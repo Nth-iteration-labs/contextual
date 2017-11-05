@@ -1,0 +1,10 @@
+Package: contextual
+Type: Package
+Title: Contextual multi-armed bandit simulation and analysis 
+Version: 0.1.0
+Author: Robin van Emden
+Maintainer: Robin van Emden <robin@pwy.nl>
+Description: A package for simulating contextual multi-armed bandit problems and analysing the results.
+License: MIT
+Encoding: UTF-8
+LazyData: true
