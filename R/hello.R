@@ -1,18 +1,141 @@
-# Hello, world!
-#
-# This is an example function named 'hello'
-# which prints 'Hello, world!'.
-#
-# You can learn more about package authoring with RStudio at:
-#
-#   http://r-pkgs.had.co.nz/
-#
-# Some useful keyboard shortcuts for package authoring:
-#
-#   Build and Reload Package:  'Ctrl + Shift + B'
-#   Check Package:             'Ctrl + Shift + E'
-#   Test Package:              'Ctrl + Shift + T'
+#' External Person
+#'
+#' Managing external processes from R is not trivial, and this
+#'
+#' @section Usage:
+#' \preformatted{p <- process$new(command = NULL, args, commandline = NULL,
+#'                  stdout = TRUE, stderr = TRUE)
+#'
+#' p$is_alive()
+#' p$kill(grace = 0.1)
+#' p$wait()
+#' p$get_exit_status()
+#' p$restart()
+#'
+#' p$read_output_lines(...)
+#' p$read_error_lines(...)
+#' p$can_read_output()
+#' p$can_read_error()
+#' p$is_eof_output()
+#' p$is_eof_error()
+#' p$get_output_connection()
+#' p$get_error_connection()
+#'
+#' print(p)
+#' }
+#'
+#' @section Arguments:
+#' \describe{
+#'   \item{p}{A \code{process} object.}
+#'   \item{command}{Character scalar, the command to run. It will be
+#'     escaped via \code{\link[base]{shQuote}}.}
+#'   \item{args}{Character vector, arguments to the command. The will be
+#'     escaped via \code{\link[base]{shQuote}}.}
+#'   \item{commandline}{A character scalar, a full command line.
+#'     No escaping will be performed on it.}
+#'   \item{stdout}{What to do with the standard output. Possible values:
+#'     \code{FALSE}: discard it; a string, redirect it to this file,
+#'     \code{TRUE}: redirect it to a temporary file.}
+#'   \item{stdout}{What to do with the standard error. Possible values:
+#'     \code{FALSE}: discard it; a string, redirect it to this file,
+#'     \code{TRUE}: redirect it to a temporary file.}
+#'   \item{grace}{Grace pediod between the TERM and KILL signals, in
+#'     seconds.}
+#'   \item{...}{Extra arguments are passed to the
+#'     \code{\link[base]{readLines}} function.}
+#' }
+#'
+#' @section Details:
+#' \code{$new()} starts a new process, it uses \code{\link[base]{pipe}}.
+#' R does \emph{not} wait for the process to finish, but returns
+#' immediately.
+#'
+#' \code{$is_alive()} checks if the process is alive. Returns a logical
+#' scalar.
+#'
+#' \code{$kill()} kills the process. It also kills all of its child
+#' processes. First it sends the child processes a \code{TERM} signal, and
+#' then after a grace period a \code{KILL} signal. Then it does the same
+#' for the process itself. A killed process can be restarted using the
+#' \code{restart} method. It returns the process itself.
+#'
+#' \code{$wait()} waits until the process finishes. Note that if the
+#' process never finishes, then R will never regain control. It returns
+#' the process itself.
+#'
+#' \code{$get_exit_code} returns the exit code of the process if it has
+#' finished and \code{wait} was called on it. Otherwise it will return
+#' \code{NULL}.
+#'
+#' \code{$restart()} restarts a process. It returns the process itself.
+#'
+#' \code{$read_output_lines()} reads from standard output of the process.
+#' If the standard output was not requested, then it returns an error.
+#' It uses a non-blocking text connection.
+#'
+#' \code{$read_error_lines()} is similar to \code{$read_output_lines}, but
+#' it reads from the standard error stream.
+#'
+#' \code{$can_read_output()} checks if there is any standard output
+#' immediately available.
+#'
+#' \code{$can_read_error()} checks if there is any standard error
+#' immediately available.
+#'
+#' \code{$is_eof_output()} checks if the standard output stream has
+#' ended. This means that the process is finished and all output has
+#' been processed.
+#'
+#' \code{$is_eof_error()} checks if the standard error stream has
+#' ended. This means that the process is finished and all output has
+#' been processed.
+#'
+#' \code{$get_output_connection()} returns a connection object, to the
+#' standard output stream of the process.
+#'
+#' \code{$get_error_conneciton()} returns a connection object, to the
+#' standard error stream of the process.
+#'
+#' \code{print(p)} or \code{p$print()} shows some information about the
+#' process on the screen, whether it is running and it's process id, etc.
+#'
+#' @importFrom R6 R6Class
+#' @name Person
+#' @examples
+#' ann <- Person$new("Ann", "black")
+#'
+NULL
 
+
+#' Title
+#'
+#' @return null
+#' @export
+#'
+#' @examples
+#' hello()
 hello <- function() {
   print("Hello, Contextual Bandits!")
 }
+
+library(R6)
+
+#' @export
+Person <- R6Class(
+  "Person",
+  public = list(
+    name = NULL,
+    hair = NULL,
+    initialize = function(name = NA, hair = NA) {
+      self$name <- name
+      self$hair <- hair
+      self$greet()
+    },
+    set_hair = function(val) {
+      self$hair <- val
+    },
+    greet = function() {
+      cat(paste0("Hello, my name is ", self$name, ".\n"))
+    }
+  )
+)
