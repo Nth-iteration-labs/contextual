@@ -4,13 +4,19 @@ library(R6)
 OfflineEvaluation <- R6Class(
   "OfflineEvaluation",
 
+  portable = FALSE,
+  class = FALSE,
+  cloneable = FALSE,
+
   public = list(
+
+    last_cummulative = 0L,
+
     policy = NULL,
     arms = NULL,
     num_sims = NULL,
     horizon = NULL,
 
-    #private? initialize these values here?
     chosen_arms = NULL,
     rewards = NULL,
     cumulative_rewards = NULL,
@@ -29,43 +35,29 @@ OfflineEvaluation <- R6Class(
       self$sim_nums <- rep(0.0, times = num_sims * horizon)
       self$times <- rep(0.0, times = num_sims * horizon)
     },
-
     run = function() {
-
-      for (sim in 1:self$num_sims) {
-
+      index <- 1L
+      sim <- 1L
+      t <- 1L
+      reward <- 1L
+      chosen_arm <- 1L
+      for (sim in 1L:self$num_sims) {
         self$policy$set_arms(length(self$arms))
-
-        for (t in 1:self$horizon) {
-
-          index = (sim - 1) * self$horizon + t
-
+        for (t in 1L:self$horizon) {
+          index = (sim - 1L) * self$horizon + t
           self$sim_nums[index] <- sim
           self$times[index] <- t
-
           chosen_arm <- self$policy$select_arm()
-
           self$chosen_arms[index] <- chosen_arm
-
-          chosen_arm_object = self$arms[chosen_arm][[1]]
-
-          reward <- chosen_arm_object$draw()
+          reward <- self$arms[[chosen_arm]]$draw()
           self$rewards[index] <- reward
-
-          if (t == 1) {
-            self$cumulative_rewards[index] <- reward
-          } else {
-            self$cumulative_rewards[index] <- self$cumulative_rewards[index - 1] + reward
-          }
+          self$last_cummulative <- self$last_cummulative + reward
+          self$cumulative_rewards[index] <- self$last_cummulative
           self$policy$update(chosen_arm, reward)
-
-
         }
       }
-
-      ret = data.frame(self$sim_nums, self$times, self$chosen_arms, self$rewards, self$cumulative_rewards)
-      ret
-
+      df <- data.frame(self$sim_nums, self$times, self$chosen_arms, self$rewards, self$cumulative_rewards)
+      return(df)
     }
   )
 )

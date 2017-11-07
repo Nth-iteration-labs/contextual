@@ -3,24 +3,25 @@ library(R6)
 #' @export
 BernoulliArm <- R6Class(
   "BernoulliArm",
+  portable = FALSE,
+  class = FALSE,
+  cloneable = FALSE,
   public = list(
     p = NULL,
-    initialize = function(p = NA, seed = NA) {
-      self$p <- p
-      if (!is.na(seed))
-        set.seed(seed)
-      self$draw()
+    initialize = function(p_in = NA, seed_in = NA) {
+      self$p <- p_in
+      if (!is.na(seed_in))
+        set.seed(seed_in)
     },
     set_p = function(val) {
       self$p <- val
     },
     draw = function() {
-      if (runif(1) > self$p) {
-        ret = 0.0
+      if (runif(1) > p) {
+        return(0.0)
       } else {
-        ret = 1.0
+        return(1.0)
       }
-      ret
     }
   )
 )
