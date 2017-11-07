@@ -13,15 +13,9 @@ policy = EpsilonGreedy$new(0.1)
 
 # Define some arms.
 
-arm1 <- BernoulliArm$new(0.1)
-arm2 <- BernoulliArm$new(0.1)
-arm3 <- BernoulliArm$new(0.1)
-arm4 <- BernoulliArm$new(0.1)
-arm5 <- BernoulliArm$new(0.9)
+list_of_pvalues <- c(0.1, 0.1, 0.1, 0.1, 0.9)
 
-# Add the arms to a list.
-
-arms <- list(arm1, arm2, arm3, arm4, arm5)
+arms <- lapply(list_of_pvalues, BernoulliArm$new)
 
 # Run OfflineEvaluation.
 
