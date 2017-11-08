@@ -7,11 +7,9 @@ BernoulliArm <- R6Class(
   class = FALSE,
   cloneable = FALSE,
   public = list(
-    p = NULL,
-    initialize = function(p_in = NA, seed_in = NA) {
-      self$p <- p_in
-      if (!is.na(seed_in))
-        set.seed(seed_in)
+    p = 0.0,
+    initialize = function(p = NA) {
+      self$p <- p
     },
     set_p = function(val) {
       self$p <- val
