@@ -47,19 +47,20 @@ GaussianBandit <- R6Class(
     optimal = NULL,
 
     initialize = function(k = NA, mu=0, sigma= 1) {
-      self$k = k                          # arms
-      self$mu = mu                        # mean
-      self$sigma = sigma                  # standard deviation
-      self$reset()                        # reset
+      self$k = k                                                   # arms
+      self$mu = mu                                                 # mean
+      self$sigma = sigma                                           # standard deviation
+      self$reset()                                                 # reset
     },
-
     reset = function() {
       self$action_values = rnorm(self$k, self$mu, self$sigma )     # result action values
       self$optimal = index_of_max(self$action_values)              # optimal result
     },
-
-    pull = function(action) {
-      reward = setNames(list( rnorm(1, self$action_values[action]) , action == self$optimal ) , c("reward", "is_optimal"))
+    get_reward = function(action) {
+      reward = setNames(
+          list( rnorm(1, self$action_values[action]) , action == self$optimal ),
+          c("reward", "is_optimal")
+      )
       return(reward)
     }
 

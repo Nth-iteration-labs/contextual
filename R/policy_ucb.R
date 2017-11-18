@@ -29,7 +29,7 @@ UCBPolicy <- R6Class(
 
       exploration = exploration ^ (1 / self$c)
 
-      ucb = agent$value_estimates + exploration
+      ucb = agent$theta + exploration
 
       action = index_of_max(ucb)
 
