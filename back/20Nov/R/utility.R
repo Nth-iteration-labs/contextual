@@ -74,24 +74,23 @@ plot_results = function(results, time_step = NA) {
 
   layout(matrix(c(1,3,2,4), 2, 2, byrow = TRUE))
 
+
+
   dev.hold()
 
   par(mar = c(1,5,3,1)) #b,l,t,r
-
-
-
   matplot(cumsum(results$reward)[1:time_step] * 100 ,
           type = "l", lwd = 1, lty = 1,
           xlab = NULL, ylab = "Cumulative Reward",
           main = "Live Bandit Plots",
           xlim = c(0,time_step))
 
-  #par(mar = c(3,5,2,1)) #b,l,t,r
-  #barplot( colMeans(colSums(results$arm)) / time_step ,
-  #         #col = rainbow(20),
-  #         ylab = "Proportion arm chosen",
-  #         names.arg=1:length(colMeans(colSums(results$arm))),
-  #         ylim = c(0,1))
+  par(mar = c(3,5,2,1)) #b,l,t,r
+  barplot( colMeans(colSums(results$arm)) / time_step ,
+           #col = rainbow(20),
+           ylab = "Proportion arm chosen",
+           names.arg=1:length(colMeans(colSums(results$arm))),
+           ylim = c(0,1))
 
   par(mar = c(1,5,3,1)) #b,l,t,r
   matplot(results$optimal[1:time_step] * 100 ,

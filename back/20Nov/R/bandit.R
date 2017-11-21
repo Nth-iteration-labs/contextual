@@ -1,8 +1,11 @@
 library(R6)
+
 #' @export
 Bandit <- R6Class(
   "Bandit",
-  portable = FALSE, class = FALSE, cloneable = TRUE,
+  portable = FALSE,
+  class = FALSE,
+  cloneable = TRUE,
   private = list(W = NULL, R = NULL, X = NULL),
   public = list(
     d           = 0,
@@ -28,14 +31,19 @@ Bandit <- R6Class(
       #private$W = matrix(c(0.1,0.1,0.9), self$k , self$d)
     },
     generate_samples = function(n = 1000L) {
+
       if (self$feature_type == 'binary') {
         private$X = matrix(sample( c(0,1), replace = TRUE, size = n * self$d ), n , self$d )
       } else if (self$feature_type == 'integer') {
         private$X = matrix(sample( c(0:4), replace = TRUE, size = n * self$d ), n , self$d )
       }
+
       IP = tcrossprod(private$X,private$W)
+
       if (self$reward_type == 'gaussian') {
+
         ############### work this out! + IP
+
         private$R = matrix(rnorm(self$means + IP, self$means  + IP, self$stds), ncol = self$k)
       } else if (self$reward_type == 'binary') {
         private$R = matrix((sign(rnorm(self$means + IP, self$means + IP, self$stds)) + 1) / 2, ncol = self$k)
@@ -47,7 +55,8 @@ Bandit <- R6Class(
         private$R = matrix((sign(rnorm(self$means + IP, self$means + IP, self$stds)) + 1) / 2, ncol = self$k)
         private$R = private$R * matrix(rnorm(self$means + IP, self$means + IP, self$stds) , ncol = self$k)
       }
-      return(setNames(list(private$X, private$R, private$W), c("X","R","W")))
+
+      return(setNames(list(private$X, private$R, private$W), c("X","R","W")))     # still pregenerate, for order troubles?
     },
     get_reward = function(action) {
       return(setNames(list( private$R[action],index_of_max(private$R) == action, action),c("reward","optimal","arm")))
@@ -55,11 +64,6 @@ Bandit <- R6Class(
     get_context = function() {
       generate_samples(1L)
       return(private$X)
-    },
-    add_arm = function () {
-    },
-    remove_arm = function() {
-
     }
   )
 )

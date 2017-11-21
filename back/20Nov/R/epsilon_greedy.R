@@ -14,7 +14,7 @@ EpsilonGreedyPolicy <- R6Class(
       if (runif(1) < self$epsilon) {
         return(sample.int(agent$bandit$k, 1))
       } else {
-        return(index_of_max(agent$get_theta()))
+        return(index_of_max(agent$get_memory()))
       }
     }
 

@@ -34,7 +34,7 @@ Agent <- R6Class(
     },
 
     reset = function() {
-      private$theta = rep(self$prior, bandit$k)
+      private$memory = rep(self$prior, bandit$k)
       self$action_attempts = rep(0, bandit$k)
       self$last_action = NA
 
@@ -47,8 +47,8 @@ Agent <- R6Class(
       return(action)
     },
 
-    get_theta = function() {
-        return(private$theta)
+    get_memory = function() {
+        return(private$memory)
     },
 
     set_reward = function(reward) {
@@ -61,14 +61,14 @@ Agent <- R6Class(
       } else {
         g = self$gamma
       }
-      q = private$theta[self$last_action]
+      q = private$memory[self$last_action]
 
-      private$theta[self$last_action] =
-        private$theta[self$last_action] + g * (reward - q)
+      private$memory[self$last_action] =
+        private$memory[self$last_action] + g * (reward - q)
     }
 
   ),
   private = list(
-    theta = NULL
+    memory = NULL
   )
 )

@@ -40,10 +40,10 @@ alpha = 7
 
 library(MASS)
 # this function returns the ucb estimates or p_t_a from above
-inside_for_func <- function(inverse_cov_matrix, reward_vector_times_design_matrix, context_vector, alpha){
-  theta_hat <- inverse_cov_matrix %*% reward_vector_times_design_matrix
+inside_for_func <- function(A, b, context_vector, alpha){
+  theta_hat <- A %*% b
   ucb_estimate <- t(theta_hat) %*% context_vector +
-    alpha * sqrt(t(context_vector) %*% inverse_cov_matrix %*% context_vector)
+    alpha * sqrt(t(context_vector) %*% A %*% context_vector)
   return(ucb_estimate)
 }
 # This function updates the covariate matrix
@@ -51,8 +51,8 @@ update_cov_matrix <- function(cov_matrix, context_vector){
   return(cov_matrix + context_vector %*% t(context_vector))
 }
 # this one updates b_a from above
-update_reward_vector_times_design_matrix <- function(reward_vector_times_design_matrix, reward, context_vector){
-  return(reward_vector_times_design_matrix + reward * context_vector)
+update_b <- function(b, reward, context_vector){
+  return(b + reward * context_vector)
 }
 
 
@@ -60,7 +60,7 @@ arms <- c(1:3)
 d <- 2
 arm_choice <- c()
 cov_matrix <- list()
-reward_vector_times_design_matrix <- list()
+b <- list()
 ucb_estimate <- matrix(0, n, length(arms))
 
 for (t in 1:n){
@@ -68,15 +68,16 @@ for (t in 1:n){
   for (a in arms){
     if(t == 1){
       cov_matrix[[a]] <- diag(d)
-      reward_vector_times_design_matrix[[a]] <- rep(0, d)
+      b[[a]] <- rep(0, d)
     }
-    inverse_cov_matrix <- ginv(cov_matrix[[a]])
-    ucb_estimate[t, a] <- inside_for_func(inverse_cov_matrix,
-                                          as.matrix(reward_vector_times_design_matrix[[a]]),
+    A <- ginv(cov_matrix[[a]])
+    ucb_estimate[t, a] <- inside_for_func(A,
+                                          as.matrix(b[[a]]),
                                           as.matrix(c(context$clicked_sports, context$clicked_politics)),
                                           alpha)
 
   }
+  print (ucb_estimate[t,])
   trial_arm <- which(ucb_estimate[t,] == max(ucb_estimate[t,]))
   if(length(trial_arm) > 1){
     trial_arm <- sample(trial_arm, 1)
@@ -89,8 +90,8 @@ for (t in 1:n){
   }
   cov_matrix[[arm_choice[t]]] <- update_cov_matrix(cov_matrix[[arm_choice[t]]],
                                                    as.matrix(c(context$clicked_sports, context$clicked_politics)))
-  reward_vector_times_design_matrix[[arm_choice[t]]] <- update_reward_vector_times_design_matrix(
-    as.matrix(reward_vector_times_design_matrix[[arm_choice[t]]]),
+  b[[arm_choice[t]]] <- update_b(
+    as.matrix(b[[arm_choice[t]]]),
     context$click,
     as.matrix(c(context$clicked_sports, context$clicked_politics))
   )
