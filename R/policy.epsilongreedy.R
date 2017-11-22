@@ -5,8 +5,10 @@ EpsilonGreedyPolicy <- R6Class(
   portable = FALSE, class = FALSE, cloneable = FALSE,
   public = list(
     epsilon = 0.1,
-    initialize = function(epsilon = 0.1) {
+    name = "",
+    initialize = function(epsilon = 0.1, name = "EpsilonGreedy") {
       self$epsilon = epsilon
+      self$name = name
     },
     get_action = function(agent){
       if (runif(1) < self$epsilon) {

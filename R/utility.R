@@ -1,4 +1,5 @@
 library(R.devices)
+library(dplyr)
 
 index_of_max <- function(x)
 {
@@ -68,45 +69,55 @@ external_graphs = function(ext = TRUE, width = 10, height = 6){
   }
 }
 
-plot_results = function(results, time_step = NA) {
-  if (is.na(time_step)) time_step = length(results$reward)
+plot_results = function(results, time_step = NA, b = NA) {
 
-
+  as.data.frame(results)
+  dev.hold()
   layout(matrix(c(1,3,2,4), 2, 2, byrow = TRUE))
 
-  dev.hold()
-
-  par(mar = c(1,5,3,1)) #b,l,t,r
-
-
-
-  matplot(cumsum(results$reward)[1:time_step] * 100 ,
-          type = "l", lwd = 1, lty = 1,
-          xlab = NULL, ylab = "Cumulative Reward",
-          main = "Live Bandit Plots",
-          xlim = c(0,time_step))
-
-  #par(mar = c(3,5,2,1)) #b,l,t,r
-  #barplot( colMeans(colSums(results$arm)) / time_step ,
-  #         #col = rainbow(20),
-  #         ylab = "Proportion arm chosen",
-  #         names.arg=1:length(colMeans(colSums(results$arm))),
-  #         ylim = c(0,1))
-
-  par(mar = c(1,5,3,1)) #b,l,t,r
-  matplot(results$optimal[1:time_step] * 100 ,
-          xaxt = 'n', type = "l", lwd = 1, lty = 1,
-          xlab = NULL, ylab = "Optimal Action",  ylim = c(0,100),
-          xlim = c(0,horizon))
+  ######################
 
   par(mar = c(3,5,1,1)) #b,l,t,r
-  matplot(results$reward[1:time_step],
-          type = "l", lwd = 1, lty = 1,
-          xlab = "Time Step", ylab = "Chosen arm",
-          ylim = c(-0.5,  2), xlim = c(0,horizon) )
+
+  aggr = results %>%
+    group_by(t,agent) %>%
+    arrange(t,agent) %>%
+    summarize(average_reward = mean(reward)) %>%
+    group_by(agent)  %>%
+    mutate(cummulative_reward = cumsum(average_reward))
+
+  if (is.na(b)) b = length(unique(aggr$agent))
+
+  matrix <- matrix(aggr$cummulative_reward, ncol = b, byrow = T)
+  matplot(matrix, type = "l", lwd = 1, lty = 1,
+          xlab = "Time Step", ylab = "Cummulative reward")
+
+  legend( "topleft", NULL, unique(aggr$agent), col = c(1,2,3,4,5,6), lwd = 1, lty = 1)
+  ####################
+
+  par(mar = c(3,5,1,1)) #b,l,t,r
+
+  aggr = results %>%
+    group_by(t,agent) %>%
+    arrange(t,agent) %>%
+    summarize(optimal_action = mean(optimal)*100)
+
+  matrix <- matrix(aggr$optimal_action, ncol = b, byrow = T)
+  matplot(matrix, type = "l", lwd = 1, lty = 1,
+          xlab = NULL, ylab = "Optimal arm",  ylim = c(0,100))
+
+  ######################
+
+  par(mar = c(3,5,1,2)) #b,l,t,r
+  aggr = results %>%
+    group_by(t,agent) %>%
+    arrange(t,agent) %>%
+    summarize(average_reward = mean(reward))
+
+  matrix <- matrix(aggr$average_reward, ncol = b, byrow = T)
+  matplot(matrix, type = "l", lwd = 1, lty = 1,
+                  xlab = "Time Step", ylab = "Average reward")
 
 
-  results$cummulative <- cumsum(results$reward)
   dev.flush()
 }
-

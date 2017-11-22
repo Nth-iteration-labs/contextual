@@ -1,13 +1,15 @@
 library(R6)
-
+# disjoint
 #' @export
 LinUCBPolicy <- R6Class(
   "LinUCBPolicy",
   portable = FALSE, class = FALSE, cloneable = FALSE,
   public = list(
     alpha = 0.1,
-    initialize = function(alpha = 1) {
+    name = "",
+    initialize = function(alpha = 1, name = "LinUCB") {
       self$alpha = alpha
+      self$name = name
     },
     get_action = function(agent,context) {
       memory = agent$get_memory()
@@ -22,7 +24,7 @@ LinUCBPolicy <- R6Class(
         theta_hat  = A_inv %*% b
 
         mean =  t(context_vector) %*% theta_hat
-        var  =  sqrt( ( t(context_vector) %*% A_inv ) %*% context_vector )
+        var  =  sqrt( (t(context_vector) %*% A_inv ) %*% context_vector )
 
         expected_reward_for_arm = mean + (self$alpha * var)
         expected_rewards_vector[arm] = expected_reward_for_arm

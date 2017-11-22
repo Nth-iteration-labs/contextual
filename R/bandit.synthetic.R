@@ -1,7 +1,7 @@
 library(R6)
 #' @export
-Bandit <- R6Class(
-  "Bandit",
+SyntheticBandit <- R6Class(
+  "SyntheticBandit",
   portable = FALSE, class = FALSE, cloneable = TRUE,
   private = list(W = NULL, R = NULL, X = NULL),
   public = list(
@@ -13,7 +13,7 @@ Bandit <- R6Class(
     feature_type = NULL,
     initialize = function(k = 2L,
                           d = 2L,
-                          reward_type = 'gaussian',
+                          reward_type = 'binary',
                           feature_type = 'binary'  ) {
       self$d = d                                                                  # number of features
       self$k = k                                                                  # number of bandits
@@ -24,8 +24,12 @@ Bandit <- R6Class(
     reset = function(mean = 0.0, sd = 1.0) {
       self$means = rnorm(self$k)                                                  # means  vector of k size
       self$stds = 1.0 + 2.0 * runif(self$k)                                       # stddev vector of k size - wild!
-      private$W  = matrix(rnorm(self$k * self$d, mean, sd) , self$k , self$d)     # generate weight vectors
-      #private$W = matrix(c(0.1,0.1,0.9), self$k , self$d)
+      #private$W  = matrix(rnorm(self$k * self$d, mean, sd) , self$k , self$d)     # generate weight vectors
+      private$W = matrix(runif(self$k))
+      private$W = matrix(c(0.1,0.1,0.9), self$k , self$d)
+    },
+    get_weights = function() {
+      return(private$W)
     },
     generate_samples = function(n = 1000L) {
       if (self$feature_type == 'binary') {
@@ -33,12 +37,16 @@ Bandit <- R6Class(
       } else if (self$feature_type == 'integer') {
         private$X = matrix(sample( c(0:4), replace = TRUE, size = n * self$d ), n , self$d )
       }
+
       IP = tcrossprod(private$X,private$W)
+
       if (self$reward_type == 'gaussian') {
         ############### work this out! + IP
         private$R = matrix(rnorm(self$means + IP, self$means  + IP, self$stds), ncol = self$k)
       } else if (self$reward_type == 'binary') {
-        private$R = matrix((sign(rnorm(self$means + IP, self$means + IP, self$stds)) + 1) / 2, ncol = self$k)
+        randomcompare = matrix(runif(self$k))
+        private$R = as.integer(randomcompare < private$W  )
+        #private$R = matrix((sign(rnorm(self$means + IP, self$means + IP, self$stds)) + 1) / 2, ncol = self$k)
       } else if (self$reward_type == 'positive') {
         private$R = matrix(rnorm(self$means + IP, self$means + IP, self$stds), ncol = self$k)
       } else if (self$reward_type == 'lognormal') {
