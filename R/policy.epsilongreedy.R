@@ -6,7 +6,7 @@ EpsilonGreedyPolicy <- R6Class(
   public = list(
     epsilon = 0.1,
     name = "",
-    initialize = function(epsilon = 0.1, name = "EpsilonGreedy") {
+    initialize = function(epsilon = 0.1, name = "EpsilonGreedy" ) {
       self$epsilon = epsilon
       self$name = name
     },
@@ -18,6 +18,5 @@ EpsilonGreedyPolicy <- R6Class(
         return(index_of_max(memory$theta))
       }
     }
-
   )
 )

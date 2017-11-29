@@ -1,7 +1,7 @@
 library(R6)
 #' @export
-Agent <- R6Class(
-  "Agent",
+BasicAgent <- R6Class(
+  "BasicAgent",
   portable = FALSE, class = FALSE, cloneable = TRUE,
   public = list(
     policy = NULL,
@@ -18,22 +18,24 @@ Agent <- R6Class(
       return(private$memory)
     },
     reset = function() {
-      self$bandit$reset()
-      private$memory$theta = rep(0, self$bandit$k)
-      private$memory$n_arm = rep(0, self$bandit$k)
-      private$memory$action = list()
+      private$memory$theta =         rep(0, self$bandit$k)          # or self$values.. or below under theta
+      private$memory$choice.counts = rep(0, self$bandit$k)          # per arm count
+      private$memory$succes.counts = rep(0, self$bandit$k)          # per arm succesful count
+      private$memory$current.choice = list()                        # current arm choice
     },
     get_action = function(context = NULL) {
-      action = self$policy$get_action(self)
-      private$memory$action = action
-      return(action)
+      private$memory$current.choice = self$policy$get_action(self)
+      return(private$memory$current.choice)
     },
     set_reward = function(reward) {
-      action = private$memory$action
-      private$memory$n_arm[action] = private$memory$n_arm[action] + 1
-      current_value_arm = private$memory$theta[action]
-      current_p_arm  = 1 / private$memory$n_arm[action]
-      private$memory$theta[action] = current_value_arm + current_p_arm * (reward - current_value_arm)
+      current.choice = private$memory$current.choice
+      inc(private$memory$choice.counts[current.choice]) <- 1
+      if (reward == 1) {
+        inc(private$memory$succes.counts[current.choice]) <- 1
+      }
+      current_value_arm = private$memory$theta[current.choice]
+      current_prob_arm  = 1 / private$memory$choice.counts[current.choice]
+      private$memory$theta[current.choice] = current_prob_arm * (reward - current_value_arm) + current_value_arm
     }
   ),
   private = list(

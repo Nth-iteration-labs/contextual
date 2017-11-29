@@ -18,7 +18,6 @@ LinUCBAgent <- R6Class(
       return(private$memory)
     },
     reset = function() {
-      self$bandit$reset()
       private$memory$theta = list()                    # instantiate memory for theta
       theta_arm = list(
         'A' = diag(1,bandit$d),                        # A is a d*d identity matrix
@@ -37,7 +36,7 @@ LinUCBAgent <- R6Class(
     },
     set_reward = function(reward) {
 
-      A_chosen_arm = private$memory$theta[[private$memory$action]]$A  # other way arround and $
+      A_chosen_arm = private$memory$theta[[private$memory$action]]$A
       b_chosen_arm = private$memory$theta[[private$memory$action]]$b
       mem = as.vector(private$memory$context)
 
