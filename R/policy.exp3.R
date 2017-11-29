@@ -28,7 +28,7 @@ Exp3Policy <- R6Class(
       for (arm in 1:agent$bandit$k) {
         probs[arm] = (1 - self$gamma) * (agent$get_memory()$theta[arm] / sum(agent$get_memory()$theta))
       }
-      probs[arm] = probs[arm] + (self$gamma) * (1.0 / agent$bandit$k)
+      inc(probs[arm]) <- (self$gamma) * (1.0 / agent$bandit$k)
       return(categorical_draw(probs))
     }
   )

@@ -29,8 +29,8 @@ Exp3Agent <- R6Class(
       current.choice = private$memory$current.choice
       probs = rep(0.0, self$bandit$k)
       for (arm in 1:self$bandit$k ) {
-        probs[arm] = as.numeric((1 - self$policy$gamma) * (private$memory$theta[arm] / sum(private$memory$theta)))
-        probs[arm] = probs[arm] + (self$policy$gamma) * (1.0 / self$bandit$k)
+        probs[arm] = (1 - self$policy$gamma) * (private$memory$theta[arm] / sum(private$memory$theta))
+        inc(probs[arm]) <- (self$policy$gamma) * (1.0 / self$bandit$k)
       }
       x = reward / probs[current.choice]
       growth_factor = exp((self$policy$gamma / self$bandit$k) * x)

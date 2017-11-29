@@ -69,7 +69,7 @@ Simulator <- R6Class(
             #set(self$history,counter,7L,bandit_instance[[a,s]]$get_weights())
             if (reward$optimal) set(self$history,counter,2L,1L)
 
-            counter = counter + 1L
+            inc(counter) <- 1L
           }
         }
         if (self$animate == TRUE && t %% 2 == 0) plot$grid(history[t != 0L])  # xlim = c(0,horizon))

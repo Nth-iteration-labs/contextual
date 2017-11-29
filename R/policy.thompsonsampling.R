@@ -22,6 +22,7 @@ ThompsonSamplingPolicy <- R6Class(
     get_action = function(agent) {
 
       self$mem = agent$get_memory()
+      # loop here .. like exp3 .. or other way arround, sapply in exp3?
       mu = sapply(1:agent$bandit$k, function(i) self$calc_rho(i))
       return(index_of_max(mu));
     }

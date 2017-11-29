@@ -28,3 +28,12 @@ is.rstudio = function(){
 "dec<-" <- function(x, value) {
   x - value
 }
+
+"mult<-" <- function(x, value) {
+  x * value
+}
+
+"div<-" <- function(x, value) {
+  x / value
+}
+
