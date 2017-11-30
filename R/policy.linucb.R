@@ -1,5 +1,5 @@
 library(R6)
-# disjoint
+library(MASS)
 #' @export
 LinUCBPolicy <- R6Class(
   "LinUCBPolicy",
@@ -11,27 +11,18 @@ LinUCBPolicy <- R6Class(
       self$alpha = alpha
       self$name = name
     },
-    get_action = function(agent,context) {
-      memory = agent$get_memory()
-      context_vector = t(as.matrix(context))
-      k = length(memory[['theta']])
-      expected_rewards_vector = vector(mode = "numeric", length = agent$bandit$k)
-      for (arm in 1:k) {
-
-        A          = memory[['theta']][[arm]][['A']]
-        b          = as.matrix(memory[['theta']][[arm]][['b']])
-        A_inv      = solve(A)
-        theta_hat  = A_inv %*% b
-
-        mean =  t(context_vector) %*% theta_hat
-        var  =  sqrt( (t(context_vector) %*% A_inv ) %*% context_vector )  #########
-
-        expected_reward_for_arm = mean + (self$alpha * var)       ##############
-        expected_rewards_vector[arm] = expected_reward_for_arm
-
+    get.action = function(agent,context) {
+      expected.rewards.vector = rep(0.0, agent$bandit$k)
+      for (arm in 1:agent$bandit$k) {
+        A          = agent$get.memory()[['theta']][[arm]][['A']]
+        b          = agent$get.memory()[['theta']][[arm]][['b']]
+        A.inv      = chol2inv(chol(A))                                        # Faster as A.inv = solve(A), same?
+        theta.hat  = A.inv %*% b
+        mean =  context$X %*% theta.hat
+        var  =  sqrt( tcrossprod(context$X %*% A.inv, context$X) )            # faster as sqrt( (context$X %*% A.inv ) %*% t(context$X) )
+        expected.rewards.vector[arm] = mean + (self$alpha * var)
       }
-      return(index_of_max(expected_rewards_vector))
+      return(index.of.max(expected.rewards.vector))
     }
-
   )
 )

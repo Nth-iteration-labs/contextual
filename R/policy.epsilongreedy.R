@@ -10,12 +10,11 @@ EpsilonGreedyPolicy <- R6Class(
       self$epsilon = epsilon
       self$name = name
     },
-    get_action = function(agent){
+    get.action = function(agent,context){
       if (runif(1) < self$epsilon) {
         return(sample.int(agent$bandit$k, 1))
       } else {
-        memory = agent$get_memory()
-        return(index_of_max(memory$theta))
+        return(index.of.max(agent$get.memory()$theta))
       }
     }
   )

@@ -14,29 +14,26 @@ LinUCBAgent <- R6Class(
       self$policy = policy
       self$reset()
     },
-    get_memory = function() {
+    get.memory = function() {
       return(private$memory)
     },
     reset = function() {
       private$memory$theta = list()                    # instantiate memory for theta
-      theta_arm = list(
+      theta.arm = list(
         'A' = diag(1,bandit$d),                        # A is a d*d identity matrix
         'b' = rep(0,bandit$d)                          # b is a 0 vector of length
       )
       for (i in 1:self$bandit$k) {
-        private$memory$theta[[i]] = theta_arm          # assign per arm to theta in memory
+        private$memory$theta[[i]] = theta.arm          # assign per arm to theta in memory
       }
     },
-    get_action = function(context) {
-      action = self$policy$get_action(self,context)
-      private$memory$action = action
-      private$memory$context = context
-      return(action)
+    get.action = function(context) {
+      return(self$policy$get.action(self,context))
     },
-    set_reward = function(reward) {
-      mem = as.vector(private$memory$context)
-      inc(private$memory$theta[[private$memory$action]]$A) <- outer(mem, mem)
-      inc(private$memory$theta[[private$memory$action]]$b) <- reward * mem
+    set.reward = function(reward,context) {
+      X = as.vector(context$X)
+      inc(private$memory$theta[[reward$current.choice]]$A) <- outer(X, X)
+      inc(private$memory$theta[[reward$current.choice]]$b) <- reward$reward * X
     }
   ),
   private = list(

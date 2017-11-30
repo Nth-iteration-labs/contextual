@@ -1,5 +1,5 @@
 library(R6)
-library(data.table)
+library(progress)
 #' @export
 Simulator <- R6Class(
   "Simulator",
@@ -8,71 +8,54 @@ Simulator <- R6Class(
     rewards = NULL
   ),
   public = list(
-    agent_list = NULL,
-    agent_n = NULL,
+    agent.list = NULL,
+    agent.n = NULL,
     animate = FALSE,
+    animate.step = 2,
     horizon = 100L,
     simulations = 1L,
-    history = data.table(),
-
-    initialize = function(agent_list, animate = FALSE) {
-      self$agent_list = agent_list
-      self$agent_n = length(agent_list)
+    history = NULL,
+    initialize = function(agent.list, animate = FALSE, animate.step = 2) {
+      self$agent.list = agent.list
+      self$agent.n = length(agent.list)
       self$animate = animate
+      self$animate.step = animate.step
       self$reset
     },
     reset = function(){
-      for (a in 1L:agent_n) {
-        agent_list[[a]]$reset()
-      }
+      for (a in 1L:agent.n) agent.list[[a]]$reset()
     },
     run = function(horizon=100L, simulations=1L) {
-
+      counter = 1L
       self$horizon = horizon
+      pb <- progress_bar$new(total = horizon)
+      pb$tick(0)
       self$simulations = simulations
-      n = self$horizon*self$agent_n*self$simulations
-
-      self$history = data.table(
-        reward          = rep(0L,     n), #1
-        optimal         = rep(0L,     n), #2
-        agent           = rep("",     n), #3
-        t               = rep(0L,     n), #4
-        sim             = rep(0L,     n), #5
-        arm             = rep(0L,     n)  #6
-      )
-
-      agent_instance =  matrix( list(), agent_n,simulations)
-      bandit_instance = matrix( list(), agent_n,simulations)
-
+      n = self$horizon*self$agent.n*self$simulations
+      self$history = History$new(n)
+      agent.instance =  matrix( list(), agent.n,simulations)
+      bandit.instance = matrix( list(), agent.n,simulations)   # is this slow? how to access objects faster?
       for (s in 1L:self$simulations) {
-        for (a in 1L:self$agent_n) {
-          agent_instance[a,s]  = list(self$agent_list[[a]]$clone())
-          bandit_instance[a,s] = list(self$agent_list[[a]]$bandit$clone())
+        for (a in 1L:self$agent.n) {
+          agent.instance[a,s]  = list(self$agent.list[[a]]$clone())
+          bandit.instance[a,s] = list(self$agent.list[[a]]$bandit$clone())
         }
       }
-
-      counter = 1L
-
       for (t in 1L:self$horizon) {
-        for (a in 1L:self$agent_n) {
+        pb$tick()
+        for (a in 1L:self$agent.n) {
           for (s in 1L:self$simulations) {
+            context  = bandit.instance[[a,s]]$get.context()        # context k * d, works at current t for now
+            action   = agent.instance[[a,s]]$get.action(context)   # agent chooses an arm k, knowing context d
+            reward   = bandit.instance[[a,s]]$get.reward(action)   # see how the bandit rewards us
+            agent.instance[[a,s]]$set.reward(reward,context)       # agent adapts theta..
+                                                                   # .. knowing reward choice arm k in context
 
-            context  = bandit_instance[[a,s]]$get_context()        # works at this t for bandit, k * d
-            action   = agent_instance[[a,s]]$get_action(context)   # agent chooses an arm k, knowing context d
-            reward   = bandit_instance[[a,s]]$get_reward(action)   # see how the bandit rewards us
-            agent_instance[[a,s]]$set_reward(reward$reward)        # agent remembers reward for next round
-            set(self$history,counter,4L,t)
-            set(self$history,counter,5L,s)
-            set(self$history,counter,6L,action)
-            set(self$history,counter,1L,reward$reward)
-            set(self$history,counter,3L,agent_instance[[a,s]]$policy$name)
-            #set(self$history,counter,7L,bandit_instance[[a,s]]$get_weights())
-            if (reward$optimal) set(self$history,counter,2L,1L)
-
+            history$save(counter,t,s,action,reward,agent.instance[[a,s]]$policy$name)
             inc(counter) <- 1L
           }
         }
-        if (self$animate == TRUE && t %% 2 == 0) plot$grid(history[t != 0L])  # xlim = c(0,horizon))
+        if (self$animate == TRUE && t %% animate.step == 0) plot$grid(history$get.data.table()[t != 0L])  # xlim = c(0,horizon))
       }
       return(history)
     }

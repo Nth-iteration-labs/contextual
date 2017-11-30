@@ -8,12 +8,8 @@ OraclePolicy <- R6Class(
     initialize = function(name = "Oracle" ) {
       self$name = name
     },
-    get_action = function(agent){
-      return(sample.int(agent$bandit$k, 1))
-
-
-      ################
-      ################ TODO
+    get.action = function(agent,context){
+      return(index.of.max(context$oracle))
     }
   )
 )

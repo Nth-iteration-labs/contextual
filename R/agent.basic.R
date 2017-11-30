@@ -14,28 +14,22 @@ BasicAgent <- R6Class(
       self$policy = policy
       self$reset()
     },
-    get_memory = function() {
+    get.memory = function() {
       return(private$memory)
     },
     reset = function() {
-      private$memory$theta =         rep(0, self$bandit$k)          # or self$values.. or below under theta
+      private$memory$theta =         rep(0, self$bandit$k)          # theta per arm
       private$memory$choice.counts = rep(0, self$bandit$k)          # per arm count
       private$memory$succes.counts = rep(0, self$bandit$k)          # per arm succesful count
-      private$memory$current.choice = list()                        # current arm choice
     },
-    get_action = function(context = NULL) {
-      private$memory$current.choice = self$policy$get_action(self)
-      return(private$memory$current.choice)
+    get.action = function(context) {
+      return(self$policy$get.action(self,context))
     },
-    set_reward = function(reward) {
-      current.choice = private$memory$current.choice
-      inc(private$memory$choice.counts[current.choice]) <- 1
-      if (reward == 1) {
-        inc(private$memory$succes.counts[current.choice]) <- 1
-      }
-      current_value_arm = private$memory$theta[current.choice]
-      current_prob_arm  = 1 / private$memory$choice.counts[current.choice]
-      private$memory$theta[current.choice] = current_prob_arm * (reward - current_value_arm) + current_value_arm
+    set.reward = function(reward, context = NULL) {
+      inc(private$memory$choice.counts[reward$current.choice]) <- 1
+      if (reward$reward == 1) inc(private$memory$succes.counts[reward$current.choice]) <- 1
+      inc(private$memory$theta[reward$current.choice]) <-
+        (1 / private$memory$choice.counts[reward$current.choice]) * (reward$reward - private$memory$theta[reward$current.choice])
     }
   ),
   private = list(

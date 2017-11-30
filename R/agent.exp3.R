@@ -14,27 +14,24 @@ Exp3Agent <- R6Class(
       self$policy = policy
       self$reset()
     },
-    get_memory = function() {
+    get.memory = function() {
       return(private$memory)
     },
     reset = function() {
       private$memory$theta = rep(1.0, self$bandit$k)
-      private$memory$current.choice = list()
     },
-    get_action = function(context = NULL) {
-      private$memory$current.choice = self$policy$get_action(self)
-      return(private$memory$current.choice)
+    get.action = function(context = NULL) {
+      return(self$policy$get.action(self))
     },
-    set_reward = function(reward) {
-      current.choice = private$memory$current.choice
+    set.reward = function(reward,context = NULL) {
       probs = rep(0.0, self$bandit$k)
       for (arm in 1:self$bandit$k ) {
         probs[arm] = (1 - self$policy$gamma) * (private$memory$theta[arm] / sum(private$memory$theta))
         inc(probs[arm]) <- (self$policy$gamma) * (1.0 / self$bandit$k)
       }
-      x = reward / probs[current.choice]
-      growth_factor = exp((self$policy$gamma / self$bandit$k) * x)
-      private$memory$theta[current.choice] = private$memory$theta[current.choice] * growth_factor
+      x = reward$reward / probs[reward$current.choice]
+      growth.factor = exp((self$policy$gamma / self$bandit$k) * x)
+      mult(private$memory$theta[reward$current.choice]) <- growth.factor
     }
   ),
   private = list(

@@ -7,24 +7,20 @@ ThompsonSamplingPolicy <- R6Class(
     alpha = 1,
     beta = 1,
     name = "",
-    mem = NULL, ################# this is no good! beeh!
-
     initialize = function(alpha = 1, beta =  1, name = "Thompson Sampling" ) {
       self$alpha = alpha
       self$beta  = beta
       self$name  = name
     },
-    calc_rho = function(i) {
+    get.action = function(agent,context) {
+      mu = rep(0.0, agent$bandit$k)
+      for (arm in 1:agent$bandit$k) {
+        mu[arm] =  rbeta(1, self$alpha + agent$get.memory()$succes.counts[arm],
+                         self$beta + agent$get.memory()$choice.counts[arm] - agent$get.memory()$succes.counts[arm])
+      }
+      return(index.of.max(mu));
 
-      rbeta(1, self$alpha + self$mem$succes.counts[i],
-            self$beta + self$mem$choice.counts[i] - self$mem$succes.counts[i])
-    },
-    get_action = function(agent) {
 
-      self$mem = agent$get_memory()
-      # loop here .. like exp3 .. or other way arround, sapply in exp3?
-      mu = sapply(1:agent$bandit$k, function(i) self$calc_rho(i))
-      return(index_of_max(mu));
     }
   )
 )

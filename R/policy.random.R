@@ -8,7 +8,7 @@ RandomPolicy <- R6Class(
     initialize = function(name = "Random" ) {
       self$name = name
     },
-    get_action = function(agent){
+    get.action = function(agent,context){
       return(sample.int(agent$bandit$k, 1))
     }
   )

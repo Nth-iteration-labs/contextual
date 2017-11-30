@@ -3,70 +3,65 @@ library(R6)
 SyntheticBandit <- R6Class(
   "SyntheticBandit",
   portable = FALSE, class = FALSE, cloneable = TRUE,
-  private = list(W = NULL, R = NULL, X = NULL),
+  private = list(W = NULL, R = NULL, X = NULL, oracle = NULL),
   public = list(
-    d            = 0,
-    k            = 0,
+    d            = 0L,
+    k            = 0L,
     means        = 0.0,
     stds         = 0.0,
-    reward_type  = NULL,
-    feature_type = NULL,
-    weight_type  = NULL,
+    reward.type  = NULL,
+    feature.type = NULL,
+    weight.type  = NULL,
     initialize   = function(k = 2L,
                             d = 2L,
-                            weight_type  = 'uniform',
-                            reward_type  = 'binary',
-                            feature_type = 'binary'  ) {
-
+                            weight.type  = 'uniform',
+                            reward.type  = 'binary',
+                            feature.type = 'binary'  ) {
       self$k = k                                                                  # number of bandits
       self$d = d                                                                  # number of features
-      self$reward_type = reward_type                                              # binary, positive, mixed
-      self$feature_type = feature_type                                            # positive
-      self$weight_type  = weight_type
-      self$generate_weights()                                                     # generate some weights
+      self$reward.type = reward.type                                              # binary, positive, mixed
+      self$feature.type = feature.type                                            # positive
+      self$weight.type  = weight.type
+      self$generate.weights()                                                     # generate some weights
     },
-    generate_weights = function(mean = 0.0, sd = 1.0) {
-      if (weight_type == "uniform") {
-        private$W = matrix(runif(self$k * self$d), self$k, self$d)
+    generate.weights = function(mean = 0.0, sd = 1.0) {
+      if (weight.type == "uniform") {
+        private$W = matrix(runif(self$d * self$k), self$d, self$k)
       }
     },
-    get_weights = function() {
+    get.weights = function() {
       return(private$W)
     },
-    set_weights = function(weightMatrix) {
-      private$W = matrix(weightMatrix, self$k , self$d)
+    set.weights = function(weightMatrix) {
+      if (length(weightMatrix) != (self$d * self$k))
+        stop("Weight needs to be of length k*d.")
+      private$W = matrix(weightMatrix,  self$d, self$k)
     },
-    generate_sample = function(n = 1L) {
+    generate.sample = function(n = 1L) {
 
       # n is not yet finished!
 
-      if (self$feature_type == 'single' || is.na(self$feature_type)) {
+      if (self$feature.type == 'single' || is.na(self$feature.type)) {
         private$X = matrix(1, n, self$d)
-      } else if (self$feature_type == 'binary') {
+      } else if (self$feature.type == 'binary') {
         private$X = matrix(sample( c(0,1), replace = TRUE, size = n * self$d ), n , self$d )  # always one feature, at least?
       }
 
-      weights_per_feature = t(t(private$W) * as.vector(private$X))                 # this can be done in a better way!
+      weights.per.feature = private$W * as.vector(private$X)
 
-      if (self$reward_type == 'binary') {
-        randomcomparator   = runif(self$k)
-        featureweights = rowSums(weights_per_feature)/sum(private$X)
-        featureweights[is.nan(featureweights)] = 0
-        private$R = as.integer(randomcomparator < featureweights  )
+      if (self$reward.type == 'binary') {
+        private$oracle = colSums(weights.per.feature)/sum(private$X)
+        private$oracle[is.nan(private$oracle)] = 0
+        private$R = as.integer(runif(self$k) < private$oracle  )
       }
-      return(setNames(list(private$X, private$R, private$W), c("X","R","W")))
+      return(setNames(list(private$X, private$oracle), c("X","oracle")))
     },
-    get_reward = function(action) {
-      return(setNames(list( private$R[action],index_of_max(private$R) == action, action),c("reward","optimal","arm")))
+    get.reward = function(action) {
+      return(setNames(list( private$R[action], action, index.of.max(private$R) == action ),
+                             c("reward","current.choice","is.optimal.choice")))
     },
-    get_context = function() {
-      generate_sample()
-      return(private$X)
-    },
-    add_arm = function() {
-    },
-    remove_arm = function() {
-
+    get.context = function() {
+      return(generate.sample())
     }
   )
 )
