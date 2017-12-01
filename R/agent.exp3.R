@@ -38,3 +38,33 @@ Exp3Agent <- R6Class(
     memory = NULL
   )
 )
+
+#' External Exp3Agent
+#'
+#' Exp3Agent intro
+#'
+#' @section Usage:
+#' \preformatted{b <- Exp3Agent$new()
+#'
+#' b$reset()
+#'
+#' print(b)
+#' }
+#'
+#' @section Arguments:
+#' \describe{
+#'   \item{b}{A \code{Exp3Agent} object.}
+#' }
+#'
+#' @section Details:
+#' \code{$new()} starts a new Exp3Agent, it uses \code{\link[base]{pipe}}.
+#' R does \emph{not} wait for the process to finish, but returns
+#' immediately.
+#'
+#' @importFrom R6 R6Class
+#' @name Exp3Agent
+#' @examples
+#'\dontrun{}
+#'
+NULL
+

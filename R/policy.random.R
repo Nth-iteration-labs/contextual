@@ -13,3 +13,33 @@ RandomPolicy <- R6Class(
     }
   )
 )
+
+#' External RandomPolicy
+#'
+#' RandomPolicy intro
+#'
+#' @section Usage:
+#' \preformatted{b <- RandomPolicy$new()
+#'
+#' b$reset()
+#'
+#' print(b)
+#' }
+#'
+#' @section Arguments:
+#' \describe{
+#'   \item{b}{A \code{RandomPolicy} object.}
+#' }
+#'
+#' @section Details:
+#' \code{$new()} starts a new RandomPolicy, it uses \code{\link[base]{pipe}}.
+#' R does \emph{not} wait for the process to finish, but returns
+#' immediately.
+#'
+#' @importFrom R6 R6Class
+#' @name RandomPolicy
+#' @examples
+#'\dontrun{}
+#'
+NULL
+

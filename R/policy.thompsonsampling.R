@@ -25,6 +25,33 @@ ThompsonSamplingPolicy <- R6Class(
   )
 )
 
-
+#' External ThompsonSamplingPolicy
+#'
+#' ThompsonSamplingPolicy intro
+#'
+#' @section Usage:
+#' \preformatted{b <- ThompsonSamplingPolicy$new()
+#'
+#' b$reset()
+#'
+#' print(b)
+#' }
+#'
+#' @section Arguments:
+#' \describe{
+#'   \item{b}{A \code{ThompsonSamplingPolicy} object.}
+#' }
+#'
+#' @section Details:
+#' \code{$new()} starts a new ThompsonSamplingPolicy, it uses \code{\link[base]{pipe}}.
+#' R does \emph{not} wait for the process to finish, but returns
+#' immediately.
+#'
+#' @importFrom R6 R6Class
+#' @name ThompsonSamplingPolicy
+#' @examples
+#'\dontrun{}
+#'
+NULL
 
 

@@ -13,3 +13,34 @@ OraclePolicy <- R6Class(
     }
   )
 )
+
+#' External OraclePolicy
+#'
+#' OraclePolicy intro
+#'
+#' @section Usage:
+#' \preformatted{b <- OraclePolicy$new()
+#'
+#' b$reset()
+#'
+#' print(b)
+#' }
+#'
+#' @section Arguments:
+#' \describe{
+#'   \item{b}{A \code{OraclePolicy} object.}
+#' }
+#'
+#' @section Details:
+#' \code{$new()} starts a new OraclePolicy, it uses \code{\link[base]{pipe}}.
+#' R does \emph{not} wait for the process to finish, but returns
+#' immediately.
+#'
+#' @importFrom R6 R6Class
+#' @name OraclePolicy
+#' @examples
+#'\dontrun{}
+#'
+NULL
+
+

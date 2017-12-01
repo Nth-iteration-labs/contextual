@@ -1,13 +1,18 @@
 library(R6)
 # library(contextual)
-source("dev.source.R")
+setwd("~/GitHub/contextual/demo")
+source("dev.R")
 
 plot = Plot$new()                                                              # initialize plot.. TODO: change to within class
 plot$set.external(T,11,6L)                                                     # set external for Rstudio
 agents = list()                                                                # to keep track of our agents
 set.seed(21L)                                                                  # set seed, to be able to repeat our tests with the same data
 
-bandit  = SyntheticBandit$new(k = 3L, d = 3L, "uniform", "binary", "binary")   # define a bandit, with k arms and d features
+bandit  = SyntheticBandit$new(k = 3L,
+                              d = 3L,
+                              weight.distribution = "Uniform",
+                              reward.family =       "Bernoulli",
+                              feature.type =        "Bernoulli")               # define a bandit, with k arms and d features
 
                     # d1  #d2   #d3
 bandit$set.weights( c(0.9, 0.0, 0.1,  #k1                                      # override auto-generated weights

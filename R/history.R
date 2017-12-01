@@ -35,3 +35,33 @@ History <- R6Class(
     }
   )
 )
+
+#' External History
+#'
+#' History intro
+#'
+#' @section Usage:
+#' \preformatted{b <- History$new()
+#'
+#' b$reset()
+#'
+#' print(b)
+#' }
+#'
+#' @section Arguments:
+#' \describe{
+#'   \item{b}{A \code{History} object.}
+#' }
+#'
+#' @section Details:
+#' \code{$new()} starts a new History, it uses \code{\link[base]{pipe}}.
+#' R does \emph{not} wait for the process to finish, but returns
+#' immediately.
+#'
+#' @importFrom R6 R6Class
+#' @name History
+#' @examples
+#'\dontrun{}
+#'
+NULL
+

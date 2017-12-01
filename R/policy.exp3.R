@@ -31,6 +31,35 @@ Exp3Policy <- R6Class(
   )
 )
 
+#' External Exp3Policy
+#'
+#' Exp3Policy intro
+#'
+#' @section Usage:
+#' \preformatted{b <- Exp3Policy$new()
+#'
+#' b$reset()
+#'
+#' print(b)
+#' }
+#'
+#' @section Arguments:
+#' \describe{
+#'   \item{b}{A \code{Exp3Policy} object.}
+#' }
+#'
+#' @section Details:
+#' \code{$new()} starts a new Exp3Policy, it uses \code{\link[base]{pipe}}.
+#' R does \emph{not} wait for the process to finish, but returns
+#' immediately.
+#'
+#' @importFrom R6 R6Class
+#' @name Exp3Policy
+#' @examples
+#'\dontrun{}
+#'
+NULL
+
 
 
 

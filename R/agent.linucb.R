@@ -40,3 +40,33 @@ LinUCBAgent <- R6Class(
     memory = list()
   )
 )
+
+#' External LinUCBAgent
+#'
+#' LinUCBAgent intro
+#'
+#' @section Usage:
+#' \preformatted{b <- LinUCBAgent$new()
+#'
+#' b$reset()
+#'
+#' print(b)
+#' }
+#'
+#' @section Arguments:
+#' \describe{
+#'   \item{b}{A \code{LinUCBAgent} object.}
+#' }
+#'
+#' @section Details:
+#' \code{$new()} starts a new LinUCBAgent, it uses \code{\link[base]{pipe}}.
+#' R does \emph{not} wait for the process to finish, but returns
+#' immediately.
+#'
+#' @importFrom R6 R6Class
+#' @name LinUCBAgent
+#' @examples
+#'\dontrun{}
+#'
+NULL
+

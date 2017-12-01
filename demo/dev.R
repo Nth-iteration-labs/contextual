@@ -1,5 +1,6 @@
 if ("package:contextual" %in% search()) detach("package:contextual", unload = TRUE)
-setwd("~/GitHub/contextual/scripts")
+
+#system("R CMD Rd2pdf contextual")
 
 source("../R/utility.R")
 source("../R/history.R")

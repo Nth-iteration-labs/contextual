@@ -78,3 +78,33 @@ Plot <- R6Class(
     }
   )
 )
+
+#' External Plot
+#'
+#' Plot intro
+#'
+#' @section Usage:
+#' \preformatted{b <- Plot$new()
+#'
+#' b$reset()
+#'
+#' print(b)
+#' }
+#'
+#' @section Arguments:
+#' \describe{
+#'   \item{b}{A \code{Plot} object.}
+#' }
+#'
+#' @section Details:
+#' \code{$new()} starts a new Plot, it uses \code{\link[base]{pipe}}.
+#' R does \emph{not} wait for the process to finish, but returns
+#' immediately.
+#'
+#' @importFrom R6 R6Class
+#' @name Plot
+#' @examples
+#'\dontrun{}
+#'
+NULL
+

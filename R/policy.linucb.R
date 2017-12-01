@@ -1,5 +1,4 @@
 library(R6)
-library(MASS)
 #' @export
 LinUCBPolicy <- R6Class(
   "LinUCBPolicy",
@@ -26,3 +25,33 @@ LinUCBPolicy <- R6Class(
     }
   )
 )
+
+#' External LinUCBPolicy
+#'
+#' LinUCBPolicy intro
+#'
+#' @section Usage:
+#' \preformatted{b <- LinUCBPolicy$new()
+#'
+#' b$reset()
+#'
+#' print(b)
+#' }
+#'
+#' @section Arguments:
+#' \describe{
+#'   \item{b}{A \code{LinUCBPolicy} object.}
+#' }
+#'
+#' @section Details:
+#' \code{$new()} starts a new LinUCBPolicy, it uses \code{\link[base]{pipe}}.
+#' R does \emph{not} wait for the process to finish, but returns
+#' immediately.
+#'
+#' @importFrom R6 R6Class
+#' @name LinUCBPolicy
+#' @examples
+#'\dontrun{}
+#'
+NULL
+

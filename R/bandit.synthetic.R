@@ -9,23 +9,23 @@ SyntheticBandit <- R6Class(
     k            = 0L,
     means        = 0.0,
     stds         = 0.0,
-    reward.type  = NULL,
+    reward.family  = NULL,
     feature.type = NULL,
-    weight.type  = NULL,
+    weight.distribution  = NULL,
     initialize   = function(k = 2L,
                             d = 2L,
-                            weight.type  = 'uniform',
-                            reward.type  = 'binary',
-                            feature.type = 'binary'  ) {
-      self$k = k                                                                  # number of bandits
-      self$d = d                                                                  # number of features
-      self$reward.type = reward.type                                              # binary, positive, mixed
-      self$feature.type = feature.type                                            # positive
-      self$weight.type  = weight.type
-      self$generate.weights()                                                     # generate some weights
+                            weight.distribution  = 'Uniform',
+                            reward.family        = 'Bernoulli',
+                            feature.type         = 'Bernoulli'  ) {
+      self$k = k
+      self$d = d
+      self$reward.family        = reward.family
+      self$feature.type       = feature.type
+      self$weight.distribution  = weight.distribution
+      self$generate.weights()
     },
     generate.weights = function(mean = 0.0, sd = 1.0) {
-      if (weight.type == "uniform") {
+      if (weight.distribution == "Uniform") {
         private$W = matrix(runif(self$d * self$k), self$d, self$k)
       }
     },
@@ -41,15 +41,15 @@ SyntheticBandit <- R6Class(
 
       # n is not yet finished!
 
-      if (self$feature.type == 'single' || is.na(self$feature.type)) {
+      if (self$feature.type == 'Single' || is.na(self$feature.type)) {
         private$X = matrix(1, n, self$d)
-      } else if (self$feature.type == 'binary') {
+      } else if (self$feature.type == 'Bernoulli') {
         private$X = matrix(sample( c(0,1), replace = TRUE, size = n * self$d ), n , self$d )  # always one feature, at least?
       }
 
       weights.per.feature = private$W * as.vector(private$X)
 
-      if (self$reward.type == 'binary') {
+      if (self$reward.family == 'Bernoulli') {
         private$oracle = colSums(weights.per.feature)/sum(private$X)
         private$oracle[is.nan(private$oracle)] = 0
         private$R = as.integer(runif(self$k) < private$oracle  )
@@ -65,3 +65,33 @@ SyntheticBandit <- R6Class(
     }
   )
 )
+
+#' External SyntheticBandit
+#'
+#' SyntheticBandit intro
+#'
+#' @section Usage:
+#' \preformatted{b <- SyntheticBandit$new()
+#'
+#' b$reset()
+#'
+#' print(b)
+#' }
+#'
+#' @section Arguments:
+#' \describe{
+#'   \item{b}{A \code{SyntheticBandit} object.}
+#' }
+#'
+#' @section Details:
+#' \code{$new()} starts a new SyntheticBandit, it uses \code{\link[base]{pipe}}.
+#' R does \emph{not} wait for the process to finish, but returns
+#' immediately.
+#'
+#' @importFrom R6 R6Class
+#' @name SyntheticBandit
+#' @examples
+#'\dontrun{}
+#'
+NULL
+
