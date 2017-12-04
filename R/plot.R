@@ -1,5 +1,7 @@
 library(R6)
 library(data.table)
+library(R.devices)
+
 #' @export
 Plot <- R6Class(
   "Plot",
@@ -30,7 +32,9 @@ Plot <- R6Class(
       if (legend) legend( "topleft", NULL, agent.list, col = 1:agents, lwd = 1, lty = 1, bg = "white")
       if (grid == FALSE) dev.flush()
     },
-
+    is.rstudio = function(){
+      .Platform$GUI == "RStudio"
+    },
     optimal = function(history, grid = FALSE, xlim = NULL, legend = TRUE ) {
       if (grid == FALSE) dev.hold()
       cs = history[,list(mean = mean(optimal)),by = list(t,agent)]
@@ -56,7 +60,7 @@ Plot <- R6Class(
       if (grid == FALSE) dev.flush()
     },
     set.external = function(ext = TRUE, width = 10, height = 6){
-      if ( is.rstudio() ) {
+      if ( self$is.rstudio() ) {
         if ( isTRUE(ext) ) {
           sysname = tolower(Sys.info()["sysname"])
           device.name = "x11"

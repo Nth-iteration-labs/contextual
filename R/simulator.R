@@ -1,5 +1,9 @@
 library(R6)
 library(progress)
+source("../R/utility.R")
+library(foreach)
+library(doParallel)
+
 #' @export
 Simulator <- R6Class(
   "Simulator",
@@ -31,19 +35,27 @@ Simulator <- R6Class(
       pb <- progress_bar$new(total = horizon)
       pb$tick(0)
       self$simulations = simulations
+
+
       n = self$horizon*self$agent.n*self$simulations
       self$history = History$new(n)
       agent.instance =  matrix( list(), agent.n,simulations)
-      bandit.instance = matrix( list(), agent.n,simulations)   # is this slow? how to access objects faster?
+      bandit.instance = matrix( list(), agent.n,simulations)
       for (s in 1L:self$simulations) {
         for (a in 1L:self$agent.n) {
           agent.instance[a,s]  = list(self$agent.list[[a]]$clone())
           bandit.instance[a,s] = list(self$agent.list[[a]]$bandit$clone())
         }
       }
-      for (t in 1L:self$horizon) {
+
+      registerDoParallel(cores = detectCores())
+
+      foreach(t = 1L:self$horizon) %dopar% {
+      #for (t in 1L:self$horizon) {
+
         pb$tick()
         for (a in 1L:self$agent.n) {
+
           for (s in 1L:self$simulations) {
             context  = bandit.instance[[a,s]]$get.context()        # context k * d, works at current t for now
             action   = agent.instance[[a,s]]$get.action(context)   # agent chooses an arm k, knowing context d
@@ -57,6 +69,7 @@ Simulator <- R6Class(
         }
         if (self$animate == TRUE && t %% animate.step == 0) plot$grid(history$get.data.table()[t != 0L])  # xlim = c(0,horizon))
       }
+
       return(history)
     }
   )

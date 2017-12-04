@@ -1,0 +1,20 @@
+#' @export
+util <- list(
+    index.of.max = function(x)
+    {
+      y <- seq_along(x)[x == max(x)]
+      if (length(y) > 1L)
+        sample(y, 1L)
+      else
+        y
+    },
+    "inc<-" = function(x, value) {
+      x + value
+    },
+    "dec<-" = function(x, value) {
+      x - value
+    },
+    "mult<-" = function(x, value) {
+      x * value
+    }
+)
