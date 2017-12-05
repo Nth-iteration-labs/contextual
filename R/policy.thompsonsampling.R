@@ -2,6 +2,7 @@ library(R6)
 #' @export
 ThompsonSamplingPolicy <- R6Class(
   "ThompsonSamplingPolicy",
+  inherit = Contextual,
   portable = FALSE, class = FALSE, cloneable = FALSE,
   public = list(
     alpha = 1,

@@ -2,6 +2,7 @@ library(R6)
 #' @export
 LinUCBAgent <- R6Class(
   "LinUCBAgent",
+  inherit = Contextual,
   portable = FALSE, class = FALSE, cloneable = TRUE,
   public = list(
     policy = NULL,

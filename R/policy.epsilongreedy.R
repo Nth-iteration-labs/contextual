@@ -2,6 +2,7 @@ library(R6)
 #' @export
 EpsilonGreedyPolicy <- R6Class(
   "EpsilonGreedyPolicy",
+  inherit = Contextual,
   portable = FALSE, class = FALSE, cloneable = FALSE,
   public = list(
     epsilon = 0.1,

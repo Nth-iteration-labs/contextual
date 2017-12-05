@@ -2,6 +2,7 @@ library(R6)
 #' @export
 BasicAgent <- R6Class(
   "BasicAgent",
+  inherit = Contextual,
   portable = FALSE, class = FALSE, cloneable = TRUE,
   public = list(
     policy = NULL,
@@ -23,6 +24,7 @@ BasicAgent <- R6Class(
       private$memory$succes.counts = rep(0, self$bandit$k)          # per arm succesful count
     },
     get.action = function(context) {
+      ls(globalenv())
       return(self$policy$get.action(self,context))
     },
     set.reward = function(reward, context = NULL) {

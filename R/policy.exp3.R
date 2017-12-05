@@ -2,6 +2,7 @@ library(R6)
 #' @export
 Exp3Policy <- R6Class(
   "Exp3Policy",
+  inherit = Contextual,
   portable = FALSE, class = FALSE, cloneable = FALSE,
   public = list(
     gamma = 0.1,

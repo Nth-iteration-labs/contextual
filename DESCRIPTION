@@ -12,5 +12,7 @@ RoxygenNote: 6.0.1
 Imports: 
     R6,
     data.table,
-    progress,
-    R.devices
+    R.devices,
+    foreach,
+    doParallel,
+    doRNG

@@ -2,6 +2,7 @@ library(R6)
 #' @export
 OraclePolicy <- R6Class(
   "OraclePolicy",
+  inherit = Contextual,
   portable = FALSE, class = FALSE, cloneable = FALSE,
   public = list(
     name = "",

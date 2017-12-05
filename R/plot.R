@@ -1,10 +1,13 @@
 library(R6)
 library(data.table)
 library(R.devices)
+#' @import data.table
+#' @import R.devices
 
 #' @export
 Plot <- R6Class(
   "Plot",
+  inherit = Contextual,
   portable = FALSE, class = FALSE, cloneable = FALSE,
   public = list(
     initialize = function() {

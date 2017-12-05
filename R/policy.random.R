@@ -2,6 +2,7 @@ library(R6)
 #' @export
 RandomPolicy <- R6Class(
   "RandomPolicy",
+  inherit = Contextual,
   portable = FALSE, class = FALSE, cloneable = FALSE,
   public = list(
     name = "",

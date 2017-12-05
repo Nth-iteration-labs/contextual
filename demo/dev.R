@@ -1,9 +1,7 @@
 if ("package:contextual" %in% search()) detach("package:contextual", unload = TRUE)
 
 #system("R CMD Rd2pdf contextual")
-
-source("../R/utility.R")
-source("../R/utility.class.R")
+source("../R/contextual.R")
 source("../R/history.R")
 source("../R/simulator.R")
 source("../R/plot.R")

@@ -2,6 +2,7 @@ library(R6)
 #' @export
 Exp3Agent <- R6Class(
   "Exp3Agent",
+  inherit = Contextual,
   portable = FALSE, class = FALSE, cloneable = TRUE,
   public = list(
     policy = NULL,

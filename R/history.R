@@ -3,15 +3,15 @@ library(data.table)
 #' @export
 History <- R6Class(
   "History",
+  inherit = Contextual,
   portable = FALSE, class = FALSE, cloneable = FALSE,
   public = list(
     n = 1000,
     data = data.table(),
-    initialize = function(n = 1000) {
-      self$n = n
-      self$reset(n)
+    initialize = function() {
     },
-    reset = function(n){
+    reset = function(n = 1000){
+      self$n = n
       self$data = data.table(
         reward          = rep(0L,     n), #1
         optimal         = rep(0L,     n), #2
@@ -21,17 +21,23 @@ History <- R6Class(
         arm             = rep(0L,     n)  #6
       )
     },
-    save = function(counter,t,s,action,reward,policy.name) {
+    save.step = function(counter,t,s,action,reward,policy.name) {
       set(self$data,counter,4L,t)
       set(self$data,counter,5L,s)
       set(self$data,counter,6L,action)
       set(self$data,counter,1L,reward$reward)
       set(self$data,counter,3L,policy.name)
-      if (reward$is.optimal.choice) set(self$data,counter,2L,1L)
-      #set(self$data,counter,7L,bandit.instance[[a,s]]$get.weights())
+      if (reward$is.optimal.choice) {
+        set(self$data,counter,2L,1L)
+      } else {
+        set(self$data,counter,2L,0L)
+      }
     },
     get.data.table = function() {
       return(self$data)
+    },
+    set.data.table = function(dt) {
+      self$data = dt
     }
   )
 )

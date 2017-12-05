@@ -2,6 +2,7 @@ library(R6)
 #' @export
 SyntheticBandit <- R6Class(
   "SyntheticBandit",
+  inherit = Contextual,
   portable = FALSE, class = FALSE, cloneable = TRUE,
   private = list(W = NULL, R = NULL, X = NULL, oracle = NULL),
   public = list(
@@ -17,10 +18,11 @@ SyntheticBandit <- R6Class(
                             weight.distribution  = 'Uniform',
                             reward.family        = 'Bernoulli',
                             feature.type         = 'Bernoulli'  ) {
+
       self$k = k
       self$d = d
       self$reward.family        = reward.family
-      self$feature.type       = feature.type
+      self$feature.type         = feature.type
       self$weight.distribution  = weight.distribution
       self$generate.weights()
     },
@@ -39,12 +41,17 @@ SyntheticBandit <- R6Class(
     },
     generate.sample = function(n = 1L) {
 
-      # n is not yet finished!
+      # n is not yet completed!
 
       if (self$feature.type == 'Single' || is.na(self$feature.type)) {
         private$X = matrix(1, n, self$d)
       } else if (self$feature.type == 'Bernoulli') {
-        private$X = matrix(sample( c(0,1), replace = TRUE, size = n * self$d ), n , self$d )  # always one feature, at least?
+        private$X = matrix(0, n , self$d )                                                       # create matrix
+        private$X[sample(1:(n * self$d), 1)] = 1                                                 # always one feature, at least?
+        private$X = as.integer( private$X |
+                                  matrix(sample( c(0,1),
+                                    replace = TRUE,
+                                    size = n * self$d ), n , self$d ) )                          # but can be multiple features
       }
 
       weights.per.feature = private$W * as.vector(private$X)

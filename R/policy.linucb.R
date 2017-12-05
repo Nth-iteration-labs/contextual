@@ -2,6 +2,7 @@ library(R6)
 #' @export
 LinUCBPolicy <- R6Class(
   "LinUCBPolicy",
+  inherit = Contextual,
   portable = FALSE, class = FALSE, cloneable = FALSE,
   public = list(
     alpha = 0.1,
