@@ -8,11 +8,15 @@ RandomPolicy <- R6Class(
   cloneable = FALSE,
   public = list(
     name = "",
+    action = list(),
     initialize = function(name = "Random") {
       self$name = name
+      self$action = list()
     },
     get_action = function(agent, context) {
-      return(sample.int(agent$bandit$k, 1))
+      self$action$current_choice  = sample.int(agent$bandit$k, 1)
+      #self$action$propensity      = 1/agent$bandit$k
+      return(self$action)
     }
   )
 )

@@ -24,17 +24,14 @@ BasicAgent <- R6Class(
       private$memory$succes.counts = rep(0, self$bandit$k)                      # per arm succesful count
     },
     get_action = function(context) {
-      ls(globalenv())
       return(self$policy$get_action(self, context))
     },
     set_reward = function(reward, context = NULL) {
-      inc(private$memory$choice.counts[reward$current.choice]) <- 1
-      if (reward$reward == 1) {
-        inc(private$memory$succes.counts[reward$current.choice]) <- 1
-      }
-      inc(private$memory$theta[reward$current.choice]) <-
-        (1 / private$memory$choice.counts[reward$current.choice]) *
-        (reward$reward - private$memory$theta[reward$current.choice])
+      inc(private$memory$choice.counts[reward$current_choice]) <- 1
+      if (reward$reward == 1) inc(private$memory$succes.counts[reward$current_choice]) <- 1
+      inc(private$memory$theta[reward$current_choice]) <-
+        (1 / private$memory$choice.counts[reward$current_choice]) *
+        (reward$reward - private$memory$theta[reward$current_choice])
     }
   ),
   private = list(memory = NULL)

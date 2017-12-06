@@ -10,12 +10,14 @@ ThompsonSamplingPolicy <- R6Class(
     alpha = 1,
     beta = 1,
     name = "",
+    action = list(),
     initialize = function(alpha = 1,
                           beta =  1,
                           name = "Thompson Sampling") {
-      self$alpha = alpha
-      self$beta  = beta
-      self$name  = name
+      self$alpha  = alpha
+      self$beta   = beta
+      self$name   = name
+      self$action = list()
     },
     get_action = function(agent, context) {
       mu = rep(0.0, agent$bandit$k)
@@ -26,7 +28,10 @@ ThompsonSamplingPolicy <- R6Class(
           self$beta + agent$get_memory()$choice.counts[arm] - agent$get_memory()$succes.counts[arm]
         )
       }
-      return(index_of_max(mu))
+      self$action$current_choice  = index_of_max(mu)
+      self$action$propensity      = 0 # ###################
+      return(self$action)
+      return()
     }
   )
 )

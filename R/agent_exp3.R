@@ -32,9 +32,9 @@ Exp3Agent <- R6Class(
         inc(probs[arm]) <-
           (self$policy$gamma) * (1.0 / self$bandit$k)
       }
-      x = reward$reward / probs[reward$current.choice]
+      x = reward$reward / probs[reward$current_choice]
       growth.factor = exp((self$policy$gamma / self$bandit$k) * x)
-      mult(private$memory$theta[reward$current.choice]) <-
+      mult(private$memory$theta[reward$current_choice]) <-
         growth.factor
     }
   ),

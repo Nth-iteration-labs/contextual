@@ -8,11 +8,15 @@ OraclePolicy <- R6Class(
   cloneable = FALSE,
   public = list(
     name = "",
+    action = list(),
     initialize = function(name = "Oracle") {
       self$name = name
+      self$action = list()
     },
     get_action = function(agent, context) {
-      return(index_of_max(context$oracle))
+      self$action$current_choice  = index_of_max(context$oracle)
+      self$action$propensity      = 1 # isdatzo? nee.. propensity staat vast per..
+      return(self$action)
     }
   )
 )

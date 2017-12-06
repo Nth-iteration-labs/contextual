@@ -2,9 +2,6 @@
 source("dev.R")
 setwd("~/GitHub/contextual/demo")
 
-ptm <- proc.time()
-#Rprof ( tf <- "log.log",  memory.profiling = TRUE )
-
 plot = Plot$new()                                                               # initialize plot.. TODO: change to within class
 plot$set_external(T, 11, 6L)                                                    # set external for Rstudio
 agents = list()                                                                 # to keep track of our agents
@@ -41,12 +38,14 @@ agents$Exp3    = Exp3Agent$new(policyExp3, bandit)                              
 policyLinUCB   = LinUCBPolicy$new(1.0, "LinUCB")                                # which policy do we want to test?
 agents$LinUCB  = LinUCBAgent$new(policyLinUCB, bandit)                          # define an agent, who uses an policy, to find out more about a bandit
 
+ptm <- proc.time()                                                              # or Rprof ( tf <- "log.log",  memory.profiling = TRUE )
+
 simulations    = 100L                                                           # define how many simulations
 horizon        = 100L                                                           # define how many each sim
 simulation     = Simulator$new(agents , parallel = TRUE)                        # let's see what our cunning agent can find out about the bandit
 history        = simulation$run(horizon, simulations)                           # go!
 
+print(proc.time() - ptm)                                                        # or Rprof ( NULL ) ; print ( summaryRprof ( tf )  )
+
 plot$grid(history)                                                              # plot the results...
 
-#Rprof ( NULL ) ; print ( summaryRprof ( tf )  )
-print(proc.time() - ptm)

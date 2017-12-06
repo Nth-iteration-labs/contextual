@@ -63,6 +63,7 @@ Simulator <- R6Class(
         for (t in 1L:self$horizon) {
           for (a in 1L:self$agent_n) {
             for (s in 1L:self$simulations) {
+
               context  = bandit_instance[[a, s]]$get_context()
               action   = agent_instance[[a, s]]$get_action(context)
               reward   = bandit_instance[[a, s]]$get_reward(action)
@@ -105,6 +106,7 @@ Simulator <- R6Class(
               reward   = bandit_instance[[a, s]]$get_reward(action)
               agent_instance[[a, s]]$set_reward(reward, context)
 
+
               self$history$save_step(parallel_counter,
                                      t,
                                      s,
@@ -118,7 +120,7 @@ Simulator <- R6Class(
           self$history$get_data_table()
         }
         parallel_results = rbindlist(parallel_results)[sim != 0]
-        #self$history$set_data_table(parallel_results)
+        self$history$set_data_table(parallel_results)
         stopCluster(cl)
         return(parallel_results)
       }

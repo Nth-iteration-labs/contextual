@@ -20,16 +20,23 @@ History <- R6Class(
         agent           = rep("",     n), #3
         t               = rep(0L,     n), #4
         sim             = rep(0L,     n), #5
-        arm             = rep(0L,     n)  #6
+        arm             = rep(0L,     n), #6
+        propensity      = rep(0.0,    n)  #7
       )
     },
     save_step = function(counter, t, s, action, reward, policy.name) {
       set(self$data, counter, 4L, t)
       set(self$data, counter, 5L, s)
-      set(self$data, counter, 6L, action)
+      set(self$data, counter, 6L, action$current_choice)
       set(self$data, counter, 1L, reward$reward)
       set(self$data, counter, 3L, policy.name)
-      if (reward$is.optimal.choice) {
+      if (is.null(action[["propensity"]]) ) {
+        set(self$data, counter, 7L, NA)
+      } else {
+        set(self$data, counter, 7L, action$propensity)
+      }
+
+      if (reward$is_optimal_choice) {
         set(self$data, counter, 2L, 1L)
       } else {
         set(self$data, counter, 2L, 0L)

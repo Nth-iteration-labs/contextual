@@ -9,9 +9,11 @@ LinUCBPolicy <- R6Class(
   public = list(
     alpha = 0.1,
     name = "",
+    action = list(),
     initialize = function(alpha = 1, name = "LinUCB") {
       self$alpha = alpha
       self$name = name
+      self$action = list()
     },
     get_action = function(agent, context) {
       expected.rewards.vector = rep(0.0, agent$bandit$k)
@@ -24,7 +26,9 @@ LinUCBPolicy <- R6Class(
         var  =  sqrt(tcrossprod(context$X %*% A.inv, context$X))              # faster than sqrt( (context$X %*% A.inv ) %*% t(context$X) )
         expected.rewards.vector[arm] = mean + (self$alpha * var)
       }
-      return(index_of_max(expected.rewards.vector))
+      self$action$current_choice  = index_of_max(expected.rewards.vector)
+      self$action$propensity      = 0 # ###################
+      return(self$action)
     }
   )
 )

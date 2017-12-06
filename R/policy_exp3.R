@@ -9,9 +9,11 @@ Exp3Policy <- R6Class(
   public = list(
     gamma = 0.1,
     name = "",
+    action = list(),
     initialize = function(gamma =  0.1, name = "Exp3") {
       self$gamma = gamma
       self$name  = name
+      self$action = list()
     },
     categorical.draw = function(probs) {
       z = runif(1)
@@ -31,7 +33,9 @@ Exp3Policy <- R6Class(
           (agent$get_memory()$theta[arm] / sum(agent$get_memory()$theta))
       }
       inc(probs[arm]) <- (self$gamma) * (1.0 / agent$bandit$k)
-      return(categorical.draw(probs))
+      self$action$current_choice  = categorical.draw(probs)
+      self$action$propensity      = 0 # ###################
+      return(self$action)
     }
   )
 )

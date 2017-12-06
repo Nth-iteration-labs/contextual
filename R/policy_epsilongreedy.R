@@ -9,15 +9,41 @@ EpsilonGreedyPolicy <- R6Class(
   public = list(
     epsilon = 0.1,
     name = "",
+    action = list(),
     initialize = function(epsilon = 0.1, name = "EpsilonGreedy") {
       self$epsilon = epsilon
       self$name = name
+      self$action = list()
     },
     get_action = function(agent, context) {
+      action = list()
       if (runif(1) < self$epsilon) {
-        return(sample.int(agent$bandit$k, 1))
+
+        #"simulate": "success",
+        #"theta": {
+        #  "treatment:treatment": {
+        #    "m": "5.863945505387279",
+        #    "n": "99"
+        #  },
+        #  "treatment:control": {
+        #    "m": "4.825426929553009",
+        ##    "n": "3"
+        #  }
+        #},
+        #"experiment": "3ea45886b5"
+        #base.List(self.get_theta(key="treatment"), base.Mean, ["control", "treatment"]
+                                                                                ### differences:
+                                                                                ### - names k arms --nonsene here?
+                                                                                ### - in memory, name key,
+                                                                                ###    and set m and n
+
+        self$action$current_choice  = sample.int(agent$bandit$k, 1)             ### meanList.random()
+        self$action$propensity      = epsilon*(1/length(agent$bandit$k))
+        return(self$action)
       } else {
-        return(index_of_max(agent$get_memory()$theta))
+        self$action$current_choice  = index_of_max(agent$get_memory()$theta)    ### meanList.max() --> here is mean of list, explicit in theta?
+        self$action$propensity      = 1 - epsilon
+        return(self$action)
       }
     }
   )

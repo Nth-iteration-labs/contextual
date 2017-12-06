@@ -33,9 +33,9 @@ LinUCBAgent <- R6Class(
     },
     set_reward = function(reward, context) {
       X = as.vector(context$X)
-      inc(private$memory$theta[[reward$current.choice]]$A) <-
+      inc(private$memory$theta[[reward$current_choice]]$A) <-
         outer(X, X)
-      inc(private$memory$theta[[reward$current.choice]]$b) <-
+      inc(private$memory$theta[[reward$current_choice]]$b) <-
         reward$reward * X
     }
   ),

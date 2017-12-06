@@ -40,10 +40,10 @@ SyntheticBandit <- R6Class(
     get_weights = function() {
       return(private$W)
     },
-    set_weights = function(weightMatrix) {
-      if (length(weightMatrix) != (self$d * self$k))
+    set_weights = function(weight_matrix) {
+      if (length(weight_matrix) != (self$d * self$k))
         stop("Weight needs to be of length k*d.")
-      private$W = matrix(weightMatrix,  self$d, self$k)
+      private$W = matrix(weight_matrix,  self$d, self$k)
     },
     generate_sample = function(n = 1L) {
       # n is not yet completed!
@@ -62,10 +62,10 @@ SyntheticBandit <- R6Class(
                                  ), n , self$d))                                # but can be multiple features
       }
 
-      weights.per.feature = private$W * as.vector(private$X)
+      weights_per_feature = private$W * as.vector(private$X)
 
       if (self$reward_family == 'Bernoulli') {
-        private$oracle = colSums(weights.per.feature) / sum(private$X)
+        private$oracle = colSums(weights_per_feature) / sum(private$X)
         private$oracle[is.nan(private$oracle)] = 0
         private$R = as.integer(runif(self$k) < private$oracle)
       }
@@ -73,12 +73,16 @@ SyntheticBandit <- R6Class(
     },
     get_reward = function(action) {
       return(setNames(
-        list(private$R[action],
-             action,
-             index_of_max(private$R) == action),
-        c("reward",
-          "current.choice",
-          "is.optimal.choice")
+        list(
+             private$R[action$current_choice],
+             action$current_choice,
+             index_of_max(private$R) == action$current_choice,
+             action$propensity),
+
+           c("reward",
+             "current_choice",
+             "is_optimal_choice",
+             "propensity")
       ))
     },
     get_context = function() {
