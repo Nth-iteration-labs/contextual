@@ -3,25 +3,30 @@ library(R6)
 ThompsonSamplingPolicy <- R6Class(
   "ThompsonSamplingPolicy",
   inherit = Contextual,
-  portable = FALSE, class = FALSE, cloneable = FALSE,
+  portable = FALSE,
+  class = FALSE,
+  cloneable = FALSE,
   public = list(
     alpha = 1,
     beta = 1,
     name = "",
-    initialize = function(alpha = 1, beta =  1, name = "Thompson Sampling" ) {
+    initialize = function(alpha = 1,
+                          beta =  1,
+                          name = "Thompson Sampling") {
       self$alpha = alpha
       self$beta  = beta
       self$name  = name
     },
-    get.action = function(agent,context) {
+    get_action = function(agent, context) {
       mu = rep(0.0, agent$bandit$k)
       for (arm in 1:agent$bandit$k) {
-        mu[arm] =  rbeta(1, self$alpha + agent$get.memory()$succes.counts[arm],
-                         self$beta + agent$get.memory()$choice.counts[arm] - agent$get.memory()$succes.counts[arm])
+        mu[arm] =  rbeta(
+          1,
+          self$alpha + agent$get_memory()$succes.counts[arm],
+          self$beta + agent$get_memory()$choice.counts[arm] - agent$get_memory()$succes.counts[arm]
+        )
       }
-      return(index.of.max(mu));
-
-
+      return(index_of_max(mu))
     }
   )
 )
@@ -54,5 +59,3 @@ ThompsonSamplingPolicy <- R6Class(
 #'\dontrun{}
 #'
 NULL
-
-

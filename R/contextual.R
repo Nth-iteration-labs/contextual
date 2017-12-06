@@ -3,15 +3,18 @@ library(R6)
 #' @export
 Contextual <- R6Class(
   "Contextual",
-  portable = FALSE, class = FALSE, cloneable = FALSE,
+  portable = FALSE,
+  class = FALSE,
+  cloneable = FALSE,
   public = list(
-    index.of.max = function(x)
+    index_of_max = function(x)
     {
       y <- seq_along(x)[x == max(x)]
-      if (length(y) > 1L)
-        sample(y, 1L)
-      else
-        y
+      if (length(y) > 1L) {
+        return(sample(y, 1L))
+      } else {
+        return(y)
+      }
     },
     "inc<-" = function(x, value) {
       x + value

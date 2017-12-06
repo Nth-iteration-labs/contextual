@@ -3,11 +3,13 @@ library(R6)
 Exp3Policy <- R6Class(
   "Exp3Policy",
   inherit = Contextual,
-  portable = FALSE, class = FALSE, cloneable = FALSE,
+  portable = FALSE,
+  class = FALSE,
+  cloneable = FALSE,
   public = list(
     gamma = 0.1,
     name = "",
-    initialize = function(gamma =  0.1, name = "Exp3" ) {
+    initialize = function(gamma =  0.1, name = "Exp3") {
       self$gamma = gamma
       self$name  = name
     },
@@ -16,15 +18,17 @@ Exp3Policy <- R6Class(
       cum.prob = 0.0
       lp = length(probs)
       for (i in 1:lp) {
-         inc(cum.prob) <- probs[i]
-         if (cum.prob > z) return(i)
+        inc(cum.prob) <- probs[i]
+        if (cum.prob > z)
+          return(i)
       }
       return(sample(1:lp, 1))
     },
-    get.action = function(agent,context) {
+    get_action = function(agent, context) {
       probs = rep(0.0, agent$bandit$k)
       for (arm in 1:agent$bandit$k) {
-        probs[arm] = (1 - self$gamma) * (agent$get.memory()$theta[arm] / sum(agent$get.memory()$theta))
+        probs[arm] = (1 - self$gamma) *
+          (agent$get_memory()$theta[arm] / sum(agent$get_memory()$theta))
       }
       inc(probs[arm]) <- (self$gamma) * (1.0 / agent$bandit$k)
       return(categorical.draw(probs))
@@ -60,7 +64,3 @@ Exp3Policy <- R6Class(
 #'\dontrun{}
 #'
 NULL
-
-
-
-

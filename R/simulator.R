@@ -10,89 +10,115 @@ library(doRNG)
 #' @export
 Simulator <- R6Class(
   "Simulator",
+
   inherit = Contextual,
-  portable = FALSE, class = FALSE, cloneable = FALSE,
+  portable = FALSE,
+  class = FALSE,
+  cloneable = FALSE,
   private = list(rewards = NULL),
+
   public = list(
-    agent.list = NULL,
-    agent.n = NULL,
+    agent_list = NULL,
+    agent_n = NULL,
     animate = FALSE,
-    animate.step = 2,
+    animate_step = 2,
     horizon = 100L,
     simulations = 1L,
     history = NULL,
     parallel = FALSE,
-    initialize = function(agent.list, animate = FALSE, animate.step = 2, parallel = FALSE) {
+
+    initialize = function(agent_list,
+                          animate = FALSE,
+                          animate_step = 2,
+                          parallel = FALSE) {
       self$history = History$new()
-      self$agent.list = agent.list
-      self$agent.n = length(agent.list)
+      self$agent_list = agent_list
+      self$agent_n = length(agent_list)
       self$animate = animate
-      self$animate.step = animate.step
+      self$animate_step = animate_step
       self$parallel = parallel
       self$reset()
     },
     reset = function() {
-      for (a in 1L:agent.n)
-        agent.list[[a]]$reset()
+      for (a in 1L:agent_n)
+        agent_list[[a]]$reset()
     },
-    run = function(horizon = 100L, simulations = 100L) {
-
+    run = function(horizon = 100L,
+                   simulations = 100L) {
       self$horizon = horizon
       self$simulations = simulations
-      agent.instance =  matrix(list(), agent.n, simulations)
-      bandit.instance = matrix(list(), agent.n, simulations)
+      agent_instance =  matrix(list(), agent_n, simulations)
+      bandit_instance = matrix(list(), agent_n, simulations)
       for (s in 1L:self$simulations) {
-        for (a in 1L:self$agent.n) {
-          agent.instance[a, s]  = list(self$agent.list[[a]]$clone())            #deep? in init?
-          bandit.instance[a, s] = list(self$agent.list[[a]]$bandit$clone())
+        for (a in 1L:self$agent_n) {
+          agent_instance[a, s]  = list(self$agent_list[[a]]$clone())            #deep? in init?
+          bandit_instance[a, s] = list(self$agent_list[[a]]$bandit$clone())
         }
       }
 
       if (!self$parallel) {
-
         counter = 1L
-        n = self$horizon * self$agent.n * self$simulations
+        n = self$horizon * self$agent_n * self$simulations
         self$history$reset(n)
         for (t in 1L:self$horizon) {
-          for (a in 1L:self$agent.n) {
+          for (a in 1L:self$agent_n) {
             for (s in 1L:self$simulations) {
+              context  = bandit_instance[[a, s]]$get_context()
+              action   = agent_instance[[a, s]]$get_action(context)
+              reward   = bandit_instance[[a, s]]$get_reward(action)
+              agent_instance[[a, s]]$set_reward(reward, context)
 
-              context  = bandit.instance[[a, s]]$get.context()        # context k * d, works at current t for now
-              action   = agent.instance[[a, s]]$get.action(context)   # agent chooses an arm k, knowing context d
-              reward   = bandit.instance[[a, s]]$get.reward(action)   # see how the bandit rewards us
-              agent.instance[[a, s]]$set.reward(reward, context)      # agent adapts theta knowing reward choice arm k in context
+              self$history$save_step(counter,
+                                     t,
+                                     s,
+                                     action,
+                                     reward,
+                                     agent_instance[[a, s]]$policy$name)
 
-              self$history$save.step(counter,t,s,action,reward,agent.instance[[a, s]]$policy$name)
               counter <- counter + 1L
             }
           }
-          if (self$animate == TRUE && t %% animate.step == 0) plot$grid(history$get.data.table()[t != 0L])  # xlim = c(0,horizon))
+          if (self$animate == TRUE && t %% animate_step == 0) {
+            plot$grid(history$get_data_table()[t != 0L])
+          }
         }
-        return(history$get.data.table())
+        return(history$get_data_table())
 
       } else {
-
         workers <- detectCores() - 1
         cl <- makeCluster(workers)
         registerDoParallel(cl)
-        n = as.integer(ceiling(self$horizon * self$agent.n * self$simulations / workers))
+        n = as.integer(ceiling(self$horizon / workers *
+                                 self$agent_n *
+                                 self$simulations))
         self$history$reset(n)
-        parallel_results = foreach(t = 1L:self$horizon, .inorder = TRUE, .packages = c("data.table")) %dorng% {
+        parallel_results = foreach(
+          t = 1L:self$horizon,
+          .inorder = TRUE,
+          .packages = c("data.table")
+        ) %dorng% {
           parallel_counter <- 1L
-          for (a in 1L:self$agent.n) {
+          for (a in 1L:self$agent_n) {
             for (s in 1L:self$simulations) {
-              context  = bandit.instance[[a, s]]$get.context()        # context k * d, works at current t for now
-              action   = agent.instance[[a, s]]$get.action(context)   # agent chooses an arm k, knowing context d
-              reward   = bandit.instance[[a, s]]$get.reward(action)   # see how the bandit rewards us
-              agent.instance[[a, s]]$set.reward(reward, context)      # agent adapts theta knowing reward choice arm k in context
-              self$history$save.step(parallel_counter,t,s,action,reward,agent.instance[[a, s]]$policy$name)
+              context  = bandit_instance[[a, s]]$get_context()
+              action   = agent_instance[[a, s]]$get_action(context)
+              reward   = bandit_instance[[a, s]]$get_reward(action)
+              agent_instance[[a, s]]$set_reward(reward, context)
+
+              self$history$save_step(parallel_counter,
+                                     t,
+                                     s,
+                                     action,
+                                     reward,
+                                     agent_instance[[a, s]]$policy$name)
+
               parallel_counter <- parallel_counter + 1L
             }
           }
-          self$history$get.data.table()
+          self$history$get_data_table()
         }
         parallel_results = rbindlist(parallel_results)[sim != 0]
-        #self$history$set.data.table(parallel_results)
+        #self$history$set_data_table(parallel_results)
         stopCluster(cl)
         return(parallel_results)
       }

@@ -3,14 +3,16 @@ library(R6)
 OraclePolicy <- R6Class(
   "OraclePolicy",
   inherit = Contextual,
-  portable = FALSE, class = FALSE, cloneable = FALSE,
+  portable = FALSE,
+  class = FALSE,
+  cloneable = FALSE,
   public = list(
     name = "",
-    initialize = function(name = "Oracle" ) {
+    initialize = function(name = "Oracle") {
       self$name = name
     },
-    get.action = function(agent,context){
-      return(index.of.max(context$oracle))
+    get_action = function(agent, context) {
+      return(index_of_max(context$oracle))
     }
   )
 )
@@ -43,5 +45,3 @@ OraclePolicy <- R6Class(
 #'\dontrun{}
 #'
 NULL
-
-

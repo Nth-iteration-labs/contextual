@@ -1,3 +1,3 @@
-run.compare.cMAB.parallel                   Parallel cMAB demo script
-run.compare.MAB.serial.live.chart           Serial MAB demo script
+demo_do_parallel                            Parallel cMAB demo script
+demo_live_chart                             Serial MAB demo script
 dev                                         Dev support file

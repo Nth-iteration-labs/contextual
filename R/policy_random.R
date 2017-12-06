@@ -3,13 +3,15 @@ library(R6)
 RandomPolicy <- R6Class(
   "RandomPolicy",
   inherit = Contextual,
-  portable = FALSE, class = FALSE, cloneable = FALSE,
+  portable = FALSE,
+  class = FALSE,
+  cloneable = FALSE,
   public = list(
     name = "",
-    initialize = function(name = "Random" ) {
+    initialize = function(name = "Random") {
       self$name = name
     },
-    get.action = function(agent,context){
+    get_action = function(agent, context) {
       return(sample.int(agent$bandit$k, 1))
     }
   )
@@ -43,4 +45,3 @@ RandomPolicy <- R6Class(
 #'\dontrun{}
 #'
 NULL
-
