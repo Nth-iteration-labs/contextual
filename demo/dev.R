@@ -16,15 +16,9 @@ source("../R/agent_basic.R")
 source("../R/agent_linucb.R")
 source("../R/agent_exp3.R")
 
-# MAB Bandit
-# bandit  = SyntheticBandit$new(k = 3L, d = 1, "uniform", "binary", "single")  # define a bandit, with k arms and d features
-# bandit$set.weights( c(0.1,
-#                       0.9,
-#                       0.1) )
-
 # theta are all the variables in the policy (function) that we are looking to optimize
 
-# add tests and travis
+# add tests with TESTr
 
 # TODO theta setup, some mem stuff
 # assign <- not =
