@@ -15,12 +15,12 @@ Imports:
     R.devices,
     foreach,
     doParallel,
-    doAzureParallel,
     rAzureBatch,
+    doAzureParallel,
     doRNG
 Suggests: 
     testthat,
     covr
 Remotes:
-    github::Azure/doAzureParallel,
-    github::Azure/rAzureBatch
+    Azure/rAzureBatch,
+    Azure/doAzureParallel
