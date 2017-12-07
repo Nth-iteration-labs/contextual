@@ -22,8 +22,8 @@ SimulatorAzure <- R6::R6Class(
       self$history = History$new()
       self$agent_list = agent_list
       self$agent_n = length(agent_list)
-      generateClusterConfig("cluster.json")
-      generateCredentialsConfig("credentials.json")
+      doAzureParallel::generateClusterConfig("cluster.json")
+      doAzureParallel::generateCredentialsConfig("credentials.json")
       self$reset()
     },
     reset = function() {
@@ -67,22 +67,31 @@ SimulatorAzure <- R6::R6Class(
                                self$agent_n *
                                self$simulations))
       self$history$reset(n)
+
       `%dopar%` <- foreach::`%dopar%`
+
+      opt <- list(chunkSize = n, enableMerge = FALSE)
+
+      doAzureParallel::setVerbose(TRUE)
+
       parallel_results = foreach::foreach(
-        t = 1L:self$horizon,
-        .inorder = TRUE,
-        .packages = c("data.table")
+        i = 1:100,
+        .packages = c("data.table"),
+        .options.azure = opt
       ) %dopar% {
         parallel_counter <- 1L
+        localhistory = History$new()
+        localhistory$reset(n)
         for (a in 1L:self$agent_n) {
           for (s in 1L:self$simulations) {
+
             context  = bandit_instance[[a, s]]$get_context()
             action   = agent_instance[[a, s]]$get_action(context)
             reward   = bandit_instance[[a, s]]$get_reward(action)
             agent_instance[[a, s]]$set_reward(reward, context)
 
-            self$history$save_step(parallel_counter,
-                                   t,
+            localhistory$save_step(parallel_counter,
+                                   i,
                                    s,
                                    action,
                                    reward,
@@ -91,9 +100,9 @@ SimulatorAzure <- R6::R6Class(
             parallel_counter <- parallel_counter + 1L
           }
         }
-        self$history$get_data_table()
+        localhistory$get_data_table()
       }
-      parallel_results = data.table::rbindlist(parallel_results)[sim != 0]
+      parallel_results = data.table::rbindlist(parallel_results)
       self$history$set_data_table(parallel_results)
       doAzureParallel::stopCluster(cluster)
 

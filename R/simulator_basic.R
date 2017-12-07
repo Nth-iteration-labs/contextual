@@ -39,7 +39,7 @@ SimulatorBasic <- R6::R6Class(
       agent =  matrix(list(), agent_n, simulations)
       for (s in 1L:self$simulations) {
         for (a in 1L:self$agent_n) {
-          agent[a, s]  = list(self$agent_list[[a]]$clone())
+          agent[a, s]  = list(self$agent_list[[a]]$clone(deep = FALSE))
         }
       }
 

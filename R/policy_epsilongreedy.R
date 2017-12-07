@@ -18,24 +18,6 @@ EpsilonGreedyPolicy <- R6::R6Class(
       self$action = list()
       if (runif(1) < self$epsilon) {
 
-        #"simulate": "success",
-        #"theta": {
-        #  "treatment:treatment": {
-        #    "m": "5.863945505387279",
-        #    "n": "99"
-        #  },
-        #  "treatment:control": {
-        #    "m": "4.825426929553009",
-        ##    "n": "3"
-        #  }
-        #},
-        #"experiment": "3ea45886b5"
-        #base.List(self.get_theta(key="treatment"), base.Mean, ["control", "treatment"]
-                                                                                ### differences:
-                                                                                ### - names k arms --nonsene here?
-                                                                                ### - in memory, name key,
-                                                                                ###    and set m and n
-
         self$action$current_choice  = sample.int(agent$bandit$k, 1)             ### meanList.random()
         self$action$propensity      = epsilon*(1/length(agent$bandit$k))
         self$action
@@ -47,6 +29,25 @@ EpsilonGreedyPolicy <- R6::R6Class(
     }
   )
 )
+
+#"simulate": "success",
+#"theta": {
+#  "treatment:treatment": {
+#    "m": "5.863945505387279",
+#    "n": "99"
+#  },
+#  "treatment:control": {
+#    "m": "4.825426929553009",
+##    "n": "3"
+#  }
+#},
+#"experiment": "3ea45886b5"
+#base.List(self.get_theta(key="treatment"), base.Mean, ["control", "treatment"]
+### differences:
+### - names k arms --nonsene here?
+### - in memory, name key,
+###    and set m and n
+
 
 #' External EpsilonGreedyPolicy
 #'

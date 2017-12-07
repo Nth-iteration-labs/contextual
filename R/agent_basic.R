@@ -5,10 +5,10 @@ BasicAgent <- R6::R6Class(
   portable = FALSE,
   class = FALSE,
   cloneable = TRUE,
-  private = list(memory = NULL),
+  private = list(memory = list()),
   public = list(
-    policy = NULL,
-    bandit = NULL,
+    policy = list(),
+    bandit = list(),
     initialize = function(policy,
                           bandit) {
       self$bandit = bandit
