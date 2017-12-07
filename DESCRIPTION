@@ -22,5 +22,5 @@ Suggests:
     testthat,
     covr
 Remotes:
-    github::Azure/doAzureParallel
+    github::Azure/doAzureParallel,
     github::Azure/rAzureBatch
