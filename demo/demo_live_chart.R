@@ -2,9 +2,9 @@
 source("dev.R")
 setwd("~/GitHub/contextual/demo")
 
-#############
 plot = Plot$new()                                                               # initialize plot.. TODO: change to within class
 plot$set_external(T, 11, 6L)                                                    # set external for Rstudio
+
 agents = list()                                                                 # to keep track of our agents
 set.seed(21L)                                                                   # set seed, to be able to repeat our tests with the same data
 
@@ -29,5 +29,5 @@ agents$Random  = BasicAgent$new(policyRandom, bandit)                           
 
 simulations    = 300L                                                           # define how many simulations
 horizon        = 100L                                                           # define how many each sim
-simulation     = Simulator$new(agents , animate = TRUE, animate_step = 1)       # let's see what our cunning agent can find out about the bandit
+simulation     = SimulatorBasic$new(agents, animate = TRUE, animate_step = 1)   # let's see what our cunning agent can find out about the bandit
 history        = simulation$run(horizon, simulations)                           # go!

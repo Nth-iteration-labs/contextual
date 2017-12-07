@@ -40,12 +40,12 @@ agents$LinUCB  = LinUCBAgent$new(policyLinUCB, bandit)                          
 
 ptm <- proc.time()                                                              # or Rprof ( tf <- "log.log",  memory.profiling = TRUE )
 
-simulations    = 100L                                                           # define how many simulations
-horizon        = 100L                                                           # define how many each sim
-simulation     = SimulatorParallel$new(agents)                                  # let's see what our cunning agent can find out about the bandit
+simulations    = 1000L                                                           # define how many simulations
+horizon        = 200L                                                           # define how many each sim
+simulation     = SimulatorAzure$new(agents)                                     # let's see what our cunning agent can find out about the bandit
 history        = simulation$run(horizon, simulations)                           # go!
 
 print(proc.time() - ptm)                                                        # or Rprof ( NULL ) ; print ( summaryRprof ( tf )  )
 
-plot$plot_grid(history)                                                              # plot the results...
+plot$plot_grid(history)                                                         # plot the results...
 

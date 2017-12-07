@@ -1,0 +1,21 @@
+{
+  "name": "contextual_test_cluster_1",
+  "vmSize": "Standard_F2",
+  "maxTasksPerNode": 2,
+  "poolSize": {
+    "dedicatedNodes": {
+        "min": 2,
+        "max": 2
+    },
+    "lowPriorityNodes": {
+        "min": 1,
+        "max": 10
+    },
+    "autoscaleFormula": "QUEUE"
+  },
+  "rPackages": {
+    "cran": ["foreach", "data.table"],
+    "github": ["robinvanemden/contextual"]
+  },
+  "commandLine": []
+}
