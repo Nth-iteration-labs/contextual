@@ -16,9 +16,11 @@ Imports:
     foreach,
     doParallel,
     doAzureParallel,
+    rAzureBatch,
     doRNG
 Suggests: 
     testthat,
     covr
 Remotes:
     Azure/doAzureParallel
+    Azure/rAzureBatch
