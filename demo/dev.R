@@ -1,20 +1,7 @@
 if ("package:contextual" %in% search()) detach("package:contextual", unload = TRUE)
-
-#system("R CMD Rd2pdf contextual")
-source("../R/contextual.R")
-source("../R/history.R")
-source("../R/simulator.R")
-source("../R/plot.R")
-source("../R/bandit_synthetic.R")
-source("../R/policy_linucb.R")
-source("../R/policy_thompsonsampling.R")
-source("../R/policy_epsilongreedy.R")
-source("../R/policy_oracle.R")
-source("../R/policy_random.R")
-source("../R/policy_exp3.R")
-source("../R/agent_basic.R")
-source("../R/agent_linucb.R")
-source("../R/agent_exp3.R")
+devtools::load_all()
+library(covr)
+codecov(token = "880ade00-4754-4659-9181-042bb749a94f")
 
 # theta are all the variables in the policy (function) that we are looking to optimize
 

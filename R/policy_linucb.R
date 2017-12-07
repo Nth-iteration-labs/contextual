@@ -1,6 +1,5 @@
-library(R6)
 #' @export
-LinUCBPolicy <- R6Class(
+LinUCBPolicy <- R6::R6Class(
   "LinUCBPolicy",
   inherit = Contextual,
   portable = FALSE,
@@ -27,7 +26,6 @@ LinUCBPolicy <- R6Class(
         expected.rewards.vector[arm] = mean + (self$alpha * var)
       }
       self$action$current_choice  = index_of_max(expected.rewards.vector)
-      self$action$propensity      = 0 # ###################
       return(self$action)
     }
   )

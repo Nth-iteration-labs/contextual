@@ -1,7 +1,6 @@
-library(R6)
-
+#' @import R6
 #' @export
-Contextual <- R6Class(
+Contextual <- R6::R6Class(
   "Contextual",
   portable = FALSE,
   class = FALSE,

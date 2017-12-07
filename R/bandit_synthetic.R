@@ -1,6 +1,5 @@
-library(R6)
 #' @export
-SyntheticBandit <- R6Class(
+SyntheticBandit <- R6::R6Class(
   "SyntheticBandit",
   inherit = Contextual,
   portable = FALSE,

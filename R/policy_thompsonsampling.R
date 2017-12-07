@@ -1,6 +1,5 @@
-library(R6)
 #' @export
-ThompsonSamplingPolicy <- R6Class(
+ThompsonSamplingPolicy <- R6::R6Class(
   "ThompsonSamplingPolicy",
   inherit = Contextual,
   portable = FALSE,
@@ -31,7 +30,6 @@ ThompsonSamplingPolicy <- R6Class(
       self$action$current_choice  = index_of_max(mu)
       self$action$propensity      = 0 # ###################
       return(self$action)
-      return()
     }
   )
 )

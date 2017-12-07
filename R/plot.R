@@ -1,11 +1,6 @@
-library(R6)
-library(data.table)
-library(R.devices)
-#' @import data.table
 #' @import R.devices
-
 #' @export
-Plot <- R6Class(
+Plot <- R6::R6Class(
   "Plot",
   inherit = Contextual,
   portable = FALSE,
@@ -15,7 +10,7 @@ Plot <- R6Class(
     initialize = function() {
 
     },
-    grid = function(history) {
+    plot_grid = function(history) {
       dev.hold()
       layout(matrix(c(1, 3, 2, 4), 2, 2, byrow = TRUE))
       par(mar = c(3, 5, 1, 1))#b,l,t,r
@@ -146,7 +141,7 @@ Plot <- R6Class(
                    device.name = "windows"
                  })
           options("device" = device.name)
-          devOptions(sysname, width = width, height = height)
+          R.devices::devOptions(sysname, width = width, height = height)
         } else{
           options("device" = "RStudioGD")
         }

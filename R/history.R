@@ -1,7 +1,6 @@
-library(R6)
-library(data.table)
+#' @import data.table
 #' @export
-History <- R6Class(
+History <- R6::R6Class(
   "History",
   inherit = Contextual,
   portable = FALSE,
@@ -9,12 +8,12 @@ History <- R6Class(
   cloneable = FALSE,
   public = list(
     n = 1000,
-    data = data.table(),
+    data = data.table::data.table(),
     initialize = function() {
     },
     reset = function(n = 1000) {
       self$n = n
-      self$data = data.table(
+      self$data = data.table::data.table(
         reward          = rep(0L,     n), #1
         optimal         = rep(0L,     n), #2
         agent           = rep("",     n), #3
@@ -25,21 +24,22 @@ History <- R6Class(
       )
     },
     save_step = function(counter, t, s, action, reward, policy.name) {
-      set(self$data, counter, 4L, t)
-      set(self$data, counter, 5L, s)
-      set(self$data, counter, 6L, action$current_choice)
-      set(self$data, counter, 1L, reward$reward)
-      set(self$data, counter, 3L, policy.name)
+
+      data.table::set(self$data, counter, 4L, t)
+      data.table::set(self$data, counter, 5L, s)
+      data.table::set(self$data, counter, 6L, action$current_choice)
+      data.table::set(self$data, counter, 1L, reward$reward)
+      data.table::set(self$data, counter, 3L, policy.name)
       if (is.null(action[["propensity"]]) ) {
-        set(self$data, counter, 7L, NA)
+        data.table::set(self$data, counter, 7L, NA)
       } else {
-        set(self$data, counter, 7L, action$propensity)
+        data.table::set(self$data, counter, 7L, action$propensity)
       }
 
       if (reward$is_optimal_choice) {
-        set(self$data, counter, 2L, 1L)
+        data.table::set(self$data, counter, 2L, 1L)
       } else {
-        set(self$data, counter, 2L, 0L)
+        data.table::set(self$data, counter, 2L, 0L)
       }
     },
     get_data_table = function() {

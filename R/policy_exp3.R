@@ -1,6 +1,5 @@
-library(R6)
 #' @export
-Exp3Policy <- R6Class(
+Exp3Policy <- R6::R6Class(
   "Exp3Policy",
   inherit = Contextual,
   portable = FALSE,
@@ -34,7 +33,6 @@ Exp3Policy <- R6Class(
       }
       inc(probs[arm]) <- (self$gamma) * (1.0 / agent$bandit$k)
       self$action$current_choice  = categorical.draw(probs)
-      self$action$propensity      = 0 # ###################
       return(self$action)
     }
   )

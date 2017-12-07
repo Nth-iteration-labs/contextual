@@ -1,6 +1,5 @@
-library(R6)
 #' @export
-Exp3Agent <- R6Class(
+Exp3Agent <- R6::R6Class(
   "Exp3Agent",
   inherit = Contextual,
   portable = FALSE,

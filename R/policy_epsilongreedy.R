@@ -1,6 +1,5 @@
-library(R6)
 #' @export
-EpsilonGreedyPolicy <- R6Class(
+EpsilonGreedyPolicy <- R6::R6Class(
   "EpsilonGreedyPolicy",
   inherit = Contextual,
   portable = FALSE,

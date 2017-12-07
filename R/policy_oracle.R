@@ -1,6 +1,5 @@
-library(R6)
 #' @export
-OraclePolicy <- R6Class(
+OraclePolicy <- R6::R6Class(
   "OraclePolicy",
   inherit = Contextual,
   portable = FALSE,
@@ -15,7 +14,7 @@ OraclePolicy <- R6Class(
     },
     get_action = function(agent, context) {
       self$action$current_choice  = index_of_max(context$oracle)
-      self$action$propensity      = 1 # isdatzo? nee.. propensity staat vast per..
+      self$action$propensity      = 1
       return(self$action)
     }
   )

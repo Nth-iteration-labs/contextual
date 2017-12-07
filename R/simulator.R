@@ -1,14 +1,10 @@
-library(R6)
-library(foreach)
-library(doParallel)
-library(doRNG)
-
 #' @import foreach
 #' @import doParallel
 #' @import doRNG
+#' @import data.table
 
 #' @export
-Simulator <- R6Class(
+Simulator <- R6::R6Class(
   "Simulator",
 
   inherit = Contextual,
@@ -80,20 +76,20 @@ Simulator <- R6Class(
             }
           }
           if (self$animate == TRUE && t %% animate_step == 0) {
-            plot$grid(history$get_data_table()[t != 0L])
+            plot$plot_grid(history$get_data_table()[t != 0L])
           }
         }
         return(history$get_data_table())
 
       } else {
-        workers <- detectCores() - 1
-        cl <- makeCluster(workers)
-        registerDoParallel(cl)
+        workers <- parallel::detectCores() - 1
+        cl <- parallel::makeCluster(workers)
+        doParallel::registerDoParallel(cl)
         n = as.integer(ceiling(self$horizon / workers *
                                  self$agent_n *
                                  self$simulations))
         self$history$reset(n)
-        parallel_results = foreach(
+        parallel_results = foreach::foreach(
           t = 1L:self$horizon,
           .inorder = TRUE,
           .packages = c("data.table")
@@ -101,11 +97,11 @@ Simulator <- R6Class(
           parallel_counter <- 1L
           for (a in 1L:self$agent_n) {
             for (s in 1L:self$simulations) {
+
               context  = bandit_instance[[a, s]]$get_context()
               action   = agent_instance[[a, s]]$get_action(context)
               reward   = bandit_instance[[a, s]]$get_reward(action)
               agent_instance[[a, s]]$set_reward(reward, context)
-
 
               self$history$save_step(parallel_counter,
                                      t,
@@ -121,7 +117,7 @@ Simulator <- R6Class(
         }
         parallel_results = rbindlist(parallel_results)[sim != 0]
         self$history$set_data_table(parallel_results)
-        stopCluster(cl)
+        parallel::stopCluster(cl)
         return(parallel_results)
       }
     }

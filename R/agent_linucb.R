@@ -1,6 +1,5 @@
-library(R6)
 #' @export
-LinUCBAgent <- R6Class(
+LinUCBAgent <- R6::R6Class(
   "LinUCBAgent",
   inherit = Contextual,
   portable = FALSE,

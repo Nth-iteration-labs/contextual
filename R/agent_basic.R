@@ -1,6 +1,5 @@
-library(R6)
 #' @export
-BasicAgent <- R6Class(
+BasicAgent <- R6::R6Class(
   "BasicAgent",
   inherit = Contextual,
   portable = FALSE,
@@ -28,7 +27,8 @@ BasicAgent <- R6Class(
     },
     set_reward = function(reward, context = NULL) {
       inc(private$memory$choice.counts[reward$current_choice]) <- 1
-      if (reward$reward == 1) inc(private$memory$succes.counts[reward$current_choice]) <- 1
+      if (reward$reward == 1)
+        inc(private$memory$succes.counts[reward$current_choice]) <- 1
       inc(private$memory$theta[reward$current_choice]) <-
         (1 / private$memory$choice.counts[reward$current_choice]) *
         (reward$reward - private$memory$theta[reward$current_choice])

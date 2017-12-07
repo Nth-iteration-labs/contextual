@@ -47,5 +47,5 @@ history        = simulation$run(horizon, simulations)                           
 
 print(proc.time() - ptm)                                                        # or Rprof ( NULL ) ; print ( summaryRprof ( tf )  )
 
-plot$grid(history)                                                              # plot the results...
+plot$plot_grid(history)                                                              # plot the results...
 

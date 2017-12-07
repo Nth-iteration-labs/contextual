@@ -16,3 +16,6 @@ Imports:
     foreach,
     doParallel,
     doRNG
+Suggests: 
+    testthat,
+    covr
