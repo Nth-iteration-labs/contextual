@@ -1,7 +1,7 @@
 Package: contextual
 Type: Package
 Title: Multi-Armed Bandit Simulation and Analysis
-Version: 0.0.0.9010
+Version: 0.0.0.9011
 Author: Robin van Emden
 Maintainer: Robin van Emden <robin@pwy.nl>
 Description: Simulates contextual multi-armed bandit problems and analyses the results.
@@ -20,3 +20,5 @@ Imports:
 Suggests: 
     testthat,
     covr
+Remotes:
+    Azure/doAzureParallel
