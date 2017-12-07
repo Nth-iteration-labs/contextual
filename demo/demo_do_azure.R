@@ -41,7 +41,7 @@ agents$LinUCB  = LinUCBAgent$new(policyLinUCB, bandit)                          
 
 ptm <- proc.time()                                                              # or Rprof ( tf <- "log.log",  memory.profiling = TRUE )
 
-simulations    = 1000L                                                          # define how many simulations
+simulations    = 100L                                                           # define how many simulations
 horizon        = 100L                                                           # define how many each sim
 simulation     = SimulatorAzure$new(agents)                                     # let's see what our cunning agent can find out about the bandit
 history        = simulation$run(horizon, simulations)                           # go!

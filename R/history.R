@@ -43,7 +43,7 @@ History <- R6::R6Class(
       }
     },
     get_data_table = function() {
-      return(self$data)
+      self$data
     },
     set_data_table = function(dt) {
       self$data = dt

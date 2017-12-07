@@ -37,7 +37,7 @@ SyntheticBandit <- R6::R6Class(
       }
     },
     get_weights = function() {
-      return(private$W)
+      private$W
     },
     set_weights = function(weight_matrix) {
       if (length(weight_matrix) != (self$d * self$k))
@@ -68,10 +68,10 @@ SyntheticBandit <- R6::R6Class(
         private$oracle[is.nan(private$oracle)] = 0
         private$R = as.integer(runif(self$k) < private$oracle)
       }
-      return(setNames(list(private$X, private$oracle), c("X", "oracle")))
+      setNames(list(private$X, private$oracle), c("X", "oracle"))
     },
     get_reward = function(action) {
-      return(setNames(
+      setNames(
         list(
              private$R[action$current_choice],
              action$current_choice,
@@ -82,10 +82,10 @@ SyntheticBandit <- R6::R6Class(
              "current_choice",
              "is_optimal_choice",
              "propensity")
-      ))
+      )
     },
     get_context = function() {
-      return(generate_sample())
+      generate_sample()
     }
   )
 )

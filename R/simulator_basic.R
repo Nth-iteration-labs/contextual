@@ -1,4 +1,3 @@
-
 #' @export
 SimulatorBasic <- R6::R6Class(
   "SimulatorBasic",
@@ -19,7 +18,7 @@ SimulatorBasic <- R6::R6Class(
     history = NULL,
     initialize = function(agent_list,
                           animate = FALSE,
-                          animate_step = 2) {
+                          animate_step = 1) {
       self$history = History$new()
       self$agent_list = agent_list
       self$agent_n = length(agent_list)
@@ -33,33 +32,39 @@ SimulatorBasic <- R6::R6Class(
     },
     run = function(horizon = 100L,
                    simulations = 100L) {
+
       self$horizon = horizon
       self$simulations = simulations
-      agent_instance =  matrix(list(), agent_n, simulations)
-      bandit_instance = matrix(list(), agent_n, simulations)
+
+      agent =  matrix(list(), agent_n, simulations)
       for (s in 1L:self$simulations) {
         for (a in 1L:self$agent_n) {
-          agent_instance[a, s]  = list(self$agent_list[[a]]$clone())            #deep? in init?
-          bandit_instance[a, s] = list(self$agent_list[[a]]$bandit$clone())
+          agent[a, s]  = list(self$agent_list[[a]]$clone())
         }
       }
+
       counter = 1L
       n = self$horizon * self$agent_n * self$simulations
       self$history$reset(n)
+
       for (t in 1L:self$horizon) {
         for (a in 1L:self$agent_n) {
           for (s in 1L:self$simulations) {
-            context  = bandit_instance[[a, s]]$get_context()
-            action   = agent_instance[[a, s]]$get_action(context)
-            reward   = bandit_instance[[a, s]]$get_reward(action)
-            agent_instance[[a, s]]$set_reward(reward, context)
+
+            # context/action/reward all at time t -> move into agent memory?
+            # these are really tiny steps, part of bigger step t
+
+            context = agent[[a, s]]$get_context()
+            action  = agent[[a, s]]$get_action(context)
+            reward  = agent[[a, s]]$get_reward(action)
+                      agent[[a, s]]$set_reward(reward, context)
 
             self$history$save_step(counter,
                                    t,
                                    s,
                                    action,
                                    reward,
-                                   agent_instance[[a, s]]$policy$name)
+                                   agent[[a, s]]$policy$name)
 
             counter <- counter + 1L
           }
@@ -68,7 +73,7 @@ SimulatorBasic <- R6::R6Class(
           plot$plot_grid(history$get_data_table()[t != 0L])
         }
       }
-      return(history$get_data_table())
+      history$get_data_table()
     }
   )
 )

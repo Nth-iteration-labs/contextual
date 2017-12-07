@@ -28,8 +28,7 @@ ThompsonSamplingPolicy <- R6::R6Class(
         )
       }
       self$action$current_choice  = index_of_max(mu)
-      self$action$propensity      = 0 # ###################
-      return(self$action)
+      self$action
     }
   )
 )

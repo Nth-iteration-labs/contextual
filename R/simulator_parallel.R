@@ -30,14 +30,14 @@ SimulatorParallel <- R6::R6Class(
     },
     run = function(horizon = 100L,
                    simulations = 100L) {
+
       self$horizon = horizon
       self$simulations = simulations
-      agent_instance =  matrix(list(), agent_n, simulations)
-      bandit_instance = matrix(list(), agent_n, simulations)
+      agent =  matrix(list(), agent_n, simulations)
+
       for (s in 1L:self$simulations) {
         for (a in 1L:self$agent_n) {
-          agent_instance[a, s]  = list(self$agent_list[[a]]$clone())            #deep? in init?
-          bandit_instance[a, s] = list(self$agent_list[[a]]$bandit$clone())
+          agent[a, s]  = list(self$agent_list[[a]]$clone())
         }
       }
 
@@ -49,6 +49,7 @@ SimulatorParallel <- R6::R6Class(
                                self$simulations))
       self$history$reset(n)
       `%dorng%` <- doRNG::`%dorng%`
+      `%dopar%` <- foreach::`%dopar%`
       parallel_results = foreach::foreach(
         t = 1L:self$horizon,
         .inorder = TRUE,
@@ -57,27 +58,29 @@ SimulatorParallel <- R6::R6Class(
         parallel_counter <- 1L
         for (a in 1L:self$agent_n) {
           for (s in 1L:self$simulations) {
-            context  = bandit_instance[[a, s]]$get_context()
-            action   = agent_instance[[a, s]]$get_action(context)
-            reward   = bandit_instance[[a, s]]$get_reward(action)
-            agent_instance[[a, s]]$set_reward(reward, context)
+
+            context = agent[[a, s]]$get_context()
+            action  = agent[[a, s]]$get_action(context)
+            reward  = agent[[a, s]]$get_reward(action)
+            agent[[a, s]]$set_reward(reward, context)
 
             self$history$save_step(parallel_counter,
                                    t,
                                    s,
                                    action,
                                    reward,
-                                   agent_instance[[a, s]]$policy$name)
+                                   agent[[a, s]]$policy$name)
 
             parallel_counter <- parallel_counter + 1L
           }
         }
-        self$history$get_data_table()
+        dth <- self$history$get_data_table()
+        dth[sim != 0]
       }
-      parallel_results = data.table::rbindlist(parallel_results)[sim != 0]      ### that's a potential problem?
+      parallel_results = data.table::rbindlist(parallel_results)
       self$history$set_data_table(parallel_results)
       parallel::stopCluster(cl)
-      return(parallel_results)
+      parallel_results
     }
   )
 )

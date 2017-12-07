@@ -5,6 +5,7 @@ BasicAgent <- R6::R6Class(
   portable = FALSE,
   class = FALSE,
   cloneable = TRUE,
+  private = list(memory = NULL),
   public = list(
     policy = NULL,
     bandit = NULL,
@@ -14,27 +15,31 @@ BasicAgent <- R6::R6Class(
       self$policy = policy
       self$reset()
     },
-    get_memory = function() {
-      return(private$memory)
-    },
     reset = function() {
       private$memory$theta =         rep(0, self$bandit$k)                      # theta per arm
       private$memory$choice.counts = rep(0, self$bandit$k)                      # per arm count
       private$memory$succes.counts = rep(0, self$bandit$k)                      # per arm succesful count
     },
+    get_memory = function() {
+      private$memory
+    },
+    get_context = function() {
+      self$bandit$get_context()
+    },
     get_action = function(context) {
-      return(self$policy$get_action(self, context))
+      self$policy$get_action(self, context)
+    },
+    get_reward = function(action) {
+      self$bandit$get_reward(action)
     },
     set_reward = function(reward, context = NULL) {
       inc(private$memory$choice.counts[reward$current_choice]) <- 1
-      if (reward$reward == 1)
-        inc(private$memory$succes.counts[reward$current_choice]) <- 1
+      if (reward$reward == 1) inc(private$memory$succes.counts[reward$current_choice]) <- 1
       inc(private$memory$theta[reward$current_choice]) <-
         (1 / private$memory$choice.counts[reward$current_choice]) *
         (reward$reward - private$memory$theta[reward$current_choice])
     }
-  ),
-  private = list(memory = NULL)
+  )
 )
 
 #' External BasicAgent

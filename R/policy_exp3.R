@@ -23,7 +23,7 @@ Exp3Policy <- R6::R6Class(
         if (cum.prob > z)
           return(i)
       }
-      return(sample(1:lp, 1))
+      sample(1:lp, 1)
     },
     get_action = function(agent, context) {
       probs = rep(0.0, agent$bandit$k)
@@ -33,7 +33,7 @@ Exp3Policy <- R6::R6Class(
       }
       inc(probs[arm]) <- (self$gamma) * (1.0 / agent$bandit$k)
       self$action$current_choice  = categorical.draw(probs)
-      return(self$action)
+      self$action
     }
   )
 )

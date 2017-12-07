@@ -15,7 +15,7 @@ RandomPolicy <- R6::R6Class(
     get_action = function(agent, context) {
       self$action$current_choice  = sample.int(agent$bandit$k, 1)
       self$action$propensity      = 1/agent$bandit$k
-      return(self$action)
+      self$action
     }
   )
 )

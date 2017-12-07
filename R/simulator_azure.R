@@ -95,10 +95,9 @@ SimulatorAzure <- R6::R6Class(
       }
       parallel_results = data.table::rbindlist(parallel_results)[sim != 0]
       self$history$set_data_table(parallel_results)
-
       doAzureParallel::stopCluster(cluster)
 
-      return(parallel_results)
+      parallel_results
     }
   )
 )

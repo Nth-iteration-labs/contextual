@@ -15,7 +15,7 @@ EpsilonGreedyPolicy <- R6::R6Class(
       self$action = list()
     },
     get_action = function(agent, context) {
-      action = list()
+      self$action = list()
       if (runif(1) < self$epsilon) {
 
         #"simulate": "success",
@@ -38,11 +38,11 @@ EpsilonGreedyPolicy <- R6::R6Class(
 
         self$action$current_choice  = sample.int(agent$bandit$k, 1)             ### meanList.random()
         self$action$propensity      = epsilon*(1/length(agent$bandit$k))
-        return(self$action)
+        self$action
       } else {
         self$action$current_choice  = index_of_max(agent$get_memory()$theta)    ### meanList.max() --> here is mean of list, explicit in theta?
         self$action$propensity      = 1 - epsilon
-        return(self$action)
+        self$action
       }
     }
   )

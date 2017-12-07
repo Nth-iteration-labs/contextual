@@ -14,14 +14,20 @@ Exp3Agent <- R6::R6Class(
       self$policy = policy
       self$reset()
     },
-    get_memory = function() {
-      return(private$memory)
-    },
     reset = function() {
       private$memory$theta = rep(1.0, self$bandit$k)
     },
-    get_action = function(context = NULL) {
-      return(self$policy$get_action(self))
+    get_memory = function() {
+      return(private$memory)
+    },
+    get_context = function() {
+      self$bandit$get_context()
+    },
+    get_action = function(context) {
+      self$policy$get_action(self, context)
+    },
+    get_reward = function(action) {
+      self$bandit$get_reward(action)
     },
     set_reward = function(reward, context = NULL) {
       probs = rep(0.0, self$bandit$k)

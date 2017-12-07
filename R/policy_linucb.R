@@ -26,7 +26,7 @@ LinUCBPolicy <- R6::R6Class(
         expected.rewards.vector[arm] = mean + (self$alpha * var)
       }
       self$action$current_choice  = index_of_max(expected.rewards.vector)
-      return(self$action)
+      self$action
     }
   )
 )
