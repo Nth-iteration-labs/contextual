@@ -48,6 +48,7 @@ SimulatorParallel <- R6::R6Class(
                                self$agent_n *
                                self$simulations))
       self$history$reset(n)
+      `%dorng%` <- doRNG::`%dorng%`
       parallel_results = foreach::foreach(
         t = 1L:self$horizon,
         .inorder = TRUE,
@@ -73,7 +74,7 @@ SimulatorParallel <- R6::R6Class(
         }
         self$history$get_data_table()
       }
-      parallel_results = data.table::rbindlist(parallel_results)[sim != 0]
+      parallel_results = data.table::rbindlist(parallel_results)[sim != 0]      ### that's a potential problem?
       self$history$set_data_table(parallel_results)
       parallel::stopCluster(cl)
       return(parallel_results)

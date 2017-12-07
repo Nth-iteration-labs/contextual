@@ -1,5 +1,5 @@
 #' @import foreach
-#' @import doAzureParallel                                                      # make this optional?
+#' @import doAzureParallel
 #' @import doRNG
 #' @export
 SimulatorAzure <- R6::R6Class(
@@ -67,6 +67,7 @@ SimulatorAzure <- R6::R6Class(
                                self$agent_n *
                                self$simulations))
       self$history$reset(n)
+      `%dopar%` <- foreach::`%dopar%`
       parallel_results = foreach::foreach(
         t = 1L:self$horizon,
         .inorder = TRUE,

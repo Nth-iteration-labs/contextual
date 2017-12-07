@@ -1,6 +1,7 @@
+setwd("~/GitHub/contextual/demo")
 #library(contextual)
 source("dev.R")
-setwd("~/GitHub/contextual/demo")
+
 
 plot = Plot$new()                                                               # initialize plot.. TODO: change to within class
 plot$set_external(T, 11, 6L)                                                    # set external for Rstudio
@@ -40,8 +41,8 @@ agents$LinUCB  = LinUCBAgent$new(policyLinUCB, bandit)                          
 
 ptm <- proc.time()                                                              # or Rprof ( tf <- "log.log",  memory.profiling = TRUE )
 
-simulations    = 1000L                                                           # define how many simulations
-horizon        = 200L                                                           # define how many each sim
+simulations    = 10L                                                           # define how many simulations
+horizon        = 10L                                                           # define how many each sim
 simulation     = SimulatorAzure$new(agents)                                     # let's see what our cunning agent can find out about the bandit
 history        = simulation$run(horizon, simulations)                           # go!
 

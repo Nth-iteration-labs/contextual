@@ -1,6 +1,6 @@
+setwd("~/GitHub/contextual/demo")
 #library(contextual)
 source("dev.R")
-setwd("~/GitHub/contextual/demo")
 
 plot = Plot$new()                                                               # initialize plot.. TODO: change to within class
 plot$set_external(T, 11, 6L)                                                    # set external for Rstudio

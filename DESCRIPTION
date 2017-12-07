@@ -15,6 +15,7 @@ Imports:
     R.devices,
     foreach,
     doParallel,
+    doAzureParallel,
     doRNG
 Suggests: 
     testthat,
