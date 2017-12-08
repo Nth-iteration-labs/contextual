@@ -54,7 +54,7 @@ SimulatorAzure <- R6::R6Class(
 
       # 6. Check that your parallel backend has been registered
       workers = foreach::getDoParWorkers()
-      #workers = 1
+      #workers = 2
 
       n = as.integer(ceiling(self$horizon / workers *
                                self$agent_n *
@@ -72,6 +72,7 @@ SimulatorAzure <- R6::R6Class(
       parallel_results = foreach::foreach(
         t = 1L:self$horizon,
         .inorder = TRUE,
+        .export='agent',
         .packages = c("data.table"),
         .options.azure = opt
       ) %dopar% {
