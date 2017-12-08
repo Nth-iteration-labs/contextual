@@ -11,12 +11,11 @@ SimulatorAzure <- R6::R6Class(
     horizon = 100L,
     simulations = 1L,
     history = NULL,
+
     initialize = function(agent_list) {
       self$history = History$new()
       self$agent_list = agent_list
       self$agent_n = length(agent_list)
-      doAzureParallel::generateClusterConfig("cluster.json")
-      doAzureParallel::generateCredentialsConfig("credentials.json")
       self$reset()
     },
     reset = function() {
@@ -25,18 +24,21 @@ SimulatorAzure <- R6::R6Class(
     },
     run = function(horizon = 100L,
                    simulations = 100L) {
+
       self$horizon = horizon
       self$simulations = simulations
-      agent_instance =  matrix(list(), self$agent_n, simulations)
+      agent =  matrix(list(), self$agent_n, simulations)
+
       for (s in 1L:self$simulations) {
         for (a in 1L:self$agent_n) {
-          agent_instance[a, s]  = list(self$agent_list[[a]]$clone(deep = TRUE))
+          agent[a, s]  = list(self$agent_list[[a]]$clone(deep = TRUE))
         }
       }
 
       # 1. Generate your credential and cluster configuration files.
       doAzureParallel::generateClusterConfig("cluster.json")
       doAzureParallel::generateCredentialsConfig("credentials.json")
+      doAzureParallel::setVerbose(TRUE)
 
       # 2. Fill out your credential config and cluster config files.
       # Enter your Azure Batch Account & Azure Storage keys/account-info into your credential config ("credentials.json") and configure your cluster in your cluster config ("cluster.json")
@@ -52,45 +54,52 @@ SimulatorAzure <- R6::R6Class(
 
       # 6. Check that your parallel backend has been registered
       workers = foreach::getDoParWorkers()
-
+      #workers = 1
 
       n = as.integer(ceiling(self$horizon / workers *
                                self$agent_n *
                                self$simulations))
+
       self$history$reset(n)
+
+
+
+      `%do%` <- foreach::`%do%`
       `%dopar%` <- foreach::`%dopar%`
 
       opt <- list(chunkSize = n, enableMerge = FALSE)
 
-      doAzureParallel::setVerbose(TRUE)
-
       parallel_results = foreach::foreach(
-        t = 1:self$horizon,
+        t = 1L:self$horizon,
+        .inorder = TRUE,
         .packages = c("data.table"),
         .options.azure = opt
       ) %dopar% {
         parallel_counter <- 1L
         for (a in 1L:self$agent_n) {
           for (s in 1L:self$simulations) {
-            context  = bandit_instance[[a, s]]$get_context()
-            action   = agent_instance[[a, s]]$get_action(context)
-            reward   = bandit_instance[[a, s]]$get_reward(action)
-            agent_instance[[a, s]]$set_reward(reward, context)
+
+            context = agent[[a, s]]$get_context()
+            action  = agent[[a, s]]$get_action(context)
+            reward  = agent[[a, s]]$get_reward(action)
+            agent[[a, s]]$set_reward(reward, context)
 
             self$history$save_step(parallel_counter,
                                    t,
                                    s,
                                    action,
                                    reward,
-                                   agent_instance[[a, s]]$policy$name)
+                                   agent[[a, s]]$policy$name)
 
             parallel_counter <- parallel_counter + 1L
           }
         }
-        self$history$get_data_table()
+        dth <- self$history$get_data_table()
+        dth[sim != 0]
       }
-      parallel_results #= data.table::rbindlist(parallel_results)[sim != 0]
+      parallel_results = data.table::rbindlist(parallel_results)
       self$history$set_data_table(parallel_results)
+
       doAzureParallel::stopCluster(cluster)
 
       parallel_results

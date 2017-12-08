@@ -1,5 +1,5 @@
 {
-  "name": "contextual_test_cluster_1",
+  "name": "contextual_test_cluster_2",
   "vmSize": "Standard_F2",
   "maxTasksPerNode": 2,
   "poolSize": {

@@ -38,12 +38,16 @@ SimulatorParallel <- R6::R6Class(
       workers <- parallel::detectCores() - 1
       cl <- parallel::makeCluster(workers)
       doParallel::registerDoParallel(cl)
+
       n = as.integer(ceiling(self$horizon / workers *
                                self$agent_n *
                                self$simulations))
       self$history$reset(n)
+
+      `%do%` <- foreach::`%do%`
       `%dorng%` <- doRNG::`%dorng%`
       `%dopar%` <- foreach::`%dopar%`
+
       parallel_results = foreach::foreach(
         t = 1L:self$horizon,
         .inorder = TRUE,
@@ -72,8 +76,11 @@ SimulatorParallel <- R6::R6Class(
         dth[sim != 0]
       }
       parallel_results = data.table::rbindlist(parallel_results)
+
       self$history$set_data_table(parallel_results)
+
       parallel::stopCluster(cl)
+
       parallel_results
     }
   )

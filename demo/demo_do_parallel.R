@@ -21,8 +21,8 @@ bandit$set_weights(c(0.9, 0.0, 0.1,  #k1                                        
                      0.1, 0.9, 0.1,  #k2                                        # d stands for a feature,
                      0.9, 0.1, 0.9)) #k3                                        # k for an arm
 
-policyEG       = EpsilonGreedyPolicy$new(0.1, "\U190-greedy")                  # which policy do we want to test?
-agents$EG      = BasicAgent$new(policyEG, bandit)                              # define an agent, who uses an policy, to find out more about a bandit
+policyEG       = EpsilonGreedyPolicy$new(0.1, "\U190-greedy")                   # which policy do we want to test?
+agents$EG      = BasicAgent$new(policyEG, bandit)                               # define an agent, who uses an policy, to find out more about a bandit
 
 policyTS       = ThompsonSamplingPolicy$new(1.0, 1.0, "TSampling")              # which policy do we want to test?
 agents$TS      = BasicAgent$new(policyTS, bandit)                               # define an agent, who uses an policy, to find out more about a bandit

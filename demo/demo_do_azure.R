@@ -2,9 +2,6 @@ setwd("~/GitHub/contextual/demo")
 #library(contextual)
 source("dev.R")
 
-
-plot = Plot$new()                                                               # initialize plot.. TODO: change to within class
-plot$set_external(T, 11, 6L)                                                    # set external for Rstudio
 agents = list()                                                                 # to keep track of our agents
 set.seed(21L)                                                                   # set seed, to be able to repeat our tests with the same data
 
@@ -51,5 +48,5 @@ print(proc.time() - ptm)                                                        
 
 plot = Plot$new()                                                               # initialize plot.. TODO: change to within class
 plot$set_external(T, 11, 6L)
-#print(plot$plot_grid(history))                                                 # plot the results...
+print(plot$plot_grid(history))                                                  # plot the results...
 
