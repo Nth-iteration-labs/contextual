@@ -1,10 +1,7 @@
 #' @export
 LinUCBAgent <- R6::R6Class(
   "LinUCBAgent",
-  inherit = Contextual,
-  portable = FALSE,
-  class = FALSE,
-  cloneable = TRUE,
+  private = list(memory = NULL),
   public = list(
     policy = NULL,
     bandit = NULL,
@@ -38,12 +35,9 @@ LinUCBAgent <- R6::R6Class(
     },
     set_reward = function(reward, context) {
       X = as.vector(context$X)
-      inc(private$memory$theta[[reward$current_choice]]$A) <- outer(X, X)
-      inc(private$memory$theta[[reward$current_choice]]$b) <- reward$reward * X
+      private$memory$theta[[reward$current_choice]]$A <- private$memory$theta[[reward$current_choice]]$A + outer(X, X)
+      private$memory$theta[[reward$current_choice]]$b <- private$memory$theta[[reward$current_choice]]$b + reward$reward * X
     }
-  ),
-  private = list(
-    memory = list()
   )
 )
 

@@ -2,30 +2,24 @@
 EpsilonGreedyPolicy <- R6::R6Class(
   "EpsilonGreedyPolicy",
   inherit = Contextual,
-  portable = FALSE,
-  class = FALSE,
-  cloneable = FALSE,
   public = list(
     epsilon = 0.1,
     name = "",
-    action = list(),
+    action = NULL,
     initialize = function(epsilon = 0.1, name = "EpsilonGreedy") {
       self$epsilon = epsilon
       self$name = name
       self$action = list()
     },
     get_action = function(agent, context) {
-      self$action = list()
       if (runif(1) < self$epsilon) {
-
-        self$action$current_choice  = sample.int(agent$bandit$k, 1)             ### meanList.random()
-        self$action$propensity      = epsilon*(1/length(agent$bandit$k))
-        self$action
+        self$action$current_choice  = sample.int(agent$bandit$k, 1)
+        self$action$propensity      = self$epsilon*(1/length(agent$bandit$k))
       } else {
-        self$action$current_choice  = index_of_max(agent$get_memory()$theta)    ### meanList.max() --> here is mean of list, explicit in theta?
-        self$action$propensity      = 1 - epsilon
-        self$action
+        self$action$current_choice  = self$index_of_max(agent$get_memory()$theta)
+        self$action$propensity      = 1 - self$epsilon
       }
+      self$action
     }
   )
 )

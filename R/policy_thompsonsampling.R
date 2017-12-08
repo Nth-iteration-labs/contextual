@@ -2,9 +2,6 @@
 ThompsonSamplingPolicy <- R6::R6Class(
   "ThompsonSamplingPolicy",
   inherit = Contextual,
-  portable = FALSE,
-  class = FALSE,
-  cloneable = FALSE,
   public = list(
     alpha = 1,
     beta = 1,
@@ -27,7 +24,7 @@ ThompsonSamplingPolicy <- R6::R6Class(
           self$beta + agent$get_memory()$choice.counts[arm] - agent$get_memory()$succes.counts[arm]
         )
       }
-      self$action$current_choice  = index_of_max(mu)
+      self$action$current_choice  = self$index_of_max(mu)
       self$action
     }
   )

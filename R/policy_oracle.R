@@ -2,9 +2,6 @@
 OraclePolicy <- R6::R6Class(
   "OraclePolicy",
   inherit = Contextual,
-  portable = FALSE,
-  class = FALSE,
-  cloneable = FALSE,
   public = list(
     name = "",
     action = list(),
@@ -13,7 +10,7 @@ OraclePolicy <- R6::R6Class(
       self$action = list()
     },
     get_action = function(agent, context) {
-      self$action$current_choice  = index_of_max(context$oracle)
+      self$action$current_choice  = self$index_of_max(context$oracle)
       self$action$propensity      = 1
       self$action
     }

@@ -1,10 +1,7 @@
 #' @export
 Exp3Agent <- R6::R6Class(
   "Exp3Agent",
-  inherit = Contextual,
-  portable = FALSE,
-  class = FALSE,
-  cloneable = TRUE,
+  private = list(memory = NULL),
   public = list(
     policy = NULL,
     bandit = NULL,
@@ -18,7 +15,7 @@ Exp3Agent <- R6::R6Class(
       private$memory$theta = rep(1.0, self$bandit$k)
     },
     get_memory = function() {
-      return(private$memory)
+      private$memory
     },
     get_context = function() {
       self$bandit$get_context()
@@ -32,18 +29,14 @@ Exp3Agent <- R6::R6Class(
     set_reward = function(reward, context = NULL) {
       probs = rep(0.0, self$bandit$k)
       for (arm in 1:self$bandit$k) {
-        probs[arm] = (1 - self$policy$gamma) *
-          (private$memory$theta[arm] / sum(private$memory$theta))
-        inc(probs[arm]) <-
-          (self$policy$gamma) * (1.0 / self$bandit$k)
+        probs[arm] = (1 - self$policy$gamma) * (private$memory$theta[arm] / sum(private$memory$theta))
+        probs[arm] = probs[arm] + (self$policy$gamma) * (1.0 / self$bandit$k)
       }
       x = reward$reward / probs[reward$current_choice]
-      growth.factor = exp((self$policy$gamma / self$bandit$k) * x)
-      mult(private$memory$theta[reward$current_choice]) <-
-        growth.factor
+      growth_factor = exp((self$policy$gamma / self$bandit$k) * x)
+      private$memory$theta[reward$current_choice] <- private$memory$theta[reward$current_choice] * growth_factor
     }
-  ),
-  private = list(memory = NULL)
+  )
 )
 
 #' External Exp3Agent

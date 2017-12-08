@@ -1,14 +1,10 @@
 #' @export
 BasicAgent <- R6::R6Class(
   "BasicAgent",
-  inherit = Contextual,
-  portable = FALSE,
-  class = FALSE,
-  cloneable = TRUE,
-  private = list(memory = list()),
+  private = list(memory = NULL),
   public = list(
-    policy = list(),
-    bandit = list(),
+    policy = NULL,
+    bandit = NULL,
     initialize = function(policy,
                           bandit) {
       self$bandit = bandit
@@ -33,11 +29,12 @@ BasicAgent <- R6::R6Class(
       self$bandit$get_reward(action)
     },
     set_reward = function(reward, context = NULL) {
-      inc(private$memory$choice.counts[reward$current_choice]) <- 1
-      if (reward$reward == 1) inc(private$memory$succes.counts[reward$current_choice]) <- 1
-      inc(private$memory$theta[reward$current_choice]) <-
+      private$memory$choice.counts[reward$current_choice] = private$memory$choice.counts[reward$current_choice] + 1
+      if (reward$reward == 1) private$memory$succes.counts[reward$current_choice] = private$memory$succes.counts[reward$current_choice] + 1
+      private$memory$theta[reward$current_choice] = private$memory$theta[reward$current_choice] +
         (1 / private$memory$choice.counts[reward$current_choice]) *
         (reward$reward - private$memory$theta[reward$current_choice])
+
     }
   )
 )

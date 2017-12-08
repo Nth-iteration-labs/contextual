@@ -27,7 +27,7 @@ agents$EG      = BasicAgent$new(policyEG, bandit)                               
 policyRandom   = RandomPolicy$new("Random")                                     # which policy do we want to test?
 agents$Random  = BasicAgent$new(policyRandom, bandit)                           # define an agent, who uses an policy, to find out more about a bandit
 
-simulations    = 300L                                                           # define how many simulations
+simulations    = 100L                                                           # define how many simulations
 horizon        = 100L                                                           # define how many each sim
 simulation     = SimulatorBasic$new(agents, animate = TRUE, animate_step = 1)   # let's see what our cunning agent can find out about the bandit
 history        = simulation$run(horizon, simulations)                           # go!

@@ -2,9 +2,6 @@
 #' @export
 Contextual <- R6::R6Class(
   "Contextual",
-  portable = FALSE,
-  class = FALSE,
-  cloneable = FALSE,
   public = list(
     index_of_max = function(x)
     {

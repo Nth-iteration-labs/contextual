@@ -2,10 +2,6 @@
 #' @export
 Plot <- R6::R6Class(
   "Plot",
-  inherit = Contextual,
-  portable = FALSE,
-  class = FALSE,
-  cloneable = FALSE,
   public = list(
     initialize = function() {
 

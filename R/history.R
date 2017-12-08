@@ -2,10 +2,6 @@
 #' @export
 History <- R6::R6Class(
   "History",
-  inherit = Contextual,
-  portable = FALSE,
-  class = FALSE,
-  cloneable = FALSE,
   public = list(
     n = 1000,
     data = data.table::data.table(),

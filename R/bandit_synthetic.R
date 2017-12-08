@@ -2,9 +2,6 @@
 SyntheticBandit <- R6::R6Class(
   "SyntheticBandit",
   inherit = Contextual,
-  portable = FALSE,
-  class = FALSE,
-  cloneable = TRUE,
   private = list(
     W = NULL,
     R = NULL,
@@ -32,7 +29,7 @@ SyntheticBandit <- R6::R6Class(
       self$generate_weights()
     },
     generate_weights = function(mean = 0.0, sd = 1.0) {
-      if (weight_distribution == "Uniform") {
+      if (self$weight_distribution == "Uniform") {
         private$W = matrix(runif(self$d * self$k), self$d, self$k)
       }
     },
@@ -75,7 +72,7 @@ SyntheticBandit <- R6::R6Class(
         list(
              private$R[action$current_choice],
              action$current_choice,
-             index_of_max(private$R) == action$current_choice,
+             self$index_of_max(private$R) == action$current_choice,
              action$propensity),
 
            c("reward",
@@ -85,7 +82,7 @@ SyntheticBandit <- R6::R6Class(
       )
     },
     get_context = function() {
-      generate_sample()
+      self$generate_sample()
     }
   )
 )

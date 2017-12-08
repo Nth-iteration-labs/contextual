@@ -4,20 +4,13 @@
 #' @export
 SimulatorAzure <- R6::R6Class(
   "SimulatorAzure",
-
-  inherit = Contextual,
-  portable = FALSE,
-  class = FALSE,
-  cloneable = FALSE,
   private = list(rewards = NULL),
-
   public = list(
     agent_list = NULL,
     agent_n = NULL,
     horizon = 100L,
     simulations = 1L,
     history = NULL,
-
     initialize = function(agent_list) {
       self$history = History$new()
       self$agent_list = agent_list
@@ -27,19 +20,17 @@ SimulatorAzure <- R6::R6Class(
       self$reset()
     },
     reset = function() {
-      for (a in 1L:agent_n)
-        agent_list[[a]]$reset()
+      for (a in 1L:self$agent_n)
+        self$agent_list[[a]]$reset()
     },
     run = function(horizon = 100L,
                    simulations = 100L) {
       self$horizon = horizon
       self$simulations = simulations
-      agent_instance =  matrix(list(), agent_n, simulations)
-      bandit_instance = matrix(list(), agent_n, simulations)
+      agent_instance =  matrix(list(), self$agent_n, simulations)
       for (s in 1L:self$simulations) {
         for (a in 1L:self$agent_n) {
-          agent_instance[a, s]  = list(self$agent_list[[a]]$clone())            #deep? in init?
-          bandit_instance[a, s] = list(self$agent_list[[a]]$bandit$clone())
+          agent_instance[a, s]  = list(self$agent_list[[a]]$clone(deep = TRUE))
         }
       }
 
@@ -67,7 +58,6 @@ SimulatorAzure <- R6::R6Class(
                                self$agent_n *
                                self$simulations))
       self$history$reset(n)
-
       `%dopar%` <- foreach::`%dopar%`
 
       opt <- list(chunkSize = n, enableMerge = FALSE)
@@ -75,23 +65,20 @@ SimulatorAzure <- R6::R6Class(
       doAzureParallel::setVerbose(TRUE)
 
       parallel_results = foreach::foreach(
-        i = 1:100,
+        t = 1:self$horizon,
         .packages = c("data.table"),
         .options.azure = opt
       ) %dopar% {
         parallel_counter <- 1L
-        localhistory = History$new()
-        localhistory$reset(n)
         for (a in 1L:self$agent_n) {
           for (s in 1L:self$simulations) {
-
             context  = bandit_instance[[a, s]]$get_context()
             action   = agent_instance[[a, s]]$get_action(context)
             reward   = bandit_instance[[a, s]]$get_reward(action)
             agent_instance[[a, s]]$set_reward(reward, context)
 
-            localhistory$save_step(parallel_counter,
-                                   i,
+            self$history$save_step(parallel_counter,
+                                   t,
                                    s,
                                    action,
                                    reward,
@@ -100,9 +87,9 @@ SimulatorAzure <- R6::R6Class(
             parallel_counter <- parallel_counter + 1L
           }
         }
-        localhistory$get_data_table()
+        self$history$get_data_table()
       }
-      parallel_results = data.table::rbindlist(parallel_results)
+      parallel_results #= data.table::rbindlist(parallel_results)[sim != 0]
       self$history$set_data_table(parallel_results)
       doAzureParallel::stopCluster(cluster)
 

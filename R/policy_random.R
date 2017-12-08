@@ -1,13 +1,9 @@
 #' @export
 RandomPolicy <- R6::R6Class(
   "RandomPolicy",
-  inherit = Contextual,
-  portable = FALSE,
-  class = FALSE,
-  cloneable = FALSE,
   public = list(
     name = "",
-    action = list(),
+    action = NULL,
     initialize = function(name = "Random") {
       self$name = name
       self$action = list()

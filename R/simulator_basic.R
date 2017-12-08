@@ -1,13 +1,7 @@
 #' @export
 SimulatorBasic <- R6::R6Class(
   "SimulatorBasic",
-
-  inherit = Contextual,
-  portable = FALSE,
-  class = FALSE,
-  cloneable = FALSE,
   private = list(rewards = NULL),
-
   public = list(
     agent_list = NULL,
     agent_n = NULL,
@@ -27,8 +21,8 @@ SimulatorBasic <- R6::R6Class(
       self$reset()
     },
     reset = function() {
-      for (a in 1L:agent_n)
-        agent_list[[a]]$reset()
+      for (a in 1L:self$agent_n)
+        self$agent_list[[a]]$reset()
     },
     run = function(horizon = 100L,
                    simulations = 100L) {
@@ -36,7 +30,7 @@ SimulatorBasic <- R6::R6Class(
       self$horizon = horizon
       self$simulations = simulations
 
-      agent =  matrix(list(), agent_n, simulations)
+      agent =  matrix(list(), self$agent_n, simulations)
       for (s in 1L:self$simulations) {
         for (a in 1L:self$agent_n) {
           agent[a, s]  = list(self$agent_list[[a]]$clone(deep = FALSE))
@@ -69,11 +63,11 @@ SimulatorBasic <- R6::R6Class(
             counter <- counter + 1L
           }
         }
-        if (self$animate == TRUE && t %% animate_step == 0) {
-          plot$plot_grid(history$get_data_table()[t != 0L])
+        if (self$animate == TRUE && t %% self$animate_step == 0) {
+          plot$plot_grid(self$history$get_data_table()[t != 0L])
         }
       }
-      history$get_data_table()
+      self$history$get_data_table()
     }
   )
 )

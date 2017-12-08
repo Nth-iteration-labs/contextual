@@ -2,9 +2,6 @@
 LinUCBPolicy <- R6::R6Class(
   "LinUCBPolicy",
   inherit = Contextual,
-  portable = FALSE,
-  class = FALSE,
-  cloneable = FALSE,
   public = list(
     alpha = 0.1,
     name = "",
@@ -25,7 +22,7 @@ LinUCBPolicy <- R6::R6Class(
         var  =  sqrt(tcrossprod(context$X %*% A.inv, context$X))              # faster than sqrt( (context$X %*% A.inv ) %*% t(context$X) )
         expected.rewards.vector[arm] = mean + (self$alpha * var)
       }
-      self$action$current_choice  = index_of_max(expected.rewards.vector)
+      self$action$current_choice  = self$index_of_max(expected.rewards.vector)
       self$action
     }
   )

@@ -1,3 +1,5 @@
+rm(list = ls())
+gc()
 if ("package:contextual" %in% search()) detach("package:contextual", unload = TRUE)
 devtools::load_all()
 
