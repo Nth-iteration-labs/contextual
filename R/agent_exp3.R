@@ -1,21 +1,35 @@
 #' @export
 Exp3Agent <- R6::R6Class(
   "Exp3Agent",
-  private = list(memory = NULL),
+  inherit = Contextual,
+  private = list(.memory = NULL),
+  active = list(
+    memory = function(value) {
+      if (missing(value)) {
+        private$.memory
+      } else {
+        stop("'$memory' is read only", call. = FALSE)
+      }
+    }
+  ),
   public = list(
     policy = NULL,
     bandit = NULL,
     initialize = function(policy,
                           bandit) {
-      self$bandit = bandit
-      self$policy = policy
+      stopifnot(is.element("R6", class(policy)))
+      stopifnot(is.element("R6", class(bandit)))
+      self$bandit <- bandit
+      self$policy <- policy
       self$reset()
     },
     reset = function() {
-      private$memory$theta = rep(1.0, self$bandit$k)
-    },
-    get_memory = function() {
-      private$memory
+      theta.arm <- list(
+        'value' = 1
+      )
+      for (i in 1:self$bandit$k) {
+        private$.memory$theta[[i]] <- theta.arm
+      }
     },
     get_context = function() {
       self$bandit$get_context()
@@ -27,14 +41,17 @@ Exp3Agent <- R6::R6Class(
       self$bandit$get_reward(action)
     },
     set_reward = function(reward, context = NULL) {
-      probs = rep(0.0, self$bandit$k)
+      probs <- rep(0.0, self$bandit$k)
       for (arm in 1:self$bandit$k) {
-        probs[arm] = (1 - self$policy$gamma) * (private$memory$theta[arm] / sum(private$memory$theta))
+        probs[arm] = (1 - self$policy$gamma) *
+          (self$memory$theta[[arm]]$value /
+             self$sumval(self$memory$theta, "value"))
         probs[arm] = probs[arm] + (self$policy$gamma) * (1.0 / self$bandit$k)
       }
-      x = reward$reward / probs[reward$current_choice]
-      growth_factor = exp((self$policy$gamma / self$bandit$k) * x)
-      private$memory$theta[reward$current_choice] <- private$memory$theta[reward$current_choice] * growth_factor
+      x <- reward$reward / probs[reward$choice]
+      growth_factor <- exp((self$policy$gamma / self$bandit$k) * x)
+      private$.memory$theta[[reward$choice]]$value <-
+        private$.memory$theta[[reward$choice]]$value * growth_factor
     }
   )
 )

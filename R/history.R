@@ -6,37 +6,46 @@ History <- R6::R6Class(
     n = 1000,
     data = data.table::data.table(),
     initialize = function() {
+
     },
     reset = function(n = 1000) {
-      self$n = n
-      self$data = data.table::data.table(
-        reward          = rep(0L,     n), #1
-        optimal         = rep(0L,     n), #2
-        agent           = rep("",     n), #3
-        t               = rep(0L,     n), #4
-        sim             = rep(0L,     n), #5
-        arm             = rep(0L,     n), #6
-        propensity      = rep(0.0,    n)  #7
+      self$n <- n
+      self$data <- data.table::data.table(
+        reward          = rep(0L,      n), #1
+        optimal         = rep(0L,      n), #2
+        agent           = rep("",      n), #3
+        t               = rep(0L,      n), #4
+        sim             = rep(0L,      n), #5
+        arm             = rep(0L,      n), #6
+        propensity      = rep(0.0,     n)  #7
+        #memory          = rep(list(""),n)  #8
       )
     },
-    save_step = function(counter, t, s, action, reward, policy.name) {
+    save_step = function(counter,
+                         t,
+                         s,
+                         action,
+                         reward,
+                         policy.name,
+                         memory = NA) {
 
-      data.table::set(self$data, counter, 4L, t)
-      data.table::set(self$data, counter, 5L, s)
-      data.table::set(self$data, counter, 6L, action$current_choice)
       data.table::set(self$data, counter, 1L, reward$reward)
-      data.table::set(self$data, counter, 3L, policy.name)
-      if (is.null(action[["propensity"]]) ) {
-        data.table::set(self$data, counter, 7L, NA)
-      } else {
-        data.table::set(self$data, counter, 7L, action$propensity)
-      }
-
       if (reward$is_optimal_choice) {
         data.table::set(self$data, counter, 2L, 1L)
       } else {
         data.table::set(self$data, counter, 2L, 0L)
       }
+      data.table::set(self$data, counter, 3L, policy.name)
+      data.table::set(self$data, counter, 4L, t)
+      data.table::set(self$data, counter, 5L, s)
+      data.table::set(self$data, counter, 6L, action$choice)
+      if (is.null(action[["propensity"]])) {
+        data.table::set(self$data, counter, 7L, NA)
+      } else {
+        data.table::set(self$data, counter, 7L, action$propensity)
+      }
+      #data.table::set(self$data, counter, 8L, list(memory))
+
     },
     get_data_table = function() {
       self$data
@@ -75,3 +84,8 @@ History <- R6::R6Class(
 #'\dontrun{}
 #'
 NULL
+
+
+
+
+

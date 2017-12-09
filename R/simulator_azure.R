@@ -13,9 +13,9 @@ SimulatorAzure <- R6::R6Class(
     history = NULL,
 
     initialize = function(agent_list) {
-      self$history = History$new()
-      self$agent_list = agent_list
-      self$agent_n = length(agent_list)
+      self$history <- History$new()
+      self$agent_list <- agent_list
+      self$agent_n <- length(agent_list)
       self$reset()
     },
     reset = function() {
@@ -25,13 +25,13 @@ SimulatorAzure <- R6::R6Class(
     run = function(horizon = 100L,
                    simulations = 100L) {
 
-      self$horizon = horizon
-      self$simulations = simulations
-      agent =  matrix(list(), self$agent_n, simulations)
+      self$horizon <- horizon
+      self$simulations <- simulations
+      agent <-  matrix(list(), self$agent_n, simulations)
 
       for (s in 1L:self$simulations) {
         for (a in 1L:self$agent_n) {
-          agent[a, s]  = list(self$agent_list[[a]]$clone(deep = TRUE))
+          agent[a, s]  <- list(self$agent_list[[a]]$clone(deep = TRUE))
         }
       }
 
@@ -53,36 +53,30 @@ SimulatorAzure <- R6::R6Class(
       doAzureParallel::registerDoAzureParallel(cluster)
 
       # 6. Check that your parallel backend has been registered
-      workers = foreach::getDoParWorkers()
-      #workers = 2
+      workers <- foreach::getDoParWorkers()
 
-      n = as.integer(ceiling(self$horizon / workers *
-                               self$agent_n *
-                               self$simulations))
-
+      n <- self$horizon  * self$agent_n
       self$history$reset(n)
-
-
 
       `%do%` <- foreach::`%do%`
       `%dopar%` <- foreach::`%dopar%`
 
-      opt <- list(chunkSize = n, enableMerge = FALSE)
+      opt <- list(enableMerge = FALSE)
 
-      parallel_results = foreach::foreach(
-        t = 1L:self$horizon,
-        .inorder = TRUE,
-        .export='agent',
+      parallel_results <- foreach::foreach(
+        s = 1L:self$simulations,
+        .inorder = FALSE,
+        .export = 'agent',
         .packages = c("data.table"),
         .options.azure = opt
       ) %dopar% {
         parallel_counter <- 1L
         for (a in 1L:self$agent_n) {
-          for (s in 1L:self$simulations) {
+          for (t in 1L:self$horizon) {
 
-            context = agent[[a, s]]$get_context()
-            action  = agent[[a, s]]$get_action(context)
-            reward  = agent[[a, s]]$get_reward(action)
+            context <- agent[[a, s]]$get_context()
+            action  <- agent[[a, s]]$get_action(context)
+            reward  <- agent[[a, s]]$get_reward(action)
             agent[[a, s]]$set_reward(reward, context)
 
             self$history$save_step(parallel_counter,
@@ -98,7 +92,7 @@ SimulatorAzure <- R6::R6Class(
         dth <- self$history$get_data_table()
         dth[sim != 0]
       }
-      parallel_results = data.table::rbindlist(parallel_results)
+      parallel_results <- data.table::rbindlist(parallel_results)
       self$history$set_data_table(parallel_results)
 
       doAzureParallel::stopCluster(cluster)

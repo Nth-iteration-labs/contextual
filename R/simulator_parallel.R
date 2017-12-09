@@ -13,9 +13,9 @@ SimulatorParallel <- R6::R6Class(
     history = NULL,
 
     initialize = function(agent_list) {
-      self$history = History$new()
-      self$agent_list = agent_list
-      self$agent_n = length(agent_list)
+      self$history <- History$new()
+      self$agent_list <- agent_list
+      self$agent_n <- length(agent_list)
       self$reset()
     },
     reset = function() {
@@ -25,13 +25,13 @@ SimulatorParallel <- R6::R6Class(
     run = function(horizon = 100L,
                    simulations = 100L) {
 
-      self$horizon = horizon
-      self$simulations = simulations
-      agent =  matrix(list(), self$agent_n, simulations)
+      self$horizon <- horizon
+      self$simulations <- simulations
+      agent <- matrix(list(), self$agent_n, simulations)
 
       for (s in 1L:self$simulations) {
         for (a in 1L:self$agent_n) {
-          agent[a, s]  = list(self$agent_list[[a]]$clone(deep = TRUE))
+          agent[a, s]  <- list(self$agent_list[[a]]$clone(deep = TRUE))
         }
       }
 
@@ -39,27 +39,25 @@ SimulatorParallel <- R6::R6Class(
       cl <- parallel::makeCluster(workers)
       doParallel::registerDoParallel(cl)
 
-      n = as.integer(ceiling(self$horizon / workers *
-                               self$agent_n *
-                               self$simulations))
+      n <- self$horizon  * self$agent_n
       self$history$reset(n)
 
       `%do%` <- foreach::`%do%`
       `%dorng%` <- doRNG::`%dorng%`
       `%dopar%` <- foreach::`%dopar%`
 
-      parallel_results = foreach::foreach(
-        t = 1L:self$horizon,
-        .inorder = TRUE,
+      parallel_results <- foreach::foreach(
+        s = 1L:self$simulations,
+        .inorder = FALSE,
         .packages = c("data.table")
       ) %dorng% {
         parallel_counter <- 1L
         for (a in 1L:self$agent_n) {
-          for (s in 1L:self$simulations) {
+          for (t in 1L:self$horizon) {
 
-            context = agent[[a, s]]$get_context()
-            action  = agent[[a, s]]$get_action(context)
-            reward  = agent[[a, s]]$get_reward(action)
+            context <- agent[[a, s]]$get_context()
+            action  <- agent[[a, s]]$get_action(context)
+            reward  <- agent[[a, s]]$get_reward(action)
             agent[[a, s]]$set_reward(reward, context)
 
             self$history$save_step(parallel_counter,
@@ -75,7 +73,9 @@ SimulatorParallel <- R6::R6Class(
         dth <- self$history$get_data_table()
         dth[sim != 0]
       }
-      parallel_results = data.table::rbindlist(parallel_results)
+      parallel_results <- data.table::rbindlist(parallel_results)
+
+
 
       self$history$set_data_table(parallel_results)
 

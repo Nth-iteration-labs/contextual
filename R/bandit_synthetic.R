@@ -19,18 +19,18 @@ SyntheticBandit <- R6::R6Class(
     initialize   = function(k = 2L,
                             d = 2L,
                             weight_distribution  = 'Uniform',
-                            reward_family        = 'Bernoulli',
+                            reward_family       = 'Bernoulli',
                             feature_type         = 'Bernoulli') {
-      self$k = k
-      self$d = d
-      self$reward_family        = reward_family
-      self$feature_type         = feature_type
-      self$weight_distribution  = weight_distribution
+      self$k <- k
+      self$d <- d
+      self$reward_family        <- reward_family
+      self$feature_type         <- feature_type
+      self$weight_distribution  <- weight_distribution
       self$generate_weights()
     },
     generate_weights = function(mean = 0.0, sd = 1.0) {
       if (self$weight_distribution == "Uniform") {
-        private$W = matrix(runif(self$d * self$k), self$d, self$k)
+        private$W <- matrix(runif(self$d * self$k), self$d, self$k)
       }
     },
     get_weights = function() {
@@ -39,18 +39,18 @@ SyntheticBandit <- R6::R6Class(
     set_weights = function(weight_matrix) {
       if (length(weight_matrix) != (self$d * self$k))
         stop("Weight needs to be of length k*d.")
-      private$W = matrix(weight_matrix,  self$d, self$k)
+      private$W <- matrix(weight_matrix,  self$d, self$k)
     },
     generate_sample = function(n = 1L) {
       # n is not yet completed!
 
       if (self$feature_type == 'Single' ||
           is.na(self$feature_type)) {
-        private$X = matrix(1, n, self$d)
+        private$X <- matrix(1, n, self$d)
       } else if (self$feature_type == 'Bernoulli') {
-        private$X = matrix(0, n , self$d)                                       # create matrix
-        private$X[sample(1:(n * self$d), 1)] = 1                                # always one feature, at least?
-        private$X = as.integer(private$X |
+        private$X <- matrix(0, n , self$d)                                       # create matrix
+        private$X[sample(1:(n * self$d), 1)] <- 1                                # always one feature, at least?
+        private$X <- as.integer(private$X |
                                  matrix(sample(
                                    c(0, 1),
                                    replace = TRUE,
@@ -58,25 +58,25 @@ SyntheticBandit <- R6::R6Class(
                                  ), n , self$d))                                # but can be multiple features
       }
 
-      weights_per_feature = private$W * as.vector(private$X)
+      weights_per_feature <- private$W * as.vector(private$X)
 
       if (self$reward_family == 'Bernoulli') {
-        private$oracle = colSums(weights_per_feature) / sum(private$X)
-        private$oracle[is.nan(private$oracle)] = 0
-        private$R = as.integer(runif(self$k) < private$oracle)
+        private$oracle <- colSums(weights_per_feature) / sum(private$X)
+        private$oracle[is.nan(private$oracle)] <- 0
+        private$R <- as.integer(runif(self$k) < private$oracle)
       }
       setNames(list(private$X, private$oracle), c("X", "oracle"))
     },
     get_reward = function(action) {
       setNames(
         list(
-             private$R[action$current_choice],
-             action$current_choice,
-             self$index_of_max(private$R) == action$current_choice,
+             private$R[action$choice],
+             action$choice,
+             self$argmax(private$R) == action$choice,
              action$propensity),
 
            c("reward",
-             "current_choice",
+             "choice",
              "is_optimal_choice",
              "propensity")
       )

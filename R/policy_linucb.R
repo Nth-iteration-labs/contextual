@@ -7,22 +7,22 @@ LinUCBPolicy <- R6::R6Class(
     name = "",
     action = list(),
     initialize = function(alpha = 1, name = "LinUCB") {
-      self$alpha = alpha
-      self$name = name
-      self$action = list()
+      self$alpha <- alpha
+      self$name <- name
+      self$action <- list()
     },
     get_action = function(agent, context) {
-      expected.rewards.vector = rep(0.0, agent$bandit$k)
+      expected_rewards <- rep(0.0, agent$bandit$k)
       for (arm in 1:agent$bandit$k) {
-        A          = agent$get_memory()[['theta']][[arm]][['A']]
-        b          = agent$get_memory()[['theta']][[arm]][['b']]
-        A.inv      = chol2inv(chol(A))                                          # Faster than A.inv = solve(A), same?
-        theta.hat  = A.inv %*% b
-        mean =  context$X %*% theta.hat
-        var  =  sqrt(tcrossprod(context$X %*% A.inv, context$X))              # faster than sqrt( (context$X %*% A.inv ) %*% t(context$X) )
-        expected.rewards.vector[arm] = mean + (self$alpha * var)
+        A          <- agent$memory$theta[[arm]][['A']]
+        b          <- agent$memory$theta[[arm]][['b']]
+        A.inv      <- chol2inv(chol(A))                                         # Faster than A.inv <- solve(A), same?
+        theta.hat  <- A.inv %*% b
+        mean <-  context$X %*% theta.hat
+        var  <-  sqrt(tcrossprod(context$X %*% A.inv, context$X))               # faster than sqrt( (context$X %*% A.inv ) %*% t(context$X) )
+        expected_rewards[arm] <- mean + (self$alpha * var)
       }
-      self$action$current_choice  = self$index_of_max(expected.rewards.vector)
+      self$action$choice  <- self$argmax(expected_rewards)
       self$action
     }
   )

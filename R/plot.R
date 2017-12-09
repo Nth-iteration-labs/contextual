@@ -4,17 +4,22 @@ Plot <- R6::R6Class(
   "Plot",
   public = list(
     initialize = function() {
-
     },
     plot_grid = function(history) {
       dev.hold()
       layout(matrix(c(1, 3, 2, 4), 2, 2, byrow = TRUE))
+
       par(mar = c(3, 5, 1, 1))#b,l,t,r
       self$cummulative(history, grid = TRUE, legend = TRUE)
       par(mar = c(3, 5, 1, 1))
       self$optimal(history, grid = TRUE, legend = FALSE)
       par(mar = c(3, 5, 1, 2))
       self$average(history, grid = TRUE, legend = FALSE)
+      if (history[agent == "TSampling",.N]>0) {                                 ## this needs to be more generic!
+        par(mar = c(3, 5, 1, 2))
+        self$ts(history, grid = TRUE, legend = FALSE)
+      }
+
       dev.flush()
     },
     cummulative = function(history,
@@ -23,12 +28,12 @@ Plot <- R6::R6Class(
                            legend = TRUE) {
       if (grid == FALSE)
         dev.hold()
-      cs = history[, list(mean = mean(reward)), by = list(t, agent)]
-      agent_list = unique(cs$agent)
-      agents = length(agent_list)
+      cs <- history[, list(mean = mean(reward)), by = list(t, agent)]
+      agent_list <- unique(cs$agent)
+      agents <- length(agent_list)
       setorder(cs, agent, t)
-      agent_list = unique(cs$agent)
-      ms = matrix(unlist(cs[, cumsum(mean), by = list(agent)][, 2]),
+      agent_list <- unique(cs$agent)
+      ms <- matrix(unlist(cs[, cumsum(mean), by = list(agent)][, 2]),
                   ncol = agents)
       matplot(
         ms,
@@ -55,18 +60,57 @@ Plot <- R6::R6Class(
     is_rstudio = function() {
       .Platform$GUI == "RStudio"
     },
+    ts = function(history,
+                       grid = FALSE,
+                       xlim = NULL,
+                       legend = TRUE) {
+      if (grid == FALSE)
+        dev.hold()
+
+      sims_n   = history[,max(sim)]
+      chosen_n = history[agent == "TSampling",.N, by = arm][order(arm)][,N]/sims_n
+      succes_n = history[agent == "TSampling" & reward == "1",.N, by = arm][order(arm)][,N]/sims_n
+
+      alpha = 1; beta = 1
+      alpha_per_arm = alpha + succes_n
+      beta_per_arm = beta + chosen_n - succes_n
+
+
+
+      curve(dbeta(x,alpha_per_arm[1],
+                  beta_per_arm[1]),
+                  col = "green",
+                  xlab = "X",
+                  ylab = "PDF",
+                  ylim = c(0, 13))
+      for (i in 2:length(alpha_per_arm)) {
+        curve(dbeta(x,alpha_per_arm[i],beta_per_arm[i]),add = TRUE,col = "blue")
+      }
+      if (legend)
+        legend(
+          "topleft",
+          NULL,
+          agent_list,
+          col = 1:agents,
+          lwd = 1,
+          lty = 1,
+          bg = "white"
+        )
+      if (grid == FALSE)
+        dev.flush()
+    },
     optimal = function(history,
                        grid = FALSE,
                        xlim = NULL,
                        legend = TRUE) {
       if (grid == FALSE)
         dev.hold()
-      cs = history[, list(mean = mean(optimal)), by = list(t, agent)]
-      agent_list = unique(cs$agent)
-      agents = length(agent_list)
+      cs <- history[, list(mean = mean(optimal)), by = list(t, agent)]
+      agent_list <- unique(cs$agent)
+      agents <- length(agent_list)
       setorder(cs, agent, t)
-      agent_list = unique(cs$agent)
-      ms = matrix(unlist(cs[, 3]), ncol = agents)
+      agent_list <- unique(cs$agent)
+      ms <- matrix(unlist(cs[, 3]), ncol = agents)
       matplot(
         ms * 100,
         type = "l",
@@ -95,12 +139,12 @@ Plot <- R6::R6Class(
                        xlim = NULL,
                        legend = TRUE) {
       if (grid == FALSE) dev.hold()
-      cs = history[, list(mean = mean(reward)), by = list(t, agent)]
-      agent_list = unique(cs$agent)
-      agents = length(agent_list)
+      cs <- history[, list(mean = mean(reward)), by = list(t, agent)]
+      agent_list <- unique(cs$agent)
+      agents <- length(agent_list)
       setorder(cs, agent, t)
-      agent_list = unique(cs$agent)
-      ms = matrix(unlist(cs[, 3]), ncol = agents)
+      agent_list <- unique(cs$agent)
+      ms <- matrix(unlist(cs[, 3]), ncol = agents)
       matplot(
         ms,
         type = "l",
@@ -127,8 +171,8 @@ Plot <- R6::R6Class(
                             height = 6) {
       if (self$is_rstudio()) {
         if (isTRUE(ext)) {
-          sysname = tolower(Sys.info()["sysname"])
-          device.name = "x11"
+          sysname <- tolower(Sys.info()["sysname"])
+          device.name <- "x11"
           switch(sysname,
                  darwin = {
                    device.name = "quartz"

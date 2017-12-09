@@ -6,12 +6,12 @@ OraclePolicy <- R6::R6Class(
     name = "",
     action = list(),
     initialize = function(name = "Oracle") {
-      self$name = name
-      self$action = list()
+      self$name <- name
+      self$action <- list()
     },
     get_action = function(agent, context) {
-      self$action$current_choice  = self$index_of_max(context$oracle)
-      self$action$propensity      = 1
+      self$action$choice  <- self$argmax(context$oracle)
+      self$action$propensity <- 1
       self$action
     }
   )

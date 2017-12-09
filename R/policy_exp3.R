@@ -7,27 +7,29 @@ Exp3Policy <- R6::R6Class(
     name = "",
     action = NULL,
     initialize = function(gamma =  0.1, name = "Exp3") {
-      self$gamma = gamma
-      self$name  = name
-      self$action = list()
+      self$gamma <- gamma
+      self$name  <- name
+      self$action <- list()
     },
     categorical_draw = function(probs) {
-      z = runif(1)
-      cum_prob = 0.0
-      lp = length(probs)
+      z <- runif(1)
+      cum_prob <- 0.0
+      lp <- length(probs)
       for (i in 1:lp) {
-        cum_prob = cum_prob + probs[i]
+        cum_prob <- cum_prob + probs[i]
         if (cum_prob > z) return(i)
       }
       return(sample(1:lp, 1))
     },
     get_action = function(agent, context) {
-      probs = rep(0.0, agent$bandit$k)
+      probs <- rep(0.0, agent$bandit$k)
       for (arm in 1:agent$bandit$k) {
-        probs[arm] = (1 - self$gamma) * (agent$get_memory()$theta[arm] / sum(agent$get_memory()$theta))
+        probs[arm] <- (1 - self$gamma) *
+          (agent$memory$theta[[arm]]$value /
+             self$sumval(agent$memory$theta, "value"))
       }
-      probs[arm] = probs[arm] + ((self$gamma) * (1.0 / agent$bandit$k))
-      self$action$current_choice  = self$categorical_draw(probs)
+      probs[arm] <- probs[arm] + ((self$gamma) * (1.0 / agent$bandit$k))
+      self$action$choice  <- self$categorical_draw(probs)
       self$action
     }
   )

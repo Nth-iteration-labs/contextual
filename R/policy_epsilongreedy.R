@@ -7,40 +7,22 @@ EpsilonGreedyPolicy <- R6::R6Class(
     name = "",
     action = NULL,
     initialize = function(epsilon = 0.1, name = "EpsilonGreedy") {
-      self$epsilon = epsilon
-      self$name = name
-      self$action = list()
+      self$epsilon <- epsilon
+      self$name <- name
+      self$action <- list()
     },
     get_action = function(agent, context) {
       if (runif(1) < self$epsilon) {
-        self$action$current_choice  = sample.int(agent$bandit$k, 1)
-        self$action$propensity      = self$epsilon*(1/length(agent$bandit$k))
+        self$action$choice  <- sample.int(agent$bandit$k, 1)
+        self$action$propensity <- self$epsilon*(1/length(agent$bandit$k))
       } else {
-        self$action$current_choice  = self$index_of_max(agent$get_memory()$theta)
-        self$action$propensity      = 1 - self$epsilon
+        self$action$choice <- self$argmax(agent$memory$theta,"value")
+        self$action$propensity <- 1 - self$epsilon
       }
       self$action
     }
   )
 )
-
-#"simulate": "success",
-#"theta": {
-#  "treatment:treatment": {
-#    "m": "5.863945505387279",
-#    "n": "99"
-#  },
-#  "treatment:control": {
-#    "m": "4.825426929553009",
-##    "n": "3"
-#  }
-#},
-#"experiment": "3ea45886b5"
-#base.List(self.get_theta(key="treatment"), base.Mean, ["control", "treatment"]
-### differences:
-### - names k arms --nonsene here?
-### - in memory, name key,
-###    and set m and n
 
 
 #' External EpsilonGreedyPolicy

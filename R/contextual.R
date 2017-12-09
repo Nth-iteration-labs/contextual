@@ -3,8 +3,11 @@
 Contextual <- R6::R6Class(
   "Contextual",
   public = list(
-    index_of_max = function(x)
+    argmax = function(x, list_element_name = NA)
     {
+      if (!is.na(list_element_name)) {
+        x <- sapply(x, `[[`, list_element_name)
+      }
       y <- seq_along(x)[x == max(x)]
       if (length(y) > 1L) {
         return(sample(y, 1L))
@@ -12,14 +15,11 @@ Contextual <- R6::R6Class(
         return(y)
       }
     },
-    "inc<-" = function(x, value) {
-      x + value
-    },
-    "dec<-" = function(x, value) {
-      x - value
-    },
-    "mult<-" = function(x, value) {
-      x * value
+    sumval = function(x, list_element_name)
+    {
+      stopifnot(is.list(x), length(x) > 2)
+      stopifnot(is.character(list_element_name), length(list_element_name) > 0)
+      sum(sapply(x, `[[`, as.character(list_element_name)))
     }
   )
 )
