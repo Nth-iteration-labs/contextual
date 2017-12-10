@@ -1,6 +1,6 @@
+
 #' @import foreach
 #' @import doAzureParallel
-#' @import doRNG
 #' @export
 SimulatorAzure <- R6::R6Class(
   "SimulatorAzure",
@@ -28,11 +28,11 @@ SimulatorAzure <- R6::R6Class(
 
       self$horizon <- horizon
       self$simulations <- simulations
-      agent <-  matrix(list(), self$agent_n, simulations)
+      agent <- matrix(list(), self$agent_n, simulations)
 
       for (s in 1L:self$simulations) {
         for (a in 1L:self$agent_n) {
-          agent[a, s]  <- list(self$agent_list[[a]]$clone(deep = TRUE))
+          agent[a,s] <- list(self$agent_list[[a]]$clone(deep = FALSE))
         }
       }
 

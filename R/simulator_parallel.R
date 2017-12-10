@@ -32,7 +32,7 @@ SimulatorParallel <- R6::R6Class(
 
       for (s in 1L:self$simulations) {
         for (a in 1L:self$agent_n) {
-          agent[a, s]  <- list(self$agent_list[[a]]$clone(deep = FALSE))
+          agent[a,s] <- list(self$agent_list[[a]]$clone(deep = FALSE))
         }
       }
 
