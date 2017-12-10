@@ -1,7 +1,8 @@
 #' @export
 SyntheticBandit <- R6::R6Class(
   "SyntheticBandit",
-  inherit = Contextual,
+  inherit = AbstractAgent,
+  portable = FALSE,
   private = list(
     W = NULL,
     R = NULL,
@@ -19,7 +20,7 @@ SyntheticBandit <- R6::R6Class(
     initialize   = function(k = 2L,
                             d = 2L,
                             weight_distribution  = 'Uniform',
-                            reward_family       = 'Bernoulli',
+                            reward_family        = 'Bernoulli',
                             feature_type         = 'Bernoulli') {
       self$k <- k
       self$d <- d
@@ -48,8 +49,8 @@ SyntheticBandit <- R6::R6Class(
           is.na(self$feature_type)) {
         private$X <- matrix(1, n, self$d)
       } else if (self$feature_type == 'Bernoulli') {
-        private$X <- matrix(0, n , self$d)                                       # create matrix
-        private$X[sample(1:(n * self$d), 1)] <- 1                                # always one feature, at least?
+        private$X <- matrix(0, n , self$d)                                      # create matrix
+        private$X[sample(n * self$d, 1)] <- 1                                   # always one feature, at least?
         private$X <- as.integer(private$X |
                                  matrix(sample(
                                    c(0, 1),
@@ -65,7 +66,7 @@ SyntheticBandit <- R6::R6Class(
         private$oracle[is.nan(private$oracle)] <- 0
         private$R <- as.integer(runif(self$k) < private$oracle)
       }
-      setNames(list(private$X, private$oracle), c("X", "oracle"))
+      setNames(list(self$k, self$d, private$X, private$oracle), c("k","d","X", "oracle"))
     },
     get_reward = function(action) {
       setNames(

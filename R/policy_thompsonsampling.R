@@ -1,12 +1,13 @@
 #' @export
 ThompsonSamplingPolicy <- R6::R6Class(
   "ThompsonSamplingPolicy",
-  inherit = Contextual,
+  portable = FALSE,
+  inherit = AbstractPolicy,
   public = list(
     alpha = 1,
     beta = 1,
     name = "",
-    action = list(),
+    action = NULL,
     initialize = function(alpha = 1,
                           beta =  1,
                           name = "Thompson Sampling") {
@@ -15,17 +16,31 @@ ThompsonSamplingPolicy <- R6::R6Class(
       self$name   <- name
       self$action <- list()
     },
-    get_action = function(agent, context) {
-      mu <- rep(0.0, agent$bandit$k)
-      for (arm in 1:agent$bandit$k) {
+    get_action = function(context, theta) {
+      mu <- rep(0.0, context$k)
+      for (arm in 1:context$k) {
         mu[arm] <-  rbeta(
           1,
-          self$alpha + agent$memory$theta[[arm]]$succes,
-          self$beta + agent$memory$theta[[arm]]$chosen - agent$memory$theta[[arm]]$succes
+          self$alpha + theta[[arm]]$succes,
+          self$beta  + theta[[arm]]$chosen - theta[[arm]]$succes
         )
       }
+      self$action$mu <- mu
       self$action$choice <- self$argmax(mu)
       self$action
+    },
+    set_reward = function(reward, context, theta) {
+
+      theta[[reward$choice]]$chosen <- theta[[reward$choice]]$chosen + 1
+
+      if (reward$reward == 1)
+        theta[[reward$choice]]$succes <- theta[[reward$choice]]$succes + 1
+
+      theta[[reward$choice]]$value <- theta[[reward$choice]]$value +
+        (1 / theta[[reward$choice]]$chosen) *
+        (reward$reward - theta[[reward$choice]]$value)
+
+      theta
     }
   )
 )
@@ -48,7 +63,8 @@ ThompsonSamplingPolicy <- R6::R6Class(
 #' }
 #'
 #' @section Details:
-#' \code{$new()} starts a new ThompsonSamplingPolicy, it uses \code{\link[base]{pipe}}.
+#' \code{$new()} starts a new ThompsonSamplingPolicy,
+#' it uses \code{\link[base]{pipe}}.
 #' R does \emph{not} wait for the process to finish, but returns
 #' immediately.
 #'

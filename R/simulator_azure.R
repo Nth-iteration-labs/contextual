@@ -4,6 +4,7 @@
 #' @export
 SimulatorAzure <- R6::R6Class(
   "SimulatorAzure",
+  portable = FALSE,
   private = list(rewards = NULL),
   public = list(
     agent_list = NULL,
@@ -70,23 +71,18 @@ SimulatorAzure <- R6::R6Class(
         .packages = c("data.table"),
         .options.azure = opt
       ) %dopar% {
-        parallel_counter <- 1L
+        counter <- 1L
         for (a in 1L:self$agent_n) {
           for (t in 1L:self$horizon) {
 
-            context <- agent[[a, s]]$get_context()
-            action  <- agent[[a, s]]$get_action(context)
-            reward  <- agent[[a, s]]$get_reward(action)
-            agent[[a, s]]$set_reward(reward, context)
+                      agent[[a,s]]$observe_bandit(t)
+            action <- agent[[a,s]]$get_policy_decision(t)
+            reward <- agent[[a,s]]$get_bandit_reward(t)
+                      agent[[a,s]]$adjust_policy(t)
 
-            self$history$save_step(parallel_counter,
-                                   t,
-                                   s,
-                                   action,
-                                   reward,
-                                   agent[[a, s]]$policy$name)
+            self$history$save_agent(counter,t,action,reward,agent[[a,s]]$policy$name,s)
 
-            parallel_counter <- parallel_counter + 1L
+            counter <- counter + 1L
           }
         }
         dth <- self$history$get_data_table()

@@ -2,6 +2,8 @@
 #' @export
 History <- R6::R6Class(
   "History",
+  portable = FALSE,
+  inherit = Contextual,
   public = list(
     n = 1000,
     data = data.table::data.table(),
@@ -17,17 +19,11 @@ History <- R6::R6Class(
         t               = rep(0L,      n), #4
         sim             = rep(0L,      n), #5
         arm             = rep(0L,      n), #6
-        propensity      = rep(0.0,     n)  #7
+        propensity      = rep(0.0,     n)#, #7
         #memory          = rep(list(""),n)  #8
       )
     },
-    save_step = function(counter,
-                         t,
-                         s,
-                         action,
-                         reward,
-                         policy.name,
-                         memory = NA) {
+    save_agent = function(counter, t, action, reward, policy_name, s = NA, memory = NA) {
 
       data.table::set(self$data, counter, 1L, reward$reward)
       if (reward$is_optimal_choice) {
@@ -35,7 +31,7 @@ History <- R6::R6Class(
       } else {
         data.table::set(self$data, counter, 2L, 0L)
       }
-      data.table::set(self$data, counter, 3L, policy.name)
+      data.table::set(self$data, counter, 3L, policy_name)
       data.table::set(self$data, counter, 4L, t)
       data.table::set(self$data, counter, 5L, s)
       data.table::set(self$data, counter, 6L, action$choice)
@@ -44,7 +40,7 @@ History <- R6::R6Class(
       } else {
         data.table::set(self$data, counter, 7L, action$propensity)
       }
-      #data.table::set(self$data, counter, 8L, list(memory))
+      #data.table::set(self$data, counter, 8L, list(action))
 
     },
     get_data_table = function() {

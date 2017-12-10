@@ -1,18 +1,32 @@
 #' @export
 OraclePolicy <- R6::R6Class(
   "OraclePolicy",
-  inherit = Contextual,
+  portable = FALSE,
+  inherit = AbstractPolicy,
   public = list(
     name = "",
-    action = list(),
+    action = NULL,
     initialize = function(name = "Oracle") {
       self$name <- name
       self$action <- list()
     },
-    get_action = function(agent, context) {
+    get_action = function(context, theta) {
       self$action$choice  <- self$argmax(context$oracle)
       self$action$propensity <- 1
       self$action
+    },
+    set_reward = function(reward, context, theta) {
+
+      theta[[reward$choice]]$chosen <- theta[[reward$choice]]$chosen + 1
+
+      if (reward$reward == 1)
+        theta[[reward$choice]]$succes <- theta[[reward$choice]]$succes + 1
+
+      theta[[reward$choice]]$value <- theta[[reward$choice]]$value +
+        (1 / theta[[reward$choice]]$chosen) *
+        (reward$reward - theta[[reward$choice]]$value)
+
+      theta
     }
   )
 )

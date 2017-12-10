@@ -1,12 +1,27 @@
 #' @import R6
+#' @import digest
 #' @export
 Contextual <- R6::R6Class(
   "Contextual",
+  portable = FALSE,
+  private = list(
+    .hash = NULL
+  ),
+  active = list(
+    hash = function(value) {
+      if (missing(value)) {
+        private$.hash
+      }
+    }
+  ),
   public = list(
+    initialize = function() {
+      private$.hash = digest::digest(self)
+    },
     argmax = function(x, list_element_name = NA)
     {
       if (!is.na(list_element_name)) {
-        x <- sapply(x, `[[`, list_element_name)
+        x <- unlist(lapply(x, `[[`, list_element_name))
       }
       y <- seq_along(x)[x == max(x)]
       if (length(y) > 1L) {
@@ -17,12 +32,15 @@ Contextual <- R6::R6Class(
     },
     sumval = function(x, list_element_name)
     {
-      stopifnot(is.list(x), length(x) > 2)
-      stopifnot(is.character(list_element_name), length(list_element_name) > 0)
-      sum(sapply(x, `[[`, as.character(list_element_name)))
+      sum(unlist(lapply(x, `[[`, as.character(list_element_name))))
     }
   )
 )
+
+
+
+
+
 
 #' External Contextual
 #'

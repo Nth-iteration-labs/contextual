@@ -24,27 +24,27 @@ bandit$set_weights(c(0.9, 0.0, 0.1,  #k1                                        
 policyEG       <- EpsilonGreedyPolicy$new(0.1, "\U190-greedy")                  # which policy do we want to test?
 agents$EG      <- BasicAgent$new(policyEG, bandit)                              # define an agent, who uses an policy, to find out more about a bandit
 
-policyTS       <- ThompsonSamplingPolicy$new(1.0, 1.0, "TSampling")              # which policy do we want to test?
-agents$TS      <- BasicAgent$new(policyTS, bandit)                               # define an agent, who uses an policy, to find out more about a bandit
+#policyTS       <- ThompsonSamplingPolicy$new(1.0, 1.0, "TSampling")            # which policy do we want to test?
+#agents$TS      <- BasicAgent$new(policyTS, bandit)                             # define an agent, who uses an policy, to find out more about a bandit
 
-policyRandom   <- RandomPolicy$new("Random")                                     # which policy do we want to test?
-agents$Random  <- BasicAgent$new(policyRandom, bandit)                           # define an agent, who uses an policy, to find out more about a bandit
+policyRandom   <- RandomPolicy$new("Random")                                    # which policy do we want to test?
+agents$Random  <- BasicAgent$new(policyRandom, bandit)                          # define an agent, who uses an policy, to find out more about a bandit
 
-policyOracle   <- OraclePolicy$new("Oracle")                                     # which policy do we want to test?
-agents$Oracle  <- BasicAgent$new(policyOracle, bandit)                           # define an agent, who uses an policy, to find out more about a bandit
+policyOracle   <- OraclePolicy$new("Oracle")                                    # which policy do we want to test?
+agents$Oracle  <- BasicAgent$new(policyOracle, bandit)                          # define an agent, who uses an policy, to find out more about a bandit
 
-policyExp3     <- Exp3Policy$new(0.1, "Exp3")                                    # which policy do we want to test?
-agents$Exp3    <- Exp3Agent$new(policyExp3, bandit)                              # define an agent, who uses an policy, to find out more about a bandit
+policyExp3     <- Exp3Policy$new(0.1, "Exp3")                                   # which policy do we want to test?
+agents$Exp3    <- Exp3Agent$new(policyExp3, bandit)                             # define an agent, who uses an policy, to find out more about a bandit
 
-policyLinUCB   <- LinUCBPolicy$new(1.0, "LinUCB")                                # which policy do we want to test?
-agents$LinUCB  <- LinUCBAgent$new(policyLinUCB, bandit)                          # define an agent, who uses an policy, to find out more about a bandit
+policyLinUCB   <- LinUCBPolicy$new(1.0, "LinUCB")                               # which policy do we want to test?
+agents$LinUCB  <- LinUCBAgent$new(policyLinUCB, bandit)                         # define an agent, who uses an policy, to find out more about a bandit
 
 ptm <- proc.time()                                                              # or Rprof ( tf <- "log.log",  memory.profiling = TRUE )
 
 simulations    <- 100L                                                           # define how many simulations
 horizon        <- 100L                                                           # define how many each sim
-simulation     <- SimulatorParallel$new(agents)                                  # let's see what our cunning agent can find out about the bandit
-history        <- simulation$run(horizon, simulations)                           # go!
+simulation     <- SimulatorParallel$new(agents)                                 # let's see what our cunning agent can find out about the bandit
+history        <- simulation$run(horizon, simulations)                          # go!
 
 print(proc.time() - ptm)                                                        # or Rprof ( NULL ) ; print ( summaryRprof ( tf )  )
 

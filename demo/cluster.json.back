@@ -1,15 +1,15 @@
 {
-  "name": "contextual_test_cluster_1",
-  "vmSize": "Standard_F2",
-  "maxTasksPerNode": 2,
+  "name": "contextual_test_cluster_2",
+  "vmSize": "Standard_F16",
+  "maxTasksPerNode": 5,
   "poolSize": {
     "dedicatedNodes": {
         "min": 2,
-        "max": 2
+        "max": 5
     },
     "lowPriorityNodes": {
         "min": 1,
-        "max": 8
+        "max": 5
     },
     "autoscaleFormula": "QUEUE"
   },
@@ -19,5 +19,3 @@
   },
   "commandLine": []
 }
-
-

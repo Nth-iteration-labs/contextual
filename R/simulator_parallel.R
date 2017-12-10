@@ -4,6 +4,7 @@
 #' @export
 SimulatorParallel <- R6::R6Class(
   "SimulatorParallel",
+  portable = FALSE,
   private = list(rewards = NULL),
   public = list(
     agent_list = NULL,
@@ -31,7 +32,7 @@ SimulatorParallel <- R6::R6Class(
 
       for (s in 1L:self$simulations) {
         for (a in 1L:self$agent_n) {
-          agent[a, s]  <- list(self$agent_list[[a]]$clone(deep = TRUE))
+          agent[a, s]  <- list(self$agent_list[[a]]$clone(deep = FALSE))
         }
       }
 
@@ -51,23 +52,18 @@ SimulatorParallel <- R6::R6Class(
         .inorder = FALSE,
         .packages = c("data.table")
       ) %dorng% {
-        parallel_counter <- 1L
+        counter <- 1L
         for (a in 1L:self$agent_n) {
           for (t in 1L:self$horizon) {
 
-            context <- agent[[a, s]]$get_context()
-            action  <- agent[[a, s]]$get_action(context)
-            reward  <- agent[[a, s]]$get_reward(action)
-            agent[[a, s]]$set_reward(reward, context)
+                      agent[[a,s]]$observe_bandit(t)
+            action <- agent[[a,s]]$get_policy_decision(t)
+            reward <- agent[[a,s]]$get_bandit_reward(t)
+                      agent[[a,s]]$adjust_policy(t)
 
-            self$history$save_step(parallel_counter,
-                                   t,
-                                   s,
-                                   action,
-                                   reward,
-                                   agent[[a, s]]$policy$name)
+            self$history$save_agent(counter,t,action,reward,agent[[a,s]]$policy$name,s)
 
-            parallel_counter <- parallel_counter + 1L
+            counter <- counter + 1L
           }
         }
         dth <- self$history$get_data_table()

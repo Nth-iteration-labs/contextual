@@ -1,7 +1,8 @@
 #' @export
 Exp3Policy <- R6::R6Class(
   "Exp3Policy",
-  inherit = Contextual,
+  portable = FALSE,
+  inherit = AbstractPolicy,
   public = list(
     gamma = 0.1,
     name = "",
@@ -11,26 +12,37 @@ Exp3Policy <- R6::R6Class(
       self$name  <- name
       self$action <- list()
     },
-    categorical_draw = function(probs) {
-      z <- runif(1)
-      cum_prob <- 0.0
-      lp <- length(probs)
-      for (i in 1:lp) {
-        cum_prob <- cum_prob + probs[i]
-        if (cum_prob > z) return(i)
+    get_action = function(context, theta) {
+       probabilities <- rep(0.0, context$k)
+      for (arm in 1:context$k) {
+         probabilities[arm] <-
+           (1 - self$gamma) * (theta[[arm]]$value / self$sumval(theta, "value"))
       }
-      return(sample(1:lp, 1))
-    },
-    get_action = function(agent, context) {
-      probs <- rep(0.0, agent$bandit$k)
-      for (arm in 1:agent$bandit$k) {
-        probs[arm] <- (1 - self$gamma) *
-          (agent$memory$theta[[arm]]$value /
-             self$sumval(agent$memory$theta, "value"))
-      }
-      probs[arm] <- probs[arm] + ((self$gamma) * (1.0 / agent$bandit$k))
-      self$action$choice  <- self$categorical_draw(probs)
+       probabilities[arm] <- probabilities[arm] + ((self$gamma) * (1.0 / context$k))
+      self$action$choice  <- self$categorical_draw(probabilities,context$k)
       self$action
+    },
+    set_reward = function(reward, context, theta) {
+
+       probabilities <- rep(0.0, context$k)
+      for (arm in 1:context$k) {
+         probabilities[arm] <- (1 - self$gamma) * (theta[[arm]]$value / self$sumval(theta, "value"))
+         probabilities[arm] <-  probabilities[arm] + (self$gamma) * (1.0 / context$k)
+      }
+      x <- reward$reward /  probabilities[reward$choice]
+      growth_factor <- exp((self$gamma / context$k) * x)
+      theta[[reward$choice]]$value <-
+        theta[[reward$choice]]$value * growth_factor
+
+      theta
+    },
+    categorical_draw = function(probabilities,arms) {
+      cummulative_probability <- 0.0
+      for (arm in 1:arms) {
+         cummulative_probability <-  cummulative_probability + probabilities[arm]
+        if ( cummulative_probability > runif(1)) return(arm)
+      }
+      sample(arms, 1)
     }
   )
 )

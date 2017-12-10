@@ -1,7 +1,8 @@
 #' @export
 EpsilonGreedyPolicy <- R6::R6Class(
   "EpsilonGreedyPolicy",
-  inherit = Contextual,
+  portable = FALSE,
+  inherit = AbstractPolicy,
   public = list(
     epsilon = 0.1,
     name = "",
@@ -11,19 +12,31 @@ EpsilonGreedyPolicy <- R6::R6Class(
       self$name <- name
       self$action <- list()
     },
-    get_action = function(agent, context) {
+    get_action = function(context, theta) {
       if (runif(1) < self$epsilon) {
-        self$action$choice  <- sample.int(agent$bandit$k, 1)
-        self$action$propensity <- self$epsilon*(1/length(agent$bandit$k))
+        self$action$choice  <- sample.int(context$k, 1)
+        self$action$propensity <- self$epsilon*(1/context$k)
       } else {
-        self$action$choice <- self$argmax(agent$memory$theta,"value")
+        self$action$choice <- self$argmax(theta,"value")
         self$action$propensity <- 1 - self$epsilon
       }
       self$action
+    },
+    set_reward = function(reward, context, theta) {
+
+      theta[[reward$choice]]$chosen <- theta[[reward$choice]]$chosen + 1
+
+      if (reward$reward == 1)
+        theta[[reward$choice]]$succes <- theta[[reward$choice]]$succes + 1
+
+      theta[[reward$choice]]$value <- theta[[reward$choice]]$value +
+        (1 / theta[[reward$choice]]$chosen) *
+        (reward$reward - theta[[reward$choice]]$value)
+
+      theta
     }
   )
 )
-
 
 #' External EpsilonGreedyPolicy
 #'

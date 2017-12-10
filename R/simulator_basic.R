@@ -1,6 +1,8 @@
 #' @export
 SimulatorBasic <- R6::R6Class(
   "SimulatorBasic",
+  portable = FALSE,
+  inherit = Contextual,
   private = list(rewards = NULL),
   public = list(
     agent_list = NULL,
@@ -33,7 +35,9 @@ SimulatorBasic <- R6::R6Class(
       agent <-  matrix(list(), self$agent_n, simulations)
       for (s in 1L:self$simulations) {
         for (a in 1L:self$agent_n) {
-          agent[a, s]  <- list(self$agent_list[[a]]$clone(deep = FALSE))
+          agent[a, s]  <- list(self$agent_list[[a]]$clone(deep = FALSE))        ## deep may be very important when bandits or policies
+                                                                                ## change per type?
+                                                                                ## but *much* slower .. bug report at R6!
         }
       }
 
@@ -45,21 +49,12 @@ SimulatorBasic <- R6::R6Class(
         for (a in 1L:self$agent_n) {
           for (s in 1L:self$simulations) {
 
-            # context/action/reward all at time t -> move into agent memory?
-            # these are really tiny steps, part of bigger step t
+                      agent[[a,s]]$observe_bandit(t)
+            action <- agent[[a,s]]$get_policy_decision(t)
+            reward <- agent[[a,s]]$get_bandit_reward(t)
+                      agent[[a,s]]$adjust_policy(t)
 
-            context <- agent[[a, s]]$get_context()
-            action  <- agent[[a, s]]$get_action(context)
-            reward  <- agent[[a, s]]$get_reward(action)
-                       agent[[a, s]]$set_reward(reward, context)
-
-            self$history$save_step(counter,
-                                   t,
-                                   s,
-                                   action,
-                                   reward,
-                                   agent[[a, s]]$policy$name
-                                   )
+            self$history$save_agent(counter,t,action,reward,agent[[a,s]]$policy$name,s)
 
             counter <- counter + 1L
           }

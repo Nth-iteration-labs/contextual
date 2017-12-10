@@ -15,7 +15,6 @@ bandit  = SyntheticBandit$new(
   reward_family =       "Bernoulli",
   feature_type =        "Bernoulli"
 )
-
                      #d1
 bandit$set_weights(c(0.2,  #k1                                                  # override auto-generated weights
                      0.4,  #k2                                                  # d stands for a feature,
@@ -27,10 +26,11 @@ agents$EG      <- BasicAgent$new(policyEG, bandit)                              
 policyRandom   <- RandomPolicy$new("Random")                                    # which policy do we want to test?
 agents$Random  <- BasicAgent$new(policyRandom, bandit)                          # define an agent, who uses an policy, to find out more about a bandit
 
-policyTS       <- ThompsonSamplingPolicy$new(1.0, 1.0, "TSampling")             # which policy do we want to test?
-agents$TS      <- BasicAgent$new(policyTS, bandit)                              # define an agent, who uses an policy, to find out more about a bandit
+#policyTS       <- ThompsonSamplingPolicy$new(1.0, 1.0, "TSampling")             # which policy do we want to test?
+#agents$TS      <- BasicAgent$new(policyTS, bandit)                              # define an agent, who uses an policy, to find out more about a bandit
 
 simulations    <- 100L                                                          # define how many simulations
 horizon        <- 100L                                                          # define how many each sim
+
 simulation     <- SimulatorBasic$new(agents, animate = TRUE, animate_step = 1)  # let's see what our cunning agent can find out about the bandit
 history        <- simulation$run(horizon, simulations)                          # go!

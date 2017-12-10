@@ -1,7 +1,8 @@
 #' @export
 LinUCBPolicy <- R6::R6Class(
   "LinUCBPolicy",
-  inherit = Contextual,
+  portable = FALSE,
+  inherit = AbstractPolicy,
   public = list(
     alpha = 0.1,
     name = "",
@@ -11,11 +12,12 @@ LinUCBPolicy <- R6::R6Class(
       self$name <- name
       self$action <- list()
     },
-    get_action = function(agent, context) {
-      expected_rewards <- rep(0.0, agent$bandit$k)
-      for (arm in 1:agent$bandit$k) {
-        A          <- agent$memory$theta[[arm]][['A']]
-        b          <- agent$memory$theta[[arm]][['b']]
+    get_action = function(context, theta) {
+      expected_rewards <- rep(0.0, context$k)
+      for (arm in 1:context$k) {
+
+        A          <- theta[[arm]]$A
+        b          <- theta[[arm]]$b
         A.inv      <- chol2inv(chol(A))                                         # Faster than A.inv <- solve(A), same?
         theta.hat  <- A.inv %*% b
         mean <-  context$X %*% theta.hat
@@ -24,6 +26,12 @@ LinUCBPolicy <- R6::R6Class(
       }
       self$action$choice  <- self$argmax(expected_rewards)
       self$action
+    },
+    set_reward = function(reward, context, theta) {
+      X <- as.vector(context$X)
+      theta[[reward$choice]]$A <- theta[[reward$choice]]$A + outer(X, X)
+      theta[[reward$choice]]$b <- theta[[reward$choice]]$b + reward$reward * X
+      theta
     }
   )
 )

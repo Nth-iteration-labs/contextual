@@ -1,6 +1,8 @@
 #' @export
 RandomPolicy <- R6::R6Class(
   "RandomPolicy",
+  portable = FALSE,
+  inherit = AbstractPolicy,
   public = list(
     name = "",
     action = NULL,
@@ -8,10 +10,23 @@ RandomPolicy <- R6::R6Class(
       self$name <- name
       self$action <- list()
     },
-    get_action = function(agent, context) {
-      self$action$choice <- sample.int(agent$bandit$k, 1)
-      self$action$propensity <- 1/agent$bandit$k
+    get_action = function(context, theta) {
+      self$action$choice <- sample.int(context$k, 1)
+      self$action$propensity <- 1/context$k
       self$action
+    },
+    set_reward = function(reward, context, theta) {
+
+      theta[[reward$choice]]$chosen <- theta[[reward$choice]]$chosen + 1
+
+      if (reward$reward == 1)
+        theta[[reward$choice]]$succes <- theta[[reward$choice]]$succes + 1
+
+      theta[[reward$choice]]$value <- theta[[reward$choice]]$value +
+        (1 / theta[[reward$choice]]$chosen) *
+        (reward$reward - theta[[reward$choice]]$value)
+
+      theta
     }
   )
 )

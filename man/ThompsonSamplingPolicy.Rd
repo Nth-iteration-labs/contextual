@@ -25,7 +25,8 @@ print(b)
 
 \section{Details}{
 
-\code{$new()} starts a new ThompsonSamplingPolicy, it uses \code{\link[base]{pipe}}.
+\code{$new()} starts a new ThompsonSamplingPolicy,
+it uses \code{\link[base]{pipe}}.
 R does \emph{not} wait for the process to finish, but returns
 immediately.
 }

@@ -2,6 +2,7 @@
 #' @export
 Plot <- R6::R6Class(
   "Plot",
+  portable = FALSE,
   public = list(
     initialize = function() {
     },
@@ -15,9 +16,9 @@ Plot <- R6::R6Class(
       self$optimal(history, grid = TRUE, legend = FALSE)
       par(mar = c(3, 5, 1, 2))
       self$average(history, grid = TRUE, legend = FALSE)
-      if (history[agent == "TSampling",.N]>0) {                                 ## this needs to be more generic!
+      if (history[agent == "TSampling",.N] > 0) {                               ## this needs to be more generic!!!
         par(mar = c(3, 5, 1, 2))
-        self$ts(history, grid = TRUE, legend = FALSE)
+        self$ts(history, grid = TRUE, legend = TRUE)
       }
 
       dev.flush()
@@ -68,30 +69,40 @@ Plot <- R6::R6Class(
         dev.hold()
 
       sims_n   = history[,max(sim)]
+      last_t   = history[,max(t)]
       chosen_n = history[agent == "TSampling",.N, by = arm][order(arm)][,N]/sims_n
       succes_n = history[agent == "TSampling" & reward == "1",.N, by = arm][order(arm)][,N]/sims_n
+
+      last_mu = unlist(history[agent == "TSampling" & t == last_t & sim == sims_n,memory])
 
       alpha = 1; beta = 1
       alpha_per_arm = alpha + succes_n
       beta_per_arm = beta + chosen_n - succes_n
+      arm_n = length(alpha_per_arm)
 
-
+      xv = seq(0, 1, by = 0.1); yv_all = c()
+      for (i in 1:arm_n) {
+        yv_all = as.vector(rbind(yv_all,dbeta(xv,alpha_per_arm[i],beta_per_arm[i])))
+      }
+      ymax = max(yv_all)
 
       curve(dbeta(x,alpha_per_arm[1],
                   beta_per_arm[1]),
-                  col = "green",
+                  col = 4,
                   xlab = "X",
                   ylab = "PDF",
-                  ylim = c(0, 13))
-      for (i in 2:length(alpha_per_arm)) {
-        curve(dbeta(x,alpha_per_arm[i],beta_per_arm[i]),add = TRUE,col = "blue")
+                  ylim = c(0, (ymax + 0.6)))
+      for (i in 2:arm_n) {
+        curve(dbeta(x,alpha_per_arm[i],beta_per_arm[i]),add = TRUE,col = (i + 3))
       }
+      abline(v = last_mu, col = c(4:(arm_n + 4)))
+      #points(max(last_mu), 0, type = "p")
       if (legend)
         legend(
           "topleft",
           NULL,
-          agent_list,
-          col = 1:agents,
+          paste("Arm ", 1:arm_n, sep = ""),
+          col = c(4:(arm_n + 4)),
           lwd = 1,
           lty = 1,
           bg = "white"

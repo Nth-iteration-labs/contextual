@@ -15,6 +15,7 @@ Imports:
     R.devices,
     foreach,
     doParallel,
+    digest,
     rAzureBatch,
     doAzureParallel,
     doRNG
