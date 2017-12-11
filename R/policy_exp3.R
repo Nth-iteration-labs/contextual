@@ -41,8 +41,6 @@ Exp3Policy <- R6::R6Class(
 
       theta
     },
-
-
     categorical_draw = function(probabilities) {
       arms = length(probabilities)
       cummulative_probability <- 0.0

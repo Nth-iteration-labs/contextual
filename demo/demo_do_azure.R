@@ -25,11 +25,10 @@ agents <- list(
   Agent$new(LinUCBPolicy$new(1.0, "LinUCB"), bandit)
 )
 
-simulations    <- 100L                                                          # define how many simulations
+simulations    <- 300L                                                          # define how many simulations
 horizon        <- 100L                                                          # define how many each sim
 simulation     <- SimulatorAzure$new(agents)                                    # let's see what our cunning agent can find out about the bandit
 history        <- simulation$run(horizon, simulations)                          # go!
-
 
 plot <- Plot$new()                                                              # initialize plot.. TODO: change to within class
 plot$set_external(T, 11, 6L)

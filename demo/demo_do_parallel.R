@@ -4,7 +4,7 @@ source("dev.R")
 
 set.seed(21L)
 
-bandit  <- SyntheticBandit$new(
+bandit <- SyntheticBandit$new(
   k = 3L,
   d = 3L,
   weight_distribution = "Uniform",

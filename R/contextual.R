@@ -41,11 +41,6 @@ Contextual <- R6::R6Class(
   )
 )
 
-
-
-
-
-
 #' External Contextual
 #'
 #' Contextual intro
