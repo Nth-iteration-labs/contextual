@@ -17,6 +17,15 @@ AbstractPolicy <- R6::R6Class(
     set_reward = function(reward, context, theta) {
       warning("Don't forget to implement  set_reward()!")
       theta
+    },
+    set_theta = function(arms, features) {
+      parameters_per_arm <- list('value' = 0)
+      populate_theta(arms, parameters_per_arm)
+    },
+    populate_theta = function(arms, parameters_per_arm) {
+      theta = list()                                                            ## if we check whats there and add defaults, becomes.. dynamic :D
+      for (arm in 1:arms) theta[[arm]] <- parameters_per_arm
+      theta
     }
   )
 )

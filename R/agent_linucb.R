@@ -2,7 +2,6 @@
 LinUCBAgent <- R6::R6Class(
   "LinUCBAgent",
   portable = FALSE,
-  inherit = AbstractAgent,
   private = list(
     initiate_theta = function(t=NA) {
       theta_arm <- list(

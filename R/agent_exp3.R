@@ -2,7 +2,6 @@
 Exp3Agent <- R6::R6Class(
   "Exp3Agent",
   portable = FALSE,
-  inherit = AbstractAgent,
   private = list(
     initiate_theta = function(t=NA) {
       theta_arm <- list('value' = 1)

@@ -75,12 +75,17 @@ SimulatorAzure <- R6::R6Class(
         for (a in 1L:self$agent_n) {
           for (t in 1L:self$horizon) {
 
-                      agent[[a,s]]$observe_bandit(t)
-            action <- agent[[a,s]]$get_policy_decision(t)
-            reward <- agent[[a,s]]$get_bandit_reward(t)
-                      agent[[a,s]]$adjust_policy(t)
+            agent[[a,s]]$bandit_get_context(t)                                  # observe the bandit in its context
+            action <- agent[[a,s]]$policy_get_decision(t)                       # use policy to decide which choice to make (which arm to pick)
+            reward <- agent[[a,s]]$bandit_get_reward(t)                         # observe the resonse of the bandit in this context
+            agent[[a,s]]$policy_set_reward(t)                                   # adjust the policy, update theta
 
-            self$history$save_agent(counter,t,action,reward,agent[[a,s]]$policy$name,s)
+            self$history$save_agent(counter,                                    # save the results to the history log
+                                    t,
+                                    action,
+                                    reward,
+                                    agent[[a,s]]$policy$name,
+                                    s)
 
             counter <- counter + 1L
           }

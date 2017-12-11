@@ -33,14 +33,15 @@ SimulatorBasic <- R6::R6Class(
       self$simulations <- simulations
 
       agent <-  matrix(list(), self$agent_n, simulations)
+
       for (s in 1L:self$simulations) {
         for (a in 1L:self$agent_n) {
           agent[a, s]  <- list(self$agent_list[[a]]$clone(deep = FALSE))        ## deep may be very important when bandits or policies
                                                                                 ## change per type?
-                                                                                ## but *much* slower .. bug report at R6!
+                                                                                ## but *much* slower, and leads to circular reference
+                                                                                ## .. file bug report at R6?
         }
       }
-
       counter <- 1L
       n <- self$horizon * self$agent_n * self$simulations
       self$history$reset(n)
@@ -49,17 +50,23 @@ SimulatorBasic <- R6::R6Class(
         for (a in 1L:self$agent_n) {
           for (s in 1L:self$simulations) {
 
-                      agent[[a,s]]$observe_bandit(t)
-            action <- agent[[a,s]]$get_policy_decision(t)
-            reward <- agent[[a,s]]$get_bandit_reward(t)
-                      agent[[a,s]]$adjust_policy(t)
+                      agent[[a,s]]$bandit_get_context(t)                        # observe the bandit in its context
+            action <- agent[[a,s]]$policy_get_decision(t)                       # use policy to decide which choice to make (which arm to pick)
+            reward <- agent[[a,s]]$bandit_get_reward(t)                         # observe the resonse of the bandit in this context
+            theta  <- agent[[a,s]]$policy_set_reward(t)                         # adjust the policy, update theta
 
-            self$history$save_agent(counter,t,action,reward,agent[[a,s]]$policy$name,s)
+            self$history$save_agent(counter,                                    # save the results to the history log
+                                    t,
+                                    action,
+                                    reward,
+                                    agent[[a,s]]$policy$name,
+                                    s,
+                                    theta)
 
             counter <- counter + 1L
           }
         }
-        if (self$animate == TRUE && t %% self$animate_step == 0) {
+        if (self$animate == TRUE && t %% self$animate_step == 0) {              # animate while computing?
           plot$plot_grid(self$history$get_data_table()[t != 0L])
         }
       }

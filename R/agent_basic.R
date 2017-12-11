@@ -2,10 +2,9 @@
 BasicAgent <- R6::R6Class(
   "BasicAgent",
   portable = FALSE,
-  inherit = AbstractAgent,
   private = list(
     initiate_theta = function(t=NA) {
-      theta_arm <- list('chosen' = 0,'succesful' = 0, 'value' = 0)
+      theta_arm <- list('chosen' = 0,'succesful' = 0, 'value' = 0, 'mu' = 0.0, 'alpha' = 1.0, 'beta' = 1.0)
       for (arm in 1:self$bandit$k) private$.theta[[arm]] <- theta_arm
     }
   )

@@ -16,30 +16,34 @@ ThompsonSamplingPolicy <- R6::R6Class(
       self$name   <- name
       self$action <- list()
     },
+    set_theta = function(arms, features) {
+      parameters_per_arm <- list('chosen' = 0,
+                                 'probability' = 0.0,
+                                 'succes' = 0,
+                                 'mu' = 0.0)
+      populate_theta(arms, parameters_per_arm)
+    },
     get_action = function(context, theta) {
-      mu <- rep(0.0, context$k)
       for (arm in 1:context$k) {
-        mu[arm] <-  rbeta(
+        theta[[arm]]$mu <-  rbeta(
           1,
           self$alpha + theta[[arm]]$succes,
           self$beta  + theta[[arm]]$chosen - theta[[arm]]$succes
         )
       }
-      self$action$mu <- mu
-      self$action$choice <- self$argmax(mu)
+      self$action$choice <- self$argmax(theta,"mu")
+      self$action$theta  <- theta                                               ## really just to save, so is this smart?
       self$action
     },
     set_reward = function(reward, context, theta) {
 
       theta[[reward$choice]]$chosen <- theta[[reward$choice]]$chosen + 1
-
       if (reward$reward == 1)
         theta[[reward$choice]]$succes <- theta[[reward$choice]]$succes + 1
-
-      theta[[reward$choice]]$value <- theta[[reward$choice]]$value +
+      theta[[reward$choice]]$probability <- theta[[reward$choice]]$probability +
         (1 / theta[[reward$choice]]$chosen) *
-        (reward$reward - theta[[reward$choice]]$value)
-
+        (reward$reward - theta[[reward$choice]]$probability)
+      #print(as.data.frame(theta))
       theta
     }
   )

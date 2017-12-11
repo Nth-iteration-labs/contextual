@@ -3,6 +3,7 @@
 Plot <- R6::R6Class(
   "Plot",
   portable = FALSE,
+  inherit = Contextual,
   public = list(
     initialize = function() {
     },
@@ -68,35 +69,36 @@ Plot <- R6::R6Class(
       if (grid == FALSE)
         dev.hold()
 
-      sims_n   = history[,max(sim)]
       last_t   = history[,max(t)]
-      chosen_n = history[agent == "TSampling",.N, by = arm][order(arm)][,N]/sims_n
-      succes_n = history[agent == "TSampling" & reward == "1",.N, by = arm][order(arm)][,N]/sims_n
-
-      last_mu = unlist(history[agent == "TSampling" & t == last_t & sim == sims_n,memory])
+      theta_list = history[agent == "TSampling" & t == last_t & sim == 1,theta]
+      mu = lname_to_vector(theta_list[[1]], "mu")
+      succes_n = lname_to_vector(theta_list[[1]], "succes")
+      chosen_n = lname_to_vector(theta_list[[1]], "chosen")
 
       alpha = 1; beta = 1
       alpha_per_arm = alpha + succes_n
       beta_per_arm = beta + chosen_n - succes_n
       arm_n = length(alpha_per_arm)
 
-      xv = seq(0, 1, by = 0.1); yv_all = c()
+      xv = seq(0, 1, by = 0.01); yv_all = c()
       for (i in 1:arm_n) {
         yv_all = as.vector(rbind(yv_all,dbeta(xv,alpha_per_arm[i],beta_per_arm[i])))
       }
-      ymax = max(yv_all)
+      #ymax = max(yv_all)
 
       curve(dbeta(x,alpha_per_arm[1],
                   beta_per_arm[1]),
                   col = 4,
                   xlab = "X",
                   ylab = "PDF",
-                  ylim = c(0, (ymax + 0.6)))
+                  ylim = c(0, (10 + 0.6)))
+                  #ylim = c(0, (ymax + 0.6)))
       for (i in 2:arm_n) {
         curve(dbeta(x,alpha_per_arm[i],beta_per_arm[i]),add = TRUE,col = (i + 3))
       }
-      abline(v = last_mu, col = c(4:(arm_n + 4)))
-      #points(max(last_mu), 0, type = "p")
+      abline(v = mu, col = c(4:(arm_n + 4)))
+      #points(max(mu), 0, type = "p")
+
       if (legend)
         legend(
           "topleft",

@@ -10,9 +10,14 @@ OraclePolicy <- R6::R6Class(
       self$name <- name
       self$action <- list()
     },
+    set_theta = function(arms, features) {
+      parameters_per_arm <- list('chosen' = 0, 'succes' = 0, 'value' = 0)
+      populate_theta(arms, parameters_per_arm)
+    },
     get_action = function(context, theta) {
       self$action$choice  <- self$argmax(context$oracle)
       self$action$propensity <- 1
+      self$action$theta  <- theta
       self$action
     },
     set_reward = function(reward, context, theta) {

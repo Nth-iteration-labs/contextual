@@ -33,6 +33,10 @@ Contextual <- R6::R6Class(
     sumval = function(x, list_element_name)
     {
       sum(unlist(lapply(x, `[[`, as.character(list_element_name))))
+    },
+    lname_to_vector = function(x, list_element_name)
+    {
+      unlist(lapply(x, `[[`, as.character(list_element_name)))
     }
   )
 )

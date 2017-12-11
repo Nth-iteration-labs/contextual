@@ -1,7 +1,7 @@
 #' @export
 SyntheticBandit <- R6::R6Class(
   "SyntheticBandit",
-  inherit = AbstractAgent,
+  inherit = Contextual,
   portable = FALSE,
   private = list(
     W = NULL,
