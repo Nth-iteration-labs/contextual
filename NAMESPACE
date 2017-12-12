@@ -2,13 +2,10 @@
 
 export(AbstractPolicy)
 export(Agent)
-export(BasicAgent)
 export(Contextual)
 export(EpsilonGreedyPolicy)
-export(Exp3Agent)
 export(Exp3Policy)
 export(History)
-export(LinUCBAgent)
 export(LinUCBPolicy)
 export(OraclePolicy)
 export(Plot)
