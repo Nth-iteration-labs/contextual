@@ -3,8 +3,6 @@ gc()
 if ("package:contextual" %in% search()) detach("package:contextual", unload = TRUE)
 devtools::load_all()
 
-# library(covr); codecov(token = "880ade00-4754-4659-9181-042bb749a94f")
-
 # badge_devel("contextual", "blue")
 
 # theta are all the variables in the policy (function) that we are looking to optimize
