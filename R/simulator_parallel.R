@@ -52,7 +52,7 @@ SimulatorParallel <- R6::R6Class(
         s = 1L:self$simulations,
         .inorder = FALSE,
         .packages = c("data.table")
-      ) %dopar% {
+      ) %dorng% {
         counter <- 1L
         for (a in 1L:self$agent_n) {
           for (t in 1L:self$horizon) {

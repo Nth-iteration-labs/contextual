@@ -42,21 +42,20 @@ SyntheticBandit <- R6::R6Class(
         stop("Weight needs to be of length k*d.")
       private$W <- matrix(weight_matrix,  self$d, self$k)
     },
-    generate_sample = function(n = 1L) {
-      # n is not yet completed!
+    generate_sample = function() {
 
       if (self$feature_type == 'Single' ||
           is.na(self$feature_type)) {
-        private$X <- matrix(1, n, self$d)
+        private$X <- matrix(1, 1, self$d)
       } else if (self$feature_type == 'Bernoulli') {
-        private$X <- matrix(0, n , self$d)                                      # create matrix
-        private$X[sample(n * self$d, 1)] <- 1                                   # always one feature, at least?
+        private$X <- matrix(0, 1 , self$d)                                      # create matrix
+        private$X[sample(1 * self$d, 1)] <- 1                                   # always one feature, at least?
         private$X <- as.integer(private$X |
                                  matrix(sample(
                                    c(0, 1),
                                    replace = TRUE,
-                                   size = n * self$d
-                                 ), n , self$d))                                # but can be multiple features
+                                   size = 1 * self$d
+                                 ), 1 , self$d))                                # but can be multiple features
       }
 
       weights_per_feature <- private$W * as.vector(private$X)
