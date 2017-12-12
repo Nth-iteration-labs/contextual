@@ -13,7 +13,7 @@ Installation
 ``` r
 # Install development version from GitHub:
 # install.packages("devtools")
-devtools::install_github("robinvanemden/contextual")
+devtools::install_github("Nth-iteration-labs/contextual")
 ```
 
 If you encounter a clear bug, please file a minimal reproducible example on [github](https://github.com/robinvanemden/contextual/issues). For questions and other discussion, please e-mail rss@pwy.nl.
