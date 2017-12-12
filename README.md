@@ -16,7 +16,7 @@ Installation
 devtools::install_github("Nth-iteration-labs/contextual")
 ```
 
-If you encounter a clear bug, please file a minimal reproducible example on [github](https://github.com/robinvanemden/contextual/issues). For questions and other discussion, please e-mail rss@pwy.nl.
+If you encounter a clear bug, please file a minimal reproducible example on [github](https://github.com/Nth-iteration-labs/contextual/issues). For questions and other discussion, please e-mail rss@pwy.nl.
 
 Usage
 -----
