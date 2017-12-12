@@ -3,29 +3,38 @@ gc()
 if ("package:contextual" %in% search()) detach("package:contextual", unload = TRUE)
 devtools::load_all()
 
-# badge_devel("contextual", "blue")
+########### Start TODO LIST ######################
 
-# theta are all the variables in the policy (function) that we are looking to optimize
+# TODO: Get feedback and potentially change architecture and class/function names
+# TODO: document, write, document, then write some more
 
-# add tests with TESTr
+# TODO: add tests, full test coverage with testthat
+# TODO: theta, cleanup: whats theta, whats "just logging"
+# TODO: output some info how far along, particularly if not chart --> progressbar
+# TODO: add option to do in batches
+# TODO: time calculation, benchmarking per policy, how?
+# TODO: make sure no object sees/accesses too much!
+# TODO: UCB1, exp3, exp4, epoch.. ?? Which other policies
+# TODO: create context from preexisting data
+# TODO: online and offline generators
+# TODO: Implement more interesting policies, from Maurits and others
+# TODO: Ability to add/remove arms
+# TODO: Generate changes over time
 
-# TODO theta setup, some mem stuff
-# assign <- not =
-# output some info how far along, particularly if not chart
-# add ways to do in batches
-# for demo do manyprocessor testshow
-# time calculating, O notation?
-# make sure no object sees/accesses too much!
-# do sapply or not exp3/ts
-# UCB1, exp3, exp4, epoch..
-# create data from existing
-# online and offline bandits
-# Then more interesting stuff from Maurits
-# display baysian and ucb live changes
-# add/remove arms
-# changes over time
-# documentation and article(s)
-# parameter tuning?
-# blog about all this, do JS versions
+# TODO: blog about all this, do JS versions
 
-# theta memory - put whole reward object in there?
+########### End TODO LIST #######################
+
+
+########### Start COMMENT LIST ##################
+
+## MAURITS KAPTEIN, 12-12-2017 ##################
+## Need to be able to make use of a custom data generating function ..
+## Seems to imply an AbstractBandit class, user gen Bandit classes inherit.
+## Which is what Robin already was planning to do, together with an OfflineBandit
+## or somesuch class that uses preexisting data to generate..
+## But.. maybe its better to change this altogether, context from a context class?
+
+## Badge: install.packages("badger"); library("badger"); badge_devel("robinvanemden/contextual", "blue")
+
+########### End COMMENT LIST ####################
