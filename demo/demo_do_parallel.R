@@ -34,6 +34,7 @@ history        <- simulation$run(horizon, simulations)
 
 print(proc.time() - ptm)                                                        # or Rprof ( NULL ) ; print ( summaryRprof ( tf )  )
 
+plot$set_external(T, 11, 6L)
 plot <- Plot$new()                                                              # initialize plot.. TODO: change to within class
-plot$set_external(T, 11, 6L)                                                    # set external for Rstudio
-plot$plot_grid(history)                                                         # plot the results...
+print(plot$grid(history))                                                       # plot the results...
+

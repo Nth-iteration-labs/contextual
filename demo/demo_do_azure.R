@@ -30,6 +30,6 @@ horizon        <- 100L                                                          
 simulation     <- SimulatorAzure$new(agents)                                    # let's see what our cunning agent can find out about the bandit
 history        <- simulation$run(horizon, simulations)                          # go!
 
-plot <- Plot$new()                                                              # initialize plot.. TODO: change to within class
 plot$set_external(T, 11, 6L)
-print(plot$plot_grid(history))                                                  # plot the results...
+plot <- Plot$new()                                                              # initialize plot.. TODO: change to within class
+print(plot$grid(history))                                                       # plot the results...

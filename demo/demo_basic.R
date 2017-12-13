@@ -1,4 +1,4 @@
-############################# package dev helpers ##############################
+########################### package dev helpers ################################
 
 #library(contextual)
 setwd("~/GitHub/contextual/demo")
@@ -14,6 +14,6 @@ agent       <- Agent$new(policy, bandit)
 simulation  <- SimulatorBasic$new(agent)
 history     <- simulation$run(horizon = 100L, simulations = 100L)
 
-Plot$new()$plot_grid(history)
+Plot$new()$grid(history)
 
 ################################################################################

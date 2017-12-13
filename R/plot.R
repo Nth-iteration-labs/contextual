@@ -7,7 +7,7 @@ Plot <- R6::R6Class(
   public = list(
     initialize = function() {
     },
-    plot_grid = function(history) {
+    grid = function(history) {
       dev.hold()
       layout(matrix(c(1, 3, 2, 4), 2, 2, byrow = TRUE))
 

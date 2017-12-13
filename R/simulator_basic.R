@@ -37,10 +37,7 @@ SimulatorBasic <- R6::R6Class(
 
       for (s in 1L:self$simulations) {
         for (a in 1L:self$agent_n) {
-          agent[a, s]  <- list(self$agents[[a]]$clone(deep = FALSE))        ## deep may be very important when bandits or policies
-                                                                                ## change per type?
-                                                                                ## but *much* slower, and leads to circular reference
-                                                                                ## .. file bug report at R6?
+          agent[a, s]  <- list(self$agents[[a]]$clone(deep = FALSE))
         }
       }
       counter <- 1L
@@ -68,7 +65,7 @@ SimulatorBasic <- R6::R6Class(
           }
         }
         if (self$animate == TRUE && t %% self$animate_step == 0) {              # animate while computing?
-          plot$plot_grid(self$history$get_data_table()[t != 0L])
+          plot$grid(self$history$get_data_table()[t != 0L])
         }
       }
       self$history$get_data_table()

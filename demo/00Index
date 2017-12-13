@@ -1,4 +1,5 @@
-demo_do_parallel                            Parallel cMAB demo script
-demo_live_chart                             Serial MAB demo script
-demo_do_azure                               Proof of concept Azure script
-dev                                         Dev support file
+demo_do_parallel                        Parallel cMAB demo script
+demo_live_chart                         Serial MAB demo script
+demo_do_azure                           Proof of concept Azure script
+demo_basic                              Minimal demo - one bandit, one policy
+dev                                     Dev support file
