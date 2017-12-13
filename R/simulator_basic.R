@@ -5,26 +5,27 @@ SimulatorBasic <- R6::R6Class(
   inherit = Contextual,
   private = list(rewards = NULL),
   public = list(
-    agent_list = NULL,
+    agents = NULL,
     agent_n = NULL,
     animate = FALSE,
     animate_step = 2,
     horizon = 100L,
     simulations = 1L,
     history = list(),
-    initialize = function(agent_list,
+    initialize = function(agents,
                           animate = FALSE,
                           animate_step = 1) {
+      if (!is.list(agents)) agents = list(agents)
       self$history <- History$new()
-      self$agent_list <- agent_list
-      self$agent_n <- length(agent_list)
+      self$agents <- agents
+      self$agent_n <- length(agents)
       self$animate <- animate
       self$animate_step <- animate_step
       self$reset()
     },
     reset = function() {
       for (a in 1L:self$agent_n)
-        self$agent_list[[a]]$reset()
+        self$agents[[a]]$reset()
     },
     run = function(horizon = 100L,
                    simulations = 100L) {
@@ -36,7 +37,7 @@ SimulatorBasic <- R6::R6Class(
 
       for (s in 1L:self$simulations) {
         for (a in 1L:self$agent_n) {
-          agent[a, s]  <- list(self$agent_list[[a]]$clone(deep = FALSE))        ## deep may be very important when bandits or policies
+          agent[a, s]  <- list(self$agents[[a]]$clone(deep = FALSE))        ## deep may be very important when bandits or policies
                                                                                 ## change per type?
                                                                                 ## but *much* slower, and leads to circular reference
                                                                                 ## .. file bug report at R6?

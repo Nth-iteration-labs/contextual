@@ -7,21 +7,22 @@ SimulatorAzure <- R6::R6Class(
   portable = FALSE,
   private = list(rewards = NULL),
   public = list(
-    agent_list = NULL,
+    agents = NULL,
     agent_n = NULL,
     horizon = 100L,
     simulations = 1L,
     history = NULL,
 
-    initialize = function(agent_list) {
+    initialize = function(agents) {
+      if (!is.list(agents)) agents = list(agents)
       self$history <- History$new()
-      self$agent_list <- agent_list
-      self$agent_n <- length(agent_list)
+      self$agents <- agents
+      self$agent_n <- length(agents)
       self$reset()
     },
     reset = function() {
       for (a in 1L:self$agent_n)
-        self$agent_list[[a]]$reset()
+        self$agents[[a]]$reset()
     },
     run = function(horizon = 100L,
                    simulations = 100L) {
@@ -32,7 +33,7 @@ SimulatorAzure <- R6::R6Class(
 
       for (s in 1L:self$simulations) {
         for (a in 1L:self$agent_n) {
-          agent[a,s] <- list(self$agent_list[[a]]$clone(deep = FALSE))
+          agent[a,s] <- list(self$agents[[a]]$clone(deep = FALSE))
         }
       }
 

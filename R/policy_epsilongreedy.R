@@ -12,33 +12,32 @@ EpsilonGreedyPolicy <- R6::R6Class(
       self$name <- name
       self$action <- list()
     },
-    set_theta = function(arms, features) {
+    reset_theta = function(arms, features) {
       parameters_per_arm <- list('chosen' = 0, 'succes' = 0, 'value' = 0)
       populate_theta(arms, parameters_per_arm)
     },
-    get_action = function(context, theta) {
+    get_action = function(context) {
       if (runif(1) < self$epsilon) {
         self$action$choice  <- sample.int(context$k, 1)
         self$action$propensity <- self$epsilon*(1/context$k)
       } else {
-        self$action$choice <- self$argmax(theta,"value")
+        self$action$choice <- self$argmax(self$theta,"value")
         self$action$propensity <- 1 - self$epsilon
       }
-      self$action$theta  <- theta                                               # hmm...
       self$action
     },
-    set_reward = function(reward, context, theta) {
+    set_reward = function(reward, context) {
 
-      theta[[reward$choice]]$chosen <- theta[[reward$choice]]$chosen + 1
+      self$theta[[reward$choice]]$chosen <- self$theta[[reward$choice]]$chosen + 1
 
       if (reward$reward == 1)
-        theta[[reward$choice]]$succes <- theta[[reward$choice]]$succes + 1
+        self$theta[[reward$choice]]$succes <- self$theta[[reward$choice]]$succes + 1
 
-      theta[[reward$choice]]$value <- theta[[reward$choice]]$value +
-        (1 / theta[[reward$choice]]$chosen) *
-        (reward$reward - theta[[reward$choice]]$value)
+      self$theta[[reward$choice]]$value <- self$theta[[reward$choice]]$value +
+        (1 / self$theta[[reward$choice]]$chosen) *
+        (reward$reward - self$theta[[reward$choice]]$value)
 
-      theta
+      self$theta
     }
   )
 )

@@ -6,19 +6,24 @@ AbstractPolicy <- R6::R6Class(
   public = list(
     name = "",
     action = NULL,
+    theta = NULL,
     initialize = function(name = "ImplementMe") {
       self$name   <- name
       self$action <- list()
     },
     get_action = function(context, theta) {
+      self$theta = theta
       warning("Don't forget to implement get_action()!")
       self$action
     },
-    set_reward = function(reward, context, theta) {
+    set_reward = function(reward, context) {
       warning("Don't forget to implement  set_reward()!")
-      theta
+      self$theta
     },
-    set_theta = function(arms, features) {
+    set_theta = function(theta) {
+      self$theta = theta
+    },
+    reset_theta = function(arms, features) {
       parameters_per_arm <- list('value' = 0)
       populate_theta(arms, parameters_per_arm)
     },

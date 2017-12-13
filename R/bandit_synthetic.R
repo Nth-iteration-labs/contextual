@@ -33,6 +33,7 @@ SyntheticBandit <- R6::R6Class(
       if (self$weight_distribution == "Uniform") {
         private$W <- matrix(runif(self$d * self$k), self$d, self$k)
       }
+      invisible(self)
     },
     get_weights = function() {
       private$W
@@ -41,6 +42,7 @@ SyntheticBandit <- R6::R6Class(
       if (length(weight_matrix) != (self$d * self$k))
         stop("Weight needs to be of length k*d.")
       private$W <- matrix(weight_matrix,  self$d, self$k)
+      invisible(self)
     },
     generate_sample = function() {
 

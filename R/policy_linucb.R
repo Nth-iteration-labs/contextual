@@ -12,18 +12,18 @@ LinUCBPolicy <- R6::R6Class(
       self$name <- name
       self$action <- list()
     },
-    set_theta = function(arms, features) {
+    reset_theta = function(arms, features) {
       parameters_per_arm <- list(
         'A' = diag(1,features),                                                 # A is a d*d identity matrix
         'b' = rep(0,features)                                                   # b is a 0 vector of length
       )
       populate_theta(arms, parameters_per_arm)
     },
-    get_action = function(context, theta) {
+    get_action = function(context) {
       expected_rewards <- rep(0.0, context$k)
       for (arm in 1:context$k) {
-        A          <- theta[[arm]]$A
-        b          <- theta[[arm]]$b
+        A          <- self$theta[[arm]]$A
+        b          <- self$theta[[arm]]$b
         A.inv      <- chol2inv(chol(A))                                         # Faster than A.inv <- solve(A), same?
         theta.hat  <- A.inv %*% b
         mean <-  context$X %*% theta.hat
@@ -31,14 +31,13 @@ LinUCBPolicy <- R6::R6Class(
         expected_rewards[arm] <- mean + (self$alpha * var)
       }
       self$action$choice  <- self$argmax(expected_rewards)
-      self$action$theta  <- theta
       self$action
     },
-    set_reward = function(reward, context, theta) {
+    set_reward = function(reward, context) {
       X <- as.vector(context$X)
-      theta[[reward$choice]]$A <- theta[[reward$choice]]$A + outer(X, X)
-      theta[[reward$choice]]$b <- theta[[reward$choice]]$b + reward$reward * X
-      theta
+      self$theta[[reward$choice]]$A <- self$theta[[reward$choice]]$A + outer(X, X)
+      self$theta[[reward$choice]]$b <- self$theta[[reward$choice]]$b + reward$reward * X
+      self$theta
     }
   )
 )

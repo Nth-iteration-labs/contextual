@@ -39,7 +39,7 @@ Agent <- R6::R6Class(
     reset = function() {
       self$k = self$bandit$k
       self$d = self$bandit$d
-      private$.theta = self$policy$set_theta(self$k,self$d)
+      private$.theta = self$policy$reset_theta(self$k,self$d)
       private$.state$context <- matrix()
       private$.state$action <- list()
       private$.state$reward <- list()
@@ -57,20 +57,16 @@ Agent <- R6::R6Class(
       private$.state$context
     },
     policy_get_decision = function(t=NA) {
-      private$.state$action <- self$policy$get_action(private$.state$context,
-                                                     private$.theta)
-      private$.theta <- private$.state$action$theta                             ## not very elegant
+      self$policy$set_theta(private$.theta)
+      private$.state$action <- self$policy$get_action(private$.state$context)
       private$.state$action
     },
     bandit_get_reward = function(t=NA) {
-      private$.state$reward <-
-        self$bandit$get_reward(private$.state$action)
+      private$.state$reward <- self$bandit$get_reward(private$.state$action)
       private$.state$reward
     },
     policy_set_reward = function(t=NA) {
-      private$.theta <- self$policy$set_reward(private$.state$reward,
-                                               private$.state$context,
-                                               private$.theta)
+      private$.theta <- self$policy$set_reward(private$.state$reward, private$.state$context)
       private$.theta
     }
   )
