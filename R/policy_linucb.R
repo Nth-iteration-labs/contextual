@@ -5,19 +5,9 @@ LinUCBPolicy <- R6::R6Class(
   inherit = AbstractPolicy,
   public = list(
     alpha = 0.1,
-    name = "",
-    action = list(),
     initialize = function(alpha = 1, name = "LinUCB") {
+      super$initialize(name)
       self$alpha <- alpha
-      self$name <- name
-      self$action <- list()
-    },
-    reset_theta = function(arms, features) {
-      parameters_per_arm <- list(
-        'A' = diag(1,features),                                                 # A is a d*d identity matrix
-        'b' = rep(0,features)                                                   # b is a 0 vector of length
-      )
-      populate_theta(arms, parameters_per_arm)
     },
     get_action = function(context) {
       expected_rewards <- rep(0.0, context$k)
@@ -38,9 +28,41 @@ LinUCBPolicy <- R6::R6Class(
       self$theta[[reward$choice]]$A <- self$theta[[reward$choice]]$A + outer(X, X)
       self$theta[[reward$choice]]$b <- self$theta[[reward$choice]]$b + reward$reward * X
       self$theta
+    },
+    reset_theta = function(arms, features) {
+      self$parameters_per_arm <- list(
+        'A' = diag(1,features),                                                 # A is a d*d identity matrix
+        'b' = rep(0,features)                                                   # b is a 0 vector of length
+      )
+      populate_theta(arms,self$parameters_per_arm)
     }
   )
 )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #' External LinUCBPolicy
 #'

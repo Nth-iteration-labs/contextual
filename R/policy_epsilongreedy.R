@@ -5,16 +5,10 @@ EpsilonGreedyPolicy <- R6::R6Class(
   inherit = AbstractPolicy,
   public = list(
     epsilon = 0.1,
-    name = "",
-    action = NULL,
     initialize = function(epsilon = 0.1, name = "EpsilonGreedy") {
+      super$initialize(name)
+      self$parameters_per_arm <- list('chosen' = 0, 'succes' = 0, 'value' = 0)
       self$epsilon <- epsilon
-      self$name <- name
-      self$action <- list()
-    },
-    reset_theta = function(arms, features) {
-      parameters_per_arm <- list('chosen' = 0, 'succes' = 0, 'value' = 0)
-      populate_theta(arms, parameters_per_arm)
     },
     get_action = function(context) {
       if (runif(1) < self$epsilon) {
@@ -27,20 +21,46 @@ EpsilonGreedyPolicy <- R6::R6Class(
       self$action
     },
     set_reward = function(reward, context) {
-
       self$theta[[reward$choice]]$chosen <- self$theta[[reward$choice]]$chosen + 1
-
       if (reward$reward == 1)
         self$theta[[reward$choice]]$succes <- self$theta[[reward$choice]]$succes + 1
-
       self$theta[[reward$choice]]$value <- self$theta[[reward$choice]]$value +
         (1 / self$theta[[reward$choice]]$chosen) *
         (reward$reward - self$theta[[reward$choice]]$value)
-
       self$theta
     }
   )
 )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #' External EpsilonGreedyPolicy
 #'

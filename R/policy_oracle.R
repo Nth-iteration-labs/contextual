@@ -4,36 +4,64 @@ OraclePolicy <- R6::R6Class(
   portable = FALSE,
   inherit = AbstractPolicy,
   public = list(
-    name = "",
-    action = NULL,
     initialize = function(name = "Oracle") {
-      self$name <- name
-      self$action <- list()
-    },
-    reset_theta = function(arms, features) {
-      parameters_per_arm <- list('chosen' = 0, 'succes' = 0, 'value' = 0)
-      populate_theta(arms, parameters_per_arm)
+      super$initialize(name)
+      self$parameters_per_arm <- list('chosen' = 0, 'succes' = 0, 'value' = 0)
     },
     get_action = function(context) {
-      self$action$choice  <- self$argmax(context$oracle)
+      self$action$choice <- self$argmax(context$oracle)
       self$action$propensity <- 1
       self$action
     },
     set_reward = function(reward, context) {
-
       self$theta[[reward$choice]]$chosen <- self$theta[[reward$choice]]$chosen + 1
-
       if (reward$reward == 1)
         self$theta[[reward$choice]]$succes <- self$theta[[reward$choice]]$succes + 1
-
       self$theta[[reward$choice]]$value <- self$theta[[reward$choice]]$value +
         (1 / self$theta[[reward$choice]]$chosen) *
         (reward$reward - self$theta[[reward$choice]]$value)
-
       self$theta
     }
   )
 )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #' External OraclePolicy
 #'

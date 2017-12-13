@@ -5,16 +5,10 @@ Exp3Policy <- R6::R6Class(
   inherit = AbstractPolicy,
   public = list(
     gamma = 0.1,
-    name = "",
-    action = NULL,
     initialize = function(gamma =  0.1, name = "Exp3") {
+      super$initialize(name)
       self$gamma <- gamma
-      self$name  <- name
-      self$action <- list()
-    },
-    reset_theta = function(arms, features) {
-      parameters_per_arm <- list('value' = 1)
-      populate_theta(arms, parameters_per_arm)
+      self$parameters_per_arm <- list('value' = 1)
     },
     get_action = function(context) {
       probabilities <- rep(0.0, context$k)
@@ -27,8 +21,7 @@ Exp3Policy <- R6::R6Class(
       self$action
     },
     set_reward = function(reward, context) {
-
-       probabilities <- rep(0.0, context$k)
+      probabilities <- rep(0.0, context$k)
       for (arm in 1:context$k) {
          probabilities[arm] <- (1 - self$gamma) * (self$theta[[arm]]$value / self$sumval(self$theta, "value"))
          probabilities[arm] <-  probabilities[arm] + (self$gamma) * (1.0 / context$k)
@@ -37,7 +30,6 @@ Exp3Policy <- R6::R6Class(
       growth_factor <- exp((self$gamma / context$k) * x)
       self$theta[[reward$choice]]$value <-
         self$theta[[reward$choice]]$value * growth_factor
-
       self$theta
     },
     categorical_draw = function(probabilities) {
@@ -51,6 +43,23 @@ Exp3Policy <- R6::R6Class(
     }
   )
 )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #' External Exp3Policy
 #'

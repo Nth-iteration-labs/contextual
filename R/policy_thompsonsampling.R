@@ -6,22 +6,16 @@ ThompsonSamplingPolicy <- R6::R6Class(
   public = list(
     alpha = 1,
     beta = 1,
-    name = "",
-    action = NULL,
     initialize = function(alpha = 1,
                           beta =  1,
                           name = "Thompson Sampling") {
+      super$initialize(name)
       self$alpha  <- alpha
       self$beta   <- beta
-      self$name   <- name
-      self$action <- list()
-    },
-    reset_theta = function(arms, features) {
-      parameters_per_arm <- list('chosen' = 0,
-                                 'probability' = 0.0,
-                                 'succes' = 0,
-                                 'mu' = 0.0)
-      populate_theta(arms, parameters_per_arm)
+      self$parameters_per_arm <- list('chosen' = 0,
+                                      'probability' = 0.0,
+                                      'succes' = 0,
+                                      'mu' = 0.0)
     },
     get_action = function(context) {
       for (arm in 1:context$k) {
@@ -35,18 +29,37 @@ ThompsonSamplingPolicy <- R6::R6Class(
       self$action
     },
     set_reward = function(reward, context) {
-
       self$theta[[reward$choice]]$chosen <- self$theta[[reward$choice]]$chosen + 1
       if (reward$reward == 1)
         self$theta[[reward$choice]]$succes <- self$theta[[reward$choice]]$succes + 1
       self$theta[[reward$choice]]$probability <- self$theta[[reward$choice]]$probability +
         (1 / self$theta[[reward$choice]]$chosen) *
         (reward$reward - self$theta[[reward$choice]]$probability)
-      #print(as.data.frame(self$theta))
       self$theta
     }
   )
 )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #' External ThompsonSamplingPolicy
 #'

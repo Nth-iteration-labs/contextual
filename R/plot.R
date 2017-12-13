@@ -200,6 +200,7 @@ Plot <- R6::R6Class(
         }
         graphics.off()
       }
+      invisible(self)
     }
   )
 )

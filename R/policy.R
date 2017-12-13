@@ -7,9 +7,11 @@ AbstractPolicy <- R6::R6Class(
     name = "",
     action = NULL,
     theta = NULL,
+    parameters_per_arm = NULL,
     initialize = function(name = "ImplementMe") {
       self$name   <- name
       self$action <- list()
+      self$parameters_per_arm <- list('value' = 0)
     },
     get_action = function(context, theta) {
       self$theta = theta
@@ -24,8 +26,7 @@ AbstractPolicy <- R6::R6Class(
       self$theta = theta
     },
     reset_theta = function(arms, features) {
-      parameters_per_arm <- list('value' = 0)
-      populate_theta(arms, parameters_per_arm)
+      populate_theta(arms, self$parameters_per_arm)
     },
     populate_theta = function(arms, parameters_per_arm) {
       theta = list()                                                            ## if we check whats there and add defaults, becomes.. dynamic :D
@@ -34,6 +35,31 @@ AbstractPolicy <- R6::R6Class(
     }
   )
 )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #' External AbstractPolicy
 #'

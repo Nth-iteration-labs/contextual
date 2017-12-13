@@ -27,14 +27,13 @@ agents <- list(
 
 ptm <- proc.time()                                                              # or Rprof ( tf <- "log.log",  memory.profiling = TRUE )
 
-simulations    <- 300L
-horizon        <- 100L
+simulations    <- 30L
+horizon        <- 10L
 simulation     <- SimulatorParallel$new(agents)
 history        <- simulation$run(horizon, simulations)
 
 print(proc.time() - ptm)                                                        # or Rprof ( NULL ) ; print ( summaryRprof ( tf )  )
 
-plot$set_external(T, 11, 6L)
-plot <- Plot$new()                                                              # initialize plot.. TODO: change to within class
+plot <- Plot$new()$set_external(T, 11, 6L)                                      # initialize plot.. TODO: change to within class
 print(plot$grid(history))                                                       # plot the results...
 
