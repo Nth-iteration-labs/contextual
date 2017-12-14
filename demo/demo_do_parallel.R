@@ -27,8 +27,8 @@ agents <- list(
 
 ptm <- proc.time()                                                              # or Rprof ( tf <- "log.log",  memory.profiling = TRUE )
 
-simulations    <- 30L
-horizon        <- 10L
+simulations    <- 100L
+horizon        <- 100L
 simulation     <- SimulatorParallel$new(agents)
 history        <- simulation$run(horizon, simulations)
 

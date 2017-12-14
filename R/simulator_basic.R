@@ -33,11 +33,11 @@ SimulatorBasic <- R6::R6Class(
       self$horizon <- horizon
       self$simulations <- simulations
 
-      agent <-  matrix(list(), self$agent_n, simulations)
+      agent_list <-  matrix(list(), self$agent_n, simulations)
 
       for (s in 1L:self$simulations) {
         for (a in 1L:self$agent_n) {
-          agent[a, s]  <- list(self$agents[[a]]$clone(deep = FALSE))
+          agent_list[a, s]  <- list(self$agents[[a]]$clone(deep = FALSE))
         }
       }
       counter <- 1L
@@ -48,16 +48,16 @@ SimulatorBasic <- R6::R6Class(
         for (a in 1L:self$agent_n) {
           for (s in 1L:self$simulations) {
 
-                      agent[[a,s]]$bandit_get_context(t)                        # observe the bandit in its context
-            action <- agent[[a,s]]$policy_get_decision(t)                       # use policy to decide which choice to make (which arm to pick)
-            reward <- agent[[a,s]]$bandit_get_reward(t)                         # observe the resonse of the bandit in this context
-            theta  <- agent[[a,s]]$policy_set_reward(t)                         # adjust the policy, update theta
+                      agent_list[[a,s]]$bandit_get_context(t)                   # observe the bandit in its context
+            action <- agent_list[[a,s]]$policy_get_decision(t)                  # use policy to decide which choice to make (which arm to pick)
+            reward <- agent_list[[a,s]]$bandit_get_reward(t)                    # observe the resonse of the bandit in this context
+            theta  <- agent_list[[a,s]]$policy_set_reward(t)                    # adjust the policy, update theta
 
             self$history$save_agent(counter,                                    # save the results to the history log
                                     t,
                                     action,
                                     reward,
-                                    agent[[a,s]]$policy$name,
+                                    agent_list[[a,s]]$policy$name,
                                     s,
                                     theta)
 

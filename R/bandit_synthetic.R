@@ -67,7 +67,7 @@ SyntheticBandit <- R6::R6Class(
         private$oracle[is.nan(private$oracle)] <- 0
         private$R <- as.integer(runif(self$k) < private$oracle)
       }
-      setNames(list(self$k, self$d, private$X, private$oracle), c("k","d","X", "oracle"))
+      setNames(list(self$k, self$d, private$X, private$oracle), c("k","d","X","oracle"))
     },
     get_reward = function(action) {
       setNames(

@@ -6,7 +6,9 @@ RandomPolicy <- R6::R6Class(
   public = list(
     initialize = function(name = "Random") {
       super$initialize(name)
-      self$parameters_per_arm <- list('chosen' = 0, 'succes' = 0, 'value' = 0)
+    },
+    set_parameters = function() {
+      self$parameters <- list('chosen' = 0, 'succes' = 0, 'value' = 0)
     },
     get_action = function(context) {
       self$action$choice <- sample.int(context$k, 1)

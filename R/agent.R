@@ -26,20 +26,18 @@ Agent <- R6::R6Class(
   public = list(
     policy = NULL,
     bandit = NULL,
-    k = 0,
-    d = 0,
-    initialize = function(policy,
-                          bandit) {
+    initialize = function(policy, bandit) {
       stopifnot(is.element("R6", class(policy)))
       stopifnot(is.element("R6", class(bandit)))
       self$bandit <- bandit$clone()
       self$policy <- policy$clone()
+      self$policy$k = self$bandit$k
+      self$policy$d = self$bandit$d
       self$reset()
     },
     reset = function() {
-      self$k = self$bandit$k
-      self$d = self$bandit$d
-      private$.theta = self$policy$reset_theta(self$k,self$d)
+      self$policy$set_parameters()
+      private$.theta = self$policy$initialize_theta()
       private$.state$context <- matrix()
       private$.state$action <- list()
       private$.state$reward <- list()
@@ -52,8 +50,8 @@ Agent <- R6::R6Class(
         private$.state$t <- t
       }
       private$.state$context <- self$bandit$get_context()
-      self$k = private$.state$context$k
-      self$d = private$.state$context$d
+      self$policy$k = private$.state$context$k
+      self$policy$d = private$.state$context$d
       private$.state$context
     },
     policy_get_decision = function(t=NA) {

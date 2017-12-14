@@ -8,7 +8,9 @@ Exp3Policy <- R6::R6Class(
     initialize = function(gamma =  0.1, name = "Exp3") {
       super$initialize(name)
       self$gamma <- gamma
-      self$parameters_per_arm <- list('value' = 1)
+    },
+    set_parameters = function() {
+      self$parameters <- list('value' = 1)
     },
     get_action = function(context) {
       probabilities <- rep(0.0, context$k)

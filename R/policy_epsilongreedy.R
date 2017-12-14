@@ -7,8 +7,10 @@ EpsilonGreedyPolicy <- R6::R6Class(
     epsilon = 0.1,
     initialize = function(epsilon = 0.1, name = "EpsilonGreedy") {
       super$initialize(name)
-      self$parameters_per_arm <- list('chosen' = 0, 'succes' = 0, 'value' = 0)
       self$epsilon <- epsilon
+    },
+    set_parameters = function() {
+      self$parameters <- list('chosen' = 0, 'succes' = 0, 'value' = 0)
     },
     get_action = function(context) {
       if (runif(1) < self$epsilon) {

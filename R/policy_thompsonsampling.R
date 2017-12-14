@@ -6,16 +6,16 @@ ThompsonSamplingPolicy <- R6::R6Class(
   public = list(
     alpha = 1,
     beta = 1,
-    initialize = function(alpha = 1,
-                          beta =  1,
-                          name = "Thompson Sampling") {
+    initialize = function(alpha = 1, beta =  1, name = "Thompson Sampling") {
       super$initialize(name)
       self$alpha  <- alpha
       self$beta   <- beta
-      self$parameters_per_arm <- list('chosen' = 0,
-                                      'probability' = 0.0,
-                                      'succes' = 0,
-                                      'mu' = 0.0)
+    },
+    set_parameters = function() {
+      self$parameters <- list('chosen' = 0,
+                              'probability' = 0.0,
+                              'succes' = 0,
+                              'mu' = 0.0)
     },
     get_action = function(context) {
       for (arm in 1:context$k) {

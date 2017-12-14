@@ -7,11 +7,12 @@ AbstractPolicy <- R6::R6Class(
     name = "",
     action = NULL,
     theta = NULL,
-    parameters_per_arm = NULL,
+    parameters = NULL,
+    k = NULL,
+    d = NULL,
     initialize = function(name = "ImplementMe") {
       self$name   <- name
       self$action <- list()
-      self$parameters_per_arm <- list('value' = 0)
     },
     get_action = function(context, theta) {
       self$theta = theta
@@ -22,16 +23,16 @@ AbstractPolicy <- R6::R6Class(
       warning("Don't forget to implement  set_reward()!")
       self$theta
     },
+    set_parameters = function() {
+      self$parameters <- list('value' = 0)
+    },
+    initialize_theta = function() {
+      theta = list()                                                            ## if we check whats there and add defaults, becomes.. dynamic :D
+      for (arm in 1:self$k) theta[[arm]] <- self$parameters
+      theta
+    },
     set_theta = function(theta) {
       self$theta = theta
-    },
-    reset_theta = function(arms, features) {
-      populate_theta(arms, self$parameters_per_arm)
-    },
-    populate_theta = function(arms, parameters_per_arm) {
-      theta = list()                                                            ## if we check whats there and add defaults, becomes.. dynamic :D
-      for (arm in 1:arms) theta[[arm]] <- parameters_per_arm
-      theta
     }
   )
 )
