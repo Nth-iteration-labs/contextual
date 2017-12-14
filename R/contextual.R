@@ -21,18 +21,14 @@ Contextual <- R6::R6Class(
     argmax = function(x, list_element_name = NA)
     {
       if (!is.na(list_element_name)) {
-        x <- unlist(lapply(x, `[[`, list_element_name))
+        x <- lname_to_vector(x, list_element_name)
       }
       y <- seq_along(x)[x == max(x)]
-      if (length(y) > 1L) {
-        return(sample(y, 1L))
-      } else {
-        return(y)
-      }
+      if (length(y) > 1L) sample(y, 1L) else y
     },
     sumval = function(x, list_element_name)
     {
-      sum(unlist(lapply(x, `[[`, as.character(list_element_name))))
+      sum(lname_to_vector(x, list_element_name))
     },
     lname_to_vector = function(x, list_element_name)
     {

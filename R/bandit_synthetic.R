@@ -74,7 +74,7 @@ SyntheticBandit <- R6::R6Class(
         list(
              private$R[action$choice],
              action$choice,
-             self$argmax(private$R) == action$choice,
+             argmax(private$R) == action$choice,
              action$propensity),
 
            c("reward",

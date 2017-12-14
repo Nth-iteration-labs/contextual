@@ -4,6 +4,8 @@
 setwd("~/GitHub/contextual/demo")
 source("dev.R")
 
+set.seed(21)
+
 ############################# basic simulation #################################
 
 bandit      <- SyntheticBandit$new(k = 3L, d = 1L)$set_weights(c(0.1, 0.1, 0.9))

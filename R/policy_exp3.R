@@ -39,7 +39,7 @@ Exp3Policy <- R6::R6Class(
       cummulative_probability <- 0.0
       for (arm in 1:arms) {
          cummulative_probability <-  cummulative_probability + probabilities[arm]
-        if ( cummulative_probability > runif(1)) return(arm)
+        if ( cummulative_probability > runif(1) ) return(arm)
       }
       sample(arms, 1)
     }

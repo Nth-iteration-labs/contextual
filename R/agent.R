@@ -14,13 +14,6 @@ Agent <- R6::R6Class(
       } else {
         stop("'$theta' is read only", call. = FALSE)
       }
-    },
-    state = function(value) {
-      if (missing(value)) {
-        private$.state
-      } else {
-        stop("'$state' is read only", call. = FALSE)
-      }
     }
   ),
   public = list(
@@ -44,28 +37,24 @@ Agent <- R6::R6Class(
       private$.state$t <- 0
     },
     bandit_get_context = function(t=NA) {
-      if (is.na(t)) {
-        private$.state$t <- t + 1
-      } else {
-        private$.state$t <- t
-      }
+      if (is.na(t)) private$.state$t <- t + 1 else  private$.state$t <- t
       private$.state$context <- self$bandit$get_context()
-      self$policy$k = private$.state$context$k
-      self$policy$d = private$.state$context$d
+      self$policy$k <- private$.state$context$k
+      self$policy$d <- private$.state$context$d
       private$.state$context
     },
     policy_get_decision = function(t=NA) {
       self$policy$set_theta(private$.theta)
-      private$.state$action <- self$policy$get_action(private$.state$context)
-      private$.state$action
+      # by assigning between () you return the value visibly as well (optimized)
+      (private$.state$action <- self$policy$get_action(private$.state$context))
     },
     bandit_get_reward = function(t=NA) {
-      private$.state$reward <- self$bandit$get_reward(private$.state$action)
-      private$.state$reward
+      # by assigning between () you return the value visibly as well (optimized)
+      (private$.state$reward <- self$bandit$get_reward(private$.state$action))
     },
     policy_set_reward = function(t=NA) {
-      private$.theta <- self$policy$set_reward(private$.state$reward, private$.state$context)
-      private$.theta
+      # by assigning between () you return the value visibly as well (optimized)
+      (private$.theta <- self$policy$set_reward(private$.state$reward, private$.state$context))
     }
   )
 )

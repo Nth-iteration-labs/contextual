@@ -17,6 +17,7 @@ bandit$set_weights(c(0.9, 0.0, 0.1,  #k1                                        
                      0.1, 0.9, 0.1,  #k2                                        # d: how many features
                      0.9, 0.1, 0.9)) #k3                                        # k: how many arms
 
+
 agents <- list(
   Agent$new(EpsilonGreedyPolicy$new(0.1, "\U190-greedy"), bandit),
   Agent$new(RandomPolicy$new("Random"), bandit),
@@ -24,6 +25,7 @@ agents <- list(
   Agent$new(Exp3Policy$new(0.1, "Exp3"), bandit),
   Agent$new(LinUCBPolicy$new(1.0, "LinUCB"), bandit)
 )
+
 
 ptm <- proc.time()                                                              # or Rprof ( tf <- "log.log",  memory.profiling = TRUE )
 
