@@ -4,6 +4,7 @@
 Contextual <- R6::R6Class(
   "Contextual",
   portable = FALSE,
+  class = FALSE,
   private = list(
     .hash = NULL
   ),

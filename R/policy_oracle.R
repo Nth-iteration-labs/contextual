@@ -2,6 +2,7 @@
 OraclePolicy <- R6::R6Class(
   "OraclePolicy",
   portable = FALSE,
+  class = FALSE,
   inherit = AbstractPolicy,
   public = list(
     initialize = function(name = "Oracle") {

@@ -3,6 +3,7 @@
 History <- R6::R6Class(
   "History",
   portable = FALSE,
+  class = FALSE,
   inherit = Contextual,
   public = list(
     n = 1000,

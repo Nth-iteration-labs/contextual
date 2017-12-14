@@ -2,6 +2,7 @@
 Agent <- R6::R6Class(
   "Agent",
   portable = FALSE,
+  class = FALSE,
   inherit = Contextual,
   private = list(
     .theta = NULL,
@@ -20,8 +21,8 @@ Agent <- R6::R6Class(
     policy = NULL,
     bandit = NULL,
     initialize = function(policy, bandit) {
-      stopifnot(is.element("R6", class(policy)))
-      stopifnot(is.element("R6", class(bandit)))
+      #stopifnot(is.element("R6", class(policy)))
+      #stopifnot(is.element("R6", class(bandit)))
       self$bandit <- bandit$clone()
       self$policy <- policy$clone()
       self$policy$k = self$bandit$k

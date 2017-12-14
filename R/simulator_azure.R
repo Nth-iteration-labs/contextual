@@ -5,6 +5,7 @@
 SimulatorAzure <- R6::R6Class(
   "SimulatorAzure",
   portable = FALSE,
+  class = FALSE,
   private = list(rewards = NULL),
   public = list(
     agents = NULL,

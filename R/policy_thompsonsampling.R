@@ -2,6 +2,7 @@
 ThompsonSamplingPolicy <- R6::R6Class(
   "ThompsonSamplingPolicy",
   portable = FALSE,
+  class = FALSE,
   inherit = AbstractPolicy,
   public = list(
     alpha = 1,

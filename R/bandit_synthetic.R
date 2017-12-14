@@ -3,6 +3,7 @@ SyntheticBandit <- R6::R6Class(
   "SyntheticBandit",
   inherit = Contextual,
   portable = FALSE,
+  class = FALSE,
   private = list(
     W = NULL,
     R = NULL,

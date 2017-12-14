@@ -35,11 +35,3 @@ horizon        <- 100L                                                          
 
 simulation     <- SimulatorBasic$new(agents, animate = TRUE, animate_step = 1)  # And run the sumulation
 history        <- simulation$run(horizon, simulations)
-
-
-
-
-
-
-
-

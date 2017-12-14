@@ -4,6 +4,7 @@ Plot <- R6::R6Class(
   "Plot",
   portable = FALSE,
   inherit = Contextual,
+  class = FALSE,
   public = list(
     initialize = function() {
     },

@@ -2,6 +2,7 @@
 AbstractPolicy <- R6::R6Class(
   "AbstractPolicy",
   portable = FALSE,
+  class = FALSE,
   inherit = Contextual,
   public = list(
     name = "",

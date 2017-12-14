@@ -2,6 +2,7 @@
 RandomPolicy <- R6::R6Class(
   "RandomPolicy",
   portable = FALSE,
+  class = FALSE,
   inherit = AbstractPolicy,
   public = list(
     initialize = function(name = "Random") {

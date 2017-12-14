@@ -2,6 +2,7 @@
 LinUCBPolicy <- R6::R6Class(
   "LinUCBPolicy",
   portable = FALSE,
+  class = FALSE,
   inherit = AbstractPolicy,
   public = list(
     alpha = 0.1,

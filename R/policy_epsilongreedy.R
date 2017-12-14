@@ -2,6 +2,7 @@
 EpsilonGreedyPolicy <- R6::R6Class(
   "EpsilonGreedyPolicy",
   portable = FALSE,
+  class = FALSE,
   inherit = AbstractPolicy,
   public = list(
     epsilon = 0.1,

@@ -2,6 +2,7 @@
 Exp3Policy <- R6::R6Class(
   "Exp3Policy",
   portable = FALSE,
+  class = FALSE,
   inherit = AbstractPolicy,
   public = list(
     gamma = 0.1,

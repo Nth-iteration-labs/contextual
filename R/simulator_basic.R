@@ -2,6 +2,7 @@
 SimulatorBasic <- R6::R6Class(
   "SimulatorBasic",
   portable = FALSE,
+  class = FALSE,
   inherit = Contextual,
   private = list(rewards = NULL),
   public = list(
