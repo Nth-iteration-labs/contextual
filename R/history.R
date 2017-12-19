@@ -8,11 +8,9 @@ History <- R6::R6Class(
   public = list(
     n = 1000,
     data = data.table::data.table(),
-    initialize = function() {
-
-    },
-    reset = function(n = 1000) {
+    initialize = function(n = 1000) {
       self$n <- n
+
       self$data <- data.table::data.table(
         reward          = rep(0L,      n), #1
         optimal         = rep(0L,      n), #2
@@ -20,15 +18,14 @@ History <- R6::R6Class(
         t               = rep(0L,      n), #4
         sim             = rep(0L,      n), #5
         arm             = rep(0L,      n), #6
-        theta           = rep(list(),  n) #7
-        #propensity      = rep(0.0,    n)  #8
-
+        theta           = rep(list(),  n)  #7
       )
     },
+
     save_agent = function(counter, t, action, reward, policy_name, s = NA, theta = list()) {
       counter = as.integer(counter)
-      if (reward$is_optimal_choice) opt = 1L else opt = 0L
-      #ugly but optimized
+      opt = 0L
+      if (reward$is_optimal_choice) opt = 1L
       data.table::set(data, counter, 1L:7L,
                       c(reward[[1]],
                       opt,

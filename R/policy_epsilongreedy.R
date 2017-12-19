@@ -5,7 +5,7 @@ EpsilonGreedyPolicy <- R6::R6Class(
   class = FALSE,
   inherit = AbstractPolicy,
   public = list(
-    epsilon = 0.1,
+    epsilon = NULL,
     initialize = function(epsilon = 0.1, name = "EpsilonGreedy") {
       super$initialize(name)
       self$epsilon <- epsilon
@@ -15,10 +15,10 @@ EpsilonGreedyPolicy <- R6::R6Class(
     },
     get_action = function(context) {
       if (runif(1) < self$epsilon) {
-        self$action$choice  <- sample.int(context$k, 1)
+        self$action$choice  <- sample.int(context$k, 1, replace = TRUE)
         self$action$propensity <- self$epsilon*(1/context$k)
       } else {
-        self$action$choice <- self$argmax(self$theta,"value")
+        self$action$choice <- self$argmaxlist(self$theta,"value")
         self$action$propensity <- 1 - self$epsilon
       }
       self$action

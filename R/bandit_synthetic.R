@@ -1,15 +1,10 @@
+# create from scratch if not cache, otherwise do cahce
 #' @export
 SyntheticBandit <- R6::R6Class(
   "SyntheticBandit",
-  inherit = Contextual,
+  inherit = AbstractBandit,
   portable = FALSE,
   class = FALSE,
-  private = list(
-    W = NULL,
-    R = NULL,
-    X = NULL,
-    oracle = NULL
-  ),
   public = list(
     d            = 0L,
     k            = 0L,
@@ -18,74 +13,53 @@ SyntheticBandit <- R6::R6Class(
     reward_family  = NULL,
     feature_type = NULL,
     weight_distribution  = NULL,
-    initialize   = function(k = 2L,
-                            d = 2L,
-                            weight_distribution  = 'Uniform',
+    initialize   = function(weight_distribution  = 'Uniform',
                             reward_family        = 'Bernoulli',
                             feature_type         = 'Bernoulli') {
-      self$k <- k
-      self$d <- d
+      super$initialize()
+      self$set_precaching(TRUE)
       self$reward_family        <- reward_family
       self$feature_type         <- feature_type
       self$weight_distribution  <- weight_distribution
-      self$generate_weights()
     },
-    generate_weights = function(mean = 0.0, sd = 1.0) {
+    get_reward = function(action, t) {
+      do_reward(action, t)
+    },
+    get_context = function(t) {
+      do_context(t)
+    },
+    generate_weights = function(k, d, mean = 0.0, sd = 1.0) {
+      self$k <- k
+      self$d <- d
       if (self$weight_distribution == "Uniform") {
-        private$W <- matrix(runif(self$d * self$k), self$d, self$k)
+        private$.W <- matrix(runif(self$d * self$k), self$d, self$k)
       }
       invisible(self)
     },
-    get_weights = function() {
-      private$W
-    },
-    set_weights = function(weight_matrix) {
-      if (length(weight_matrix) != (self$d * self$k))
-        stop("Weight needs to be of length k*d.")
-      private$W <- matrix(weight_matrix,  self$d, self$k)
-      invisible(self)
-    },
-    generate_sample = function() {
+    generate_samples = function(n = 1L, d_one_min = TRUE) {
+      private$.X <- matrix(0, n , d)
+      private$.R <- matrix(0, self$k, n)
+      private$.O <- matrix(0, self$k, n)
 
-      if (self$feature_type == 'Single' ||
-          is.na(self$feature_type)) {
-        private$X <- matrix(1, 1, self$d)
-      } else if (self$feature_type == 'Bernoulli') {
-        private$X <- matrix(0, 1 , self$d)                                      # create matrix
-        private$X[sample(1 * self$d, 1)] <- 1                                   # always one feature, at least?
-        private$X <- as.integer(private$X |
-                                 matrix(sample(
-                                   c(0, 1),
-                                   replace = TRUE,
-                                   size = 1 * self$d
-                                 ), 1 , self$d))                                # but can be multiple features
+      if (self$feature_type == 'Bernoulli') {
+        if (d_one_min) private$.X[cbind(1:n, sample(d, n, replace = TRUE))] <- 1
+        X_random <- matrix(sample(c(0, 1), replace = TRUE, size = n * self$d), n , self$d)
+        private$.X <- matrix((private$.X | X_random),n,d)
+        mode(private$.X) <- 'integer'
       }
 
-      weights_per_feature <- private$W * as.vector(private$X)
+      W <- array(t(matrix(private$.W, self$k , self$d)), dim = c(self$d, self$k, n))
+
+      localX <- private$.X
+      for (nn in 1:n) {
+        W[, , nn] <- W[, , nn] * as.vector(localX[nn, ])
+      }
+      private$.O <- t(t(colSums(W)) / as.vector(rowSums(private$.X)))
+      private$.O[is.nan(private$.O)] <- 0
 
       if (self$reward_family == 'Bernoulli') {
-        private$oracle <- colSums(weights_per_feature) / sum(private$X)
-        private$oracle[is.nan(private$oracle)] <- 0
-        private$R <- as.integer(runif(self$k) < private$oracle)
+        private$.R <- runif(self$k * n) < private$.O
       }
-      setNames(list(self$k, self$d, private$X, private$oracle), c("k","d","X","oracle"))
-    },
-    get_reward = function(action) {
-      setNames(
-        list(
-             private$R[action$choice],
-             action$choice,
-             argmax(private$R) == action$choice,
-             action$propensity),
-
-           c("reward",
-             "choice",
-             "is_optimal_choice",
-             "propensity")
-      )
-    },
-    get_context = function() {
-      self$generate_sample()
     }
   )
 )

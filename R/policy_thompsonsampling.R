@@ -26,7 +26,7 @@ ThompsonSamplingPolicy <- R6::R6Class(
           self$beta  + self$theta[[arm]]$chosen - self$theta[[arm]]$succes
         )
       }
-      self$action$choice <- self$argmax(self$theta,"mu")
+      self$action$choice <- self$argmaxlist(self$theta,"mu")
       self$action
     },
     set_reward = function(reward, context) {

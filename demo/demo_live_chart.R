@@ -5,7 +5,7 @@ source("dev.R")
 set.seed(21L)
 
 plot <- Plot$new()                                                              # Initialize live plot. TODO: change to within class.
-plot$set_external(T, 11, 6L)                                                    # Set plot to external window when in Rstudio.
+plot$set_external(T, 11L, 6L)                                                   # Set plot to external window when in Rstudio.
 
 agents <- list()                                                                # A list to keep track of our agents
 
@@ -30,8 +30,11 @@ agents$TS      <- Agent$new(policyTS, bandit)
 policyRandom   <- RandomPolicy$new("Random")
 agents$Random  <- Agent$new(policyRandom, bandit)
 
-simulations    <- 100L                                                          # Now define how many simulations we'll run..
-horizon        <- 100L                                                          # and how many time steps per simulation.
 
-simulation     <- SimulatorBasic$new(agents, animate = TRUE, animate_step = 1)  # And run the sumulation
-history        <- simulation$run(horizon, simulations)
+simulation     <- SimulatorBasic$new(agents,
+                                     animate = TRUE,
+                                     animate_step = 1L,
+                                     horizon = 100L,
+                                     simulations = 100L)
+
+history        <- simulation$run()

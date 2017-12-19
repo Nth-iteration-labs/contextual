@@ -36,7 +36,7 @@ Plot <- R6::R6Class(
       agents <- length(agent_list)
       setorder(cs, agent, t)
       agent_list <- unique(cs$agent)
-      ms <- matrix(unlist(cs[, cumsum(mean), by = list(agent)][, 2]),
+      ms <- matrix(unlist(cs[, cumsum(mean), by = list(agent)][, 2], FALSE, FALSE),
                   ncol = agents)
       matplot(
         ms,
@@ -124,7 +124,7 @@ Plot <- R6::R6Class(
       agents <- length(agent_list)
       setorder(cs, agent, t)
       agent_list <- unique(cs$agent)
-      ms <- matrix(unlist(cs[, 3]), ncol = agents)
+      ms <- matrix(unlist(cs[, 3], FALSE, FALSE), ncol = agents)
       matplot(
         ms * 100,
         type = "l",
@@ -158,7 +158,7 @@ Plot <- R6::R6Class(
       agents <- length(agent_list)
       setorder(cs, agent, t)
       agent_list <- unique(cs$agent)
-      ms <- matrix(unlist(cs[, 3]), ncol = agents)
+      ms <- matrix(unlist(cs[, 3], FALSE, FALSE), ncol = agents)
       matplot(
         ms,
         type = "l",

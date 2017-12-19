@@ -10,27 +10,27 @@ SimulatorParallel <- R6::R6Class(
   public = list(
     agents = NULL,
     agent_n = NULL,
-    horizon = 100L,
-    simulations = 1L,
+    horizon = NULL,
+    simulations = NULL,
     history = NULL,
 
-    initialize = function(agents) {
+    initialize = function(agents,horizon = 100L, simulations = 100L) {
+      self$horizon <- horizon
+      self$simulations <- simulations
       if (!is.list(agents)) agents = list(agents)
-      self$history <- History$new()
       self$agents <- agents
       self$agent_n <- length(agents)
+      self$history <- History$new(self$horizon * self$agent_n * self$simulations)
+
       self$reset()
     },
     reset = function() {
       for (a in 1L:self$agent_n)
         self$agents[[a]]$reset()
+      self$agents[[a]]$precache(self$horizon*self$simulations + 1)
     },
-    run = function(horizon = 100L,
-                   simulations = 100L) {
-      self$horizon <- horizon
-      self$simulations <- simulations
-
-      agent <-  matrix(list(), self$agent_n, simulations)
+    run = function() {
+      agent <-  matrix(list(), self$agent_n, self$simulations)
 
       for (s in 1L:self$simulations) {
         for (a in 1L:self$agent_n) {
@@ -43,26 +43,28 @@ SimulatorParallel <- R6::R6Class(
       cl <- parallel::makeCluster(workers)
       doParallel::registerDoParallel(cl)
 
-      n <- self$horizon  * self$agent_n
-      self$history$reset(n)
-
       `%do%` <- foreach::`%do%`
       `%dorng%` <- doRNG::`%dorng%`
       `%dopar%` <- foreach::`%dopar%`
 
+      sims = self$simulations
+
       parallel_results <- foreach::foreach(
         s = 1L:self$simulations,
         .inorder = FALSE,
+        .export = c("self"),
         .packages = c("data.table")
-      ) %dorng% {
+      ) %dopar% {
         counter <- 1L
         for (a in 1L:self$agent_n) {
           for (t in 1L:self$horizon) {
 
-            agent[[a,s]]$bandit_get_context(t)                                  # observe the bandit in its context
-            action <- agent[[a,s]]$policy_get_decision(t)                       # use policy to decide which choice to make (which arm to pick)
-            reward <- agent[[a,s]]$bandit_get_reward(t)                         # observe the resonse of the bandit in this context
-            agent[[a,s]]$policy_set_reward(t)                                   # adjust the policy, update theta
+            agent_counter = as.integer(s + ((t - 1L) * self$simulations))
+
+            agent[[a,s]]$bandit_get_context(agent_counter)                      # observe the bandit in its context
+            action <- agent[[a,s]]$policy_get_decision(agent_counter)           # use policy to decide which choice to make (which arm to pick)
+            reward <- agent[[a,s]]$bandit_get_reward(agent_counter)             # observe the resonse of the bandit in this context
+            agent[[a,s]]$policy_set_reward(agent_counter)                       # adjust the policy, update theta
 
             self$history$save_agent(counter,                                    # save the results to the history log
                                     t,

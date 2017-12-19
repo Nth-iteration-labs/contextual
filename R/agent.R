@@ -6,7 +6,8 @@ Agent <- R6::R6Class(
   inherit = Contextual,
   private = list(
     .theta = NULL,
-    .state = NULL
+    .state = NULL,
+    .context_cache = NULL
   ),
   active = list(
     theta = function(value) {
@@ -21,10 +22,8 @@ Agent <- R6::R6Class(
     policy = NULL,
     bandit = NULL,
     initialize = function(policy, bandit) {
-      #stopifnot(is.element("R6", class(policy)))
-      #stopifnot(is.element("R6", class(bandit)))
-      self$bandit <- bandit$clone()
-      self$policy <- policy$clone()
+      self$bandit <- bandit                                                     ## to clone, or not to clone
+      self$policy <- policy                                                     ## that is the question..
       self$policy$k = self$bandit$k
       self$policy$d = self$bandit$d
       self$reset()
@@ -35,26 +34,25 @@ Agent <- R6::R6Class(
       private$.state$context <- matrix()
       private$.state$action <- list()
       private$.state$reward <- list()
-      private$.state$t <- 0
+      private$.state$t <- 0                                                     ## work this out to make work in different orders
     },
-    bandit_get_context = function(t=NA) {
-      if (is.na(t)) private$.state$t <- t + 1 else  private$.state$t <- t
-      private$.state$context <- self$bandit$get_context()
+    precache = function(n) {
+      self$bandit$precache(n)
+    },
+    bandit_get_context = function(t) {
+      private$.state$context <- self$bandit$get_context(t)
       self$policy$k <- private$.state$context$k
       self$policy$d <- private$.state$context$d
       private$.state$context
     },
-    policy_get_decision = function(t=NA) {
+    policy_get_decision = function(t) {
       self$policy$set_theta(private$.theta)
-      # by assigning between () you return the value visibly as well (optimized)
       (private$.state$action <- self$policy$get_action(private$.state$context))
     },
-    bandit_get_reward = function(t=NA) {
-      # by assigning between () you return the value visibly as well (optimized)
-      (private$.state$reward <- self$bandit$get_reward(private$.state$action))
+    bandit_get_reward = function(t) {
+      (private$.state$reward <- self$bandit$get_reward(private$.state$action,t))
     },
-    policy_set_reward = function(t=NA) {
-      # by assigning between () you return the value visibly as well (optimized)
+    policy_set_reward = function(t) {
       (private$.theta <- self$policy$set_reward(private$.state$reward, private$.state$context))
     }
   )

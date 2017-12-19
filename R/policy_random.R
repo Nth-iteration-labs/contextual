@@ -12,7 +12,7 @@ RandomPolicy <- R6::R6Class(
       self$parameters <- list('chosen' = 0, 'succes' = 0, 'value' = 0)
     },
     get_action = function(context) {
-      self$action$choice <- sample.int(context$k, 1)
+      self$action$choice <- sample.int(context$k, 1, replace = TRUE)
       self$action$propensity <- 1/context$k
       self$action
     },

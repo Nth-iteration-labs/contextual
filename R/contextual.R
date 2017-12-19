@@ -19,13 +19,16 @@ Contextual <- R6::R6Class(
     initialize = function() {
       private$.hash = digest::digest(self)
     },
-    argmax = function(x, list_element_name = NA)
+    argmaxlist = function(x, list_element_name = NA)
     {
-      if (!is.na(list_element_name)) {
-        x <- lname_to_vector(x, list_element_name)
-      }
+      x <- lname_to_vector(x, list_element_name)
       y <- seq_along(x)[x == max(x)]
-      if (length(y) > 1L) sample(y, 1L) else y
+      if (length(y) > 1L) sample(y, 1L, replace = TRUE) else y
+    },
+    argmax = function(x)
+    {
+      y <- seq_along(x)[x == max(x)]
+      if (length(y) > 1L) sample(y, 1L, replace = TRUE) else y
     },
     sumval = function(x, list_element_name)
     {
@@ -33,7 +36,7 @@ Contextual <- R6::R6Class(
     },
     lname_to_vector = function(x, list_element_name)
     {
-      unlist(lapply(x, `[[`, as.character(list_element_name)))
+      unlist(lapply(x, `[[`, list_element_name) , FALSE, FALSE)
     }
   )
 )

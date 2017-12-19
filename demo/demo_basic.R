@@ -4,18 +4,25 @@
 setwd("~/GitHub/contextual/demo")
 source("dev.R")
 
-set.seed(21)
+set.seed(12)
+
+################################################################################
+
+ptm <- proc.time()                                                              # or Rprof ( tf <- "log.log",  memory.profiling = TRUE )
 
 ############################# basic simulation #################################
 
-bandit      <- SyntheticBandit$new(k = 3L, d = 1L)$set_weights(c(0.1, 0.1, 0.9))
-
-policy      <- EpsilonGreedyPolicy$new(0.1)
-
+bandit      <- SyntheticBandit$new()$set_weights(c(0.1, 0.1, 0.9))
+policy      <- EpsilonGreedyPolicy$new(0.05)
 agent       <- Agent$new(policy, bandit)
-simulation  <- SimulatorBasic$new(agent)
-history     <- simulation$run(horizon = 100L, simulations = 100L)
+simulation  <- SimulatorBasic$new(agent, horizon = 100L, simulations = 100L)
 
-Plot$new()$grid(history)
+history     <- simulation$run()
 
 ################################################################################
+
+print(proc.time() - ptm)                                                        # or Rprof ( NULL ) ; print ( summaryRprof ( tf )  )
+
+################################################################################
+
+Plot$new()$set_external(T, 11, 6L)$grid(history)
