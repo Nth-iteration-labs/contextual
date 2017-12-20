@@ -6,8 +6,7 @@ Agent <- R6::R6Class(
   inherit = Contextual,
   private = list(
     .theta = NULL,
-    .state = NULL,
-    .context_cache = NULL
+    .state = NULL
   ),
   active = list(
     theta = function(value) {
@@ -22,10 +21,10 @@ Agent <- R6::R6Class(
     policy = NULL,
     bandit = NULL,
     initialize = function(policy, bandit) {
-      self$bandit <- bandit                                                     ## to clone, or not to clone
-      self$policy <- policy                                                     ## that is the question..
-      self$policy$k = self$bandit$k
-      self$policy$d = self$bandit$d
+      self$bandit   <- bandit                                                   ## to clone, or not to clone
+      self$policy   <- policy                                                   ## that is the question..
+      self$policy$k <- self$bandit$k
+      self$policy$d <- self$bandit$d
       self$reset()
     },
     reset = function() {
@@ -36,8 +35,8 @@ Agent <- R6::R6Class(
       private$.state$reward <- list()
       private$.state$t <- 0                                                     ## work this out to make work in different orders
     },
-    precache = function(n) {
-      self$bandit$precache(n)
+    generate_cache = function(n) {
+      self$bandit$generate_cache(n)
     },
     bandit_get_context = function(t) {
       private$.state$context <- self$bandit$get_context(t)

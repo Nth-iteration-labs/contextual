@@ -10,23 +10,27 @@ SimulatorAzure <- R6::R6Class(
   public = list(
     agents = NULL,
     agent_n = NULL,
-    horizon = 100L,
-    simulations = 1L,
+    horizon = NULL,
+    simulations = NULL,
     history = NULL,
 
-    initialize = function(agents) {
+    initialize = function(agents,horizon = 100L, simulations = 100L) {
+      self$horizon <- horizon
+      self$simulations <- simulations
       if (!is.list(agents)) agents = list(agents)
-      self$history <- History$new()
       self$agents <- agents
       self$agent_n <- length(agents)
+      self$history <- History$new(self$horizon * self$agent_n * self$simulations)
       self$reset()
     },
     reset = function() {
-      for (a in 1L:self$agent_n)
+      for (a in 1L:self$agent_n) {
         self$agents[[a]]$reset()
+        if (self$agents[[a]]$bandit$is_precaching)
+          self$agents[[a]]$generate_cache(self$horizon*self$simulations)
+      }
     },
-    run = function(horizon = 100L,
-                   simulations = 100L) {
+    run = function() {
 
       self$horizon <- horizon
       self$simulations <- simulations

@@ -21,13 +21,14 @@ SimulatorParallel <- R6::R6Class(
       self$agents <- agents
       self$agent_n <- length(agents)
       self$history <- History$new(self$horizon * self$agent_n * self$simulations)
-
       self$reset()
     },
     reset = function() {
-      for (a in 1L:self$agent_n)
+      for (a in 1L:self$agent_n) {
         self$agents[[a]]$reset()
-      self$agents[[a]]$precache(self$horizon*self$simulations + 1)
+        if (self$agents[[a]]$bandit$is_precaching)
+          self$agents[[a]]$generate_cache(self$horizon*self$simulations)
+      }
     },
     run = function() {
       agent <-  matrix(list(), self$agent_n, self$simulations)

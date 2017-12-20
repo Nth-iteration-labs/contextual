@@ -5,7 +5,7 @@ Exp3Policy <- R6::R6Class(
   class = FALSE,
   inherit = AbstractPolicy,
   public = list(
-    gamma = 0.1,
+    gamma = NULL,
     initialize = function(gamma =  0.1, name = "Exp3") {
       super$initialize(name)
       self$gamma <- gamma

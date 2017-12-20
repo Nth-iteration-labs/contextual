@@ -8,15 +8,13 @@ set.seed(21L)
 
 bandit <- SyntheticBandit$new(
   weight_distribution = "Uniform",
-  reward_family =       "Bernoulli",
-  feature_type =        "Bernoulli"
+  reward_type =         "Bernoulli"
 )
-
                             #d1  #d2  #d3
-bandit$set_weights(matrix(c(0.9, 0.0, 0.1,  #k1                                 # override auto-generated weights
-                            0.1, 0.9, 0.1,  #k2                                 # d / nrow: how many features
-                            0.9, 0.1, 0.9)  #k3                                 # k / ncol: how many arms
-                            ,nrow = 3, ncol = 3))
+bandit$set_weights(matrix(c(0.9, 0.0, 0.1,  #k1                                 # d / nrow: how many features
+                            0.1, 0.9, 0.1,  #k2                                 # k / ncol: how many arms
+                            0.9, 0.1, 0.9), #k3
+                            nrow = 3, ncol = 3))
 
 agents <- list(
   Agent$new(EpsilonGreedyPolicy$new(0.1, "\U190-greedy"), bandit),
@@ -35,4 +33,3 @@ print(proc.time() - ptm)
 
 plot <- Plot$new()$set_external(T, 11, 6L)                                      # initialize plot.. TODO: change to within class
 plot$grid(history)                                                              # plot the results...
-

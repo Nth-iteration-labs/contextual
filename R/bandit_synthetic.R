@@ -6,63 +6,77 @@ SyntheticBandit <- R6::R6Class(
   portable = FALSE,
   class = FALSE,
   public = list(
-    d            = 0L,
-    k            = 0L,
-    means        = 0.0,
-    stds         = 0.0,
-    reward_family  = NULL,
-    feature_type = NULL,
+    d             = NULL,
+    k             = NULL,
+    weight_stds   = NULL,
+    weight_means  = NULL,
+    reward_means  = NULL,
+    reward_stds   = NULL,
+    reward_type   = NULL,
     weight_distribution  = NULL,
     initialize   = function(weight_distribution  = 'Uniform',
-                            reward_family        = 'Bernoulli',
-                            feature_type         = 'Bernoulli') {
+                            reward_type          = 'Bernoulli',
+
+                            weight_stds          = NA,
+                            weight_means         = NA,
+                            reward_means         = NA,
+                            reward_stds          = NA) {
+
       super$initialize()
-      self$set_precaching(TRUE)
-      self$reward_family        <- reward_family
-      self$feature_type         <- feature_type
+      self$is_precaching        <- TRUE
+      self$reward_type          <- reward_type
       self$weight_distribution  <- weight_distribution
     },
     get_reward = function(action, t) {
-      do_reward(action, t)
+      format_reward(action, t)
     },
     get_context = function(t) {
-      do_context(t)
+      format_context(t)
     },
-    generate_weights = function(k, d, mean = 0.0, sd = 1.0) {
+    generate_weights = function(k, d = 1, mean = 3.0, sd = 1.0) {
       self$k <- k
       self$d <- d
       if (self$weight_distribution == "Uniform") {
         private$.W <- matrix(runif(self$d * self$k), self$d, self$k)
+      } else if (self$weight_distribution == "Normal") {
+        private$.W <- matrix(rnorm(self$d * self$k, self$feature_means, self$feature_stds), self$d, self$k)
       }
       invisible(self)
     },
-    generate_samples = function(n = 1L, d_one_min = TRUE) {
+    generate_cache = function(n = 1L, never_zero_features = TRUE) {
       private$.X <- matrix(0, n , d)
-      private$.R <- matrix(0, self$k, n)
       private$.O <- matrix(0, self$k, n)
+      private$.R <- matrix(0, self$k, n)
 
-      if (self$feature_type == 'Bernoulli') {
-        if (d_one_min) private$.X[cbind(1:n, sample(d, n, replace = TRUE))] <- 1
-        X_random <- matrix(sample(c(0, 1), replace = TRUE, size = n * self$d), n , self$d)
-        private$.X <- matrix((private$.X | X_random),n,d)
-        mode(private$.X) <- 'integer'
-      }
-
+      private$.generate_context(n, never_zero_features)
+      private$.generate_oracle(n)
+      private$.generate_rewards(n)
+    }
+  ),
+  private = list(
+    .generate_context = function(n = 1L, never_zero_features = TRUE) {
+      if (never_zero_features) private$.X[cbind(1:n, sample(d, n, replace = TRUE))] <- 1
+      X_random <- matrix(sample(c(0, 1), replace = TRUE, size = n * self$d), n , self$d)
+      private$.X <- matrix((private$.X | X_random),n,d)
+      mode(private$.X) <- 'integer'
+    },
+    .generate_oracle = function(n) {
       W <- array(t(matrix(private$.W, self$k , self$d)), dim = c(self$d, self$k, n))
-
-      localX <- private$.X
-      for (nn in 1:n) {
-        W[, , nn] <- W[, , nn] * as.vector(localX[nn, ])
-      }
+      for (i in 1:n) { W[, , i] <- W[, , i] * as.vector(private$.X[i, ])}
       private$.O <- t(t(colSums(W)) / as.vector(rowSums(private$.X)))
       private$.O[is.nan(private$.O)] <- 0
-
-      if (self$reward_family == 'Bernoulli') {
+    },
+    .generate_rewards = function(n) {
+      if (self$reward_type == 'Bernoulli') {
         private$.R <- runif(self$k * n) < private$.O
+      } else if (self$reward_type == 'Gaussian') {
+        private$.R <- (rnorm(self$k * n, self$reward_means, self$reward_stds) + private$.O) / 2
       }
     }
+
   )
 )
+
 
 #' External SyntheticBandit
 #'

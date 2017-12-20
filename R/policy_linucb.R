@@ -5,7 +5,7 @@ LinUCBPolicy <- R6::R6Class(
   class = FALSE,
   inherit = AbstractPolicy,
   public = list(
-    alpha = 0.1,
+    alpha = NULL,
     initialize = function(alpha = 1, name = "LinUCB") {
       super$initialize(name)
       self$alpha <- alpha

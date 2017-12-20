@@ -13,7 +13,6 @@ bandit  = SyntheticBandit$new(
   k = 3L,
   d = 1L,
   weight_distribution = "Uniform",
-  reward_family =       "Bernoulli",
   feature_type =        "Bernoulli"
 )
                      #d1

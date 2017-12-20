@@ -8,8 +8,7 @@ bandit <- SyntheticBandit$new(
   k = 3L,
   d = 3L,
   weight_distribution = "Uniform",
-  reward_family =       "Bernoulli",
-  feature_type =        "Bernoulli"
+  reward_type =         "Bernoulli"
 )
 
                      #d1  #d2  #d3
