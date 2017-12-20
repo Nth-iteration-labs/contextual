@@ -12,7 +12,7 @@ OraclePolicy <- R6::R6Class(
       self$parameters <- list('chosen' = 0, 'succes' = 0, 'value' = 0)
     },
     get_action = function(context) {
-      self$action$choice <- self$argmax(context$oracle)
+      self$action$choice <- self$argmax(context$O)
       self$action$propensity <- 1
       self$action
     },

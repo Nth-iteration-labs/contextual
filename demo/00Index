@@ -3,5 +3,5 @@ demo_live_chart                         Serial MAB demo script
 demo_do_azure                           Proof of concept Azure script
 demo_basic                              Basic demo - one bandit, one policy
 demo_minimal_bandit                     How to define custom bandits inline
-demo_minimal_bandit_inline              Testing some stuff
+demo_offline_log                        Demo of Li's offline testing policy
 dev                                     Dev support file

@@ -8,7 +8,7 @@ History <- R6::R6Class(
   public = list(
     n = 1000,
     data = data.table::data.table(),
-    initialize = function(n = 1000) {
+    initialize = function(n = 1) {
       self$n <- n
 
       self$data <- data.table::data.table(
@@ -26,11 +26,10 @@ History <- R6::R6Class(
 
     save_agent = function(counter, t, action, reward, context, policy_name, s = NA, theta = list()) {
       counter = as.integer(counter)
-      if (reward$is_optimal_choice) optimal = 1L else optimal = 0L
+      if (reward$optimal) optimal = 1L else optimal = 0L
 
       # cant use I? Inhibit Interpretation/Conversion? maybe better lists in
       # diffent data.table?
-
       # add probability, propensity
 
       data.table::set(data, counter, 1L:8L,
@@ -51,18 +50,29 @@ History <- R6::R6Class(
                          ".RData",
                          sep = "")
       saveRDS(self$data, file = filename, compress = FALSE)
+      invisible(self)
+    },
+    load_data = function(filename) {
+      self$data = readRDS(filename)
+      invisible(self)
     },
     get_data_frame = function() {
       as.data.frame(self$data)
     },
     set_data_frame = function(dt) {
       self$data = as.data.table(dt)
+      invisible(self)
     },
     get_data_table = function() {
       self$data
     },
     set_data_table = function(dt) {
       self$data = dt
+      invisible(self)
+    },
+    delete_empty_rows = function() {
+      self$data <- self$data[ sim > 0 & t > 0]
+      invisible(self)
     }
   )
 )

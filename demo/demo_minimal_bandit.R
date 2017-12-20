@@ -19,19 +19,17 @@ CustomBanditLocal <- R6::R6Class(
     },
     get_reward = function(action, t) {
       self$calculate_reward( runif(self$k) < self$get_weights() )
-      self$format_reward(action)
+      self$reward_to_list(action)
     }
   )
 )
 
 bandit      <- CustomBanditLocal$new()
-policy      <- EpsilonGreedyPolicy$new(0.05)
+policy      <- EpsilonGreedyPolicy$new()
 agent       <- Agent$new(policy, bandit)
 simulation  <- SimulatorBasic$new(agent, horizon = 100L, simulations = 100L)
 
 history     <- simulation$run()
-
-print(proc.time() - ptm)
 
 Plot$new()$set_external(T, 11, 6L)$grid(history)
 
