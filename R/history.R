@@ -14,21 +14,29 @@ History <- R6::R6Class(
       self$data <- data.table::data.table(
         reward          = rep(0L,      n), #1
         optimal         = rep(0L,      n), #2
-        agent           = rep("",      n), #3
-        t               = rep(0L,      n), #4
-        sim             = rep(0L,      n), #5
-        arm             = rep(0L,      n), #6
-        theta           = rep(list(),  n)  #7
+        context         = rep(list(),  n), #3
+        agent           = rep("",      n), #4
+        t               = rep(0L,      n), #5
+        sim             = rep(0L,      n), #6
+        arm             = rep(0L,      n), #7
+        theta           = rep(list(),  n)  #8
       )
+      invisible(self)
     },
 
-    save_agent = function(counter, t, action, reward, policy_name, s = NA, theta = list()) {
+    save_agent = function(counter, t, action, reward, context, policy_name, s = NA, theta = list()) {
       counter = as.integer(counter)
-      opt = 0L
-      if (reward$is_optimal_choice) opt = 1L
-      data.table::set(data, counter, 1L:7L,
+      if (reward$is_optimal_choice) optimal = 1L else optimal = 0L
+
+      # cant use I? Inhibit Interpretation/Conversion? maybe better lists in
+      # diffent data.table?
+
+      # add probability, propensity
+
+      data.table::set(data, counter, 1L:8L,
                       c(reward[[1]],
-                      opt,
+                      optimal,
+                      list(list(context)),
                       policy_name,
                       t,
                       s,
@@ -36,6 +44,19 @@ History <- R6::R6Class(
                       list(list(theta))
                       ))
 
+    },
+    save_data = function(filename = NA) {
+      if (is.na(filename)) filename = paste("contextual_data_",
+                         format(Sys.time(), "%y%m%d_%H%M%S"),
+                         ".RData",
+                         sep = "")
+      saveRDS(self$data, file = filename, compress = FALSE)
+    },
+    get_data_frame = function() {
+      as.data.frame(self$data)
+    },
+    set_data_frame = function(dt) {
+      self$data = as.data.table(dt)
     },
     get_data_table = function() {
       self$data

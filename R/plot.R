@@ -9,6 +9,7 @@ Plot <- R6::R6Class(
     initialize = function() {
     },
     grid = function(history) {
+      if (!is.data.table(history)) history = history$get_data_table()
       dev.hold()
       layout(matrix(c(1, 3, 2, 4), 2, 2, byrow = TRUE))
 
@@ -29,6 +30,7 @@ Plot <- R6::R6Class(
                            grid = FALSE,
                            xlim = NULL ,
                            legend = TRUE) {
+      if (!is.data.table(history)) history = history$get_data_table()
       if (grid == FALSE)
         dev.hold()
       cs <- history[, list(mean = mean(reward)), by = list(t, agent)]
@@ -67,6 +69,7 @@ Plot <- R6::R6Class(
                        grid = FALSE,
                        xlim = NULL,
                        legend = TRUE) {
+      if (!is.data.table(history)) history = history$get_data_table()
       if (grid == FALSE)
         dev.hold()
 
@@ -117,6 +120,7 @@ Plot <- R6::R6Class(
                        grid = FALSE,
                        xlim = NULL,
                        legend = TRUE) {
+      if (!is.data.table(history)) history = history$get_data_table()
       if (grid == FALSE)
         dev.hold()
       cs <- history[, list(mean = mean(optimal)), by = list(t, agent)]
@@ -152,6 +156,7 @@ Plot <- R6::R6Class(
                        grid = FALSE,
                        xlim = NULL,
                        legend = TRUE) {
+      if (!is.data.table(history)) history = history$get_data_table()
       if (grid == FALSE) dev.hold()
       cs <- history[, list(mean = mean(reward)), by = list(t, agent)]
       agent_list <- unique(cs$agent)

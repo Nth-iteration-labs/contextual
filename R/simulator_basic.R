@@ -57,15 +57,16 @@ SimulatorBasic <- R6::R6Class(
 
             agent_counter = as.integer(s + ((t - 1L) * self$simulations))
 
-                      agent_list[[a,s]]$bandit_get_context(agent_counter)       # observe the bandit in its context
-            action <- agent_list[[a,s]]$policy_get_decision(agent_counter)      # use policy to decide which choice to make (which arm to pick)
-            reward <- agent_list[[a,s]]$bandit_get_reward(agent_counter)        # observe the resonse of the bandit in this context
-            theta  <- agent_list[[a,s]]$policy_set_reward(agent_counter)        # adjust the policy, update theta
+            context <- agent_list[[a,s]]$bandit_get_context(agent_counter)      # observe the bandit in its context
+            action  <- agent_list[[a,s]]$policy_get_decision(agent_counter)     # use policy to decide which choice to make (which arm to pick)
+            reward  <- agent_list[[a,s]]$bandit_get_reward(agent_counter)       # observe the resonse of the bandit in this context
+            theta   <- agent_list[[a,s]]$policy_set_reward(agent_counter)       # adjust the policy, update theta
 
             self$history$save_agent(counter,                                    # save the results to the history log
                                     t,
                                     action,
                                     reward,
+                                    context$X,
                                     agent_list[[a,s]]$policy$name,
                                     s,
                                     theta)
@@ -77,7 +78,7 @@ SimulatorBasic <- R6::R6Class(
           plot$grid(self$history$get_data_table()[t != 0L])
         }
       }
-      self$history$get_data_table()
+      self$history
     }
   )
 )

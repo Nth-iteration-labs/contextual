@@ -28,10 +28,10 @@ SyntheticBandit <- R6::R6Class(
       self$weight_distribution  <- weight_distribution
     },
     get_reward = function(action, t) {
-      format_reward(action, t)
+      private$.format_reward(action, t)
     },
     get_context = function(t) {
-      format_context(t)
+      private$.format_context(t)
     },
     generate_weights = function(k, d = 1, mean = 3.0, sd = 1.0) {
       self$k <- k

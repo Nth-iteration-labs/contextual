@@ -12,7 +12,27 @@ AbstractBandit <- R6::R6Class(
     .X = NULL,      # context matrix
     .O = NULL,      # oracle
 
-    .is_precaching = NULL
+    .is_precaching = NULL,
+
+    .format_reward = function(action, t = 1) {
+      setNames(
+        list(
+          as.integer(private$.R[action$choice, t]),
+          action$choice,
+          argmax(private$.R[, t]) == action$choice,
+          action$propensity
+        ),
+        c("reward",
+          "choice",
+          "is_optimal_choice",
+          "propensity")
+      )
+    },
+    .format_context = function(t = 1) {
+      return(
+        setNames(list(self$k, self$d, private$.X[t, ], private$.O[, t]),
+                 c("k", "d", "X", "oracle")))
+    }
   ),
   active = list(
     is_precaching = function(value) {
@@ -47,32 +67,13 @@ AbstractBandit <- R6::R6Class(
       invisible(self)
     },
     get_reward = function(action, t) {
-      format_reward(action)
-    },
-    format_reward = function(action, t = 1) {
-      setNames(
-        list(
-          as.integer(private$.R[action$choice, t]),
-          action$choice,
-          argmax(private$.R[, t]) == action$choice,
-          action$propensity
-        ),
-        c("reward",
-          "choice",
-          "is_optimal_choice",
-          "propensity")
-      )
+      private$.format_reward(action)
     },
     get_context = function(t) {
-      format_context(1)
+      private$.format_context(1)
     },
     calculate_reward = function (R){
       private$.R <- matrix(R,3,1)
-    },
-    format_context = function(t = 1) {
-      return(
-        setNames(list(self$k, self$d, private$.X[t, ], private$.O[, t]),
-                 c("k", "d", "X", "oracle")))
     },
     generate_cache = function(n) {
       stop("Need to implement cache if is_precaching is TRUE.")
