@@ -22,7 +22,7 @@ agents <- list(
   Agent$new(LinUCBPolicy$new(1.0, "LinUCB"), bandit)
 )
 
-simulation     <- SimulatorParallel$new(agents, horizon = 100L, simulations = 100L)
+simulation     <- SimulatorAzure$new(agents, horizon = 100L, simulations = 100L)
 
 history        <- simulation$run()                                              # go!
 

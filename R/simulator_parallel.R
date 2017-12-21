@@ -60,7 +60,7 @@ SimulatorParallel <- R6::R6Class(
         for (a in 1L:self$agent_n) {
           for (t in 1L:self$horizon) {
 
-            agent_counter = as.integer(s + ((t - 1L) * self$simulations))
+            agent_counter = as.integer(s + ((t - 1L) * sims))
 
             context <- agent[[a,s]]$bandit_get_context(agent_counter)                      # observe the bandit in its context
             action  <- agent[[a,s]]$policy_get_decision(agent_counter)           # use policy to decide which choice to make (which arm to pick)

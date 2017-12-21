@@ -1,4 +1,3 @@
-
 #' @import foreach
 #' @import doAzureParallel
 #' @export
@@ -66,9 +65,6 @@ SimulatorAzure <- R6::R6Class(
       # 6. Check that your parallel backend has been registered
       workers <- foreach::getDoParWorkers()
 
-      n <- self$horizon  * self$agent_n
-      self$history$reset(n)
-
       `%do%` <- foreach::`%do%`
       `%dopar%` <- foreach::`%dopar%`
 
@@ -93,7 +89,7 @@ SimulatorAzure <- R6::R6Class(
 
 
             if (!is.null(reward)) {
-              theta <- agent[[a,s]]$policy_set_reward(agent_counter)                       # adjust the policy, update theta
+              theta <- agent[[a,s]]$policy_set_reward(agent_counter)            # adjust the policy, update theta
 
 
               self$history$save_agent(counter,                                  # save the results to the history log
