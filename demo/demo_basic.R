@@ -7,7 +7,9 @@ source("dev.R")
 
 set.seed(12)
 
-bandit      <- SyntheticBandit$new()$generate_weights(3)
+bandit      <- SyntheticBandit$new(  weight_distribution = "Uniform",
+                                     reward_type =         "Bernoulli")$generate_weights(3,3)
+
 policy      <- EpsilonGreedyPolicy$new(0.05)
 agent       <- Agent$new(policy, bandit)
 simulation  <- SimulatorBasic$new(agent, horizon = 100L, simulations = 100L)

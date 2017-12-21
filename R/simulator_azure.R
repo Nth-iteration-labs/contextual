@@ -77,7 +77,7 @@ SimulatorAzure <- R6::R6Class(
       parallel_results <- foreach::foreach(
         s = 1L:self$simulations,
         .inorder = FALSE,
-        .export = 'agent',
+        .export = c("agent","self"),
         .packages = c("data.table"),
         .options.azure = opt
       ) %dopar% {
@@ -87,7 +87,7 @@ SimulatorAzure <- R6::R6Class(
 
             agent_counter = as.integer(s + ((t - 1L) * self$simulations))
 
-            context <- agent[[a,s]]$bandit_get_context(agent_counter)                      # observe the bandit in its context
+            context <- agent[[a,s]]$bandit_get_context(agent_counter)            # observe the bandit in its context
             action  <- agent[[a,s]]$policy_get_decision(agent_counter)           # use policy to decide which choice to make (which arm to pick)
             reward  <- agent[[a,s]]$bandit_get_reward(agent_counter)             # observe the resonse of the bandit in this context
 
