@@ -31,10 +31,14 @@ SimulatorAzure <- R6::R6Class(
       }
     },
     run = function() {
+      agent <-  matrix(list(), self$agent_n, self$simulations)
 
-      self$horizon <- horizon
-      self$simulations <- simulations
-      agent <- matrix(list(), self$agent_n, simulations)
+      for (s in 1L:self$simulations) {
+        for (a in 1L:self$agent_n) {
+          agent[a, s]  <- list(self$agents[[a]]$clone(deep = FALSE))
+
+        }
+      }
 
       for (s in 1L:self$simulations) {
         for (a in 1L:self$agent_n) {
@@ -81,19 +85,28 @@ SimulatorAzure <- R6::R6Class(
         for (a in 1L:self$agent_n) {
           for (t in 1L:self$horizon) {
 
-            agent[[a,s]]$bandit_get_context(t)                                  # observe the bandit in its context
-            action <- agent[[a,s]]$policy_get_decision(t)                       # use policy to decide which choice to make (which arm to pick)
-            reward <- agent[[a,s]]$bandit_get_reward(t)                         # observe the resonse of the bandit in this context
-            agent[[a,s]]$policy_set_reward(t)                                   # adjust the policy, update theta
+            agent_counter = as.integer(s + ((t - 1L) * self$simulations))
 
-            self$history$save_agent(counter,                                    # save the results to the history log
-                                    t,
-                                    action,
-                                    reward,
-                                    agent[[a,s]]$policy$name,
-                                    s)
+            context <- agent[[a,s]]$bandit_get_context(agent_counter)                      # observe the bandit in its context
+            action  <- agent[[a,s]]$policy_get_decision(agent_counter)           # use policy to decide which choice to make (which arm to pick)
+            reward  <- agent[[a,s]]$bandit_get_reward(agent_counter)             # observe the resonse of the bandit in this context
 
-            counter <- counter + 1L
+
+            if (!is.null(reward)) {
+              theta <- agent[[a,s]]$policy_set_reward(agent_counter)                       # adjust the policy, update theta
+
+
+              self$history$save_agent(counter,                                  # save the results to the history log
+                                      t,
+                                      action,
+                                      reward,
+                                      context$X,
+                                      agent[[a,s]]$policy$name,
+                                      s,
+                                      theta)
+
+              counter <- counter + 1L
+            }
           }
         }
         dth <- self$history$get_data_table()

@@ -17,7 +17,7 @@ SimulatorBasic <- R6::R6Class(
     animate_step = NULL,
 
     initialize = function(agents,
-                          animate = FALSE,
+                          animate = FALSE,                                      ## should be other way around, first hor/sim, then anim
                           animate_step = 1,
                           horizon = 100L,
                           simulations = 100L
