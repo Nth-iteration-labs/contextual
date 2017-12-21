@@ -1,11 +1,11 @@
 ########################### package dev helpers ################################
+
 #library(contextual)
 setwd("~/GitHub/contextual/demo")
 source("dev.R")
-########################### package dev helpers ################################
 
-set.seed(12)
 
+########################### create a random log ################################
 
 set.seed(12)
 
@@ -18,28 +18,27 @@ bandit$set_weights(matrix(c(0.9, 0.0, 0.1,  #k1                                 
 
 policy      <- RandomPolicy$new()
 agent       <- Agent$new(policy, bandit)
-simulation  <- SimulatorBasic$new(agent, horizon = 200L, simulations = 200L)
+simulation  <- SimulatorBasic$new(agent, horizon = 200L, simulations = 200L)    # dividing over sims is faster than just horizon - parallel, etc
 
 history     <- simulation$run()
-
-Plot$new()$set_external(T, 11, 6L)$grid(history)
 
 before <- history$get_data_table()
 
 history$save_data("test.RData")
 
-######################## playing around with logs ##############################
+Plot$new()$set_external(T, 11, 6L)$grid(history)
 
 
+######################## use the log to test a policy ##########################
 
 log_S     <- History$new()
 log_S$load_data("test.RData")
 
 bandit      <- LiLogBandit$new(log_S,3,3)
+
 policy      <- LinUCBPolicy$new(1.0)
 agent       <- Agent$new(policy, bandit)
 simulation  <- SimulatorBasic$new(agent, horizon = 200L, simulations = 200L)
-
 
 history     <- simulation$run()
 

@@ -21,7 +21,7 @@ Agent <- R6::R6Class(
     policy = NULL,
     bandit = NULL,
     initialize = function(policy, bandit) {
-      self$bandit   <- bandit$clone()                                           ## to clone, or not to clone
+      self$bandit   <- bandit                                                   ## to clone, or not to clone
       self$policy   <- policy                                                   ## that is the question..
       self$policy$k <- self$bandit$k
       self$policy$d <- self$bandit$d

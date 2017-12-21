@@ -26,7 +26,7 @@ agents <- list(
 
 ptm <- proc.time()
 
-simulation     <- SimulatorParallel$new(agents,horizon = 100L, simulations = 1000L)
+simulation     <- SimulatorParallel$new(agents,horizon = 100L, simulations = 100L)
 history        <- simulation$run()
 
 print(proc.time() - ptm)
