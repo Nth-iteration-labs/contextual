@@ -10,6 +10,7 @@ Plot <- R6::R6Class(
     },
     grid = function(history) {
       if (!is.data.table(history)) history = history$get_data_table()
+      history <- history[t <= history[ , max(t), by = c("sim")][,min(V1)]]
       dev.hold()
       layout(matrix(c(1, 3, 2, 4), 2, 2, byrow = TRUE))
 

@@ -72,6 +72,8 @@ History <- R6::R6Class(
     },
     delete_empty_rows = function() {
       self$data <- self$data[ sim > 0 & t > 0]
+      self$data <- self$data[, t := seq_len(.N), by = c("agent","sim")]
+      #self$data[ , max(t), by = c("agent","sim")][,min(V1), by = c("agent")][,V1]
       invisible(self)
     }
   )

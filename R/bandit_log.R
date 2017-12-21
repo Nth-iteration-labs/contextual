@@ -6,16 +6,13 @@ LiLogBandit <- R6::R6Class(
   portable = FALSE,
   class = FALSE,
   private = list(
-    .S = NULL,  # S: stream S of events of length L.
-    .G = NULL,  # Gtheta: an initially zero ttoal payoff.
-    .T = NULL   # T: an initially zero count of valid events.
-  ),
+    .S = NULL # S: stream S of events of length L.
+ ),
   public = list(
     initialize   = function(log_file, k, d) {
       super$initialize()
       self$k = k
       self$d = d
-      private$.G = 0
       private$.S = log_file$get_data_table()
     },
     get_context = function(t) {

@@ -18,11 +18,13 @@ bandit$set_weights(matrix(c(0.9, 0.0, 0.1,  #k1                                 
 
 policy      <- RandomPolicy$new()
 agent       <- Agent$new(policy, bandit)
-simulation  <- SimulatorBasic$new(agent, horizon = 100L, simulations = 100L)
+simulation  <- SimulatorBasic$new(agent, horizon = 200L, simulations = 200L)
 
 history     <- simulation$run()
 
 Plot$new()$set_external(T, 11, 6L)$grid(history)
+
+before <- history$get_data_table()
 
 history$save_data("test.RData")
 
@@ -36,8 +38,11 @@ log_S$load_data("test.RData")
 bandit      <- LiLogBandit$new(log_S,3,3)
 policy      <- LinUCBPolicy$new(1.0)
 agent       <- Agent$new(policy, bandit)
-simulation  <- SimulatorBasic$new(agent, horizon = 100L, simulations = 100L)
+simulation  <- SimulatorBasic$new(agent, horizon = 200L, simulations = 200L)
+
 
 history     <- simulation$run()
+
+after <- history$get_data_table()
 
 Plot$new()$set_external(T, 11, 6L)$grid(history)
