@@ -20,7 +20,10 @@ Agent <- R6::R6Class(
   public = list(
     policy = NULL,
     bandit = NULL,
+    s_index = NULL,
+    a_index = NULL,
     initialize = function(policy, bandit) {
+      super$initialize()
       self$bandit   <- bandit                                                   ## to clone, or not to clone
       self$policy   <- policy                                                   ## that is the question..
       self$policy$k <- self$bandit$k
@@ -33,7 +36,7 @@ Agent <- R6::R6Class(
       private$.state$context <- matrix()
       private$.state$action <- list()
       private$.state$reward <- list()
-      private$.state$t <- 0                                                     ## work this out to make work in different orders
+      private$.state$t <- 0L                                                    ## work this out to make work in different orders
     },
     generate_cache = function(n) {
       self$bandit$generate_cache(n)
@@ -53,6 +56,10 @@ Agent <- R6::R6Class(
     },
     policy_set_reward = function(t) {
       (private$.theta <- self$policy$set_reward(private$.state$reward, private$.state$context))
+    },
+    object_size = function() {
+      cat(paste("Agent: ", self$hash),"\n")
+      bandit$object_size()
     }
   )
 )

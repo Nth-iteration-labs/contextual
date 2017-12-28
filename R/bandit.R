@@ -25,20 +25,29 @@ AbstractBandit <- R6::R6Class(
     d            = NULL,
     k            = NULL,
     initialize   = function() {
+      super$initialize()
       self$is_precaching <- FALSE
-      private$.X <- matrix(1, 1, 1)
-      private$.R <- matrix(0, 3, 1)
-      private$.W <- matrix(0, 3, 1)
-      private$.O <- matrix(0, 3, 1)
+      private$.X <- matrix(1L, 1L, 1L)
+      private$.R <- matrix(0L, 3L, 1L)
+      private$.W <- matrix(0L, 3L, 1L)
+      private$.O <- matrix(0L, 3L, 1L)
     },
     get_weights = function() {
       private$.W
     },
+    object_size = function() {
+      cat(paste("  Bandit: ", self$hash),"\n")
+      cat(paste("    Size of W: ", format(object.size(private$.W), units = "auto")),"\n")
+      cat(paste("    Size of R: ", format(object.size(private$.R), units = "auto")),"\n")
+      cat(paste("    Size of X: ", format(object.size(private$.X), units = "auto")),"\n")
+      cat(paste("    Size of O: ", format(object.size(private$.O), units = "auto")),"\n")
+      self$hash
+    },
     set_weights = function(W) {
-      if (is.vector(W)) private$.W <- matrix(W, nrow = 1)
+      if (is.vector(W)) private$.W <- matrix(W, nrow = 1L)
       if (is.matrix(W)) private$.W <- W
-      self$d <- dim(private$.W)[1]
-      self$k <- dim(private$.W)[2]
+      self$d <- as.integer(dim(private$.W)[1])
+      self$k <- as.integer(dim(private$.W)[2])
       private$.O  <- t(private$.W)
       invisible(self)
     },
@@ -49,7 +58,7 @@ AbstractBandit <- R6::R6Class(
       self$reward_to_list(action)
     },
     calculate_reward = function(R){
-      private$.R <- matrix(R,3,1)
+      private$.R <- matrix(R,3L,1L)
     },
     generate_cache = function(n) {
       stop("Need to implement cache if is_precaching is TRUE.")

@@ -5,9 +5,7 @@ Contextual <- R6::R6Class(
   "Contextual",
   portable = FALSE,
   class = FALSE,
-  private = list(
-    .hash = NULL
-  ),
+  private = list(.hash = NULL),
   active = list(
     hash = function(value) {
       if (missing(value)) {
@@ -17,18 +15,25 @@ Contextual <- R6::R6Class(
   ),
   public = list(
     initialize = function() {
-      private$.hash = digest::digest(self)
+      private$.hash = sub('<environment: (.*)>', '\\1',  capture.output(self)) #digest::digest(self)
+
     },
     argmaxlist = function(x, list_element_name = NA)
     {
       x <- lname_to_vector(x, list_element_name)
       y <- seq_along(x)[x == max(x)]
-      if (length(y) > 1L) sample(y, 1L, replace = TRUE) else y
+      if (length(y) > 1L)
+        sample(y, 1L, replace = TRUE)
+      else
+        y
     },
     argmax = function(x)
     {
       y <- seq_along(x)[x == max(x)]
-      if (length(y) > 1L) sample(y, 1L, replace = TRUE) else y
+      if (length(y) > 1L)
+        sample(y, 1L, replace = TRUE)
+      else
+        y
     },
     sumval = function(x, list_element_name)
     {
@@ -37,6 +42,11 @@ Contextual <- R6::R6Class(
     lname_to_vector = function(x, list_element_name)
     {
       unlist(lapply(x, `[[`, list_element_name) , FALSE, FALSE)
+    },
+    repmat = function(X, m, n) {
+      mx = dim(X)[1]
+      nx = dim(X)[2]
+      matrix(t(matrix(X, mx, nx * n)), mx * m, nx * n, byrow = TRUE)
     }
   )
 )

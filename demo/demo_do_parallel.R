@@ -4,17 +4,19 @@ setwd("~/GitHub/contextual/demo")
 #library(contextual)
 source("dev.R")
 
-set.seed(21L)
+
+set.seed(12L)
 
 bandit <- SyntheticBandit$new(
   weight_distribution = "Uniform",
-  reward_type =         "Bernoulli"
+  reward_type =         "Bernoulli",
+  seed = 1
 )
                             #d1  #d2  #d3
-bandit$set_weights(matrix(c(0.9, 0.0, 0.1,  #k1                                 # d / nrow: how many features
-                            0.1, 0.9, 0.1,  #k2                                 # k / ncol: how many arms
-                            0.9, 0.1, 0.9), #k3
-                            nrow = 3, ncol = 3))
+bandit$set_weights(matrix(c(0.9, 0.1, 0.1,  #k1                                 # d / nrow: how many features
+                            0.1, 0.2, 0.1,  #k2                                 # k / ncol: how many arms
+                            0.2, 0.1, 0.2), #k3
+                            nrow = 3L, ncol = 3L))
 
 agents <- list(
   Agent$new(EpsilonGreedyPolicy$new(0.1, "\U190-greedy"), bandit),
@@ -26,10 +28,25 @@ agents <- list(
 
 ptm <- proc.time()
 
-simulation     <- SimulatorParallel$new(agents,horizon = 100L, simulations = 100L)
+print("pregenerate")
+simulation     <- SimulatorParallel$new(agents,
+                                        horizon = 100L,
+                                        simulations = 100L,
+                                        save_context = FALSE,
+                                        save_theta = FALSE,
+                                        worker_max = 7)
+
+print("start sim")
 history        <- simulation$run()
+print("sim complete")
 
 print(proc.time() - ptm)
 
-plot <- Plot$new()$set_external(T, 11, 6L)                                      # initialize plot.. TODO: change to within class
-plot$grid(history)                                                              # plot the results...
+print("start plot")
+plot <- Plot$new()
+plot$grid(history)
+print("end plot")
+
+simulation$object_size()
+
+

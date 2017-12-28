@@ -18,7 +18,8 @@ Imports:
     digest,
     rAzureBatch,
     doAzureParallel,
-    doRNG
+    doRNG,
+    itertools
 Suggests: 
     testthat,
     covr

@@ -22,6 +22,7 @@ SimulatorBasic <- R6::R6Class(
                           horizon = 100L,
                           simulations = 100L
                           ) {
+      super$initialize()
       self$horizon <- horizon
       self$simulations <- simulations
       if (!is.list(agents)) agents = list(agents)
@@ -82,6 +83,13 @@ SimulatorBasic <- R6::R6Class(
         }
       }
       self$history$delete_empty_rows()
+    },
+    object_size = function() {
+      cat(paste("Simulator: ", self$hash),"\n")
+      cat(paste("Size of W: ", format(object.size(private$.W), units = "auto")),"\n")
+      cat(paste("Size of R: ", format(object.size(private$.R), units = "auto")),"\n")
+      cat(paste("Size of X: ", format(object.size(private$.X), units = "auto")),"\n")
+      cat(paste("Size of O: ", format(object.size(private$.O), units = "auto")),"\n")
     }
   )
 )

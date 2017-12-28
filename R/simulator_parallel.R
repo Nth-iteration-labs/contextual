@@ -1,26 +1,40 @@
+# TODO: make sure same results (SEED) in par. and serial
+
 #' @import foreach
 #' @import doParallel
 #' @import doRNG
+#' @import itertools
 #' @export
 SimulatorParallel <- R6::R6Class(
   "SimulatorParallel",
   portable = FALSE,
   class = FALSE,
+  inherit = Contextual,
   private = list(rewards = NULL),
   public = list(
     agents = NULL,
     agent_n = NULL,
     horizon = NULL,
     simulations = NULL,
+    worker_max = NULL,
     history = NULL,
-
-    initialize = function(agents,horizon = 100L, simulations = 100L) {
+    save_context = NULL,
+    save_theta = NULL,
+    initialize = function(agents,
+                          horizon = 100L,
+                          simulations = 100L,
+                          save_context = FALSE,
+                          save_theta = FALSE,
+                          worker_max = 7) {
+      super$initialize()
       self$horizon <- horizon
       self$simulations <- simulations
+      self$save_theta <- save_theta
+      self$save_context <- save_context
       if (!is.list(agents)) agents = list(agents)
       self$agents <- agents
+      self$worker_max <- worker_max
       self$agent_n <- length(agents)
-      self$history <- History$new(self$horizon * self$agent_n * self$simulations)
       self$reset()
     },
     reset = function() {
@@ -31,74 +45,101 @@ SimulatorParallel <- R6::R6Class(
       }
     },
     run = function() {
-      agent <-  matrix(list(), self$agent_n, self$simulations)
-
+      sims_agents_list <-  matrix(list(), self$simulations, self$agent_n)
       for (s in 1L:self$simulations) {
         for (a in 1L:self$agent_n) {
-          agent[a, s]  <- list(self$agents[[a]]$clone(deep = FALSE))
-
+          sims_agents_list[s, a]  <- list(self$agents[[a]]$clone(deep = FALSE))
+          sims_agents_list[[s, a]]$s_index <- s
+          sims_agents_list[[s, a]]$a_index <- a
         }
       }
-
+      print("preworkercreation")
       workers <- parallel::detectCores() - 1
-      cl <- parallel::makeCluster(workers)
+      if (workers > worker_max) workers <- worker_max
+      cl <- parallel::makeCluster(workers, useXDR = FALSE) #type="FORK")   #  type="FORK" only linux
+      print("postworkercreation")
       doParallel::registerDoParallel(cl)
 
       `%do%` <- foreach::`%do%`
       `%dorng%` <- doRNG::`%dorng%`
       `%dopar%` <- foreach::`%dopar%`
 
-      sims = self$simulations
+      horizon = self$horizon
+      agent_n = self$agent_n
+      save_context = self$save_context
+      save_theta = self$save_theta
+
+      self$history <- History$new(self$horizon * self$agent_n * self$simulations)
 
       parallel_results <- foreach::foreach(
-        s = 1L:self$simulations,
+        sims_agents = itertools::isplitRows(sims_agents_list, chunks = workers),
+        i = iterators::icount(),
+        .options.RNG = 123,
         .inorder = FALSE,
-        .export = c("self"),
-        .packages = c("data.table")
+        .export = c("History"),
+        .noexport = c("sims_agents_list","history"),
+        .packages = c("data.table","itertools")
       ) %dopar% {
         counter <- 1L
-        for (a in 1L:self$agent_n) {
-          for (t in 1L:self$horizon) {
+        agent_counter <- 21L
 
-            agent_counter = as.integer(s + ((t - 1L) * sims))
+        local_history <- History$new(horizon * agent_n * length(sims_agents))
 
-            context <- agent[[a,s]]$bandit_get_context(agent_counter)                      # observe the bandit in its context
-            action  <- agent[[a,s]]$policy_get_decision(agent_counter)           # use policy to decide which choice to make (which arm to pick)
-            reward  <- agent[[a,s]]$bandit_get_reward(agent_counter)             # observe the resonse of the bandit in this context
+        for (sa in sims_agents) {
+          sidx <- sa$s_index
+          set.seed(sidx)
+          pname <- sa$policy$name
+          for (t in 1L:horizon) {
 
+            agent_counter = as.integer(t + ((sidx - 1L) * horizon))
 
+            context <- sa$bandit_get_context(agent_counter)                     # observe the bandit in its context
+            action  <- sa$policy_get_decision(agent_counter)                    # use policy to decide which choice to make (which arm to pick)
+            reward  <- sa$bandit_get_reward(agent_counter)                      # observe the resonse of the bandit in this context
             if (!is.null(reward)) {
-              theta <- agent[[a,s]]$policy_set_reward(agent_counter)                       # adjust the policy, update theta
-
-
-              self$history$save_agent(counter,                                  # save the results to the history log
-                                      t,
-                                      action,
-                                      reward,
-                                      context$X,
-                                      agent[[a,s]]$policy$name,
-                                      s,
-                                      theta)
-
+              theta <- sa$policy_set_reward(agent_counter)                      # adjust the policy, update theta
+              local_history$save_agent(
+                                       counter,                                 # save the results to the history log
+                                       t,
+                                       action,
+                                       reward,
+                                       pname,
+                                       sidx,
+                                       if (save_context) context$X else NA,
+                                       if (save_theta)   theta     else NA
+                                      )
               counter <- counter + 1L
-
-
-
             }
           }
         }
-        dth <- self$history$get_data_table()
+        dth <- local_history$get_data_table()
         dth[sim != 0]
       }
       parallel_results <- data.table::rbindlist(parallel_results)
-
-
-
-      self$history$set_data_table(parallel_results)
-
+      self$history$set_data_table(parallel_results)  ## set it here
       parallel::stopCluster(cl)
+      parallel_results   ## return it here .. hmm!
+    },
+    object_size = function() {
+      cat(paste("Simulator: ", self$hash),"\n")
+      cat(paste("  Size of history: ", format(object.size(self$history$data), units = "auto")),"\n")
+      cat(paste("    Size of t:     ", format(object.size(self$history$data$t), units = "auto")),"\n")
+      cat(paste("    Size of sim  : ", format(object.size(self$history$data$sim), units = "auto")),"\n")
+      cat(paste("    Size of arm  : ", format(object.size(self$history$data$arm), units = "auto")),"\n")
+      cat(paste("    Size of r    : ", format(object.size(self$history$data$reward), units = "auto")),"\n")
+      cat(paste("    Size of opt  : ", format(object.size(self$history$data$optimal), units = "auto")),"\n")
+      cat(paste("    Size of agent: ", format(object.size(self$history$data$agent), units = "auto")),"\n")
+      cat(paste("    Size of ctxt : ", format(object.size(self$history$data$context), units = "auto")),"\n")
+      cat(paste("    Size of theta: ", format(object.size(self$history$data$theta), units = "auto")),"\n")
 
-      parallel_results
+      agent_hashes <- list()
+      for (a in 1L:self$agent_n) {
+        if (!(self$agents[[a]]$bandit$hash %in% agent_hashes)) {
+          agent_hashes <- list(agent_hashes,self$agents[[a]]$bandit$hash)
+          self$agents[[a]]$object_size()
+        }
+      }
+      invisible(self)
     }
   )
 )
