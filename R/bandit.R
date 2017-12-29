@@ -37,10 +37,14 @@ AbstractBandit <- R6::R6Class(
     },
     object_size = function() {
       cat(paste("  Bandit: ", self$hash),"\n")
-      cat(paste("    Size of W: ", format(object.size(private$.W), units = "auto")),"\n")
-      cat(paste("    Size of R: ", format(object.size(private$.R), units = "auto")),"\n")
-      cat(paste("    Size of X: ", format(object.size(private$.X), units = "auto")),"\n")
-      cat(paste("    Size of O: ", format(object.size(private$.O), units = "auto")),"\n")
+      cat(paste("    Size of W:        ",
+                format(object.size(private$.W), units = "auto")),"\n")
+      cat(paste("    Size of R:        ",
+                format(object.size(private$.R), units = "auto")),"\n")
+      cat(paste("    Size of X:        ",
+                format(object.size(private$.X), units = "auto")),"\n")
+      cat(paste("    Size of O:        ",
+                format(object.size(private$.O), units = "auto")),"\n")
       self$hash
     },
     set_weights = function(W) {

@@ -15,14 +15,7 @@ Imports:
     R.devices,
     foreach,
     doParallel,
-    digest,
-    rAzureBatch,
-    doAzureParallel,
-    doRNG,
     itertools
 Suggests: 
     testthat,
     covr
-Remotes:
-    Azure/rAzureBatch,
-    Azure/doAzureParallel

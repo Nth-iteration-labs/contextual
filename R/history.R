@@ -17,8 +17,8 @@ History <- R6::R6Class(
         reward          = rep(0L,      n),
         optimal         = rep(0L,      n),
         agent           = rep("",      n),
-        context         = rep(list(),  n),
-        theta           = rep(list(),  n)
+        theta           = rep(list(),  n),
+        context         = rep(list(),  n)
       )
       invisible(self)
     },
@@ -39,17 +39,16 @@ History <- R6::R6Class(
       else
         optimal = 0L
 
-      data.table::set(data, counter, 1L , t)
-      data.table::set(data, counter, 2L , s)
-      data.table::set(data, counter, 3L , action$choice)
-      data.table::set(data, counter, 4L , reward[[1]])
-      data.table::set(data, counter, 5L , optimal)
-      data.table::set(data, counter, 6L , policy_name)
-      if (!is.na(context)) {
-        data.table::set(data, counter, 7L , list(list(context)))
-      }
+      data.table::set(data, counter, 1L:6L,
+                      list(t,s,action$choice,reward[[1]],optimal,policy_name)
+                      )
+
       if (!is.na(theta)) {
-        data.table::set(data, counter, 8L , list(list(theta)))
+        data.table::set(data, counter, "theta" , list(list(theta)))
+      }
+      if (!is.na(context)) {
+        data.table::set(data, counter, 7L, list(list(context)))
+        #data[counter, (paste0("X.", seq_along(context))) := context]
       }
     },
     save_data = function(filename = NA) {

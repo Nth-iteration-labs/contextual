@@ -15,24 +15,33 @@ SyntheticBandit <- R6::R6Class(
     reward_type   = NULL,
     weight_distribution  = NULL,
     seed = NULL,
+    precache = NULL,
+    has_cache = NULL,
     initialize   = function(weight_distribution  = 'Uniform',
                             reward_type          = 'Bernoulli',
                             seed                 = 1L,
                             weight_stds          = NA,
                             weight_means         = NA,
                             reward_means         = NA,
-                            reward_stds          = NA) {
-
+                            reward_stds          = NA,
+                            precache             = TRUE
+                           ) {
       super$initialize()
+      self$has_cache            <- FALSE                                        # true / false? version nr
       self$seed                 <- seed
-      self$is_precaching        <- TRUE
+      self$is_precaching        <- precache
       self$reward_type          <- reward_type
       self$weight_distribution  <- weight_distribution
     },
     get_context = function(t) {
+      if (!self$is_precaching) {
+        self$generate_cache(n = 1L, not_zero_features = TRUE, seed_counter = t)
+        t = 1
+      }
       self$context_to_list(t)
     },
     get_reward = function(action, t) {
+      if (!self$is_precaching) t = 1
       self$reward_to_list(action, t)
     },
     generate_weights = function(k, d = 1L, mean = 3.0, sd = 1.0) {
@@ -46,19 +55,21 @@ SyntheticBandit <- R6::R6Class(
       }
       invisible(self)
     },
-    generate_cache = function(n = 1L, never_zero_features = TRUE) {
-      set.seed(self$seed)
+    generate_cache = function(n = 1L, not_zero_features = TRUE, seed_counter = 0L) {
+      print("precaching bandit" )
+      set.seed(self$seed + seed_counter)
       private$.X <- matrix(0, n , d)
       private$.O <- matrix(0, self$k, n)
       private$.R <- matrix(0, self$k, n)
-      private$.generate_context(n, never_zero_features)
+      private$.generate_context(n, not_zero_features)
       private$.generate_oracle(n)
       private$.generate_rewards(n)
+      self$has_cache = TRUE
     }
   ),
   private = list(
-    .generate_context = function(n = 1L, never_zero_features = TRUE) {
-      if (never_zero_features) private$.X[cbind(1L:n, sample(self$d, n, replace = TRUE))] <- 1
+    .generate_context = function(n = 1L, not_zero_features = TRUE) {
+      if (not_zero_features) private$.X[cbind(1L:n, sample(self$d, n, replace = TRUE))] <- 1
       private$.X <- matrix((private$.X |
                               matrix(sample(c(0, 1), replace = TRUE, size = n * self$d), n , self$d)
                             ),n,self$d)
@@ -81,11 +92,10 @@ SyntheticBandit <- R6::R6Class(
   )
 )
 
-#W <- repmat(t(matrix(private$.W, self$k , self$d)),n,1)
-#X <- as.vector(matrix(t(private$.X),n*d,1 , byrow = TRUE))
-#WX <- W*X
-#print(aperm(array(t(WX),c(n,d,k))),c(3,1,2)) ?????? grrr
-
+#W <- repmat(t(matrix(private$.W, self$k , self$d)),n,1) *
+#     as.vector(matrix(t(private$.X),n*d,1 , byrow = TRUE))
+#W <- array(t(W), dim = c(self$k , self$d, n))
+#W <- aperm(W,c(2,1,3))
 
 #' External SyntheticBandit
 #'

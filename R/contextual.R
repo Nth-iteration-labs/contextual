@@ -1,5 +1,4 @@
 #' @import R6
-#' @import digest
 #' @export
 Contextual <- R6::R6Class(
   "Contextual",
@@ -15,7 +14,7 @@ Contextual <- R6::R6Class(
   ),
   public = list(
     initialize = function() {
-      private$.hash = sub('<environment: (.*)>', '\\1',  capture.output(self)) #digest::digest(self)
+      private$.hash = sub('<environment: (.*)>', '\\1',  capture.output(self))
 
     },
     argmaxlist = function(x, list_element_name = NA)
