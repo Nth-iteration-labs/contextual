@@ -1,6 +1,6 @@
 # Contextual
 
-[![Build Status](https://travis-ci.com/robinvanemden/contextual.svg?token=vdxzMgcdpyqKNduu9KeR&branch=master)](https://travis-ci.com/robinvanemden/contextual) [![codecov](https://codecov.io/gh/robinvanemden/contextual/branch/master/graph/badge.svg?token=u2LWZWFeZL)](https://codecov.io/gh/robinvanemden/contextual) [![develVersion](https://img.shields.io/badge/devel%20version-0.0.0.9011-blue.svg?style=flat)](https://github.com/Nth-iteration-labs/contextual)
+[![Build Status](https://travis-ci.org/Nth-iteration-labs/contextual.svg?branch=master)](https://travis-ci.org/Nth-iteration-labs/contextual) [![codecov](https://codecov.io/gh/robinvanemden/contextual/branch/master/graph/badge.svg?token=u2LWZWFeZL)](https://codecov.io/gh/robinvanemden/contextual) [![develVersion](https://img.shields.io/badge/devel%20version-0.0.0.9011-blue.svg?style=flat)](https://github.com/Nth-iteration-labs/contextual)
 
 Overview
 --------
