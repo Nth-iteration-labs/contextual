@@ -55,6 +55,7 @@ SimulatorParallel <- R6::R6Class(
       }
       print("preworkercreation")
       workers <- parallel::detectCores() - 1
+      if (workers < 1) workers <- 1
       if (workers > worker_max) workers <- worker_max
       cl <- parallel::makeCluster(workers, useXDR = FALSE) #type="FORK")   #  type="FORK" only linux
       print("postworkercreation")

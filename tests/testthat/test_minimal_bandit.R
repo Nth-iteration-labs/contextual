@@ -21,9 +21,10 @@ test_that("Minimal bandit setup test", {
   agent       <- Agent$new(policy, bandit)
   expect_identical(typeof(agent), "environment")
 
-  simulation  <- SimulatorParallel$new(agent, horizon = 2L, simulations = 2L)
+  simulation  <- SimulatorParallel$new(agent, horizon = 2L, simulations = 2L, worker_max = 1)
   expect_identical(typeof(simulation), "environment")
 
   history     <- simulation$run()
   expect_equal(sum(history$reward), 0)
+
 })
