@@ -1,4 +1,5 @@
 # create from scratch if not cache, otherwise do cache
+# This is not abstractbandit, but UniformBasicBandit..
 #' @export
 AbstractBandit <- R6::R6Class(
   "AbstractBandit",
@@ -10,14 +11,14 @@ AbstractBandit <- R6::R6Class(
     .R = NULL,      # rewards matrix
     .X = NULL,      # context matrix
     .O = NULL,      # oracle
-    .is_precaching = NULL
+    .is_precaching = FALSE
   ),
   active = list(
     is_precaching = function(value) {
       if (missing(value)) {
         private$.is_precaching
       } else {
-        private$.is_precaching <- value
+        warning("### AbstractBandit's is_precaching is locked at FALSE.", call. = FALSE)
       }
     }
   ),
@@ -26,7 +27,6 @@ AbstractBandit <- R6::R6Class(
     k            = NULL,
     initialize   = function() {
       super$initialize()
-      self$is_precaching <- FALSE
       private$.X <- matrix(1L, 1L, 1L)
       private$.R <- matrix(0L, 3L, 1L)
       private$.W <- matrix(0L, 3L, 1L)
@@ -55,17 +55,15 @@ AbstractBandit <- R6::R6Class(
       private$.O  <- t(private$.W)
       invisible(self)
     },
-    get_context = function(t) {
+    get_context = function(t = 1) {
       self$context_to_list()
     },
-    get_reward = function(action, t) {
+    get_reward = function(action, t = 1) {
+      private$.R <- matrix(runif(self$k) < self$get_weights(), self$k, self$d)
       self$reward_to_list(action)
     },
-    generate_reward = function(R){                                              ## this is weird.. can be smarter about this..
-      private$.R <- matrix(R,3L,1L)
-    },
-    generate_cache = function(n) {
-      stop("Need to implement cache if is_precaching is TRUE.")
+    generate_cache = function(n = 1) {
+      stop("### Need to implement cache if is_precaching is TRUE.", call. = FALSE)
     },
     context_to_list = function(t = 1) {
       return(

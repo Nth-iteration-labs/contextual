@@ -16,10 +16,6 @@ CustomBanditLocal <- R6::R6Class(
     initialize   = function() {
       super$initialize()
       self$set_weights(c(0.1,0.1,0.9))
-    },
-    get_reward = function(action, t) {
-      self$calculate_reward( runif(self$k) < self$get_weights() )
-      self$reward_to_list(action)
     }
   )
 )

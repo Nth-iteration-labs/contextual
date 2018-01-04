@@ -10,6 +10,8 @@ Sys.setenv(R_GSCMD = "C:\\Program Files\\gs\\gs9.22\\bin\\gswin64c.exe")
 
 # TODO: document, write, document, then write some more
 
+# TODO: propensity, and correct names for all vars
+
 # make sure enough checks on inputs..
 
 # TODO: confidence interval

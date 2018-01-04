@@ -5,6 +5,15 @@ SyntheticBandit <- R6::R6Class(
   inherit = AbstractBandit,
   portable = FALSE,
   class = FALSE,
+  active = list(
+    is_precaching = function(value) {
+      if (missing(value)) {
+        private$.is_precaching
+      } else {
+        private$.is_precaching <- value
+      }
+    }
+  ),
   public = list(
     d             = NULL,
     k             = NULL,
@@ -81,6 +90,11 @@ SyntheticBandit <- R6::R6Class(
       private$.O <- t(t(colSums(W)) / as.vector(rowSums(private$.X)))
       private$.O[is.nan(private$.O)] <- 0
     },
+
+
+
+    ############## this is more general! --@@--
+
     .generate_rewards = function(n) {
       if (self$reward_type == 'Bernoulli') {
         private$.R <- runif(self$k * n) < private$.O
