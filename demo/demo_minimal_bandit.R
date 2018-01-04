@@ -27,11 +27,11 @@ CustomBanditLocal <- R6::R6Class(
 bandit      <- CustomBanditLocal$new()
 policy      <- EpsilonGreedyPolicy$new()
 agent       <- Agent$new(policy, bandit)
-simulation  <- SimulatorBasic$new(agent, horizon = 100L, simulations = 100L)
+simulation  <- SimulatorParallel$new(agent, horizon = 100L, simulations = 100L)
 
 history     <- simulation$run()
 
 Plot$new()$set_external(T, 11, 6L)$grid(history)
 
-#print(sum(history$optimal)/sum(history$reward))
+print(sum(history$optimal)/sum(history$reward))
 

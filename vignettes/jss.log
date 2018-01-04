@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6350 64-bit) (preloaded format=pdflatex 2017.10.23)  4 JAN 2018 14:10
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6350 64-bit) (preloaded format=pdflatex 2017.10.23)  4 JAN 2018 15:14
 entering extended mode
 **./jss.tex
 (jss.tex
 LaTeX2e <2017-04-15>
 Babel <3.10> and hyphenation patterns for 75 language(s) loaded.
-(jss.cls
+(C:/PROGRA~1/MIE74D~1/ROPEN~1/R-34~1.2/share/texmf/tex/latex\jss.cls
 Document Class: jss 2015/09/01 3.0 jss class by Achim Zeileis
 ("C:\Program Files\MiKTeX 2.9\tex\latex\base\article.cls"
 Document Class: article 2014/09/29 v1.4h Standard LaTeX document class
@@ -314,11 +314,11 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
 
 
 Package hyperref Warning: Option `hyperindex' has already been used,
-(hyperref)                setting the option has no effect on input line 466.
+(hyperref)                setting the option has no effect on input line 446.
 
-Package hyperref Info: Option `colorlinks' set `true' on input line 466.
-Package hyperref Info: Option `linktocpage' set `true' on input line 466.
-Package hyperref Info: Option `plainpages' set `false' on input line 466.
+Package hyperref Info: Option `colorlinks' set `true' on input line 446.
+Package hyperref Info: Option `linktocpage' set `true' on input line 446.
+Package hyperref Info: Option `plainpages' set `false' on input line 446.
 ) ("C:\Program Files\MiKTeX 2.9\tex\latex\base\inputenc.sty"
 Package: inputenc 2015/03/17 v1.2c Input encoding file
 \inpenc@prehook=\toks15
@@ -855,9 +855,9 @@ Package rerunfilecheck Info: File `jss.out' has not changed.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 107.
  ) 
 Here is how much of TeX's memory you used:
- 7551 strings out of 493323
- 106740 string characters out of 3139065
- 199019 words of memory out of 3000000
+ 7552 strings out of 493323
+ 106920 string characters out of 3139065
+ 198013 words of memory out of 3000000
  10940 multiletter control sequences out of 15000+200000
  39347 words of font info for 73 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -870,7 +870,7 @@ fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files/MiKTeX 2.9/fonts/typ
 e1/public/amsfonts/cm/cmss10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/publi
 c/amsfonts/cm/cmti10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfon
 ts/cm/cmtt10.pfb>
-Output written on jss.pdf (2 pages, 108550 bytes).
+Output written on jss.pdf (2 pages, 107400 bytes).
 PDF statistics:
  73 PDF objects out of 1000 (max. 8388607)
  10 named destinations out of 1000 (max. 500000)

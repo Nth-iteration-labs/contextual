@@ -1,6 +1,6 @@
 ---
 title: "Introduction to contextial"
-author: "RObin van Emden"
+author: "Robin van Emden"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >

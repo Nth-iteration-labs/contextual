@@ -61,7 +61,7 @@ AbstractBandit <- R6::R6Class(
     get_reward = function(action, t) {
       self$reward_to_list(action)
     },
-    calculate_reward = function(R){
+    generate_reward = function(R){                                              ## this is weird.. can be smarter about this..
       private$.R <- matrix(R,3L,1L)
     },
     generate_cache = function(n) {

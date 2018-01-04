@@ -1,4 +1,4 @@
-%\VignetteIndexEntry{contextual: Simulation of Contextual Multi-Armed Bandit Problems in R (article)}
+%\VignetteIndexEntry{contextual: Simulating Contextual Multi-Armed Bandit Problems in R (article)}
 %\VignetteEngine{knitr::knitr}
 %\VignetteKeyword{archivsit}
 %\VignetteKeyword{package}
@@ -23,11 +23,11 @@
   Eric Postma\\Tilburg University \And
   Maurits Kaptein\\Tilburg University}
 
-\title{\pkg{contextual}: Simulation of Contextual Multi-Armed Bandit Problems in R}
+\title{\pkg{contextual}: Simulating Contextual Multi-Armed Bandit Problems in R}
 
 %% for pretty printing and a nice hypersummary also set:
 \Plainauthor{Robin van Emden, Eric Postma, Maurits Kaptein} %% comma-separated
-\Plaintitle{contextual: Simulation of Contextual Multi-Armed Bandit Problems in R} %% without formatting
+\Plaintitle{contextual: Simulating Contextual Multi-Armed Bandit Problems in R} %% without formatting
 \Shorttitle{\pkg{contextual}} %% a short title (if necessary)
 
 %% an abstract and keywords

@@ -1,3 +1,4 @@
+#' @import checkmate
 #' @export
 Agent <- R6::R6Class(
   "Agent",
@@ -13,7 +14,8 @@ Agent <- R6::R6Class(
       if (missing(value)) {
         private$.theta
       } else {
-        stop("'$theta' is read only", call. = FALSE)
+        if (is.null(self$bandit$d)) stop("### Cannot set $theta, it is read only." , call. = FALSE)
+
       }
     }
   ),
@@ -26,6 +28,8 @@ Agent <- R6::R6Class(
       super$initialize()
       self$bandit   <- bandit                                                   ## to clone, or not to clone
       self$policy   <- policy                                                   ## that is the question..
+
+      if (is.null(self$bandit$d)) stop("### No weights - please set_weights(W) or generate_weights() on your Bandit object." , call. = FALSE)
       self$policy$k <- self$bandit$k
       self$policy$d <- self$bandit$d
       self$reset()
