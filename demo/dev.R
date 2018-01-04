@@ -3,6 +3,9 @@ gc()
 if ("package:contextual" %in% search()) detach("package:contextual", unload = TRUE)
 devtools::load_all()
 
+# Set environment path to GhostScript command, for check
+Sys.setenv(R_GSCMD = "C:\\Program Files\\gs\\gs9.22\\bin\\gswin64c.exe")
+
 ########### Start TODO LIST ######################
 
 # TODO: document, write, document, then write some more

@@ -2,8 +2,6 @@
 setwd("~/GitHub/contextual/demo")
 source("dev.R")
 
-library(tcltk)
-
 bandit <- SyntheticBandit$new(
   weight_distribution = "Uniform",
   reward_type         = "Bernoulli",
@@ -44,38 +42,4 @@ plot <- Plot$new()
 plot$grid(history)
 
 simulation$object_size()
-
-
-server <- function(){
-  while(TRUE){
-    writeLines("Listening...")
-    con <- socketConnection(host="localhost", port = 6011, blocking=TRUE,
-                            server=TRUE, open="r+")
-    data <- readLines(con, 1)
-    print(data)
-    response <- toupper(data)
-    writeLines(response, con)
-    close(con)
-  }
-}
-server()
-
-client <- function(){
-  while(TRUE){
-    con <- socketConnection(host="localhost", port = 6011, blocking=TRUE,
-                            server=FALSE, open="r+")
-    f <- file("stdin")
-    open(f)
-    print("Enter text to be upper-cased, q to quit")
-    sendme <- readLines(f, n=1)
-    if(tolower(sendme)=="q"){
-      break
-    }
-    write_resp <- writeLines(sendme, con)
-    server_resp <- readLines(con, 1)
-    print(paste("Your upper cased text:  ", server_resp))
-    close(con)
-  }
-}
-client()
 

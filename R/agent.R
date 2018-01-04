@@ -22,14 +22,12 @@ Agent <- R6::R6Class(
     bandit = NULL,
     s_index = NULL,
     a_index = NULL,
-    log_socket = NULL,
     initialize = function(policy, bandit) {
       super$initialize()
       self$bandit   <- bandit                                                   ## to clone, or not to clone
       self$policy   <- policy                                                   ## that is the question..
       self$policy$k <- self$bandit$k
       self$policy$d <- self$bandit$d
-      self$log_socket <- make.socket(port = 4000)
       self$reset()
     },
     reset = function() {
@@ -44,11 +42,6 @@ Agent <- R6::R6Class(
       if (!self$bandit$has_cache) {
           self$bandit$generate_cache(n)
       }
-    },
-    write_to_socket = function(text, ...) {
-      msg <- sprintf(paste0(as.character(Sys.time()), ": ", text, "\n"), ...)
-      cat(msg)
-      write.socket(self$log_socket, msg)
     },
     bandit_get_context = function(t) {
       private$.state$context <- self$bandit$get_context(t)

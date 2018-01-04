@@ -87,7 +87,6 @@ SimulatorParallel <- R6::R6Class(
           sidx <- sa$s_index
           set.seed(sidx)
           pname <- sa$policy$name
-          sa$write_to_socket(sidx)
           for (t in 1L:horizon) {
 
             agent_counter = as.integer(t + ((sidx - 1L) * horizon))
