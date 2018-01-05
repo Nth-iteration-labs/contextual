@@ -49,7 +49,7 @@ simulation$object_size()
 setwd("~/GitHub/contextual/demo")
 source("dev.R")
 
-bandit      <- AbstractBandit$new()
+bandit      <- SyntheticBandit$new()
 
 bandit$set_weights(c(0.1, 0.9, 0.1))
 
@@ -66,6 +66,29 @@ history     <- simulation$run()
 plot <- Plot$new()
 plot$grid(history)
 sum(history$reward)
+
+#############
+
+# here, we did setweights, can also generate based on d/k, but check if either
+setwd("~/GitHub/contextual/demo")
+source("dev.R")
+
+bandit      <- SyntheticBandit$new()
+
+bandit$set_weights(c(0.1,0.9))
+
+policy      <- EpsilonGreedyPolicy$new()
+
+agent       <- Agent$new(policy, bandit)
+
+simulation  <- SimulatorParallel$new(agent, horizon = 2L, simulations = 2L, worker_max = 1)
+
+history     <- simulation$run()
+sum(history$reward)
+
+context <- bandit$get_context(4)
+
+context$X
 
 
 
