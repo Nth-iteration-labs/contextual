@@ -27,7 +27,7 @@ simulation  <- SimulatorParallel$new(agent, horizon = 100L, simulations = 100L)
 
 history     <- simulation$run()
 
-Plot$new()$set_external(T, 11, 6L)$grid(history)
+Plot$new()$grid(history)
 
 print(sum(history$optimal)/sum(history$reward))
 

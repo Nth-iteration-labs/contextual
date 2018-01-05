@@ -44,4 +44,4 @@ history     <- simulation$run()
 
 after <- history$get_data_table()
 
-Plot$new()$set_external(T, 11, 6L)$grid(history)
+Plot$new()$grid(history)

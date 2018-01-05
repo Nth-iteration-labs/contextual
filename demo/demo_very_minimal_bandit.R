@@ -16,7 +16,7 @@ agent       <- Agent$new(policy, bandit)
 simulation  <- SimulatorParallel$new(agent, horizon = 2L, simulations = 2L)
 history     <- simulation$run()
 
-Plot$new()$set_external(T, 11, 6L)$grid(history)
+Plot$new()$grid(history)
 
 print(sum(history$reward))
 
