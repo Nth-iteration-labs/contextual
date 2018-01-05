@@ -53,7 +53,7 @@ bandit      <- AbstractBandit$new()
 
 bandit$set_weights(c(0.1, 0.9, 0.1))
 
-policy      <- RandomPolicy$new("Random")
+policy      <- EpsilonGreedyPolicy$new(0.1, "\U190-greedy")
 
 agent       <- Agent$new(policy, bandit)
 
