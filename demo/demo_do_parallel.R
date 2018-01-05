@@ -53,7 +53,7 @@ bandit      <- AbstractBandit$new()
 
 bandit$set_weights(c(0.1, 0.9, 0.1))
 
-policy      <- Exp3Policy$new(0.1, "Exp3")
+policy      <- RandomPolicy$new("Random")
 
 agent       <- Agent$new(policy, bandit)
 
@@ -65,10 +65,7 @@ history     <- simulation$run()
 
 plot <- Plot$new()
 plot$grid(history)
-
-simulation$object_size()
-
-print(sum(history$reward))
+sum(history$reward)
 
 
 
