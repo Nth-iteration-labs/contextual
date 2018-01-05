@@ -1,26 +1,23 @@
-# Clean and reset local development environment --------------------------------
+# Clean and reset the local development environment ----------------------------
 
-# Detach and unload package, we want to use local code base.
-if ("package:contextual" %in% search()) {
-  detach("package:contextual", unload = TRUE)
-}
-
-# Clear environment of all objects.
+# Detach and unload package: we want to run the local code base when developing.
+if ("package:contextual" %in% search()) detach("package:contextual", unload = T)
+# Clear environment of all objects before running, to make sure no interactions.
 rm(list = ls())
-
-# Garbage collection, just to be sure.
+# Garbage collection to free up memory, cleaning up after rm.
 gc()
-
-# Install package dependencies if needed.
+# Install package dependencies if needed...
 devtools::install_deps()
+# And load package dependencies, since do not load the package itself.
 devtools::load_all()
-
-# Set environment path to GhostScript command, for CRAN check
+# Set path to GhostScript command, necessary for local as-cran check.
 Sys.setenv(R_GSCMD = "C:\\Program Files\\gs\\gs9.22\\bin\\gswin64c.exe")
 
 
-
 # TODO LIST --------------------------------------------------------------------
+
+# Comments should explain the why, not the what.
+# More than 80 chars: encapsulate in other function.
 
 # TODO: document, write, document, then write some more
 # TODO: propensity, and correct names for all vars
@@ -46,7 +43,6 @@ Sys.setenv(R_GSCMD = "C:\\Program Files\\gs\\gs9.22\\bin\\gswin64c.exe")
 # TODO: Changes over time
 # TODO: Adversarial
 # TODO: blog about all this, do JS versions
-
 
 
 # PERFORMANCE DATA  ------------------------------------------------------------

@@ -18,7 +18,8 @@ AbstractBandit <- R6::R6Class(
       if (missing(value)) {
         private$.is_precaching
       } else {
-        warning("### AbstractBandit's is_precaching is locked at FALSE.", call. = FALSE)
+        warning("### AbstractBandit's is_precaching is locked at FALSE.",
+                call. = FALSE)
       }
     }
   ),
@@ -63,7 +64,8 @@ AbstractBandit <- R6::R6Class(
       self$reward_to_list(action)
     },
     generate_cache = function(n = 1) {
-      stop("### Need to implement cache if is_precaching is TRUE.", call. = FALSE)
+      stop("### Need to implement cache if is_precaching is TRUE.",
+           call. = FALSE)
     },
     context_to_list = function(t = 1) {
       return(

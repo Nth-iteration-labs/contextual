@@ -53,18 +53,26 @@ SyntheticBandit <- R6::R6Class(
       if (!self$is_precaching) t = 1
       self$reward_to_list(action, t)
     },
-    generate_weights = function(k, d = 1L, mean = 3.0, sd = 1.0) {
+    generate_weights = function(k,
+                                d = 1L,
+                                mean = 3.0,
+                                sd = 1.0) {
       set.seed(self$seed)
       self$k <- k
       self$d <- d
       if (self$weight_distribution == "Uniform") {
         private$.W <- matrix(runif(d * k), d, k)
       } else if (self$weight_distribution == "Normal") {
-        private$.W <- matrix(rnorm(self$d * self$k, self$feature_means, self$feature_stds), d, k)
+        private$.W <-
+          matrix(rnorm(self$d * self$k, self$feature_means, self$feature_stds),
+                 d,
+                 k)
       }
       invisible(self)
     },
-    generate_cache = function(n = 1L, not_zero_features = TRUE, seed_counter = 0L) {
+    generate_cache = function(n = 1L,
+                              not_zero_features = TRUE,
+                              seed_counter = 0L) {
       print("precaching bandit" )
       set.seed(self$seed + seed_counter)
       private$.X <- matrix(0, n , d)
@@ -77,29 +85,48 @@ SyntheticBandit <- R6::R6Class(
     }
   ),
   private = list(
-    .generate_context = function(n = 1L, not_zero_features = TRUE) {
-      if (not_zero_features) private$.X[cbind(1L:n, sample(self$d, n, replace = TRUE))] <- 1
+    .generate_context = function(n = 1L,
+                                 not_zero_features = TRUE) {
+      if (not_zero_features) {
+        private$.X[cbind(1L:n, sample(self$d, n, replace = TRUE))] <- 1
+      }
       private$.X <- matrix((private$.X |
-                              matrix(sample(c(0, 1), replace = TRUE, size = n * self$d), n , self$d)
-                            ),n,self$d)
+                              matrix(
+                                sample(c(0, 1),
+                                       replace = TRUE,
+                                       size = n * self$d),
+                                n ,
+                                self$d
+                              )
+                            ),
+                           n,
+                           self$d)
       mode(private$.X) <- 'integer'
     },
     .generate_oracle = function(n) {
-      W <- sweep(array(t(matrix(private$.W, self$k , self$d)), dim = c(self$d, self$k, n)),
-                 3, private$.X,FUN = "*",check.margin = FALSE)
-      private$.O <- t(t(colSums(W)) / as.vector(rowSums(private$.X)))
+      W <-
+        sweep(array(t(matrix(
+          private$.W, self$k , self$d
+        )), dim = c(self$d, self$k, n)),
+        3,
+        private$.X,
+        FUN = "*",
+        check.margin = FALSE)
+      private$.O <-
+        t(t(colSums(W)) / as.vector(rowSums(private$.X)))
       private$.O[is.nan(private$.O)] <- 0
     },
 
 
 
-    ############## this is more general! --@@--
+    ############## this is more general!
 
     .generate_rewards = function(n) {
       if (self$reward_type == 'Bernoulli') {
         private$.R <- runif(self$k * n) < private$.O
       } else if (self$reward_type == 'Gaussian') {
-        private$.R <- (rnorm(self$k * n, self$reward_means, self$reward_stds) + private$.O) / 2
+        private$.R <-
+          (rnorm(self$k * n, self$reward_means, self$reward_stds) + private$.O) / 2
       }
     }
 
