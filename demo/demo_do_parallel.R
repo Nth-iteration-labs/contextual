@@ -86,9 +86,15 @@ simulation  <- SimulatorParallel$new(agent, horizon = 2L, simulations = 2L, work
 history     <- simulation$run()
 sum(history$reward)
 
-context <- bandit$get_context(4)
+context <- bandit$get_context()
 
-context$X
+print(context$X)
+
+print(bandit$generate_weights(2,2))
+print(bandit$get_weights())
+
+
+
 
 
 

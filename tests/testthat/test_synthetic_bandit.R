@@ -31,10 +31,14 @@ test_that("SyntheticBandit simulation test.", {
   history     <- simulation$run()
   expect_equal(sum(history$reward), 3)
 
-  context <- bandit$get_context()  ########### without n, than..  check
+  context <- bandit$get_context()  ########### without n, then..  check
   expect_equal(context$k, 2)
   expect_equal(context$d, 1)
   expect_equal(context$X, rep(1,4))
   expect_equal(context$O, matrix(c(0.1,0.9,0.1,0.9,0.1,0.9,0.1,0.9),2,4))
+
+  bandit$generate_weights(2,2)  ###########  should return values here itself!!!, neater
+  generated_weights <- matrix(c(0.2655087,0.3721239,0.5728534,0.9082078),2,2)
+  expect_equal(round(bandit$get_weights(),7),generated_weights)
 
 })
