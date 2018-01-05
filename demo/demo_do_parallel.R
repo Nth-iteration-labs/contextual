@@ -43,3 +43,33 @@ plot$grid(history)
 
 simulation$object_size()
 
+#############
+
+# here, we did setweights, can also generate based on d/k, but check if either
+setwd("~/GitHub/contextual/demo")
+source("dev.R")
+
+bandit      <- AbstractBandit$new()
+
+bandit$set_weights(c(0.1, 0.9, 0.1))
+
+policy      <- Exp3Policy$new(0.1, "Exp3")
+
+agent       <- Agent$new(policy, bandit)
+
+simulation  <- SimulatorParallel$new(agent, horizon = 10L, simulations = 10L, worker_max = 1)
+
+context <- bandit$get_context()
+
+history     <- simulation$run()
+
+plot <- Plot$new()
+plot$grid(history)
+
+simulation$object_size()
+
+print(sum(history$reward))
+
+
+
+
