@@ -1,5 +1,7 @@
 context("SyntheticBandit")
 
+## add precache = FALSE and much more..
+
 test_that("SyntheticBandit simulation test.", {
 
   bandit      <- SyntheticBandit$new()

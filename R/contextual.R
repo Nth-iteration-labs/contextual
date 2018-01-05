@@ -41,11 +41,6 @@ Contextual <- R6::R6Class(
     lname_to_vector = function(x, list_element_name)
     {
       unlist(lapply(x, `[[`, list_element_name) , FALSE, FALSE)
-    },
-    repmat = function(X, m, n) {
-      mx = dim(X)[1]
-      nx = dim(X)[2]
-      matrix(t(matrix(X, mx, nx * n)), mx * m, nx * n, byrow = TRUE)
     }
   )
 )
