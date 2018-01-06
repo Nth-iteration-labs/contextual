@@ -39,7 +39,7 @@ Simulator <- R6::R6Class(
     reset = function() {
       for (a in 1L:self$agent_n) {
         self$agents[[a]]$reset()
-        if (self$agents[[a]]$bandit$is_precaching ){
+        if (self$agents[[a]]$bandit$is_precaching ) {
           self$agents[[a]]$generate_cache(self$horizon*self$simulations)
         }
       }
