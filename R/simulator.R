@@ -78,7 +78,7 @@ Simulator <- R6::R6Class(
         .export = c("History"),
         .noexport = c("sims_agents_list","history"),
         .packages = c("data.table","itertools")
-      ) %dopar% {
+      ) %do% {
         counter <- 1L
         agent_counter <- 21L
 
@@ -93,10 +93,11 @@ Simulator <- R6::R6Class(
             agent_counter = as.integer(t + ((sidx - 1L) * horizon))
 
             context <- sa$bandit_get_context(agent_counter)                     # observe the bandit in its context
-            action  <- sa$policy_get_decision(agent_counter)                    # use policy to decide which choice to make (which arm to pick)
+            action  <- sa$policy_get_action(agent_counter)                      # use policy to decide which choice to make (which arm to pick)
             reward  <- sa$bandit_get_reward(agent_counter)                      # observe the resonse of the bandit in this context
             if (!is.null(reward)) {
               theta <- sa$policy_set_reward(agent_counter)                      # adjust the policy, update theta
+
               local_history$save_agent(
                                        counter,                                 # save the results to the history log
                                        t,

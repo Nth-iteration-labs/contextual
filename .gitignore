@@ -5,3 +5,4 @@
 packrat/lib*/
 *.RData
 inst/doc
+demo/dadada.R

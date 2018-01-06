@@ -27,7 +27,6 @@ test_that("Running SyntheticBandit simulation.", {
 
   simulation  <- Simulator$new(agent, horizon = 2L, simulations = 2L, worker_max = 1)
 
-
   expect_output(bandit$object_size(), ".*216.")
 
   history     <- simulation$run()

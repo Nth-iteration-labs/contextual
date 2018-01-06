@@ -28,4 +28,3 @@ history     <- simulation$run()
 Plot$new()$grid(history)
 
 print(sum(history$optimal)/sum(history$reward))
-

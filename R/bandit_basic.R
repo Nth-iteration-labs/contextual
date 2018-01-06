@@ -21,7 +21,7 @@ BasicBandit <- R6::R6Class(
       self$d <- as.integer(dim(private$.W)[1])
       self$k <- as.integer(dim(private$.W)[2])
       private$.O  <- t(private$.W)
-      invisible(self)
+      private$.W
     },
     get_context = function(t = 1) {
       self$context_to_list()

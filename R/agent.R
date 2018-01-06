@@ -9,16 +9,6 @@ Agent <- R6::R6Class(
     .theta = NULL,
     .state = NULL
   ),
-  active = list(
-    theta = function(value) {
-      if (missing(value)) {
-        private$.theta
-      } else {
-        if (is.null(self$bandit$d)) stop("### Cannot set $theta, it is read only." , call. = FALSE)
-
-      }
-    }
-  ),
   public = list(
     policy = NULL,
     bandit = NULL,
@@ -53,7 +43,7 @@ Agent <- R6::R6Class(
       self$policy$d <- private$.state$context$d
       private$.state$context
     },
-    policy_get_decision = function(t) {
+    policy_get_action = function(t) {
       self$policy$set_theta(private$.theta)
       (private$.state$action <- self$policy$get_action(private$.state$context))
     },
