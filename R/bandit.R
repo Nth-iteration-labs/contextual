@@ -1,5 +1,3 @@
-# create from scratch if not cache, otherwise do cache
-# This is not BasicBandit, but UniformBasicBandit..
 #' @export
 AbstractBandit <- R6::R6Class(
   "AbstractBandit",
@@ -18,7 +16,7 @@ AbstractBandit <- R6::R6Class(
       if (missing(value)) {
         private$.is_precaching
       } else {
-        warning("### Precaching is locked at FALSE.",
+        warning("### Precaching is locked to FALSE by default.",
                 call. = FALSE)
       }
     }
@@ -83,12 +81,12 @@ AbstractBandit <- R6::R6Class(
   )
 )
 
-#' External BasicBandit
+#' External AbstractBandit
 #'
-#' BasicBandit intro
+#' AbstractBandit intro
 #'
 #' @section Usage:
-#' \preformatted{b <- BasicBandit$new()
+#' \preformatted{b <- AbstractBandit$new()
 #'
 #' b$reset()
 #'
@@ -97,16 +95,16 @@ AbstractBandit <- R6::R6Class(
 #'
 #' @section Arguments:
 #' \describe{
-#'   \item{b}{A \code{BasicBandit} object.}
+#'   \item{b}{A \code{AbstractBandit} object.}
 #' }
 #'
 #' @section Details:
-#' \code{$new()} starts a new BasicBandit, it uses \code{\link[base]{pipe}}.
+#' \code{$new()} starts a new AbstractBandit, it uses \code{\link[base]{pipe}}.
 #' R does \emph{not} wait for the process to finish, but returns
 #' immediately.
 #'
 #' @importFrom R6 R6Class
-#' @name BasicBandit
+#' @name AbstractBandit
 #' @examples
 #'\dontrun{}
 #'
