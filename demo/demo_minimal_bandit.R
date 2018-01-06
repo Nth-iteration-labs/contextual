@@ -4,13 +4,11 @@
 setwd("~/GitHub/contextual/demo")
 source("dev.R")
 
-set.seed(21)
-
 ptm <- proc.time()
 
 CustomBanditLocal <- R6::R6Class(
   "CustomBanditLocal",
-  inherit = AbstractBandit,
+  inherit = BasicBandit,
   portable = FALSE, class = FALSE,
   public = list(
     initialize   = function() {
@@ -23,7 +21,7 @@ CustomBanditLocal <- R6::R6Class(
 bandit      <- CustomBanditLocal$new()
 policy      <- EpsilonGreedyPolicy$new()
 agent       <- Agent$new(policy, bandit)
-simulation  <- SimulatorParallel$new(agent, horizon = 100L, simulations = 100L)
+simulation  <- Simulator$new(agent, horizon = 100L, simulations = 100L)
 
 history     <- simulation$run()
 

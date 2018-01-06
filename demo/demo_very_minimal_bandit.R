@@ -8,12 +8,12 @@ set.seed(21)
 
 ptm <- proc.time()
 
-bandit      <- AbstractBandit$new()
+bandit      <- BasicBandit$new()
 
-bandit      <- AbstractBandit$new()$set_weights(c(0.1,0.9))
+bandit      <- BasicBandit$new()$set_weights(c(0.1,0.9))
 policy      <- EpsilonGreedyPolicy$new()
 agent       <- Agent$new(policy, bandit)
-simulation  <- SimulatorParallel$new(agent, horizon = 2L, simulations = 2L)
+simulation  <- Simulator$new(agent, horizon = 2L, simulations = 2L)
 history     <- simulation$run()
 
 Plot$new()$grid(history)

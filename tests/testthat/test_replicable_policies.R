@@ -1,7 +1,7 @@
 context("Policies")
 
 test_that("Test Exp3", {
-  bandit      <- AbstractBandit$new()
+  bandit      <- BasicBandit$new()
   expect_identical(typeof(bandit), "environment")
 
   bandit$set_weights(c(0.1, 0.9, 0.1))
@@ -13,13 +13,13 @@ test_that("Test Exp3", {
   agent       <- Agent$new(policy, bandit)
   expect_identical(typeof(agent), "environment")
 
-  simulation  <- SimulatorParallel$new(agent, horizon = 10L, simulations = 10L, worker_max = 1)
+  simulation  <- Simulator$new(agent, horizon = 10L, simulations = 10L, worker_max = 1)
   history     <- simulation$run()
   expect_equal(sum(history$reward), 45)
 })
 
 test_that("Test Oracle", {
-  bandit      <- AbstractBandit$new()
+  bandit      <- BasicBandit$new()
   expect_identical(typeof(bandit), "environment")
 
   bandit$set_weights(c(0.1, 0.9, 0.1))
@@ -31,13 +31,13 @@ test_that("Test Oracle", {
   agent       <- Agent$new(policy, bandit)
   expect_identical(typeof(agent), "environment")
 
-  simulation  <- SimulatorParallel$new(agent, horizon = 10L, simulations = 10L, worker_max = 1)
+  simulation  <- Simulator$new(agent, horizon = 10L, simulations = 10L, worker_max = 1)
   history     <- simulation$run()
   expect_equal(sum(history$reward), 90)
 })
 
 test_that("Test Random", {
-  bandit      <- AbstractBandit$new()
+  bandit      <- BasicBandit$new()
   expect_identical(typeof(bandit), "environment")
 
   bandit$set_weights(c(0.1, 0.9, 0.1))
@@ -49,13 +49,13 @@ test_that("Test Random", {
   agent       <- Agent$new(policy, bandit)
   expect_identical(typeof(agent), "environment")
 
-  simulation  <- SimulatorParallel$new(agent, horizon = 10L, simulations = 10L, worker_max = 1)
+  simulation  <- Simulator$new(agent, horizon = 10L, simulations = 10L, worker_max = 1)
   history     <- simulation$run()
   expect_equal(sum(history$reward), 36)
 })
 
 test_that("Test LinUCB", {
-  bandit      <- AbstractBandit$new()
+  bandit      <- BasicBandit$new()
   expect_identical(typeof(bandit), "environment")
 
   bandit$set_weights(c(0.1, 0.9, 0.1))
@@ -67,14 +67,14 @@ test_that("Test LinUCB", {
   agent       <- Agent$new(policy, bandit)
   expect_identical(typeof(agent), "environment")
 
-  simulation  <- SimulatorParallel$new(agent, horizon = 10L, simulations = 10L, worker_max = 1)
+  simulation  <- Simulator$new(agent, horizon = 10L, simulations = 10L, worker_max = 1)
   history     <- simulation$run()
   expect_equal(sum(history$reward), 74)
 })
 
 test_that("Test ThompsonSampling", {
 
-  bandit      <- AbstractBandit$new()
+  bandit      <- BasicBandit$new()
   expect_identical(typeof(bandit), "environment")
 
   bandit$set_weights(c(0.1, 0.9, 0.1))
@@ -86,13 +86,13 @@ test_that("Test ThompsonSampling", {
   agent       <- Agent$new(policy, bandit)
   expect_identical(typeof(agent), "environment")
 
-  simulation  <- SimulatorParallel$new(agent, horizon = 10L, simulations = 10L, worker_max = 1)
+  simulation  <- Simulator$new(agent, horizon = 10L, simulations = 10L, worker_max = 1)
   history     <- simulation$run()
   expect_equal(sum(history$reward), 59)
 })
 
 test_that("Test EpsilonGreedy", {
-  bandit      <- AbstractBandit$new()
+  bandit      <- BasicBandit$new()
   expect_identical(typeof(bandit), "environment")
 
   bandit$set_weights(c(0.1, 0.9, 0.1))
@@ -104,7 +104,7 @@ test_that("Test EpsilonGreedy", {
   agent       <- Agent$new(policy, bandit)
   expect_identical(typeof(agent), "environment")
 
-  simulation  <- SimulatorParallel$new(agent, horizon = 10L, simulations = 10L, worker_max = 1)
+  simulation  <- Simulator$new(agent, horizon = 10L, simulations = 10L, worker_max = 1)
   history     <- simulation$run()
   expect_equal(sum(history$reward), 37)
 })

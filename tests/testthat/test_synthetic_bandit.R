@@ -2,7 +2,7 @@ context("SyntheticBandit")
 
 ## add precache = FALSE and much more..
 
-test_that("SyntheticBandit simulation test.", {
+test_that("Running SyntheticBandit simulation.", {
 
   bandit      <- SyntheticBandit$new()
   expect_identical(typeof(bandit), "environment")
@@ -25,22 +25,24 @@ test_that("SyntheticBandit simulation test.", {
   agent       <- Agent$new(policy, bandit)
   expect_identical(typeof(agent), "environment")
 
-  simulation  <- SimulatorParallel$new(agent, horizon = 2L, simulations = 2L, worker_max = 1)
+  simulation  <- Simulator$new(agent, horizon = 2L, simulations = 2L, worker_max = 1)
 
-  ########expect_error(bandit$generate_cache(1),".*precaching.*")  ########## extend
-  expect_identical(bandit$object_size(), bandit$hash)
+
+  expect_output(bandit$object_size(), ".*216.")
 
   history     <- simulation$run()
   expect_equal(sum(history$reward), 3)
 
-  context <- bandit$get_context()  ########### without n, then..  check
+  context <- bandit$get_context()
   expect_equal(context$k, 2)
   expect_equal(context$d, 1)
-  expect_equal(context$X, rep(1,4))
-  expect_equal(context$O, matrix(c(0.1,0.9,0.1,0.9,0.1,0.9,0.1,0.9),2,4))
+  expect_equal(context$X, 1)
+  expect_identical(context$O, c(0.1,0.9))
 
-  bandit$generate_weights(2,2)  ###########  should return values here itself!!!, neater
-  generated_weights <- matrix(c(0.2655087,0.3721239,0.5728534,0.9082078),2,2)
-  expect_equal(round(bandit$get_weights(),7),generated_weights)
+  generated_weights <- bandit$generate_weights(2,2)
+  generated_weights_expected <- matrix(c(0.2655087,0.3721239,0.5728534,0.9082078),2,2)
+  expect_equal(round(generated_weights,7),generated_weights_expected)
+  expect_equal(round(bandit$get_weights(),7),generated_weights_expected)
 
+  expect_message(bandit$generate_cache(1),"Precaching bandit")
 })

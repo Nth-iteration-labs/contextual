@@ -4,8 +4,8 @@
 #' @import doParallel
 #' @import itertools
 #' @export
-SimulatorParallel <- R6::R6Class(
-  "SimulatorParallel",
+Simulator <- R6::R6Class(
+  "Simulator",
   portable = FALSE,
   class = FALSE,
   inherit = Contextual,
@@ -53,12 +53,12 @@ SimulatorParallel <- R6::R6Class(
           sims_agents_list[[s, a]]$a_index <- a
         }
       }
-      print("preworkercreation")
+      message("Preworkercreation")
       workers <- parallel::detectCores() - 1
       if (workers < 1) workers <- 1
       if (workers > worker_max) workers <- worker_max
       cl <- parallel::makeCluster(workers, useXDR = FALSE) #type="FORK")   #  type="FORK" only linux
-      print("postworkercreation")
+      message("Postworkercreation")
       doParallel::registerDoParallel(cl)
 
       `%do%` <- foreach::`%do%`
@@ -143,12 +143,12 @@ SimulatorParallel <- R6::R6Class(
   )
 )
 
-#' External SimulatorParallel
+#' External Simulator
 #'
-#' SimulatorParallel intro
+#' Simulator intro
 #'
 #' @section Usage:
-#' \preformatted{b <- SimulatorParallel$new()
+#' \preformatted{b <- Simulator$new()
 #'
 #' b$reset()
 #'
@@ -157,16 +157,16 @@ SimulatorParallel <- R6::R6Class(
 #'
 #' @section Arguments:
 #' \describe{
-#'   \item{b}{A \code{SimulatorParallel} object.}
+#'   \item{b}{A \code{Simulator} object.}
 #' }
 #'
 #' @section Details:
-#' \code{$new()} starts a new SimulatorParallel, it uses \code{\link[base]{pipe}}.
+#' \code{$new()} starts a new Simulator, it uses \code{\link[base]{pipe}}.
 #' R does \emph{not} wait for the process to finish, but returns
 #' immediately.
 #'
 #' @importFrom R6 R6Class
-#' @name SimulatorParallel
+#' @name Simulator
 #' @examples
 #'\dontrun{}
 #'

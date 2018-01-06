@@ -19,6 +19,9 @@ Sys.setenv(R_GSCMD = "C:\\Program Files\\gs\\gs9.22\\bin\\gswin64c.exe")
 # Comments should explain the why, not the what.
 # More than 80 chars: encapsulate in other function.
 
+# random when not set, "choose" randomly prgrammaticly.
+# and check what if not precache, seed-wize .. must be same as not precache?
+# check all <- and =
 # TODO: document, write, document, then write some more
 # TODO: propensity, and correct names for all vars
 # TODO: visualisation(s) from thesis

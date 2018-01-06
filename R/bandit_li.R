@@ -2,7 +2,7 @@
 #' @export
 LiLogBandit <- R6::R6Class(
   "LiLogBandit",
-  inherit = AbstractBandit,
+  inherit = BasicBandit,
   portable = FALSE,
   class = FALSE,
   private = list(

@@ -2,7 +2,7 @@
 #' @export
 SyntheticBandit <- R6::R6Class(
   "SyntheticBandit",
-  inherit = AbstractBandit,
+  inherit = BasicBandit,
   portable = FALSE,
   class = FALSE,
   active = list(
@@ -42,14 +42,14 @@ SyntheticBandit <- R6::R6Class(
       self$reward_type          <- reward_type
       self$weight_distribution  <- weight_distribution
     },
-    get_context = function(t) {
+    get_context = function(t = 1) {
       if (!self$is_precaching) {
         self$generate_cache(n = 1L, not_zero_features = TRUE, seed_counter = t)
         t = 1
       }
       self$context_to_list(t)
     },
-    get_reward = function(action, t) {
+    get_reward = function(action, t = 1) {
       if (!self$is_precaching) t = 1
       self$reward_to_list(action, t)
     },
@@ -68,12 +68,12 @@ SyntheticBandit <- R6::R6Class(
                  d,
                  k)
       }
-      invisible(self)
+      private$.W
     },
     generate_cache = function(n = 1L,
                               not_zero_features = TRUE,
                               seed_counter = 0L) {
-      print("precaching bandit" )
+      message("Precaching bandit" )
       set.seed(self$seed + seed_counter)
       private$.X <- matrix(0, n , d)
       private$.O <- matrix(0, self$k, n)

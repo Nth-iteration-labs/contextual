@@ -25,7 +25,7 @@ agents <- list(
 
 ptm            <- proc.time()
 
-simulation     <- SimulatorParallel$new(
+simulation     <- Simulator$new(
   agents,
   horizon      = 100L,
   simulations  = 100L,
@@ -57,7 +57,7 @@ policy      <- EpsilonGreedyPolicy$new(0.1, "\U190-greedy")
 
 agent       <- Agent$new(policy, bandit)
 
-simulation  <- SimulatorParallel$new(agent, horizon = 10L, simulations = 10L, worker_max = 1)
+simulation  <- Simulator$new(agent, horizon = 10L, simulations = 10L, worker_max = 1)
 
 context <- bandit$get_context()
 
@@ -81,7 +81,7 @@ policy      <- EpsilonGreedyPolicy$new()
 
 agent       <- Agent$new(policy, bandit)
 
-simulation  <- SimulatorParallel$new(agent, horizon = 2L, simulations = 2L, worker_max = 1)
+simulation  <- Simulator$new(agent, horizon = 2L, simulations = 2L, worker_max = 1)
 
 history     <- simulation$run()
 sum(history$reward)
@@ -89,6 +89,7 @@ sum(history$reward)
 context <- bandit$get_context()
 
 print(context$X)
+print(context$O)
 
 print(bandit$generate_weights(2,2))
 print(bandit$get_weights())

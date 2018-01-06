@@ -1,5 +1,5 @@
 # create from scratch if not cache, otherwise do cache
-# This is not abstractbandit, but UniformBasicBandit..
+# This is not BasicBandit, but UniformBasicBandit..
 #' @export
 AbstractBandit <- R6::R6Class(
   "AbstractBandit",
@@ -18,7 +18,7 @@ AbstractBandit <- R6::R6Class(
       if (missing(value)) {
         private$.is_precaching
       } else {
-        warning("### AbstractBandit's is_precaching is locked at FALSE.",
+        warning("### Precaching is locked at FALSE.",
                 call. = FALSE)
       }
     }
@@ -33,44 +33,26 @@ AbstractBandit <- R6::R6Class(
       private$.W <- matrix(0L, 3L, 1L)
       private$.O <- matrix(0L, 3L, 1L)
     },
-    get_weights = function() {
-      private$.W
-    },
-    object_size = function() {
-      cat(paste("  Bandit: ", self$hash),"\n")
-      cat(paste("    Size of W:        ",
-                format(object.size(private$.W), units = "auto")),"\n")
-      cat(paste("    Size of R:        ",
-                format(object.size(private$.R), units = "auto")),"\n")
-      cat(paste("    Size of X:        ",
-                format(object.size(private$.X), units = "auto")),"\n")
-      cat(paste("    Size of O:        ",
-                format(object.size(private$.O), units = "auto")),"\n")
-      self$hash
-    },
-    set_weights = function(W) {
-      if (is.vector(W)) private$.W <- matrix(W, nrow = 1L)
-      if (is.matrix(W)) private$.W <- W
-      self$d <- as.integer(dim(private$.W)[1])
-      self$k <- as.integer(dim(private$.W)[2])
-      private$.O  <- t(private$.W)
-      invisible(self)
-    },
     get_context = function(t = 1) {
-      self$context_to_list()
+      stop("### Need to implement get_context.",
+           call. = FALSE)
     },
     get_reward = function(action, t = 1) {
-      private$.R <- matrix(runif(self$k) < self$get_weights(), self$k, self$d)
-      self$reward_to_list(action)
+      stop("### Need to implement get_reward.",
+           call. = FALSE)
+    },
+    set_weights = function(W) {
+      stop("### Need to implement set_weights.",
+           call. = FALSE)
     },
     generate_cache = function(n = 1) {
-      stop("### Need to implement cache if is_precaching is TRUE.",
+      stop("### Need to implement generate_cache if is_precaching is TRUE.",
            call. = FALSE)
     },
     context_to_list = function(t = 1) {
       return(
         setNames(list(self$k, self$d, private$.X[t, ], private$.O[, t]),
-        c("k", "d", "X", "O")))
+                 c("k", "d", "X", "O")))
     },
     reward_to_list = function(action, t = 1) {
       setNames(
@@ -85,16 +67,28 @@ AbstractBandit <- R6::R6Class(
           "optimal",
           "propensity")
       )
+    },
+    object_size = function() {
+      cat(paste("  Bandit: ", self$hash),"\n")
+      cat(paste("    Size of W:        ",
+                format(object.size(private$.W), units = "auto")),"\n")
+      cat(paste("    Size of R:        ",
+                format(object.size(private$.R), units = "auto")),"\n")
+      cat(paste("    Size of X:        ",
+                format(object.size(private$.X), units = "auto")),"\n")
+      cat(paste("    Size of O:        ",
+                format(object.size(private$.O), units = "auto")),"\n")
+      self$hash
     }
   )
 )
 
-#' External AbstractBandit
+#' External BasicBandit
 #'
-#' AbstractBandit intro
+#' BasicBandit intro
 #'
 #' @section Usage:
-#' \preformatted{b <- AbstractBandit$new()
+#' \preformatted{b <- BasicBandit$new()
 #'
 #' b$reset()
 #'
@@ -103,16 +97,16 @@ AbstractBandit <- R6::R6Class(
 #'
 #' @section Arguments:
 #' \describe{
-#'   \item{b}{A \code{AbstractBandit} object.}
+#'   \item{b}{A \code{BasicBandit} object.}
 #' }
 #'
 #' @section Details:
-#' \code{$new()} starts a new AbstractBandit, it uses \code{\link[base]{pipe}}.
+#' \code{$new()} starts a new BasicBandit, it uses \code{\link[base]{pipe}}.
 #' R does \emph{not} wait for the process to finish, but returns
 #' immediately.
 #'
 #' @importFrom R6 R6Class
-#' @name AbstractBandit
+#' @name BasicBandit
 #' @examples
 #'\dontrun{}
 #'
