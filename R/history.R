@@ -7,19 +7,23 @@ History <- R6::R6Class(
   inherit = Contextual,
   public = list(
     n = 1000,
+    save_theta = NULL,
+    save_context = NULL,
     data = data.table::data.table(),
-    initialize = function(n = 1) {
+    initialize = function(n = 1, save_context= FALSE, save_theta = FALSE) {
       self$n <- n
+      self$save_context <- save_context
+      self$save_theta   <- save_theta
       self$data <- data.table::data.table(
         t               = rep(0L,      n),
         sim             = rep(0L,      n),
         arm             = rep(0L,      n),
         reward          = rep(0L,      n),
         optimal         = rep(0L,      n),
-        agent           = rep("",      n),
-        theta           = rep(list(),  n),
-        context         = rep(list(),  n)
+        agent           = rep("",      n)
       )
+      if (self$save_context) self$data$context = rep(list(),  n)
+      if (self$save_theta)   self$data$theta   = rep(list(),  n)
       invisible(self)
     },
 
@@ -29,8 +33,8 @@ History <- R6::R6Class(
                           reward,
                           policy_name,
                           s,
-                          context = NA,
-                          theta = NA) {
+                          context_value = NA,
+                          theta_value = NA) {
 
       counter = as.integer(counter)
 
@@ -43,12 +47,16 @@ History <- R6::R6Class(
                       list(t,s,action$choice,reward[[1]],optimal,policy_name)
                       )
 
-      if (!is.na(theta)) {
-        data.table::set(data, counter, "theta" , list(list(theta)))
-      }
-      if (!is.na(context)) {
-        data.table::set(data, counter, 7L, list(list(context)))
-        #data[counter, (paste0("X.", seq_along(context))) := context]
+      if (!self$save_context & !self$save_theta) {
+        # nothing to do here, carry on..
+      } else if (self$save_context & !self$save_theta) {
+        data.table::set(data, counter, 7L , list(list(context_value)))
+      } else if (!self$save_context & self$save_theta) {
+        data.table::set(data, counter, 7L, list(list(theta_value)))
+        #data[counter, (paste0("X.", seq_along(context))) := context]           ## if split over mult col
+      } else {
+        data.table::set(data, counter, 7L, list(list(context_value)))
+        data.table::set(data, counter, 8L , list(list(theta_value)))
       }
     },
     save_data = function(filename = NA) {

@@ -51,6 +51,6 @@ test_that("Running SyntheticBandit simulation.", {
 
   expect_message(bandit$generate_cache(1), "Precaching bandit")
 
-  expect_output(simulation$object_size(), ".*2.4 Kb.*")
+  expect_output(simulation$object_size(), ".*56 bytes.*")
 
 })

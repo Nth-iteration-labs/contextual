@@ -78,11 +78,11 @@ Simulator <- R6::R6Class(
         .export = c("History"),
         .noexport = c("sims_agents_list","history"),
         .packages = c("data.table","itertools")
-      ) %do% {
+      ) %dopar% {
         counter <- 1L
         agent_counter <- 21L
 
-        local_history <- History$new(horizon * agent_n * length(sims_agents))
+        local_history <- History$new(horizon * agent_n * length(sims_agents), save_context, save_theta)
 
         for (sa in sims_agents) {
           sidx <- sa$s_index
@@ -105,8 +105,8 @@ Simulator <- R6::R6Class(
                                        reward,
                                        pname,
                                        sidx,
-                                       if (save_context) context$X else NA,
-                                       if (save_theta)   theta     else NA
+                                       if (self$save_context) context$X else NA,
+                                       if (self$save_theta)   theta     else NA
                                       )
               counter <- counter + 1L
             }
@@ -118,7 +118,7 @@ Simulator <- R6::R6Class(
       parallel_results <- data.table::rbindlist(parallel_results)
       self$history$set_data_table(parallel_results)  ## set it here
       parallel::stopCluster(cl)
-      parallel_results   ## return it here .. hmm!
+      parallel_results   ## return it here .. hmm!                              ############ NOOOO! RETURN HISTORY OBJECT!!
     },
     object_size = function() {
       cat(paste("Simulator: ", self$hash),"\n")
