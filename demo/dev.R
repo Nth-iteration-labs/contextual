@@ -29,6 +29,7 @@ Sys.setenv(R_GSCMD = "C:\\Program Files\\gs\\gs9.22\\bin\\gswin64c.exe")
 # make sure enough checks on inputs..
 # PROGRESS - through sockets?
 # check if without precalc faster on 128 cores.
+# TODO: make possible more simple save reward and such (reward = 1 vsreward$reward = ..)
 # TODO: seperate context and theta results tables afterall? mem use for nothing.
 # TODO: confidence interval
 # summary -- these agents, ..

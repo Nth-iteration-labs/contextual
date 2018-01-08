@@ -32,9 +32,7 @@ simulation  <-
 
 simulation$run()
 
-## so change this .. return history, not data.table
-
-before <- simulation$history$get_data_table()
+before <- simulation$history$data
 
 simulation$history$save_data("test.RData")
 
@@ -54,6 +52,6 @@ simulation  <- Simulator$new(agent, horizon = 200L, simulations = 200L)
 
 simulation$run()
 
-after <- simulation$history$get_data_table()
+after <- simulation$history$data
 
 Plot$new()$grid(after)

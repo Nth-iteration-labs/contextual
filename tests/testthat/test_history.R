@@ -1,6 +1,6 @@
-context("BasicBandit")
+context("History")
 
-test_that("Running BasicBandit simulation.", {
+test_that("History simulation.", {
 
   bandit      <- BasicBandit$new()
   expect_identical(typeof(bandit), "environment")
@@ -13,10 +13,6 @@ test_that("Running BasicBandit simulation.", {
   expect_warning(bandit$is_precaching <- TRUE,".*locked*")
   expect_identical(bandit$get_weights(), matrix(c(0.1,0.9,0.1,0.9),2,2))
 
-  bandit$set_weights(c(0.1,0.9))
-  expect_equal(bandit$k, 2)
-  expect_equal(bandit$d, 1)
-  expect_identical(bandit$get_weights(), matrix(c(0.1,0.9),1,2))
 
   policy      <- EpsilonGreedyPolicy$new()
   expect_identical(typeof(policy), "environment")
@@ -25,7 +21,6 @@ test_that("Running BasicBandit simulation.", {
   expect_identical(typeof(agent), "environment")
 
   simulation  <- Simulator$new(agent, horizon = 2L, simulations = 2L, worker_max = 1)
-
   expect_error(bandit$generate_cache(1),".*precaching.*")
   expect_output(bandit$object_size(), ".*216.")
 
@@ -37,5 +32,6 @@ test_that("Running BasicBandit simulation.", {
 
   history     <- simulation$run()
   expect_equal(sum(history$data$reward), 3)
+
 
 })

@@ -35,7 +35,7 @@ test_that("Running SyntheticBandit simulation.", {
   expect_output(bandit$object_size(), ".*216.*")
 
   history     <- simulation$run()
-  expect_equal(sum(history$reward), 3)
+  expect_equal(sum(history$data$reward), 3)
 
   context <- bandit$get_context()
   expect_equal(context$k, 2)

@@ -1,5 +1,3 @@
-########################### package dev helpers ################################
-
 #library(contextual)
 setwd("~/GitHub/contextual/demo")
 source("dev.R")

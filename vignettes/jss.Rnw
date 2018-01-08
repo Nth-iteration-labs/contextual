@@ -92,6 +92,56 @@ A vignette for the \cite{contextual} paper.
 
 In the canonical multi-armed bandit (MAB) problem a gambler faces a number of slot machines, each with a potentially different payoff. It is the gamblers goal to make as much profit (or, in the case of gambling, as little loss) as possible by sequentially choosing which machine to play, learning from the observations as she goes along.
 
+\section{The Contextual Multi-Armed Bandit}
+%% Note: If there is markup in \(sub)section, then it has to be escape as above.
+
+In the canonical multi-armed bandit (MAB) problem a gambler faces a number of slot machines, each with a potentially different payoff. It is the gamblers goal to make as much profit (or, in the case of gambling, as little loss) as possible by sequentially choosing which machine to play, learning from the observations as she goes along.
+
+\section{Structure of the contextual R package}
+%% Note: If there is markup in \(sub)section, then it has to be escape as above.
+
+In the canonical multi-armed bandit (MAB) problem a gambler faces a number of slot machines, each with a potentially different payoff. It is the gamblers goal to make as much profit (or, in the case of gambling, as little loss) as possible by sequentially choosing which machine to play, learning from the observations as she goes along.
+
+\section{A basic example}
+%% Note: If there is markup in \(sub)section, then it has to be escape as above.
+
+bandit      \textless{}- BasicBandit\textdollar{}new()
+
+bandit\textdollar{}set\_weights(matrix(c(0.1, 0.9, 0.1, 0.5, 0.1, 0.1), 3, 3))
+
+policy      \textless{}- EpsilonGreedyPolicy\textdollar{}new()
+agent       \textless{}- Agent\textdollar{}new(policy, bandit)
+simulation  \textless{}- Simulator\textdollar{}new(agent, horizon = 30L, simulations = 30L, worker\_max = 1 )
+context     \textless{}- bandit\textdollar{}get\_context()
+history     \textless{}- simulation\textdollar{}run()
+)
+
+\section{Special features}
+%% Note: If there is markup in \(sub)section, then it has to be escape as above.
+
+For instance, quantifying variance..
+
+\section{The art of optimal parallelisation}
+%% Note: If there is markup in \(sub)section, then it has to be escape as above.
+
+There is a very intersting trade of between the amount of parallelisation (how many cores, nodes used) the resources needed to compute a certain model, and the amount of data going to and fro the cores.
+
+PERFORMANCE DATA  ------------------------------------------------------------
+
+on 58  cores:    k3*d3 * 5 policies * 300  * 10000 --\textgreater{} 132 seconds
+on 120 cores:    k3*d3 * 5 policies * 300  * 10000 --\textgreater{} 390 seconds
+
+on 58  cores:    k3*d3 * 5 policies * 3000 * 10000 --\textgreater{} 930 seconds
+on 120 cores:    k3*d3 * 5 policies * 3000 * 10000 --\textgreater{} 691 seconds
+
+
+
+\section{Extra greedy UCB}
+%% Note: If there is markup in \(sub)section, then it has to be escape as above.
+
+In the canonical multi-armed bandit (MAB) problem a gambler faces a number of slot machines, each with a potentially different payoff. It is the gamblers goal to make as much profit (or, in the case of gambling, as little loss) as possible by sequentially choosing which machine to play, learning from the observations as she goes along.
+
+
 \section{Conclusions}
 \label{sec:conc4}
 

@@ -115,10 +115,10 @@ Simulator <- R6::R6Class(
         dth <- local_history$get_data_table()
         dth[sim != 0]
       }
-      parallel_results <- data.table::rbindlist(parallel_results)
-      self$history$set_data_table(parallel_results)  ## set it here
       parallel::stopCluster(cl)
-      parallel_results   ## return it here .. hmm!                              ############ NOOOO! RETURN HISTORY OBJECT!!
+      parallel_results <- data.table::rbindlist(parallel_results)
+      self$history$set_data_table(parallel_results)
+      self$history
     },
     object_size = function() {
       cat(paste("Simulator: ", self$hash),"\n")
