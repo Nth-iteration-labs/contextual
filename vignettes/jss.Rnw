@@ -114,7 +114,9 @@ In the canonical multi-armed bandit (MAB) problem a gambler faces a number of sl
 
 <<include=FALSE>>=
 install.packages("devtools",repos = "http://cran.us.r-project.org")
+library("devtools")
 devtools::install_github("Nth-iteration-labs/contextual")
+knitr::opts_chunk$set(fig.path="fig/")
 @
 
 <<label=fig1plot, message = FALSE, fig.keep='none'>>=

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6350 64-bit) (preloaded format=pdflatex 2017.10.23)  8 JAN 2018 16:11
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6350 64-bit) (preloaded format=pdflatex 2017.10.23)  8 JAN 2018 16:36
 entering extended mode
 **./jss.tex
 (jss.tex
@@ -846,10 +846,10 @@ LaTeX Font Warning: Font shape `T1/aett/bx/n' undefined
 (Font)              using `T1/aett/m/n' instead on input line 170.
 
 Package color Info: Redefining color shadecolor on input line 190.
-<figure/fig1-1.pdf, id=61, 505.89pt x 505.89pt>
-File: figure/fig1-1.pdf Graphic file (type pdf)
- <use figure/fig1-1.pdf>
-Package pdftex.def Info: figure/fig1-1.pdf used on input line 191.
+<fig/fig1-1.pdf, id=61, 505.89pt x 505.89pt>
+File: fig/fig1-1.pdf Graphic file (type pdf)
+ <use fig/fig1-1.pdf>
+Package pdftex.def Info: fig/fig1-1.pdf used on input line 191.
 (pdftex.def)             Requested size: 442.65375pt x 442.66037pt.
 LaTeX Font Info:    Font shape `T1/aer/b/sl' in size <10.95> not available
 (Font)              Font shape `T1/aer/bx/sl' tried instead on input line 216.
@@ -863,7 +863,7 @@ Overfull \hbox (5.47499pt too wide) has occurred while \output is active
 [] \T1/aer/m/n/10.95 3
  []
 
-[3 <./figure/fig1-1.pdf>] (jss.bbl)
+[3 <./fig/fig1-1.pdf>] (jss.bbl)
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 249.
 
 Underfull \hbox (badness 10000) in paragraph at lines 249--249
@@ -900,7 +900,7 @@ Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 249.
  ) 
 Here is how much of TeX's memory you used:
  7675 strings out of 493323
- 108958 string characters out of 3139065
+ 108943 string characters out of 3139065
  201206 words of memory out of 3000000
  11034 multiletter control sequences out of 15000+200000
  41166 words of font info for 75 fonts, out of 3000000 for 9000
@@ -916,7 +916,7 @@ c/amsfonts/cm/cmsl10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfon
 ts/cm/cmss10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cm
 ti10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmtt10.pfb
 >
-Output written on jss.pdf (5 pages, 154068 bytes).
+Output written on jss.pdf (5 pages, 154065 bytes).
 PDF statistics:
  140 PDF objects out of 1000 (max. 8388607)
  28 named destinations out of 1000 (max. 500000)
