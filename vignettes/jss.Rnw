@@ -92,12 +92,12 @@ A vignette for the \cite{contextual} paper.
 
 In the canonical multi-armed bandit (MAB) problem a gambler faces a number of slot machines, each with a potentially different payoff. It is the gamblers goal to make as much profit (or, in the case of gambling, as little loss) as possible by sequentially choosing which machine to play, learning from the observations as she goes along.
 
-\section{The Contextual Multi-Armed Bandit}
+\section{Contextual Multi-Armed Bandits}
 %% Note: If there is markup in \(sub)section, then it has to be escape as above.
 
 In the canonical multi-armed bandit (MAB) problem a gambler faces a number of slot machines, each with a potentially different payoff. It is the gamblers goal to make as much profit (or, in the case of gambling, as little loss) as possible by sequentially choosing which machine to play, learning from the observations as she goes along.
 
-\section{Structure of the contextual R package}
+\section{Implementation of the contextual R package}
 %% Note: If there is markup in \(sub)section, then it has to be escape as above.
 
 In the canonical multi-armed bandit (MAB) problem a gambler faces a number of slot machines, each with a potentially different payoff. It is the gamblers goal to make as much profit (or, in the case of gambling, as little loss) as possible by sequentially choosing which machine to play, learning from the observations as she goes along.
@@ -110,11 +110,23 @@ bandit      \textless{}- BasicBandit\textdollar{}new()
 bandit\textdollar{}set\_weights(matrix(c(0.1, 0.9, 0.1, 0.5, 0.1, 0.1), 3, 3))
 
 policy      \textless{}- EpsilonGreedyPolicy\textdollar{}new()
+
 agent       \textless{}- Agent\textdollar{}new(policy, bandit)
+
 simulation  \textless{}- Simulator\textdollar{}new(agent, horizon = 30L, simulations = 30L, worker\_max = 1 )
+
 context     \textless{}- bandit\textdollar{}get\_context()
+
 history     \textless{}- simulation\textdollar{}run()
-)
+
+\section{Object orientation: extending contextual}
+%% Note: If there is markup in \(sub)section, then it has to be escape as above.
+
+The R6 package allows the creation of classes with reference semantics, similar to R's built-in reference classes. Compared to reference classes, R6 classes are simpler and lighter-weight, and they are not built on S4 classes so they do not require the methods package. These classes allow public and private members, and they support inheritance, even when the classes are defined in different packages.
+
+One R6 class can inherit from another. In other words, you can have super- and sub-classes.
+
+Subclasses can have additional methods, and they can also have methods that override the superclass methods. In this example of a custom \pkg{contextual} bandit, we’ll extend BasicBandit and override the initialize() method..
 
 \section{Special features}
 %% Note: If there is markup in \(sub)section, then it has to be escape as above.
