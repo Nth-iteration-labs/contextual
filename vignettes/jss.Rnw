@@ -5,7 +5,6 @@
 %\VignetteKeyword{vignette}
 %\VignetteKeyword{LaTeX}
 \documentclass[nojss]{jss}
-\SweaveOpts{concordance=FALSE}
 
 \usepackage[utf8]{inputenc}
 \usepackage{color}
@@ -113,12 +112,12 @@ In the canonical multi-armed bandit (MAB) problem a gambler faces a number of sl
 
 See Figure \ref{fig:fig1} on page \pageref{fig:fig1}.
 
-<<include=FALSE,echo=FALSE,results=hide>>=
+<<include=FALSE>>=
 install.packages("devtools")
 devtools::install_github("Nth-iteration-labs/contextual")
 @
 
-<<label=fig1plot,include=FALSE>>=
+<<label=fig1plot, message = FALSE, warning = FALSE, fig.keep='none'>>=
 library("contextual")
 
 bandit      <- BasicBandit$new()
@@ -133,15 +132,12 @@ Plot$new()$grid(history)
 @
 
 
-\begin{figure}
 \begin{center}
-<<label=fig1,fig=TRUE,echo=FALSE>>=
+<<label=fig1,fig.keep='high',echo=FALSE,message=FALSE, fig.cap="Epsilon Greedy">>=
 <<fig1plot>>
 @
 \end{center}
-\caption{Epsilon Greedy}
-\label{fig:fig1}
-\end{figure}
+
 
 
 \section{Object orientation: extending contextual}
