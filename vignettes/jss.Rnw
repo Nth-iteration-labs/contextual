@@ -110,11 +110,12 @@ In the canonical multi-armed bandit (MAB) problem a gambler faces a number of sl
 %% Note: If there is markup in \(sub)section, then it has to be escape as above.
 
 
+See Figure \ref{fig:fig1} on page \pageref{fig:fig1}.
 
-<<echo=FALSE>>=
-
+<<include=FALSE,echo=FALSE,results=hide>>=
+install.packages("devtools")
+devtools::install_github("Nth-iteration-labs/contextual")
 @
-
 
 <<label=fig1plot,include=FALSE>>=
 library("contextual")
@@ -138,7 +139,7 @@ Plot$new()$grid(history)
 @
 \end{center}
 \caption{Epsilon Greedy}
-\label{fig:one}
+\label{fig:fig1}
 \end{figure}
 
 

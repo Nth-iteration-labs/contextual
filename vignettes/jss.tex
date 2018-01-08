@@ -109,32 +109,30 @@ In the canonical multi-armed bandit (MAB) problem a gambler faces a number of sl
 \section{A basic example}
 %% Note: If there is markup in \(sub)section, then it has to be escape as above.
 
+
+See Figure \ref{fig:fig1} on page \pageref{fig:fig1}.
+
+
 \begin{Schunk}
-\begin{Soutput}
-     [,1] [,2]
-[1,]  0.1  0.9
-\end{Soutput}
-\begin{Soutput}
-[1] 0
-\end{Soutput}
+\begin{Sinput}
+> library("contextual")
+> bandit      <- BasicBandit$new()
+> bandit$set_weights(c(0.1, 0.9))
+> policy      <- EpsilonGreedyPolicy$new()
+> agent       <- Agent$new(policy, bandit)
+> simulation  <- Simulator$new(agent, horizon = 100L, simulations = 100L)
+> history     <- simulation$run()
+> Plot$new()$grid(history)
+\end{Sinput}
 \end{Schunk}
 
 
 \begin{figure}
 \begin{center}
-\begin{Schunk}
-\begin{Soutput}
-     [,1] [,2]
-[1,]  0.1  0.9
-\end{Soutput}
-\begin{Soutput}
-[1] 0
-\end{Soutput}
-\end{Schunk}
 \includegraphics{jss-fig1}
 \end{center}
 \caption{Epsilon Greedy}
-\label{fig:one}
+\label{fig:fig1}
 \end{figure}
 
 
