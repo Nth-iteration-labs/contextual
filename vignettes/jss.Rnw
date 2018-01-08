@@ -5,6 +5,7 @@
 %\VignetteKeyword{vignette}
 %\VignetteKeyword{LaTeX}
 \documentclass[nojss]{jss}
+\SweaveOpts{concordance=FALSE}
 
 \usepackage[utf8]{inputenc}
 \usepackage{color}
