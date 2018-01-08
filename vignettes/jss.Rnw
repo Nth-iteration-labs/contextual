@@ -145,9 +145,13 @@ There is a very intersting trade of between the amount of parallelisation (how m
 PERFORMANCE DATA  ------------------------------------------------------------
 
 on 58  cores:    k3*d3 * 5 policies * 300  * 10000 --\textgreater{} 132 seconds
+
 on 120 cores:    k3*d3 * 5 policies * 300  * 10000 --\textgreater{} 390 seconds
 
+---
+
 on 58  cores:    k3*d3 * 5 policies * 3000 * 10000 --\textgreater{} 930 seconds
+
 on 120 cores:    k3*d3 * 5 policies * 3000 * 10000 --\textgreater{} 691 seconds
 
 
