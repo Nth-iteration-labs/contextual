@@ -170,11 +170,18 @@ In the canonical multi-armed bandit (MAB) problem a gambler faces a number of sl
 \hlkwd{library}\hlstd{(}\hlstr{"contextual"}\hlstd{)}
 
 \hlstd{bandit}      \hlkwb{<-} \hlstd{BasicBandit}\hlopt{$}\hlkwd{new}\hlstd{()}
+
 \hlstd{bandit}\hlopt{$}\hlkwd{set_weights}\hlstd{(}\hlkwd{c}\hlstd{(}\hlnum{0.1}\hlstd{,} \hlnum{0.9}\hlstd{))}
 
 \hlstd{policy}      \hlkwb{<-} \hlstd{EpsilonGreedyPolicy}\hlopt{$}\hlkwd{new}\hlstd{()}
+
 \hlstd{agent}       \hlkwb{<-} \hlstd{Agent}\hlopt{$}\hlkwd{new}\hlstd{(policy, bandit)}
-\hlstd{simulation}  \hlkwb{<-} \hlstd{Simulator}\hlopt{$}\hlkwd{new}\hlstd{(agent,} \hlkwc{horizon} \hlstd{=} \hlnum{100L}\hlstd{,} \hlkwc{simulations} \hlstd{=} \hlnum{100L}\hlstd{)}
+
+\hlstd{simulation}  \hlkwb{<-} \hlstd{Simulator}\hlopt{$}\hlkwd{new}\hlstd{(agent,}
+                             \hlkwc{horizon} \hlstd{=} \hlnum{100L}\hlstd{,}
+                             \hlkwc{simulations} \hlstd{=} \hlnum{100L}\hlstd{,}
+                             \hlkwc{worker_max} \hlstd{=} \hlnum{1}\hlstd{)}
+
 \hlstd{history}     \hlkwb{<-} \hlstd{simulation}\hlopt{$}\hlkwd{run}\hlstd{()}
 
 \hlstd{Plot}\hlopt{$}\hlkwd{new}\hlstd{()}\hlopt{$}\hlkwd{grid}\hlstd{(history)}

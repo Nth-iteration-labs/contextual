@@ -55,3 +55,6 @@ simulation$run()
 after <- simulation$history$data
 
 Plot$new()$grid(after)
+
+
+###################delete afterwards!
