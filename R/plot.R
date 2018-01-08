@@ -24,8 +24,8 @@ Plot <- R6::R6Class(
         par(mar = c(3, 5, 1, 2))
         self$ts(history, grid = TRUE, legend = TRUE)
       }
-
       dev.flush()
+      invisible(self)
     },
     cummulative = function(history,
                            grid = FALSE,
@@ -62,6 +62,7 @@ Plot <- R6::R6Class(
         )
       if (grid == FALSE)
         dev.flush()
+      invisible(self)
     },
     is_rstudio = function() {
       .Platform$GUI == "RStudio"
@@ -116,6 +117,7 @@ Plot <- R6::R6Class(
         )
       if (grid == FALSE)
         dev.flush()
+      invisible(self)
     },
     optimal = function(history,
                        grid = FALSE,
@@ -152,6 +154,7 @@ Plot <- R6::R6Class(
         )
       if (grid == FALSE)
         dev.flush()
+      invisible(self)
     },
     average = function(history,
                        grid = FALSE,
@@ -185,6 +188,7 @@ Plot <- R6::R6Class(
           bg = "white"
         )
       if (grid == FALSE) dev.flush()
+      invisible(self)
     },
     set_external = function(ext = TRUE,
                             width = 10,
