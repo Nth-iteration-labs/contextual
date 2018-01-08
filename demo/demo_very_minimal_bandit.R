@@ -14,8 +14,7 @@ bandit      <- BasicBandit$new()
 bandit$set_weights(c(0.1, 0.9))
 policy      <- EpsilonGreedyPolicy$new()
 agent       <- Agent$new(policy, bandit)
-simulation  <-
-  Simulator$new(agent, horizon = 100L, simulations = 100L)
+simulation  <- Simulator$new(agent, horizon = 100L, simulations = 100L)
 history     <- simulation$run()
 
 Plot$new()$grid(history)
