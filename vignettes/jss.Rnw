@@ -110,14 +110,14 @@ In the canonical multi-armed bandit (MAB) problem a gambler faces a number of sl
 %% Note: If there is markup in \(sub)section, then it has to be escape as above.
 
 
-See Figure \ref{fig:fig1} on page \pageref{fig:fig1}.
+
 
 <<include=FALSE>>=
-install.packages("devtools")
+install.packages("devtools",repos = "http://cran.us.r-project.org")
 devtools::install_github("Nth-iteration-labs/contextual")
 @
 
-<<label=fig1plot, message = FALSE, warning = FALSE, fig.keep='none'>>=
+<<label=fig1plot, message = FALSE, fig.keep='none'>>=
 library("contextual")
 
 bandit      <- BasicBandit$new()
@@ -131,14 +131,14 @@ history     <- simulation$run()
 Plot$new()$grid(history)
 @
 
+For results, see Figure \ref{fig:fig1} on page \pageref{fig:fig1}.
+
 
 \begin{center}
-<<label=fig1,fig.keep='high',echo=FALSE,message=FALSE, fig.cap="Epsilon Greedy">>=
+<<label=fig1, fig.keep='high', echo=FALSE, message=FALSE, fig.cap="Epsilon Greedy">>=
 <<fig1plot>>
 @
 \end{center}
-
-
 
 \section{Object orientation: extending contextual}
 %% Note: If there is markup in \(sub)section, then it has to be escape as above.
