@@ -32,7 +32,7 @@ test_that("Running SyntheticBandit simulation.", {
       worker_max = 1
     )
 
-  expect_output(bandit$object_size(), ".*216.*")
+  expect_output(bandit$object_size(), ".bytes.*")
 
   history     <- simulation$run()
   expect_equal(sum(history$data$reward), 3)
@@ -51,6 +51,6 @@ test_that("Running SyntheticBandit simulation.", {
 
   expect_message(bandit$generate_cache(1), "Precaching bandit")
 
-  expect_output(simulation$object_size(), ".*56 bytes.*")
+  expect_output(simulation$object_size(), ".bytes.*")
 
 })

@@ -57,3 +57,5 @@ Sys.setenv(R_GSCMD = "C:\\Program Files\\gs\\gs9.22\\bin\\gswin64c.exe")
 # on 58  cores:    k3*d3 * 5 policies * 3000 * 10000 --> 930 seconds
 # on 120 cores:    k3*d3 * 5 policies * 3000 * 10000 --> 691 seconds
 
+# devtools::use_appveyor()
+
