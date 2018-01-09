@@ -79,8 +79,8 @@ Simulator <- R6::R6Class(
         .noexport = c("sims_agents_list","history"),
         .packages = c("data.table","itertools")
       ) %dopar% {
-        counter <- 1L
-        agent_counter <- 21L
+        index <- 1L
+        agent_index <- 21L
 
         local_history <- History$new(horizon * agent_n * length(sims_agents), save_context, save_theta)
 
@@ -90,16 +90,16 @@ Simulator <- R6::R6Class(
           pname <- sa$policy$name
           for (t in 1L:horizon) {
 
-            agent_counter = as.integer(t + ((sidx - 1L) * horizon))
+            agent_index = as.integer(t + ((sidx - 1L) * horizon))
 
-            context <- sa$bandit_get_context(agent_counter)                     # observe the bandit in its context
-            action  <- sa$policy_get_action(agent_counter)                      # use policy to decide which choice to make (which arm to pick)
-            reward  <- sa$bandit_get_reward(agent_counter)                      # observe the resonse of the bandit in this context
+            context <- sa$bandit_get_context(agent_index)                     # observe the bandit in its context
+            action  <- sa$policy_get_action(agent_index)                      # use policy to decide which choice to make (which arm to pick)
+            reward  <- sa$bandit_get_reward(agent_index)                      # observe the resonse of the bandit in this context
             if (!is.null(reward)) {
-              theta <- sa$policy_set_reward(agent_counter)                      # adjust the policy, update theta
+              theta <- sa$policy_set_reward(agent_index)                      # adjust the policy, update theta
 
               local_history$save_agent(
-                                       counter,                                 # save the results to the history log
+                                       index,                                 # save the results to the history log
                                        t,
                                        action,
                                        reward,
@@ -108,7 +108,7 @@ Simulator <- R6::R6Class(
                                        if (self$save_context) context$X else NA,
                                        if (self$save_theta)   theta     else NA
                                       )
-              counter <- counter + 1L
+              index <- index + 1L
             }
           }
         }

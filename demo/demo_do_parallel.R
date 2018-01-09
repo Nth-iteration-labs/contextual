@@ -29,12 +29,13 @@ simulation     <- Simulator$new(
   agents,
   horizon      = 100L,
   simulations  = 100L,
-  save_context = FALSE,
+  save_context = TRUE,
   save_theta   = FALSE,
   worker_max   = 7
 )
 
 history        <- simulation$run()
+h              <- history$get_data_table()
 
 print(proc.time() - ptm)
 

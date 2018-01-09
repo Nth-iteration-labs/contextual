@@ -1,37 +1,93 @@
 context("History")
 
-test_that("History simulation.", {
+test_that("History simulation testing saving and loading.", {
 
-  # bandit      <- BasicBandit$new()
-  # expect_identical(typeof(bandit), "environment")
-  #
-  # bandit$set_weights(matrix(c(0.1,0.9,0.1,0.9),2,2))
-  #
-  # expect_equal(bandit$k, 2)
-  # expect_equal(bandit$d, 2)
-  # expect_false(bandit$is_precaching)
-  # expect_warning(bandit$is_precaching <- TRUE,".*locked*")
-  # expect_identical(bandit$get_weights(), matrix(c(0.1,0.9,0.1,0.9),2,2))
-  #
-  #
-  # policy      <- EpsilonGreedyPolicy$new()
-  # expect_identical(typeof(policy), "environment")
-  #
-  # agent       <- Agent$new(policy, bandit)
-  # expect_identical(typeof(agent), "environment")
-  #
-  # simulation  <- Simulator$new(agent, horizon = 2L, simulations = 2L, worker_max = 1)
-  # expect_error(bandit$generate_cache(1),".*precaching.*")
-  # expect_output(bandit$object_size(), ".*216.")
-  #
-  # context <- bandit$get_context()
-  # expect_equal(context$k, 2)
-  # expect_equal(context$d, 1)
-  # expect_equal(context$X, 1)
-  # expect_identical(context$O, c(0.1,0.9))
-  #
-  # history     <- simulation$run()
-  # expect_equal(sum(history$data$reward), 3)
+  bandit      <- SyntheticBandit$new()
+  bandit$set_weights(matrix(c(0.9, 0.1, 0.1,
+                              0.1, 0.2, 0.1,
+                              0.2, 0.1, 0.2),
+                            nrow = 3L,
+                            ncol = 3L))
+  policy      <- EpsilonGreedyPolicy$new()
+  agent       <- Agent$new(policy, bandit)
+  simulation  <-
+    Simulator$new(
+      agent,
+      horizon = 30L,
+      simulations = 30L,
+      worker_max = 1
+    )
+  history     <- simulation$run()
+  expect_equal(history$data$reward[1], 0)
 
+  reward = list()
+  reward["reward"]  = 10
+  reward["choice"] = 1
+  reward["optimal"] = 0
+  reward["propensity"] = 0
+  action = list()
+  action$choice = 2
+  history$save_agent(
+    index = 1,
+    t = 30,
+    action = action,
+    reward = reward,
+    policy_name = "EpsilonGreedy",
+    s = 30
+  )
+  expect_equal(history$data$reward[1], 10)
+
+  history$save_data("test.RData")
+  expect_true(file.exists("test.RData"))
+  history$reset()
+  history$load_data("test.RData")
+  file.remove("test.RData")
+  expect_equal(history$data$reward[1], 10)
+
+  df <- history$get_data_frame()
+  history$reset()
+  history$set_data_frame(df)
+  expect_equal(history$data$reward[1], 10)
+
+  dt <- history$get_data_table()
+  history$reset()
+  history$set_data_table(dt)
+  expect_equal(history$data$reward[1], 10)
+  expect_equal(nrow(history$data), 900)
+
+  history$save_agent(
+    index = 30,
+    t = 0,
+    action = action,
+    reward = reward,
+    policy_name = "EpsilonGreedy",
+    s = 0
+  )
+  history$delete_empty_rows()
+  expect_equal(nrow(history$data), 899)
+})
+
+test_that("History simulation testing context and theta.", {
+
+  bandit      <- SyntheticBandit$new()
+  bandit$set_weights(matrix(c(0.9, 0.1, 0.1,
+                              0.1, 0.2, 0.1,
+                              0.2, 0.1, 0.2),
+                            nrow = 3L,
+                            ncol = 3L))
+  policy      <- EpsilonGreedyPolicy$new()
+  agent       <- Agent$new(policy, bandit)
+  simulation  <-
+    Simulator$new(
+      agent,
+      horizon = 30L,
+      simulations = 30L,
+      worker_max = 1,
+      save_context = TRUE,
+      save_theta = TRUE
+    )
+  history     <- simulation$run()
+  expect_equal(unlist(history$data$context[1]), c(1,0,0))
+  expect_equal(history$data$theta[[1]][[2]]$chosen, 1)
 
 })

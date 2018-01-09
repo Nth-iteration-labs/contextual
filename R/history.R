@@ -13,6 +13,9 @@ History <- R6::R6Class(
       self$n <- n
       self$save_context <- save_context
       self$save_theta   <- save_theta
+      self$reset()
+    },
+    reset = function() {
       private$.data <- data.table::data.table(
         t               = rep(0L,      n),
         sim             = rep(0L,      n),
@@ -25,7 +28,7 @@ History <- R6::R6Class(
       if (self$save_theta)   private$.data$theta   = rep(list(),  n)
       invisible(self)
     },
-    save_agent = function(counter,
+    save_agent = function(index,  ## other name for this save? not save agent?
                           t,
                           action,
                           reward,
@@ -34,28 +37,29 @@ History <- R6::R6Class(
                           context_value = NA,
                           theta_value = NA) {
 
-      counter = as.integer(counter)
+      index = as.integer(index)
 
       if (reward$optimal)
         optimal = 1L
       else
         optimal = 0L
 
-      data.table::set(data, counter, 1L:6L,
+      data.table::set(data, index, 1L:6L,
                       list(t,s,action$choice,reward[[1]],optimal,policy_name)
                       )
 
       if (!self$save_context & !self$save_theta) {
         # nothing to do here, carry on..
       } else if (self$save_context & !self$save_theta) {
-        data.table::set(data, counter, 7L , list(list(context_value)))
+        data.table::set(data, index, 7L , list(list(context_value)))
       } else if (!self$save_context & self$save_theta) {
-        data.table::set(data, counter, 7L, list(list(theta_value)))
-        #data[counter, (paste0("X.", seq_along(context))) := context]           ## if split over mult col
+        data.table::set(data, index, 7L, list(list(theta_value)))
+        #data[index, (paste0("X.", seq_along(context))) := context]           ## if split over mult col
       } else {
-        data.table::set(data, counter, 7L, list(list(context_value)))
-        data.table::set(data, counter, 8L , list(list(theta_value)))
+        data.table::set(data, index, 7L, list(list(context_value)))
+        data.table::set(data, index, 8L , list(list(theta_value)))
       }
+      invisible(self)
     },
     save_data = function(filename = NA) {
       if (is.na(filename))
@@ -73,8 +77,8 @@ History <- R6::R6Class(
     get_data_frame = function() {
       as.data.frame(private$.data)
     },
-    set_data_frame = function(dt) {
-      private$.data = as.data.table(dt)
+    set_data_frame = function(df) {
+      private$.data = as.data.table(df)
       invisible(self)
     },
     get_data_table = function() {

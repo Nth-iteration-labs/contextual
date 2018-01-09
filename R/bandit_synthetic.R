@@ -44,7 +44,7 @@ SyntheticBandit <- R6::R6Class(
     },
     get_context = function(t = 1) {
       if (!self$is_precaching) {
-        self$generate_cache(n = 1L, not_zero_features = TRUE, seed_counter = t)
+        self$generate_cache(n = 1L, not_zero_features = TRUE, seed_number = t)
         t = 1
       }
       self$context_to_list(t)
@@ -72,9 +72,9 @@ SyntheticBandit <- R6::R6Class(
     },
     generate_cache = function(n = 1L,
                               not_zero_features = TRUE,
-                              seed_counter = 0L) {
+                              seed_number = 0L) {
       message("Precaching bandit" )
-      set.seed(self$seed + seed_counter)
+      set.seed(self$seed + seed_number)
       private$.X <- matrix(0, n , d)
       private$.O <- matrix(0, self$k, n)
       private$.R <- matrix(0, self$k, n)
