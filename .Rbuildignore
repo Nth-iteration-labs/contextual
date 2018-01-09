@@ -5,3 +5,4 @@ contextual.Rproj
 ^\.Rprofile$
 ^\.travis\.yml$
 ^codecov\.yml$
+^appveyor\.yml$
