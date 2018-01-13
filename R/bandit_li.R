@@ -20,7 +20,7 @@ LiLogBandit <- R6::R6Class(
       self$context_to_list()
     },
     get_reward = function(action, t) {
-      if (private$.S$arm[[t]] == action$choice) {                               # name both the same, choice, arm
+      if (private$.S$choice[[t]] == action$choice) {
         return(
           setNames(
             list(

@@ -19,7 +19,7 @@ History <- R6::R6Class(
       private$.data <- data.table::data.table(
         t               = rep(0L,      n),
         sim             = rep(0L,      n),
-        arm             = rep(0L,      n),
+        choice          = rep(0L,      n),
         reward          = rep(0L,      n),   ##### double
         is_optimal      = rep(0L,      n),
         oracle          = rep(0L,      n),   ###### double ;)
