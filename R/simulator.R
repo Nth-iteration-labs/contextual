@@ -78,7 +78,7 @@ Simulator <- R6::R6Class(
         .export = c("History"),
         .noexport = c("sims_agents_list","history"),
         .packages = c("data.table","itertools")
-      ) %dopar% {
+      ) %do% {
         index <- 1L
         agent_index <- 21L
 

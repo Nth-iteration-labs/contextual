@@ -22,12 +22,13 @@ LiLogBandit <- R6::R6Class(
     get_reward = function(action, t) {
       if (private$.S$choice[[t]] == action$choice) {
         return(
+
           setNames(
             list(
               as.integer(private$.S$reward[[t]]),
               action$choice,
-              0,
-              as.integer(private$.R[action$optimal_choice, t]),
+              as.integer(private$.S$is_optimal[[t]]),                           ######## double check if this correct
+              as.integer(private$.S$oracle[[t]]),
               action$propensity
             ),
             c("reward",
