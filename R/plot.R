@@ -13,19 +13,26 @@ Plot <- R6::R6Class(
       history <- history[t <= history[ , max(t), by = c("sim")][,min(V1)]]
       dev.hold()
       layout(matrix(c(1, 3, 2, 4), 2, 2, byrow = TRUE))
+
       par(mar = c(3, 5, 1, 1))#b,l,t,r
-      self$cummulative(history, grid = TRUE, legend = TRUE,     , regret = TRUE)
+      self$cummulative(history, grid = TRUE, legend = TRUE, regret = TRUE)
+
       par(mar = c(3, 5, 1, 1))
       self$optimal(history, grid = TRUE, legend = FALSE)
+
+      par(mar = c(3, 5, 1, 2))
+      self$cummulative(history, grid = TRUE, legend = FALSE, regret = FALSE)
+
+
       par(mar = c(3, 5, 1, 2))
       self$average(history, grid = TRUE, legend = FALSE)
-      if (history[agent == "TSampling",.N] > 0) {                               ## this needs to be more generic!!!
-        par(mar = c(3, 5, 1, 2))
-        self$ts(history, grid = TRUE, legend = TRUE)
-      } else {
-        par(mar = c(3, 5, 1, 2))
-        self$average(history, grid = TRUE, legend = FALSE, regret = TRUE)
-      }
+
+      #if (history[agent == "TSampling",.N] > 0) {                               ## this needs to be more generic!!!
+      #  self$ts(history, grid = TRUE, legend = TRUE)
+      #} else {
+      #  self$average(history, grid = TRUE, legend = FALSE, regret = TRUE)
+      #}
+
       dev.flush()
       invisible(self)
     },

@@ -27,9 +27,10 @@ setwd("~/GitHub/contextual/demo")
 source("dev.R")
 
 bandit      <- SyntheticBandit$new()
-bandit$set_weights(matrix(c(0.9, 0.1, 0.1,  #k1
-                            0.1, 0.2, 0.1,  #k2
-                            0.2, 0.1, 0.2), #k3
+                            #k1  #k2  #k3
+bandit$set_weights(matrix(c(0.9, 0.1, 0.1,  #d1
+                            0.1, 0.2, 0.1,  #d2
+                            0.2, 0.1, 0.2), #d3
                           nrow = 3L,
                           ncol = 3L))
 policy      <- EpsilonGreedyPolicy$new()
