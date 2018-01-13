@@ -5,3 +5,4 @@ demo_basic                              Basic demo - one bandit, one policy
 demo_minimal_bandit                     How to define custom bandits inline
 demo_offline_log                        Demo of Li's offline testing policy
 dev                                     Dev support file
+test                                    Temporary test file
