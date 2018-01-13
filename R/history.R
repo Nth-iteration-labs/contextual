@@ -20,8 +20,9 @@ History <- R6::R6Class(
         t               = rep(0L,      n),
         sim             = rep(0L,      n),
         arm             = rep(0L,      n),
-        reward          = rep(0L,      n),
-        optimal         = rep(0L,      n),
+        reward          = rep(0L,      n),   ##### double
+        is_optimal      = rep(0L,      n),
+        oracle          = rep(0L,      n),   ###### double ;)
         agent           = rep("",      n)
       )
       if (self$save_context) private$.data$context = rep(list(),  n)
@@ -39,25 +40,25 @@ History <- R6::R6Class(
 
       index = as.integer(index)
 
-      if (reward$optimal)
-        optimal = 1L
+      if (reward$is_optimal)
+        is_optimal = 1L
       else
-        optimal = 0L
+        is_optimal = 0L
 
-      data.table::set(data, index, 1L:6L,
-                      list(t,s,action$choice,reward[[1]],optimal,policy_name)
+      data.table::set(data, index, 1L:7L,
+                      list(t,s,action$choice,reward[[1]],is_optimal,reward$oracle,policy_name)  ## turn oracle into [[]]
                       )
 
       if (!self$save_context & !self$save_theta) {
         # nothing to do here, carry on..
       } else if (self$save_context & !self$save_theta) {
-        data.table::set(data, index, 7L , list(list(context_value)))
+        data.table::set(data, index, 8L , list(list(context_value)))
       } else if (!self$save_context & self$save_theta) {
-        data.table::set(data, index, 7L, list(list(theta_value)))
+        data.table::set(data, index, 8L, list(list(theta_value)))
         #data[index, (paste0("X.", seq_along(context))) := context]           ## if split over mult col
       } else {
-        data.table::set(data, index, 7L, list(list(context_value)))
-        data.table::set(data, index, 8L , list(list(theta_value)))
+        data.table::set(data, index, 8L, list(list(context_value)))
+        data.table::set(data, index, 9L , list(list(theta_value)))
       }
       invisible(self)
     },

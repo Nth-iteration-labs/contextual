@@ -8,6 +8,8 @@ bandit <- SyntheticBandit$new(
   seed                = 1,
   precache            = TRUE
 )
+
+# right order? d/k if nrow 1 ncol 3 --> error?
                             #d1  #d2  #d3
 bandit$set_weights(matrix(c(0.9, 0.1, 0.1,  #k1
                             0.1, 0.2, 0.1,  #k2
@@ -28,10 +30,9 @@ ptm            <- proc.time()
 simulation     <- Simulator$new(
   agents,
   horizon      = 100L,
-  simulations  = 100L,
+  simulations  = 500L,
   save_context = TRUE,
-  save_theta   = FALSE,
-  worker_max   = 7
+  save_theta   = FALSE
 )
 
 history        <- simulation$run()

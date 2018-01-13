@@ -13,9 +13,8 @@ Plot <- R6::R6Class(
       history <- history[t <= history[ , max(t), by = c("sim")][,min(V1)]]
       dev.hold()
       layout(matrix(c(1, 3, 2, 4), 2, 2, byrow = TRUE))
-
       par(mar = c(3, 5, 1, 1))#b,l,t,r
-      self$cummulative(history, grid = TRUE, legend = TRUE)
+      self$cummulative(history, grid = TRUE, legend = TRUE,     , regret = TRUE)
       par(mar = c(3, 5, 1, 1))
       self$optimal(history, grid = TRUE, legend = FALSE)
       par(mar = c(3, 5, 1, 2))
@@ -23,6 +22,9 @@ Plot <- R6::R6Class(
       if (history[agent == "TSampling",.N] > 0) {                               ## this needs to be more generic!!!
         par(mar = c(3, 5, 1, 2))
         self$ts(history, grid = TRUE, legend = TRUE)
+      } else {
+        par(mar = c(3, 5, 1, 2))
+        self$average(history, grid = TRUE, legend = FALSE, regret = TRUE)
       }
       dev.flush()
       invisible(self)
@@ -30,17 +32,31 @@ Plot <- R6::R6Class(
     cummulative = function(history,
                            grid = FALSE,
                            xlim = NULL ,
-                           legend = TRUE) {
+                           legend = TRUE,
+                           regret = FALSE) {
       if (!is.data.table(history)) history = history$get_data_table()
       if (grid == FALSE)
         dev.hold()
-      cs <- history[, list(mean = mean(reward)), by = list(t, agent)]
+
+      if (regret) {
+        cs <- history[, list(mean = mean(oracle - reward)), by = list(t, agent)]
+      } else {
+        cs <- history[, list(mean = mean(reward)), by = list(t, agent)]
+      }
+
       agent_list <- unique(cs$agent)
       agents <- length(agent_list)
       setorder(cs, agent, t)
       agent_list <- unique(cs$agent)
       ms <- matrix(unlist(cs[, cumsum(mean), by = list(agent)][, 2], FALSE, FALSE),
                   ncol = agents)
+
+      if (regret) {
+        ylab_title = "Cummulative regret"
+      } else {
+        ylab_title = "Cummulative reward"
+      }
+
       matplot(
         ms,
         type = "l",
@@ -48,7 +64,90 @@ Plot <- R6::R6Class(
         lwd = 1,
         lty = 1,
         xlab = "Time Step",
-        ylab = "Cummulative reward"
+        ylab = ylab_title
+      )
+      if (legend)
+        legend(
+          "topleft",
+          NULL,
+          agent_list,
+          col = 1:agents,
+          lwd = 1,
+          lty = 1,
+          bg = "white"
+        )
+      if (grid == FALSE)
+        dev.flush()
+      invisible(self)
+    },
+    average = function(history,
+                       grid = FALSE,
+                       xlim = NULL,
+                       legend = TRUE,
+                       regret = FALSE) {
+      if (!is.data.table(history)) history = history$get_data_table()
+      if (grid == FALSE) dev.hold()
+      if (regret) {
+        cs <- history[, list(mean = mean(oracle - reward)), by = list(t, agent)]
+      } else {
+        cs <- history[, list(mean = mean(reward)), by = list(t, agent)]
+      }
+      agent_list <- unique(cs$agent)
+      agents <- length(agent_list)
+      setorder(cs, agent, t)
+      agent_list <- unique(cs$agent)
+      ms <- matrix(unlist(cs[, 3], FALSE, FALSE), ncol = agents)
+      if (regret) {
+        ylab_title = "Average regret"
+      } else {
+        ylab_title = "Average reward"
+      }
+
+
+      matplot(
+        ms,
+        type = "l",
+        xlim = xlim,
+        lwd = 1,
+        lty = 1,
+        xlab = "Time Step",
+        ylab = ylab_title
+      )
+      if (legend)
+        legend(
+          "topleft",
+          NULL,
+          agent_list,
+          col = 1:agents,
+          lwd = 1,
+          lty = 1,
+          bg = "white"
+        )
+      if (grid == FALSE) dev.flush()
+      invisible(self)
+    },
+    optimal = function(history,
+                       grid = FALSE,
+                       xlim = NULL,
+                       legend = TRUE) {
+      if (!is.data.table(history)) history = history$get_data_table()
+      if (grid == FALSE)
+        dev.hold()
+      cs <- history[, list(mean = mean(is_optimal)), by = list(t, agent)]
+      agent_list <- unique(cs$agent)
+      agents <- length(agent_list)
+      setorder(cs, agent, t)
+      agent_list <- unique(cs$agent)
+      ms <- matrix(unlist(cs[, 3], FALSE, FALSE), ncol = agents)
+      matplot(
+        ms * 100,
+        type = "l",
+        xlim = xlim,
+        lwd = 1,
+        lty = 1,
+        xlab = "Time Step",
+        ylab = "Optimal arm",
+        ylim = c(0, 100)
       )
       if (legend)
         legend(
@@ -68,9 +167,9 @@ Plot <- R6::R6Class(
       .Platform$GUI == "RStudio"
     },
     ts = function(history,
-                       grid = FALSE,
-                       xlim = NULL,
-                       legend = TRUE) {
+                  grid = FALSE,
+                  xlim = NULL,
+                  legend = TRUE) {
       if (!is.data.table(history)) history = history$get_data_table()
       if (grid == FALSE)
         dev.hold()
@@ -117,77 +216,6 @@ Plot <- R6::R6Class(
         )
       if (grid == FALSE)
         dev.flush()
-      invisible(self)
-    },
-    optimal = function(history,
-                       grid = FALSE,
-                       xlim = NULL,
-                       legend = TRUE) {
-      if (!is.data.table(history)) history = history$get_data_table()
-      if (grid == FALSE)
-        dev.hold()
-      cs <- history[, list(mean = mean(optimal)), by = list(t, agent)]
-      agent_list <- unique(cs$agent)
-      agents <- length(agent_list)
-      setorder(cs, agent, t)
-      agent_list <- unique(cs$agent)
-      ms <- matrix(unlist(cs[, 3], FALSE, FALSE), ncol = agents)
-      matplot(
-        ms * 100,
-        type = "l",
-        xlim = xlim,
-        lwd = 1,
-        lty = 1,
-        xlab = "Time Step",
-        ylab = "Optimal arm",
-        ylim = c(0, 100)
-      )
-      if (legend)
-        legend(
-          "topleft",
-          NULL,
-          agent_list,
-          col = 1:agents,
-          lwd = 1,
-          lty = 1,
-          bg = "white"
-        )
-      if (grid == FALSE)
-        dev.flush()
-      invisible(self)
-    },
-    average = function(history,
-                       grid = FALSE,
-                       xlim = NULL,
-                       legend = TRUE) {
-      if (!is.data.table(history)) history = history$get_data_table()
-      if (grid == FALSE) dev.hold()
-      cs <- history[, list(mean = mean(reward)), by = list(t, agent)]
-      agent_list <- unique(cs$agent)
-      agents <- length(agent_list)
-      setorder(cs, agent, t)
-      agent_list <- unique(cs$agent)
-      ms <- matrix(unlist(cs[, 3], FALSE, FALSE), ncol = agents)
-      matplot(
-        ms,
-        type = "l",
-        xlim = xlim,
-        lwd = 1,
-        lty = 1,
-        xlab = "Time Step",
-        ylab = "Average reward"
-      )
-      if (legend)
-        legend(
-          "topleft",
-          NULL,
-          agent_list,
-          col = 1:agents,
-          lwd = 1,
-          lty = 1,
-          bg = "white"
-        )
-      if (grid == FALSE) dev.flush()
       invisible(self)
     },
     set_external = function(ext = TRUE,

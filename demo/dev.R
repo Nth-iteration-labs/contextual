@@ -19,6 +19,8 @@ Sys.setenv(R_GSCMD = "C:\\Program Files\\gs\\gs9.22\\bin\\gswin64c.exe")
 # Comments should explain the why, not the what.
 # More than 80 chars: encapsulate in other function.
 
+# REFACTOR and DRY plot .. check how usually done in R
+# make sure output/summary is nicely formatted and collected
 # random when not set, "choose" randomly prgrammaticly.
 # and check what if not precache, seed-wize .. must be same as not precache?
 # check all <- and =

@@ -39,14 +39,16 @@ BasicBandit <- R6::R6Class(
     reward_to_list = function(action, t = 1) {
       setNames(
         list(
-          as.integer(private$.R[action$choice, t]),
+          as.integer(private$.R[action$choice, t]),                             ### remove the "as.integer" for double
           action$choice,
           argmax(private$.R[, t]) == action$choice,
+          as.integer(private$.R[action$optimal_choice, t]),                     ### remove the "as.integer" for double
           action$propensity
         ),
         c("reward",
           "choice",
-          "optimal",
+          "is_optimal",
+          "oracle",
           "propensity")
       )
     }

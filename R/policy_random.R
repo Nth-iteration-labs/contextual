@@ -14,6 +14,7 @@ RandomPolicy <- R6::R6Class(
     get_action = function(context) {
       self$action$choice <- sample.int(context$k, 1, replace = TRUE)
       self$action$propensity <- 1/context$k
+      self$action$optimal_choice <- self$argmax(context$O)                      ### repeats itself everywhere, so in superclass!
       self$action
     },
     set_reward = function(reward, context) {

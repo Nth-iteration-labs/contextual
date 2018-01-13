@@ -27,11 +27,13 @@ LiLogBandit <- R6::R6Class(
               as.integer(private$.S$reward[[t]]),
               action$choice,
               0,
+              as.integer(private$.R[action$optimal_choice, t]),
               action$propensity
             ),
             c("reward",
               "choice",
-              "optimal",
+              "is_optimal",
+              "oracle",
               "propensity")
           )
         )

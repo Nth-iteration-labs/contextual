@@ -21,6 +21,7 @@ Exp3Policy <- R6::R6Class(
       }
        probabilities[arm] <- probabilities[arm] + ((self$gamma) * (1.0 / context$k))
       self$action$choice  <- self$categorical_draw(probabilities)
+      self$action$optimal_choice <- self$argmax(context$O)                      ### repeats itself everywhere, so in superclass!
       self$action
     },
     set_reward = function(reward, context) {

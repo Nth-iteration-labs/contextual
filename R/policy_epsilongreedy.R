@@ -21,6 +21,7 @@ EpsilonGreedyPolicy <- R6::R6Class(
         self$action$choice <- self$argmaxlist(self$theta,"value")
         self$action$propensity <- 1 - self$epsilon
       }
+      self$action$optimal_choice <- self$argmax(context$O)                      ### repeats itself everywhere, so in superclass!
       self$action
     },
     set_reward = function(reward, context) {

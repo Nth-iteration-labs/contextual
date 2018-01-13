@@ -14,6 +14,7 @@ OraclePolicy <- R6::R6Class(
     get_action = function(context) {
       self$action$choice <- self$argmax(context$O)
       self$action$propensity <- 1
+      self$action$optimal_choice <- self$argmax(context$O)                      ### repeats itself everywhere, so in superclass!
       self$action
     },
     set_reward = function(reward, context) {

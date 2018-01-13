@@ -25,10 +25,14 @@ test_that("History simulation testing saving and loading.", {
   reward = list()
   reward["reward"]  = 10
   reward["choice"] = 1
-  reward["optimal"] = 0
+  reward["is_optimal"] = 0
+  reward["oracle"] = 1
   reward["propensity"] = 0
+
   action = list()
   action$choice = 2
+  action$optimal_choice = 2
+
   history$save_agent(
     index = 1,
     t = 30,
