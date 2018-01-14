@@ -1,6 +1,6 @@
 context("History")
 
-test_that("History simulation testing saving and loading.", {
+test_that("History simulation, saving and loading", {
 
   bandit      <- SyntheticBandit$new()
   bandit$set_weights(matrix(c(0.9, 0.1, 0.1,

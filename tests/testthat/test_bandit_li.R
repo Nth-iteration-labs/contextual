@@ -1,6 +1,6 @@
-context("Li Bandit")
+context("LiLogBandit")
 
-test_that("Li Bandit test.", {
+test_that("LiLogBandit simulation", {
 
   bandit      <- SyntheticBandit$new()
   bandit$set_weights(matrix(

@@ -32,19 +32,19 @@ AbstractBandit <- R6::R6Class(
       private$.O <- matrix(0L, 3L, 1L)
     },
     get_context = function(t = 1) {
-      stop("### Need to implement get_context.",
+      stop("### Need to implement AbstractBandit$get_context.",
            call. = FALSE)
     },
     get_reward = function(action, t = 1) {
-      stop("### Need to implement get_reward.",
+      stop("### Need to implement AbstractBandit$get_reward.",
            call. = FALSE)
     },
     set_weights = function(W) {
-      stop("### Need to implement set_weights.",
+      stop("### Need to implement AbstractBandit$set_weights.",
            call. = FALSE)
     },
     generate_cache = function(n = 1) {
-      stop("### Need to implement generate_cache if is_precaching is TRUE.",
+      stop("### Need to implement AbstractBandit$generate_cache if is_precaching is TRUE.",
            call. = FALSE)
     },
     context_to_list = function(t = 1) {

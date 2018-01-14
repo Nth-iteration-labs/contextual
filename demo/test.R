@@ -1,45 +1,17 @@
-grid = FALSE
-xlim = NULL
-legend = TRUE
-regret = FALSE
 
+## first time with context and theta
+setwd("~/GitHub/contextual/demo")
+source("dev.R")
 
-#if (!is.data.table(history)) history = history$get_data_table()
-if (grid == FALSE) dev.hold()
-if (regret) {
-  cs <- history[, list(mean = mean(reward)), by = list(t, agent)]
-} else {
-  cs <- history[, list(mean = mean(reward)), by = list(t, agent)]
-}
-agent_list <- unique(cs$agent)
-agents <- length(agent_list)
-setorder(cs, agent, t)
-agent_list <- unique(cs$agent)
-ms <- matrix(unlist(cs[, 3], FALSE, FALSE), ncol = agents)
-if (regret) {
-  ylab_title = "Average regret"
-} else {
-  ylab_title = "Average reward"
-}
+bandit      <- BasicBandit$new()
+bandit$set_weights(matrix(c(0.1,0.9,0.1,0.9),2,2))
+bandit$set_weights(c(0.1,0.9))
+policy      <- EpsilonGreedyPolicy$new()
+agent       <- Agent$new(policy, bandit)
+simulation  <- Simulator$new(agent, horizon = 10L, simulations = 10L, worker_max = 1)
+history     <- simulation$run()
 
+plot = Plot$new()
+plot_result = plot$grid(history)
 
-matplot(
-  ms,
-  type = "l",
-  xlim = xlim,
-  lwd = 1,
-  lty = 1,
-  xlab = "Time Step",
-  ylab = ylab_title
-)
-if (legend)
-  legend(
-    "topleft",
-    NULL,
-    agent_list,
-    col = 1:agents,
-    lwd = 1,
-    lty = 1,
-    bg = "white"
-  )
-if (grid == FALSE) dev.flush()
+print(plot_result$bandit_matrix)

@@ -6,13 +6,14 @@ Plot <- R6::R6Class(
   inherit = Contextual,
   class = FALSE,
   public = list(
+    bandit_matrix = NULL,
     initialize = function() {
     },
     grid = function(history) {
       if (!is.data.table(history)) history = history$get_data_table()
       history <- history[t <= history[ , max(t), by = c("sim")][,min(V1)]]
       dev.hold()
-      layout(matrix(c(1, 3, 2, 4), 2, 2, byrow = TRUE))
+      self$bandit_matrix <- layout(matrix(c(1, 3, 2, 4), 2, 2, byrow = TRUE))
 
       par(mar = c(3, 5, 1, 1))#b,l,t,r
       self$cummulative(history, grid = TRUE, legend = TRUE, regret = TRUE)

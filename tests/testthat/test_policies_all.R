@@ -1,6 +1,6 @@
 context("Policies")
 
-test_that("Test Exp3", {
+test_that("Exp3", {
   bandit      <- BasicBandit$new()
   expect_identical(typeof(bandit), "environment")
 
@@ -18,7 +18,7 @@ test_that("Test Exp3", {
   expect_equal(sum(history$data$reward), 45)
 })
 
-test_that("Test Oracle", {
+test_that("Oracle", {
   bandit      <- BasicBandit$new()
   expect_identical(typeof(bandit), "environment")
 
@@ -54,7 +54,7 @@ test_that("Test Random", {
   expect_equal(sum(history$data$reward), 36)
 })
 
-test_that("Test LinUCB", {
+test_that("LinUCB", {
   bandit      <- BasicBandit$new()
   expect_identical(typeof(bandit), "environment")
 
@@ -72,7 +72,7 @@ test_that("Test LinUCB", {
   expect_equal(sum(history$data$reward), 74)
 })
 
-test_that("Test ThompsonSampling", {
+test_that("ThompsonSampling", {
 
   bandit      <- BasicBandit$new()
   expect_identical(typeof(bandit), "environment")
@@ -91,7 +91,7 @@ test_that("Test ThompsonSampling", {
   expect_equal(sum(history$data$reward), 59)
 })
 
-test_that("Test EpsilonGreedy", {
+test_that("EpsilonGreedy", {
   bandit      <- BasicBandit$new()
   expect_identical(typeof(bandit), "environment")
 

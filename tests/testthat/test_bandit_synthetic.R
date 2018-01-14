@@ -2,7 +2,7 @@ context("SyntheticBandit")
 
 ## add precache = FALSE and much more..
 
-test_that("Running SyntheticBandit simulation.", {
+test_that("SyntheticBandit simulation", {
   bandit      <- SyntheticBandit$new()
   expect_identical(typeof(bandit), "environment")
 
