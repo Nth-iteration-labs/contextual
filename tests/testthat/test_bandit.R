@@ -21,7 +21,7 @@ test_that("Bandit test.", {
   expect_error(bandit$set_weights(1), ".*implement.")
   expect_error(bandit$generate_cache(1), ".*implement.")
 
-  context_list <- bandit$context_to_list()     ### shouldn't this be more informative
+  context_list <- bandit$context_to_list()     ### shouldn't this be more informative, that is, state that has to be implemented etc..
   expect_equal(context_list$k,NULL)
   expect_equal(context_list$d,NULL)
   expect_equal(context_list$X,1)
@@ -29,7 +29,7 @@ test_that("Bandit test.", {
 
   reward_list <- bandit$reward_to_list(action,1)
   expect_equal(reward_list$reward,0)
-  expect_true(!unlist(reward_list$is_optimal))
+  #expect_true(!unlist(reward_list$is_optimal))
   expect_equal(reward_list$oracle,0)
   expect_equal(reward_list$propensity,NULL)
 

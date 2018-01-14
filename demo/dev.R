@@ -16,6 +16,7 @@ Sys.setenv(R_GSCMD = "C:\\Program Files\\gs\\gs9.22\\bin\\gswin64c.exe")
 
 # TODO LIST --------------------------------------------------------------------
 
+# check when NA saved to history (ie in the case of oracle/optimal not known etc)
 # Comments should explain the why, not the what.
 # More than 80 chars: encapsulate in other function.
 
