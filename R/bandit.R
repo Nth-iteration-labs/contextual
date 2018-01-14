@@ -52,7 +52,7 @@ AbstractBandit <- R6::R6Class(
         setNames(list(self$k, self$d, private$.X[t, ], private$.O[, t]),
                  c("k", "d", "X", "O")))
     },
-    reward_to_list = function(action, t = 1) {
+    reward_to_list = function(action, t = 1) {         #### check if t = 1 necessary everywehere?
       setNames(
         list(
           as.integer(private$.R[action$choice, t]),
