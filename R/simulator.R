@@ -55,7 +55,7 @@ Simulator <- R6::R6Class(
       }
       message("Preworkercreation")
       workers <- parallel::detectCores() - 1
-      if (workers < 1) workers <- 1
+      if (workers < 1) workers <- 1 # nocov
       if (workers > worker_max) workers <- worker_max
       cl <- parallel::makeCluster(workers, useXDR = FALSE) #type="FORK")   #  type="FORK" only linux
       message("Postworkercreation")
@@ -78,7 +78,7 @@ Simulator <- R6::R6Class(
         .export = c("History"),
         .noexport = c("sims_agents_list","history"),
         .packages = c("data.table","itertools")
-      ) %do% {
+      ) %dopar% {
         index <- 1L
         agent_index <- 21L
 
