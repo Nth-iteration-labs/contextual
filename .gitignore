@@ -6,3 +6,4 @@ packrat/lib*/
 *.RData
 inst/doc
 demo/dadada.R
+tests/testthat/Rplots.pdf
