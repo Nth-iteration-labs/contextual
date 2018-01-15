@@ -14,5 +14,6 @@ test_that("Plot check", {
   plot_result = plot$grid(history)
 
   expect_equal(plot_result$bandit_matrix,4)
+  expect_true(file.exists("Rplots.pdf"))
 
 })

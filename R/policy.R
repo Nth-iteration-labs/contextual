@@ -19,17 +19,14 @@ AbstractPolicy <- R6::R6Class(
       self$theta = theta
       stop("### Need to implement AbstractPolicy$get_action",
            call. = FALSE)
-      self$action
     },
     set_reward = function(reward, context) {
       stop("### Need to implement AbstractPolicy$set_reward",
            call. = FALSE)
-      self$theta
     },
     set_parameters = function() {
       stop("### Need to implement AbstractPolicy$set_parameters",
            call. = FALSE)
-      self$parameters <- list('value' = 0)
     },
     initialize_theta = function() {
       theta = list()                                                            ## if we check whats there and add defaults, becomes.. dynamic :D
