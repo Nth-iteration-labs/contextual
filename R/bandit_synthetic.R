@@ -26,11 +26,9 @@ SyntheticBandit <- R6::R6Class(
     seed = NULL,
     precache = NULL,
     has_cache = NULL,
-    initialize   = function(weight_distribution  = 'Uniform',
-                            reward_type          = 'Bernoulli',
-                            seed                 = 1L,
-                            weight_stds          = NA,
-                            weight_means         = NA,
+    initialize   = function(
+                            reward_type          = 'Bernoulli',                 # or arm-model .. arm-model array .. more flexible, but ever useful?
+                            seed                 = 1L,                          ##################################################
                             reward_means         = NA,
                             reward_stds          = NA,
                             precache             = TRUE
@@ -40,7 +38,6 @@ SyntheticBandit <- R6::R6Class(
       self$seed                 <- seed
       self$is_precaching        <- precache
       self$reward_type          <- reward_type
-      self$weight_distribution  <- weight_distribution
     },
     get_context = function(t = 1) {
       if (!self$is_precaching) {
@@ -52,23 +49,6 @@ SyntheticBandit <- R6::R6Class(
     get_reward = function(action, t = 1) {
       if (!self$is_precaching) t = 1
       self$reward_to_list(action, t)
-    },
-    generate_weights = function(k,
-                                d = 1L,
-                                mean = 3.0,
-                                sd = 1.0) {
-      set.seed(self$seed)
-      self$k <- k
-      self$d <- d
-      if (self$weight_distribution == "Uniform") {
-        private$.W <- matrix(runif(d * k), d, k)
-      } else if (self$weight_distribution == "Normal") {
-        private$.W <-
-          matrix(rnorm(self$d * self$k, self$feature_means, self$feature_stds),
-                 d,
-                 k)
-      }
-      private$.W
     },
     generate_cache = function(n = 1L,
                               not_zero_features = TRUE,
@@ -123,7 +103,7 @@ SyntheticBandit <- R6::R6Class(
 
     .generate_rewards = function(n) {
       if (self$reward_type == 'Bernoulli') {
-        private$.R <- runif(self$k * n) < private$.O
+        private$.R <- runif(self$k * n) < private$.O                            # reward function, defines model
       } else if (self$reward_type == 'Gaussian') {
         private$.R <-
           (rnorm(self$k * n, self$reward_means, self$reward_stds) + private$.O) / 2

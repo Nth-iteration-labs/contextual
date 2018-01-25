@@ -27,7 +27,7 @@ LiLogBandit <- R6::R6Class(
             list(
               as.integer(private$.S$reward[[t]]),
               action$choice,
-              as.integer(private$.S$is_optimal[[t]]),                           ######## double check if this correct
+              as.integer(private$.S$is_optimal[[t]]),                           ######## double check if this correct ## as integer? limitted
               as.integer(private$.S$oracle[[t]]),
               action$propensity
             ),

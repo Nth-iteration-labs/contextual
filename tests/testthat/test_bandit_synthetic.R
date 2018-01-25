@@ -43,12 +43,6 @@ test_that("SyntheticBandit simulation", {
   expect_equal(context$X, 1)
   expect_identical(context$O, c(0.1, 0.9))
 
-  generated_weights <- bandit$generate_weights(2, 2)
-  generated_weights_expected <-
-    matrix(c(0.2655087, 0.3721239, 0.5728534, 0.9082078), 2, 2)
-  expect_equal(round(generated_weights, 7), generated_weights_expected)
-  expect_equal(round(bandit$get_weights(), 7), generated_weights_expected)
-
   expect_message(bandit$generate_cache(1), "Precaching bandit")
 
   expect_output(simulation$object_size(), ".bytes.*")
