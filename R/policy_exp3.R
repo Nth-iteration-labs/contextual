@@ -11,13 +11,13 @@ Exp3Policy <- R6::R6Class(
       self$gamma <- gamma
     },
     set_parameters = function() {
-      self$parameters <- list('value' = 1)
+      self$parameters <- list('weight' = 1)
     },
     get_action = function(context) {
       probabilities <- rep(0.0, context$k)
       for (arm in 1:context$k) {
          probabilities[arm] <-
-           (1 - self$gamma) * (self$theta[[arm]]$value / self$sumval(self$theta, "value"))
+           (1 - self$gamma) * (self$theta[[arm]]$weight / self$sumval(self$theta, "weight"))
       }
        probabilities[arm] <- probabilities[arm] + ((self$gamma) * (1.0 / context$k))
       self$action$choice  <- self$categorical_draw(probabilities)
@@ -27,13 +27,13 @@ Exp3Policy <- R6::R6Class(
     set_reward = function(reward, context) {
       probabilities <- rep(0.0, context$k)
       for (arm in 1:context$k) {
-         probabilities[arm] <- (1 - self$gamma) * (self$theta[[arm]]$value / self$sumval(self$theta, "value"))
+         probabilities[arm] <- (1 - self$gamma) * (self$theta[[arm]]$weight / self$sumval(self$theta, "weight"))
          probabilities[arm] <-  probabilities[arm] + (self$gamma) * (1.0 / context$k)
       }
       x <- reward$reward /  probabilities[reward$choice]
       growth_factor <- exp((self$gamma / context$k) * x)
-      self$theta[[reward$choice]]$value <-
-        self$theta[[reward$choice]]$value * growth_factor
+      self$theta[[reward$choice]]$weight <-
+        self$theta[[reward$choice]]$weight * growth_factor
       self$theta
     },
     categorical_draw = function(probabilities) {

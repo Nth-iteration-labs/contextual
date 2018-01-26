@@ -28,7 +28,7 @@ LinUCBPolicy <- R6::R6Class(
         expected_rewards[arm] <- mean + (self$alpha * var)
       }
       self$action$choice  <- self$argmax(expected_rewards)
-      self$action$optimal_choice <- self$argmax(context$O)                      ### repeats itself everywhere, so in superclass!
+      self$action$optimal_choice <- self$argmax(context$O)
       self$action
     },
     set_reward = function(reward, context) {

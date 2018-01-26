@@ -16,17 +16,17 @@ ThompsonSamplingPolicy <- R6::R6Class(
       self$parameters <- list('chosen' = 0,
                               'probability' = 0.0,
                               'succes' = 0,
-                              'mu' = 0.0)
+                              'mu_hat' = 0.0)
     },
     get_action = function(context) {
       for (arm in 1:context$k) {
-        self$theta[[arm]]$mu <-  rbeta(
+        self$theta[[arm]]$mu_hat <-  rbeta(
           1,
           self$alpha + self$theta[[arm]]$succes,
           self$beta  + self$theta[[arm]]$chosen - self$theta[[arm]]$succes
         )
       }
-      self$action$choice <- self$argmaxlist(self$theta,"mu")
+      self$action$choice <- self$argmaxlist(self$theta,"mu_hat")
       self$action$optimal_choice <- self$argmax(context$O)                      ### repeats itself everywhere, so in superclass!
       self$action
     },

@@ -24,8 +24,8 @@ agent       <- Agent$new(policy, bandit)
 simulation  <-
   Simulator$new(
     agent,
-    horizon = 10L,
-    simulations = 10L,
+    horizon = 400L,
+    simulations = 400L,
     save_context = TRUE,
     save_theta = FALSE
   )
@@ -34,9 +34,7 @@ before <- simulation$run()
 
 before$save_data("test.RData")
 
-#Plot$new()$grid(before)
-
-print(before$data$reward)
+Plot$new()$grid(before)
 
 ######################## use the log to test a policy ##########################
 
@@ -47,30 +45,13 @@ bandit      <- LiLogBandit$new(log_S, 3, 3)
 
 policy      <- LinUCBPolicy$new(1.0)
 agent       <- Agent$new(policy, bandit)
-simulation  <- Simulator$new(agent, horizon = 10L, simulations = 10L, worker_max = 1 )
+simulation  <- Simulator$new(agent, horizon = 400L, simulations = 400L, worker_max = 1 )
 
 after <- simulation$run()
 
-print(after$data$reward)
-
-# Plot$new()$grid(after)
+Plot$new()$grid(after)
 
 if (file.exists("test.RData")) file.remove("test.RData")
 
 
-####
 
-bandit <- AbstractBandit$new()
-
-reward = list()
-reward["reward"]  = 10
-reward["choice"] = 1
-reward["is_optimal"] = 0
-reward["oracle"] = 1
-reward["propensity"] = 0
-
-action = list()
-action$choice = 2
-action$optimal_choice = 2
-
-print(bandit$reward_to_list(action,1))

@@ -228,7 +228,7 @@ Plot <- R6::R6Class(
     },
     set_external = function(ext = TRUE,
                             width = 10,
-                            height = 6) {
+                            height = 6) {                                       #restore device after running ###
       if (self$is_rstudio()) {
         if (isTRUE(ext)) {
           sysname <- tolower(Sys.info()["sysname"])

@@ -19,11 +19,13 @@ Simulator <- R6::R6Class(
     history = NULL,
     save_context = NULL,
     save_theta = NULL,
+    do_parallel = NULL,
     initialize = function(agents,
                           horizon = 100L,
                           simulations = 100L,
                           save_context = FALSE,
                           save_theta = FALSE,
+                          do_parallel = TRUE,
                           worker_max = 7) {
       super$initialize()
       self$horizon <- horizon
@@ -34,6 +36,7 @@ Simulator <- R6::R6Class(
       self$agents <- agents
       self$worker_max <- worker_max
       self$agent_n <- length(agents)
+      self$do_parallel <- do_parallel
       self$reset()
     },
     reset = function() {
@@ -53,16 +56,23 @@ Simulator <- R6::R6Class(
           sims_agents_list[[s, a]]$a_index <- a
         }
       }
-      message("Preworkercreation")
-      workers <- parallel::detectCores() - 1
-      if (workers < 1) workers <- 1 # nocov
-      if (workers > worker_max) workers <- worker_max
-      cl <- parallel::makeCluster(workers, useXDR = FALSE) #type="FORK")   #  type="FORK" only linux
-      message("Postworkercreation")
-      doParallel::registerDoParallel(cl)
 
-      `%do%` <- foreach::`%do%`
-      `%dopar%` <- foreach::`%dopar%`
+
+      `%fun%` <- foreach::`%do%`
+      workers <- 1
+
+      if (self$do_parallel) {
+        message("Preworkercreation")
+
+        nr_cores <- parallel::detectCores()
+        if (nr_cores >= 3) workers <- nr_cores - 1 # nocov
+        if (workers > worker_max) workers <- worker_max
+        cl <- parallel::makeCluster(workers, useXDR = FALSE) #type="FORK")   #  type="FORK" only linux
+        doParallel::registerDoParallel(cl)
+        `%fun%` <- foreach::`%dopar%`
+
+        message("Postworkercreation")
+      }
 
       horizon = self$horizon
       agent_n = self$agent_n
@@ -71,14 +81,14 @@ Simulator <- R6::R6Class(
 
       self$history <- History$new(self$horizon * self$agent_n * self$simulations)
 
-      parallel_results <- foreach::foreach(
+      foreach_results <- foreach::foreach(
         sims_agents = itertools::isplitRows(sims_agents_list, chunks = workers),
         i = iterators::icount(),
         .inorder = FALSE,
         .export = c("History"),
         .noexport = c("sims_agents_list","history"),
         .packages = c("data.table","itertools")
-      ) %dopar% {
+      ) %fun% {
         index <- 1L
         agent_index <- 21L
 
@@ -92,14 +102,14 @@ Simulator <- R6::R6Class(
 
             agent_index = as.integer(t + ((sidx - 1L) * horizon))
 
-            context <- sa$bandit_get_context(agent_index)                     # observe the bandit in its context
-            action  <- sa$policy_get_action(agent_index)                      # use policy to decide which choice to make (which arm to pick)
-            reward  <- sa$bandit_get_reward(agent_index)                      # observe the resonse of the bandit in this context
+            context <- sa$bandit_get_context(agent_index)                       # observe the bandit in its context
+            action  <- sa$policy_get_action(agent_index)                        # use policy to decide which choice to make (which arm to pick)
+            reward  <- sa$bandit_get_reward(agent_index)                        # observe the resonse of the bandit in this context
             if (!is.null(reward)) {
-              theta <- sa$policy_set_reward(agent_index)                      # adjust the policy, update theta
+              theta <- sa$policy_set_reward(agent_index)                        # adjust the policy, update theta
 
               local_history$save_agent(
-                                       index,                                 # save the results to the history log
+                                       index,                                   # save the results to the history log
                                        t,
                                        action,
                                        reward,
@@ -115,9 +125,11 @@ Simulator <- R6::R6Class(
         dth <- local_history$get_data_table()
         dth[sim != 0]
       }
-      parallel::stopCluster(cl)
-      parallel_results <- data.table::rbindlist(parallel_results)
-      self$history$set_data_table(parallel_results)
+      if (self$do_parallel) {
+        parallel::stopCluster(cl)
+      }
+      foreach_results <- data.table::rbindlist(foreach_results)
+      self$history$set_data_table(foreach_results)
       self$history
     },
     object_size = function() {

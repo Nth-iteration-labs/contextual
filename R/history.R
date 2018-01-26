@@ -20,9 +20,9 @@ History <- R6::R6Class(
         t               = rep(0L,      n),
         sim             = rep(0L,      n),
         choice          = rep(0L,      n),
-        reward          = rep(0L,      n),   ##### double
+        reward          = rep(0.0,     n),
         is_optimal      = rep(0L,      n),
-        oracle          = rep(0L,      n),   ###### double ;)
+        oracle          = rep(0.0,     n),
         agent           = rep("",      n)
       )
       if (self$save_context) private$.data$context = rep(list(),  n)
@@ -45,18 +45,27 @@ History <- R6::R6Class(
       else
         is_optimal = 0L
 
-      data.table::set(data, index, 1L:7L,
-                      list(t,s,action$choice,reward[[1]],is_optimal,reward$oracle,policy_name)  ## turn oracle into [[]]
+      data.table::set(
+                       data,
+                       index, 1L:7L,
+                       list(t,s,action$choice,reward$reward,
+                            is_optimal,reward$oracle,policy_name)
                       )
 
-      if (!self$save_context & !self$save_theta) {
-        # nothing to do here, carry on..
-      } else if (self$save_context & !self$save_theta) {
+      #data.table::set(data, index, 1L, t)
+      #data.table::set(data, index, 2L, s)
+      #data.table::set(data, index, 3L, action$choice)
+      #data.table::set(data, index, 4L, reward[[1]])
+      #data.table::set(data, index, 5L, is_optimal)
+      #data.table::set(data, index, 6L, reward$oracle)
+      #data.table::set(data, index, 7L, policy_name)
+
+      if (self$save_context & !self$save_theta) {
         data.table::set(data, index, 8L , list(list(context_value)))
       } else if (!self$save_context & self$save_theta) {
         data.table::set(data, index, 8L, list(list(theta_value)))
-        #data[index, (paste0("X.", seq_along(context))) := context]           ## if split over mult col
-      } else {
+        #data[index, (paste0("X.", seq_along(context))) := context]             ## if split over mult col
+      } else if (self$save_context & self$save_theta) {
         data.table::set(data, index, 8L, list(list(context_value)))
         data.table::set(data, index, 9L , list(list(theta_value)))
       }

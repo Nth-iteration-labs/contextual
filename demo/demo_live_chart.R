@@ -10,8 +10,7 @@ plot$set_external(T, 11L, 6L)                                                   
 agents <- list()                                                                # A list to keep track of our agents
 
 bandit  = SyntheticBandit$new(
-  weight_distribution = "Uniform",
-  reward_type =         "Bernoulli"
+  reward_family =         "Bernoulli"
 )
                      #k1  #k2  #k3
 bandit$set_weights(c(0.2, 0.4, 0.8))

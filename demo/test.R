@@ -1,17 +1,67 @@
-
-## first time with context and theta
+########################### package dev helpers ################################
+#library(contextual)
 setwd("~/GitHub/contextual/demo")
 source("dev.R")
 
-bandit      <- BasicBandit$new()
-bandit$set_weights(matrix(c(0.1,0.9,0.1,0.9),2,2))
-bandit$set_weights(c(0.1,0.9))
-policy      <- EpsilonGreedyPolicy$new()
+bandit      <- SyntheticBandit$new()
+bandit$set_weights(matrix(
+  c(0.9, 0.0, 0.1,
+    0.1, 0.9, 0.1,
+    0.1, 0.1, 0.9),
+  nrow = 3,
+  ncol = 3
+))
+
+policy      <- RandomPolicy$new()
+
 agent       <- Agent$new(policy, bandit)
-simulation  <- Simulator$new(agent, horizon = 10L, simulations = 10L, worker_max = 1)
-history     <- simulation$run()
 
-plot = Plot$new()
-plot_result = plot$grid(history)
+simulation  <-
+  Simulator$new(
+    agent,
+    horizon = 10L,
+    simulations = 10L,
+    save_context = TRUE,
+    save_theta = FALSE,
+    worker_max = 1
+  )
 
-print(plot_result$bandit_matrix)
+before <- simulation$run()
+
+before$save_data("test.RData")
+
+compare_before_reward <- c(
+  1,0,0,0,0,0,0,0,0,1,1,0,0,0,0,1,0,0,1,1,0,1,1,
+  1,0,1,0,1,1,0,1,0,0,1,0,1,1,0,1,1,1,1,0,1,0,0,
+  1,1,0,0,1,1,1,0,0,0,0,0,0,0,1,0,1,1,1,1,0,0,1,
+  1,0,1,0,0,0,1,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,1,
+  0,0,0,0,1,1,0,1
+)
+
+#expect_equal(before$data$reward,compare_before_reward)
+
+print(before$data$reward)
+
+######################## use the log to test a policy ##########################
+
+log_S     <- History$new()
+log_S$load_data("test.RData")
+
+bandit      <- LiLogBandit$new(log_S, 3, 3)
+
+policy      <- LinUCBPolicy$new(1.0)
+agent       <- Agent$new(policy, bandit)
+simulation  <- Simulator$new(agent, horizon = 10L, simulations = 10L, worker_max = 1 )
+
+after <- simulation$run()
+
+compare_after_reward <- c(
+  1,0,0,1,1,0,1,0,1,0,1,1,1,1,0,1,1,0,1,1,
+  1,0,1,1,0,1,1,0,0,0,1,0,0,1,0,1,0,0,1,0
+)
+
+print(after$data$reward)
+
+#expect_equal(after$data$reward,compare_after_reward)
+
+if (file.exists("test.RData")) file.remove("test.RData")

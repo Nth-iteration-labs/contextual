@@ -8,8 +8,6 @@ BasicBandit <- R6::R6Class(
   portable = FALSE,
   class = FALSE,
   public = list(
-    d            = NULL,
-    k            = NULL,
     initialize   = function() {
       super$initialize()
     },
@@ -30,27 +28,6 @@ BasicBandit <- R6::R6Class(
     get_reward = function(action, t = 1) {
       private$.R <- matrix(runif(self$k) < self$get_weights(), self$k, self$d)
       self$reward_to_list(action)
-    },
-    context_to_list = function(t = 1) {
-      return(
-        setNames(list(self$k, self$d, private$.X[t, ], private$.O[, t]),
-        c("k", "d", "X", "O")))
-    },
-    reward_to_list = function(action, t = 1) {
-      setNames(
-        list(
-          as.integer(private$.R[action$choice, t]),                             ### remove the "as.integer" for double
-          action$choice,
-          argmax(private$.R[, t]) == action$choice,
-          as.integer(private$.R[action$optimal_choice, t]),                     ### remove the "as.integer" for double
-          action$propensity
-        ),
-        c("reward",
-          "choice",
-          "is_optimal",
-          "oracle",
-          "propensity")
-      )
     }
   )
 )

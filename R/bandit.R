@@ -55,10 +55,10 @@ AbstractBandit <- R6::R6Class(
     reward_to_list = function(action, t = 1) {         #### check if t = 1 necessary everywehere?
       setNames(
         list(
-          as.integer(private$.R[action$choice, t]),
+          private$.R[action$choice, t],
           action$choice,
           argmax(private$.R[, t]) == action$choice,
-          as.integer(private$.R[action$optimal_choice, t]),
+          as.double(private$.R[action$optimal_choice, t]),
           action$propensity
         ),
         c("reward",

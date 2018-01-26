@@ -3,10 +3,9 @@ setwd("~/GitHub/contextual/demo")
 source("dev.R")
 
 bandit <- SyntheticBandit$new(
-  weight_distribution = "Uniform",
-  reward_type         = "Bernoulli",
-  seed                = 1,
-  precache            = TRUE
+  reward_family         = "Bernoulli",
+  seed                  = 1,
+  precache              = TRUE
 )
 
                             #k1  #k2  #k3

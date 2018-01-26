@@ -11,14 +11,14 @@ EpsilonGreedyPolicy <- R6::R6Class(
       self$epsilon <- epsilon
     },
     set_parameters = function() {
-      self$parameters <- list('chosen' = 0, 'succes' = 0, 'value' = 0)
+      self$parameters <- list('chosen' = 0, 'succes' = 0, 'mu_hat' = 0)
     },
     get_action = function(context) {
       if (runif(1) < self$epsilon) {
         self$action$choice  <- sample.int(context$k, 1, replace = TRUE)
         self$action$propensity <- self$epsilon*(1/context$k)
       } else {
-        self$action$choice <- self$argmaxlist(self$theta,"value")
+        self$action$choice <- self$argmaxlist(self$theta,"mu_hat")
         self$action$propensity <- 1 - self$epsilon
       }
       self$action$optimal_choice <- self$argmax(context$O)                      ### repeats itself everywhere, so in superclass!
@@ -26,11 +26,11 @@ EpsilonGreedyPolicy <- R6::R6Class(
     },
     set_reward = function(reward, context) {
       self$theta[[reward$choice]]$chosen <- self$theta[[reward$choice]]$chosen + 1
-      if (reward$reward == 1)
-        self$theta[[reward$choice]]$succes <- self$theta[[reward$choice]]$succes + 1
-      self$theta[[reward$choice]]$value <- self$theta[[reward$choice]]$value +
+
+      self$theta[[reward$choice]]$mu_hat  <- self$theta[[reward$choice]]$mu_hat +
         (1 / self$theta[[reward$choice]]$chosen) *
-        (reward$reward - self$theta[[reward$choice]]$value)
+        (reward$reward - self$theta[[reward$choice]]$mu_hat)
+
       self$theta
     }
   )
