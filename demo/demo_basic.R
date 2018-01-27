@@ -9,26 +9,22 @@ ptm <- proc.time()
 
 ########################### package dev helpers ################################
 
-#bandit      <- SyntheticBandit$new(reward_family = "Gaussian", precache = F)   # set model here, and data
 
-bandit      <- SyntheticBandit$new(reward_family = "Boolean", precache = F)   # set model here, and data
+data        <- c(0.9, 0.1, 0.1)
 
+bandit      <- SyntheticBandit$new(reward_family = "Bernoulli", data = data)
 
-bandit$set_weights(c(0.9, 0.1, 0.1))
-
-#policy      <- EpsilonGreedyPolicy$new(0.05)
-policy     <- ThompsonSamplingPolicy$new(1.0,1.0)
-
+policy      <- EpsilonGreedyPolicy$new(0.05)
 
 agent       <- Agent$new(policy, bandit)
 
 simulation  <- Simulator$new(
                               agent,
-                              horizon     = 300L,
-                              simulations = 100L,
-                              save_context = TRUE,
-                              save_theta = TRUE,
-                              do_parallel = F
+                              horizon      = 100L,
+                              simulations  = 100L,
+                              save_context = FALSE,
+                              save_theta   = FALSE,
+                              do_parallel  = F
                             )
 
 history     <- simulation$run()
@@ -39,5 +35,7 @@ Plot$new()$grid(history)
 
 ################################## timer #######################################
 
-
 print(proc.time() - ptm)
+
+
+abstractbandit = AbstractBandit$new()

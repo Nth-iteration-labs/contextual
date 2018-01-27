@@ -15,7 +15,6 @@ Contextual <- R6::R6Class(
   public = list(
     initialize = function() {
       private$.hash = sub('<environment: (.*)>', '\\1',  capture.output(self))
-
     },
     argmaxlist = function(x, list_element_name = NA)
     {

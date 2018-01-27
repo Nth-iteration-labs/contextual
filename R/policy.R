@@ -17,15 +17,15 @@ AbstractPolicy <- R6::R6Class(
     },
     get_action = function(context, theta) {
       self$theta = theta
-      stop("### Need to implement AbstractPolicy$get_action",
+      stop("You still need to implement AbstractPolicy$get_action",
            call. = FALSE)
     },
     set_reward = function(reward, context) {
-      stop("### Need to implement AbstractPolicy$set_reward",
+      stop("You still need to implement AbstractPolicy$set_reward",
            call. = FALSE)
     },
     set_parameters = function() {
-      stop("### Need to implement AbstractPolicy$set_parameters",
+      stop("You still need to implement AbstractPolicy$set_parameters",
            call. = FALSE)
     },
     initialize_theta = function() {

@@ -8,26 +8,27 @@ BasicBandit <- R6::R6Class(
   portable = FALSE,
   class = FALSE,
   public = list(
-    initialize   = function() {
+    initialize   = function(data = NULL) {
       super$initialize()
+      if (!is.null(data)) set_weights(data)
     },
     get_weights = function() {
-      private$.W
+      private$W
     },
-    set_weights = function(W) {
-      if (is.vector(W)) private$.W <- matrix(W, nrow = 1L)
-      if (is.matrix(W)) private$.W <- W
-      self$d <- as.integer(dim(private$.W)[1])
-      self$k <- as.integer(dim(private$.W)[2])
-      private$.O  <- t(private$.W)
-      invisible(private$.W)
+    set_weights = function(local_W) {
+      if (is.vector(local_W)) private$W <- matrix(local_W, nrow = 1L)
+      if (is.matrix(local_W)) private$W <- local_W
+      self$d <- as.integer(dim(private$W)[1])
+      self$k <- as.integer(dim(private$W)[2])
+      private$O  <- t(private$W)
+      invisible(private$W)
     },
-    get_context = function(t = 1) {
-      self$context_to_list()
+    get_context = function(t) {
+      private$context_to_list()
     },
-    get_reward = function(action, t = 1) {
-      private$.R <- matrix(runif(self$k) < self$get_weights(), self$k, self$d)
-      self$reward_to_list(action)
+    get_reward = function(action, t) {
+      private$R <- matrix(runif(self$k) < self$get_weights(), self$k, self$d)
+      private$reward_to_list(action)
     }
   )
 )

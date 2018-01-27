@@ -54,7 +54,7 @@ test_that("LiLogBandit simulation", {
   after <- simulation$run()
 
   compare_after_reward <- c(
-    0,1,0,0,0,1,0,0,1,1,0,0,0,1,1,0,0,1,1,0,0,1,0,1,1,0,1,0,0,0,1,0,0,0,0,1,1
+    0,0,0,0,0,0,1,1,0,0,0,1,1,0,1,1,0,0,1,1,0,0,1,1,0,1,0,1,0,0,1,0,0,0,0,0,0,0,1,1,1,1
   )
   expect_equal(after$data$reward,compare_after_reward)
 

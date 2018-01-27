@@ -1,8 +1,8 @@
 language: r
 cache: packages
-#os:
-#  - linux
-#  - osx
+os:
+  - linux
+  - osx
 r_packages:
   - covr
 after_success:

@@ -18,10 +18,15 @@ OraclePolicy <- R6::R6Class(
       self$action
     },
     set_reward = function(reward, context) {
-      self$theta[[reward$choice]]$chosen <- self$theta[[reward$choice]]$chosen + 1
-      self$theta[[reward$choice]]$mu_hat <- self$theta[[reward$choice]]$mu_hat +
+
+      self$theta[[reward$choice]]$chosen <-
+        self$theta[[reward$choice]]$chosen + 1
+
+      self$theta[[reward$choice]]$mu_hat <-
+        self$theta[[reward$choice]]$mu_hat +
         (1 / self$theta[[reward$choice]]$chosen) *
         (reward$reward - self$theta[[reward$choice]]$mu_hat)
+
       self$theta
     }
   )

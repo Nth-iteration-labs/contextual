@@ -5,18 +5,39 @@ AbstractBandit <- R6::R6Class(
   portable = FALSE,
   class = FALSE,
   private = list(
-    .W = NULL,      # weights k*d
-    .R = NULL,      # rewards matrix
-    .X = NULL,      # context matrix
-    .O = NULL,      # oracle
-    .is_precaching = FALSE
+    W = NULL,      # weights k*d
+    R = NULL,      # rewards matrix
+    X = NULL,      # context matrix
+    O = NULL,      # oracle
+    precaching = FALSE,
+    context_to_list = function(t) {
+      return(
+        setNames(list(self$k, self$d, private$X[t, ], private$O[, t]),
+                 c("k", "d", "X", "O")))
+    },
+    reward_to_list = function(action, t) {
+      setNames(
+        list(
+          private$R[action$choice, t],
+          action$choice,
+          argmax(private$R[, t]) == action$choice,
+          as.double(private$R[action$optimal_choice, t]),
+          action$propensity
+        ),
+        c("reward",
+          "choice",
+          "is_optimal",
+          "oracle",
+          "propensity")
+      )
+    }
   ),
   active = list(
     is_precaching = function(value) {
       if (missing(value)) {
-        private$.is_precaching
+        private$precaching
       } else {
-        warning("### Precaching is locked to FALSE by default.",
+        warning("## Precaching is locked to FALSE by default.",
                 call. = FALSE)
       }
     }
@@ -26,59 +47,39 @@ AbstractBandit <- R6::R6Class(
     k            = NULL,
     initialize   = function() {
       super$initialize()
-      private$.X <- matrix(1L, 1L, 1L)
-      private$.R <- matrix(0L, 3L, 1L)
-      private$.W <- matrix(0L, 3L, 1L)
-      private$.O <- matrix(0L, 3L, 1L)
+      private$X <- matrix(1L, 1L, 1L)
+      private$R <- matrix(0L, 3L, 1L)
+      private$W <- matrix(0L, 3L, 1L)
+      private$O <- matrix(0L, 3L, 1L)
     },
-    get_context = function(t = 1) {
-      stop("### Need to implement AbstractBandit$get_context.",
+    get_context = function(t) {
+      stop("You still need to implement AbstractBandit$get_context.",
            call. = FALSE)
     },
-    get_reward = function(action, t = 1) {
-      stop("### Need to implement AbstractBandit$get_reward.",
+    get_reward = function(action, t) {
+      stop("You still need to implement AbstractBandit$get_reward.",
            call. = FALSE)
     },
     set_weights = function(W) {
-      stop("### Need to implement AbstractBandit$set_weights.",
+      stop("You still need to implement AbstractBandit$set_weights.",
            call. = FALSE)
-    },
-    generate_cache = function(n = 1) {
-      stop("### Need to implement AbstractBandit$generate_cache if is_precaching is TRUE.",
-           call. = FALSE)
-    },
-    context_to_list = function(t = 1) {
-      return(
-        setNames(list(self$k, self$d, private$.X[t, ], private$.O[, t]),
-                 c("k", "d", "X", "O")))
-    },
-    reward_to_list = function(action, t = 1) {         #### check if t = 1 necessary everywehere?
-      setNames(
-        list(
-          private$.R[action$choice, t],
-          action$choice,
-          argmax(private$.R[, t]) == action$choice,
-          as.double(private$.R[action$optimal_choice, t]),
-          action$propensity
-        ),
-        c("reward",
-          "choice",
-          "is_optimal",
-          "oracle",
-          "propensity")
-      )
     },
     object_size = function() {
       cat(paste("  Bandit: ", self$hash),"\n")
       cat(paste("    Size of W:        ",
-                format(object.size(private$.W), units = "auto")),"\n")
+                format(object.size(private$W), units = "auto")),"\n")
       cat(paste("    Size of R:        ",
-                format(object.size(private$.R), units = "auto")),"\n")
+                format(object.size(private$R), units = "auto")),"\n")
       cat(paste("    Size of X:        ",
-                format(object.size(private$.X), units = "auto")),"\n")
+                format(object.size(private$X), units = "auto")),"\n")
       cat(paste("    Size of O:        ",
-                format(object.size(private$.O), units = "auto")),"\n")
+                format(object.size(private$O), units = "auto")),"\n")
       self$hash
+    },
+    generate_cache = function(n) {
+      stop("You still need to implement AbstractBandit$generate_cache
+           if is_precaching is TRUE.",
+           call. = FALSE)
     }
   )
 )

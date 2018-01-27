@@ -20,6 +20,9 @@ Sys.setenv(R_GSCMD = "C:\\Program Files\\gs\\gs9.22\\bin\\gswin64c.exe")
 # Comments should explain the why, not the what.
 # More than 80 chars: encapsulate in other function.
 
+# true / false? version nr
+
+# only data as weight set mechanism, not setweights?
 
 # ## precahce on/off makes difference in seed
 # REFACTOR and DRY plot .. check how usually done in R

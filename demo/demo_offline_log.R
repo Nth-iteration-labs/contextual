@@ -24,10 +24,9 @@ agent       <- Agent$new(policy, bandit)
 simulation  <-
   Simulator$new(
     agent,
-    horizon = 400L,
-    simulations = 400L,
-    save_context = TRUE,
-    save_theta = FALSE
+    horizon = 100L,
+    simulations = 100L,
+    save_context = TRUE
   )
 
 before <- simulation$run()
@@ -45,7 +44,7 @@ bandit      <- LiLogBandit$new(log_S, 3, 3)
 
 policy      <- LinUCBPolicy$new(1.0)
 agent       <- Agent$new(policy, bandit)
-simulation  <- Simulator$new(agent, horizon = 400L, simulations = 400L, worker_max = 1 )
+simulation  <- Simulator$new(agent, horizon = 100L, simulations = 100L )
 
 after <- simulation$run()
 

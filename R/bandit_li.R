@@ -6,40 +6,36 @@ LiLogBandit <- R6::R6Class(
   portable = FALSE,
   class = FALSE,
   private = list(
-    .S = NULL # S: stream S of events of length L.
- ),
+    S = NULL
+  ),
   public = list(
-    initialize   = function(log_file, k, d) {
-      super$initialize()
+    initialize   = function(data_file, k, d) {
       self$k = k
       self$d = d
-      private$.S = log_file$get_data_table()
+      private$S = data_file$get_data_table()
     },
     get_context = function(t) {
-      private$.X = matrix(private$.S$context[[t]], 1, self$d)
-      self$context_to_list()
+      private$X = matrix(private$S$context[[t]], 1, self$d)
+      private$context_to_list()
     },
     get_reward = function(action, t) {
-      if (private$.S$choice[[t]] == action$choice) {
-        return(
-
-          setNames(
-            list(
-              as.integer(private$.S$reward[[t]]),
-              action$choice,
-              as.integer(private$.S$is_optimal[[t]]),                           ######## double check if this correct ## as integer? limitted
-              as.integer(private$.S$oracle[[t]]),
-              action$propensity
-            ),
-            c("reward",
-              "choice",
-              "is_optimal",
-              "oracle",
-              "propensity")
-          )
+      if (private$S$choice[[t]] == action$choice) {
+        setNames(
+          list(
+            private$S$reward[[t]],
+            action$choice,
+            as.integer(private$S$is_optimal[[t]]),
+            as.double(private$S$oracle[[t]]),
+            action$propensity
+          ),
+          c("reward",
+            "choice",
+            "is_optimal",
+            "oracle",
+            "propensity")
         )
       } else {
-        return(NULL)
+        NULL
       }
     }
   )

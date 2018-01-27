@@ -102,7 +102,8 @@ History <- R6::R6Class(
       private$.data <- private$.data[sim > 0 & t > 0]
       private$.data <-
         private$.data[, t := seq_len(.N), by = c("agent", "sim")]
-      #private$.data[ , max(t), by = c("agent","sim")][,min(V1), by = c("agent")][,V1]
+      #private$.data[ , max(t), by = c("agent","sim")][,min(V1),
+      #              by = c("agent")][,V1]
       invisible(self)
     }
   ),
@@ -111,7 +112,7 @@ History <- R6::R6Class(
       if (missing(value)) {
         private$.data
       } else {
-        warning("### History$data is read only", call. = FALSE)
+        warning("## History$data is read only", call. = FALSE)
       }
     }
   ),

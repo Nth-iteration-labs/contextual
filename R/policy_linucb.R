@@ -33,8 +33,12 @@ LinUCBPolicy <- R6::R6Class(
     },
     set_reward = function(reward, context) {
       X <- as.vector(context$X)
-      self$theta[[reward$choice]]$A <- self$theta[[reward$choice]]$A + outer(X, X)
-      self$theta[[reward$choice]]$b <- self$theta[[reward$choice]]$b + reward$reward * X
+      self$theta[[reward$choice]]$A <-
+        self$theta[[reward$choice]]$A + outer(X, X)
+
+      self$theta[[reward$choice]]$b <-
+        self$theta[[reward$choice]]$b + reward$reward * X
+
       self$theta
     }
   )

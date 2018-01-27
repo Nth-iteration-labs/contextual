@@ -8,9 +8,9 @@ SyntheticBandit <- R6::R6Class(
   active = list(
     is_precaching = function(value) {
       if (missing(value)) {
-        private$.is_precaching
+        private$precaching
       } else {
-        private$.is_precaching <- value
+        private$precaching <- value
       }
     }
   ),
@@ -27,11 +27,16 @@ SyntheticBandit <- R6::R6Class(
                             reward_family        = 'Bernoulli',
                             reward_means         = 4.0,
                             reward_stds          = 1.0,
+                            data                 = NULL,
                             seed                 = 1L,
                             precache             = TRUE
                            ) {
-      super$initialize()
-      self$has_cache            <- FALSE                                        # true / false? version nr
+      if (!(reward_family %in% c("Bernoulli","Gaussian","Poisson"))) {
+        stop('Reward family needs to be one of "Bernoulli",
+             "Gaussian" or "Poisson".' , call. = FALSE)
+      }
+      super$initialize(data)
+      self$has_cache            <- FALSE
       self$seed                 <- seed
       self$is_precaching        <- precache
       self$reward_family          <- reward_family
@@ -40,14 +45,15 @@ SyntheticBandit <- R6::R6Class(
     },
     get_context = function(t = 1) {
       if (!self$is_precaching) {
-        self$generate_cache(n = 1L, not_zero_features = TRUE, seed_number = t, silent = TRUE)
+        self$generate_cache(n = 1L, not_zero_features = TRUE,
+                            seed_number = t, silent = TRUE)
         t = 1
       }
-      self$context_to_list(t)
+      private$context_to_list(t)
     },
     get_reward = function(action, t = 1) {
       if (!self$is_precaching) t = 1
-      self$reward_to_list(action, t)
+      private$reward_to_list(action, t)
     },
     generate_cache = function(n = 1L,
                               not_zero_features = TRUE,
@@ -55,22 +61,22 @@ SyntheticBandit <- R6::R6Class(
                               silent = FALSE) {
       if (!silent) message("Precaching bandit" )
       set.seed(self$seed + seed_number)
-      private$.X <- matrix(0, n , d)
-      private$.O <- matrix(0, self$k, n)
-      private$.R <- matrix(0, self$k, n)
-      private$.generate_context(n, not_zero_features)
-      private$.generate_oracle(n)
-      private$.generate_rewards(n)
+      private$X <- matrix(0, n , d)
+      private$O <- matrix(0, self$k, n)
+      private$R <- matrix(0, self$k, n)
+      private$generate_context(n, not_zero_features)
+      private$generate_oracle(n)
+      private$generate_rewards(n)
       self$has_cache = TRUE
     }
   ),
   private = list(
 
-    .generate_context = function(n = 1L, not_zero_features = TRUE) {
+    generate_context = function(n = 1L, not_zero_features = TRUE) {
       if (not_zero_features) {
-        private$.X[cbind(1L:n, sample(self$d, n, replace = TRUE))] <- 1         # context always binary now..
+        private$X[cbind(1L:n, sample(self$d, n, replace = TRUE))] <- 1
       }
-      private$.X <- matrix((private$.X |
+      private$X <- matrix((private$X |
                               matrix(
                                 sample(c(0, 1),
                                        replace = TRUE,
@@ -81,40 +87,44 @@ SyntheticBandit <- R6::R6Class(
                             ),
                            n,
                            self$d)
-      mode(private$.X) <- 'integer'
+      mode(private$X) <- 'integer'
     },
 
-    .generate_oracle = function(n) {
-      W <-
+    generate_oracle = function(n) {
+      local_W <-
         sweep(array(t(matrix(
-          private$.W, self$k , self$d
+          private$W, self$k , self$d
         )), dim = c(self$d, self$k, n)),
         3,
-        private$.X,
+        private$X,
         FUN = "*",
         check.margin = FALSE)
-      private$.O <- t( t(colSums(W)) / as.vector(rowSums(private$.X)) )
-      private$.O[is.nan(private$.O)] <- 0
+      private$O <- t( t(colSums(local_W)) / as.vector(rowSums(private$X)) )
+      private$O[is.nan(private$O)] <- 0
 
       if (FALSE) {
         sineChange <- function(x,y,M){
           M[x,y] + 4 * sin((x - y*6.4)/60)  # Y would be t ..
         }
         vecSineChange <- Vectorize(sineChange,vectorize.args = c('x','y'))
-        private$.O <- outer(1:nrow(private$.O), 1:ncol(private$.O) , vecSineChange, private$.O )
+        private$O <- outer(1:nrow(private$O),
+                           1:ncol(private$O),
+                           vecSineChange,
+                           private$O )
       }
 
     },
-
-    ############## this is more general!
-
-    .generate_rewards = function(n) {
+    generate_rewards = function(n) {
+      rwrd_n = self$k * n
       if (self$reward_family == 'Bernoulli') {
-        private$.R <- round((runif(self$k * n) + private$.O) / 2)
+        private$R <-
+          round((runif(rwrd_n) + private$O) / 2)
       } else if (self$reward_family == 'Gaussian') {
-        private$.R <- (rnorm(self$k * n, self$reward_means, self$reward_stds) + private$.O) / 2
+        private$R <-
+          (rnorm(rwrd_n, self$reward_means, self$reward_stds) + private$O) / 2
       } else if (self$reward_family == 'Poisson') {
-        private$.R <- (rpois(self$k * n, self$reward_means) + private$.O) / 2
+        private$R <-
+          (rpois(rwrd_n, self$reward_means) + private$O) / 2
       }
     }
 
@@ -122,8 +132,8 @@ SyntheticBandit <- R6::R6Class(
 )
 
 
-#W <- repmat(t(matrix(private$.W, self$k , self$d)),n,1) *
-#     as.vector(matrix(t(private$.X), n*d, 1 , byrow = TRUE))
+#W <- repmat(t(matrix(private$W, self$k , self$d)),n,1) *
+#     as.vector(matrix(t(private$X), n*d, 1 , byrow = TRUE))
 #W <- array(t(W), dim = c(self$k , self$d, n))
 #W <- aperm(W,c(2,1,3))
 

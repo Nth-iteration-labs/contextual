@@ -67,7 +67,7 @@ Simulator <- R6::R6Class(
         nr_cores <- parallel::detectCores()
         if (nr_cores >= 3) workers <- nr_cores - 1 # nocov
         if (workers > worker_max) workers <- worker_max
-        cl <- parallel::makeCluster(workers, useXDR = FALSE) #type="FORK")   #  type="FORK" only linux
+        cl <- parallel::makeCluster(workers, useXDR = FALSE)                    #  type="FORK" only linux
         doParallel::registerDoParallel(cl)
         `%fun%` <- foreach::`%dopar%`
 
@@ -79,7 +79,9 @@ Simulator <- R6::R6Class(
       save_context = self$save_context
       save_theta = self$save_theta
 
-      self$history <- History$new(self$horizon * self$agent_n * self$simulations)
+      self$history <- History$new(  self$horizon *
+                                    self$agent_n *
+                                    self$simulations )
 
       foreach_results <- foreach::foreach(
         sims_agents = itertools::isplitRows(sims_agents_list, chunks = workers),
@@ -92,7 +94,9 @@ Simulator <- R6::R6Class(
         index <- 1L
         agent_index <- 21L
 
-        local_history <- History$new(horizon * agent_n * length(sims_agents), save_context, save_theta)
+        local_history <- History$new( horizon * agent_n * length(sims_agents),
+                                      save_context,
+                                      save_theta )
 
         for (sa in sims_agents) {
           sidx <- sa$s_index
@@ -134,16 +138,26 @@ Simulator <- R6::R6Class(
     },
     object_size = function() {
       cat(paste("Simulator: ", self$hash),"\n")
-      cat(paste("  Size of history:    ", format(object.size(self$history$data), units = "auto")),"\n")
-      cat(paste("    Size of t:        ", format(object.size(self$history$data$t), units = "auto")),"\n")
-      cat(paste("    Size of sim:      ", format(object.size(self$history$data$sim), units = "auto")),"\n")
-      cat(paste("    Size of arm:      ", format(object.size(self$history$data$arm), units = "auto")),"\n")
-      cat(paste("    Size of r:        ", format(object.size(self$history$data$reward), units = "auto")),"\n")
-      cat(paste("    Size of opt:      ", format(object.size(self$history$data$is_optimal), units = "auto")),"\n")
-      cat(paste("    Size of oracle:   ", format(object.size(self$history$data$oracle), units = "auto")),"\n")
-      cat(paste("    Size of agent:    ", format(object.size(self$history$data$agent), units = "auto")),"\n")
-      cat(paste("    Size of context:  ", format(object.size(self$history$data$context), units = "auto")),"\n")
-      cat(paste("    Size of theta:    ", format(object.size(self$history$data$theta), units = "auto")),"\n")
+      cat(paste("  Size of history:    ",
+                format(object.size(self$history$data), units = "auto")),"\n")
+      cat(paste("    Size of t:        ",
+                format(object.size(self$history$data$t), units = "auto")),"\n")
+      cat(paste("    Size of sim:      ",
+                format(object.size(self$history$data$sim), units = "auto")),"\n")
+      cat(paste("    Size of arm:      ",
+                format(object.size(self$history$data$arm), units = "auto")),"\n")
+      cat(paste("    Size of r:        ",
+                format(object.size(self$history$data$reward), units = "auto")),"\n")
+      cat(paste("    Size of opt:      ",
+                format(object.size(self$history$data$is_optimal), units = "auto")),"\n")
+      cat(paste("    Size of oracle:   ",
+                format(object.size(self$history$data$oracle), units = "auto")),"\n")
+      cat(paste("    Size of agent:    ",
+                format(object.size(self$history$data$agent), units = "auto")),"\n")
+      cat(paste("    Size of context:  ",
+                format(object.size(self$history$data$context), units = "auto")),"\n")
+      cat(paste("    Size of theta:    ",
+                format(object.size(self$history$data$theta), units = "auto")),"\n")
 
       agent_hashes <- list()
       for (a in 1L:self$agent_n) {

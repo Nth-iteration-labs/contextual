@@ -173,8 +173,8 @@ history$set_data_table(dt)
 print(unlist(history$data$context[1]))
 
 print(nrow(history$data))
-history$save_agent(                       ### save_agent_state , plus one that saves agent by arg agent object
-  index = 30,                             ### call this not counter but index..
+history$save_agent(                                                             ### save_agent_state , plus one that saves agent by arg agent object
+  index = 30,                                                                   ### call this not counter but index..
   t = 0,
   action = action,
   reward = reward,
@@ -182,7 +182,7 @@ history$save_agent(                       ### save_agent_state , plus one that s
   s = 0
 )
 history$delete_empty_rows()
-print(unlist(history$data$context[1]))    ## unlist .. should return unlisted?
+print(unlist(history$data$context[1]))                                          ## unlist .. should return unlisted?
 print(history$data$theta[[1]][[2]]$chosen)
 print(nrow(history$data))
 
