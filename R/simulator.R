@@ -1,5 +1,3 @@
-# TODO: make sure same results (SEED) in par. and serial
-
 #' @import foreach
 #' @import doParallel
 #' @import itertools
@@ -57,7 +55,6 @@ Simulator <- R6::R6Class(
         }
       }
 
-
       `%fun%` <- foreach::`%do%`
       workers <- 1
 
@@ -65,9 +62,9 @@ Simulator <- R6::R6Class(
         message("Preworkercreation")
 
         nr_cores <- parallel::detectCores()
-        if (nr_cores >= 3) workers <- nr_cores - 1 # nocov
+        if (nr_cores >= 3) workers <- nr_cores - 1                              # nocov
         if (workers > worker_max) workers <- worker_max
-        cl <- parallel::makeCluster(workers, useXDR = FALSE)                    #  type="FORK" only linux
+        cl <- parallel::makeCluster(workers, useXDR = FALSE)                    # type="FORK" only linux
         doParallel::registerDoParallel(cl)
         `%fun%` <- foreach::`%dopar%`
 
@@ -97,31 +94,31 @@ Simulator <- R6::R6Class(
         local_history <- History$new( horizon * agent_n * length(sims_agents),
                                       save_context,
                                       save_theta )
-
-        for (sa in sims_agents) {
-          sidx <- sa$s_index
-          set.seed(sidx)
-          pname <- sa$policy$name
+        for (sim_agent in sims_agents) {
+          simulation_index <- sim_agent$s_index
+          set.seed(simulation_index)
+          policy_name <- sim_agent$policy$name
           for (t in 1L:horizon) {
 
-            agent_index = as.integer(t + ((sidx - 1L) * horizon))
+            agent_index = as.integer(t + ((simulation_index - 1L) * horizon))
 
-            context <- sa$bandit_get_context(agent_index)                       # observe the bandit in its context
-            action  <- sa$policy_get_action(agent_index)                        # use policy to decide which choice to make (which arm to pick)
-            reward  <- sa$bandit_get_reward(agent_index)                        # observe the resonse of the bandit in this context
+            context <- sim_agent$bandit_get_context(agent_index)                # observe the bandit in its context
+            action  <- sim_agent$policy_get_action(agent_index)                 # use policy to decide which choice to make (which arm to pick)
+            reward  <- sim_agent$bandit_get_reward(agent_index)                 # observe the resonse of the bandit in this context
             if (!is.null(reward)) {
-              theta <- sa$policy_set_reward(agent_index)                        # adjust the policy, update theta
+              theta <- sim_agent$policy_set_reward(agent_index)                 # adjust the policy, update theta
 
-              local_history$save_agent(
-                                       index,                                   # save the results to the history log
-                                       t,
-                                       action,
-                                       reward,
-                                       pname,
-                                       sidx,
-                                       if (self$save_context) context$X else NA,
-                                       if (self$save_theta)   theta     else NA
-                                      )
+              local_history$save(
+                                   index,                                       # save the results to a history log
+                                   t,
+                                   action,
+                                   reward,
+                                   policy_name,
+                                   simulation_index,
+                                   if (self$save_context) context$X else NA,
+                                   if (self$save_theta)   theta     else NA
+                               )
+
               index <- index + 1L
             }
           }
@@ -139,25 +136,25 @@ Simulator <- R6::R6Class(
     object_size = function() {
       cat(paste("Simulator: ", self$hash),"\n")
       cat(paste("  Size of history:    ",
-                format(object.size(self$history$data), units = "auto")),"\n")
+        format(object.size(self$history$data), units = "auto")),"\n")
       cat(paste("    Size of t:        ",
-                format(object.size(self$history$data$t), units = "auto")),"\n")
+        format(object.size(self$history$data$t), units = "auto")),"\n")
       cat(paste("    Size of sim:      ",
-                format(object.size(self$history$data$sim), units = "auto")),"\n")
+        format(object.size(self$history$data$sim), units = "auto")),"\n")
       cat(paste("    Size of arm:      ",
-                format(object.size(self$history$data$arm), units = "auto")),"\n")
+        format(object.size(self$history$data$arm), units = "auto")),"\n")
       cat(paste("    Size of r:        ",
-                format(object.size(self$history$data$reward), units = "auto")),"\n")
+        format(object.size(self$history$data$reward), units = "auto")),"\n")
       cat(paste("    Size of opt:      ",
-                format(object.size(self$history$data$is_optimal), units = "auto")),"\n")
+        format(object.size(self$history$data$is_optimal), units = "auto")),"\n")
       cat(paste("    Size of oracle:   ",
-                format(object.size(self$history$data$oracle), units = "auto")),"\n")
+        format(object.size(self$history$data$oracle), units = "auto")),"\n")
       cat(paste("    Size of agent:    ",
-                format(object.size(self$history$data$agent), units = "auto")),"\n")
+        format(object.size(self$history$data$agent), units = "auto")),"\n")
       cat(paste("    Size of context:  ",
-                format(object.size(self$history$data$context), units = "auto")),"\n")
+        format(object.size(self$history$data$context), units = "auto")),"\n")
       cat(paste("    Size of theta:    ",
-                format(object.size(self$history$data$theta), units = "auto")),"\n")
+        format(object.size(self$history$data$theta), units = "auto")),"\n")
 
       agent_hashes <- list()
       for (a in 1L:self$agent_n) {

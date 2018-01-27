@@ -11,17 +11,18 @@ AbstractBandit <- R6::R6Class(
     O = NULL,      # oracle
     precaching = FALSE,
     context_to_list = function(t) {
-      return(
-        setNames(list(self$k, self$d, private$X[t, ], private$O[, t]),
-                 c("k", "d", "X", "O")))
+      if (self$is_precaching) idx = t else idx = 1
+      setNames(list(self$k, self$d, private$X[idx, ], private$O[, idx]),
+                 c("k", "d", "X", "O"))
     },
     reward_to_list = function(action, t) {
+      if (self$is_precaching) idx = t else idx = 1
       setNames(
         list(
-          private$R[action$choice, t],
+          private$R[action$choice, idx],
           action$choice,
-          argmax(private$R[, t]) == action$choice,
-          as.double(private$R[action$optimal_choice, t]),
+          argmax(private$R[, idx]) == action$choice,
+          as.double(private$R[action$optimal_choice, idx]),
           action$propensity
         ),
         c("reward",
@@ -76,7 +77,7 @@ AbstractBandit <- R6::R6Class(
                 format(object.size(private$O), units = "auto")),"\n")
       self$hash
     },
-    generate_cache = function(n) {
+    generate_bandit_data = function(n) {
       stop("You still need to implement AbstractBandit$generate_cache
            if is_precaching is TRUE.",
            call. = FALSE)

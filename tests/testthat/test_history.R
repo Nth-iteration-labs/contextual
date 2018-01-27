@@ -33,7 +33,7 @@ test_that("History simulation, saving and loading", {
   action$choice = 2
   action$optimal_choice = 2
 
-  history$save_agent(
+  history$save (
     index = 1,
     t = 30,
     action = action,
@@ -61,7 +61,7 @@ test_that("History simulation, saving and loading", {
   expect_equal(history$data$reward[1], 10)
   expect_equal(nrow(history$data), 900)
 
-  history$save_agent(
+  history$save(
     index = 30,
     t = 0,
     action = action,

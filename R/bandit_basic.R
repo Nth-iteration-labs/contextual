@@ -1,6 +1,3 @@
-# create from scratch if not cache, otherwise do cache
-# This is not BasicBandit, but UniformBasicBandit..
-# even stronger: this is a non-contextual bandit ... do something about this, or just clear up by name
 #' @export
 BasicBandit <- R6::R6Class(
   "BasicBandit",

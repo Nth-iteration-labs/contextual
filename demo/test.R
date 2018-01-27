@@ -51,7 +51,10 @@ bandit      <- LiLogBandit$new(log_S, 3, 3)
 
 policy      <- LinUCBPolicy$new(1.0)
 agent       <- Agent$new(policy, bandit)
-simulation  <- Simulator$new(agent, horizon = 10L, simulations = 10L, do_parallel  = F )
+simulation  <- Simulator$new(agent,
+                             horizon = 10L,
+                             simulations = 10L,
+                             do_parallel  = F )
 
 after <- simulation$run()
 

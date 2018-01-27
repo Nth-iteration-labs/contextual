@@ -26,7 +26,7 @@ test_that("BasicBandit simulation", {
 
   simulation  <- Simulator$new(agent, horizon = 2L, simulations = 2L, worker_max = 1)
 
-  expect_error(bandit$generate_cache(1),".*precaching.*")
+  expect_error(bandit$generate_bandit_data(1),".*precaching.*")
   expect_output(bandit$object_size(), ".*bytes.")
 
   context <- bandit$get_context()

@@ -29,37 +29,26 @@ History <- R6::R6Class(
       if (self$save_theta)   private$.data$theta   = rep(list(),  n)
       invisible(self)
     },
-    save_agent = function(index,  ## other name for this save? not save agent?
-                          t,
-                          action,
-                          reward,
-                          policy_name,
-                          s,
-                          context_value = NA,
-                          theta_value = NA) {
+    save = function(
+                       index,
+                       t,
+                       action,
+                       reward,
+                       policy_name,
+                       s,
+                       context_value = NA,
+                       theta_value = NA
+
+                     ) {
 
       index = as.integer(index)
-
-      if (reward$is_optimal)
-        is_optimal = 1L
-      else
-        is_optimal = 0L
-
+      if (reward$is_optimal) is_optimal = 1L else is_optimal = 0L
       data.table::set(
                        data,
                        index, 1L:7L,
                        list(t,s,action$choice,reward$reward,
                             is_optimal,reward$oracle,policy_name)
                       )
-
-      #data.table::set(data, index, 1L, t)
-      #data.table::set(data, index, 2L, s)
-      #data.table::set(data, index, 3L, action$choice)
-      #data.table::set(data, index, 4L, reward[[1]])
-      #data.table::set(data, index, 5L, is_optimal)
-      #data.table::set(data, index, 6L, reward$oracle)
-      #data.table::set(data, index, 7L, policy_name)
-
       if (self$save_context & !self$save_theta) {
         data.table::set(data, index, 8L , list(list(context_value)))
       } else if (!self$save_context & self$save_theta) {
@@ -100,8 +89,7 @@ History <- R6::R6Class(
     },
     delete_empty_rows = function() {
       private$.data <- private$.data[sim > 0 & t > 0]
-      private$.data <-
-        private$.data[, t := seq_len(.N), by = c("agent", "sim")]
+      private$.data <- private$.data[, t := seq_len(.N), by = c("agent", "sim")]
       #private$.data[ , max(t), by = c("agent","sim")][,min(V1),
       #              by = c("agent")][,V1]
       invisible(self)

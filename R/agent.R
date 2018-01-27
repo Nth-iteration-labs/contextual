@@ -32,11 +32,10 @@ Agent <- R6::R6Class(
       private$state$context <- matrix()
       private$state$action <- list()
       private$state$reward <- list()
-      private$state$t <- 0L                                                    ## work this out to make work in different orders
     },
     generate_cache = function(n) {
       if (!self$bandit$has_cache) {
-          self$bandit$generate_cache(n)
+          self$bandit$generate_bandit_data(n)
       }
     },
     bandit_get_context = function(t) {

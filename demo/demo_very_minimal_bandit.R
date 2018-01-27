@@ -55,7 +55,7 @@ reward["propensity"] = 0
 action = list()
 action$choice = 2
 
-#history$save_agent(
+#history$save(
 #  counter = 1,
 #  t = 1,
 #  action = action,
@@ -66,7 +66,7 @@ action$choice = 2
 
 print(history$data$reward[1])
 
-history$save_agent(
+history$save(
   index = 1,
   t = 30,
   action = action,
@@ -98,7 +98,7 @@ history$set_data_table(dt)
 print(history$data$reward[1])
 
 print(nrow(history$data))
-history$save_agent(                       ### save_agent_state , plus one that saves agent by arg agent object
+history$save(                       ### store_state , plus one that saves agent by arg agent object
   index = 30,
   t = 0,
   action = action,
@@ -141,7 +141,7 @@ action$choice = 2
 
 print(unlist(history$data$context[1]))
 
-history$save_agent(
+history$save(
   index = 1,
   t = 30,
   action = action,
@@ -173,7 +173,7 @@ history$set_data_table(dt)
 print(unlist(history$data$context[1]))
 
 print(nrow(history$data))
-history$save_agent(                                                             ### save_agent_state , plus one that saves agent by arg agent object
+history$save(                                                             ### store_state , plus one that saves agent by arg agent object
   index = 30,                                                                   ### call this not counter but index..
   t = 0,
   action = action,

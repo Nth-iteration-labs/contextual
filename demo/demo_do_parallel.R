@@ -29,8 +29,9 @@ simulation     <- Simulator$new(
   agents,
   horizon      = 100L,
   simulations  = 300L,
-  save_context = TRUE,
-  save_theta   = FALSE
+  save_context = FALSE,
+  save_theta   = FALSE,
+  do_parallel  = TRUE
 )
 
 history        <- simulation$run()
@@ -41,4 +42,4 @@ print(proc.time() - ptm)
 plot <- Plot$new()
 plot$grid(history)
 
-simulation$object_size()
+#simulation$object_size()

@@ -37,13 +37,13 @@ test_that("SyntheticBandit simulation", {
   history     <- simulation$run()
   expect_equal(sum(history$data$reward), 3)
 
-  context <- bandit$get_context()
+  context <- bandit$get_context(1)
   expect_equal(context$k, 2)
   expect_equal(context$d, 1)
   expect_equal(context$X, 1)
   expect_identical(context$O, c(0.1, 0.9))
 
-  expect_message(bandit$generate_cache(1), "Precaching bandit")
+  expect_message(bandit$generate_bandit_data(1), "Precaching bandit")
 
   expect_output(simulation$object_size(), ".bytes.*")
 
