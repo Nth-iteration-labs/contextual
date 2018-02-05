@@ -93,6 +93,7 @@ SyntheticBandit <- R6::R6Class(
       private$O <- t( t(colSums(Wg)) / as.vector(rowSums(private$X)) )
       private$O[is.nan(private$O)] <- 0
     },
+
     generate_rewards = function(n) {
       rwrd_n <- self$k * n
       if (self$reward_family == 'Bernoulli') {

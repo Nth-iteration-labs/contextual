@@ -1,4 +1,3 @@
-# create from scratch if not cache, otherwise do cache
 #' @export
 LiLogBandit <- R6::R6Class(
   "LiLogBandit",

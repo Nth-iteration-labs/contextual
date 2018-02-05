@@ -36,10 +36,10 @@ Exp3Policy <- R6::R6Class(
     },
     categorical_draw = function(probs) {
       arms = length(probs)
-      cummulative_probability <- 0.0
+      cumulative_probability <- 0.0
       for (arm in 1:arms) {
-        cummulative_probability <-  cummulative_probability + probs[arm]
-        if ( cummulative_probability > runif(1) ) return(arm)
+        cumulative_probability <-  cumulative_probability + probs[arm]
+        if ( cumulative_probability > runif(1) ) return(arm)
       }
       sample(arms, 1, replace = TRUE)
     }

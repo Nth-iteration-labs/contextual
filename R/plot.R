@@ -22,18 +22,18 @@ Plot <- R6::R6Class(
       dev.hold()
       self$bandit_matrix <- layout(matrix(c(1, 3, 2, 4), 2, 2, byrow = TRUE))
       par(mar = c(3, 5, 1, 1))#b,l,t,r
-      self$cummulative(history, grid = TRUE, legend = TRUE, regret = TRUE)
+      self$cumulative(history, grid = TRUE, legend = TRUE, regret = TRUE)
       par(mar = c(3, 5, 1, 1))
       self$optimal(history, grid = TRUE, legend = FALSE)
       par(mar = c(3, 5, 1, 2))
-      self$cummulative(history, grid = TRUE, legend = FALSE, regret = FALSE)
+      self$cumulative(history, grid = TRUE, legend = FALSE, regret = FALSE)
       par(mar = c(3, 5, 1, 2))
       self$average(history, grid = TRUE, legend = FALSE)
       dev.flush()
       par(old.par)
       invisible(self)
     },
-    cummulative = function(history,
+    cumulative = function(history,
                        grid = FALSE,
                        xlim = NULL,
                        legend = TRUE,
@@ -44,10 +44,10 @@ Plot <- R6::R6Class(
       max_sim   = history[, max(sim)]
       history <- history[order(agent,t,sim)]
       if (regret) {
-        ylab_title = "Cummulative regret"
+        ylab_title = "cumulative regret"
         cs <- history[, list(sd = sd(oracle - reward) / sqrt(max_sim), data = mean(oracle - reward)), by = list(t, agent)]
       } else {
-        ylab_title = "Cummulative reward"
+        ylab_title = "cumulative reward"
         cs <- history[, list(sd = sd(reward) / sqrt(max_sim), data = mean(reward)), by = list(t, agent)]
       }
       cs$data = cs[, cumsum(data), by = list(agent)][, 2]
@@ -283,7 +283,7 @@ plot.History <- function(x,...) {
 
     args <- eval(substitute(alist(...)))
 
-    if ("type" %in% names(args)) type = args$type else type = "cummulative"
+    if ("type" %in% names(args)) type = args$type else type = "cumulative"
     if ("args" %in% names(args)) grid = args$grid else grid = FALSE
     if ("xlim" %in% names(args)) xlim = args$xlim else xlim = NULL
     if ("legend" %in% names(args)) legend = args$legend else legend = TRUE
@@ -296,8 +296,8 @@ plot.History <- function(x,...) {
                       xlim = xlim,
                       use_colors = use_colors,
                       ci = ci)
-    } else if (type == "cummulative") {
-      Plot$new()$cummulative(
+    } else if (type == "cumulative") {
+      Plot$new()$cumulative(
         x,
         xlim = xlim,
         legend = legend,

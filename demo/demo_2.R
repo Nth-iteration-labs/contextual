@@ -7,7 +7,7 @@ weights     <- c( 0.9, 0.1, 0.1)
 
 bandit      <- SyntheticBandit$new(reward_family = "Bernoulli", data = weights)
 agents      <- list(
-                     Agent$new(EpsilonGreedyPolicy$new(0.1, "\U190-gready"), bandit),
+                     Agent$new(EpsilonGreedyPolicy$new(0.1, "\U190-greedy"), bandit),
                      Agent$new(RandomPolicy$new("Random"), bandit),
                      Agent$new(OraclePolicy$new("Oracle"), bandit),
                      Agent$new(Exp3Policy$new(0.1, "Exp3"), bandit),
