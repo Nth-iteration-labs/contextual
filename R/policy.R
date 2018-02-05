@@ -29,39 +29,15 @@ AbstractPolicy <- R6::R6Class(
            call. = FALSE)
     },
     initialize_theta = function() {
-      theta = list()                                                            ## if we check whats there and add defaults, becomes.. dynamic :D
+      theta <- list()                                                           ## if we check whats there and add defaults, becomes.. dynamic :D
       for (arm in 1:self$k) theta[[arm]] <- self$parameters
       theta
     },
     set_theta = function(theta) {
-      self$theta = theta
+      self$theta <- theta
     }
   )
 )
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 #' External AbstractPolicy

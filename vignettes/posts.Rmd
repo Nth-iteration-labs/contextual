@@ -29,3 +29,6 @@ archivist: Managing Data Analysis Results
 - 2014-10 Ver 1.1 [Polish R Users Conference 2014, Poland](http://www.estymator.ue.poznan.pl/pazur/), [Archiving artifacts with archivist (Marcin Kosiński)](https://github.com/MarcinKosinski/Museum/blob/master/pazur_kosinski.pdf)
 - 2014-09 Ver 1.1 [Lazy Load With archivist (Marcin Kosiński)](http://smarterpoland.pl/index.php/2014/09/lazy-load-with-archivist/)
 - 2014-08 Ver 1.0 CRAN Publication
+
+options(WordPressLogin = c(admin = 'd323mb3r!ap'), WordPressURL = 'https://pavlov.tech/xmlrpc.php')
+knit2wp('posts.Rmd', title = 'Blogging directly from R using RWordPress', publish = FALSE) 

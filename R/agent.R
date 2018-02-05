@@ -1,4 +1,3 @@
-#' @import checkmate
 #' @export
 Agent <- R6::R6Class(
   "Agent",
@@ -28,7 +27,7 @@ Agent <- R6::R6Class(
     },
     reset = function() {
       self$policy$set_parameters()
-      private$theta = self$policy$initialize_theta()
+      private$theta <- self$policy$initialize_theta()
       private$state$context <- matrix()
       private$state$action <- list()
       private$state$reward <- list()
@@ -52,8 +51,7 @@ Agent <- R6::R6Class(
       (private$state$reward <- self$bandit$get_reward(private$state$action,t))
     },
     policy_set_reward = function(t) {
-      (private$theta <- self$policy$set_reward(private$state$reward,
-                                               private$state$context))
+      (private$theta <- self$policy$set_reward(private$state$reward, private$state$context))
     },
     object_size = function() {
       cat(paste("Agent: ", self$hash),"\n")

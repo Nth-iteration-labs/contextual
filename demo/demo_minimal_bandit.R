@@ -23,7 +23,7 @@ simulation  <- Simulator$new(agent, horizon = 100L, simulations = 100L)
 
 history     <- simulation$run()
 
-Plot$new()$grid(history)
+plot(history, type = "grid")
 
 print(sum(history$optimal)/sum(history$reward))
 

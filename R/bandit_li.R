@@ -10,12 +10,12 @@ LiLogBandit <- R6::R6Class(
   ),
   public = list(
     initialize   = function(data_file, k, d) {
-      self$k = k
-      self$d = d
-      private$S = data_file$get_data_table()
+      self$k <- k
+      self$d <- d
+      private$S <- data_file$get_data_table()
     },
     get_context = function(t) {
-      private$X = matrix(private$S$context[[t]], 1, self$d)
+      private$X <- matrix(private$S$context[[t]], 1, self$d)
       private$context_to_list()
     },
     get_reward = function(action, t) {
@@ -28,11 +28,7 @@ LiLogBandit <- R6::R6Class(
             as.double(private$S$oracle[[t]]),
             action$propensity
           ),
-          c("reward",
-            "choice",
-            "is_optimal",
-            "oracle",
-            "propensity")
+          c("reward", "choice", "is_optimal", "oracle", "propensity")
         )
       } else {
         NULL

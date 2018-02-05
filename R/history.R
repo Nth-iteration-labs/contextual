@@ -3,13 +3,12 @@
 History <- R6::R6Class(
   "History",
   portable = FALSE,
-  class = FALSE,
-  inherit = Contextual,
+  class = TRUE,
   public = list(
     n = 1000,
     save_theta = NULL,
     save_context = NULL,
-    initialize = function(n = 1, save_context= FALSE, save_theta = FALSE) {
+    initialize = function(n = 1, save_context = FALSE, save_theta = FALSE) {
       self$n <- n
       self$save_context <- save_context
       self$save_theta   <- save_theta
@@ -25,8 +24,8 @@ History <- R6::R6Class(
         oracle          = rep(0.0,     n),
         agent           = rep("",      n)
       )
-      if (self$save_context) private$.data$context = rep(list(),  n)
-      if (self$save_theta)   private$.data$theta   = rep(list(),  n)
+      if (self$save_context) private$.data$context <- rep(list(),  n)
+      if (self$save_theta)   private$.data$theta   <- rep(list(),  n)
       invisible(self)
     },
     save = function(
@@ -41,8 +40,8 @@ History <- R6::R6Class(
 
                      ) {
 
-      index = as.integer(index)
-      if (reward$is_optimal) is_optimal = 1L else is_optimal = 0L
+      index <- as.integer(index)
+      if (reward$is_optimal) is_optimal <- 1L else is_optimal <- 0L
       data.table::set(
                        data,
                        index, 1L:7L,
@@ -53,7 +52,8 @@ History <- R6::R6Class(
         data.table::set(data, index, 8L , list(list(context_value)))
       } else if (!self$save_context & self$save_theta) {
         data.table::set(data, index, 8L, list(list(theta_value)))
-        #data[index, (paste0("X.", seq_along(context))) := context]             ## if split over mult col
+        ## if split over mult col
+        #data[index, (paste0("X.", seq_along(context))) := context]
       } else if (self$save_context & self$save_theta) {
         data.table::set(data, index, 8L, list(list(context_value)))
         data.table::set(data, index, 9L , list(list(theta_value)))
@@ -62,7 +62,7 @@ History <- R6::R6Class(
     },
     save_data = function(filename = NA) {
       if (is.na(filename))
-        filename = paste("contextual_data_",
+        filename <- paste("contextual_data_",
                          format(Sys.time(), "%y%m%d_%H%M%S"),
                          ".RData",
                          sep = "")
@@ -70,28 +70,27 @@ History <- R6::R6Class(
       invisible(self)
     },
     load_data = function(filename) {
-      private$.data = readRDS(filename)
+      private$.data <- readRDS(filename)
       invisible(self)
     },
     get_data_frame = function() {
       as.data.frame(private$.data)
     },
     set_data_frame = function(df) {
-      private$.data = as.data.table(df)
+      private$.data <- as.data.table(df)
       invisible(self)
     },
     get_data_table = function() {
       private$.data
     },
     set_data_table = function(dt) {
-      private$.data = dt
+      private$.data <- dt
       invisible(self)
     },
     delete_empty_rows = function() {
       private$.data <- private$.data[sim > 0 & t > 0]
       private$.data <- private$.data[, t := seq_len(.N), by = c("agent", "sim")]
-      #private$.data[ , max(t), by = c("agent","sim")][,min(V1),
-      #              by = c("agent")][,V1]
+      #private$.data[ , max(t), by = c("agent","sim")][,min(V1), by = c("agent")][,V1]
       invisible(self)
     }
   ),

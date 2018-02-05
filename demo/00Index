@@ -6,3 +6,7 @@ demo_minimal_bandit                     How to define custom bandits inline
 demo_offline_log                        Demo of Li's offline testing policy
 dev                                     Dev support file
 test                                    Temporary test file
+demo_1                                  Temporary d1
+demo_2                                  Temporary d2
+demo_3                                  Temporary d3
+demo_4_do_parallel_false                Temporary d4

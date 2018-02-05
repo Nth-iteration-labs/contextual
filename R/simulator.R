@@ -30,7 +30,7 @@ Simulator <- R6::R6Class(
       self$simulations <- simulations
       self$save_theta <- save_theta
       self$save_context <- save_context
-      if (!is.list(agents)) agents = list(agents)
+      if (!is.list(agents)) agents <- list(agents)
       self$agents <- agents
       self$worker_max <- worker_max
       self$agent_n <- length(agents)
@@ -71,10 +71,10 @@ Simulator <- R6::R6Class(
         message("Postworkercreation")
       }
 
-      horizon = self$horizon
-      agent_n = self$agent_n
-      save_context = self$save_context
-      save_theta = self$save_theta
+      horizon <- self$horizon
+      agent_n <- self$agent_n
+      save_context <- self$save_context
+      save_theta <- self$save_theta
 
       self$history <- History$new(  self$horizon *
                                     self$agent_n *
@@ -100,7 +100,7 @@ Simulator <- R6::R6Class(
           policy_name <- sim_agent$policy$name
           for (t in 1L:horizon) {
 
-            agent_index = as.integer(t + ((simulation_index - 1L) * horizon))
+            agent_index <- as.integer(t + ((simulation_index - 1L) * horizon))
 
             context <- sim_agent$bandit_get_context(agent_index)                # observe the bandit in its context
             action  <- sim_agent$policy_get_action(agent_index)                 # use policy to decide which choice to make (which arm to pick)

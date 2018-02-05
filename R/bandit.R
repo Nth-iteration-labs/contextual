@@ -5,18 +5,21 @@ AbstractBandit <- R6::R6Class(
   portable = FALSE,
   class = FALSE,
   private = list(
+
     W = NULL,      # weights k*d
     R = NULL,      # rewards matrix
     X = NULL,      # context matrix
     O = NULL,      # oracle
+
     precaching = FALSE,
+
     context_to_list = function(t) {
-      if (self$is_precaching) idx = t else idx = 1
+      if (self$is_precaching) idx <- t else idx <- 1
       setNames(list(self$k, self$d, private$X[idx, ], private$O[, idx]),
-                 c("k", "d", "X", "O"))
+               c("k", "d", "X", "O"))
     },
     reward_to_list = function(action, t) {
-      if (self$is_precaching) idx = t else idx = 1
+      if (self$is_precaching) idx <- t else idx <- 1
       setNames(
         list(
           private$R[action$choice, idx],
@@ -25,11 +28,7 @@ AbstractBandit <- R6::R6Class(
           as.double(private$R[action$optimal_choice, idx]),
           action$propensity
         ),
-        c("reward",
-          "choice",
-          "is_optimal",
-          "oracle",
-          "propensity")
+        c("reward", "choice", "is_optimal", "oracle", "propensity")
       )
     }
   ),
@@ -67,14 +66,10 @@ AbstractBandit <- R6::R6Class(
     },
     object_size = function() {
       cat(paste("  Bandit: ", self$hash),"\n")
-      cat(paste("    Size of W:        ",
-                format(object.size(private$W), units = "auto")),"\n")
-      cat(paste("    Size of R:        ",
-                format(object.size(private$R), units = "auto")),"\n")
-      cat(paste("    Size of X:        ",
-                format(object.size(private$X), units = "auto")),"\n")
-      cat(paste("    Size of O:        ",
-                format(object.size(private$O), units = "auto")),"\n")
+      cat(paste("    Size of W:        ", format(object.size(private$W), units = "auto")),"\n")
+      cat(paste("    Size of R:        ", format(object.size(private$R), units = "auto")),"\n")
+      cat(paste("    Size of X:        ", format(object.size(private$X), units = "auto")),"\n")
+      cat(paste("    Size of O:        ", format(object.size(private$O), units = "auto")),"\n")
       self$hash
     },
     generate_bandit_data = function(n) {

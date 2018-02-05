@@ -24,8 +24,8 @@ agent       <- Agent$new(policy, bandit)
 simulation  <-
   Simulator$new(
     agent,
-    horizon = 100L,
-    simulations = 100L,
+    horizon = 250L,
+    simulations = 600L,
     save_context = TRUE
   )
 
@@ -33,7 +33,7 @@ before <- simulation$run()
 
 before$save_data("test.RData")
 
-Plot$new()$grid(before)
+plot(before, type = "grid")
 
 ######################## use the log to test a policy ##########################
 
@@ -44,11 +44,11 @@ bandit      <- LiLogBandit$new(log_S, 3, 3)
 
 policy      <- LinUCBPolicy$new(1.0)
 agent       <- Agent$new(policy, bandit)
-simulation  <- Simulator$new(agent, horizon = 100L, simulations = 100L )
+simulation  <- Simulator$new(agent, horizon = 250L, simulations = 500L )
 
 after <- simulation$run()
 
-Plot$new()$grid(after)
+plot(after, type = "grid")
 
 if (file.exists("test.RData")) file.remove("test.RData")
 

@@ -13,10 +13,7 @@ ThompsonSamplingPolicy <- R6::R6Class(
       self$beta   <- beta
     },
     set_parameters = function() {
-      self$parameters <- list('chosen' = 0,
-                              'probability' = 0.0,
-                              'succes' = 0,
-                              'mu_hat' = 0.0)
+      self$parameters <- list('chosen' = 0, 'probability' = 0.0, 'succes' = 0, 'mu_hat' = 0.0)
     },
     get_action = function(context) {
       for (arm in 1:context$k) {
@@ -32,23 +29,14 @@ ThompsonSamplingPolicy <- R6::R6Class(
     },
     set_reward = function(reward, context) {
 
-      self$theta[[reward$choice]]$chosen <-
-        self$theta[[reward$choice]]$chosen + 1
-
-      if (reward$reward == 1)
-        self$theta[[reward$choice]]$succes <-
-          self$theta[[reward$choice]]$succes + 1
-
-      self$theta[[reward$choice]]$probability <-
-        self$theta[[reward$choice]]$probability +
-        (1 / self$theta[[reward$choice]]$chosen) *
-        (reward$reward - self$theta[[reward$choice]]$probability)
-
+      self$theta[[reward$choice]]$chosen <- self$theta[[reward$choice]]$chosen + 1
+      if (reward$reward == 1) self$theta[[reward$choice]]$succes <- self$theta[[reward$choice]]$succes + 1
+      self$theta[[reward$choice]]$probability <- self$theta[[reward$choice]]$probability +
+        (1 / self$theta[[reward$choice]]$chosen) * (reward$reward - self$theta[[reward$choice]]$probability)
       self$theta
     }
   )
 )
-
 
 
 

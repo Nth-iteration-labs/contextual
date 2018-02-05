@@ -10,21 +10,21 @@ LinUCBPolicy <- R6::R6Class(
       super$initialize(name)
       self$alpha <- alpha
     },
+    # A is a d*d identity matrix, b is a 0 vector of length
     set_parameters = function() {
-      self$parameters <- list(
-        'A' = diag(1,self$d),                                                   # A is a d*d identity matrix
-        'b' = rep(0,self$d)                                                     # b is a 0 vector of length
-      )
+      self$parameters <- list( 'A' = diag(1,self$d), 'b' = rep(0,self$d))
     },
     get_action = function(context) {
       expected_rewards <- rep(0.0, context$k)
       for (arm in 1:context$k) {
-        A          <- self$theta[[arm]]$A
-        b          <- self$theta[[arm]]$b
-        A.inv      <- chol2inv(chol(A))                                         # Faster than A.inv <- solve(A), same?
-        theta.hat  <- A.inv %*% b
+        A          <-  self$theta[[arm]]$A
+        b          <-  self$theta[[arm]]$b
+        # Faster than A.inv <- solve(A), same?
+        A.inv      <-  chol2inv(chol(A))
+        theta.hat  <-  A.inv %*% b
         mean       <-  context$X %*% theta.hat
-        var        <-  sqrt(tcrossprod(context$X %*% A.inv, context$X))         # faster than sqrt( (context$X %*% A.inv ) %*% t(context$X) )
+        # faster than sqrt( (context$X %*% A.inv ) %*% t(context$X) )
+        var        <-  sqrt(tcrossprod(context$X %*% A.inv, context$X))
         expected_rewards[arm] <- mean + (self$alpha * var)
       }
       self$action$choice  <- self$argmax(expected_rewards)
@@ -33,12 +33,8 @@ LinUCBPolicy <- R6::R6Class(
     },
     set_reward = function(reward, context) {
       X <- as.vector(context$X)
-      self$theta[[reward$choice]]$A <-
-        self$theta[[reward$choice]]$A + outer(X, X)
-
-      self$theta[[reward$choice]]$b <-
-        self$theta[[reward$choice]]$b + reward$reward * X
-
+      self$theta[[reward$choice]]$A <- self$theta[[reward$choice]]$A + outer(X, X)
+      self$theta[[reward$choice]]$b <- self$theta[[reward$choice]]$b + reward$reward * X
       self$theta
     }
   )

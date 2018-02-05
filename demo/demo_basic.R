@@ -1,13 +1,8 @@
-########################### package dev helpers ################################
 #library(contextual)
 setwd("~/GitHub/contextual/demo")
 source("dev.R")
 
-################################## timer #######################################
-
 ptm <- proc.time()
-
-########################### package dev helpers ################################
 
 weights     <- c(0.9, 0.1, 0.1)
 
@@ -24,7 +19,7 @@ agent       <- Agent$new(policy, bandit)
 simulation  <- Simulator$new(
                               agent,
                               horizon      = 100L,
-                              simulations  = 100L,
+                              simulations  = 300L,
                               save_context = FALSE,
                               save_theta   = FALSE,
                               do_parallel  = F
@@ -32,17 +27,7 @@ simulation  <- Simulator$new(
 
 history     <- simulation$run()
 
-history_df  <- history$get_data_frame()
-
-# plot(history, type = ..) ---> make this work
-
-Plot$new()$grid(history)
-
-################################## timer #######################################
-
-print(proc.time() - ptm)
-
-
+plot(history, type = "grid")
 
 
 

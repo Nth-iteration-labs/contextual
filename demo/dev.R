@@ -18,18 +18,12 @@ Sys.setenv(R_GSCMD = "C:\\Program Files\\gs\\gs9.22\\bin\\gswin64c.exe")
 
 # check when NA saved to history (ie in the case of oracle/optimal not known etc)
 # Comments should explain the why, not the what.
-# More than 80 chars: encapsulate in other function.
-
-# true / false? version nr
 
 # only data as weight set mechanism, not setweights?
 
-# ## precahce on/off makes difference in seed
 # REFACTOR and DRY plot .. check how usually done in R
 # make sure output/summary is nicely formatted and collected
 # random when not set, "choose" randomly prgrammaticly.
-# and check what if not precache, seed-wize .. must be same as not precache?
-# check all <- and =
 # TODO: document, write, document, then write some more
 # TODO: propensity, and correct names for all vars
 # TODO: visualisation(s) from thesis
@@ -76,3 +70,27 @@ Sys.setenv(R_GSCMD = "C:\\Program Files\\gs\\gs9.22\\bin\\gswin64c.exe")
 #data.table::set(data, index, 5L, is_optimal)
 #data.table::set(data, index, 6L, reward$oracle)
 #data.table::set(data, index, 7L, policy_name)
+
+# at end of oracle_generate can do
+# if (FALSE) {
+# sineChange <- function(x,y,M){
+#  M[x,y] + 4 * sin((x - y*6.4)/60)  # Y would be t ..
+#}
+#vecSineChange <- Vectorize(sineChange,vectorize.args = c('x','y'))
+#private$O <- outer(1:nrow(private$O),
+#                   1:ncol(private$O),
+#                   vecSineChange,
+#                   private$O )
+#}
+
+# history --> grid
+#if (history[agent == "TSampling",.N] > 0) {                               ## this needs to be more generic!!!
+#  self$ts(history, grid = TRUE, legend = TRUE)
+#} else {
+#  self$average(history, grid = TRUE, legend = FALSE, regret = TRUE)
+#}
+
+
+
+# options(WordPressLogin = c(admin = 'd323mb3r!ap'), WordPressURL = 'https://pavlov.tech/xmlrpc.php')
+# knit2wp('posts.Rmd', title = 'Blogging directly from R using RWordPress', publish = FALSE)
