@@ -2,8 +2,6 @@
 setwd("~/GitHub/contextual/demo")
 source("dev.R")
 
-ptm <- proc.time()
-
 weights     <- c(0.9, 0.1, 0.1)
 
 # model k * X , linear .. by default. can set differently..

@@ -8,47 +8,87 @@ Plot <- R6::R6Class(
   public = list(
     bandit_matrix = NULL,
     initialize = function() {
+
     },
     grid = function(history,
                     type = "grid",
                     xlim = NULL,
                     legend = TRUE,
-                    regret = FALSE,
                     use_colors = TRUE,
                     ci = FALSE) {
-      if (!data.table::is.data.table(history)) history = history$get_data_table()
-      history <- history[t <= history[ , max(t), by = c("sim")][,min(V1)]]
+      if (!data.table::is.data.table(history))
+        history = history$get_data_table()
+      history <-
+        history[t <= history[, max(t), by = c("sim")][, min(V1)]]
       old.par <- par(no.readonly = TRUE)
       dev.hold()
-      self$bandit_matrix <- layout(matrix(c(1, 3, 2, 4), 2, 2, byrow = TRUE))
-      par(mar = c(3, 5, 1, 1))#b,l,t,r
-      self$cumulative(history, grid = TRUE, legend = TRUE, regret = TRUE)
+      self$bandit_matrix <-
+        layout(matrix(c(1, 3, 2, 4), 2, 2, byrow = TRUE))
+      # par(mar = c(bottom, left, top, right))
       par(mar = c(3, 5, 1, 1))
-      self$optimal(history, grid = TRUE, legend = FALSE)
+      self$cumulative(
+        history,
+        grid = TRUE,
+        xlim = xlim,
+        legend = legend,
+        regret = TRUE,
+        use_colors = use_colors,
+        ci = ci
+      )
+      par(mar = c(3, 5, 1, 1))
+      self$optimal(
+        history,
+        grid = TRUE,
+        xlim = xlim,
+        legend = FALSE,
+        use_colors = use_colors,
+        ci = TRUE
+      )
       par(mar = c(3, 5, 1, 2))
-      self$cumulative(history, grid = TRUE, legend = FALSE, regret = FALSE)
+      self$cumulative(
+        history,
+        grid = TRUE,
+        xlim = xlim,
+        legend = FALSE,
+        regret = FALSE,
+        use_colors = use_colors,
+        ci = ci
+      )
       par(mar = c(3, 5, 1, 2))
-      self$average(history, grid = TRUE, legend = FALSE)
+      self$average(
+        history,
+        grid = TRUE,
+        xlim = xlim,
+        legend = FALSE,
+        regret = FALSE,
+        use_colors = use_colors,
+        ci = ci
+      )
       dev.flush()
       par(old.par)
       invisible(self)
     },
     cumulative = function(history,
-                       grid = FALSE,
-                       xlim = NULL,
-                       legend = TRUE,
-                       regret = FALSE,
-                       use_colors = TRUE,
-                       ci = FALSE) {
-      if (!data.table::is.data.table(history)) history = history$get_data_table()
+                          grid = FALSE,
+                          xlim = NULL,
+                          legend = TRUE,
+                          regret = FALSE,
+                          use_colors = TRUE,
+                          ci = FALSE) {
+      if (!data.table::is.data.table(history))
+        history = history$get_data_table()
       max_sim   = history[, max(sim)]
-      history <- history[order(agent,t,sim)]
+      history <- history[order(agent, t, sim)]
       if (regret) {
         ylab_title = "cumulative regret"
-        cs <- history[, list(sd = sd(oracle - reward) / sqrt(max_sim), data = mean(oracle - reward)), by = list(t, agent)]
+        cs <-
+          history[, list(sd = sd(oracle - reward) / sqrt(max_sim),
+                         data = mean(oracle - reward)), by = list(t, agent)]
       } else {
         ylab_title = "cumulative reward"
-        cs <- history[, list(sd = sd(reward) / sqrt(max_sim), data = mean(reward)), by = list(t, agent)]
+        cs <-
+          history[, list(sd = sd(reward) / sqrt(max_sim),
+                         data = mean(reward)), by = list(t, agent)]
       }
       cs$data = cs[, cumsum(data), by = list(agent)][, 2]
       do_plot(cs, ylab_title, use_colors, ci, legend, grid)
@@ -61,82 +101,54 @@ Plot <- R6::R6Class(
                        regret = FALSE,
                        use_colors = TRUE,
                        ci = FALSE) {
-
-      if (!data.table::is.data.table(history)) history = history$get_data_table()
+      if (!data.table::is.data.table(history))
+        history = history$get_data_table()
       max_sim   = history[, max(sim)]
-      history <- history[order(agent,t,sim)]
+      history <- history[order(agent, t, sim)]
       if (regret) {
         ylab_title = "Average regret"
-        cs <- history[, list(sd = sd(oracle - reward) / sqrt(max_sim), data = mean(oracle - reward)), by = list(t, agent)]
+        cs <-
+          history[, list(sd = sd(oracle - reward) / sqrt(max_sim),
+                         data = mean(oracle - reward)), by = list(t, agent)]
       } else {
         ylab_title = "Average reward"
-        cs <- history[, list(sd = sd(reward) / sqrt(max_sim), data = mean(reward)), by = list(t, agent)]
+        cs <-
+          history[, list(sd = sd(reward) / sqrt(max_sim),
+                         data = mean(reward)), by = list(t, agent)]
       }
-      do_plot(cs = cs, ylab_title = ylab_title, use_colors = use_colors, ci = ci, legend = legend, grid = grid)
+      do_plot(
+        cs = cs,
+        ylab_title = ylab_title,
+        use_colors = use_colors,
+        ci = ci,
+        legend = legend,
+        grid = grid
+      )
       invisible(self)
     },
     optimal = function(history,
                        grid = FALSE,
                        xlim = NULL,
                        legend = TRUE,
-                       regret = FALSE,
                        use_colors = TRUE,
                        ci = FALSE) {
-      if (!data.table::is.data.table(history)) history = history$get_data_table()
-      history <- history[order(agent,t,sim)]
+      if (!data.table::is.data.table(history))
+        history = history$get_data_table()
+      max_sim   = history[, max(sim)]
+      history <- history[order(agent, t, sim)]
       ylab_title = "Optimal arm"
-      cs <- history[, list(data = mean(is_optimal) * 100), by = list(t, agent)]
-      do_plot(cs = cs, ylab_title = ylab_title, use_colors = use_colors, ci = ci, legend = legend, grid = grid, ylim = c(0, 100))
-      invisible(self)
-    },
-    ts = function(history,
-                  grid = FALSE,
-                  xlim = NULL,
-                  legend = TRUE) {
-      if (!data.table::is.data.table(history)) history = history$get_data_table()
-      if (grid == FALSE)
-        dev.hold()
-
-      last_t   = history[,max(t)]
-      theta_list = history[agent == "TSampling" & t == last_t & sim == 1,theta]
-      mu = lname_to_vector(theta_list[[1]], "mu")
-      succes_n = lname_to_vector(theta_list[[1]], "succes")
-      chosen_n = lname_to_vector(theta_list[[1]], "chosen")
-
-      alpha = 1; beta = 1
-      alpha_per_arm = alpha + succes_n
-      beta_per_arm = beta + chosen_n - succes_n
-      arm_n = length(alpha_per_arm)
-
-      xv = seq(0, 1, by = 0.01); yv_all = c()
-      for (i in 1:arm_n) {
-        yv_all = as.vector(rbind(yv_all,dbeta(xv,alpha_per_arm[i],beta_per_arm[i])))
-      }
-      #ymax = max(yv_all)
-      curve(dbeta(x,alpha_per_arm[1],
-                  beta_per_arm[1]),
-            col = 4,
-            xlab = "X",
-            ylab = "PDF",
-            ylim = c(0, (10 + 0.6)))
-      #ylim = c(0, (ymax + 0.6)))
-      for (i in 2:arm_n) {
-        curve(dbeta(x,alpha_per_arm[i],beta_per_arm[i]),add = TRUE,col = (i + 3))
-      }
-      abline(v = mu, col = c(4:(arm_n + 4)))
-      #points(max(mu), 0, type = "p")
-      if (legend)
-        legend(
-          "topleft",
-          NULL,
-          paste("Arm ", 1:arm_n, sep = ""),
-          col = c(4:(arm_n + 4)),
-          lwd = 1,
-          lty = 1,
-          bg = "white"
-        )
-      if (grid == FALSE)
-        dev.flush()
+      cs <-
+        history[, list(sd = sd(is_optimal * 100) / sqrt(max_sim),
+                       data = mean(is_optimal) * 100), by = list(t, agent)]
+      do_plot(
+        cs = cs,
+        ylab_title = ylab_title,
+        use_colors = use_colors,
+        ci = ci,
+        legend = legend,
+        grid = grid,
+        ylim = c(0, 100)
+      )
       invisible(self)
     },
     do_plot = function(cs,
@@ -146,11 +158,10 @@ Plot <- R6::R6Class(
                        legend = TRUE,
                        grid = FALSE,
                        ylim = NULL) {
+      if (grid == FALSE)
+        dev.hold()
 
-
-      if (grid == FALSE) dev.hold()
-
-      cs <- cs[order(agent,t)]
+      cs <- cs[order(agent, t)]
 
       if (ci) {
         # 95% confidence
@@ -216,12 +227,14 @@ Plot <- R6::R6Class(
               border = NA
             )
           }
-          lines(cs[cs$agent == agent_name]$t,
-                cs[cs$agent == agent_name]$data,
-                lwd = 1,
-                lty = 1,
-                col = rgb(0.2, 0.2, 0.2, 0.8),
-                type = "l")
+          lines(
+            cs[cs$agent == agent_name]$t,
+            cs[cs$agent == agent_name]$data,
+            lwd = 1,
+            lty = 1,
+            col = rgb(0.2, 0.2, 0.2, 0.8),
+            type = "l"
+          )
         }
       }
       axis(1)
@@ -239,7 +252,8 @@ Plot <- R6::R6Class(
           lty = 1,
           bg = "white"
         )
-      if (grid == FALSE) dev.flush()
+      if (grid == FALSE)
+        dev.flush()
     },
     gg_color_hue = function(n) {
       hues = seq(15, 375, length = n + 1)
@@ -270,61 +284,140 @@ Plot <- R6::R6Class(
         graphics.off()
       }
       invisible(self)
+    },
+    # for fun and eductional purposes, live plotting of ts ..
+    ts = function(history,
+                  grid = FALSE,
+                  xlim = NULL,
+                  legend = TRUE) {
+      if (!data.table::is.data.table(history))
+        history = history$get_data_table()
+      if (grid == FALSE)
+        dev.hold()
+
+      last_t   = history[, max(t)]
+      theta_list = history[agent == "TSampling" &
+                             t == last_t & sim == 1, theta]
+      mu = lname_to_vector(theta_list[[1]], "mu")
+      succes_n = lname_to_vector(theta_list[[1]], "succes")
+      chosen_n = lname_to_vector(theta_list[[1]], "chosen")
+
+      alpha = 1
+      beta = 1
+      alpha_per_arm = alpha + succes_n
+      beta_per_arm = beta + chosen_n - succes_n
+      arm_n = length(alpha_per_arm)
+
+      xv = seq(0, 1, by = 0.01)
+      yv_all = c()
+      for (i in 1:arm_n) {
+        yv_all = as.vector(rbind(yv_all, dbeta(xv, alpha_per_arm[i], beta_per_arm[i])))
+      }
+      #ymax = max(yv_all)
+      curve(
+        dbeta(x, alpha_per_arm[1],
+              beta_per_arm[1]),
+        col = 4,
+        xlab = "X",
+        ylab = "PDF",
+        ylim = c(0, (10 + 0.6))
+      )
+      #ylim = c(0, (ymax + 0.6)))
+      for (i in 2:arm_n) {
+        curve(dbeta(x, alpha_per_arm[i], beta_per_arm[i]),
+              add = TRUE,
+              col = (i + 3))
+      }
+      abline(v = mu, col = c(4:(arm_n + 4)))
+      #points(max(mu), 0, type = "p")
+      if (legend)
+        legend(
+          "topleft",
+          NULL,
+          paste("Arm ", 1:arm_n, sep = ""),
+          col = c(4:(arm_n + 4)),
+          lwd = 1,
+          lty = 1,
+          bg = "white"
+        )
+      if (grid == FALSE)
+        dev.flush()
+      invisible(self)
     }
   )
 )
 
 #' @export
-plot.History <- function(x,...) {
+plot.History <- function(x, ...) {
+  # need to extract these values from the ellipsis, as this function overrides
+  # plot(x, ...) for the History class, and needs to have the exact same (x,..)
+  # signature
 
-    # need to extract these values from the ellipsis, as this function overrides
-    # plot(x, ...) for the History class, and needs to have the exact same (x,..)
-    # signature
+  args <- eval(substitute(alist(...)))
 
-    args <- eval(substitute(alist(...)))
+  if ("type" %in% names(args))
+    type = args$type
+  else
+    type = "cumulative"
+  if ("args" %in% names(args))
+    grid = args$grid
+  else
+    grid = FALSE
+  if ("xlim" %in% names(args))
+    xlim = args$xlim
+  else
+    xlim = NULL
+  if ("legend" %in% names(args))
+    legend = args$legend
+  else
+    legend = TRUE
+  if ("regret" %in% names(args))
+    regret = args$regret
+  else
+    regret = TRUE
+  if ("use_colors" %in% names(args))
+    use_colors = args$use_colors
+  else
+    use_colors = TRUE
+  if ("ci" %in% names(args))
+    ci = args$ci
+  else
+    ci = FALSE
 
-    if ("type" %in% names(args)) type = args$type else type = "cumulative"
-    if ("args" %in% names(args)) grid = args$grid else grid = FALSE
-    if ("xlim" %in% names(args)) xlim = args$xlim else xlim = NULL
-    if ("legend" %in% names(args)) legend = args$legend else legend = TRUE
-    if ("regret" %in% names(args)) regret = args$regret else regret = TRUE
-    if ("use_colors" %in% names(args)) use_colors = args$use_colors else use_colors = TRUE
-    if ("ci" %in% names(args)) ci = args$ci else ci = FALSE
-
-    if (type == "grid") {
-      Plot$new()$grid(x,
-                      xlim = xlim,
-                      use_colors = use_colors,
-                      ci = ci)
-    } else if (type == "cumulative") {
-      Plot$new()$cumulative(
-        x,
-        xlim = xlim,
-        legend = legend,
-        regret = regret,
-        use_colors = use_colors,
-        ci = ci
-      )
-    } else if (type == "average") {
-      Plot$new()$average(
-        x,
-        xlim = xlim,
-        legend = legend,
-        regret = regret,
-        use_colors = use_colors,
-        ci = ci
-      )
-    } else if (type == "optimal") {
-      Plot$new()$optimal(
-        x,
-        xlim = xlim,
-        legend = legend,
-        regret = regret,
-        use_colors = use_colors,
-        ci = ci
-      )
-    }
+  if (type == "grid") {
+    Plot$new()$grid(x,
+                    xlim = xlim,
+                    use_colors = use_colors,
+                    ci = ci)
+  } else if (type == "cumulative") {
+    Plot$new()$cumulative(
+      x,
+      xlim = xlim,
+      legend = legend,
+      regret = regret,
+      use_colors = use_colors,
+      ci = ci
+    )
+  } else if (type == "average") {
+    Plot$new()$average(
+      x,
+      xlim = xlim,
+      legend = legend,
+      regret = regret,
+      use_colors = use_colors,
+      ci = ci
+    )
+  } else if (type == "optimal") {
+    Plot$new()$optimal(
+      x,
+      xlim = xlim,
+      legend = legend,
+      regret = regret,
+      use_colors = use_colors,
+      ci = ci
+    )
   }
+}
 
 #' External Plot
 #'

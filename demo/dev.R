@@ -90,7 +90,18 @@ Sys.setenv(R_GSCMD = "C:\\Program Files\\gs\\gs9.22\\bin\\gswin64c.exe")
 #  self$average(history, grid = TRUE, legend = FALSE, regret = TRUE)
 #}
 
-
+#ggplot(data = cs, aes(
+#  x = t,
+#  y = mean,
+#  ymin = ci_lower,
+#  ymax = ci_upper
+#)) +
+#  geom_line(aes(color = agent)) + geom_ribbon(aes(fill = agent), alpha = 0.3)
+##geom_smooth(method = "lm",
+## formula = y ~ splines::bs(x, 6),
+## aes(fill = agent, color = agent),
+## alpha = 0.5, se = FALSE)
+#gp
 
 # options(WordPressLogin = c(admin = 'd323mb3r!ap'), WordPressURL = 'https://pavlov.tech/xmlrpc.php')
 # knit2wp('posts.Rmd', title = 'Blogging directly from R using RWordPress', publish = FALSE)

@@ -1,6 +1,7 @@
 #' @import foreach
 #' @import doParallel
 #' @import itertools
+#'
 #' @export
 Simulator <- R6::R6Class(
   "Simulator",
