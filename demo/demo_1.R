@@ -12,4 +12,4 @@ agent              <- Agent$new(policy, bandit)
 simulation         <- Simulator$new(agent, horizon, simulations)
 history            <- simulation$run()
 
-plot(history, type = "grid", ci = TRUE)
+plot(history, type = "grid")

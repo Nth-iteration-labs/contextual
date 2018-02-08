@@ -42,7 +42,7 @@ Plot <- R6::R6Class(
         xlim = xlim,
         legend = FALSE,
         use_colors = use_colors,
-        ci = TRUE
+        ci = ci
       )
       par(mar = c(3, 5, 1, 2))
       self$cumulative(
