@@ -16,10 +16,8 @@ Plot <- R6::R6Class(
                     legend = TRUE,
                     use_colors = TRUE,
                     ci = FALSE) {
-      if (!data.table::is.data.table(history))
-        history = history$get_data_table()
-      history <-
-        history[t <= history[, max(t), by = c("sim")][, min(V1)]]
+      history <- check_history_data(history)
+      history <- history[t <= history[, max(t), by = c("sim")][, min(V1)]]
       old.par <- par(no.readonly = TRUE)
       dev.hold()
       self$bandit_matrix <-
@@ -75,8 +73,7 @@ Plot <- R6::R6Class(
                           regret = FALSE,
                           use_colors = TRUE,
                           ci = FALSE) {
-      if (!data.table::is.data.table(history))
-        history = history$get_data_table()
+      history <- check_history_data(history)
       max_sim   = history[, max(sim)]
       history <- history[order(agent, t, sim)]
       if (regret) {
@@ -101,8 +98,7 @@ Plot <- R6::R6Class(
                        regret = FALSE,
                        use_colors = TRUE,
                        ci = FALSE) {
-      if (!data.table::is.data.table(history))
-        history = history$get_data_table()
+      history <- check_history_data(history)
       max_sim   = history[, max(sim)]
       history <- history[order(agent, t, sim)]
       if (regret) {
@@ -132,8 +128,7 @@ Plot <- R6::R6Class(
                        legend = TRUE,
                        use_colors = TRUE,
                        ci = FALSE) {
-      if (!data.table::is.data.table(history))
-        history = history$get_data_table()
+      history <- check_history_data(history)
       max_sim   = history[, max(sim)]
       history <- history[order(agent, t, sim)]
       ylab_title = "Optimal arm"
@@ -149,6 +144,72 @@ Plot <- R6::R6Class(
         grid = grid,
         ylim = c(0, 100)
       )
+      invisible(self)
+    },
+    arms = function(history,
+                    grid = FALSE,
+                    xlim = NULL,
+                    legend = TRUE,
+                    use_colors = TRUE) {
+      history <- check_history_data(history)
+      ylab_title = "Arm Choice %"
+      agent_levels <- levels(as.factor(history$agent))
+      if (length(agent_levels) > 1)
+        warning("## Arm percentage plot always plots the results of just one agent.", call. = FALSE)
+      history <- history[agent == agent_levels[1]]
+      cs <- history[, list(arm_count = .(rowCount = .N)), by = list(t,choice)]
+      max_sim  = history[, max(sim)]
+      max_t    = history[, max(t)]
+      choice_levels <- levels(as.factor(cs$choice))
+      max_choice = length(choice_levels)
+      cs$arm_count <- as.double((unlist(cs$arm_count)/max_sim) * 100L)
+      eg = expand.grid(t = seq(1.0, max_t, 1), choice = seq(1.0, max_choice, 1))
+      cs <- merge(cs, eg, all = TRUE)
+      cs[is.na(cs)] <- 0.0
+      cs$csum <- ave(cs$arm_count, cs$t, FUN = cumsum)
+      cs$zero <- 0.0
+      cs <- cs[order(choice, t)]
+      min_ylim <- 0
+      max_ylim <- 100
+      plot.new()
+      cl <- gg_color_hue(length(agent_levels))
+      plot.window(xlim = c(1, cs[, max(t)]),
+                  ylim = c(min_ylim, max_ylim))
+      cl <- gg_color_hue(length(choice_levels))
+      color <- 1
+      polygon(
+        c(cs[cs$choice == 1]$t, rev(cs[cs$choice == 1]$t)),
+        c(cs[cs$choice == 1]$csum, rev(cs[cs$choice == 1]$zero)),
+        col = adjustcolor(cl[color], alpha.f = 0.6),
+        border = NA
+      )
+      color <- 2
+      for (choice_nr in c(2:length(choice_levels))) {
+        polygon(
+          c(cs[cs$choice == choice_nr]$t, rev(cs[cs$choice == choice_nr]$t)),
+          c(cs[cs$choice == choice_nr - 1]$csum, rev(cs[cs$choice == choice_nr]$csum)),
+          col = adjustcolor(cl[color], alpha.f = 0.6),
+          border = NA
+        )
+        color <- color + 1
+      }
+      axis(1)
+      axis(2)
+      title(xlab = "Time Step")
+      title(ylab = ylab_title)
+      box()
+      if (legend)
+        legend(
+          "bottomright",
+          NULL,
+          paste("arm", choice_levels, sep = " "),
+          col = cl,
+          title=agent_levels[1],
+          pch = 15,
+          pt.cex = 1.2,
+          bg = "white",
+          inset = c(0.08, 0.1)
+        )
       invisible(self)
     },
     do_plot = function(cs,
@@ -170,13 +231,9 @@ Plot <- R6::R6Class(
         colnames(cs)[colnames(cs) == 'V2'] <- 'ci_lower'
         colnames(cs)[colnames(cs) == 'V1'] <- 'ci_upper'
       }
-
       plot.new()
-
       agent_levels <- levels(as.factor(cs$agent))
-
       cl <- gg_color_hue(length(agent_levels))
-
       if (ci) {
         min_ylim = cs[, min(ci_lower)]
         max_ylim = cs[, max(ci_upper)]
@@ -188,7 +245,7 @@ Plot <- R6::R6Class(
         min_ylim <- ylim[1]
         max_ylim <- ylim[2]
       }
-      plot.window(xlim = c(0, cs[, max(t)]),
+      plot.window(xlim = c(1, cs[, max(t)]),
                   ylim = c(min_ylim, max_ylim))
 
       if (use_colors) {
@@ -285,13 +342,25 @@ Plot <- R6::R6Class(
       }
       invisible(self)
     },
+    check_history_data = function(history) {
+      if (!data.table::is.data.table(history)) {
+        if (is(history,"History")) {
+          history = history$get_data_table()
+          return(history)
+        } else {
+          stop("Plots need History or data.table object",
+               call. = FALSE)
+        }
+      } else {
+        return(history)
+      }
+    },
     # for fun and eductional purposes, live plotting of ts ..
     ts = function(history,
                   grid = FALSE,
                   xlim = NULL,
                   legend = TRUE) {
-      if (!data.table::is.data.table(history))
-        history = history$get_data_table()
+      history <- check_history_data(history)
       if (grid == FALSE)
         dev.hold()
 
@@ -415,6 +484,13 @@ plot.History <- function(x, ...) {
       regret = regret,
       use_colors = use_colors,
       ci = ci
+    )
+  } else if (type == "arms") {
+    Plot$new()$arms(
+      x,
+      xlim = xlim,
+      legend = legend,
+      use_colors = use_colors
     )
   }
 }

@@ -16,11 +16,19 @@ Contextual <- R6::R6Class(
     initialize = function() {
       private$.hash = sub('<environment: (.*)>', '\\1',  capture.output(self))
     },
-    argmaxlist = function(x, list_element_name = NA)
+    argmaxlist = function(x, list_element_name = NA, equal_is_random = TRUE)
     {
       x <- lname_to_vector(x, list_element_name)
       y <- seq_along(x)[x == max(x)]
-      if (length(y) > 1L) sample(y, 1L, replace = TRUE) else y
+      if (length(y) > 1L)  {
+        if (equal_is_random) {
+          return(sample(y, 1L, replace = TRUE))
+        } else {
+          return(y[1])
+        }
+      } else {
+        return(y)
+      }
     },
     argmax = function(x)
     {
