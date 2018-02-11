@@ -94,7 +94,7 @@ test_that("History simulation testing context and theta.", {
     )
   history     <- simulation$run()
   expect_equal(unlist(history$data$context[1]), c(1,1,0))
-  expect_equal(history$data$theta[[1]][[2]]$chosen, 1)
+  expect_equal(history$data$theta[[1]][[2]]$n, 1)
 
 })
 
@@ -119,7 +119,7 @@ test_that("History simulation testing save_context.", {
     )
   history     <- simulation$run()
   expect_equal(unlist(history$data$context[1]), c(1,0,0))
-  expect_equal(history$data$theta[[1]][[2]]$chosen, NULL)
+  expect_equal(history$data$theta[[1]][[2]]$n, NULL)
 
 })
 
@@ -144,6 +144,6 @@ test_that("History simulation testing save_theta", {
     )
   history     <- simulation$run()
   expect_equal(unlist(history$data$context[1]), NULL)
-  expect_equal(history$data$theta[[1]][[2]]$chosen, 1)
+  expect_equal(history$data$theta[[1]][[2]]$n, 1)
 
 })
