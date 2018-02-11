@@ -11,23 +11,24 @@ EpsilonGreedyPolicy <- R6::R6Class(
       self$epsilon <- epsilon
     },
     set_parameters = function() {
-      self$parameters <- list('chosen' = 0, 'succes' = 0, 'mu_hat' = 0)
+      self$parameters <- list('n' = 0, 'mean' = 0)
     },
     get_action = function(context) {
-      if (runif(1) < self$epsilon) {
-        self$action$choice  <- sample.int(context$k, 1, replace = TRUE)
-        self$action$propensity <- self$epsilon*(1/context$k)
+      if (runif(1) < epsilon) {
+        action$choice       <- sample.int(context$k, 1, replace = TRUE)
+        action$propensity   <- epsilon*(1/context$k)
       } else {
-        self$action$choice <- self$argmaxlist(self$theta,"mu_hat")
-        self$action$propensity <- 1 - self$epsilon
+        action$choice       <- argmaxlist(theta, "mean", equal_is_random = TRUE)
+        action$propensity   <- 1 - epsilon
       }
-      self$action$optimal_choice <- self$argmax(context$O)
-      self$action
+      action
     },
     set_reward = function(reward, context) {
-      self$theta[[reward$choice]]$chosen  <- self$theta[[reward$choice]]$chosen + 1
-      self$theta[[reward$choice]]$mu_hat  <- self$theta[[reward$choice]]$mu_hat + (1 / self$theta[[reward$choice]]$chosen) * (reward$reward - self$theta[[reward$choice]]$mu_hat)
-      self$theta
+      arm    <- reward$choice
+      reward <- reward$reward
+      inc(theta[[arm]]$n) <- 1
+      inc(theta[[arm]]$mean) <- (reward - theta[[arm]]$mean) / theta[[arm]]$n
+      theta
     }
   )
 )

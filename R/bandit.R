@@ -25,7 +25,7 @@ AbstractBandit <- R6::R6Class(
           private$R[action$choice, idx],
           action$choice,
           argmax(private$R[, idx]) == action$choice,
-          as.double(private$R[action$optimal_choice, idx]),
+          as.double(private$R[argmax(private$O[, idx]), idx]),
           action$propensity
         ),
         c("reward", "choice", "is_optimal", "oracle", "propensity")

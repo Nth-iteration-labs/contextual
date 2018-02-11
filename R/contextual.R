@@ -30,6 +30,12 @@ Contextual <- R6::R6Class(
         return(y)
       }
     },
+    "inc<-" = function(x, value) {
+      x + value
+    },
+    "dec<-" = function(x, value) {
+      x - value
+    },
     argmax = function(x)
     {
       y <- seq_along(x)[x == max(x)]

@@ -5,33 +5,33 @@ EpsilonFirstPolicy <- R6::R6Class(
   class = FALSE,
   inherit = AbstractPolicy,
   public = list(
-    n_first = NULL,
-    initialize = function(n_first = 100, name = "EpsilonFirst") {
+    first = NULL,
+    initialize = function(first = 100, name = "EpsilonFirst") {
       super$initialize(name)
-      self$n_first <- n_first
+      self$first <- first
     },
     set_parameters = function() {
-      self$parameters <- list('chosen' = 0, 'succes' = 0, 'mu_hat' = 0)
+      self$parameters <- list('n' = 0, 'mean' = 0)
     },
     get_action = function(context) {
-      print(self$sumval(self$theta, "chosen"))
-      if (self$sumval(self$theta, "chosen") < self$n_first) {
-        self$action$choice  <- sample.int(context$k, 1, replace = TRUE)
-        self$action$propensity <- (1/context$k)
+      if (sumval(theta, "n") < first) {
+        action$choice       <- sample.int(context$k, 1, replace = TRUE)
+        action$propensity   <- (1/context$k)
       } else {
-        print(paste0("    " ,self$argmaxlist(self$theta,"mu_hat", equal_is_random = F)))
-        self$action$choice <- self$argmaxlist(self$theta,"mu_hat", equal_is_random = FALSE)
-        self$action$propensity <- 1
+        action$choice       <- argmaxlist(theta, "mean", equal_is_random = FALSE)
+        action$propensity   <- 1
       }
-      self$action$optimal_choice <- self$argmax(context$O)
-      self$action
+      action
     },
     set_reward = function(reward, context) {
-      self$theta[[reward$choice]]$chosen  <- self$theta[[reward$choice]]$chosen + 1
-      if (self$sumval(self$theta, "chosen") < self$n_first - 1)                              ########### +1
-        self$theta[[reward$choice]]$mu_hat  <- self$theta[[reward$choice]]$mu_hat +
-          (1 / self$theta[[reward$choice]]$chosen) * (reward$reward - self$theta[[reward$choice]]$mu_hat)
-      self$theta
+      arm      <- reward$choice
+      reward   <- reward$reward
+
+      inc(theta[[arm]]$n) <- 1
+      if (sumval(theta, "n") < first - 1)
+        inc(theta[[arm]]$mean ) <- (reward - theta[[arm]]$mean) / theta[[arm]]$n
+
+      theta
     }
   )
 )

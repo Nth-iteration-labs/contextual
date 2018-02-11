@@ -1,14 +1,14 @@
 setwd("~/GitHub/contextual/demo")
 source("dev.R")
 
-horizon            <- 100L
-simulations        <- 100L
+horizon            <- 60L
+simulations        <- 500L
 weight_per_arm     <- c( 0.9, 0.1, 0.1)
 
 bandit             <- SyntheticBandit$new(data = weight_per_arm)
 agents             <- list(
-                             Agent$new(EpsilonGreedyPolicy$new(0.1, "\U190-greedy"), bandit)
-                             #Agent$new(EpsilonFirstPolicy$new(20, "\U190-first"), bandit)
+                             #Agent$new(EpsilonGreedyPolicy$new(0.1, "\U190-greedy"), bandit)
+                             Agent$new(EpsilonFirstPolicy$new(30, "\U190-first"), bandit)
                              #Agent$new(LinUCBPolicy$new(1.0, "LinUCB"), bandit)
                            )
 

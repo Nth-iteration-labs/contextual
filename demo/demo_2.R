@@ -9,8 +9,10 @@ bandit             <- SyntheticBandit$new(data = weight_per_arm)
 agents             <- list( Agent$new(EpsilonGreedyPolicy$new(0.1, "\U190-greedy"), bandit),
                             Agent$new(RandomPolicy$new("Random"), bandit),
                             Agent$new(OraclePolicy$new("Oracle"), bandit),
+                            #Agent$new(ThompsonSamplingPolicy$new(1.0, 1.0, "TS"), bandit)
                             Agent$new(Exp3Policy$new(0.1, "Exp3"), bandit),
-                            Agent$new(LinUCBPolicy$new(1.0, "LinUCB"), bandit) )
+                            Agent$new(LinUCBPolicy$new(1.0, "LinUCB"), bandit)
+                          )
 
 simulation         <- Simulator$new(agents, horizon, simulations)
 history            <- simulation$run()

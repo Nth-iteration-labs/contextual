@@ -9,19 +9,19 @@ OraclePolicy <- R6::R6Class(
       super$initialize(name)
     },
     set_parameters = function() {
-      self$parameters <- list('chosen' = 0, 'mu_hat' = 0)
+      self$parameters <- list('n' = 0, 'mean' = 0)
     },
     get_action = function(context) {
-      self$action$propensity <- 1
-      self$action$choice <- self$argmax(context$O)
-      self$action$optimal_choice <- self$argmax(context$O)
-      self$action
+      action$propensity <- 1
+      action$choice <- argmax(context$O)
+      action
     },
     set_reward = function(reward, context) {
-      self$theta[[reward$choice]]$chosen <- self$theta[[reward$choice]]$chosen + 1
-      self$theta[[reward$choice]]$mu_hat <- self$theta[[reward$choice]]$mu_hat +
-        (1 / self$theta[[reward$choice]]$chosen) * (reward$reward - self$theta[[reward$choice]]$mu_hat)
-      self$theta
+      arm    <- reward$choice
+      reward <- reward$reward
+      inc(theta[[arm]]$n) <- 1
+      inc(theta[[arm]]$mean) <- (reward - theta[[arm]]$mean) / theta[[arm]]$n
+      theta
     }
   )
 )

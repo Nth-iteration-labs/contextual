@@ -13,27 +13,24 @@ ThompsonSamplingPolicy <- R6::R6Class(
       self$beta   <- beta
     },
     set_parameters = function() {
-      self$parameters <- list('chosen' = 0, 'probability' = 0.0, 'succes' = 0, 'mu_hat' = 0.0)
+      self$parameters <- list('n' = 0, 'p' = 0.0, 'succes' = 0, 'mean' = 0.0)
     },
     get_action = function(context) {
       for (arm in 1:context$k) {
-        self$theta[[arm]]$mu_hat <-  rbeta(
-          1,
-          self$alpha + self$theta[[arm]]$succes,
-          self$beta  + self$theta[[arm]]$chosen - self$theta[[arm]]$succes
+        theta[[arm]]$mean <-  rbeta(
+          1, alpha + theta[[arm]]$succes, beta + theta[[arm]]$n - theta[[arm]]$succes
         )
       }
-      self$action$choice <- self$argmaxlist(self$theta,"mu_hat")
-      self$action$optimal_choice <- self$argmax(context$O)
-      self$action
+      action$choice <- argmaxlist(theta, "mean")
+      action
     },
     set_reward = function(reward, context) {
-
-      self$theta[[reward$choice]]$chosen <- self$theta[[reward$choice]]$chosen + 1
-      if (reward$reward == 1) self$theta[[reward$choice]]$succes <- self$theta[[reward$choice]]$succes + 1
-      self$theta[[reward$choice]]$probability <- self$theta[[reward$choice]]$probability +
-        (1 / self$theta[[reward$choice]]$chosen) * (reward$reward - self$theta[[reward$choice]]$probability)
-      self$theta
+      arm    <- reward$choice
+      reward <- reward$reward
+      inc(theta[[arm]]$n) <- 1
+      if (reward == 1) inc(theta[[arm]]$succes) <- 1
+      inc(theta[[arm]]$p) <- (reward - theta[[arm]]$p) / theta[[arm]]$n
+      theta
     }
   )
 )

@@ -15,31 +15,31 @@ Exp3Policy <- R6::R6Class(
     },
     get_action = function(context) {
       probs <- rep(0.0, context$k)
-      for (arm in 1:context$k) {
-         probs[arm] <- (1 - self$gamma) * (self$theta[[arm]]$weight / self$sumval(self$theta, "weight"))
+      for (i in 1:context$k) {
+         probs[i] <- (1 - gamma) * (theta[[i]]$weight / sumval(theta, "weight"))
       }
-      probs[arm] <- probs[arm] + ((self$gamma) * (1.0 / context$k))
-      self$action$choice  <- self$categorical_draw(probs)
-      self$action$optimal_choice <- self$argmax(context$O)
-      self$action
+      inc(probs[i])  <- ((gamma) * (1.0 / context$k))
+      action$choice  <- categorical_draw(probs)
+      action
     },
     set_reward = function(reward, context) {
-      probs <- rep(0.0, context$k)
-      for (arm in 1:context$k) {
-         probs[arm] <- (1 - self$gamma) * (self$theta[[arm]]$weight / self$sumval(self$theta, "weight"))
-         probs[arm] <-  probs[arm] + (self$gamma) * (1.0 / context$k)
+      arm    <- reward$choice
+      reward <- reward$reward
+      probs  <- rep(0.0, context$k)
+      for (i in 1:context$k) {
+         probs[i] <- (1 - gamma) * (theta[[i]]$weight / sumval(theta, "weight"))
+         inc(probs[i]) <- gamma  / context$k
       }
-      x <- reward$reward /  probs[reward$choice]
-      growth_factor <- exp((self$gamma / context$k) * x)
-      self$theta[[reward$choice]]$weight <- self$theta[[reward$choice]]$weight * growth_factor
-      self$theta
+      growth_factor <- exp((gamma / context$k) * reward / probs[arm])
+      theta[[arm]]$weight <- theta[[arm]]$weight * growth_factor
+      theta
     },
     categorical_draw = function(probs) {
       arms = length(probs)
       cumulative_probability <- 0.0
-      for (arm in 1:arms) {
-        cumulative_probability <-  cumulative_probability + probs[arm]
-        if ( cumulative_probability > runif(1) ) return(arm)
+      for (i in 1:arms) {
+        inc(cumulative_probability) <- probs[i]
+        if ( cumulative_probability > runif(1) ) return(i)
       }
       sample(arms, 1, replace = TRUE)
     }
