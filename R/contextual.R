@@ -1,4 +1,4 @@
-#' @import R6
+#' @importFrom R6 R6Class
 #' @export
 Contextual <- R6::R6Class(
   "Contextual",
@@ -16,9 +16,23 @@ Contextual <- R6::R6Class(
     initialize = function() {
       private$.hash = sub('<environment: (.*)>', '\\1',  capture.output(self))
     },
-    argmaxlist = function(x, list_element_name = NA, equal_is_random = TRUE)
+    "inc<-" = function(x, value) {
+      x + value
+    },
+    "dec<-" = function(x, value) {
+      x - value
+    },
+    list_level_to_vector = function(list_name, element_name)
     {
-      x <- lname_to_vector(x, list_element_name)
+      unlist(lapply(list_name, `[[`, element_name) , FALSE, FALSE)
+    },
+    max_in_param = function(theta, param, equal_is_random = TRUE)
+    {
+      param <- list_level_to_vector(theta, param)
+      max_in(param, equal_is_random)
+    },
+    max_in = function(x, equal_is_random = TRUE)
+    {
       y <- seq_along(x)[x == max(x)]
       if (length(y) > 1L)  {
         if (equal_is_random) {
@@ -30,53 +44,136 @@ Contextual <- R6::R6Class(
         return(y)
       }
     },
-    "inc<-" = function(x, value) {
-      x + value
-    },
-    "dec<-" = function(x, value) {
-      x - value
-    },
-    argmax = function(x)
+    sum_of_param = function(theta, param)
     {
-      y <- seq_along(x)[x == max(x)]
-      if (length(y) > 1L) sample(y, 1L, replace = TRUE) else y
-    },
-    sumval = function(x, list_element_name)
-    {
-      sum(lname_to_vector(x, list_element_name))
-    },
-    lname_to_vector = function(x, list_element_name)
-    {
-      unlist(lapply(x, `[[`, list_element_name) , FALSE, FALSE)
+      sum(list_level_to_vector(theta, param))
     }
   )
 )
 
-#' External Contextual
+#' Contextual Root Class
 #'
-#' Contextual intro
+#' The R6 class \code{Contextual} is the root of the \code{\{contextual\}} package's class hierarchy.
+#' That is, every class in the \code{\{contextual\}} package has \code{Contextual} as a superclass.
+#' Contextual contains several utility functions that are used throughtout \code{\{contextual\}}.
 #'
 #' @section Usage:
-#' \preformatted{b <- Contextual$new()
-#'
-#' b$reset()
-#'
-#' print(b)
+#' \preformatted{
+#' contextual <- Contextual$new()
 #' }
+#'
+#' @section Package:
+#'
+#' The \code{\{contextual\}} package enables you to simulate and analyze
+#' contextual multi-armed bandit algorithms with poise.
 #'
 #' @section Arguments:
+#'
 #' \describe{
-#'   \item{b}{A \code{Contextual} object.}
+#'   \item{\code{hash}}{
+#'   Returns an unique hash for any instantiated \code{\{contextual\}} child object. This hash value is acquired from the R6 object's environment.
+#'   }
 #' }
 #'
-#' @section Details:
-#' \code{$new()} starts a new Contextual, it uses \code{\link[base]{pipe}}.
-#' R does \emph{not} wait for the process to finish, but returns
-#' immediately.
+#' @section Methods:
 #'
-#' @importFrom R6 R6Class
+#' \describe{
+#'   \item{\code{new()}}{ Generates a new \code{Contextual} object.}
+#' }
+#'
+#'
+#' \describe{
+#'   \item{\code{list_level_to_vector(list_name, element_name)}}{
+#'   Returns a vector of the values of all elements named \code{element_name}
+#'   in multilevel list \code{list_name}.
+#'   }
+#' }
+#'
+#' \describe{
+#'   \item{\code{max_in_param(theta, param, equal_is_random = TRUE)}}{
+#'   Returns the index of the maximum value of the elements named \code{param}
+#'   in multilevel list \code{theta}.
+#'
+#'   If there is a tie and \code{equal_is_random} is \code{TRUE},
+#'   the index of one of the tied maxima is returned at random.
+#'
+#'   If \code{equal_is_random} is \code{FALSE},
+#'   the maximum with the lowest index value is returned.
+#'   }
+#' }
+#'
+#' \describe{
+#'   \item{\code{max_in(x, equal_is_random = TRUE))}}{
+#'   Returns the index of the maximum value in list \code{x}.
+#'
+#'   If there is a tie and \code{equal_is_random} is \code{TRUE},
+#'   the index of one of the tied maxima is returned at random.
+#'
+#'   If \code{equal_is_random} is \code{FALSE},
+#'   the maximum with the lowest index value is returned.
+#'   }
+#' }
+#'
+#' \describe{
+#'   \item{\code{sum_of_param(theta, param)}}{
+#'   Returns the sum of the values of al elements named \code{param} in multilevel list \code{theta}.
+#'   }
+#' }
+#'
+#' \describe{
+#'   \item{\code{inc(x)<-value}}{
+#'   Increments x by value. Equivalent to x <- x + value. (orginal: \code{Hmisc})
+#'   }
+#' }
+#' \describe{
+#'   \item{\code{dec(x)<-value}}{
+#'   Decrements x by value. Equivalent to x <- x - value. (orginal: \code{Hmisc})
+#'   }
+#' }
+#'
+#' @references
+#'
+#' Winston Chang (2017). R6: Classes with Reference Semantics. R package version 2.2.2. https://CRAN.R-project.org/package=R6
+#'
+#' Frank E Harrell Jr, with contributions from Charles Dupont and many others. (2017). Hmisc:   Harrell Miscellaneous. R package version 4.0-3. https://CRAN.R-project.org/package=Hmisc
+#'
+#' @seealso
+#'
 #' @name Contextual
+#' @family contextual classes
 #' @examples
-#'\dontrun{}
+#' contextual <- Contextual$new()
+#'
+#' print(contextual$hash)
+#'
+#' contextual$max_in(c(71,94,10))
+#'
+#' theta <- list()
+#' theta[[1]] <- list(param_a=1,param_b=2,param_c=3)
+#' theta[[2]] <- list(param_a=4,param_b=5,param_c=6)
+#'
+#' contextual$sum_of_param(theta,"param_a")
+#' contextual$max_in_param(theta,"param_a")
+#' contextual$list_level_to_vector(theta, "param_a")
+#'
+#' # For this example section, the inc<- and dec<-
+#' # functions need to be extracted from our
+#' # contextual object.
+#'
+#' "inc<-" <- contextual$`inc<-`
+#' "dec<-" <- contextual$`dec<-`
+#'
+#' # Within our contextual class hierarchy,
+#' # these functions do not need to be
+#' # extracted and can be applied directly
+#' # as illustrated below.
+#'
+#' x <- 5
+#'
+#' inc(x) <- 1
+#' x == 6
+#'
+#' dec(x) <- 2
+#' x == 4
 #'
 NULL

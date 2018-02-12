@@ -24,7 +24,7 @@ LinUCBPolicy <- R6::R6Class(
         var        <-  sqrt(tcrossprod(context$X %*% A.inv, context$X))
         expected_rewards[arm] <- mean + (alpha * var)
       }
-      action$choice  <- argmax(expected_rewards)
+      action$choice  <- max_in(expected_rewards)
       action
     },
     set_reward = function(reward, context) {

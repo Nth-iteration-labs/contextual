@@ -4,6 +4,7 @@ History <- R6::R6Class(
   "History",
   portable = FALSE,
   class = TRUE,
+  inherit = Contextual,
   public = list(
     n = 1000,
     save_theta = NULL,

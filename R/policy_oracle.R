@@ -13,7 +13,7 @@ OraclePolicy <- R6::R6Class(
     },
     get_action = function(context) {
       action$propensity <- 1
-      action$choice <- argmax(context$O)
+      action$choice <- max_in(context$O)
       action
     },
     set_reward = function(reward, context) {

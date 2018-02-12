@@ -34,3 +34,6 @@ immediately.
 \dontrun{}
 
 }
+\seealso{
+Other contextual classes: \code{\link{Contextual}}
+}

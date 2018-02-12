@@ -24,8 +24,8 @@ AbstractBandit <- R6::R6Class(
         list(
           private$R[action$choice, idx],
           action$choice,
-          argmax(private$R[, idx]) == action$choice,
-          as.double(private$R[argmax(private$O[, idx]), idx]),
+          max_in(private$R[, idx]) == action$choice,
+          as.double(private$R[max_in(private$O[, idx]), idx]),
           action$propensity
         ),
         c("reward", "choice", "is_optimal", "oracle", "propensity")
@@ -103,6 +103,7 @@ AbstractBandit <- R6::R6Class(
 #' immediately.
 #'
 #' @importFrom R6 R6Class
+#' @family contextual classes
 #' @name AbstractBandit
 #' @examples
 #'\dontrun{}

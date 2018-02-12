@@ -367,9 +367,9 @@ Plot <- R6::R6Class(
       last_t   = history[, max(t)]
       theta_list = history[agent == "TSampling" &
                              t == last_t & sim == 1, theta]
-      mu = lname_to_vector(theta_list[[1]], "mu")
-      succes_n = lname_to_vector(theta_list[[1]], "succes")
-      chosen_n = lname_to_vector(theta_list[[1]], "chosen")
+      mu = list_level_to_vector(theta_list[[1]], "mu")
+      succes_n = list_level_to_vector(theta_list[[1]], "succes")
+      chosen_n = list_level_to_vector(theta_list[[1]], "chosen")
 
       alpha = 1
       beta = 1

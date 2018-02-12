@@ -14,11 +14,11 @@ EpsilonFirstPolicy <- R6::R6Class(
       self$parameters <- list('n' = 0, 'mean' = 0)
     },
     get_action = function(context) {
-      if (sumval(theta, "n") < first) {
+      if (sum_of_param(theta, "n") < first) {
         action$choice       <- sample.int(context$k, 1, replace = TRUE)
         action$propensity   <- (1/context$k)
       } else {
-        action$choice       <- argmaxlist(theta, "mean", equal_is_random = FALSE)
+        action$choice       <- max_in_param(theta, "mean", equal_is_random = FALSE)
         action$propensity   <- 1
       }
       action

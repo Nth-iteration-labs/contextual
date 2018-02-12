@@ -21,39 +21,21 @@ ThompsonSamplingPolicy <- R6::R6Class(
           1, alpha + theta[[arm]]$succes, beta + theta[[arm]]$n - theta[[arm]]$succes
         )
       }
-      action$choice <- argmaxlist(theta, "mean")
+      action$choice <- max_in_param(theta, "mean")
       action
     },
     set_reward = function(reward, context) {
       arm    <- reward$choice
       reward <- reward$reward
+
       inc(theta[[arm]]$n) <- 1
       if (reward == 1) inc(theta[[arm]]$succes) <- 1
       inc(theta[[arm]]$p) <- (reward - theta[[arm]]$p) / theta[[arm]]$n
+
       theta
     }
   )
 )
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 #' External ThompsonSamplingPolicy
 #'

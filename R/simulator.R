@@ -90,11 +90,7 @@ Simulator <- R6::R6Class(
         .packages = c("data.table","itertools")
       ) %fun% {
         index <- 1L
-        agent_index <- 21L
-
-        local_history <- History$new( horizon * agent_n * length(sims_agents),
-                                      save_context,
-                                      save_theta )
+        local_history <- History$new( horizon * agent_n * length(sims_agents), save_context, save_theta )
         for (sim_agent in sims_agents) {
           simulation_index <- sim_agent$s_index
           set.seed(simulation_index)

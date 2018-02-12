@@ -1,6 +1,6 @@
 Package: contextual
 Type: Package
-Title: Multi-Armed Bandit Simulation and Analysis
+Title: Contextual Multi-Armed Bandit Simulation and Analysis
 Version: 0.0.0.9012
 Author: Robin van Emden
 Maintainer: Robin van Emden <robin@pwy.nl>
