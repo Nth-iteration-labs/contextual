@@ -14,7 +14,7 @@ Contextual is an R package to facilitate the simulation and analysis of Contextu
 Documentation
 -------------
 
-* [Package reference](https://nth-iteration-labs.github.io/contextual/)
+* [Online package documentation](https://nth-iteration-labs.github.io/contextual/)
 * [Blog at Pavlov](https://pavlov.tech/category/contextual/)
 
 Installation
