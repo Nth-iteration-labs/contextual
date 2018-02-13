@@ -6,3 +6,4 @@ contextual.Rproj
 ^\.travis\.yml$
 ^codecov\.yml$
 ^appveyor\.yml$
+^docs$

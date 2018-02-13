@@ -3,7 +3,10 @@ Type: Package
 Title: Contextual Multi-Armed Bandit Simulation and Analysis
 Version: 0.0.0.9012
 Author: Robin van Emden
-Maintainer: Robin van Emden <robin@pwy.nl>
+Authors@R: c(person("Robin", "van Emden", role = c("aut", "cre"),
+                     email = "robinvanemden@gmail.com"),
+              person("Maurits", "Kaptein", role = "ctb"))
+Maintainer: Robin van Emden <robinvanemden@gmail.com>
 Description: Simulates contextual multi-armed bandit problems and analyses the results.
 License: GPL-3 + file LICENSE
 Encoding: UTF-8
@@ -24,3 +27,6 @@ Suggests:
     rmarkdown,
     devtools
 VignetteBuilder: knitr
+URL: https://github.com/Nth-iteration-labs/contextual
+BugReports: https://github.com/Nth-iteration-labs/contextual/issues
+Roxygen: list(markdown = TRUE)

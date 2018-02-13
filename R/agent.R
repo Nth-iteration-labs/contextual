@@ -18,8 +18,9 @@ Agent <- R6::R6Class(
       self$bandit   <- bandit
       self$policy   <- policy
 
-      if (is.null(self$bandit$d)) stop("No weights have been set - please
-                                       set_weights(W) on your Bandit object.",
+      if (is.null(self$bandit$d)) stop(strwrap(prefix = " ", initial = "",
+                                       "No weights have been set - please
+                                       set_weights(W) on your Bandit object."),
                                        call. = FALSE)
       self$policy$k <- self$bandit$k
       self$policy$d <- self$bandit$d

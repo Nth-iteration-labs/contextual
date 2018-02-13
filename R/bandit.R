@@ -9,7 +9,7 @@ AbstractBandit <- R6::R6Class(
     W = NULL,      # weights k*d
     R = NULL,      # rewards matrix
     X = NULL,      # context matrix
-    O = NULL,      # oracle
+    O = NULL,      # oracle matrix
 
     precaching = FALSE,
 
@@ -73,8 +73,7 @@ AbstractBandit <- R6::R6Class(
       self$hash
     },
     generate_bandit_data = function(n) {
-      stop("You still need to implement AbstractBandit$generate_cache
-           if is_precaching is TRUE.",
+      stop("You still need to implement AbstractBandit$generate_cache if is_precaching is TRUE.",
            call. = FALSE)
     }
   )
