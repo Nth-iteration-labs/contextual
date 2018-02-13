@@ -51,7 +51,7 @@ Contextual <- R6::R6Class(
   )
 )
 
-#' Contextual Root Class
+#' Contextual Utility and Root Class
 #'
 #' The R6 class \code{Contextual} is the root of the \code{\{contextual\}} package's class hierarchy.
 #' That is, every class in the \code{\{contextual\}} package has \code{Contextual} as a superclass.
@@ -80,7 +80,6 @@ Contextual <- R6::R6Class(
 #' \describe{
 #'   \item{\code{new()}}{ Generates a new \code{Contextual} object.}
 #' }
-#'
 #'
 #' \describe{
 #'   \item{\code{list_level_to_vector(list_name, element_name)}}{

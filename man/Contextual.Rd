@@ -2,7 +2,7 @@
 % Please edit documentation in R/contextual.R
 \name{Contextual}
 \alias{Contextual}
-\title{Contextual Root Class}
+\title{Contextual Utility and Root Class}
 \description{
 The R6 class \code{Contextual} is the root of the \code{\{contextual\}} package's class hierarchy.
 That is, every class in the \code{\{contextual\}} package has \code{Contextual} as a superclass.
@@ -133,5 +133,7 @@ Frank E Harrell Jr, with contributions from Charles Dupont and many others. (201
 \seealso{
 \code{\link{Plot}}
 
-Other contextual classes: \code{\link{AbstractBandit}}
+Other contextual classes: \code{\link{AbstractBandit}},
+  \code{\link{EpsilonFirstPolicy}},
+  \code{\link{EpsilonGreedyPolicy}}
 }

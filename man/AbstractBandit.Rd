@@ -35,5 +35,7 @@ immediately.
 
 }
 \seealso{
-Other contextual classes: \code{\link{Contextual}}
+Other contextual classes: \code{\link{Contextual}},
+  \code{\link{EpsilonFirstPolicy}},
+  \code{\link{EpsilonGreedyPolicy}}
 }
