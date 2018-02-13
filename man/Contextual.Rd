@@ -26,9 +26,9 @@ contextual multi-armed bandit algorithms with poise.
 
 
 \describe{
-  \item{\code{hash}}{
-  Returns an unique hash for any instantiated \code{\{contextual\}} child object. This hash value is acquired from the R6 object's environment.
-  }
+\item{\code{hash}}{
+Returns an unique hash for any instantiated \code{\{contextual\}} child object. This hash value is acquired from the R6 object's environment.
+}
 }
 }
 
@@ -36,57 +36,56 @@ contextual multi-armed bandit algorithms with poise.
 
 
 \describe{
-  \item{\code{new()}}{ Generates a new \code{Contextual} object.}
-}
-
-
-\describe{
-  \item{\code{list_level_to_vector(list_name, element_name)}}{
-  Returns a vector of the values of all elements named \code{element_name}
-  in multilevel list \code{list_name}.
-  }
+\item{\code{new()}}{ Generates a new \code{Contextual} object.}
 }
 
 \describe{
-  \item{\code{max_in_param(theta, param, equal_is_random = TRUE)}}{
-  Returns the index of the maximum value of the elements named \code{param}
-  in multilevel list \code{theta}.
-
-  If there is a tie and \code{equal_is_random} is \code{TRUE},
-  the index of one of the tied maxima is returned at random.
-
-  If \code{equal_is_random} is \code{FALSE},
-  the maximum with the lowest index value is returned.
-  }
+\item{\code{list_level_to_vector(list_name, element_name)}}{
+Returns a vector of the values of all elements named \code{element_name}
+in multilevel list \code{list_name}.
+}
 }
 
 \describe{
-  \item{\code{max_in(x, equal_is_random = TRUE))}}{
-  Returns the index of the maximum value in list \code{x}.
+\item{\code{max_in_param(theta, param, equal_is_random = TRUE)}}{
+Returns the index of the maximum value of the elements named \code{param}
+in multilevel list \code{theta}.
 
-  If there is a tie and \code{equal_is_random} is \code{TRUE},
-  the index of one of the tied maxima is returned at random.
+If there is a tie and \code{equal_is_random} is \code{TRUE},
+the index of one of the tied maxima is returned at random.
 
-  If \code{equal_is_random} is \code{FALSE},
-  the maximum with the lowest index value is returned.
-  }
+If \code{equal_is_random} is \code{FALSE},
+the maximum with the lowest index value is returned.
+}
 }
 
 \describe{
-  \item{\code{sum_of_param(theta, param)}}{
-  Returns the sum of the values of al elements named \code{param} in multilevel list \code{theta}.
-  }
+\item{\code{max_in(x, equal_is_random = TRUE))}}{
+Returns the index of the maximum value in list \code{x}.
+
+If there is a tie and \code{equal_is_random} is \code{TRUE},
+the index of one of the tied maxima is returned at random.
+
+If \code{equal_is_random} is \code{FALSE},
+the maximum with the lowest index value is returned.
+}
 }
 
 \describe{
-  \item{\code{inc(x)<-value}}{
-  Increments x by value. Equivalent to x <- x + value. (orginal: \code{Hmisc})
-  }
+\item{\code{sum_of_param(theta, param)}}{
+Returns the sum of the values of al elements named \code{param} in multilevel list \code{theta}.
+}
+}
+
+\describe{
+\item{\code{inc(x)<-value}}{
+Increments x by value. Equivalent to x <- x + value. (orginal: \code{Hmisc})
+}
 }
 \describe{
-  \item{\code{dec(x)<-value}}{
-  Decrements x by value. Equivalent to x <- x - value. (orginal: \code{Hmisc})
-  }
+\item{\code{dec(x)<-value}}{
+Decrements x by value. Equivalent to x <- x - value. (orginal: \code{Hmisc})
+}
 }
 }
 
@@ -132,7 +131,5 @@ Winston Chang (2017). R6: Classes with Reference Semantics. R package version 2.
 Frank E Harrell Jr, with contributions from Charles Dupont and many others. (2017). Hmisc:   Harrell Miscellaneous. R package version 4.0-3. https://CRAN.R-project.org/package=Hmisc
 }
 \seealso{
-
-
 Other contextual classes: \code{\link{AbstractBandit}}
 }

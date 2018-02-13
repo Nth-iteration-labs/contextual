@@ -19,7 +19,7 @@ print(b)
 \section{Arguments}{
 
 \describe{
-  \item{b}{A \code{LinUCBPolicy} object.}
+\item{b}{A \code{LinUCBPolicy} object.}
 }
 }
 

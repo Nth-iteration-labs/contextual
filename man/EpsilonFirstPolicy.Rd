@@ -19,7 +19,7 @@ print(b)
 \section{Arguments}{
 
 \describe{
-  \item{b}{A \code{EpsilonFirstPolicy} object.}
+\item{b}{A \code{EpsilonFirstPolicy} object.}
 }
 }
 
