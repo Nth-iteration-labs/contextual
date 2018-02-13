@@ -26,3 +26,4 @@ Usage
 
 ``` r
 library(contextual)
+```
