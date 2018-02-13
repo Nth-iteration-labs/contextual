@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>External EpsilonGreedyPolicy — EpsilonGreedyPolicy â€¢ contextual</title>
+<title>Policy: Epsilon Greedy — EpsilonGreedyPolicy â€¢ contextual</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -95,40 +95,87 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>External EpsilonGreedyPolicy</h1>
+    <h1>Policy: Epsilon Greedy</h1>
     </div>
 
     
-    <p>EpsilonGreedyPolicy intro</p>
+    <p><code>EpsilonGreedyPolicy</code> chooses an arm at
+random (explores) with probability <code>epsilon</code>, otherwise it
+greedily chooses the arm with the highest estimated
+reward (exploits). To make sure that all arms receive at least one pull, arms
+that have not yet been chosen are given an estimate of Rmax.</p>
     
 
         
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 
     
-    <pre>b &lt;- EpsilonGreedyPolicy$new()
-    b$reset()
-    print(b)
+    <pre>
+policy &lt;- EpsilonGreedyPolicy(epsilon = 0.1, name = "EpsilonGreedyPolicy")
 </pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
 
     
     <dl class='dl-horizontal'>
-<dt>b</dt><dd><p>A <code>EpsilonGreedyPolicy</code> object.</p></dd>
+<dt><code>epsilon</code></dt><dd><p>double, value in the closed interval <code>[0,1]</code> indicating the probablilty with which
+arms are selected at random (explored).
+Otherwise, <code>EpsilonGreedyPolicy</code> chooses the best arm (exploits)
+with a probability of <code>1 - epsilon</code></p></dd>
+<dt><code>name</code></dt><dd><p>character string specifying this policy. <code>name</code>
+is, amongst others, saved to the History log and displayed in summaries and plots.</p></dd>
 </dl>
     
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
-    <p><code>$new()</code> starts a new EpsilonGreedyPolicy, it uses <code><a href='http://www.rdocumentation.org/packages/base/topics/connections'>pipe</a></code>.
-R does <em>not</em> wait for the process to finish, but returns
-immediately.</p>
+    
+    <dl class='dl-horizontal'>
+<dt><code>new(epsilon = 0.1, name = "EpsilonGreedy")</code></dt><dd><p>Generates a new <code>EpsilonGreedyPolicy</code> object. Arguments are defined in the Argument section above.</p></dd>
+</dl>
+    <dl class='dl-horizontal'>
+<dt><code>set_parameters()</code></dt><dd><p>each policy needs to assign the parameters it wants to keep track of
+to list <code>self$parameters</code> that has to be defined in <code>set_parameters()</code>'s body.
+The parameters defined here can later be accessed by arm index in the following way:
+<code>theta[[index_of_arm]]$parameter_name</code></p></dd>
+</dl>
+    <dl class='dl-horizontal'>
+<dt><code>get_action(context)</code></dt><dd><p>here, a policy decides which arm to choose, based on the current values
+of its parameters and, potentially, the current context.</p></dd>
+</dl>
+    <dl class='dl-horizontal'>
+<dt><code>set_reward(reward, context)</code></dt><dd><p>in <code>set_reward(reward, context)</code>, a policy updates its parameter values
+based on the reward received, and, potentially, the current context.</p></dd>
+</dl>
+    
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>Gittins, J., Glazebrook, K., &amp; Weber, R. (2011). Multi-armed bandit allocation indices. John Wiley &amp; Sons. (Original work published 1989)</p>
+<p>Sutton, R. S. (1996). Generalization in reinforcement learning: Successful examples using sparse coarse coding. In Advances in neural information processing systems (pp. 1038-1044).</p>
+<p>Strehl, A., &amp; Littman, M. (2004). Exploration via modelbased interval estimation. In International Conference on Machine Learning, number Icml.</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <p><code><a href='Plot.html'>Plot</a></code></p>
+<p>Other contextual classes: <code><a href='AbstractBandit.html'>AbstractBandit</a></code>,
+  <code><a href='Contextual.html'>Contextual</a></code>,
+  <code><a href='EpsilonFirstPolicy.html'>EpsilonFirstPolicy</a></code></p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"># NOT RUN {
-# }
-<div class='input'>
+    <pre class="examples"><div class='input'>
+<span class='no'>horizon</span>            <span class='kw'>&lt;-</span> <span class='fl'>100L</span>
+<span class='no'>simulations</span>        <span class='kw'>&lt;-</span> <span class='fl'>100L</span>
+<span class='no'>weight_per_arm</span>     <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='fl'>0.9</span>, <span class='fl'>0.1</span>, <span class='fl'>0.1</span>)
+
+<span class='no'>policy</span>             <span class='kw'>&lt;-</span> <span class='no'>EpsilonGreedyPolicy</span>$<span class='fu'>new</span>(<span class='kw'>epsilon</span> <span class='kw'>=</span> <span class='fl'>0.1</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"EpsilonGreedy"</span>)
+<span class='no'>bandit</span>             <span class='kw'>&lt;-</span> <span class='no'>SyntheticBandit</span>$<span class='fu'>new</span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>weight_per_arm</span>, <span class='kw'>precache</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='no'>agent</span>              <span class='kw'>&lt;-</span> <span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>policy</span>, <span class='no'>bandit</span>)
+
+<span class='no'>history</span>            <span class='kw'>&lt;-</span> <span class='no'>Simulator</span>$<span class='fu'>new</span>(<span class='no'>agent</span>, <span class='no'>horizon</span>, <span class='no'>simulations</span>, <span class='kw'>do_parallel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)$<span class='fu'>run</span>()
+
+<span class='fu'>plot</span>(<span class='no'>history</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"grid"</span>)</div><div class='img'><img src='EpsilonGreedyPolicy-1.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='fu'>plot</span>(<span class='no'>history</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"arms"</span>)</div><div class='img'><img src='EpsilonGreedyPolicy-2.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -139,7 +186,11 @@ immediately.</p>
 
       <li><a href="#arguments">Arguments</a></li>
 
-      <li><a href="#details">Details</a></li>
+      <li><a href="#methods">Methods</a></li>
+
+      <li><a href="#references">References</a></li>
+
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>

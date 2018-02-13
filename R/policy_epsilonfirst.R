@@ -121,4 +121,7 @@ EpsilonFirstPolicy <- R6::R6Class(
 #'
 #' plot(history, type = "grid")
 #'
+#' plot(history, type = "arms")
+#'
+#'
 NULL

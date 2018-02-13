@@ -39,7 +39,7 @@ is, amongst others, saved to the History log and displayed in summaries and plot
 
 
 \describe{
-\item{\code{new(epsilon = 0.1, name = "EpsilonGreedy")}}{ Generates a new \code{EpsilonGreedyPolicy} object with. Arguments are defined in the Argument section above.}
+\item{\code{new(epsilon = 0.1, name = "EpsilonGreedy")}}{ Generates a new \code{EpsilonGreedyPolicy} object. Arguments are defined in the Argument section above.}
 }
 
 \describe{
@@ -78,6 +78,9 @@ agent              <- Agent$new(policy, bandit)
 history            <- Simulator$new(agent, horizon, simulations, do_parallel = FALSE)$run()
 
 plot(history, type = "grid")
+
+plot(history, type = "arms")
+
 
 }
 \references{
