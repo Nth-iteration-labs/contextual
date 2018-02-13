@@ -163,6 +163,9 @@ Plot <- R6::R6Class(
       choice_levels <- levels(as.factor(cs$choice))
       max_choice = length(choice_levels)
       cs$arm_count <- as.double((unlist(cs$arm_count)/max_sim) * 100L)
+      old.par <- par(no.readonly = TRUE)
+      # par(mar = c(bottom, left, top, right))
+      par(mar = c(5, 5, 1, 1))
       eg = expand.grid(t = seq(1.0, max_t, 1), choice = seq(1.0, max_choice, 1))
       cs <- merge(cs, eg, all = TRUE)
       cs[is.na(cs)] <- 0.0
@@ -210,6 +213,7 @@ Plot <- R6::R6Class(
           bg = "white",
           inset = c(0.08, 0.1)
         )
+      par(old.par)
       invisible(self)
     },
     do_plot = function(cs,

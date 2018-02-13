@@ -11,5 +11,5 @@ agent              <- Agent$new(policy, bandit)
 
 history            <- Simulator$new(agent, horizon, simulations, do_parallel = FALSE)$run()
 
-plot(history, type = "grid")
+plot(history, type = "arms")
 
