@@ -138,6 +138,7 @@ Contextual <- R6::R6Class(
 #' Frank E Harrell Jr, with contributions from Charles Dupont and many others. (2017). Hmisc:   Harrell Miscellaneous. R package version 4.0-3. https://CRAN.R-project.org/package=Hmisc
 #'
 #' @seealso
+#' \code{\link{Plot}}
 #'
 #' @name Contextual
 #' @family contextual classes
