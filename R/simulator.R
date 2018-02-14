@@ -93,8 +93,8 @@ Simulator <- R6::R6Class(
         for (sim_agent in sims_agents) {
           simulation_index <- sim_agent$sim_index
           policy_name <- sim_agent$policy$name
-          set.seed(simulation_index)
-          if (continouous_counter) sim_agent$t_step <- as.integer((simulation_index - 1L) * horizon)
+          set.seed(simulation_index)  ## more sense in agent?
+          if (continouous_counter) sim_agent$t <- as.integer((simulation_index - 1L) * horizon)
           for (t in 1L:horizon) {
             step <- sim_agent$step()
             if (!is.null(step$reward)) {
