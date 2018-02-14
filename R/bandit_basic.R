@@ -2,12 +2,12 @@
 BasicBandit <- R6::R6Class(
   "BasicBandit",
   inherit = AbstractBandit,
-  portable = FALSE,
+  portable = TRUE,
   class = FALSE,
   public = list(
     initialize   = function(data = NULL) {
       super$initialize()
-      if (!is.null(data)) set_weights(data)
+      if (!is.null(data)) self$set_weights(data)
     },
     get_weights = function() {
       private$W

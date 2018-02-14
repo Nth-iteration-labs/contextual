@@ -2,7 +2,7 @@
 LiLogBandit <- R6::R6Class(
   "LiLogBandit",
   inherit = BasicBandit,
-  portable = FALSE,
+  portable = TRUE,
   class = FALSE,
   private = list(
     S = NULL

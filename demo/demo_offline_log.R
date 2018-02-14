@@ -1,12 +1,8 @@
-########################### package dev helpers ################################
-
 #library(contextual)
 setwd("~/GitHub/contextual/demo")
 source("dev.R")
 
 ########################### create a random log ################################
-
-set.seed(12)
 
 bandit      <- SyntheticBandit$new()
 bandit$set_weights(matrix(
@@ -24,8 +20,8 @@ agent       <- Agent$new(policy, bandit)
 simulation  <-
   Simulator$new(
     agent,
-    horizon = 250L,
-    simulations = 600L,
+    horizon = 100L,
+    simulations = 100L,
     save_context = TRUE
   )
 
@@ -44,13 +40,10 @@ bandit      <- LiLogBandit$new(log_S, 3, 3)
 
 policy      <- LinUCBPolicy$new(1.0)
 agent       <- Agent$new(policy, bandit)
-simulation  <- Simulator$new(agent, horizon = 250L, simulations = 500L )
+simulation  <- Simulator$new(agent, horizon = 100L, simulations = 100L, continouous_counter = TRUE )
 
 after <- simulation$run()
 
 plot(after, type = "grid")
 
 if (file.exists("test.RData")) file.remove("test.RData")
-
-
-

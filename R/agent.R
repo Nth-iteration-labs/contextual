@@ -11,16 +11,16 @@ Agent <- R6::R6Class(
   public = list(
     policy = NULL,
     bandit = NULL,
-    s_index = NULL,
-    a_index = NULL,
+    sim_index = NULL,
+    agent_index = NULL,
+    t_step = NULL,
     initialize = function(policy, bandit) {
-      super$initialize()
       self$bandit   <- bandit
       self$policy   <- policy
 
       if (is.null(self$bandit$d)) stop(strwrap(prefix = " ", initial = "",
-                                       "No weights have been set - please
-                                       set_weights(W) on your Bandit object."),
+                                               "No weights have been set - please
+                                               set_weights(W) on your Bandit object."),
                                        call. = FALSE)
       self$policy$k <- self$bandit$k
       self$policy$d <- self$bandit$d
@@ -28,31 +28,36 @@ Agent <- R6::R6Class(
     },
     reset = function() {
       self$policy$set_parameters()
+      self$t_step = 0
       private$theta <- self$policy$initialize_theta()
       private$state$context <- matrix()
       private$state$action <- list()
       private$state$reward <- list()
     },
-    generate_cache = function(n) {
-      if (!self$bandit$has_cache) {
-          self$bandit$generate_bandit_data(n)
-      }
+    step = function() {
+      context <- bandit_get_context()
+      action  <- policy_get_action()
+      reward  <- bandit_get_reward()
+      theta   <- policy_set_reward()
+      list(context=context,action=action,reward=reward,theta=theta)
     },
-    bandit_get_context = function(t) {
-      private$state$context <- self$bandit$get_context(t)
+    bandit_get_context = function() {
+      self$t_step <- self$t_step + 1
+      private$state$context <- self$bandit$get_context(self$t_step)
       self$policy$k <- private$state$context$k
       self$policy$d <- private$state$context$d
       private$state$context
     },
-    policy_get_action = function(t) {
+    policy_get_action = function() {
       self$policy$set_theta(private$theta)
       (private$state$action <- self$policy$get_action(private$state$context))
     },
-    bandit_get_reward = function(t) {
-      (private$state$reward <- self$bandit$get_reward(private$state$action,t))
+    bandit_get_reward = function() {
+      (private$state$reward <- self$bandit$get_reward(private$state$action,self$t_step))
     },
-    policy_set_reward = function(t) {
-      (private$theta <- self$policy$set_reward(private$state$reward, private$state$context))
+    policy_set_reward = function() {
+      if (!is.null(private$state$reward))
+        (private$theta <- self$policy$set_reward(private$state$reward, private$state$context))
     },
     object_size = function() {
       cat(paste("Agent: ", self$hash),"\n")

@@ -30,17 +30,18 @@ test_that("LiLogBandit simulation", {
   before$save_data("test.RData")
 
   compare_before_reward <- c(
-    0,1,0,0,0,1,0,0,0,1,0,0,0,0,0,1,
-    1,0,0,1,1,1,0,1,0,0,1,1,0,0,1,1,
-    0,0,0,0,1,0,0,1,1,0,0,0,1,1,0,1,
-    0,0,0,1,1,0,0,0,0,0,1,0,1,1,1,0,
-    0,1,0,0,1,0,0,0,0,1,0,0,0,1,0,0,
-    0,0,1,0,0,0,0,1,0,1,0,0,0,0,1,1,
-    1,0,1,1
+    1,1,0,0,0,0,1,0,0,0,1,1,1,0,1,
+    0,1,1,0,0,1,0,0,0,1,0,0,1,0,0,
+    0,0,1,1,0,0,0,1,0,1,1,1,0,0,0,
+    1,0,1,1,0,1,1,1,0,1,0,0,1,0,1,
+    1,0,0,1,1,0,0,0,0,0,1,0,0,0,1,
+    1,0,1,0,1,1,0,1,1,0,1,0,0,0,0,
+    0,0,0,1,0,0,0,0,1,0
   )
+
   expect_equal(before$data$reward,compare_before_reward)
 
-  ######################## use the log to test a policy ##########################
+  ### use the log to test a policy ###
 
   log_S     <- History$new()
   log_S$load_data("test.RData")
@@ -49,12 +50,19 @@ test_that("LiLogBandit simulation", {
 
   policy      <- LinUCBPolicy$new(1.0)
   agent       <- Agent$new(policy, bandit)
-  simulation  <- Simulator$new(agent, horizon = 10L, simulations = 10L, worker_max = 1 )
+  simulation  <-
+    Simulator$new(
+      agent,
+      horizon = 10L,
+      simulations = 10L,
+      worker_max = 1,
+      continouous_counter = TRUE
+    )
 
   after <- simulation$run()
 
   compare_after_reward <- c(
-    0,0,0,0,0,0,1,1,0,0,0,1,1,0,1,1,0,0,1,1,0,0,1,1,0,1,0,1,0,0,1,0,0,0,0,0,0,0,1,1,1,1
+    1,0,1,1,0,1,1,0,0,1,0,0,0,0,0,1,1,0,1,1,1,0,0,0,1,0,1,1,1,1,0,1,0,0,0,0
   )
   expect_equal(after$data$reward,compare_after_reward)
 

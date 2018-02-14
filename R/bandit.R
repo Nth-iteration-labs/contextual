@@ -1,8 +1,7 @@
 #' @export
 AbstractBandit <- R6::R6Class(
   "AbstractBandit",
-  inherit = Contextual,
-  portable = FALSE,
+  portable = TRUE,
   class = FALSE,
   private = list(
 
@@ -10,6 +9,8 @@ AbstractBandit <- R6::R6Class(
     R = NULL,      # rewards matrix
     X = NULL,      # context matrix
     O = NULL,      # oracle matrix
+
+    .hash = NULL,
 
     precaching = FALSE,
 
@@ -24,8 +25,8 @@ AbstractBandit <- R6::R6Class(
         list(
           private$R[action$choice, idx],
           action$choice,
-          max_in(private$R[, idx]) == action$choice,
-          as.double(private$R[max_in(private$O[, idx]), idx]),
+          self$max_in(private$R[, idx]) == action$choice,
+          as.double(private$R[self$max_in(private$O[, idx]), idx]),
           action$propensity
         ),
         c("reward", "choice", "is_optimal", "oracle", "propensity")
@@ -40,17 +41,38 @@ AbstractBandit <- R6::R6Class(
         warning("## Precaching is locked to FALSE by default.",
                 call. = FALSE)
       }
+    },
+    hash = function(value) {
+      if (missing(value)) {
+        private$.hash
+      }
     }
   ),
   public = list(
     d            = NULL,
     k            = NULL,
     initialize   = function() {
-      super$initialize()
+      private$.hash = sub('<environment: (.*)>', '\\1',  capture.output(self))
       private$X <- matrix(1L, 1L, 1L)
       private$R <- matrix(0L, 3L, 1L)
       private$W <- matrix(0L, 3L, 1L)
       private$O <- matrix(0L, 3L, 1L)
+    },
+    max_in = function(x, equal_is_random = TRUE)
+    {
+      y <- seq_along(x)[x == max(x)]
+      if (length(y) > 1L)  {
+        if (equal_is_random) {
+          return(sample(y, 1L, replace = TRUE))
+        } else {
+          return(y[1])
+        }
+      } else {
+        return(y)
+      }
+    },
+    set_seed = function(seed_value) {
+      set.seed(seed_value)
     },
     get_context = function(t) {
       stop("You still need to implement AbstractBandit$get_context.",

@@ -3,7 +3,7 @@
 SyntheticBandit <- R6::R6Class(
   "SyntheticBandit",
   inherit = BasicBandit,
-  portable = FALSE,
+  portable = TRUE,
   class = FALSE,
   active = list(
     is_precaching = function(value) {
@@ -21,27 +21,24 @@ SyntheticBandit <- R6::R6Class(
     reward_means  = NULL,
     reward_stds   = NULL,
     reward_family = NULL,
-    seed          = NULL,
     precache      = NULL,
     has_cache     = NULL,
 
     initialize   = function(
-                            reward_family        = 'Bernoulli',
-                            reward_means         = 4.0,
-                            reward_stds          = 1.0,
-                            data                 = NULL,
-                            seed                 = 1L,
-                            precache             = TRUE
-                           ) {
+      reward_family        = 'Bernoulli',
+      reward_means         = 4.0,
+      reward_stds          = 1.0,
+      data                 = NULL,
+      precache             = TRUE
+    ) {
 
       if (!(reward_family %in% c("Bernoulli","Gaussian","Poisson"))) {
-        stop('Reward family needs to be one of "Bernoulli",
-             "Gaussian" or "Poisson".' , call. = FALSE)
+        stop('Reward family needs to be one of "Bernoulli", "Gaussian" or "Poisson".' , call. = FALSE)
       }
 
       super$initialize(data)
+
       self$has_cache            <- FALSE
-      self$seed                 <- seed
       self$is_precaching        <- precache
       self$reward_family        <- reward_family
       self$reward_means         <- reward_means
@@ -52,11 +49,7 @@ SyntheticBandit <- R6::R6Class(
       if (self$is_precaching) {
         private$context_to_list(t)
       } else {
-        self$generate_bandit_data(  n = 1L,
-                                    not_zero_features = TRUE,
-                                    seed_number = t,
-                                    silent = TRUE )
-
+        self$generate_bandit_data(n = 1L, not_zero_features = TRUE, silent = TRUE )
         private$context_to_list(t = 1)
       }
     },
@@ -65,11 +58,9 @@ SyntheticBandit <- R6::R6Class(
     },
     generate_bandit_data = function(n = 1L,
                                     not_zero_features = TRUE,
-                                    seed_number = 1L,
                                     silent = FALSE ) {
       if (!silent) message("Precaching bandit" )
-      set.seed(self$seed + seed_number)
-      private$X <- matrix(0, n , d)
+      private$X <- matrix(0, n , self$d)
       private$O <- matrix(0, self$k, n)
       private$R <- matrix(0, self$k, n)
       private$generate_context(n, not_zero_features)

@@ -11,7 +11,7 @@ Simulator <- R6::R6Class(
   private = list(rewards = NULL),
   public = list(
     agents = NULL,
-    agent_n = NULL,
+    number_of_agents = NULL,
     horizon = NULL,
     simulations = NULL,
     worker_max = NULL,
@@ -19,14 +19,16 @@ Simulator <- R6::R6Class(
     save_context = NULL,
     save_theta = NULL,
     do_parallel = NULL,
+    sims_per_agent_list = NULL,
+    continouous_counter = NULL,
     initialize = function(agents,
                           horizon = 100L,
                           simulations = 100L,
                           save_context = FALSE,
                           save_theta = FALSE,
                           do_parallel = TRUE,
-                          worker_max = 7) {
-      super$initialize()
+                          worker_max = 7,
+                          continouous_counter = FALSE) {
       self$horizon <- horizon
       self$simulations <- simulations
       self$save_theta <- save_theta
@@ -34,88 +36,78 @@ Simulator <- R6::R6Class(
       if (!is.list(agents)) agents <- list(agents)
       self$agents <- agents
       self$worker_max <- worker_max
-      self$agent_n <- length(agents)
+      self$number_of_agents <- length(agents)
       self$do_parallel <- do_parallel
+      self$continouous_counter <- continouous_counter
       self$reset()
     },
     reset = function() {
-      for (a in 1L:self$agent_n) {
-        self$agents[[a]]$reset()
-        if (self$agents[[a]]$bandit$is_precaching ) {
-          self$agents[[a]]$generate_cache(self$horizon*self$simulations)
+      self$history <- History$new(self$horizon * self$number_of_agents * self$simulations)
+      self$sims_per_agent_list <-  matrix(list(), self$simulations, self$number_of_agents)
+      generate_in_silence <- FALSE
+      for (sim_index in 1L:self$simulations) {
+        for (agent_index in 1L:self$number_of_agents) {
+          self$sims_per_agent_list[sim_index, agent_index]  <- list(self$agents[[agent_index]]$clone(deep = FALSE))
+          self$sims_per_agent_list[[sim_index, agent_index]]$reset()
+          self$sims_per_agent_list[[sim_index, agent_index]]$bandit <- self$sims_per_agent_list[[sim_index, agent_index]]$bandit$clone(deep = TRUE)
+          self$sims_per_agent_list[[sim_index, agent_index]]$bandit$set_seed(sim_index)
+          self$sims_per_agent_list[[sim_index, agent_index]]$policy <- self$sims_per_agent_list[[sim_index, agent_index]]$policy$clone(deep = FALSE)
+          if (self$agents[[agent_index]]$bandit$is_precaching ) {
+            self$sims_per_agent_list[[sim_index, agent_index]]$bandit$generate_bandit_data(n = horizon, silent = generate_in_silence)
+            generate_in_silence = TRUE
+          }
+          self$sims_per_agent_list[[sim_index, agent_index]]$sim_index <- sim_index
+          self$sims_per_agent_list[[sim_index, agent_index]]$agent_index <- agent_index
         }
       }
     },
     run = function() {
-      sims_agents_list <-  matrix(list(), self$simulations, self$agent_n)
-      for (s in 1L:self$simulations) {
-        for (a in 1L:self$agent_n) {
-          sims_agents_list[s, a]  <- list(self$agents[[a]]$clone(deep = FALSE))
-          sims_agents_list[[s, a]]$s_index <- s
-          sims_agents_list[[s, a]]$a_index <- a
-        }
-      }
-
       `%fun%` <- foreach::`%do%`
       workers <- 1
-
       if (self$do_parallel) {
         message("Preworkercreation")
-
         nr_cores <- parallel::detectCores()
         if (nr_cores >= 3) workers <- nr_cores - 1                              # nocov
         if (workers > worker_max) workers <- worker_max
         cl <- parallel::makeCluster(workers, useXDR = FALSE)                    # type="FORK" only linux
         doParallel::registerDoParallel(cl)
         `%fun%` <- foreach::`%dopar%`
-
         message("Postworkercreation")
       }
-
       horizon <- self$horizon
-      agent_n <- self$agent_n
+      sims_per_agent_list <- self$sims_per_agent_list  ## double in mem now? not?
+      number_of_agents <- self$number_of_agents
       save_context <- self$save_context
       save_theta <- self$save_theta
-
-      self$history <- History$new(  self$horizon *
-                                    self$agent_n *
-                                    self$simulations )
-
+      continouous_counter <- self$continouous_counter
       foreach_results <- foreach::foreach(
-        sims_agents = itertools::isplitRows(sims_agents_list, chunks = workers),
+        sims_agents = itertools::isplitRows(sims_per_agent_list, chunks = workers),
         i = iterators::icount(),
-        .inorder = FALSE,
+        .inorder = TRUE,
         .export = c("History"),
-        .noexport = c("sims_agents_list","history"),
+        .noexport = c("sims_per_agent_list","history"),
         .packages = c("data.table","itertools")
       ) %fun% {
         index <- 1L
-        local_history <- History$new( horizon * agent_n * length(sims_agents), save_context, save_theta )
+        local_history <- History$new( horizon * number_of_agents * length(sims_agents), save_context, save_theta )
         for (sim_agent in sims_agents) {
-          simulation_index <- sim_agent$s_index
-          set.seed(simulation_index)
+          simulation_index <- sim_agent$sim_index
           policy_name <- sim_agent$policy$name
+          set.seed(simulation_index)
+          if (continouous_counter) sim_agent$t_step <- as.integer((simulation_index - 1L) * horizon)
           for (t in 1L:horizon) {
-
-            agent_index <- as.integer(t + ((simulation_index - 1L) * horizon))
-
-            context <- sim_agent$bandit_get_context(agent_index)                # observe the bandit in its context
-            action  <- sim_agent$policy_get_action(agent_index)                 # use policy to decide which choice to make (which arm to pick)
-            reward  <- sim_agent$bandit_get_reward(agent_index)                 # observe the resonse of the bandit in this context
-            if (!is.null(reward)) {
-              theta <- sim_agent$policy_set_reward(agent_index)                 # adjust the policy, update theta
-
+            step <- sim_agent$step()
+            if (!is.null(step$reward)) {
               local_history$save(
-                                   index,                                       # save the results to a history log
-                                   t,
-                                   action,
-                                   reward,
-                                   policy_name,
-                                   simulation_index,
-                                   if (self$save_context) context$X else NA,
-                                   if (self$save_theta)   theta     else NA
-                               )
-
+                index,
+                t,
+                step$action,
+                step$reward,
+                policy_name,
+                simulation_index,
+                if (save_context) step$context$X else NA,
+                if (save_theta)   step$theta     else NA
+              )
               index <- index + 1L
             }
           }
@@ -133,28 +125,28 @@ Simulator <- R6::R6Class(
     object_size = function() {
       cat(paste("Simulator: ", self$hash),"\n")
       cat(paste("  Size of history:    ",
-        format(object.size(self$history$data), units = "auto")),"\n")
+                format(object.size(self$history$data), units = "auto")),"\n")
       cat(paste("    Size of t:        ",
-        format(object.size(self$history$data$t), units = "auto")),"\n")
+                format(object.size(self$history$data$t), units = "auto")),"\n")
       cat(paste("    Size of sim:      ",
-        format(object.size(self$history$data$sim), units = "auto")),"\n")
+                format(object.size(self$history$data$sim), units = "auto")),"\n")
       cat(paste("    Size of arm:      ",
-        format(object.size(self$history$data$arm), units = "auto")),"\n")
+                format(object.size(self$history$data$arm), units = "auto")),"\n")
       cat(paste("    Size of r:        ",
-        format(object.size(self$history$data$reward), units = "auto")),"\n")
+                format(object.size(self$history$data$reward), units = "auto")),"\n")
       cat(paste("    Size of opt:      ",
-        format(object.size(self$history$data$is_optimal), units = "auto")),"\n")
+                format(object.size(self$history$data$is_optimal), units = "auto")),"\n")
       cat(paste("    Size of oracle:   ",
-        format(object.size(self$history$data$oracle), units = "auto")),"\n")
+                format(object.size(self$history$data$oracle), units = "auto")),"\n")
       cat(paste("    Size of agent:    ",
-        format(object.size(self$history$data$agent), units = "auto")),"\n")
+                format(object.size(self$history$data$agent), units = "auto")),"\n")
       cat(paste("    Size of context:  ",
-        format(object.size(self$history$data$context), units = "auto")),"\n")
+                format(object.size(self$history$data$context), units = "auto")),"\n")
       cat(paste("    Size of theta:    ",
-        format(object.size(self$history$data$theta), units = "auto")),"\n")
+                format(object.size(self$history$data$theta), units = "auto")),"\n")
 
       agent_hashes <- list()
-      for (a in 1L:self$agent_n) {
+      for (a in 1L:self$number_of_agents) {
         if (!(self$agents[[a]]$bandit$hash %in% agent_hashes)) {
           agent_hashes <- list(agent_hashes,self$agents[[a]]$bandit$hash)
           self$agents[[a]]$object_size()
