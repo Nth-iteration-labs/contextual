@@ -15,7 +15,7 @@
 <![endif]-->
 </head>
 <body>
-    <div class="container template-home">
+    <div class="container template-vignette">
       <header><div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
@@ -70,8 +70,13 @@
 
       
       </header><div class="row">
-  <div class="contents col-md-9">
-    <div id="contextual" class="section level1">
+  <div class="col-md-9">
+    
+
+    
+    
+<div class="contents">
+<div id="contextual" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#contextual" class="anchor"></a>Contextual</h1></div>
 
@@ -99,7 +104,7 @@ devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocument
 <div id="usage" class="section level2">
 <h2 class="hasAnchor">
 <a href="#usage" class="anchor"></a>Usage</h2>
-<p>Running a basic Multi-Armed Bandit policy comparison simulation:</p>
+<p>Running and plotting a basic Multi-Armed Bandit policy comparison simulation:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(contextual)
 
 horizon            &lt;-<span class="st"> </span>100L
@@ -119,8 +124,8 @@ simulation         &lt;-<span class="st"> </span>Simulator<span class="op">$</sp
 history            &lt;-<span class="st"> </span>simulation<span class="op">$</span><span class="kw">run</span>()
 
 <span class="kw">plot</span>(history, <span class="dt">type =</span> <span class="st">"grid"</span>)</code></pre></div>
-<p><img src="tools/readme/basic_multi_plot.png?raw=true" title="Title" alt="MAB plot"></p>
-<p>Running a Contextual Multi-Armed Bandit policy comparison simulation:</p>
+<p><img src="../tools/readme/basic_multi_plot.png" width="100%"></p>
+<p>Running and plotting a Contextual Multi-Armed Bandit policy comparison simulation:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(contextual)
 
 horizon            &lt;-<span class="st"> </span>100L
@@ -139,13 +144,15 @@ simulation         &lt;-<span class="st"> </span>Simulator<span class="op">$</sp
 history            &lt;-<span class="st"> </span>simulation<span class="op">$</span><span class="kw">run</span>()
 
 <span class="kw">plot</span>(history, <span class="dt">type =</span> <span class="st">"grid"</span>)</code></pre></div>
-<p><img src="tools/readme/contextual_plot.png?raw=true" title="Title" alt="CMAB plot"></p>
+<p><img src="../tools/readme/contextual_plot.png" width="100%"></p>
+</div>
 </div>
 </div>
   </div>
 
-  <div class="col-md-3" id="sidebar">
-    <h2>Links</h2>
+  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+    <h2 class="hasAnchor">
+<a href="#sidebar" class="anchor"></a>Links</h2>
 <ul class="list-unstyled">
 <li>Browse source code at <br><a href="https://github.com/Nth-iteration-labs/contextual">https://​github.com/​Nth-iteration-labs/​contextual</a>
 </li>
@@ -170,6 +177,7 @@ history            &lt;-<span class="st"> </span>simulation<span class="op">$</s
 <li><a href="https://cran.r-project.org/package=contextual"><img src="http://www.r-pkg.org/badges/version/contextual" alt="CRAN_Status_Badge"></a></li>
 </ul>
 </div>
+
 </div>
 
 

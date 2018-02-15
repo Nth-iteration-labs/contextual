@@ -1,10 +1,23 @@
-Contextual: R package for Contextual Multi-Armed Bandit Simulation
-================
+---
+title: "Contextual: R package for Contextual Multi-Armed Bandit Simulation"
+output:
+  github_document:
+    fig_width: 9
+    fig_height: 5
+---
 
 Contextual
 ==========
 
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/Nth-iteration-labs/contextual?branch=master&svg=true)](https://ci.appveyor.com/project/Nth-iteration-labs/contextual) [![Build Status](https://travis-ci.org/Nth-iteration-labs/contextual.svg?branch=master)](https://travis-ci.org/Nth-iteration-labs/contextual) [![codecov](https://codecov.io/gh/Nth-iteration-labs/contextual/branch/master/graph/badge.svg)](https://codecov.io/gh/Nth-iteration-labs/contextual) [![develVersion](https://img.shields.io/badge/devel%20version-0.0.0.9012-blue.svg?style=flat)](https://github.com/Nth-iteration-labs/contextual) [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![DOI](https://zenodo.org/badge/114037654.svg)](https://zenodo.org/badge/latestdoi/114037654) [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version/contextual)](https://cran.r-project.org/package=contextual)
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(eval = TRUE)
+knitr::opts_chunk$set(warning = FALSE)
+knitr::opts_chunk$set(fig.path = "tools/readme/", dev = "png")
+knitr::opts_chunk$set(out.width = '100%')
+```
 
 Overview
 --------
@@ -55,7 +68,9 @@ history            <- simulation$run()
 plot(history, type = "grid")
 ```
 
-<img src="../tools/readme/basic_multi_plot.png" width="100%" />
+```{r echo=FALSE, out.width='100%'}
+knitr::include_graphics("../tools/readme/basic_multi_plot.png")
+```
 
 Running and plotting a Contextual Multi-Armed Bandit policy comparison simulation:
 
@@ -80,4 +95,7 @@ history            <- simulation$run()
 plot(history, type = "grid")
 ```
 
-<img src="../tools/readme/contextual_plot.png" width="100%" />
+```{r echo=FALSE, out.width='100%'}
+knitr::include_graphics("../tools/readme/contextual_plot.png")
+```
+
