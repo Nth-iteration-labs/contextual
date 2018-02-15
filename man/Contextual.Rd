@@ -107,7 +107,7 @@ Winston Chang (2017). R6: Classes with Reference Semantics. R package version 2.
 Frank E Harrell Jr, with contributions from Charles Dupont and many others. (2017). Hmisc:   Harrell Miscellaneous. R package version 4.0-3. https://CRAN.R-project.org/package=Hmisc
 }
 \seealso{
-\code{\link{Plot}}
+Online: \code{\href{https://nth-iteration-labs.github.io/contextual/index.html}{Documentation}}
 
 Other contextual classes: \code{\link{AbstractBandit}},
   \code{\link{EpsilonFirstPolicy}},

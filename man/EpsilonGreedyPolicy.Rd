@@ -91,7 +91,7 @@ Sutton, R. S. (1996). Generalization in reinforcement learning: Successful examp
 Strehl, A., & Littman, M. (2004). Exploration via modelbased interval estimation. In International Conference on Machine Learning, number Icml.
 }
 \seealso{
-\code{\link{Plot}}
+Online: \code{\href{https://nth-iteration-labs.github.io/contextual/index.html}{Documentation}}
 
 Other contextual classes: \code{\link{AbstractBandit}},
   \code{\link{Contextual}},

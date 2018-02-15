@@ -108,7 +108,8 @@ EpsilonGreedyPolicy <- R6::R6Class(
 #' Strehl, A., & Littman, M. (2004). Exploration via modelbased interval estimation. In International Conference on Machine Learning, number Icml.
 #'
 #' @seealso
-#' \code{\link{Plot}}
+#'
+#' Online: \code{\href{https://nth-iteration-labs.github.io/contextual/index.html}{Documentation}}
 #'
 #' @examples
 #'
