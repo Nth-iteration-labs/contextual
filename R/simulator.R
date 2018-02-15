@@ -45,6 +45,7 @@ Simulator <- R6::R6Class(
       self$history <- History$new(self$horizon * self$number_of_agents * self$simulations)
       self$sims_per_agent_list <-  matrix(list(), self$simulations, self$number_of_agents)
       generate_in_silence <- FALSE
+      # this could potentially be simplified by moving generation to within parallel loop
       for (sim_index in 1L:self$simulations) {
         for (agent_index in 1L:self$number_of_agents) {
           self$sims_per_agent_list[sim_index, agent_index]  <- list(self$agents[[agent_index]]$clone(deep = FALSE))
@@ -54,7 +55,7 @@ Simulator <- R6::R6Class(
           self$sims_per_agent_list[[sim_index, agent_index]]$policy <- self$sims_per_agent_list[[sim_index, agent_index]]$policy$clone(deep = FALSE)
           if (self$agents[[agent_index]]$bandit$is_precaching ) {
             self$sims_per_agent_list[[sim_index, agent_index]]$bandit$generate_bandit_data(n = horizon, silent = generate_in_silence)
-            generate_in_silence = TRUE
+            generate_in_silence <- TRUE
           }
           self$sims_per_agent_list[[sim_index, agent_index]]$sim_index <- sim_index
           self$sims_per_agent_list[[sim_index, agent_index]]$agent_index <- agent_index

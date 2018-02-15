@@ -33,6 +33,9 @@ Agent <- R6::R6Class(
       private$state$reward <- list()
       private$theta <- self$policy$initialize_theta()
     },
+    set_t = function(t) {
+      private$state$t <- t
+    },
     step = function() {
       private$state$t <- private$state$t + 1
       list(context = bandit_get_context(),
@@ -58,12 +61,6 @@ Agent <- R6::R6Class(
         private$theta <- policy$set_reward(private$state$reward, private$state$context)
         private$theta
       }
-    },
-    set_t = function(t) {
-      private$state$t = t
-    },
-    get_t = function(t) {
-      private$state$t
     },
     object_size = function() {
       cat(paste("Agent: ", hash),"\n")

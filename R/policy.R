@@ -16,7 +16,6 @@ AbstractPolicy <- R6::R6Class(
       self$action <- list()
     },
     get_action = function(context, theta) {
-      self$theta = theta
       stop("AbstractPolicy$get_action() has not been implemented",
            call. = FALSE)
     },

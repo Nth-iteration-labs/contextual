@@ -4,18 +4,12 @@ AbstractBandit <- R6::R6Class(
   portable = TRUE,
   class = FALSE,
   private = list(
-
     W = NULL,      # weights matrix k*d
     R = NULL,      # rewards matrix
     X = NULL,      # context matrix
     O = NULL,      # oracle matrix
-
     .hash = NULL,
-
     precaching = FALSE,
-
-    # utility functions
-
     context_to_list = function(t) {
       if (self$is_precaching) idx <- t else idx <- 1
       setNames(list(self$k, self$d, private$X[idx, ], private$O[, idx]),
@@ -77,15 +71,15 @@ AbstractBandit <- R6::R6Class(
       set.seed(seed)
     },
     get_context = function(t) {
-      stop("You still need to implement AbstractBandit$get_context.",
+      stop("AbstractBandit$get_context() not implemented",
            call. = FALSE)
     },
     get_reward = function(action, t) {
-      stop("You still need to implement AbstractBandit$get_reward.",
+      stop("AbstractBandit$get_reward() not implemented",
            call. = FALSE)
     },
     set_weights = function(W) {
-      stop("You still need to implement AbstractBandit$set_weights.",
+      stop("AbstractBandit$set_weights() not implemented",
            call. = FALSE)
     },
     object_size = function() {
@@ -97,7 +91,7 @@ AbstractBandit <- R6::R6Class(
       self$hash
     },
     generate_bandit_data = function(n) {
-      stop("You still need to implement AbstractBandit$generate_cache if is_precaching is TRUE.",
+      stop("AbstractBandit$generate_cache() must be implemented when is_precaching is TRUE.",
            call. = FALSE)
     }
   )
