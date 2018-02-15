@@ -40,26 +40,6 @@ Returns an unique hash for any instantiated \code{\{contextual\}} child object. 
 }
 
 \describe{
-\item{\code{list_level_to_vector(list_name, element_name)}}{
-Returns a vector of the values of all elements named \code{element_name}
-in multilevel list \code{list_name}.
-}
-}
-
-\describe{
-\item{\code{max_in_param(theta, param, equal_is_random = TRUE)}}{
-Returns the index of the maximum value of the elements named \code{param}
-in multilevel list \code{theta}.
-
-If there is a tie and \code{equal_is_random} is \code{TRUE},
-the index of one of the tied maxima is returned at random.
-
-If \code{equal_is_random} is \code{FALSE},
-the maximum with the lowest index value is returned.
-}
-}
-
-\describe{
 \item{\code{max_in(x, equal_is_random = TRUE))}}{
 Returns the index of the maximum value in list \code{x}.
 
@@ -67,13 +47,13 @@ If there is a tie and \code{equal_is_random} is \code{TRUE},
 the index of one of the tied maxima is returned at random.
 
 If \code{equal_is_random} is \code{FALSE},
-the maximum with the lowest index value is returned.
+the maximum with the lowest index number is returned.
 }
 }
 
 \describe{
-\item{\code{sum_of_param(theta, param)}}{
-Returns the sum of the values of al elements named \code{param} in multilevel list \code{theta}.
+\item{\code{sum_of(x)}}{
+Returns the sum of the values of the elements of a list \code{x}.
 }
 }
 
@@ -94,15 +74,11 @@ contextual <- Contextual$new()
 
 print(contextual$hash)
 
-contextual$max_in(c(71,94,10))
+theta = list(par_one = list(1,2,3), par_two = list(2,3,4))
 
-theta <- list()
-theta[[1]] <- list(param_a=1,param_b=2,param_c=3)
-theta[[2]] <- list(param_a=4,param_b=5,param_c=6)
+contextual$max_in(theta$par_one)
 
-contextual$sum_of_param(theta,"param_a")
-contextual$max_in_param(theta,"param_a")
-contextual$list_level_to_vector(theta, "param_a")
+contextual$sum_of(theta$par_one)
 
 # For this example section, the inc<- and dec<-
 # functions need to be extracted from our
