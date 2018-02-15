@@ -36,6 +36,6 @@ test_that("BasicBandit simulation", {
   expect_identical(context$O, c(0.1,0.9))
 
   history     <- simulation$run()
-  expect_equal(sum(history$data$reward), 3)
+  expect_equal(sum(history$data$reward), 2)
 
 })
