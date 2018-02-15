@@ -55,7 +55,7 @@ history            <- simulation$run()
 plot(history, type = "grid")
 ```
 
-<img src="../tools/readme/basic_multi_plot.png" width="100%" />
+<img src="tools/readme/basic_multi_plot.png" width="100%" />
 
 Running and plotting a Contextual Multi-Armed Bandit policy comparison simulation:
 
@@ -80,4 +80,4 @@ history            <- simulation$run()
 plot(history, type = "grid")
 ```
 
-<img src="../tools/readme/contextual_plot.png" width="100%" />
+<img src="tools/readme/contextual_plot.png" width="100%" />
