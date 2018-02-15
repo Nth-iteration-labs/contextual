@@ -81,4 +81,4 @@ history            <- simulation$run()
 plot(history, type = "grid")
 ```
 
-<img src="https://raw.githubusercontent.com/Nth-iteration-labs/contextual/master/tools/readme/contextual_plot.png" width="100%" />
+<img src="https://raw.githubusercontent.com/Nth-iteration-labs/contextual/master/tools/readme/basic_contextual_plot.png" width="100%" />
