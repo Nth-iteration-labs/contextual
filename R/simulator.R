@@ -36,10 +36,7 @@ Simulator <- R6::R6Class(
       if (!is.list(agents)) agents <- list(agents)
       self$agents <- agents
       self$number_of_agents <- length(agents)
-      policy_names = list()
-
       self$worker_max <- worker_max
-
       self$do_parallel <- do_parallel
       self$continouous_counter <- continouous_counter
       self$reset()
@@ -96,8 +93,8 @@ Simulator <- R6::R6Class(
         for (sim_agent in sims_agents) {
           simulation_index <- sim_agent$sim_index
           policy_name <- sim_agent$policy$name
-          set.seed(simulation_index)  #needed to make seed work in parallel
-          if (continouous_counter) sim_agent$t <- as.integer((simulation_index - 1L) * horizon)
+          set.seed(simulation_index)
+          if (continouous_counter) sim_agent$set_t(as.integer((simulation_index - 1L) * horizon))
           for (t in 1L:horizon) {
             step <- sim_agent$step()
             if (!is.null(step$reward)) {

@@ -13,7 +13,6 @@ Agent <- R6::R6Class(
     bandit = NULL,
     sim_index = NULL,
     agent_index = NULL,
-    t = NULL,
     initialize = function(policy, bandit) {
       self$bandit   <- bandit
       self$policy   <- policy
@@ -28,22 +27,21 @@ Agent <- R6::R6Class(
     },
     reset = function() {
       self$policy$set_parameters()
-      self$t = 0
-
+      private$state$t <- 0
       private$state$context <- matrix()
       private$state$action <- list()
       private$state$reward <- list()
       private$theta <- self$policy$initialize_theta()
     },
     step = function() {
-      self$t <- self$t + 1
+      private$state$t <- private$state$t + 1
       list(context = bandit_get_context(),
            action =  policy_get_action(),
            reward =  bandit_get_reward(),
            theta  =  policy_set_reward())
     },
     bandit_get_context = function() {
-      private$state$context <- bandit$get_context(t)
+      private$state$context <- bandit$get_context(private$state$t)
       private$state$context
     },
     policy_get_action = function() {
@@ -52,7 +50,7 @@ Agent <- R6::R6Class(
       private$state$action
     },
     bandit_get_reward = function() {
-      private$state$reward <- bandit$get_reward(private$state$action,t)
+      private$state$reward <- bandit$get_reward(private$state$action,private$state$t)
       private$state$reward
     },
     policy_set_reward = function() {
@@ -60,6 +58,12 @@ Agent <- R6::R6Class(
         private$theta <- policy$set_reward(private$state$reward, private$state$context)
         private$theta
       }
+    },
+    set_t = function(t) {
+      private$state$t = t
+    },
+    get_t = function(t) {
+      private$state$t
     },
     object_size = function() {
       cat(paste("Agent: ", hash),"\n")
