@@ -61,12 +61,12 @@ Running and plotting a Contextual Multi-Armed Bandit policy comparison simulatio
 ``` r
 library(contextual)
 
-horizon            <- 300L
-simulations        <- 3000L
+horizon            <- 100L
+simulations        <- 5000L
                                   #k1  #k2  #k3   -> k armed bandit
 weights            <- matrix(  c( 0.9, 0.3, 0.2,                        #d1
-                                  0.3, 0.5, 0.3,                        #d2
-                                  0.2, 0.2, 0.1),  nrow = 3, ncol = 3)  #d3  -> d features in context
+                                  0.5, 0.6, 0.2,                        #d2
+                                  0.2, 0.1, 0.5),  nrow = 3, ncol = 3)  #d3  -> d features in context
 
 bandit             <- SyntheticBandit$new(data = weights )
 
