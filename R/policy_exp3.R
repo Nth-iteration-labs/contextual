@@ -16,7 +16,7 @@ Exp3Policy <- R6::R6Class(
     get_action = function(context) {
       probs <- rep(0.0, context$k)
       for (i in 1:context$k) {
-         probs[i] <- (1 - gamma) * (theta[[i]]$weight / sum_of_param(theta, "weight"))
+         probs[i] <- (1 - gamma) * (theta$weight[[i]] / sum_of(theta$weight))
       }
       inc(probs[i])  <- ((gamma) * (1.0 / context$k))
       action$choice  <- categorical_draw(probs)
@@ -27,11 +27,11 @@ Exp3Policy <- R6::R6Class(
       reward <- reward$reward
       probs  <- rep(0.0, context$k)
       for (i in 1:context$k) {
-         probs[i] <- (1 - gamma) * (theta[[i]]$weight / sum_of_param(theta, "weight"))
+         probs[i] <- (1 - gamma) * (theta$weight[[i]] / sum_of(theta$weight))
          inc(probs[i]) <- gamma  / context$k
       }
       growth_factor <- exp((gamma / context$k) * reward / probs[arm])
-      theta[[arm]]$weight <- theta[[arm]]$weight * growth_factor
+      theta$weight[[arm]] <- theta$weight[[arm]] * growth_factor
       theta
     },
     categorical_draw = function(probs) {

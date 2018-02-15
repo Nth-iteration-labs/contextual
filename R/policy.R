@@ -11,26 +11,28 @@ AbstractPolicy <- R6::R6Class(
     parameters = NULL,
     k = NULL,
     d = NULL,
-    initialize = function(name = "ImplementMe") {
+    initialize = function(name = "Not implemented") {
       self$name   <- name
       self$action <- list()
     },
     get_action = function(context, theta) {
       self$theta = theta
-      stop("You still need to implement AbstractPolicy$get_action",
+      stop("AbstractPolicy$get_action() has not been implemented",
            call. = FALSE)
     },
     set_reward = function(reward, context) {
-      stop("You still need to implement AbstractPolicy$set_reward",
+      stop("AbstractPolicy$set_reward() has not been implemented",
            call. = FALSE)
     },
     set_parameters = function() {
-      stop("You still need to implement AbstractPolicy$set_parameters",
+      stop("AbstractPolicy$set_parameters() has not been implemented",
            call. = FALSE)
     },
     initialize_theta = function() {
       theta <- list()
-      for (arm in 1:self$k) theta[[arm]] <- self$parameters
+      for (param_index in 1L:length(parameters)) {
+        theta[[ names(self$parameters)[param_index] ]] <- rep(list(self$parameters[[param_index]]),self$k)
+      }
       theta
     },
     set_theta = function(theta) {

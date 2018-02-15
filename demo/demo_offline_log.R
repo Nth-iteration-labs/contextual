@@ -20,12 +20,14 @@ agent       <- Agent$new(policy, bandit)
 simulation  <-
   Simulator$new(
     agent,
-    horizon = 100L,
-    simulations = 100L,
+    horizon = 500L,
+    simulations = 500L,
     save_context = TRUE
   )
 
 before <- simulation$run()
+
+b <- before$get_data_table()
 
 before$save_data("test.RData")
 
@@ -40,9 +42,11 @@ bandit      <- LiLogBandit$new(log_S, 3, 3)
 
 policy      <- LinUCBPolicy$new(1.0)
 agent       <- Agent$new(policy, bandit)
-simulation  <- Simulator$new(agent, horizon = 100L, simulations = 100L, continouous_counter = TRUE )
+simulation  <- Simulator$new(agent, horizon = 500L, simulations = 500L, continouous_counter = TRUE, do_parallel = FALSE )
 
 after <- simulation$run()
+
+a <- after$get_data_table()
 
 plot(after, type = "grid")
 

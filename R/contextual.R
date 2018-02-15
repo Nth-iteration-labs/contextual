@@ -22,17 +22,9 @@ Contextual <- R6::R6Class(
     "dec<-" = function(x, value) {
       x - value
     },
-    list_level_to_vector = function(list_name, element_name)
-    {
-      unlist(lapply(list_name, `[[`, element_name) , FALSE, FALSE)
-    },
-    max_in_param = function(theta, param, equal_is_random = TRUE)
-    {
-      param <- list_level_to_vector(theta, param)
-      max_in(param, equal_is_random)
-    },
     max_in = function(x, equal_is_random = TRUE)
     {
+      x <- unlist(x)
       y <- seq_along(x)[x == max(x)]
       if (length(y) > 1L)  {
         if (equal_is_random) {
@@ -44,9 +36,9 @@ Contextual <- R6::R6Class(
         return(y)
       }
     },
-    sum_of_param = function(theta, param)
+    sum_of = function(theta_param)
     {
-      sum(list_level_to_vector(theta, param))
+      sum(unlist(theta_param))
     }
   )
 )

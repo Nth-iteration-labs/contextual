@@ -15,13 +15,14 @@ LinUCBPolicy <- R6::R6Class(
     },
     get_action = function(context) {
       expected_rewards <- rep(0.0, context$k)
+      X <- context$X
       for (arm in 1:context$k) {
-        A          <-  theta[[arm]]$A
-        b          <-  theta[[arm]]$b
+        A          <-  theta$A[[arm]]
+        b          <-  theta$b[[arm]]
         A.inv      <-  chol2inv(chol(A))
         theta.hat  <-  A.inv %*% b
-        mean       <-  context$X %*% theta.hat
-        var        <-  sqrt(tcrossprod(context$X %*% A.inv, context$X))
+        mean       <-  X %*% theta.hat
+        var        <-  sqrt(tcrossprod(context$X %*% A.inv, X))
         expected_rewards[arm] <- mean + (alpha * var)
       }
       action$choice  <- max_in(expected_rewards)
@@ -30,9 +31,11 @@ LinUCBPolicy <- R6::R6Class(
     set_reward = function(reward, context) {
       arm <- reward$choice
       reward <- reward$reward
-      X <- as.vector(context$X)
-      inc(theta[[arm]]$A) <- outer(X, X)
-      inc(theta[[arm]]$b) <- reward * X
+      X <- context$X
+
+      inc(theta$A[[arm]]) <- outer(X, X)
+      inc(theta$b[[arm]]) <- reward * X
+
       theta
     }
   )

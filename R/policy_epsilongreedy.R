@@ -18,15 +18,17 @@ EpsilonGreedyPolicy <- R6::R6Class(
         action$choice       <- sample.int(context$k, 1, replace = TRUE)
         action$propensity   <- epsilon*(1/context$k)
       } else {
-        action$choice       <- max_in_param(theta, "mean")
+        action$choice       <- max_in(theta$mean)
         action$propensity   <- 1 - epsilon
       }
       action
     },
     set_reward = function(reward, context) {
       arm <- reward$choice ; reward <- reward$reward
-      inc(theta[[arm]]$n)    <- 1
-      inc(theta[[arm]]$mean) <- (reward - theta[[arm]]$mean) / theta[[arm]]$n
+
+      inc(theta$n[[arm]])    <- 1
+      inc(theta$mean[[arm]]) <- (reward - theta$mean[[arm]]) / theta$n[[arm]]
+
       theta
     }
   )
