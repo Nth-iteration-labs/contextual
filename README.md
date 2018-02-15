@@ -35,9 +35,11 @@ library(contextual)
 
 horizon            <- 100L
 simulations        <- 1000L
+
 weight_per_arm     <- c(0.9, 0.1, 0.1)
 
 bandit             <- SyntheticBandit$new(data = weight_per_arm)
+
 agents             <- list( Agent$new(EpsilonGreedyPolicy$new(0.1, "\U190-greedy"), bandit),
                             Agent$new(RandomPolicy$new("Random"), bandit),
                             Agent$new(OraclePolicy$new("Oracle"), bandit),
@@ -46,6 +48,7 @@ agents             <- list( Agent$new(EpsilonGreedyPolicy$new(0.1, "\U190-greedy
                             Agent$new(LinUCBPolicy$new(1.0, "LinUCB"), bandit) )
 
 simulation         <- Simulator$new(agents, horizon, simulations)
+
 history            <- simulation$run()
 
 plot(history, type = "grid")
@@ -58,19 +61,21 @@ Running and plotting a Contextual Multi-Armed Bandit policy comparison simulatio
 ``` r
 library(contextual)
 
-horizon            <- 100L
-simulations        <- 2000L
+horizon            <- 300L
+simulations        <- 3000L
                                   #k1  #k2  #k3   -> k armed bandit
-weights            <- matrix(  c( 0.9, 0.1, 0.1,                           #d1
-                                  0.1, 0.9, 0.1,                           #d2
-                                  0.1, 0.1, 0.9),  nrow = 3, ncol = 3)     #d3  -> d features in context
+weights            <- matrix(  c( 0.9, 0.3, 0.2,                        #d1
+                                  0.3, 0.5, 0.3,                        #d2
+                                  0.2, 0.2, 0.1),  nrow = 3, ncol = 3)  #d3  -> d features in context
 
 bandit             <- SyntheticBandit$new(data = weights )
+
 agents             <- list( Agent$new(OraclePolicy$new("Oracle"), bandit),
                             Agent$new(ThompsonSamplingPolicy(1, 1, "TS"), bandit),
                             Agent$new(LinUCBPolicy$new(1.0, "LinUCB"), bandit) )
 
 simulation         <- Simulator$new(agents, horizon, simulations)
+
 history            <- simulation$run()
 
 plot(history, type = "grid")

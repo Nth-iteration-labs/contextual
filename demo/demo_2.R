@@ -2,10 +2,10 @@ setwd("~/GitHub/contextual/demo")
 source("dev.R")
 
 horizon            <- 100L
-simulations        <- 1000L
+simulations        <- 3000L
 weights            <- matrix(  c( 0.9, 0.3, 0.2,
                                   0.3, 0.5, 0.3,
-                                  0.2, 0.2, 0.1),  nrow = 3, ncol = 3)
+                                  0.2, 0.2, 0.1),  nrow = 3, ncol = 3  )
 
 bandit             <- SyntheticBandit$new(data = weights )
 
