@@ -29,10 +29,11 @@ Agent <- R6::R6Class(
     reset = function() {
       self$policy$set_parameters()
       self$t = 0
-      private$theta <- self$policy$initialize_theta()
+
       private$state$context <- matrix()
       private$state$action <- list()
       private$state$reward <- list()
+      private$theta <- self$policy$initialize_theta()
     },
     step = function() {
       self$t <- self$t + 1

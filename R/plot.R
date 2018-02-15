@@ -359,7 +359,7 @@ Plot <- R6::R6Class(
         return(history)
       }
     },
-    # for fun and eductional purposes, live plotting of ts ..
+    # For fun and for eductional purposes, live plotting of Thompson Sampling
     ts = function(history,
                   grid = FALSE,
                   xlim = NULL,

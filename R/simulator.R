@@ -35,8 +35,11 @@ Simulator <- R6::R6Class(
       self$save_context <- save_context
       if (!is.list(agents)) agents <- list(agents)
       self$agents <- agents
-      self$worker_max <- worker_max
       self$number_of_agents <- length(agents)
+      policy_names = list()
+
+      self$worker_max <- worker_max
+
       self$do_parallel <- do_parallel
       self$continouous_counter <- continouous_counter
       self$reset()
@@ -75,7 +78,7 @@ Simulator <- R6::R6Class(
         message("Postworkercreation")
       }
       horizon <- self$horizon
-      sims_per_agent_list <- self$sims_per_agent_list  ## double in mem now? not?
+      sims_per_agent_list <- self$sims_per_agent_list
       number_of_agents <- self$number_of_agents
       save_context <- self$save_context
       save_theta <- self$save_theta
@@ -93,7 +96,7 @@ Simulator <- R6::R6Class(
         for (sim_agent in sims_agents) {
           simulation_index <- sim_agent$sim_index
           policy_name <- sim_agent$policy$name
-          set.seed(simulation_index)  ## more sense in agent?
+          set.seed(simulation_index)  #needed to make seed work in parallel
           if (continouous_counter) sim_agent$t <- as.integer((simulation_index - 1L) * horizon)
           for (t in 1L:horizon) {
             step <- sim_agent$step()

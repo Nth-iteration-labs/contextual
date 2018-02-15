@@ -13,18 +13,18 @@ LiLogBandit <- R6::R6Class(
       self$d <- d
       private$S <- data_file$get_data_table()
     },
-    get_context = function(t) {
-      private$X <- matrix(private$S$context[[t]], 1, self$d)
+    get_context = function(index) {
+      private$X <- matrix(private$S$context[[index]], 1, self$d)
       private$context_to_list()
     },
-    get_reward = function(action, t) {
-      if (private$S$choice[[t]] == action$choice) {
+    get_reward = function(action, index) {
+      if (private$S$choice[[index]] == action$choice) {
         setNames(
           list(
-            private$S$reward[[t]],
+            as.double(private$S$reward[[index]]),
             action$choice,
-            as.integer(private$S$is_optimal[[t]]),
-            as.double(private$S$oracle[[t]]),
+            as.integer(private$S$is_optimal[[index]]),
+            as.double(private$S$oracle[[index]]),
             action$propensity
           ),
           c("reward", "choice", "is_optimal", "oracle", "propensity")

@@ -5,7 +5,7 @@ AbstractBandit <- R6::R6Class(
   class = FALSE,
   private = list(
 
-    W = NULL,      # weights k*d
+    W = NULL,      # weights matrix k*d
     R = NULL,      # rewards matrix
     X = NULL,      # context matrix
     O = NULL,      # oracle matrix
@@ -14,10 +14,25 @@ AbstractBandit <- R6::R6Class(
 
     precaching = FALSE,
 
+    # utility functions
+
     context_to_list = function(t) {
       if (self$is_precaching) idx <- t else idx <- 1
       setNames(list(self$k, self$d, private$X[idx, ], private$O[, idx]),
                c("k", "d", "X", "O"))
+    },
+    max_in = function(x, equal_is_random = TRUE)
+    {
+      y <- seq_along(x)[x == max(x)]
+      if (length(y) > 1L)  {
+        if (equal_is_random) {
+          return(sample(y, 1L, replace = TRUE))
+        } else {
+          return(y[1])
+        }
+      } else {
+        return(y)
+      }
     },
     reward_to_list = function(action, t) {
       if (self$is_precaching) idx <- t else idx <- 1
@@ -25,8 +40,8 @@ AbstractBandit <- R6::R6Class(
         list(
           private$R[action$choice, idx],
           action$choice,
-          self$max_in(private$R[, idx]) == action$choice,
-          as.double(private$R[self$max_in(private$O[, idx]), idx]),
+          private$max_in(private$R[, idx]) == action$choice,
+          as.double(private$R[private$max_in(private$O[, idx]), idx]),
           action$propensity
         ),
         c("reward", "choice", "is_optimal", "oracle", "propensity")
@@ -58,21 +73,8 @@ AbstractBandit <- R6::R6Class(
       private$W <- matrix(0L, 3L, 1L)
       private$O <- matrix(0L, 3L, 1L)
     },
-    max_in = function(x, equal_is_random = TRUE)
-    {
-      y <- seq_along(x)[x == max(x)]
-      if (length(y) > 1L)  {
-        if (equal_is_random) {
-          return(sample(y, 1L, replace = TRUE))
-        } else {
-          return(y[1])
-        }
-      } else {
-        return(y)
-      }
-    },
-    set_seed = function(seed_value) {
-      set.seed(seed_value)
+    set_seed = function(seed) {
+      set.seed(seed)
     },
     get_context = function(t) {
       stop("You still need to implement AbstractBandit$get_context.",
