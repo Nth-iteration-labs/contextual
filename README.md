@@ -11,7 +11,7 @@ Contextual is an R package that facilitates the simulation and analysis of Conte
 Documentation
 -------------
 
--   [Online package documentation](https://nth-iteration-labs.github.io/contextual/)
+-   [Online Reference](https://nth-iteration-labs.github.io/contextual/)
 -   [Blog at Pavlov](https://pavlov.tech/category/contextual/)
 
 Installation
@@ -23,7 +23,7 @@ Installation
 devtools::install_github("Nth-iteration-labs/contextual")
 ```
 
-If you encounter a clear bug, please file a minimal reproducible example on [github](https://github.com/Nth-iteration-labs/contextual/issues).
+If you encounter a clear bug, please file a minimal reproducible example on [GitHub](https://github.com/Nth-iteration-labs/contextual/issues).
 
 Usage
 -----
