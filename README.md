@@ -11,7 +11,7 @@ Contextual is an R package that facilitates the simulation and analysis of Conte
 Documentation
 -------------
 
--   [Online Reference](https://nth-iteration-labs.github.io/contextual/)
+-   [Online reference](https://nth-iteration-labs.github.io/contextual/)
 -   [Blog at Pavlov](https://pavlov.tech/category/contextual/)
 
 Installation
@@ -43,8 +43,7 @@ agents             <- list( Agent$new(EpsilonGreedyPolicy$new(0.1, "\U190-greedy
                             Agent$new(OraclePolicy$new("Oracle"), bandit),
                             Agent$new(ThompsonSamplingPolicy$new(1.0, 1.0, "TS"), bandit),
                             Agent$new(Exp3Policy$new(0.1, "Exp3"), bandit),
-                            Agent$new(LinUCBPolicy$new(1.0, "LinUCB"), bandit)
-                          )
+                            Agent$new(LinUCBPolicy$new(1.0, "LinUCB"), bandit) )
 
 simulation         <- Simulator$new(agents, horizon, simulations)
 history            <- simulation$run()
@@ -61,13 +60,13 @@ library(contextual)
 
 horizon            <- 100L
 simulations        <- 2000L
-weights            <- matrix(  c( 0.9, 0.1, 0.1,
-                                  0.1, 0.9, 0.1,
-                                  0.1, 0.1, 0.9), nrow = 3, ncol = 3)
+                                  #k1  #k2  #k3   -> k armed bandit
+weights            <- matrix(  c( 0.9, 0.1, 0.1,                           #d1
+                                  0.1, 0.9, 0.1,                           #d2
+                                  0.1, 0.1, 0.9),  nrow = 3, ncol = 3)     #d3  -> d features in context
 
 bandit             <- SyntheticBandit$new(data = weights )
-agents             <- list(
-                            Agent$new(OraclePolicy$new("Oracle"), bandit),
+agents             <- list( Agent$new(OraclePolicy$new("Oracle"), bandit),
                             Agent$new(ThompsonSamplingPolicy(1, 1, "TS"), bandit),
                             Agent$new(LinUCBPolicy$new(1.0, "LinUCB"), bandit) )
 

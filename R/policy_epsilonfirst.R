@@ -106,7 +106,7 @@ EpsilonFirstPolicy <- R6::R6Class(
 #'
 #' @seealso
 #'
-#' Online: \code{\href{https://nth-iteration-labs.github.io/contextual/index.html}{Documentation}}
+#' Online: \href{https://nth-iteration-labs.github.io/contextual/index.html}{Documentation}
 #'
 #' @examples
 #'

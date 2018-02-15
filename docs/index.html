@@ -84,7 +84,7 @@
 <h2 class="hasAnchor">
 <a href="#documentation" class="anchor"></a>Documentation</h2>
 <ul>
-<li><a href="https://nth-iteration-labs.github.io/contextual/">Online Reference</a></li>
+<li><a href="https://nth-iteration-labs.github.io/contextual/">Online reference</a></li>
 <li><a href="https://pavlov.tech/category/contextual/">Blog at Pavlov</a></li>
 </ul>
 </div>
@@ -112,8 +112,7 @@ agents             &lt;-<span class="st"> </span><span class="kw">list</span>( A
                             Agent<span class="op">$</span><span class="kw">new</span>(OraclePolicy<span class="op">$</span><span class="kw">new</span>(<span class="st">"Oracle"</span>), bandit),
                             Agent<span class="op">$</span><span class="kw">new</span>(ThompsonSamplingPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">1.0</span>, <span class="fl">1.0</span>, <span class="st">"TS"</span>), bandit),
                             Agent<span class="op">$</span><span class="kw">new</span>(Exp3Policy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.1</span>, <span class="st">"Exp3"</span>), bandit),
-                            Agent<span class="op">$</span><span class="kw">new</span>(LinUCBPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">1.0</span>, <span class="st">"LinUCB"</span>), bandit)
-                          )
+                            Agent<span class="op">$</span><span class="kw">new</span>(LinUCBPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">1.0</span>, <span class="st">"LinUCB"</span>), bandit) )
 
 simulation         &lt;-<span class="st"> </span>Simulator<span class="op">$</span><span class="kw">new</span>(agents, horizon, simulations)
 history            &lt;-<span class="st"> </span>simulation<span class="op">$</span><span class="kw">run</span>()
@@ -125,13 +124,13 @@ history            &lt;-<span class="st"> </span>simulation<span class="op">$</s
 
 horizon            &lt;-<span class="st"> </span>100L
 simulations        &lt;-<span class="st"> </span>2000L
-weights            &lt;-<span class="st"> </span><span class="kw">matrix</span>(  <span class="kw">c</span>( <span class="fl">0.9</span>, <span class="fl">0.1</span>, <span class="fl">0.1</span>,
-                                  <span class="fl">0.1</span>, <span class="fl">0.9</span>, <span class="fl">0.1</span>,
-                                  <span class="fl">0.1</span>, <span class="fl">0.1</span>, <span class="fl">0.9</span>), <span class="dt">nrow =</span> <span class="dv">3</span>, <span class="dt">ncol =</span> <span class="dv">3</span>)
+                                  <span class="co">#k1  #k2  #k3   -&gt; k armed bandit</span>
+weights            &lt;-<span class="st"> </span><span class="kw">matrix</span>(  <span class="kw">c</span>( <span class="fl">0.9</span>, <span class="fl">0.1</span>, <span class="fl">0.1</span>,                           <span class="co">#d1</span>
+                                  <span class="fl">0.1</span>, <span class="fl">0.9</span>, <span class="fl">0.1</span>,                           <span class="co">#d2</span>
+                                  <span class="fl">0.1</span>, <span class="fl">0.1</span>, <span class="fl">0.9</span>),  <span class="dt">nrow =</span> <span class="dv">3</span>, <span class="dt">ncol =</span> <span class="dv">3</span>)     <span class="co">#d3  -&gt; d features in context</span>
 
 bandit             &lt;-<span class="st"> </span>SyntheticBandit<span class="op">$</span><span class="kw">new</span>(<span class="dt">data =</span> weights )
-agents             &lt;-<span class="st"> </span><span class="kw">list</span>(
-                            Agent<span class="op">$</span><span class="kw">new</span>(OraclePolicy<span class="op">$</span><span class="kw">new</span>(<span class="st">"Oracle"</span>), bandit),
+agents             &lt;-<span class="st"> </span><span class="kw">list</span>( Agent<span class="op">$</span><span class="kw">new</span>(OraclePolicy<span class="op">$</span><span class="kw">new</span>(<span class="st">"Oracle"</span>), bandit),
                             Agent<span class="op">$</span><span class="kw">new</span>(<span class="kw"><a href="reference/ThompsonSamplingPolicy.html">ThompsonSamplingPolicy</a></span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="st">"TS"</span>), bandit),
                             Agent<span class="op">$</span><span class="kw">new</span>(LinUCBPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">1.0</span>, <span class="st">"LinUCB"</span>), bandit) )
 

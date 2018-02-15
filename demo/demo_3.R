@@ -1,13 +1,14 @@
 setwd("~/GitHub/contextual/demo")
 source("dev.R")
 
-horizon            <- 100L
-simulations        <- 1000L
+horizon            <- 10L
+simulations        <- 10L
 weights            <- matrix(  c( 0.9, 0.1, 0.1,
                                   0.1, 0.9, 0.1,
                                   0.1, 0.1, 0.9), nrow = 3, ncol = 3)
 
 bandit             <- SyntheticBandit$new(data = weights)
+
 agents             <- list( Agent$new(EpsilonGreedyPolicy$new(0.1, "\U190-greedy"), bandit),
                             Agent$new(RandomPolicy$new("Random"), bandit),
                             Agent$new(OraclePolicy$new("Oracle"), bandit),
@@ -16,5 +17,7 @@ agents             <- list( Agent$new(EpsilonGreedyPolicy$new(0.1, "\U190-greedy
 
 simulation         <- Simulator$new(agents, horizon, simulations)
 history            <- simulation$run()
+
+h <- history$get_data_table()
 
 plot(history, type = "grid")
