@@ -31,6 +31,55 @@ If you encounter a clear bug, please file a minimal reproducible example on [git
 Usage
 -----
 
+Running a basic Multi-Armed Bandit policy comparison simulation:
+
 ``` r
 library(contextual)
+
+horizon            <- 100L
+simulations        <- 1000L
+weight_per_arm     <- c(0.9, 0.1, 0.1)
+
+bandit             <- SyntheticBandit$new(data = weight_per_arm)
+agents             <- list( Agent$new(EpsilonGreedyPolicy$new(0.1, "\U190-greedy"), bandit),
+                            Agent$new(RandomPolicy$new("Random"), bandit),
+                            Agent$new(OraclePolicy$new("Oracle"), bandit),
+                            Agent$new(ThompsonSamplingPolicy$new(1.0, 1.0, "TS"), bandit),
+                            Agent$new(Exp3Policy$new(0.1, "Exp3"), bandit),
+                            Agent$new(LinUCBPolicy$new(1.0, "LinUCB"), bandit)
+                          )
+
+simulation         <- Simulator$new(agents, horizon, simulations)
+history            <- simulation$run()
+
+plot(history, type = "grid")
+
 ```
+
+![MAB plot](tools/readme/basic_multi_plot.png?raw=true "MAB plot")
+
+Running a Contextual Multi-Armed Bandit policy comparison simulation:
+
+``` r
+library(contextual)
+
+horizon            <- 100L
+simulations        <- 2000L
+weights            <- matrix(  c( 0.9, 0.1, 0.1,
+                                  0.1, 0.9, 0.1,
+                                  0.1, 0.1, 0.9), nrow = 3, ncol = 3)
+
+bandit             <- SyntheticBandit$new(data = weights )
+agents             <- list(
+                            Agent$new(OraclePolicy$new("Oracle"), bandit),
+                            Agent$new(ThompsonSamplingPolicy(1, 1, "TS"), bandit),
+                            Agent$new(LinUCBPolicy$new(1.0, "LinUCB"), bandit) )
+
+simulation         <- Simulator$new(agents, horizon, simulations)
+history            <- simulation$run()
+
+plot(history, type = "grid")
+
+```
+
+![CMAB plot](tools/readme/contextual_plot.png?raw=true "CMAB plot")

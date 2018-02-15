@@ -2,12 +2,12 @@ setwd("~/GitHub/contextual/demo")
 source("dev.R")
 
 horizon            <- 100L
-simulations        <- 100L
-weight_per_arm     <- matrix(  c( 0.9, 0.1, 0.1,
+simulations        <- 1000L
+weights            <- matrix(  c( 0.9, 0.1, 0.1,
                                   0.1, 0.9, 0.1,
                                   0.1, 0.1, 0.9), nrow = 3, ncol = 3)
 
-bandit             <- SyntheticBandit$new(data = weight_per_arm)
+bandit             <- SyntheticBandit$new(data = weights)
 agents             <- list( Agent$new(EpsilonGreedyPolicy$new(0.1, "\U190-greedy"), bandit),
                             Agent$new(RandomPolicy$new("Random"), bandit),
                             Agent$new(OraclePolicy$new("Oracle"), bandit),

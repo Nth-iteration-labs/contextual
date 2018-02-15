@@ -24,12 +24,14 @@ EpsilonGreedyPolicy <- R6::R6Class(
       action
     },
     set_reward = function(reward, context) {
+
       arm <- reward$choice ; reward <- reward$reward
 
       inc(theta$n[[arm]])    <- 1
       inc(theta$mean[[arm]]) <- (reward - theta$mean[[arm]]) / theta$n[[arm]]
 
       theta
+
     }
   )
 )
