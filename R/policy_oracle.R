@@ -35,8 +35,7 @@ OraclePolicy <- R6::R6Class(
 #' a baseline to compare other policies to.
 #'
 #' @name OraclePolicy
-#' @family contextual classes
-#' @family policies
+#' @family contextual policies
 #'
 #' @section Usage:
 #' \preformatted{
@@ -86,7 +85,12 @@ OraclePolicy <- R6::R6Class(
 #'
 #' @seealso
 #'
-#' Online: \href{https://nth-iteration-labs.github.io/contextual/index.html}{Documentation}
+#' Core contextual classes: \code{\link{Contextual}}, \code{\link{Simulator}},
+#' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
+#'
+#' Bandit classes: \code{\link{AbstractBandit}}, \code{\link{BasicBandit}},
+#' \code{\link{LiLogBandit}}, \code{\link{SyntheticBandit}}
+#'
 #'
 #' @examples
 #'

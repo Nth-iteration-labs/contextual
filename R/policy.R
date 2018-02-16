@@ -47,9 +47,8 @@ AbstractPolicy <- R6::R6Class(
 #' That is, every \code{Policy} class in the \code{\{contextual\}} package has to inherit from, and implement the methods of,
 #' the \code{Policy} superclass.
 #'
-#' @name Policy
-#' @family contextual classes
-#' @family policies
+#' @name AbstractPolicy
+#' @family contextual policies
 #'
 #' @section Usage:
 #' \preformatted{
@@ -58,7 +57,12 @@ AbstractPolicy <- R6::R6Class(
 #'
 #' @seealso
 #'
-#' Online: \href{https://nth-iteration-labs.github.io/contextual/index.html}{Documentation}
+#' Core contextual classes: \code{\link{Contextual}}, \code{\link{Simulator}},
+#' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
+#'
+#' Bandit classes: \code{\link{AbstractBandit}}, \code{\link{BasicBandit}},
+#' \code{\link{LiLogBandit}}, \code{\link{SyntheticBandit}}
+#'
 #'
 #'
 NULL

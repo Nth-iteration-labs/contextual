@@ -49,8 +49,7 @@ LinUCBPolicy <- R6::R6Class(
 #' It then proceeds to choose the arm with the highest upper confidence bound.
 #'
 #' @name LinUCBPolicy
-#' @family contextual classes
-#' @family policies
+#' @family contextual policies
 #'
 #' @section Usage:
 #' \preformatted{
@@ -114,7 +113,12 @@ LinUCBPolicy <- R6::R6Class(
 #'
 #' @seealso
 #'
-#' Online: \href{https://nth-iteration-labs.github.io/contextual/index.html}{Documentation}
+#' Core contextual classes: \code{\link{Contextual}}, \code{\link{Simulator}},
+#' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
+#'
+#' Bandit classes: \code{\link{AbstractBandit}}, \code{\link{BasicBandit}},
+#' \code{\link{LiLogBandit}}, \code{\link{SyntheticBandit}}
+#'
 #'
 #' @examples
 #'

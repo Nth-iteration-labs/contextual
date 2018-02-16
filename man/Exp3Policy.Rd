@@ -82,19 +82,16 @@ plot(history, type = "arms")
 Auer, P., Cesa-Bianchi, N., Freund, Y., & Schapire, R. E. (2002). The nonstochastic multiarmed bandit problem. SIAM journal on computing, 32(1), 48-77. Strehl, A., & Littman, M. (2004). Exploration via modelbased interval estimation. In International Conference on Machine Learning, number Icml.
 }
 \seealso{
-Online: \href{https://nth-iteration-labs.github.io/contextual/index.html}{Documentation}
+Core contextual classes: \code{\link{Contextual}}, \code{\link{Simulator}},
+\code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 
-Other contextual classes: \code{\link{AbstractBandit}},
-  \code{\link{Contextual}},
+Bandit classes: \code{\link{AbstractBandit}}, \code{\link{BasicBandit}},
+\code{\link{LiLogBandit}}, \code{\link{SyntheticBandit}}
+
+Other contextual policies: \code{\link{AbstractPolicy}},
   \code{\link{EpsilonFirstPolicy}},
   \code{\link{EpsilonGreedyPolicy}},
   \code{\link{LinUCBPolicy}}, \code{\link{OraclePolicy}},
-  \code{\link{Policy}}, \code{\link{RandomPolicy}},
-  \code{\link{ThompsonSamplingPolicy}}
-
-Other policies: \code{\link{EpsilonFirstPolicy}},
-  \code{\link{EpsilonGreedyPolicy}},
-  \code{\link{LinUCBPolicy}}, \code{\link{OraclePolicy}},
-  \code{\link{Policy}}, \code{\link{RandomPolicy}},
+  \code{\link{RandomPolicy}},
   \code{\link{ThompsonSamplingPolicy}}
 }

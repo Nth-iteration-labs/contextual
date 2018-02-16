@@ -33,8 +33,7 @@ RandomPolicy <- R6::R6Class(
 #' which would always seek to exploit.
 #'
 #' @name RandomPolicy
-#' @family contextual classes
-#' @family policies
+#' @family contextual policies
 #'
 #' @section Usage:
 #' \preformatted{
@@ -84,7 +83,11 @@ RandomPolicy <- R6::R6Class(
 #'
 #' @seealso
 #'
-#' Online: \href{https://nth-iteration-labs.github.io/contextual/index.html}{Documentation}
+#' Core contextual classes: \code{\link{Contextual}}, \code{\link{Simulator}},
+#' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
+#'
+#' Bandit classes: \code{\link{AbstractBandit}}, \code{\link{BasicBandit}},
+#' \code{\link{LiLogBandit}}, \code{\link{SyntheticBandit}}
 #'
 #' @examples
 #'

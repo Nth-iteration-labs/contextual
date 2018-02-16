@@ -92,19 +92,16 @@ plot(history, type = "grid")
 Li, L., Chu, W., Langford, J., & Schapire, R. E. (2010, April). A contextual-bandit approach to personalized news article recommendation. In Proceedings of the 19th international conference on World wide web (pp. 661-670). ACM.
 }
 \seealso{
-Online: \href{https://nth-iteration-labs.github.io/contextual/index.html}{Documentation}
+Core contextual classes: \code{\link{Contextual}}, \code{\link{Simulator}},
+\code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 
-Other contextual classes: \code{\link{AbstractBandit}},
-  \code{\link{Contextual}},
+Bandit classes: \code{\link{AbstractBandit}}, \code{\link{BasicBandit}},
+\code{\link{LiLogBandit}}, \code{\link{SyntheticBandit}}
+
+Other contextual policies: \code{\link{AbstractPolicy}},
   \code{\link{EpsilonFirstPolicy}},
   \code{\link{EpsilonGreedyPolicy}},
   \code{\link{Exp3Policy}}, \code{\link{OraclePolicy}},
-  \code{\link{Policy}}, \code{\link{RandomPolicy}},
-  \code{\link{ThompsonSamplingPolicy}}
-
-Other policies: \code{\link{EpsilonFirstPolicy}},
-  \code{\link{EpsilonGreedyPolicy}},
-  \code{\link{Exp3Policy}}, \code{\link{OraclePolicy}},
-  \code{\link{Policy}}, \code{\link{RandomPolicy}},
+  \code{\link{RandomPolicy}},
   \code{\link{ThompsonSamplingPolicy}}
 }

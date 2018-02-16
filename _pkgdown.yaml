@@ -1,2 +1,21 @@
 navbar:
   type: inverse
+reference:
+  - title: "Core"
+    desc: "Contextual's core classes."
+    contents:
+      - Contextual
+      - Simulator
+      - Agent
+      - History
+      - Plot
+  - title: "Bandits"
+    desc: "Contextual's Bandit implementations"
+    contents:
+      - ends_with("Bandit")
+  - title: "Policies"
+    desc: "Contextual's Policy implementations."
+    contents:
+      - ends_with("Policy")
+
+

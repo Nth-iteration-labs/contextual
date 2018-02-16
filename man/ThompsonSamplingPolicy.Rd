@@ -84,19 +84,15 @@ plot(history, type = "grid")
 Thompson, W. R. (1933). On the likelihood that one unknown probability exceeds another in view of the evidence of two samples. Biometrika, 25(3/4), 285-294.
 }
 \seealso{
-Online: \href{https://nth-iteration-labs.github.io/contextual/index.html}{Documentation}
+Core contextual classes: \code{\link{Contextual}}, \code{\link{Simulator}},
+\code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 
-Other contextual classes: \code{\link{AbstractBandit}},
-  \code{\link{Contextual}},
+Bandit classes: \code{\link{AbstractBandit}}, \code{\link{BasicBandit}},
+\code{\link{LiLogBandit}}, \code{\link{SyntheticBandit}}
+
+Other contextual policies: \code{\link{AbstractPolicy}},
   \code{\link{EpsilonFirstPolicy}},
   \code{\link{EpsilonGreedyPolicy}},
   \code{\link{Exp3Policy}}, \code{\link{LinUCBPolicy}},
-  \code{\link{OraclePolicy}}, \code{\link{Policy}},
-  \code{\link{RandomPolicy}}
-
-Other policies: \code{\link{EpsilonFirstPolicy}},
-  \code{\link{EpsilonGreedyPolicy}},
-  \code{\link{Exp3Policy}}, \code{\link{LinUCBPolicy}},
-  \code{\link{OraclePolicy}}, \code{\link{Policy}},
-  \code{\link{RandomPolicy}}
+  \code{\link{OraclePolicy}}, \code{\link{RandomPolicy}}
 }

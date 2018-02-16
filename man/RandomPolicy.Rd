@@ -76,19 +76,16 @@ plot(history, type = "grid")
 Gittins, J., Glazebrook, K., & Weber, R. (2011). Multi-armed bandit allocation indices. John Wiley & Sons. (Original work published 1989)
 }
 \seealso{
-Online: \href{https://nth-iteration-labs.github.io/contextual/index.html}{Documentation}
+Core contextual classes: \code{\link{Contextual}}, \code{\link{Simulator}},
+\code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 
-Other contextual classes: \code{\link{AbstractBandit}},
-  \code{\link{Contextual}},
+Bandit classes: \code{\link{AbstractBandit}}, \code{\link{BasicBandit}},
+\code{\link{LiLogBandit}}, \code{\link{SyntheticBandit}}
+
+Other contextual policies: \code{\link{AbstractPolicy}},
   \code{\link{EpsilonFirstPolicy}},
   \code{\link{EpsilonGreedyPolicy}},
   \code{\link{Exp3Policy}}, \code{\link{LinUCBPolicy}},
-  \code{\link{OraclePolicy}}, \code{\link{Policy}},
-  \code{\link{ThompsonSamplingPolicy}}
-
-Other policies: \code{\link{EpsilonFirstPolicy}},
-  \code{\link{EpsilonGreedyPolicy}},
-  \code{\link{Exp3Policy}}, \code{\link{LinUCBPolicy}},
-  \code{\link{OraclePolicy}}, \code{\link{Policy}},
+  \code{\link{OraclePolicy}},
   \code{\link{ThompsonSamplingPolicy}}
 }
