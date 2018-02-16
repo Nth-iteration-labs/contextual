@@ -105,7 +105,7 @@ devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocument
 <div id="usage" class="section level2">
 <h2 class="hasAnchor">
 <a href="#usage" class="anchor"></a>Usage</h2>
-<p>Running and plotting a basic Multi-Armed Bandit policy comparison simulation:</p>
+<p>Running a simulation to compare basic Multi-Armed Bandit policies:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(contextual)
 
 horizon            &lt;-<span class="st"> </span>100L
@@ -128,7 +128,7 @@ history            &lt;-<span class="st"> </span>simulation<span class="op">$</s
 
 <span class="kw">plot</span>(history, <span class="dt">type =</span> <span class="st">"grid"</span>)</code></pre></div>
 <p><img src="https://raw.githubusercontent.com/Nth-iteration-labs/contextual/master/tools/readme/basic_multi_plot.png" width="100%"></p>
-<p>Running and plotting a Contextual Multi-Armed Bandit policy comparison simulation:</p>
+<p>Running a simulation to compare a contextual (LinUCB) and some non-contextual Multi-Armed Bandit policies:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(contextual)
 
 horizon            &lt;-<span class="st"> </span>100L
@@ -140,9 +140,11 @@ weights            &lt;-<span class="st"> </span><span class="kw">matrix</span>(
 
 bandit             &lt;-<span class="st"> </span>SyntheticBandit<span class="op">$</span><span class="kw">new</span>(<span class="dt">data =</span> weights )
 
-agents             &lt;-<span class="st"> </span><span class="kw">list</span>( Agent<span class="op">$</span><span class="kw">new</span>(OraclePolicy<span class="op">$</span><span class="kw">new</span>(<span class="st">"Oracle"</span>), bandit),
-                            Agent<span class="op">$</span><span class="kw">new</span>(<span class="kw"><a href="reference/ThompsonSamplingPolicy.html">ThompsonSamplingPolicy</a></span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="st">"TS"</span>), bandit),
-                            Agent<span class="op">$</span><span class="kw">new</span>(LinUCBPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">1.0</span>, <span class="st">"LinUCB"</span>), bandit) )
+agents             &lt;-<span class="st"> </span><span class="kw">list</span>( Agent<span class="op">$</span><span class="kw">new</span>(EpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.1</span>, <span class="st">"\U190-greedy"</span>), bandit),
+                            Agent<span class="op">$</span><span class="kw">new</span>(LinUCBPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">1.0</span>, <span class="st">"LinUCB"</span>), bandit),
+                            Agent<span class="op">$</span><span class="kw">new</span>(OraclePolicy<span class="op">$</span><span class="kw">new</span>(<span class="st">"Oracle"</span>), bandit),
+                            Agent<span class="op">$</span><span class="kw">new</span>(RandomPolicy<span class="op">$</span><span class="kw">new</span>(<span class="st">"Random"</span>), bandit),
+                            Agent<span class="op">$</span><span class="kw">new</span>(<span class="kw"><a href="reference/ThompsonSamplingPolicy.html">ThompsonSamplingPolicy</a></span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="st">"TSampling"</span>), bandit) )
 
 simulation         &lt;-<span class="st"> </span>Simulator<span class="op">$</span><span class="kw">new</span>(agents, horizon, simulations)
 

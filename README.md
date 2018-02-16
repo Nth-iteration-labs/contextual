@@ -28,7 +28,7 @@ If you encounter a clear bug, please file a minimal reproducible example on [Git
 Usage
 -----
 
-Running and plotting a basic Multi-Armed Bandit policy comparison simulation:
+Running a simulation to compare basic Multi-Armed Bandit policies:
 
 ``` r
 library(contextual)
@@ -56,7 +56,7 @@ plot(history, type = "grid")
 
 <img src="https://raw.githubusercontent.com/Nth-iteration-labs/contextual/master/tools/readme/basic_multi_plot.png" width="100%" />
 
-Running and plotting a Contextual Multi-Armed Bandit policy comparison simulation:
+Running a simulation to compare a contextual (LinUCB) and some non-contextual Multi-Armed Bandit policies:
 
 ``` r
 library(contextual)
@@ -70,9 +70,11 @@ weights            <- matrix(  c( 0.9, 0.3, 0.2,                        #d1
 
 bandit             <- SyntheticBandit$new(data = weights )
 
-agents             <- list( Agent$new(OraclePolicy$new("Oracle"), bandit),
-                            Agent$new(ThompsonSamplingPolicy(1, 1, "TS"), bandit),
-                            Agent$new(LinUCBPolicy$new(1.0, "LinUCB"), bandit) )
+agents             <- list( Agent$new(EpsilonGreedyPolicy$new(0.1, "\U190-greedy"), bandit),
+                            Agent$new(LinUCBPolicy$new(1.0, "LinUCB"), bandit),
+                            Agent$new(OraclePolicy$new("Oracle"), bandit),
+                            Agent$new(RandomPolicy$new("Random"), bandit),
+                            Agent$new(ThompsonSamplingPolicy(1, 1, "TSampling"), bandit) )
 
 simulation         <- Simulator$new(agents, horizon, simulations)
 
