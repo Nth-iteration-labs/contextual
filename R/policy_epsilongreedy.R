@@ -6,49 +6,48 @@ EpsilonGreedyPolicy <- R6::R6Class(
   inherit = AbstractPolicy,
   public = list(
     epsilon = NULL,
+
     initialize = function(epsilon = 0.1, name = "EpsilonGreedy") {
       super$initialize(name)
       self$epsilon <- epsilon
     },
+
     set_parameters = function() {
       self$parameters <- list('n' = 0, 'mean' = 0)
     },
+
     get_action = function(context) {
-      if (runif(1) < epsilon) {
-        action$choice       <- sample.int(context$k, 1, replace = TRUE)
-        action$propensity   <- epsilon*(1/context$k)
+      if (runif(1) > epsilon) {
+        action$choice <- max_in(theta$mean)
       } else {
-        action$choice       <- max_in(theta$mean)
-        action$propensity   <- 1 - epsilon
+        action$choice <- sample.int(context$k, 1, replace = TRUE)
       }
       action
     },
+
     set_reward = function(reward, context) {
+      arm <- reward$choice
+      reward <- reward$reward
 
-      arm <- reward$choice ; reward <- reward$reward
-
-      inc(theta$n[[arm]])    <- 1
+      inc(theta$n[[arm]]) <- 1
       inc(theta$mean[[arm]]) <- (reward - theta$mean[[arm]]) / theta$n[[arm]]
 
       theta
-
     }
+
   )
 )
-
-# think about rmax if not boolean!!! Rmax.reward!!!?
-
 
 #' Policy: Epsilon Greedy
 #'
 #' \code{EpsilonGreedyPolicy} chooses an arm at
 #' random (explores) with probability \code{epsilon}, otherwise it
-#' greedily chooses the arm with the highest estimated
-#' reward (exploits). To make sure that all arms receive at least one pull, arms
-#' that have not yet been chosen are given an estimate of Rmax.
+#' greedily chooses (exploits) the arm with the highest estimated
+#' reward.
 #'
 #' @name EpsilonGreedyPolicy
 #' @family contextual classes
+#' @family policies
 #'
 #' @section Usage:
 #' \preformatted{

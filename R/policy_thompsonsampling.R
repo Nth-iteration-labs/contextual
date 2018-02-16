@@ -39,10 +39,15 @@ ThompsonSamplingPolicy <- R6::R6Class(
 
 #' Policy: Thompson Sampling
 #'
-#' \code{ThompsonSamplingPolicy} ...
+#' \code{ThompsonSamplingPolicy} works by maintaining a prior on the the mean rewards of its arms.
+#' In this, it follows a beta–binomial model with parameters alpha and beta, sampling values
+#' for each arm from its prior and picking the arm with the highest value.
+#' When an arm is pulled and a Bernoulli reward is observed, it modifies the prior based on the reward.
+#' This procedure is repeated for the next arm pull.
 #'
 #' @name ThompsonSamplingPolicy
 #' @family contextual classes
+#' @family policies
 #'
 #' @section Usage:
 #' \preformatted{
@@ -52,6 +57,12 @@ ThompsonSamplingPolicy <- R6::R6Class(
 #' @section Arguments:
 #'
 #' \describe{
+#'   \item{\code{alpha}}{
+#'    integer, a natural number N>0 - first parameter of the Beta distribution
+#'   }
+#'   \item{\code{beta}}{
+#'    integer, a natural number N>0 - second parameter of the Beta distribution
+#'   }
 #'   \item{\code{name}}{
 #'    character string specifying this policy. \code{name}
 #'    is, amongst others, saved to the History log and displayed in summaries and plots.
@@ -61,7 +72,7 @@ ThompsonSamplingPolicy <- R6::R6Class(
 #' @section Methods:
 #'
 #' \describe{
-#'   \item{\code{new(name = "Random")}}{ Generates a new \code{ThompsonSamplingPolicy} object. Arguments are defined in the Argument section above.}
+#'   \item{\code{new(alpha = 1, beta = 1, name = "TSampling")}}{ Generates a new \code{ThompsonSamplingPolicy} object. Arguments are defined in the Argument section above.}
 #' }
 #'
 #' \describe{
@@ -88,7 +99,7 @@ ThompsonSamplingPolicy <- R6::R6Class(
 #'
 #' @references
 #'
-#' Auer, P., Cesa-Bianchi, N., Freund, Y., & Schapire, R. E. (2002). The nonstochastic multiarmed bandit problem. SIAM journal on computing, 32(1), 48-77. Strehl, A., & Littman, M. (2004). Exploration via modelbased interval estimation. In International Conference on Machine Learning, number Icml.
+#' Thompson, W. R. (1933). On the likelihood that one unknown probability exceeds another in view of the evidence of two samples. Biometrika, 25(3/4), 285-294.
 #'
 #' @seealso
 #'

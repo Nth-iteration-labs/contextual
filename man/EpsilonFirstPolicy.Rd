@@ -93,7 +93,14 @@ Online: \href{https://nth-iteration-labs.github.io/contextual/index.html}{Docume
 Other contextual classes: \code{\link{AbstractBandit}},
   \code{\link{Contextual}},
   \code{\link{EpsilonGreedyPolicy}},
-  \code{\link{Exp3Policy}}, \code{\link{OraclePolicy}},
+  \code{\link{Exp3Policy}}, \code{\link{LinUCBPolicy}},
+  \code{\link{OraclePolicy}}, \code{\link{Policy}},
+  \code{\link{RandomPolicy}},
+  \code{\link{ThompsonSamplingPolicy}}
+
+Other policies: \code{\link{EpsilonGreedyPolicy}},
+  \code{\link{Exp3Policy}}, \code{\link{LinUCBPolicy}},
+  \code{\link{OraclePolicy}}, \code{\link{Policy}},
   \code{\link{RandomPolicy}},
   \code{\link{ThompsonSamplingPolicy}}
 }

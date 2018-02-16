@@ -101,9 +101,8 @@
     
     <p><code>EpsilonGreedyPolicy</code> chooses an arm at
 random (explores) with probability <code>epsilon</code>, otherwise it
-greedily chooses the arm with the highest estimated
-reward (exploits). To make sure that all arms receive at least one pull, arms
-that have not yet been chosen are given an estimate of Rmax.</p>
+greedily chooses (exploits) the arm with the highest estimated
+reward.</p>
     
 
         
@@ -159,7 +158,13 @@ based on the reward received, and, potentially, the current context.</p></dd>
 <p>Other contextual classes: <code><a href='AbstractBandit.html'>AbstractBandit</a></code>,
   <code><a href='Contextual.html'>Contextual</a></code>,
   <code><a href='EpsilonFirstPolicy.html'>EpsilonFirstPolicy</a></code>,
-  <code><a href='Exp3Policy.html'>Exp3Policy</a></code>, <code><a href='OraclePolicy.html'>OraclePolicy</a></code>,
+  <code><a href='Exp3Policy.html'>Exp3Policy</a></code>, <code><a href='LinUCBPolicy.html'>LinUCBPolicy</a></code>,
+  <code><a href='OraclePolicy.html'>OraclePolicy</a></code>, <code><a href='Policy.html'>Policy</a></code>,
+  <code><a href='RandomPolicy.html'>RandomPolicy</a></code>,
+  <code><a href='ThompsonSamplingPolicy.html'>ThompsonSamplingPolicy</a></code></p>
+<p>Other policies: <code><a href='EpsilonFirstPolicy.html'>EpsilonFirstPolicy</a></code>,
+  <code><a href='Exp3Policy.html'>Exp3Policy</a></code>, <code><a href='LinUCBPolicy.html'>LinUCBPolicy</a></code>,
+  <code><a href='OraclePolicy.html'>OraclePolicy</a></code>, <code><a href='Policy.html'>Policy</a></code>,
   <code><a href='RandomPolicy.html'>RandomPolicy</a></code>,
   <code><a href='ThompsonSamplingPolicy.html'>ThompsonSamplingPolicy</a></code></p>
     

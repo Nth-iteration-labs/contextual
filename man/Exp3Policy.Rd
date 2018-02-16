@@ -4,11 +4,10 @@
 \alias{Exp3Policy}
 \title{Policy: Exp3}
 \description{
-\code{Exp3Policy} draws an arm with a probability proportional to
-its \code{cumulative_probability}.  The distribution of their probabilities
-is a mixture of the uniform distribution and a distribution
-which assigns to each action a probability mass exponential in the estimated
-cumulative reward for that action...
+In \code{Exp3Policy}, "Exp3" stands for "Exponential-weight algorithm for Exploration and Exploitation".
+It makes use of a distribution over probabilities that is is a mixture of a
+uniform distribution and a distribution which assigns to each action
+a probability mass exponential in the estimated cumulative reward for that action.
 }
 \section{Usage}{
 
@@ -22,7 +21,7 @@ policy <- Exp3Policy(gamma = 0.1, name = "Exp3Policy")
 
 \describe{
 \item{\code{gamma}}{
-double, value in the closed interval \code{(0,1]}, often refered to as the learning rate
+double, value in the closed interval \code{(0,1]}, controls the exploration - often refered to as the learning rate
 }
 \item{\code{name}}{
 character string specifying this policy. \code{name}
@@ -89,6 +88,13 @@ Other contextual classes: \code{\link{AbstractBandit}},
   \code{\link{Contextual}},
   \code{\link{EpsilonFirstPolicy}},
   \code{\link{EpsilonGreedyPolicy}},
-  \code{\link{OraclePolicy}}, \code{\link{RandomPolicy}},
+  \code{\link{LinUCBPolicy}}, \code{\link{OraclePolicy}},
+  \code{\link{Policy}}, \code{\link{RandomPolicy}},
+  \code{\link{ThompsonSamplingPolicy}}
+
+Other policies: \code{\link{EpsilonFirstPolicy}},
+  \code{\link{EpsilonGreedyPolicy}},
+  \code{\link{LinUCBPolicy}}, \code{\link{OraclePolicy}},
+  \code{\link{Policy}}, \code{\link{RandomPolicy}},
   \code{\link{ThompsonSamplingPolicy}}
 }

@@ -16,38 +16,30 @@ Sys.setenv(R_GSCMD = "C:\\Program Files\\gs\\gs9.22\\bin\\gswin64c.exe")
 
 # TODO LIST --------------------------------------------------------------------
 
-# check when NA saved to history (ie in the case of oracle/optimal not known etc)
-# Comments should explain the why, not the what.
+# prio 1
 
-# only data as weight set mechanism, not setweights?
+# TODO: keep track where you are in sim.. PROGRESS - through sockets?
+# TODO: is optimal arm the absolute optimal arm, or the oracle optimal arm?
+# TODO: check when NA saved to history (ie in the case of oracle/optimal not known etc)
+# TODO: make sure output/summary is nicely formatted and collected
+# TODO: propensity
+# TODO: confidence interval --> check and test if all well
 
-# REFACTOR and DRY plot .. check how usually done in R
-# make sure output/summary is nicely formatted and collected
-# random when not set, "choose" randomly prgrammaticly.
-# TODO: document, write, document, then write some more
-# TODO: propensity, and correct names for all vars
+# prio 2
 # TODO: visualisation(s) from thesis
 # TODO: MODEL type input
-# make sure enough checks on inputs..
-# PROGRESS - through sockets?
-# check if without precalc faster on 128 cores.
-# TODO: make possible more simple save reward and such (reward = 1 vsreward$reward = ..)
-# TODO: seperate context and theta results tables afterall? mem use for nothing.
-# TODO: confidence interval
-# summary -- these agents, ..
-# met continue ding minder duidelijk
-# regret ... tool van analyse...
-# TODO: fix external plot device on linux etc
-# TODO: add tests, full test coverage with testthat
-# TODO: theta, cleanup naming
-# TODO: output some info how far along, particularly if not chart -> progressbar
+# TODO: make sure enough checks on inputs..
+# TODO: check if without precalc faster on 128 cores.
+# TODO: seperate context and theta results tables?
+# TODO: fix external plot device on linux -> for live plot
 # TODO: time calculation, benchmarking per policy, how?
-# TODO: double check make sure no object sees/accesses too much
 # TODO: UCB1, exp3, exp4, epoch.. ?? Which other policies, particularly cMAB
 # TODO: Implement more interesting policies, Maurits and others
 # TODO: Ability to add/remove arms
-# TODO: Changes over time
 # TODO: Adversarial
+
+# general
+
 # TODO: blog about all this, do JS versions
 
 
@@ -60,8 +52,6 @@ Sys.setenv(R_GSCMD = "C:\\Program Files\\gs\\gs9.22\\bin\\gswin64c.exe")
 # on 120 cores:    k3*d3 * 5 policies * 3000 * 10000 --> 691 seconds
 
 # devtools::use_appveyor()
-
-
 
 #data.table::set(data, index, 1L, t)
 #data.table::set(data, index, 2L, s)
@@ -105,3 +95,7 @@ Sys.setenv(R_GSCMD = "C:\\Program Files\\gs\\gs9.22\\bin\\gswin64c.exe")
 
 # options(WordPressLogin = c(admin = 'd323mb3r!ap'), WordPressURL = 'https://pavlov.tech/xmlrpc.php')
 # knit2wp('posts.Rmd', title = 'Blogging directly from R using RWordPress', publish = FALSE)
+
+# think about rmax if not boolean!!! Rmax.reward!!!?
+#To make sure that all arms receive at least one pull, arms
+#' that have not yet been chosen are given an estimate of Rmax.

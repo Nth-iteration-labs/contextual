@@ -6,7 +6,7 @@ LinUCBPolicy <- R6::R6Class(
   inherit = AbstractPolicy,
   public = list(
     alpha = NULL,
-    initialize = function(alpha = 1, name = "LinUCB") {
+    initialize = function(alpha = 1.0, name = "LinUCB") {
       super$initialize(name)
       self$alpha <- alpha
     },
@@ -42,55 +42,93 @@ LinUCBPolicy <- R6::R6Class(
 )
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# A is a d*d identity matrix, b is a 0 vector of length
-
-#' External LinUCBPolicy
+#' Policy: LinUCB
 #'
-#' LinUCBPolicy intro
+#' Each time step t, \code{LinUCBPolicy} runs a linear regression that produces coefficients for each context feature \code{d}.
+#' It then observes the new context, and generates a predicted payoff or reward together with a confidence interval for each available arm.
+#' It then proceeds to choose the arm with the highest upper confidence bound.
+#'
+#' @name LinUCBPolicy
+#' @family contextual classes
+#' @family policies
 #'
 #' @section Usage:
-#' \preformatted{b <- LinUCBPolicy$new()
-#'
-#' b$reset()
-#'
-#' print(b)
+#' \preformatted{
+#' policy <- LinUCBPolicy(alpha = 1.0, name = "LinUCB")
 #' }
 #'
 #' @section Arguments:
+#'
 #' \describe{
-#'   \item{b}{A \code{LinUCBPolicy} object.}
+#'   \item{\code{alpha}}{
+#'    double, a positive real value R+
+#'   }
+#'   \item{\code{name}}{
+#'    character string specifying this policy. \code{name}
+#'    is, amongst others, saved to the History log and displayed in summaries and plots.
+#'   }
 #' }
 #'
-#' @section Details:
-#' \code{$new()} starts a new LinUCBPolicy, it uses \code{\link[base]{pipe}}.
-#' R does \emph{not} wait for the process to finish, but returns
-#' immediately.
+#' @section Parameters:
 #'
-#' @importFrom R6 R6Class
-#' @name LinUCBPolicy
+#' \describe{
+#'   \item{\code{A}}{
+#'    d*d identity matrix
+#'   }
+#'   \item{\code{b}}{
+#'    a zero vector of length d
+#'   }
+#' }
+#'
+#' @section Methods:
+#'
+#' \describe{
+#'   \item{\code{new(alpha = 1, name = "LinUCB")}}{ Generates a new \code{LinUCBPolicy} object. Arguments are defined in the Argument section above.}
+#' }
+#'
+#' \describe{
+#'   \item{\code{set_parameters()}}{each policy needs to assign the parameters it wants to keep track of
+#'   to list \code{self$parameters} that has to be defined in \code{set_parameters()}'s body.
+#'   The parameters defined here can later be accessed by arm index in the following way:
+#'   \code{theta[[index_of_arm]]$parameter_name}
+#'   }
+#' }
+#'
+#' \describe{
+#'   \item{\code{get_action(context)}}{
+#'     here, a policy decides which arm to choose, based on the current values
+#'     of its parameters and, potentially, the current context.
+#'    }
+#'   }
+#'
+#'  \describe{
+#'   \item{\code{set_reward(reward, context)}}{
+#'     in \code{set_reward(reward, context)}, a policy updates its parameter values
+#'     based on the reward received, and, potentially, the current context.
+#'    }
+#'   }
+#'
+#' @references
+#'
+#' Li, L., Chu, W., Langford, J., & Schapire, R. E. (2010, April). A contextual-bandit approach to personalized news article recommendation. In Proceedings of the 19th international conference on World wide web (pp. 661-670). ACM.
+#'
+#' @seealso
+#'
+#' Online: \href{https://nth-iteration-labs.github.io/contextual/index.html}{Documentation}
+#'
 #' @examples
-#'\dontrun{}
+#'
+#' horizon            <- 100L
+#' simulations        <- 100L
+#' weight_per_arm     <- c(0.9, 0.1, 0.1)
+#'
+#' policy             <- LinUCBPolicy$new(alpha = 1.0, name = "LinUCB")
+#' bandit             <- SyntheticBandit$new(data = weight_per_arm, precache = FALSE)
+#' agent              <- Agent$new(policy, bandit)
+#'
+#' history            <- Simulator$new(agent, horizon, simulations, do_parallel = FALSE)$run()
+#'
+#' plot(history, type = "grid")
+#'
 #'
 NULL

@@ -41,32 +41,24 @@ AbstractPolicy <- R6::R6Class(
 )
 
 
-#' External AbstractPolicy
+#' Policy: Abstract Root Class
 #'
-#' AbstractPolicy intro
+#' The R6 class \code{Policy} is the root of all policies implemented by \code{\{contextual\}}.
+#' That is, every \code{Policy} class in the \code{\{contextual\}} package has to inherit from, and implement the methods of,
+#' the \code{Policy} superclass.
+#'
+#' @name Policy
+#' @family contextual classes
+#' @family policies
 #'
 #' @section Usage:
-#' \preformatted{b <- AbstractPolicy$new()
-#'
-#' b$reset()
-#'
-#' print(b)
+#' \preformatted{
+#' policy <- Policy()
 #' }
 #'
-#' @section Arguments:
-#' \describe{
-#'   \item{b}{A \code{AbstractPolicy} object.}
-#' }
+#' @seealso
 #'
-#' @section Details:
-#' \code{$new()} starts a new AbstractPolicy,
-#' it uses \code{\link[base]{pipe}}.
-#' R does \emph{not} wait for the process to finish, but returns
-#' immediately.
+#' Online: \href{https://nth-iteration-labs.github.io/contextual/index.html}{Documentation}
 #'
-#' @importFrom R6 R6Class
-#' @name AbstractPolicy
-#' @examples
-#'\dontrun{}
 #'
 NULL

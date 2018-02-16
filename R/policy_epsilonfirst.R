@@ -46,6 +46,7 @@ EpsilonFirstPolicy <- R6::R6Class(
 #'
 #' @name EpsilonFirstPolicy
 #' @family contextual classes
+#' @family policies
 #'
 #' @section Usage:
 #' \preformatted{

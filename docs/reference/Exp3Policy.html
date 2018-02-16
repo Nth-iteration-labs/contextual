@@ -99,11 +99,10 @@
     </div>
 
     
-    <p><code>Exp3Policy</code> draws an arm with a probability proportional to
-its <code>cumulative_probability</code>.  The distribution of their probabilities
-is a mixture of the uniform distribution and a distribution
-which assigns to each action a probability mass exponential in the estimated
-cumulative reward for that action...</p>
+    <p>In <code>Exp3Policy</code>, "Exp3" stands for "Exponential-weight algorithm for Exploration and Exploitation".
+It makes use of a distribution over probabilities that is is a mixture of a
+uniform distribution and a distribution which assigns to each action
+a probability mass exponential in the estimated cumulative reward for that action.</p>
     
 
         
@@ -118,7 +117,7 @@ policy &lt;- Exp3Policy(gamma = 0.1, name = "Exp3Policy")
 
     
     <dl class='dl-horizontal'>
-<dt><code>gamma</code></dt><dd><p>double, value in the closed interval <code>(0,1]</code>, often refered to as the learning rate</p></dd>
+<dt><code>gamma</code></dt><dd><p>double, value in the closed interval <code>(0,1]</code>, controls the exploration - often refered to as the learning rate</p></dd>
 <dt><code>name</code></dt><dd><p>character string specifying this policy. <code>name</code>
 is, amongst others, saved to the History log and displayed in summaries and plots.</p></dd>
 </dl>
@@ -155,7 +154,13 @@ based on the reward received, and, potentially, the current context.</p></dd>
   <code><a href='Contextual.html'>Contextual</a></code>,
   <code><a href='EpsilonFirstPolicy.html'>EpsilonFirstPolicy</a></code>,
   <code><a href='EpsilonGreedyPolicy.html'>EpsilonGreedyPolicy</a></code>,
-  <code><a href='OraclePolicy.html'>OraclePolicy</a></code>, <code><a href='RandomPolicy.html'>RandomPolicy</a></code>,
+  <code><a href='LinUCBPolicy.html'>LinUCBPolicy</a></code>, <code><a href='OraclePolicy.html'>OraclePolicy</a></code>,
+  <code><a href='Policy.html'>Policy</a></code>, <code><a href='RandomPolicy.html'>RandomPolicy</a></code>,
+  <code><a href='ThompsonSamplingPolicy.html'>ThompsonSamplingPolicy</a></code></p>
+<p>Other policies: <code><a href='EpsilonFirstPolicy.html'>EpsilonFirstPolicy</a></code>,
+  <code><a href='EpsilonGreedyPolicy.html'>EpsilonGreedyPolicy</a></code>,
+  <code><a href='LinUCBPolicy.html'>LinUCBPolicy</a></code>, <code><a href='OraclePolicy.html'>OraclePolicy</a></code>,
+  <code><a href='Policy.html'>Policy</a></code>, <code><a href='RandomPolicy.html'>RandomPolicy</a></code>,
   <code><a href='ThompsonSamplingPolicy.html'>ThompsonSamplingPolicy</a></code></p>
     
 

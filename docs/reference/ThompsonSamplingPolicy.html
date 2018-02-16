@@ -99,7 +99,11 @@
     </div>
 
     
-    <p><code>ThompsonSamplingPolicy</code> ...</p>
+    <p><code>ThompsonSamplingPolicy</code> works by maintaining a prior on the the mean rewards of its arms.
+In this, it follows a beta–binomial model with parameters alpha and beta, sampling values
+for each arm from its prior and picking the arm with the highest value.
+When an arm is pulled and a Bernoulli reward is observed, it modifies the prior based on the reward.
+This procedure is repeated for the next arm pull.</p>
     
 
         
@@ -114,6 +118,8 @@ policy &lt;- ThompsonSamplingPolicy(alpha = 1, beta = 1, name = "TSampling")
 
     
     <dl class='dl-horizontal'>
+<dt><code>alpha</code></dt><dd><p>integer, a natural number N&gt;0 - first parameter of the Beta distribution</p></dd>
+<dt><code>beta</code></dt><dd><p>integer, a natural number N&gt;0 - second parameter of the Beta distribution</p></dd>
 <dt><code>name</code></dt><dd><p>character string specifying this policy. <code>name</code>
 is, amongst others, saved to the History log and displayed in summaries and plots.</p></dd>
 </dl>
@@ -122,7 +128,7 @@ is, amongst others, saved to the History log and displayed in summaries and plot
 
     
     <dl class='dl-horizontal'>
-<dt><code>new(name = "Random")</code></dt><dd><p>Generates a new <code>ThompsonSamplingPolicy</code> object. Arguments are defined in the Argument section above.</p></dd>
+<dt><code>new(alpha = 1, beta = 1, name = "TSampling")</code></dt><dd><p>Generates a new <code>ThompsonSamplingPolicy</code> object. Arguments are defined in the Argument section above.</p></dd>
 </dl>
     <dl class='dl-horizontal'>
 <dt><code>set_parameters()</code></dt><dd><p>each policy needs to assign the parameters it wants to keep track of
@@ -141,7 +147,7 @@ based on the reward received, and, potentially, the current context.</p></dd>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Auer, P., Cesa-Bianchi, N., Freund, Y., &amp; Schapire, R. E. (2002). The nonstochastic multiarmed bandit problem. SIAM journal on computing, 32(1), 48-77. Strehl, A., &amp; Littman, M. (2004). Exploration via modelbased interval estimation. In International Conference on Machine Learning, number Icml.</p>
+    <p>Thompson, W. R. (1933). On the likelihood that one unknown probability exceeds another in view of the evidence of two samples. Biometrika, 25(3/4), 285-294.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -150,7 +156,13 @@ based on the reward received, and, potentially, the current context.</p></dd>
   <code><a href='Contextual.html'>Contextual</a></code>,
   <code><a href='EpsilonFirstPolicy.html'>EpsilonFirstPolicy</a></code>,
   <code><a href='EpsilonGreedyPolicy.html'>EpsilonGreedyPolicy</a></code>,
-  <code><a href='Exp3Policy.html'>Exp3Policy</a></code>, <code><a href='OraclePolicy.html'>OraclePolicy</a></code>,
+  <code><a href='Exp3Policy.html'>Exp3Policy</a></code>, <code><a href='LinUCBPolicy.html'>LinUCBPolicy</a></code>,
+  <code><a href='OraclePolicy.html'>OraclePolicy</a></code>, <code><a href='Policy.html'>Policy</a></code>,
+  <code><a href='RandomPolicy.html'>RandomPolicy</a></code></p>
+<p>Other policies: <code><a href='EpsilonFirstPolicy.html'>EpsilonFirstPolicy</a></code>,
+  <code><a href='EpsilonGreedyPolicy.html'>EpsilonGreedyPolicy</a></code>,
+  <code><a href='Exp3Policy.html'>Exp3Policy</a></code>, <code><a href='LinUCBPolicy.html'>LinUCBPolicy</a></code>,
+  <code><a href='OraclePolicy.html'>OraclePolicy</a></code>, <code><a href='Policy.html'>Policy</a></code>,
   <code><a href='RandomPolicy.html'>RandomPolicy</a></code></p>
     
 

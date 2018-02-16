@@ -34,6 +34,7 @@ RandomPolicy <- R6::R6Class(
 #'
 #' @name RandomPolicy
 #' @family contextual classes
+#' @family policies
 #'
 #' @section Usage:
 #' \preformatted{
@@ -79,7 +80,7 @@ RandomPolicy <- R6::R6Class(
 #'
 #' @references
 #'
-#' Auer, P., Cesa-Bianchi, N., Freund, Y., & Schapire, R. E. (2002). The nonstochastic multiarmed bandit problem. SIAM journal on computing, 32(1), 48-77. Strehl, A., & Littman, M. (2004). Exploration via modelbased interval estimation. In International Conference on Machine Learning, number Icml.
+#' Gittins, J., Glazebrook, K., & Weber, R. (2011). Multi-armed bandit allocation indices. John Wiley & Sons. (Original work published 1989)
 #'
 #' @seealso
 #'

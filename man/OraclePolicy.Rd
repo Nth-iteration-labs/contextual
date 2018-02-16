@@ -74,7 +74,7 @@ plot(history, type = "grid")
 
 }
 \references{
-Auer, P., Cesa-Bianchi, N., Freund, Y., & Schapire, R. E. (2002). The nonstochastic multiarmed bandit problem. SIAM journal on computing, 32(1), 48-77. Strehl, A., & Littman, M. (2004). Exploration via modelbased interval estimation. In International Conference on Machine Learning, number Icml.
+Gittins, J., Glazebrook, K., & Weber, R. (2011). Multi-armed bandit allocation indices. John Wiley & Sons. (Original work published 1989)
 }
 \seealso{
 Online: \href{https://nth-iteration-labs.github.io/contextual/index.html}{Documentation}
@@ -83,6 +83,13 @@ Other contextual classes: \code{\link{AbstractBandit}},
   \code{\link{Contextual}},
   \code{\link{EpsilonFirstPolicy}},
   \code{\link{EpsilonGreedyPolicy}},
-  \code{\link{Exp3Policy}}, \code{\link{RandomPolicy}},
+  \code{\link{Exp3Policy}}, \code{\link{LinUCBPolicy}},
+  \code{\link{Policy}}, \code{\link{RandomPolicy}},
+  \code{\link{ThompsonSamplingPolicy}}
+
+Other policies: \code{\link{EpsilonFirstPolicy}},
+  \code{\link{EpsilonGreedyPolicy}},
+  \code{\link{Exp3Policy}}, \code{\link{LinUCBPolicy}},
+  \code{\link{Policy}}, \code{\link{RandomPolicy}},
   \code{\link{ThompsonSamplingPolicy}}
 }

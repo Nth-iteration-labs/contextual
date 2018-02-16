@@ -6,9 +6,8 @@
 \description{
 \code{EpsilonGreedyPolicy} chooses an arm at
 random (explores) with probability \code{epsilon}, otherwise it
-greedily chooses the arm with the highest estimated
-reward (exploits). To make sure that all arms receive at least one pull, arms
-that have not yet been chosen are given an estimate of Rmax.
+greedily chooses (exploits) the arm with the highest estimated
+reward.
 }
 \section{Usage}{
 
@@ -96,7 +95,14 @@ Online: \href{https://nth-iteration-labs.github.io/contextual/index.html}{Docume
 Other contextual classes: \code{\link{AbstractBandit}},
   \code{\link{Contextual}},
   \code{\link{EpsilonFirstPolicy}},
-  \code{\link{Exp3Policy}}, \code{\link{OraclePolicy}},
+  \code{\link{Exp3Policy}}, \code{\link{LinUCBPolicy}},
+  \code{\link{OraclePolicy}}, \code{\link{Policy}},
+  \code{\link{RandomPolicy}},
+  \code{\link{ThompsonSamplingPolicy}}
+
+Other policies: \code{\link{EpsilonFirstPolicy}},
+  \code{\link{Exp3Policy}}, \code{\link{LinUCBPolicy}},
+  \code{\link{OraclePolicy}}, \code{\link{Policy}},
   \code{\link{RandomPolicy}},
   \code{\link{ThompsonSamplingPolicy}}
 }
