@@ -22,7 +22,7 @@ policy <- EpsilonFirstPolicy(first = 100, name = "EpsilonFirstPolicy")
 
 \describe{
 \item{\code{first}}{
-integer, indicating for how many steps \code{EpsilonFirstPolicy} will choose an arm at random,
+integer, a natural number N>0 indicating for how many steps \code{EpsilonFirstPolicy} will choose an arm at random,
 from thereon settling for the arm that proved to offer the highest reward up till then.
 }
 \item{\code{name}}{
@@ -92,5 +92,8 @@ Online: \href{https://nth-iteration-labs.github.io/contextual/index.html}{Docume
 
 Other contextual classes: \code{\link{AbstractBandit}},
   \code{\link{Contextual}},
-  \code{\link{EpsilonGreedyPolicy}}
+  \code{\link{EpsilonGreedyPolicy}},
+  \code{\link{Exp3Policy}}, \code{\link{OraclePolicy}},
+  \code{\link{RandomPolicy}},
+  \code{\link{ThompsonSamplingPolicy}}
 }

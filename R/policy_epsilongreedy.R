@@ -59,7 +59,7 @@ EpsilonGreedyPolicy <- R6::R6Class(
 #'
 #' \describe{
 #'   \item{\code{epsilon}}{
-#'    double, value in the closed interval \code{[0,1]} indicating the probablilty with which
+#'    double, value in the closed interval \code{(0,1]} indicating the probablilty with which
 #'    arms are selected at random (explored).
 #'    Otherwise, \code{EpsilonGreedyPolicy} chooses the best arm (exploits)
 #'    with a probability of \code{1 - epsilon}

@@ -36,9 +36,6 @@ EpsilonFirstPolicy <- R6::R6Class(
   )
 )
 
-# make sure not two times same name ####
-
-
 #' Policy: Epsilon First
 #'
 #' \code{EpsilonFirstPolicy} implements a "naive" policy. That is, \code{EpsilonFirstPolicy}
@@ -59,7 +56,7 @@ EpsilonFirstPolicy <- R6::R6Class(
 #'
 #' \describe{
 #'   \item{\code{first}}{
-#'    integer, indicating for how many steps \code{EpsilonFirstPolicy} will choose an arm at random,
+#'    integer, a natural number N>0 indicating for how many steps \code{EpsilonFirstPolicy} will choose an arm at random,
 #'    from thereon settling for the arm that proved to offer the highest reward up till then.
 #'   }
 #'   \item{\code{name}}{

@@ -22,7 +22,7 @@ policy <- EpsilonGreedyPolicy(epsilon = 0.1, name = "EpsilonGreedyPolicy")
 
 \describe{
 \item{\code{epsilon}}{
-double, value in the closed interval \code{[0,1]} indicating the probablilty with which
+double, value in the closed interval \code{(0,1]} indicating the probablilty with which
 arms are selected at random (explored).
 Otherwise, \code{EpsilonGreedyPolicy} chooses the best arm (exploits)
 with a probability of \code{1 - epsilon}
@@ -95,5 +95,8 @@ Online: \href{https://nth-iteration-labs.github.io/contextual/index.html}{Docume
 
 Other contextual classes: \code{\link{AbstractBandit}},
   \code{\link{Contextual}},
-  \code{\link{EpsilonFirstPolicy}}
+  \code{\link{EpsilonFirstPolicy}},
+  \code{\link{Exp3Policy}}, \code{\link{OraclePolicy}},
+  \code{\link{RandomPolicy}},
+  \code{\link{ThompsonSamplingPolicy}}
 }

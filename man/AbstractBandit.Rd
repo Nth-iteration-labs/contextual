@@ -37,5 +37,8 @@ immediately.
 \seealso{
 Other contextual classes: \code{\link{Contextual}},
   \code{\link{EpsilonFirstPolicy}},
-  \code{\link{EpsilonGreedyPolicy}}
+  \code{\link{EpsilonGreedyPolicy}},
+  \code{\link{Exp3Policy}}, \code{\link{OraclePolicy}},
+  \code{\link{RandomPolicy}},
+  \code{\link{ThompsonSamplingPolicy}}
 }

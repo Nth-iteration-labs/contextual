@@ -2,35 +2,86 @@
 % Please edit documentation in R/policy_random.R
 \name{RandomPolicy}
 \alias{RandomPolicy}
-\title{External RandomPolicy}
+\title{Policy: Random}
 \description{
-RandomPolicy intro
+\code{RandomPolicy} always explores, choosing arms uniformly at random.
+In that respect, \code{RandomPolicy} is the mirror image of a pure greedy policy,
+which would always seek to exploit.
 }
 \section{Usage}{
 
-\preformatted{b <- RandomPolicy$new()
-
-b$reset()
-
-print(b)
+\preformatted{
+policy <- RandomPolicy(name = "RandomPolicy")
 }
 }
 
 \section{Arguments}{
 
+
 \describe{
-\item{b}{A \code{RandomPolicy} object.}
+\item{\code{name}}{
+character string specifying this policy. \code{name}
+is, amongst others, saved to the History log and displayed in summaries and plots.
+}
 }
 }
 
-\section{Details}{
+\section{Methods}{
 
-\code{$new()} starts a new RandomPolicy, it uses \code{\link[base]{pipe}}.
-R does \emph{not} wait for the process to finish, but returns
-immediately.
+
+\describe{
+\item{\code{new(name = "Random")}}{ Generates a new \code{RandomPolicy} object. Arguments are defined in the Argument section above.}
+}
+
+\describe{
+\item{\code{set_parameters()}}{each policy needs to assign the parameters it wants to keep track of
+to list \code{self$parameters} that has to be defined in \code{set_parameters()}'s body.
+The parameters defined here can later be accessed by arm index in the following way:
+\code{theta[[index_of_arm]]$parameter_name}
+}
+}
+
+\describe{
+\item{\code{get_action(context)}}{
+here, a policy decides which arm to choose, based on the current values
+of its parameters and, potentially, the current context.
+}
+}
+
+\describe{
+\item{\code{set_reward(reward, context)}}{
+in \code{set_reward(reward, context)}, a policy updates its parameter values
+based on the reward received, and, potentially, the current context.
+}
+}
 }
 
 \examples{
-\dontrun{}
 
+horizon            <- 100L
+simulations        <- 100L
+weight_per_arm     <- c(0.9, 0.1, 0.1)
+
+policy             <- RandomPolicy$new(name = "Random")
+bandit             <- SyntheticBandit$new(data = weight_per_arm, precache = FALSE)
+agent              <- Agent$new(policy, bandit)
+
+history            <- Simulator$new(agent, horizon, simulations, do_parallel = FALSE)$run()
+
+plot(history, type = "grid")
+
+
+}
+\references{
+Auer, P., Cesa-Bianchi, N., Freund, Y., & Schapire, R. E. (2002). The nonstochastic multiarmed bandit problem. SIAM journal on computing, 32(1), 48-77. Strehl, A., & Littman, M. (2004). Exploration via modelbased interval estimation. In International Conference on Machine Learning, number Icml.
+}
+\seealso{
+Online: \href{https://nth-iteration-labs.github.io/contextual/index.html}{Documentation}
+
+Other contextual classes: \code{\link{AbstractBandit}},
+  \code{\link{Contextual}},
+  \code{\link{EpsilonFirstPolicy}},
+  \code{\link{EpsilonGreedyPolicy}},
+  \code{\link{Exp3Policy}}, \code{\link{OraclePolicy}},
+  \code{\link{ThompsonSamplingPolicy}}
 }
