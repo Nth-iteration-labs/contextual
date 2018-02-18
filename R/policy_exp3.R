@@ -19,11 +19,11 @@ Exp3Policy <- R6::R6Class(
          probs[i] <- (1 - gamma) * (theta$weight[[i]] / sum_of(theta$weight))
       }
       inc(probs[i])  <- ((gamma) * (1.0 / context$k))
-      action$choice  <- categorical_draw(probs)
+      action$arm  <- categorical_draw(probs)
       action
     },
-    set_reward = function(reward, context) {
-      arm    <- reward$choice
+    set_reward = function(context, action, reward) {
+      arm    <- action$arm
       reward <- reward$reward
       probs  <- rep(0.0, context$k)
       for (i in 1:context$k) {
@@ -111,7 +111,7 @@ Exp3Policy <- R6::R6Class(
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
 #' Bandit classes: \code{\link{AbstractBandit}}, \code{\link{BasicBandit}},
-#' \code{\link{LiLogBandit}}, \code{\link{SyntheticBandit}}
+#' \code{\link{OfflineLiBandit}}, \code{\link{SyntheticBandit}}
 #'
 #'
 #' @examples
@@ -121,7 +121,7 @@ Exp3Policy <- R6::R6Class(
 #' weight_per_arm     <- c(0.9, 0.1, 0.1)
 #'
 #' policy             <- Exp3Policy$new(gamma = 0.1, name = "Exp3")
-#' bandit             <- SyntheticBandit$new(data = weight_per_arm, precache = FALSE)
+#' bandit             <- SyntheticBandit$new(weights = weight_per_arm, precache = FALSE)
 #' agent              <- Agent$new(policy, bandit)
 #'
 #' history            <- Simulator$new(agent, horizon, simulations, do_parallel = FALSE)$run()

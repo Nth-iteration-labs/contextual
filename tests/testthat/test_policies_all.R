@@ -15,7 +15,7 @@ test_that("Exp3", {
 
   simulation  <- Simulator$new(agent, horizon = 10L, simulations = 10L, worker_max = 1)
   history     <- simulation$run()
-  expect_equal(sum(history$data$reward), 47)
+  expect_equal(sum(history$data$reward), 45)
 })
 
 test_that("Oracle", {
@@ -33,7 +33,7 @@ test_that("Oracle", {
 
   simulation  <- Simulator$new(agent, horizon = 10L, simulations = 10L, worker_max = 1)
   history     <- simulation$run()
-  expect_equal(sum(history$data$reward), 91)
+  expect_equal(sum(history$data$reward), 90)
 })
 
 test_that("Test Random", {
@@ -51,7 +51,7 @@ test_that("Test Random", {
 
   simulation  <- Simulator$new(agent, horizon = 10L, simulations = 10L, worker_max = 1)
   history     <- simulation$run()
-  expect_equal(sum(history$data$reward), 39)
+  expect_equal(sum(history$data$reward), 36)
 })
 
 test_that("LinUCB", {
@@ -69,7 +69,7 @@ test_that("LinUCB", {
 
   simulation  <- Simulator$new(agent, horizon = 10L, simulations = 10L, worker_max = 1)
   history     <- simulation$run()
-  expect_equal(sum(history$data$reward), 76)
+  expect_equal(sum(history$data$reward), 74)
 })
 
 test_that("ThompsonSampling", {
@@ -88,7 +88,7 @@ test_that("ThompsonSampling", {
 
   simulation  <- Simulator$new(agent, horizon = 10L, simulations = 10L, worker_max = 1)
   history     <- simulation$run()
-  expect_equal(sum(history$data$reward), 64)
+  expect_equal(sum(history$data$reward), 59)
 })
 
 test_that("EpsilonGreedy", {
@@ -106,7 +106,7 @@ test_that("EpsilonGreedy", {
 
   simulation  <- Simulator$new(agent, horizon = 10L, simulations = 10L, worker_max = 1)
   history     <- simulation$run()
-  expect_equal(sum(history$data$reward), 63)
+  expect_equal(sum(history$data$reward), 37)
 })
 
 

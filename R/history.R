@@ -19,10 +19,11 @@ History <- R6::R6Class(
       private$.data <- data.table::data.table(
         t               = rep(0L,      n),
         sim             = rep(0L,      n),
-        choice          = rep(0L,      n),
+        arm          = rep(0L,      n),
         reward          = rep(0.0,     n),
         is_optimal      = rep(0L,      n),
         oracle          = rep(0.0,     n),
+        propensity      = rep(0.0,     n),
         agent           = rep("",      n)
       )
       if (self$save_context) private$.data$context <- rep(list(),  n)
@@ -43,21 +44,38 @@ History <- R6::R6Class(
 
       index <- as.integer(index)
       if (reward$is_optimal) is_optimal <- 1L else is_optimal <- 0L
+
+      if (!is.null(action[["propensity"]])) {
+        prop_value <- action$propensity
+      } else {
+        prop_value <- 0.0
+      }
+
+
       data.table::set(
-                       data,
-                       index, 1L:7L,
-                       list(t,s,action$choice,reward$reward,
-                            is_optimal,reward$oracle,policy_name)
-                      )
+        data,
+        index,
+        1L:8L,
+        list(
+          t,
+          s,
+          action$arm,
+          reward$reward,
+          is_optimal,
+          reward$oracle,
+          prop_value,
+          policy_name
+        )
+      )
       if (self$save_context & !self$save_theta) {
-        data.table::set(data, index, 8L , list(list(context_value)))
+        data.table::set(data, index, 9L , list(list(context_value)))
       } else if (!self$save_context & self$save_theta) {
-        data.table::set(data, index, 8L, list(list(theta_value)))
+        data.table::set(data, index, 9L, list(list(theta_value)))
         ## if split over mult col
         #data[index, (paste0("X.", seq_along(context))) := context]
       } else if (self$save_context & self$save_theta) {
-        data.table::set(data, index, 8L, list(list(context_value)))
-        data.table::set(data, index, 9L , list(list(theta_value)))
+        data.table::set(data, index, 9L, list(list(context_value)))
+        data.table::set(data, index, 10L , list(list(theta_value)))
       }
       invisible(self)
     },

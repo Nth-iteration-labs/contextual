@@ -1,6 +1,6 @@
 #' @export
-LiLogBandit <- R6::R6Class(
-  "LiLogBandit",
+OfflineLiBandit <- R6::R6Class(
+  "OfflineLiBandit",
   inherit = BasicBandit,
   portable = TRUE,
   class = FALSE,
@@ -18,16 +18,22 @@ LiLogBandit <- R6::R6Class(
       private$context_to_list()
     },
     get_reward = function(action, index) {
-      if (private$S$choice[[index]] == action$choice) {
-        setNames(
-          list(
-            as.double(private$S$reward[[index]]),
-            action$choice,
-            as.integer(private$S$is_optimal[[index]]),
-            as.double(private$S$oracle[[index]]),
-            action$propensity
-          ),
-          c("reward", "choice", "is_optimal", "oracle", "propensity")
+      use_ips <- FALSE
+      if (use_ips == TRUE) {
+        reward_at_index <- as.double(private$S$reward[[index]])
+        reward_at_index <- reward_at_index/as.double(private$S$propensity[[index]])
+
+        #cost .. blabla
+
+      } else {
+        reward_at_index <- as.double(private$S$reward[[index]])
+      }
+
+      if (private$S$arm[[index]] == action$arm | use_ips == TRUE) {
+        list(
+          reward = reward_at_index,
+          is_optimal = as.integer(private$S$is_optimal[[index]]),
+          oracle = as.double(private$S$oracle[[index]])
         )
       } else {
         NULL
@@ -36,31 +42,37 @@ LiLogBandit <- R6::R6Class(
   )
 )
 
-#' External LiLogBandit
+#' Bandit: Li Offline Evaluation
 #'
-#' LiLogBandit intro
+#' \code{OfflineLiBandit} uses data from a randomly assigned policy for offline evaluation.
+#' The key assumption of the method is that the individual events are i.i.d., and
+#' that the logging policy chose each arm at each time step uniformly at random.
+#' Take care: if A is a stationary policy that does not change over trials,
+#' data may be used more efficiently via propensity
+#' scoring (Langford et al., 2008; Strehl et al., 2011) and related
+#' techniques like doubly robust estimation (Dudik et al., 2011).
+#'
+#' @name OfflineLiBandit
+#' @family contextual bandits
 #'
 #' @section Usage:
-#' \preformatted{b <- LiLogBandit$new()
-#'
-#' b$reset()
-#'
-#' print(b)
+#' \preformatted{
+#' bandit <- OfflineLiBandit(data_file, k, d)
 #' }
 #'
-#' @section Arguments:
-#' \describe{
-#'   \item{b}{A \code{LiLogBandit} object.}
-#' }
 #'
-#' @section Details:
-#' \code{$new()} starts a new LiLogBandit, it uses \code{\link[base]{pipe}}.
-#' R does \emph{not} wait for the process to finish, but returns
-#' immediately.
 #'
-#' @importFrom R6 R6Class
-#' @name LiLogBandit
+#' @references
+#'
+#' Li, L., Chu, W., Langford, J., & Wang, X. (2011, February). Unbiased offline evaluation of contextual-bandit-based news article recommendation algorithms. In Proceedings of the fourth ACM international conference on Web search and data mining (pp. 297-306). ACM.
+#'
+#' @seealso
+#'
+#' Core contextual classes: \code{\link{Contextual}}, \code{\link{Simulator}},
+#' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}, \code{\link{AbstractPolicy}}
+#'
 #' @examples
-#'\dontrun{}
+#'
+#' horizon            <- 100L
 #'
 NULL

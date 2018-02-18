@@ -5,7 +5,7 @@ horizon            <- 60L
 simulations        <- 500L
 weight_per_arm     <- c( 0.9, 0.1, 0.1)
 
-bandit             <- SyntheticBandit$new(data = weight_per_arm)
+bandit             <- SyntheticBandit$new(weights = weight_per_arm)
 agents             <- list(
                              #Agent$new(EpsilonGreedyPolicy$new(0.1, "\U190-greedy"), bandit)
                              Agent$new(EpsilonFirstPolicy$new(30, "\U190-first"), bandit)

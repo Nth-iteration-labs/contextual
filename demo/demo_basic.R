@@ -7,7 +7,7 @@ weights     <- c(0.9, 0.1, 0.1)
 # model k * X , linear .. by default. can set differently..
 
 bandit      <- SyntheticBandit$new(reward_family = "Bernoulli",
-                                   data = weights,
+                                   weights = weights,
                                    precache = T)
 
 policy      <- EpsilonGreedyPolicy$new(0.05)

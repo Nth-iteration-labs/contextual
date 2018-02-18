@@ -48,12 +48,11 @@ history     <- simulation$run()
 
 reward = list()
 reward["reward"]  = 10
-reward["choice"] = 1
 reward["optimal"] = 0
-reward["propensity"] = 0
 
 action = list()
-action$choice = 2
+action$arm = 2
+action$propensity = 1
 
 #history$save(
 #  counter = 1,
@@ -133,11 +132,10 @@ history     <- simulation$run()
 
 reward = list()
 reward["reward"]  = 10
-reward["choice"] = 1
+reward["arm"] = 1
 reward["optimal"] = 0
-reward["propensity"] = 0
 action = list()
-action$choice = 2
+action$arm = 2
 
 print(unlist(history$data$context[1]))
 

@@ -12,9 +12,14 @@ AbstractBandit <- R6::R6Class(
     precaching = FALSE,
     context_to_list = function(t) {
       if (self$is_precaching) idx <- t else idx <- 1
-      setNames(list(self$k, self$d, private$X[idx, ], private$O[, idx]),
-               c("k", "d", "X", "O"))
+      list(
+        k = self$k,
+        d = self$d,
+        X = private$X[idx,],
+        O = private$O[, idx]
+      )
     },
+
     max_in = function(x, equal_is_random = TRUE)
     {
       y <- seq_along(x)[x == max(x)]
@@ -30,15 +35,10 @@ AbstractBandit <- R6::R6Class(
     },
     reward_to_list = function(action, t) {
       if (self$is_precaching) idx <- t else idx <- 1
-      setNames(
-        list(
-          private$R[action$choice, idx],
-          action$choice,
-          private$max_in(private$R[, idx]) == action$choice,
-          as.double(private$R[private$max_in(private$O[, idx]), idx]),
-          action$propensity
-        ),
-        c("reward", "choice", "is_optimal", "oracle", "propensity")
+      list(
+        reward = private$R[action$arm, idx],
+        is_optimal = private$max_in(private$R[, idx]) == action$arm,
+        oracle = as.double(private$R[private$max_in(private$O[, idx]), idx])
       )
     }
   ),
@@ -66,9 +66,6 @@ AbstractBandit <- R6::R6Class(
       private$R <- matrix(0L, 3L, 1L)
       private$W <- matrix(0L, 3L, 1L)
       private$O <- matrix(0L, 3L, 1L)
-    },
-    set_seed = function(seed) {
-      set.seed(seed)
     },
     get_context = function(t) {
       stop("AbstractBandit$get_context() not implemented",

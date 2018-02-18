@@ -19,7 +19,7 @@ AbstractPolicy <- R6::R6Class(
       stop("AbstractPolicy$get_action() has not been implemented",
            call. = FALSE)
     },
-    set_reward = function(reward, context) {
+    set_reward = function(context, action, reward) {
       stop("AbstractPolicy$set_reward() has not been implemented",
            call. = FALSE)
     },
@@ -61,7 +61,7 @@ AbstractPolicy <- R6::R6Class(
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
 #' Bandit classes: \code{\link{AbstractBandit}}, \code{\link{BasicBandit}},
-#' \code{\link{LiLogBandit}}, \code{\link{SyntheticBandit}}
+#' \code{\link{OfflineLiBandit}}, \code{\link{SyntheticBandit}}
 #'
 #'
 #'

@@ -13,11 +13,11 @@ OraclePolicy <- R6::R6Class(
     },
     get_action = function(context) {
       action$propensity <- 1
-      action$choice <- max_in(context$O)
+      action$arm <- max_in(context$O)
       action
     },
-    set_reward = function(reward, context) {
-      arm    <- reward$choice
+    set_reward = function(context, action, reward) {
+      arm    <- action$arm
       reward <- reward$reward
       inc(theta$n[[arm]]) <- 1
       inc(theta$mean[[arm]]) <- (reward - theta$mean[[arm]]) / theta$n[[arm]]
@@ -89,7 +89,7 @@ OraclePolicy <- R6::R6Class(
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
 #' Bandit classes: \code{\link{AbstractBandit}}, \code{\link{BasicBandit}},
-#' \code{\link{LiLogBandit}}, \code{\link{SyntheticBandit}}
+#' \code{\link{OfflineLiBandit}}, \code{\link{SyntheticBandit}}
 #'
 #'
 #' @examples
@@ -99,7 +99,7 @@ OraclePolicy <- R6::R6Class(
 #' weight_per_arm     <- c(0.9, 0.1, 0.1)
 #'
 #' policy             <- OraclePolicy$new(name = "Oracle")
-#' bandit             <- SyntheticBandit$new(data = weight_per_arm, precache = FALSE)
+#' bandit             <- SyntheticBandit$new(weights = weight_per_arm, precache = FALSE)
 #' agent              <- Agent$new(policy, bandit)
 #'
 #' history            <- Simulator$new(agent, horizon, simulations, do_parallel = FALSE)$run()

@@ -28,7 +28,7 @@ SyntheticBandit <- R6::R6Class(
       reward_family        = 'Bernoulli',
       reward_means         = 4.0,
       reward_stds          = 1.0,
-      data                 = NULL,
+      weights              = NULL,
       precache             = TRUE
     ) {
 
@@ -36,7 +36,7 @@ SyntheticBandit <- R6::R6Class(
         stop('Reward family needs to be one of "Bernoulli", "Gaussian" or "Poisson".' , call. = FALSE)
       }
 
-      super$initialize(data)
+      super$initialize(weights)
 
       self$has_cache            <- FALSE
       self$is_precaching        <- precache
@@ -89,8 +89,10 @@ SyntheticBandit <- R6::R6Class(
       rwrd_n <- self$k * n
       if (self$reward_family == 'Bernoulli') {
         private$R <- round((runif(rwrd_n) + private$O) / 2)
+
       } else if (self$reward_family == 'Gaussian') {
         private$R <- (rnorm(rwrd_n, self$reward_means, self$reward_stds) + private$O) / 2
+
       } else if (self$reward_family == 'Poisson') {
         private$R <- (rpois(rwrd_n, self$reward_means) + private$O) / 2
       }

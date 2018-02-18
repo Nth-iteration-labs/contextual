@@ -5,7 +5,7 @@ horizon     <- 100L
 simulations <- 300L
 weights     <- c( 0.9, 0.1, 0.1)
 
-bandit      <- SyntheticBandit$new(reward_family = "Bernoulli", data = weights)
+bandit      <- SyntheticBandit$new(reward_family = "Bernoulli", weights = weights)
 agents      <- list(
                      Agent$new(EpsilonGreedyPolicy$new(0.1, "\U190-greedy"), bandit),
                      Agent$new(RandomPolicy$new("Random"), bandit),

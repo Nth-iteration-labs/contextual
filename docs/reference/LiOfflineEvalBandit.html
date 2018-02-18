@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Policy: Abstract Root Class — AbstractPolicy â€¢ contextual</title>
+<title>Bandit: Li Offline Evaluation — LiOfflineEvalBandit â€¢ contextual</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -101,13 +101,17 @@
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Policy: Abstract Root Class</h1>
+    <h1>Bandit: Li Offline Evaluation</h1>
     </div>
 
     
-    <p>The R6 class <code>Policy</code> is the root of all policies implemented by <code>{contextual}</code>.
-That is, every <code>Policy</code> class in the <code>{contextual}</code> package has to inherit from, and implement the methods of,
-the <code>Policy</code> superclass.</p>
+    <p><code>LiLog</code> uses data from a randomly assigned policy for offline evaluation.
+The key assumption of the method is that the individual events are i.i.d., and
+that the logging policy chose each arm at each time step uniformly at random.
+Take care: if A is a stationary policy that does not change over trials,
+data may be used more efficiently via propensity
+scoring (Langford et al., 2008; Strehl et al., 2011) and related
+techniques like doubly robust estimation (Dudik et al., 2011).</p>
     
 
         
@@ -115,22 +119,22 @@ the <code>Policy</code> superclass.</p>
 
     
     <pre>
-policy &lt;- Policy()
+bandit &lt;- LiLogBandit(data_file, k, d)
 </pre>
+    
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>Li, L., Chu, W., Langford, J., &amp; Wang, X. (2011, February). Unbiased offline evaluation of contextual-bandit-based news article recommendation algorithms. In Proceedings of the fourth ACM international conference on Web search and data mining (pp. 297-306). ACM.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <p>Core contextual classes: <code><a href='Contextual.html'>Contextual</a></code>, <code><a href='Simulator.html'>Simulator</a></code>,
-<code><a href='Agent.html'>Agent</a></code>, <code><a href='History.html'>History</a></code>, <code><a href='Plot.html'>Plot</a></code></p>
-<p>Bandit classes: <code><a href='AbstractBandit.html'>AbstractBandit</a></code>, <code><a href='BasicBandit.html'>BasicBandit</a></code>,
-<code><a href='OfflineLiBandit.html'>OfflineLiBandit</a></code>, <code><a href='SyntheticBandit.html'>SyntheticBandit</a></code></p>
-<p>Other contextual policies: <code><a href='EpsilonFirstPolicy.html'>EpsilonFirstPolicy</a></code>,
-  <code><a href='EpsilonGreedyPolicy.html'>EpsilonGreedyPolicy</a></code>,
-  <code><a href='Exp3Policy.html'>Exp3Policy</a></code>, <code><a href='LinUCBPolicy.html'>LinUCBPolicy</a></code>,
-  <code><a href='OraclePolicy.html'>OraclePolicy</a></code>, <code><a href='RandomPolicy.html'>RandomPolicy</a></code>,
-  <code><a href='ThompsonSamplingPolicy.html'>ThompsonSamplingPolicy</a></code></p>
+<code><a href='Agent.html'>Agent</a></code>, <code><a href='History.html'>History</a></code>, <code><a href='Plot.html'>Plot</a></code>, <code><a href='AbstractPolicy.html'>AbstractPolicy</a></code></p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'>
+<span class='no'>horizon</span>            <span class='kw'>&lt;-</span> <span class='fl'>100L</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -138,8 +142,12 @@ policy &lt;- Policy()
       
       <li><a href="#usage">Usage</a></li>
 
+      <li><a href="#references">References</a></li>
+
       <li><a href="#see-also">See also</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

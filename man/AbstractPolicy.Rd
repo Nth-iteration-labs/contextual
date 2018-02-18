@@ -20,7 +20,7 @@ Core contextual classes: \code{\link{Contextual}}, \code{\link{Simulator}},
 \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 
 Bandit classes: \code{\link{AbstractBandit}}, \code{\link{BasicBandit}},
-\code{\link{LiLogBandit}}, \code{\link{SyntheticBandit}}
+\code{\link{OfflineLiBandit}}, \code{\link{SyntheticBandit}}
 
 Other contextual policies: \code{\link{EpsilonFirstPolicy}},
   \code{\link{EpsilonGreedyPolicy}},

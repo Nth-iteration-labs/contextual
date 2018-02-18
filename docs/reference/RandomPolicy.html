@@ -156,7 +156,7 @@ based on the reward received, and, potentially, the current context.</p></dd>
     <p>Core contextual classes: <code><a href='Contextual.html'>Contextual</a></code>, <code><a href='Simulator.html'>Simulator</a></code>,
 <code><a href='Agent.html'>Agent</a></code>, <code><a href='History.html'>History</a></code>, <code><a href='Plot.html'>Plot</a></code></p>
 <p>Bandit classes: <code><a href='AbstractBandit.html'>AbstractBandit</a></code>, <code><a href='BasicBandit.html'>BasicBandit</a></code>,
-<code><a href='LiLogBandit.html'>LiLogBandit</a></code>, <code><a href='SyntheticBandit.html'>SyntheticBandit</a></code></p>
+<code><a href='OfflineLiBandit.html'>OfflineLiBandit</a></code>, <code><a href='SyntheticBandit.html'>SyntheticBandit</a></code></p>
 <p>Other contextual policies: <code><a href='AbstractPolicy.html'>AbstractPolicy</a></code>,
   <code><a href='EpsilonFirstPolicy.html'>EpsilonFirstPolicy</a></code>,
   <code><a href='EpsilonGreedyPolicy.html'>EpsilonGreedyPolicy</a></code>,
@@ -172,7 +172,7 @@ based on the reward received, and, potentially, the current context.</p></dd>
 <span class='no'>weight_per_arm</span>     <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='fl'>0.9</span>, <span class='fl'>0.1</span>, <span class='fl'>0.1</span>)
 
 <span class='no'>policy</span>             <span class='kw'>&lt;-</span> <span class='no'>RandomPolicy</span>$<span class='fu'>new</span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Random"</span>)
-<span class='no'>bandit</span>             <span class='kw'>&lt;-</span> <span class='no'>SyntheticBandit</span>$<span class='fu'>new</span>(<span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>weight_per_arm</span>, <span class='kw'>precache</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='no'>bandit</span>             <span class='kw'>&lt;-</span> <span class='no'>SyntheticBandit</span>$<span class='fu'>new</span>(<span class='kw'>weights</span> <span class='kw'>=</span> <span class='no'>weight_per_arm</span>, <span class='kw'>precache</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='no'>agent</span>              <span class='kw'>&lt;-</span> <span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>policy</span>, <span class='no'>bandit</span>)
 
 <span class='no'>history</span>            <span class='kw'>&lt;-</span> <span class='no'>Simulator</span>$<span class='fu'>new</span>(<span class='no'>agent</span>, <span class='no'>horizon</span>, <span class='no'>simulations</span>, <span class='kw'>do_parallel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)$<span class='fu'>run</span>()

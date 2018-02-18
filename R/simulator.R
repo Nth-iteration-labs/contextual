@@ -21,6 +21,7 @@ Simulator <- R6::R6Class(
     do_parallel = NULL,
     sims_per_agent_list = NULL,
     continouous_counter = NULL,
+    set_seed = NULL,
     initialize = function(agents,
                           horizon = 100L,
                           simulations = 100L,
@@ -28,7 +29,8 @@ Simulator <- R6::R6Class(
                           save_theta = FALSE,
                           do_parallel = TRUE,
                           worker_max = 7,
-                          continouous_counter = FALSE) {
+                          continouous_counter = FALSE,
+                          set_seed = 0) {
       self$horizon <- horizon
       self$simulations <- simulations
       self$save_theta <- save_theta
@@ -39,26 +41,19 @@ Simulator <- R6::R6Class(
       self$worker_max <- worker_max
       self$do_parallel <- do_parallel
       self$continouous_counter <- continouous_counter
+      self$set_seed <- set_seed
       self$reset()
     },
     reset = function() {
       self$history <- History$new(self$horizon * self$number_of_agents * self$simulations)
       self$sims_per_agent_list <-  matrix(list(), self$simulations, self$number_of_agents)
-      generate_in_silence <- FALSE
-      # this could potentially be simplified by moving cache generation to within parallel loop
-      # also, this latest version multiplies the size of the bandit cache by the number
-      # of agents - so even though this mayb be cleaner code, its less efficient than before.
       for (sim_index in 1L:self$simulations) {
         for (agent_index in 1L:self$number_of_agents) {
           self$sims_per_agent_list[sim_index, agent_index]  <- list(self$agents[[agent_index]]$clone(deep = FALSE))
+
           self$sims_per_agent_list[[sim_index, agent_index]]$reset()
           self$sims_per_agent_list[[sim_index, agent_index]]$bandit <- self$sims_per_agent_list[[sim_index, agent_index]]$bandit$clone(deep = TRUE)
-          self$sims_per_agent_list[[sim_index, agent_index]]$bandit$set_seed(sim_index)
-          self$sims_per_agent_list[[sim_index, agent_index]]$policy <- self$sims_per_agent_list[[sim_index, agent_index]]$policy$clone(deep = FALSE)
-          if (self$agents[[agent_index]]$bandit$is_precaching ) {
-            self$sims_per_agent_list[[sim_index, agent_index]]$bandit$generate_bandit_data(n = self$horizon, silent = generate_in_silence)
-            generate_in_silence <- TRUE
-          }
+          self$sims_per_agent_list[[sim_index, agent_index]]$policy <- self$sims_per_agent_list[[sim_index, agent_index]]$policy$clone(deep = FALSE)  ## save theta here if deep, then contextual class gone though
           self$sims_per_agent_list[[sim_index, agent_index]]$sim_index <- sim_index
           self$sims_per_agent_list[[sim_index, agent_index]]$agent_index <- agent_index
         }
@@ -83,6 +78,7 @@ Simulator <- R6::R6Class(
       save_context <- self$save_context
       save_theta <- self$save_theta
       continouous_counter <- self$continouous_counter
+      set_seed <- self$set_seed
       foreach_results <- foreach::foreach(
         sims_agents = itertools::isplitRows(sims_per_agent_list, chunks = workers),
         i = iterators::icount(),
@@ -96,7 +92,10 @@ Simulator <- R6::R6Class(
         for (sim_agent in sims_agents) {
           simulation_index <- sim_agent$sim_index
           policy_name <- sim_agent$policy$name
-          set.seed(simulation_index + length(sims_agents))
+          set.seed(simulation_index + set_seed)
+          if (sim_agent$bandit$is_precaching ) {
+            sim_agent$bandit$generate_bandit_data(n = horizon, silent = TRUE)
+          }
           if (continouous_counter) sim_agent$set_t(as.integer((simulation_index - 1L) * horizon))
           for (t in 1L:horizon) {
             step <- sim_agent$step()

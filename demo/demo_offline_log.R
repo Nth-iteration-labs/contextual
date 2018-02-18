@@ -5,23 +5,18 @@ source("dev.R")
 ########################### create a random log ################################
 
 bandit      <- SyntheticBandit$new()
-bandit$set_weights(matrix(
-  c(0.9, 0.0, 0.1,
-    0.1, 0.9, 0.1,
-    0.1, 0.1, 0.9),
-  nrow = 3,
-  ncol = 3
-))
+bandit$set_weights(c(0.9, 0.0, 0.1)
+)
 
-policy      <- RandomPolicy$new()
+policy      <- EpsilonGreedyPolicy$new()
 
 agent       <- Agent$new(policy, bandit)
 
 simulation  <-
   Simulator$new(
     agent,
-    horizon = 500L,
-    simulations = 500L,
+    horizon = 100L,
+    simulations = 100L,
     save_context = TRUE
   )
 
@@ -38,11 +33,13 @@ plot(before, type = "grid")
 log_S     <- History$new()
 log_S$load_data("test.RData")
 
-bandit      <- LiLogBandit$new(log_S, 3, 3)
+bandit      <- OfflineLiBandit$new(log_S, 3, 3)
 
-policy      <- LinUCBPolicy$new(1.0)
-agent       <- Agent$new(policy, bandit)
-simulation  <- Simulator$new(agent, horizon = 500L, simulations = 500L, continouous_counter = TRUE, do_parallel = FALSE )
+agents             <- list( Agent$new(EpsilonGreedyPolicy$new(0.1, "\U190-greedy"), bandit),
+                            Agent$new(LinUCBPolicy$new(1.0, "LinUCB"), bandit),
+                            Agent$new(RandomPolicy$new("Random"), bandit))
+
+simulation  <- Simulator$new(agents, horizon = 100L, simulations = 100L, continouous_counter = TRUE, do_parallel = FALSE )
 
 after <- simulation$run()
 

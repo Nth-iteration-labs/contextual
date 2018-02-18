@@ -21,11 +21,11 @@ ThompsonSamplingPolicy <- R6::R6Class(
           1, alpha + theta$succes[[arm]], beta + theta$n[[arm]] - theta$succes[[arm]]
         )
       }
-      action$choice <- max_in(theta$mean)
+      action$arm <- max_in(theta$mean)
       action
     },
-    set_reward = function(reward, context) {
-      arm    <- reward$choice
+    set_reward = function(context, action, reward) {
+      arm    <- action$arm
       reward <- reward$reward
 
       inc(theta$n[[arm]]) <- 1
@@ -106,7 +106,7 @@ ThompsonSamplingPolicy <- R6::R6Class(
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
 #' Bandit classes: \code{\link{AbstractBandit}}, \code{\link{BasicBandit}},
-#' \code{\link{LiLogBandit}}, \code{\link{SyntheticBandit}}
+#' \code{\link{OfflineLiBandit}}, \code{\link{SyntheticBandit}}
 #'
 #' @examples
 #'
@@ -115,7 +115,7 @@ ThompsonSamplingPolicy <- R6::R6Class(
 #' weight_per_arm     <- c(0.9, 0.1, 0.1)
 #'
 #' policy             <- ThompsonSamplingPolicy$new(alpha = 1, beta = 1, name = "TSampling")
-#' bandit             <- SyntheticBandit$new(data = weight_per_arm, precache = FALSE)
+#' bandit             <- SyntheticBandit$new(weights = weight_per_arm, precache = FALSE)
 #' agent              <- Agent$new(policy, bandit)
 #'
 #' history            <- Simulator$new(agent, horizon, simulations, do_parallel = FALSE)$run()

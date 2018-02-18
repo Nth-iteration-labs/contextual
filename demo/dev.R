@@ -18,6 +18,13 @@ Sys.setenv(R_GSCMD = "C:\\Program Files\\gs\\gs9.22\\bin\\gswin64c.exe")
 
 # prio 1
 
+# gittins ... policy
+
+# comparison doc of all bandit algo's: strengths, weakneseses (computational eff, context / non, variance, etc)
+# add most basic sim
+# and add most basic bandit addition example..
+# and maybe annealing?
+
 # TODO: keep track where you are in sim.. PROGRESS - through sockets?
 # TODO: is optimal arm the absolute optimal arm, or the oracle optimal arm?
 # TODO: check when NA saved to history (ie in the case of oracle/optimal not known etc)
@@ -55,7 +62,7 @@ Sys.setenv(R_GSCMD = "C:\\Program Files\\gs\\gs9.22\\bin\\gswin64c.exe")
 
 #data.table::set(data, index, 1L, t)
 #data.table::set(data, index, 2L, s)
-#data.table::set(data, index, 3L, action$choice)
+#data.table::set(data, index, 3L, action$arm)
 #data.table::set(data, index, 4L, reward[[1]])
 #data.table::set(data, index, 5L, is_optimal)
 #data.table::set(data, index, 6L, reward$oracle)

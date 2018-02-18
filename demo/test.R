@@ -47,7 +47,7 @@ print(before$data$reward)
 log_S     <- History$new()
 log_S$load_data("test.RData")
 
-bandit      <- LiLogBandit$new(log_S, 3, 3)
+bandit      <- OfflineLiBandit$new(log_S, 3, 3)
 
 policy      <- LinUCBPolicy$new(1.0)
 agent       <- Agent$new(policy, bandit)

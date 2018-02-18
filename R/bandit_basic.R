@@ -5,9 +5,9 @@ BasicBandit <- R6::R6Class(
   portable = TRUE,
   class = FALSE,
   public = list(
-    initialize   = function(data = NULL) {
+    initialize   = function(weights = NULL) {
       super$initialize()
-      if (!is.null(data)) self$set_weights(data)
+      if (!is.null(weights)) self$set_weights(weights)
     },
     get_weights = function() {
       private$W
@@ -25,7 +25,7 @@ BasicBandit <- R6::R6Class(
     },
     get_reward = function(action, t) {
       private$R <- matrix(runif(self$k) < self$get_weights(), self$k, self$d)
-      private$reward_to_list(action)
+      private$reward_to_list(action, t)
     }
   )
 )

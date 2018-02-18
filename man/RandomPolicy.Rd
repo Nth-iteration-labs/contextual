@@ -63,7 +63,7 @@ simulations        <- 100L
 weight_per_arm     <- c(0.9, 0.1, 0.1)
 
 policy             <- RandomPolicy$new(name = "Random")
-bandit             <- SyntheticBandit$new(data = weight_per_arm, precache = FALSE)
+bandit             <- SyntheticBandit$new(weights = weight_per_arm, precache = FALSE)
 agent              <- Agent$new(policy, bandit)
 
 history            <- Simulator$new(agent, horizon, simulations, do_parallel = FALSE)$run()
@@ -80,7 +80,7 @@ Core contextual classes: \code{\link{Contextual}}, \code{\link{Simulator}},
 \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 
 Bandit classes: \code{\link{AbstractBandit}}, \code{\link{BasicBandit}},
-\code{\link{LiLogBandit}}, \code{\link{SyntheticBandit}}
+\code{\link{OfflineLiBandit}}, \code{\link{SyntheticBandit}}
 
 Other contextual policies: \code{\link{AbstractPolicy}},
   \code{\link{EpsilonFirstPolicy}},

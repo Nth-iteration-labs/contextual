@@ -18,22 +18,19 @@ test_that("History simulation, saving and loading", {
       worker_max = 1
     )
   history     <- simulation$run()
-  expect_equal(history$data$reward[1], 0)
+  expect_equal(history$data$reward[1], 1)
 
   expect_warning(history$data <- 1, ".*read only.*")
 
   reward = list()
   reward["reward"]  = 10
-  reward["choice"] = 1
   reward["is_optimal"] = 0
   reward["oracle"] = 1
-  reward["propensity"] = 0
 
   action = list()
-  action$choice = 2
-  action$optimal_choice = 2
+  action$arm = 2
 
-  history$save (
+  history$save(
     index = 1,
     t = 30,
     action = action,
@@ -144,6 +141,6 @@ test_that("History simulation testing save_theta", {
     )
   history     <- simulation$run()
   expect_equal(unlist(history$data$context[1]), NULL)
-  expect_equal(history$data$theta[[1]]$n[[2]], 0)
+  expect_equal(history$data$theta[[1]]$n[[2]], 1)
 
 })

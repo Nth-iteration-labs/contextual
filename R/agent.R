@@ -58,7 +58,7 @@ Agent <- R6::R6Class(
     },
     policy_set_reward = function() {
       if (!is.null(private$state$reward)) {
-        private$theta <- policy$set_reward(private$state$reward, private$state$context)
+        private$theta <- policy$set_reward(private$state$context, private$state$action, private$state$reward )
         private$theta
       }
     },

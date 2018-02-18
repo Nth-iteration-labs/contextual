@@ -12,12 +12,12 @@ RandomPolicy <- R6::R6Class(
       self$parameters <- list('n' = 0, 'mean' = 0)
     },
     get_action = function(context) {
-      action$choice <- sample.int(context$k, 1, replace = TRUE)
+      action$arm <- sample.int(context$k, 1, replace = TRUE)
       action$propensity <- 1/context$k
       action
     },
-    set_reward = function(reward, context) {
-      arm    <- reward$choice
+    set_reward = function(context, action, reward) {
+      arm    <- action$arm
       reward <- reward$reward
       inc(theta$n[[arm]]) <- 1
       inc(theta$mean[[arm]]) <- (reward - theta$mean[[arm]]) / theta$n[[arm]]
@@ -87,7 +87,7 @@ RandomPolicy <- R6::R6Class(
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
 #' Bandit classes: \code{\link{AbstractBandit}}, \code{\link{BasicBandit}},
-#' \code{\link{LiLogBandit}}, \code{\link{SyntheticBandit}}
+#' \code{\link{OfflineLiBandit}}, \code{\link{SyntheticBandit}}
 #'
 #' @examples
 #'
@@ -96,7 +96,7 @@ RandomPolicy <- R6::R6Class(
 #' weight_per_arm     <- c(0.9, 0.1, 0.1)
 #'
 #' policy             <- RandomPolicy$new(name = "Random")
-#' bandit             <- SyntheticBandit$new(data = weight_per_arm, precache = FALSE)
+#' bandit             <- SyntheticBandit$new(weights = weight_per_arm, precache = FALSE)
 #' agent              <- Agent$new(policy, bandit)
 #'
 #' history            <- Simulator$new(agent, horizon, simulations, do_parallel = FALSE)$run()

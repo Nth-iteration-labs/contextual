@@ -25,11 +25,11 @@ LinUCBPolicy <- R6::R6Class(
         var        <-  sqrt(tcrossprod(context$X %*% A.inv, X))
         expected_rewards[arm] <- mean + (alpha * var)
       }
-      action$choice  <- max_in(expected_rewards)
+      action$arm  <- max_in(expected_rewards)
       action
     },
-    set_reward = function(reward, context) {
-      arm <- reward$choice
+    set_reward = function(context, action, reward) {
+      arm <- action$arm
       reward <- reward$reward
       X <- context$X
 
@@ -117,7 +117,7 @@ LinUCBPolicy <- R6::R6Class(
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
 #' Bandit classes: \code{\link{AbstractBandit}}, \code{\link{BasicBandit}},
-#' \code{\link{LiLogBandit}}, \code{\link{SyntheticBandit}}
+#' \code{\link{OfflineLiBandit}}, \code{\link{SyntheticBandit}}
 #'
 #'
 #' @examples
@@ -127,7 +127,7 @@ LinUCBPolicy <- R6::R6Class(
 #' weight_per_arm     <- c(0.9, 0.1, 0.1)
 #'
 #' policy             <- LinUCBPolicy$new(alpha = 1.0, name = "LinUCB")
-#' bandit             <- SyntheticBandit$new(data = weight_per_arm, precache = FALSE)
+#' bandit             <- SyntheticBandit$new(weights = weight_per_arm, precache = FALSE)
 #' agent              <- Agent$new(policy, bandit)
 #'
 #' history            <- Simulator$new(agent, horizon, simulations, do_parallel = FALSE)$run()

@@ -18,15 +18,17 @@ EpsilonGreedyPolicy <- R6::R6Class(
 
     get_action = function(context) {
       if (runif(1) > epsilon) {
-        action$choice <- max_in(theta$mean)
+        action$arm <- max_in(theta$mean)
+        action$propensity <- 1 - self$epsilon
       } else {
-        action$choice <- sample.int(context$k, 1, replace = TRUE)
+        action$arm <- sample.int(context$k, 1, replace = TRUE)
+        action$propensity <- epsilon*(1/context$k)
       }
       action
     },
 
-    set_reward = function(reward, context) {
-      arm <- reward$choice
+    set_reward = function(context, action, reward) {
+      arm <- action$arm
       reward <- reward$reward
 
       inc(theta$n[[arm]]) <- 1
@@ -111,7 +113,7 @@ EpsilonGreedyPolicy <- R6::R6Class(
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
 #' Bandit classes: \code{\link{AbstractBandit}}, \code{\link{BasicBandit}},
-#' \code{\link{LiLogBandit}}, \code{\link{SyntheticBandit}}
+#' \code{\link{OfflineLiBandit}}, \code{\link{SyntheticBandit}}
 #'
 #'
 #' @examples
@@ -121,7 +123,7 @@ EpsilonGreedyPolicy <- R6::R6Class(
 #' weight_per_arm     <- c(0.9, 0.1, 0.1)
 #'
 #' policy             <- EpsilonGreedyPolicy$new(epsilon = 0.1, name = "EpsilonGreedy")
-#' bandit             <- SyntheticBandit$new(data = weight_per_arm, precache = FALSE)
+#' bandit             <- SyntheticBandit$new(weights = weight_per_arm, precache = FALSE)
 #' agent              <- Agent$new(policy, bandit)
 #'
 #' history            <- Simulator$new(agent, horizon, simulations, do_parallel = FALSE)$run()
