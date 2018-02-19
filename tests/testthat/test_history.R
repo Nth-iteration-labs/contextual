@@ -28,7 +28,7 @@ test_that("History simulation, saving and loading", {
   reward["oracle"] = 1
 
   action = list()
-  action$arm = 2
+  action$choice = 2
 
   history$save(
     index = 1,

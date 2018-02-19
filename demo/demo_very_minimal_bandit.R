@@ -51,8 +51,8 @@ reward["reward"]  = 10
 reward["optimal"] = 0
 
 action = list()
-action$arm = 2
-action$propensity = 1
+action$choice = 2
+action$propensity = 1.0
 
 #history$save(
 #  counter = 1,
@@ -135,7 +135,7 @@ reward["reward"]  = 10
 reward["arm"] = 1
 reward["optimal"] = 0
 action = list()
-action$arm = 2
+action$choice = 2
 
 print(unlist(history$data$context[1]))
 

@@ -1,0 +1,70 @@
+#' @export
+LifPolicy <- R6::R6Class(
+  "LifPolicy",
+  portable = FALSE,
+  class = FALSE,
+  inherit = AbstractPolicy,
+  public = list(
+    first = NULL,
+
+    inttime = NULL   ,                  # Integration time
+    amplitude = NULL,                   # Amplitude
+    learnrate = NULL,                   # Learnrate
+    omega = NULL,                       # Omega
+    x0_start = NULL,                    # x0 start value
+
+    initialize = function(inttime,amplitude,learnrate,omega,x0_start, name = "LockInFeedback") {
+      super$initialize(name)
+      self$inttime = inttime
+      self$amplitude = amplitude
+      self$learnrate = learnrate
+      self$omega = omega
+      self$x0_start = x0_start
+    },
+    set_parameters = function() {
+      self$parameters <- list('x0' = x0_start, 'Y' = rep(NA, inttime))
+    },
+    get_action = function(context, t) {
+      action$choice = theta$x0[[1]] + amplitude*cos(omega * t)
+      action
+    },
+    set_reward = function(context, action, reward, t) {
+      reward   <- reward$reward
+      y = amplitude*cos(omega * t)*reward
+      theta$Y[[1]] <- c(y, theta$Y[[1]])[1:length(theta$Y[[1]])]
+      if (t > inttime)
+        theta$x0[[1]] = theta$x0[[1]] + learnrate * sum( theta$Y[[1]] ) / inttime
+      theta
+    }
+  )
+)
+
+#' Policy: LiF
+#'
+#' LifPolicy intro
+#'
+#' @section Usage:
+#' \preformatted{b <- LifPolicy$new()
+#'
+#' b$reset()
+#'
+#' print(b)
+#' }
+#'
+#' @section Arguments:
+#' \describe{
+#'   \item{b}{A \code{LifPolicy} object.}
+#' }
+#'
+#' @section Details:
+#' \code{$new()} starts a new LifPolicy, it uses \code{\link[base]{pipe}}.
+#' R does \emph{not} wait for the process to finish, but returns
+#' immediately.
+#'
+#' @importFrom R6 R6Class
+#' @name LifPolicy
+#' @examples
+#'\dontrun{}
+#'
+NULL
+

@@ -29,7 +29,7 @@ OfflineLiBandit <- R6::R6Class(
         reward_at_index <- as.double(private$S$reward[[index]])
       }
 
-      if (private$S$arm[[index]] == action$arm | use_ips == TRUE) {
+      if (private$S$choice[[index]] == action$choice | use_ips == TRUE) {
         list(
           reward = reward_at_index,
           is_optimal = as.integer(private$S$is_optimal[[index]]),

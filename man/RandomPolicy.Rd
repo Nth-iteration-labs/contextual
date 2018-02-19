@@ -83,9 +83,13 @@ Bandit classes: \code{\link{AbstractBandit}}, \code{\link{BasicBandit}},
 \code{\link{OfflineLiBandit}}, \code{\link{SyntheticBandit}}
 
 Other contextual policies: \code{\link{AbstractPolicy}},
+  \code{\link{BTSLogitPolicy}},
   \code{\link{EpsilonFirstPolicy}},
   \code{\link{EpsilonGreedyPolicy}},
   \code{\link{Exp3Policy}}, \code{\link{LinUCBPolicy}},
   \code{\link{OraclePolicy}},
-  \code{\link{ThompsonSamplingPolicy}}
+  \code{\link{SimpleBTSPolicy}},
+  \code{\link{SoftmaxPolicy}},
+  \code{\link{ThompsonSamplingPolicy}},
+  \code{\link{UCB1Policy}}
 }

@@ -15,11 +15,11 @@ AbstractPolicy <- R6::R6Class(
       self$name   <- name
       self$action <- list()
     },
-    get_action = function(context, theta) {
+    get_action = function(context, theta, t) {
       stop("AbstractPolicy$get_action() has not been implemented",
            call. = FALSE)
     },
-    set_reward = function(context, action, reward) {
+    set_reward = function(context, action, reward, t) {
       stop("AbstractPolicy$set_reward() has not been implemented",
            call. = FALSE)
     },

@@ -62,7 +62,7 @@ Sys.setenv(R_GSCMD = "C:\\Program Files\\gs\\gs9.22\\bin\\gswin64c.exe")
 
 #data.table::set(data, index, 1L, t)
 #data.table::set(data, index, 2L, s)
-#data.table::set(data, index, 3L, action$arm)
+#data.table::set(data, index, 3L, action$choice)
 #data.table::set(data, index, 4L, reward[[1]])
 #data.table::set(data, index, 5L, is_optimal)
 #data.table::set(data, index, 6L, reward$oracle)

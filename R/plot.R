@@ -157,21 +157,21 @@ Plot <- R6::R6Class(
       if (length(agent_levels) > 1)
         warning("## Arm percentage plot always plots the results of just one agent.", call. = FALSE)
       history <- history[agent == agent_levels[1]]
-      cs <- history[, list(arm_count = .(rowCount = .N)), by = list(t,arm)]
+      cs <- history[, list(arm_count = .(rowCount = .N)), by = list(t,choice)]
       max_sim  = history[, max(sim)]
       max_t    = history[, max(t)]
-      arm_levels <- levels(as.factor(cs$arm))
+      arm_levels <- levels(as.factor(cs$choice))
       max_arm = length(arm_levels)
       cs$arm_count <- as.double((unlist(cs$arm_count)/max_sim) * 100L)
       old.par <- par(no.readonly = TRUE)
       # par(mar = c(bottom, left, top, right))
       par(mar = c(5, 5, 1, 1))
-      eg = expand.grid(t = seq(1.0, max_t, 1), arm = seq(1.0, max_arm, 1))
+      eg = expand.grid(t = seq(1.0, max_t, 1), choice = seq(1.0, max_arm, 1))
       cs <- merge(cs, eg, all = TRUE)
       cs[is.na(cs)] <- 0.0
       cs$csum <- ave(cs$arm_count, cs$t, FUN = cumsum)
       cs$zero <- 0.0
-      cs <- cs[order(arm, t)]
+      cs <- cs[order(choice, t)]
       min_ylim <- 0
       max_ylim <- 100
       plot.new()
@@ -181,16 +181,16 @@ Plot <- R6::R6Class(
       cl <- gg_color_hue(length(arm_levels))
       color <- 1
       polygon(
-        c(cs[cs$arm == 1]$t, rev(cs[cs$arm == 1]$t)),
-        c(cs[cs$arm == 1]$csum, rev(cs[cs$arm == 1]$zero)),
+        c(cs[cs$choice == 1]$t, rev(cs[cs$choice == 1]$t)),
+        c(cs[cs$choice == 1]$csum, rev(cs[cs$choice == 1]$zero)),
         col = adjustcolor(cl[color], alpha.f = 0.6),
         border = NA
       )
       color <- 2
       for (arm_nr in c(2:length(arm_levels))) {
         polygon(
-          c(cs[cs$arm == arm_nr]$t, rev(cs[cs$arm == arm_nr]$t)),
-          c(cs[cs$arm == arm_nr - 1]$csum, rev(cs[cs$arm == arm_nr]$csum)),
+          c(cs[cs$choice == arm_nr]$t, rev(cs[cs$choice == arm_nr]$t)),
+          c(cs[cs$choice == arm_nr - 1]$csum, rev(cs[cs$choice == arm_nr]$csum)),
           col = adjustcolor(cl[color], alpha.f = 0.6),
           border = NA
         )

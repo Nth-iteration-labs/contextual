@@ -13,7 +13,7 @@ LinUCBPolicy <- R6::R6Class(
     set_parameters = function() {
       self$parameters <- list( 'A' = diag(1,self$d), 'b' = rep(0,self$d))
     },
-    get_action = function(context) {
+    get_action = function(context, t) {
       expected_rewards <- rep(0.0, context$k)
       X <- context$X
       for (arm in 1:context$k) {
@@ -25,11 +25,11 @@ LinUCBPolicy <- R6::R6Class(
         var        <-  sqrt(tcrossprod(context$X %*% A.inv, X))
         expected_rewards[arm] <- mean + (alpha * var)
       }
-      action$arm  <- max_in(expected_rewards)
+      action$choice  <- max_in(expected_rewards)
       action
     },
-    set_reward = function(context, action, reward) {
-      arm <- action$arm
+    set_reward = function(context, action, reward, t) {
+      arm <- action$choice
       reward <- reward$reward
       X <- context$X
 

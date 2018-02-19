@@ -13,18 +13,18 @@ EpsilonFirstPolicy <- R6::R6Class(
     set_parameters = function() {
       self$parameters <- list('n' = 0, 'mean' = 0)
     },
-    get_action = function(context) {
+    get_action = function(context, t) {
       if (sum_of(theta$n) < first) {
-        action$arm          <- sample.int(context$k, 1, replace = TRUE)
+        action$choice          <- sample.int(context$k, 1, replace = TRUE)
         action$propensity   <- (1/context$k)
       } else {
-        action$arm          <- max_in(theta$mean, equal_is_random = FALSE)
+        action$choice          <- max_in(theta$mean, equal_is_random = FALSE)
         action$propensity   <- 1
       }
       action
     },
-    set_reward = function(context, action, reward) {
-      arm      <- action$arm
+    set_reward = function(context, action, reward, t) {
+      arm      <- action$choice
       reward   <- reward$reward
 
       inc(theta$n[[arm]]) <- 1

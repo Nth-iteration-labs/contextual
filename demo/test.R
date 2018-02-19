@@ -1,70 +1,63 @@
-########################### package dev helpers ################################
-#library(contextual)
 setwd("~/GitHub/contextual/demo")
 source("dev.R")
 
-bandit      <- SyntheticBandit$new()
-bandit$set_weights(matrix(
-  c(0.9, 0.0, 0.1,
-    0.1, 0.9, 0.1,
-    0.1, 0.1, 0.9),
-  nrow = 3,
-  ncol = 3
-))
+horizon            <- 100L
+simulations        <- 100L
+weight_per_arm     <- c(0.9, 0.1, 0.1)
 
-policy      <- RandomPolicy$new()
+policy             <- EpsilonFirstPolicy$new(first = 50, name = "EpsilonFirst")
+bandit             <- SyntheticBandit$new(weights = weight_per_arm, precache = FALSE)
+agent              <- Agent$new(policy, bandit)
 
-agent       <- Agent$new(policy, bandit)
+history            <- Simulator$new(agent, horizon, simulations, do_parallel = FALSE)$run()
 
-simulation  <-
-  Simulator$new(
-    agent,
-    horizon = 10L,
-    simulations = 10L,
-    save_context = TRUE,
-    save_theta = FALSE,
-    worker_max = 1
-  )
+plot(history, type = "grid")
 
-before <- simulation$run()
+plot(history, type = "arms")
 
-before$save_data("test.RData")
+############################################# LIFFFFFFFFFFFFFFF!
 
-compare_before_reward <- c(
-  1,0,0,0,0,0,0,0,0,1,1,0,0,0,0,1,0,0,1,1,0,1,1,
-  1,0,1,0,1,1,0,1,0,0,1,0,1,1,0,1,1,1,1,0,1,0,0,
-  1,1,0,0,1,1,1,0,0,0,0,0,0,0,1,0,1,1,1,1,0,0,1,
-  1,0,1,0,0,0,1,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,1,
-  0,0,0,0,1,1,0,1
-)
+horizon            <- 1500
+simulations        <- 100
 
-#expect_equal(before$data$reward,compare_before_reward)
+continuum_of_arms  <- function(x) {
+  -0.1*(x - 5) ^ 2 + 3.5  + rnorm(length(x),0,0.4)
+}
 
-print(before$data$reward)
+int_time    <- 100
+amplitude   <- 0.2
+learn_rate  <- 0.3
+omega       <- 2*pi/int_time
+x0_start    <- 2.0
 
-######################## use the log to test a policy ##########################
+policy             <- LifPolicy$new(int_time, amplitude, learn_rate, omega, x0_start, name = "LiF")
 
-log_S     <- History$new()
-log_S$load_data("test.RData")
+bandit             <- ContinuumBandit$new(FUN = continuum_of_arms)
 
-bandit      <- OfflineLiBandit$new(log_S, 3, 3)
+agent              <- Agent$new(policy,bandit)
 
-policy      <- LinUCBPolicy$new(1.0)
-agent       <- Agent$new(policy, bandit)
-simulation  <- Simulator$new(agent,
-                             horizon = 10L,
-                             simulations = 10L,
-                             do_parallel  = F )
+history            <- Simulator$new(     agents = agent,
+                                         horizon = horizon,
+                                         simulations = simulations,
+                                         save_theta = TRUE             )$run()
 
-after <- simulation$run()
+h <- history$get_data_table()
 
-compare_after_reward <- c(
-  1,0,0,1,1,0,1,0,1,0,1,1,1,1,0,1,1,0,1,1,
-  1,0,1,1,0,1,1,0,0,0,1,0,0,1,0,1,0,0,1,0
-)
+plot(history, type = "average", regret = FALSE)
 
-print(after$data$reward)
 
-#expect_equal(after$data$reward,compare_after_reward)
+##################### thinking on this #####################
 
-if (file.exists("test.RData")) file.remove("test.RData")
+x = seq(from = 0, to = 10, by = 1)
+#error = rnorm(100,0,0.4)
+#y = (-0.1*(x - 5) ^ 2 + 3.5) + error
+continuum_arm      <- function(x) { -0.1*(x - 5) ^ 2 + 3.5  + rnorm(length(x),0,0.4) }   #####  can the error be set without ...
+y = continuum_arm(x)
+plot(x,y)
+mod <- lm(y ~ x + I(x^2))
+
+summary(mod)
+
+sim_res = simulate(mod)
+plot(x,sim_res$sim_1)
+

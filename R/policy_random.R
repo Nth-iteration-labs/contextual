@@ -11,13 +11,13 @@ RandomPolicy <- R6::R6Class(
     set_parameters = function() {
       self$parameters <- list('n' = 0, 'mean' = 0)
     },
-    get_action = function(context) {
-      action$arm <- sample.int(context$k, 1, replace = TRUE)
+    get_action = function(context, t) {
+      action$choice <- sample.int(context$k, 1, replace = TRUE)
       action$propensity <- 1/context$k
       action
     },
-    set_reward = function(context, action, reward) {
-      arm    <- action$arm
+    set_reward = function(context, action, reward, t) {
+      arm    <- action$choice
       reward <- reward$reward
       inc(theta$n[[arm]]) <- 1
       inc(theta$mean[[arm]]) <- (reward - theta$mean[[arm]]) / theta$n[[arm]]

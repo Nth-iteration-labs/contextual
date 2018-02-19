@@ -19,7 +19,7 @@ History <- R6::R6Class(
       private$.data <- data.table::data.table(
         t               = rep(0L,      n),
         sim             = rep(0L,      n),
-        arm          = rep(0L,      n),
+        choice          = rep(0.0,     n),
         reward          = rep(0.0,     n),
         is_optimal      = rep(0L,      n),
         oracle          = rep(0.0,     n),
@@ -43,14 +43,17 @@ History <- R6::R6Class(
                      ) {
 
       index <- as.integer(index)
-      if (reward$is_optimal) is_optimal <- 1L else is_optimal <- 0L
 
-      if (!is.null(action[["propensity"]])) {
-        prop_value <- action$propensity
-      } else {
-        prop_value <- 0.0
-      }
 
+      if (!is.null(reward$is_optimal))
+        if(reward$is_optimal) is_optimal <- 1L else is_optimal <- 0L
+      else is_optimal <- NA
+
+      if (!is.null(action$propensity)) propensity <- action$propensity
+      else propensity <- NA
+
+      if (!is.null(reward$oracle)) oracle <- reward$oracle
+      else  oracle <- NA
 
       data.table::set(
         data,
@@ -59,11 +62,11 @@ History <- R6::R6Class(
         list(
           t,
           s,
-          action$arm,
+          action$choice,
           reward$reward,
           is_optimal,
-          reward$oracle,
-          prop_value,
+          oracle,
+          propensity,
           policy_name
         )
       )

@@ -11,7 +11,7 @@ test_that("AbstractBandit check", {
   reward["oracle"] = 1
 
   action = list()
-  action$arm = 2
+  action$choice = 2
 
   expect_error(bandit$get_context(1), ".*implement.")
   expect_error(bandit$get_reward(action,1), ".*implement.")

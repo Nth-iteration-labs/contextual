@@ -36,8 +36,8 @@ AbstractBandit <- R6::R6Class(
     reward_to_list = function(action, t) {
       if (self$is_precaching) idx <- t else idx <- 1
       list(
-        reward = private$R[action$arm, idx],
-        is_optimal = private$max_in(private$R[, idx]) == action$arm,
+        reward = private$R[action$choice, idx],
+        is_optimal = private$max_in(private$R[, idx]) == action$choice,
         oracle = as.double(private$R[private$max_in(private$O[, idx]), idx])
       )
     }

@@ -49,7 +49,7 @@ Agent <- R6::R6Class(
     },
     policy_get_action = function() {
       policy$set_theta(private$theta)
-      private$state$action <- policy$get_action(private$state$context)
+      private$state$action <- policy$get_action(private$state$context, private$state$t)
       private$state$action
     },
     bandit_get_reward = function() {
@@ -58,7 +58,7 @@ Agent <- R6::R6Class(
     },
     policy_set_reward = function() {
       if (!is.null(private$state$reward)) {
-        private$theta <- policy$set_reward(private$state$context, private$state$action, private$state$reward )
+        private$theta <- policy$set_reward(private$state$context, private$state$action, private$state$reward, private$state$t )
         private$theta
       }
     },
