@@ -43,7 +43,7 @@ test_that("SyntheticBandit simulation", {
   expect_equal(context$X, 1)
   expect_identical(context$O, c(0.1, 0.9))
 
-  expect_message(bandit$generate_bandit_data(1), "Precaching bandit")
+  #expect_message(bandit$generate_bandit_data(1), "Precaching bandit")
 
   expect_output(simulation$object_size(), ".bytes.*")
 

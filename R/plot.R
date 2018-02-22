@@ -6,22 +6,27 @@ Plot <- R6::R6Class(
   inherit = Contextual,
   class = FALSE,
   public = list(
-    bandit_matrix = NULL,
+    max_sim = NULL,
     initialize = function() {
-
+      self$max_sim = 0
     },
     grid = function(history,
                     type = "grid",
                     xlim = NULL,
                     legend = TRUE,
                     use_colors = TRUE,
-                    ci = FALSE) {
+                    ci = FALSE,
+                    step_size = 1,
+                    start_step = 1,
+                    rate = FALSE) {
+
+
+
       history <- check_history_data(history)
       history <- history[t <= history[, max(t), by = c("sim")][, min(V1)]]
       old.par <- par(no.readonly = TRUE)
       dev.hold()
-      self$bandit_matrix <-
-        layout(matrix(c(1, 3, 2, 4), 2, 2, byrow = TRUE))
+      layout(matrix(c(1, 3, 2, 4), 2, 2, byrow = TRUE))
       # par(mar = c(bottom, left, top, right))
       par(mar = c(3, 5, 1, 1))
       self$cumulative(
@@ -31,7 +36,10 @@ Plot <- R6::R6Class(
         legend = legend,
         regret = TRUE,
         use_colors = use_colors,
-        ci = ci
+        ci = FALSE,
+        step_size = step_size,
+        start_step = start_step,
+        rate = FALSE
       )
       par(mar = c(3, 5, 1, 1))
       self$optimal(
@@ -40,7 +48,9 @@ Plot <- R6::R6Class(
         xlim = xlim,
         legend = FALSE,
         use_colors = use_colors,
-        ci = ci
+        ci = ci,
+        step_size = step_size,
+        start_step = start_step
       )
       par(mar = c(3, 5, 1, 2))
       self$cumulative(
@@ -50,7 +60,10 @@ Plot <- R6::R6Class(
         legend = FALSE,
         regret = FALSE,
         use_colors = use_colors,
-        ci = ci
+        ci = ci,
+        step_size = step_size,
+        start_step = start_step,
+        rate = rate
       )
       par(mar = c(3, 5, 1, 2))
       self$average(
@@ -60,7 +73,9 @@ Plot <- R6::R6Class(
         legend = FALSE,
         regret = FALSE,
         use_colors = use_colors,
-        ci = ci
+        ci = ci,
+        step_size = step_size,
+        start_step = start_step
       )
       dev.flush()
       par(old.par)
@@ -72,23 +87,32 @@ Plot <- R6::R6Class(
                           legend = TRUE,
                           regret = FALSE,
                           use_colors = TRUE,
-                          ci = FALSE) {
+                          ci = FALSE,
+                          step_size = 1,
+                          start_step = 1,
+                          rate = FALSE) {
+
       history <- check_history_data(history)
-      max_sim   = history[, max(sim)]
-      history <- history[order(agent, t, sim)]
+      self$max_sim   = history[, max(sim)]
+      history <- history[order(agent, sim, t)]
+
+
       if (regret) {
         ylab_title = "cumulative regret"
+        if (rate) history$cumsum = history[, cumsum(oracle - reward)/t, by = list(agent, sim)]$V1
+        else history$cumsum = history[, cumsum(oracle - reward), by = list(agent, sim)]$V1
         cs <-
-          history[, list(sd = sd(oracle - reward) / sqrt(max_sim),
-                         data = mean(oracle - reward)), by = list(t, agent)]
+          history[, list(var = var(cumsum) ,
+                         data = mean(cumsum)), by = list(t, agent)]
       } else {
         ylab_title = "cumulative reward"
+        if (rate) history$cumsum = history[, cumsum(reward)/t, by = list(agent, sim)]$V1
+        else history$cumsum = history[, cumsum(reward), by = list(agent, sim)]$V1
         cs <-
-          history[, list(sd = sd(reward) / sqrt(max_sim),
-                         data = mean(reward)), by = list(t, agent)]
+          history[, list(var = var(cumsum),
+                         data = mean(cumsum)), by = list(t, agent)]
       }
-      cs$data = cs[, cumsum(data), by = list(agent)][, 2]
-      do_plot(cs, ylab_title, use_colors, ci, legend, grid)
+      do_plot(cs, ylab_title, use_colors, ci, legend, grid, NULL, step_size, start_step)
       invisible(self)
     },
     average = function(history,
@@ -97,19 +121,21 @@ Plot <- R6::R6Class(
                        legend = TRUE,
                        regret = FALSE,
                        use_colors = TRUE,
-                       ci = FALSE) {
+                       ci = FALSE,
+                       step_size = 1,
+                       start_step = 1) {
       history <- check_history_data(history)
-      max_sim   = history[, max(sim)]
+      self$max_sim   = history[, max(sim)]
       history <- history[order(agent, t, sim)]
       if (regret) {
         ylab_title = "Average regret"
         cs <-
-          history[, list(sd = sd(oracle - reward) / sqrt(max_sim),
+          history[, list(var = var(oracle - reward) ,
                          data = mean(oracle - reward)), by = list(t, agent)]
       } else {
         ylab_title = "Average reward"
         cs <-
-          history[, list(sd = sd(reward) / sqrt(max_sim),
+          history[, list(var = var(reward) ,
                          data = mean(reward)), by = list(t, agent)]
       }
       do_plot(
@@ -118,7 +144,9 @@ Plot <- R6::R6Class(
         use_colors = use_colors,
         ci = ci,
         legend = legend,
-        grid = grid
+        grid = grid,
+        step_size = step_size,
+        start_step= start_step
       )
       invisible(self)
     },
@@ -127,13 +155,15 @@ Plot <- R6::R6Class(
                        xlim = NULL,
                        legend = TRUE,
                        use_colors = TRUE,
-                       ci = FALSE) {
+                       ci = FALSE,
+                       step_size = 1,
+                       start_step = 1) {
       history <- check_history_data(history)
-      max_sim   = history[, max(sim)]
+      self$max_sim   = history[, max(sim)]
       history <- history[order(agent, t, sim)]
       ylab_title = "Optimal arm"
       cs <-
-        history[, list(sd = sd(is_optimal * 100) / sqrt(max_sim),
+        history[, list(var = var(is_optimal * 100) ,
                        data = mean(is_optimal) * 100), by = list(t, agent)]
       do_plot(
         cs = cs,
@@ -142,7 +172,9 @@ Plot <- R6::R6Class(
         ci = ci,
         legend = legend,
         grid = grid,
-        ylim = c(0, 100)
+        #ylim = c(0, 100),
+        step_size = step_size,
+        start_step = start_step
       )
       invisible(self)
     },
@@ -150,7 +182,9 @@ Plot <- R6::R6Class(
                     grid = FALSE,
                     xlim = NULL,
                     legend = TRUE,
-                    use_colors = TRUE) {
+                    use_colors = TRUE,
+                    step_size = 1,
+                    start_step = 1) {
       history <- check_history_data(history)
       ylab_title = "Arm Choice %"
       agent_levels <- levels(as.factor(history$agent))
@@ -176,21 +210,21 @@ Plot <- R6::R6Class(
       max_ylim <- 100
       plot.new()
       cl <- gg_color_hue(length(agent_levels))
-      plot.window(xlim = c(1, cs[, max(t)]),
+      plot.window(xlim = c(start_step, cs[, max(t)]),
                   ylim = c(min_ylim, max_ylim))
       cl <- gg_color_hue(length(arm_levels))
       color <- 1
       polygon(
-        c(cs[cs$choice == 1]$t, rev(cs[cs$choice == 1]$t)),
-        c(cs[cs$choice == 1]$csum, rev(cs[cs$choice == 1]$zero)),
+        c(cs[cs$choice == 1]$t, rev(cs[cs$choice == 1][seq(start_step, nrow(cs), step_size)]$t)),
+        c(cs[cs$choice == 1]$csum, rev(cs[cs$choice == 1][seq(start_step, nrow(cs), step_size)]$zero)),
         col = adjustcolor(cl[color], alpha.f = 0.6),
         border = NA
       )
       color <- 2
       for (arm_nr in c(2:length(arm_levels))) {
         polygon(
-          c(cs[cs$choice == arm_nr]$t, rev(cs[cs$choice == arm_nr]$t)),
-          c(cs[cs$choice == arm_nr - 1]$csum, rev(cs[cs$choice == arm_nr]$csum)),
+          c(cs[cs$choice == arm_nr][seq(start_step, nrow(cs), step_size)]$t, rev(cs[cs$choice == arm_nr][seq(start_step, nrow(cs), step_size)]$t)),
+          c(cs[cs$choice == arm_nr - 1][seq(start_step, nrow(cs), step_size)]$csum, rev(cs[cs$choice == arm_nr][seq(start_step, nrow(cs), step_size)]$csum)),
           col = adjustcolor(cl[color], alpha.f = 0.6),
           border = NA
         )
@@ -207,7 +241,7 @@ Plot <- R6::R6Class(
           NULL,
           paste("arm", arm_levels, sep = " "),
           col = cl,
-          title=agent_levels[1],
+          title = agent_levels[1],
           pch = 15,
           pt.cex = 1.2,
           bg = "white",
@@ -222,7 +256,9 @@ Plot <- R6::R6Class(
                        ci = FALSE,
                        legend = TRUE,
                        grid = FALSE,
-                       ylim = NULL) {
+                       ylim = NULL,
+                       step_size = 1,
+                       start_step = 1) {
       if (grid == FALSE)
         dev.hold()
 
@@ -230,7 +266,7 @@ Plot <- R6::R6Class(
 
       if (ci) {
         # 95% confidence
-        ci_range <- cs$data + outer(cs$sd, c(1.96, -1.96))
+        ci_range <- cs$data + outer(sqrt(cs$var)/sqrt(self$max_sim), c(1.64, -1.64))
         cs = cbind(cs, ci_range)
         colnames(cs)[colnames(cs) == 'V2'] <- 'ci_lower'
         colnames(cs)[colnames(cs) == 'V1'] <- 'ci_upper'
@@ -239,17 +275,17 @@ Plot <- R6::R6Class(
       agent_levels <- levels(as.factor(cs$agent))
       cl <- gg_color_hue(length(agent_levels))
       if (ci) {
-        min_ylim = cs[, min(ci_lower)]
-        max_ylim = cs[, max(ci_upper)]
+        min_ylim = cs[t>=start_step][, min(ci_lower)]
+        max_ylim = cs[t>=start_step][, max(ci_upper)]
       } else {
-        min_ylim = cs[, min(data)]
-        max_ylim = cs[, max(data)]
+        min_ylim = cs[t>=start_step][, min(data)]
+        max_ylim = cs[t>=start_step][, max(data)]
       }
       if (!is.null(ylim)) {
         min_ylim <- ylim[1]
         max_ylim <- ylim[2]
       }
-      plot.window(xlim = c(1, cs[, max(t)]),
+      plot.window(xlim = c(start_step, cs[, max(t)]),
                   ylim = c(min_ylim, max_ylim))
 
       if (use_colors) {
@@ -257,9 +293,10 @@ Plot <- R6::R6Class(
         if (ci) {
           color <- 1
           for (agent_name in agent_levels) {
+            step_seq <- seq(start_step, nrow(cs[cs$agent == agent_name]), step_size)
             polygon(
-              c(cs[cs$agent == agent_name]$t, rev(cs[cs$agent == agent_name]$t)),
-              c(cs[cs$agent == agent_name]$ci_lower, rev(cs[cs$agent == agent_name]$ci_upper)),
+              c(cs[cs$agent == agent_name][step_seq]$t, rev(cs[cs$agent == agent_name][step_seq]$t)),
+              c(cs[cs$agent == agent_name][step_seq]$ci_lower, rev(cs[cs$agent == agent_name][step_seq]$ci_upper)),
               col = adjustcolor(cl[color], alpha.f = 0.3),
               border = NA
             )
@@ -268,9 +305,10 @@ Plot <- R6::R6Class(
         }
         color <- 1
         for (agent_name in agent_levels) {
+          step_seq <- seq(start_step, nrow(cs[cs$agent == agent_name]), step_size)
           lines(
-            cs[cs$agent == agent_name]$t,
-            cs[cs$agent == agent_name]$data,
+            cs[cs$agent == agent_name][step_seq]$t,
+            cs[cs$agent == agent_name][step_seq]$data,
             lwd = 1,
             lty = 1,
             col = adjustcolor(cl[color], alpha.f = 0.9),
@@ -280,17 +318,18 @@ Plot <- R6::R6Class(
         }
       } else {
         for (agent_name in agent_levels) {
+          step_seq <- seq(start_step, nrow(cs[cs$agent == agent_name]), step_size)
           if (ci) {
             polygon(
-              c(cs[cs$agent == agent_name]$t, rev(cs[cs$agent == agent_name]$t)),
-              c(cs[cs$agent == agent_name]$ci_lower, rev(cs[cs$agent == agent_name]$ci_upper)),
+              c(cs[cs$agent == agent_name][step_seq]$t, rev(cs[cs$agent == agent_name][step_seq]$t)),
+              c(cs[cs$agent == agent_name][step_seq]$ci_lower, rev(cs[cs$agent == agent_name][step_seq]$ci_upper)),
               col = rgb(0.8, 0.8, 0.8, 0.4),
               border = NA
             )
           }
           lines(
-            cs[cs$agent == agent_name]$t,
-            cs[cs$agent == agent_name]$data,
+            cs[cs$agent == agent_name][step_seq]$t,
+            cs[cs$agent == agent_name][step_seq]$data,
             lwd = 1,
             lty = 1,
             col = rgb(0.2, 0.2, 0.2, 0.8),
@@ -363,7 +402,9 @@ Plot <- R6::R6Class(
     ts = function(history,
                   grid = FALSE,
                   xlim = NULL,
-                  legend = TRUE) {
+                  legend = TRUE,
+                  step_size = 1,
+                  start_step = 1) {
       history <- check_history_data(history)
       if (grid == FALSE)
         dev.hold()
@@ -432,6 +473,7 @@ plot.History <- function(x, ...) {
     type = args$type
   else
     type = "cumulative"
+
   if ("args" %in% names(args))
     grid = args$grid
   else
@@ -452,16 +494,38 @@ plot.History <- function(x, ...) {
     use_colors = args$use_colors
   else
     use_colors = TRUE
+
   if ("ci" %in% names(args))
     ci = args$ci
   else
     ci = FALSE
 
+  if ("step_size" %in% names(args))
+    step_size = args$step_size
+  else
+    step_size = 1
+
+  if ("start_step" %in% names(args))
+    start_step = args$start_step
+  else
+    start_step = 1
+
+  if ("rate" %in% names(args))
+    rate = args$rate
+  else
+    rate = FALSE
+
+
+
+
   if (type == "grid") {
     Plot$new()$grid(x,
                     xlim = xlim,
                     use_colors = use_colors,
-                    ci = ci)
+                    ci = ci,
+                    step_size = step_size,
+                    start_step = start_step,
+                    rate = rate)
   } else if (type == "cumulative") {
     Plot$new()$cumulative(
       x,
@@ -469,7 +533,10 @@ plot.History <- function(x, ...) {
       legend = legend,
       regret = regret,
       use_colors = use_colors,
-      ci = ci
+      ci = ci,
+      step_size = step_size,
+      start_step = start_step,
+      rate = rate
     )
   } else if (type == "average") {
     Plot$new()$average(
@@ -478,7 +545,9 @@ plot.History <- function(x, ...) {
       legend = legend,
       regret = regret,
       use_colors = use_colors,
-      ci = ci
+      ci = ci,
+      step_size = step_size,
+      start_step = start_step
     )
   } else if (type == "optimal") {
     Plot$new()$optimal(
@@ -487,14 +556,18 @@ plot.History <- function(x, ...) {
       legend = legend,
       regret = regret,
       use_colors = use_colors,
-      ci = ci
+      ci = ci,
+      step_size = step_size,
+      start_step = start_step
     )
   } else if (type == "arms") {
     Plot$new()$arms(
       x,
       xlim = xlim,
       legend = legend,
-      use_colors = use_colors
+      use_colors = use_colors,
+      step_size = step_size,
+      start_step = start_step
     )
   }
 }
@@ -527,3 +600,5 @@ plot.History <- function(x, ...) {
 #'\dontrun{}
 #'
 NULL
+
+# variance plot optimal arm --> is the arm set in advance? / sqrt(max_sim)?

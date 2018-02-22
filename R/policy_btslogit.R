@@ -19,13 +19,13 @@ BTSLogitPolicy <- R6::R6Class(
       for (arm in 1:context$k) {
         A          <-  theta$A[[arm]]
         b          <-  theta$b[[arm]]
+
         A.inv      <-  chol2inv(chol(A))
         theta.hat  <-  A.inv %*% b
         mean       <-  X %*% theta.hat
 
-
-        var        <-  sqrt(tcrossprod(context$X %*% A.inv, X))
-        expected_rewards[arm] <- mean + (alpha * var)
+        variance              <-  sqrt(tcrossprod(context$X %*% A.inv, X))
+        expected_rewards[arm] <- mean + (alpha * variance)
       }
       action$choice  <- max_in(expected_rewards)
       action

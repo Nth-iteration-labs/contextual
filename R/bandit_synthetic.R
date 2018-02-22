@@ -23,13 +23,17 @@ SyntheticBandit <- R6::R6Class(
     reward_family = NULL,
     precache      = NULL,
     has_cache     = NULL,
+    not_zero_features = NULL,
+    random_one_feature = NULL,
 
     initialize   = function(
       reward_family        = 'Bernoulli',
       reward_means         = 4.0,
       reward_stds          = 1.0,
       weights              = NULL,
-      precache             = TRUE
+      precache             = TRUE,
+      not_zero_features    = TRUE,
+      random_one_feature   = FALSE
     ) {
 
       if (!(reward_family %in% c("Bernoulli","Gaussian","Poisson"))) {
@@ -43,27 +47,28 @@ SyntheticBandit <- R6::R6Class(
       self$reward_family        <- reward_family
       self$reward_means         <- reward_means
       self$reward_stds          <- reward_stds
-
+      self$not_zero_features    <- not_zero_features
+      self$random_one_feature    <- random_one_feature
     },
     get_context = function(t) {
       if (self$is_precaching) {
         private$context_to_list(t)
       } else {
-        self$generate_bandit_data(n = 1L, not_zero_features = TRUE, silent = TRUE )
+        self$generate_bandit_data(n = 1L)
         private$context_to_list(t = 1)
       }
     },
     get_reward = function(action, t) {
       private$reward_to_list(action, t)
     },
+
     generate_bandit_data = function(n = 1L,
-                                    not_zero_features = TRUE,
-                                    silent = FALSE ) {
+                                    silent = TRUE ) {
       if (!silent) message("Precaching bandit" )
       private$X <- matrix(0, n , self$d)
       private$O <- matrix(0, self$k, n)
       private$R <- matrix(0, self$k, n)
-      private$generate_context(n, not_zero_features)
+      private$generate_context(n)
       private$generate_oracle(n)
       private$generate_rewards(n)
       self$has_cache <- TRUE
@@ -71,17 +76,27 @@ SyntheticBandit <- R6::R6Class(
   ),
   private = list(
 
-    generate_context = function(n = 1L, not_zero_features = TRUE) {
-      if (not_zero_features) {
+    generate_context = function(n = 1L) {
+      if (self$not_zero_features | self$random_one_feature) {
         private$X[cbind(1L:n, sample(self$d, n, replace = TRUE))] <- 1
       }
-      private$X <- matrix((private$X | matrix(sample(c(0, 1), replace = TRUE, size = n * self$d),  n, self$d)), n, self$d)
+      if (!self$random_one_feature) {
+        private$X <- matrix((private$X | matrix(sample(c(0, 1), replace = TRUE, size = n * self$d),  n, self$d)), n, self$d)
+      }
       mode(private$X) <- 'integer'
     },
 
     generate_oracle = function(n) {
-      Wg <- sweep(array(t(matrix(private$W, self$k , self$d)), dim = c(self$d, self$k, n)), 3, private$X, FUN = "*", check.margin = FALSE)
-      private$O <- t( t(colSums(Wg)) / as.vector(rowSums(private$X)) )
+      Wg <-
+        sweep(array(t(matrix(
+          private$W, self$k , self$d
+        )), dim = c(self$d, self$k, n)),
+        3,
+        private$X,
+        FUN = "*",
+        check.margin = FALSE)
+      private$O <-
+        t(t(colSums(Wg)) / as.vector(rowSums(private$X)))
       private$O[is.nan(private$O)] <- 0
     },
 

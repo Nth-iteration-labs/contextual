@@ -12,19 +12,16 @@ UCB1Policy <- R6::R6Class(
       self$parameters <- list('n' = 0, 'mean' = 0)
     },
     get_action = function(context, t) {
-      coldstart <- which(theta$n == 0)[1]
-      if (!is.na(coldstart)) {
-        action$choice <- coldstart
+      action$choice <- which(theta$n == 0)[1]
+      if (!is.na(action$choice)) {
         return(action)
       }
-      ucb_values <- rep(0.0, context$k)
-      total_counts <- sum_of(theta$n)
-
+      expected_rewards <- rep(0.0, context$k)
       for (arm in 1:context$k) {
-        bonus <- sqrt((2 * log(total_counts)) / theta$n[[arm]])
-        ucb_values[arm] <- theta$mean[[arm]] + bonus
+        variance <- sqrt( (2*log(sum_of(theta$n))) / theta$n[[arm]])
+        expected_rewards[arm] <- theta$mean[[arm]] + variance
       }
-      action$choice <- max_in(ucb_values)
+      action$choice <- max_in(expected_rewards)
       action
     },
     set_reward = function(context, action, reward, t) {

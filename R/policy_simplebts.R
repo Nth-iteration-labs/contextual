@@ -18,14 +18,14 @@ SimpleBTSPolicy <- R6::R6Class(
       self$b  <- b
     },
     set_parameters = function() {
-      self$parameters <- list('alpha' = self$a,  'beta' = self$b)
+      self$parameters <- list('alpha' = rep(self$b,self$J),  'beta' = rep(self$b,self$J))
     },
     get_action = function(context, t) {
       point_estimate_of_mean = vector("double", context$k)
       for (arm in 1:context$k) {
-        replicate <- sample(self$J, 1)
-        r_alpha <- theta$alpha[[replicate]][[arm]]
-        r_beta  <- theta$beta[[replicate]][[arm]]
+        one_replicate <- sample(self$J, 1)
+        r_alpha <- theta$alpha[[arm]][one_replicate]
+        r_beta  <- theta$beta[[arm]][one_replicate]
         point_estimate_of_mean[arm] <- r_alpha / (r_alpha + r_beta)
       }
       action$choice <- max_in(point_estimate_of_mean)
@@ -34,23 +34,9 @@ SimpleBTSPolicy <- R6::R6Class(
     set_reward = function(context, action, reward, t) {
       arm    <- action$choice
       reward <- reward$reward
-
-      double_or_nothing_bootstrap <- which(rbinom(self$J, 1, .5) == 1)
-      for (replicate in double_or_nothing_bootstrap) {
-        inc(theta$alpha[[replicate]][[arm]]) <- reward
-        inc(theta$beta[[replicate]][[arm]])  <- 1 - reward
-      }
-      theta
-    },
-    initialize_theta = function() {
-      theta <- list()
-      for (param_index in 1L:length(parameters)) {
-        theta[[names(self$parameters)[param_index]]] <- list()
-        for (replicate in 1L:self$J) {
-          theta[[names(self$parameters)[param_index]]][[replicate]] <-
-            rep(list(self$parameters[[param_index]]), self$k)
-        }
-      }
+      some_replicates <- which(rbinom(self$J, 1, .5) == 1) # double_or_nothing_bootstrap
+      inc(theta$alpha[[arm]][some_replicates]) <- reward
+      inc(theta$beta[[arm]][some_replicates])  <- 1 - reward
       theta
     }
   )

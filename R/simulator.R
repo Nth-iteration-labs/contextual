@@ -94,7 +94,7 @@ Simulator <- R6::R6Class(
           policy_name <- sim_agent$policy$name
           set.seed(simulation_index + set_seed)
           if (sim_agent$bandit$is_precaching ) {
-            sim_agent$bandit$generate_bandit_data(n = horizon, silent = TRUE)
+            sim_agent$bandit$generate_bandit_data(n = horizon)
           }
           if (continouous_counter) sim_agent$set_t(as.integer((simulation_index - 1L) * horizon))
           for (t in 1L:horizon) {
