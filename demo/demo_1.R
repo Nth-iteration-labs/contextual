@@ -19,4 +19,6 @@ history            <- Simulator$new(agents = agent,
 
 plot(history, type = "grid")
 
+plot(history, type = "arms")
+
 h <- history$get_data_table()

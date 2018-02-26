@@ -99,6 +99,7 @@ Plot <- R6::R6Class(
 
       if (regret) {
         ylab_title = "cumulative regret"
+        if (rate)ylab_title = "cumulative regret - rate"
         if (rate) history$cumsum = history[, cumsum(oracle - reward)/t, by = list(agent, sim)]$V1
         else history$cumsum = history[, cumsum(oracle - reward), by = list(agent, sim)]$V1
         cs <-
@@ -106,6 +107,7 @@ Plot <- R6::R6Class(
                          data = mean(cumsum)), by = list(t, agent)]
       } else {
         ylab_title = "cumulative reward"
+        if (rate)ylab_title = "cumulative reward - rate"
         if (rate) history$cumsum = history[, cumsum(reward)/t, by = list(agent, sim)]$V1
         else history$cumsum = history[, cumsum(reward), by = list(agent, sim)]$V1
         cs <-
@@ -215,16 +217,16 @@ Plot <- R6::R6Class(
       cl <- gg_color_hue(length(arm_levels))
       color <- 1
       polygon(
-        c(cs[cs$choice == 1]$t, rev(cs[cs$choice == 1][seq(start_step, nrow(cs), step_size)]$t)),
-        c(cs[cs$choice == 1]$csum, rev(cs[cs$choice == 1][seq(start_step, nrow(cs), step_size)]$zero)),
+        c(cs[cs$choice == 1]$t, rev(cs[cs$choice == 1]$t)),
+        c(cs[cs$choice == 1]$csum, rev(cs[cs$choice == 1]$zero)),
         col = adjustcolor(cl[color], alpha.f = 0.6),
         border = NA
       )
       color <- 2
       for (arm_nr in c(2:length(arm_levels))) {
         polygon(
-          c(cs[cs$choice == arm_nr][seq(start_step, nrow(cs), step_size)]$t, rev(cs[cs$choice == arm_nr][seq(start_step, nrow(cs), step_size)]$t)),
-          c(cs[cs$choice == arm_nr - 1][seq(start_step, nrow(cs), step_size)]$csum, rev(cs[cs$choice == arm_nr][seq(start_step, nrow(cs), step_size)]$csum)),
+          c(cs[cs$choice == arm_nr]$t, rev(cs[cs$choice == arm_nr]$t)),
+          c(cs[cs$choice == arm_nr - 1]$csum, rev(cs[cs$choice == arm_nr]$csum)),
           col = adjustcolor(cl[color], alpha.f = 0.6),
           border = NA
         )
@@ -602,3 +604,4 @@ plot.History <- function(x, ...) {
 NULL
 
 # variance plot optimal arm --> is the arm set in advance? / sqrt(max_sim)?
+# REALLY needs refactoring again.
