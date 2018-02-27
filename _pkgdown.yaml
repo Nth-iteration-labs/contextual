@@ -17,5 +17,3 @@ reference:
     desc: "Contextual's Policy implementations."
     contents:
       - ends_with("Policy")
-
-
