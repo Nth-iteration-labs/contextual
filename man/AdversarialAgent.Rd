@@ -2,9 +2,9 @@
 % Please edit documentation in R/agent_adversarial.R
 \name{AdversarialAgent}
 \alias{AdversarialAgent}
-\title{Agent: Adversarial}
+\title{External Adversarial}
 \description{
-Agent intro
+AdversarialAgent intro
 }
 \section{Usage}{
 

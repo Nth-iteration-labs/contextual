@@ -3,9 +3,8 @@ Type: Package
 Title: Contextual Multi-Armed Bandit Simulation and Analysis
 Version: 0.0.0.9012
 Author: Robin van Emden
-Authors@R: c(person("Robin", "van Emden", role = c("aut", "cre"), comment = c(ORCID = "0000-0001-5820-8638")
-                     email = "robinvanemden@gmail.com"),
-              person("Maurits", "Kaptein", role = "ctb", email = "m.c.kaptein@tilburguniversity.edu", comment = c(ORCID = "0000-0002-6316-7524"))
+Authors@R: c(person("Robin", "van Emden", role = c("aut", "cre"), comment = c(ORCID = "0000-0001-5820-8638"), email = "robinvanemden@gmail.com"),
+              person("Maurits", "Kaptein", role = "ctb", email = "m.c.kaptein@tilburguniversity.edu", comment = c(ORCID = "0000-0002-6316-7524")))
 Maintainer: Robin van Emden <robinvanemden@gmail.com>
 Description: Simulates contextual multi-armed bandit problems and analyses the results.
 License: GPL-3 + file LICENSE

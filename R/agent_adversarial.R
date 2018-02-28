@@ -69,9 +69,9 @@ AdversarialAgent <- R6::R6Class(
   )
 )
 
-#' Agent: Adversarial
+#' External Adversarial
 #'
-#' Agent intro
+#' AdversarialAgent intro
 #'
 #' @section Usage:
 #' \preformatted{b <- AdversarialAgent$new()
