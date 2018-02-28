@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6350 64-bit) (preloaded format=pdflatex 2017.10.23)  5 FEB 2018 16:21
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6350 64-bit) (preloaded format=pdflatex 2017.10.23)  28 FEB 2018 15:51
 entering extended mode
 **./jss.tex
 (jss.tex
@@ -831,94 +831,109 @@ LaTeX Font Info:    Try loading font information for T1+aess on input line 133.
  ("C:\Program Files\MiKTeX 2.9\tex\latex\ae\t1aess.fd"
 File: t1aess.fd 1997/11/16 Font definitions for T1/aess.
 )
+LaTeX Font Info:    Try loading font information for TS1+aer on input line 148.
+
+
+(C:/PROGRA~1/MIE74D~1/ROPEN~1/R-34~1.2/share/texmf/tex/latex\ts1aer.fd
+File: ts1aer.fd 
+)
+LaTeX Font Info:    Font shape `TS1/aer/m/n' in size <10.95> not available
+(Font)              Font shape `TS1/cmr/m/n' tried instead on input line 148.
+
 [1
 
 {C:/ProgramData/MiKTeX/2.9/pdftex/config/pdftex.map}]
-Package color Info: Redefining color shadecolor on input line 168.
-LaTeX Font Info:    Try loading font information for T1+aett on input line 169.
-
-
-("C:\Program Files\MiKTeX 2.9\tex\latex\ae\t1aett.fd"
-File: t1aett.fd 1997/11/16 Font definitions for T1/aett.
-)
-
-LaTeX Font Warning: Font shape `T1/aett/bx/n' undefined
-(Font)              using `T1/aett/m/n' instead on input line 170.
-
-Package color Info: Redefining color shadecolor on input line 197.
-<fig/fig1-1.pdf, id=61, 505.89pt x 505.89pt>
-File: fig/fig1-1.pdf Graphic file (type pdf)
- <use fig/fig1-1.pdf>
-Package pdftex.def Info: fig/fig1-1.pdf used on input line 198.
-(pdftex.def)             Requested size: 442.65375pt x 442.66037pt.
 LaTeX Font Info:    Font shape `T1/aer/b/sl' in size <10.95> not available
-(Font)              Font shape `T1/aer/bx/sl' tried instead on input line 214.
+(Font)              Font shape `T1/aer/bx/sl' tried instead on input line 173.
 
 Overfull \hbox (5.47499pt too wide) has occurred while \output is active
 \T1/aer/m/n/10.95 2 []
  []
 
 [2]
+Package color Info: Redefining color shadecolor on input line 183.
+LaTeX Font Info:    Try loading font information for T1+aett on input line 184.
+
+ ("C:\Program Files\MiKTeX 2.9\tex\latex\ae\t1aett.fd"
+File: t1aett.fd 1997/11/16 Font definitions for T1/aett.
+)
+
+LaTeX Font Warning: Font shape `T1/aett/bx/n' undefined
+(Font)              using `T1/aett/m/n' instead on input line 185.
+
+Package color Info: Redefining color shadecolor on input line 212.
+<fig/fig1-1.pdf, id=68, 505.89pt x 505.89pt>
+File: fig/fig1-1.pdf Graphic file (type pdf)
+ <use fig/fig1-1.pdf>
+Package pdftex.def Info: fig/fig1-1.pdf used on input line 213.
+(pdftex.def)             Requested size: 442.65375pt x 442.66037pt.
+
 Overfull \hbox (5.47499pt too wide) has occurred while \output is active
 [] \T1/aer/m/n/10.95 3
  []
 
-[3 <./fig/fig1-1.pdf>] (jss.bbl)
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 256.
-
-Underfull \hbox (badness 10000) in paragraph at lines 256--256
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 256--256
-
- []
-
-
+[3]
 Overfull \hbox (5.47499pt too wide) has occurred while \output is active
 \T1/aer/m/n/10.95 4 []
  []
 
-[4]
+[4 <./fig/fig1-1.pdf>] (jss.bbl)
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 271.
+
+Underfull \hbox (badness 10000) in paragraph at lines 271--271
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 271--271
+
+ []
+
+
 Overfull \hbox (5.47499pt too wide) has occurred while \output is active
 [] \T1/aer/m/n/10.95 5
  []
 
 [5]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 256.
+Overfull \hbox (5.47499pt too wide) has occurred while \output is active
+\T1/aer/m/n/10.95 6 []
+ []
+
+[6]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 271.
  (jss.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 256.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 256.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 271.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 271.
 Package rerunfilecheck Info: File `jss.out' has not changed.
 (rerunfilecheck)             Checksum: A72ED167B0208283E6EAE2159824CCB4;853.
 
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 256.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 271.
  ) 
 Here is how much of TeX's memory you used:
- 7675 strings out of 493323
- 108943 string characters out of 3139065
- 201206 words of memory out of 3000000
- 11034 multiletter control sequences out of 15000+200000
- 41166 words of font info for 75 fonts, out of 3000000 for 9000
+ 7699 strings out of 493323
+ 109366 string characters out of 3139065
+ 202886 words of memory out of 3000000
+ 11053 multiletter control sequences out of 15000+200000
+ 41507 words of font info for 76 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 35i,9n,34p,831b,334s stack positions out of 5000i,500n,10000p,200000b,50000s
-<C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmb10.pfb><C:/Pro
-gram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Program Fil
-es/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Program Files/MiKTe
-X 2.9/fonts/type1/public/amsfonts/cm/cmbxsl10.pfb><C:/Program Files/MiKTeX 2.9/
-fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Program Files/MiKTeX 2.9/fonts/ty
-pe1/public/amsfonts/cm/cmr10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/publi
-c/amsfonts/cm/cmsl10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfon
-ts/cm/cmss10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cm
-ti10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmtt10.pfb
->
-Output written on jss.pdf (5 pages, 155189 bytes).
+ 35i,9n,34p,844b,388s stack positions out of 5000i,500n,10000p,200000b,50000s
+ <C:\Users\robin\AppData\Local\MiKTeX\2.9\fonts\pk\ljfour\jknappen\ec\dpi600\
+tcrm1095.pk><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmb10.p
+fb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb><C:/P
+rogram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Program F
+iles/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbxsl10.pfb><C:/Program Files/M
+iKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Program Files/MiKTeX 2.
+9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Program Files/MiKTeX 2.9/fonts/t
+ype1/public/amsfonts/cm/cmsl10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/pub
+lic/amsfonts/cm/cmss10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsf
+onts/cm/cmti10.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/
+cmtt10.pfb>
+Output written on jss.pdf (6 pages, 159460 bytes).
 PDF statistics:
- 143 PDF objects out of 1000 (max. 8388607)
- 28 named destinations out of 1000 (max. 500000)
+ 152 PDF objects out of 1000 (max. 8388607)
+ 29 named destinations out of 1000 (max. 500000)
  86 words of extra memory for PDF output out of 10000 (max. 10000000)
 
