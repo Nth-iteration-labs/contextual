@@ -8,3 +8,4 @@ contextual.Rproj
 ^appveyor\.yml$
 ^_pkgdown.yaml$
 ^docs$
+^vignettes/jss.*
