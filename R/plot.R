@@ -98,7 +98,7 @@ Plot <- R6::R6Class(
 
 
       if (regret) {
-        ylab_title = "cumulative regret"
+        ylab_title = "cumulative expected regret"
         if (rate)ylab_title = "cumulative regret - rate"
         if (rate) history$cumsum = history[, cumsum(oracle - reward)/t, by = list(agent, sim)]$V1
         else history$cumsum = history[, cumsum(oracle - reward), by = list(agent, sim)]$V1
@@ -130,7 +130,7 @@ Plot <- R6::R6Class(
       self$max_sim   = history[, max(sim)]
       history <- history[order(agent, t, sim)]
       if (regret) {
-        ylab_title = "Average regret"
+        ylab_title = "Average expected regret"
         cs <-
           history[, list(var = var(oracle - reward) ,
                          data = mean(oracle - reward)), by = list(t, agent)]

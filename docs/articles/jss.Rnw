@@ -9,6 +9,15 @@
 \usepackage[utf8]{inputenc}
 \usepackage{color}
 
+%% packages added by RvE
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{txfonts}
+\usepackage{mathdots}
+\usepackage{float}
+%\usepackage[classicReIm]{kpfonts}
+%\usepackage[pdftex]{graphicx}
+
 \usepackage{natbib}
 \usepackage[british]{babel} % for correct word hyphenation
 \raggedbottom % for blank spaces at the bottom (e.g., references section)
@@ -31,7 +40,8 @@
 \Shorttitle{\pkg{contextual}} %% a short title (if necessary)
 
 %% an abstract and keywords
-\Abstract{A large number of statistical decision problems in the social sciences and beyond can be framed as a (contextual) multi-armed bandit problem.}
+\Abstract{
+The elegance with which many statistical and reinforcement problems can be framed as (contextual) Multi-Armed Bandit problems, together with a proliferation of powerful Bandit algorithms and a growing body of analytically oriented research has led Multi-Armed Bandit methods to be applied to ever more real-world partial information sequential decision problems, from online advertising and recommender systems to the optimization of clinical trials and personalized medicine. At the same time, tools to comprehensively compare Bandit algorithms on simulated and real-life offline data seem to be lagging behind. To help close this gap between analytical research and real life application, this paper introduces the R package \pkg{contextual}, a user friendly and easily extensible framework that facilitates the comparison of, amongst others, contextual an non-contextual Bandit policies through both simulation and offline analysis. }
 
 \Keywords{contextual multi-armed bandits, simulation, sequential experimentation, \proglang{R}}
 \Plainkeywords{contextual multi-armed bandits, simulation, sequential experimentation, R}
@@ -87,30 +97,86 @@ A vignette for the \cite{contextual} paper.
 %% include your article here, just as usual
 %% Note that you should use the \pkg{}, \proglang{} and \code{} commands.
 
+
+
+
+
+
+
 \section{Introduction}
 %% Note: If there is markup in \(sub)section, then it has to be escape as above.
 
-The need to make decisions permeates our lives. We are continuously making them in order to affect the world around us. Decisions range from the trivial, like ‘what should I have for breakfast?’, to the much more serious, like ‘how should a power station be controlled safely?’. Many of these decisions are now made on our behalf by automated systems. From automated stock trading systems, to cars that can navigate and drive, there are an increasing number of automated decision-making systems that already, or soon will, have an increasing effect on our lives. With the increased ubiquity of computing devices and sensors, the importance of automating decision making based on this influx of data becomes of greater interest. How should we make systems that can make these decisions for us?
+In a Multi-Armed Bandit (MAB) problem, an agent follows the advice of an algorithm or \textquotedblleft{}policy\textquotedblright{} in order to optimize the overall reward it receives in a sequential decision problem with limited information. That is, a MAB policy advices an agent when to explore new options and when to exploit known ones \textendash{} where, importantly, for each decision, at each time step t, the only new information the agent acquires is the reward for its latest decision. The agent remains in the dark about the potential rewards of the unchosen options and about any other information outside of current and past rewards and choices made.
 
-The first attempts at making decision-making expert systems concentrated on the use of logic and formal reasoning. Such systems were brittle since feeding the system with sufficient ground truths is difficult and time consuming, and more importantly not all outcomes are entailed by a purely logic system especially when they are probabilistic or uncertain. More recently progress has been made towards more robust systems that take a different approach, which instead learn how to make decisions through experience. This thesis is interested in this aspect of decision-making systems, how a decision-making agent should make decisions and interact with an environment, improving their behaviour through experience. The specific decision-making problems with which we are concerned can be explained by way of examples.
+In that respect, MAB problems reflect dilemmas we all encounter on a daily basis: do you stick to what you know and receive an expected result ("exploit") or choose something you don't know all that much about and potentially learn something new ("explore")?
 
---- adapt the above rigorously ---
+\begin{itemize}
+\item Do you feed your next coin to the one-armed bandit that paid out last time, or do you test your luck on another arm, on another machine?
+\item When going out to dinner, do you explore new restaurants, or do you exploit familiar ones?
+\item Do you stick to your current job, or explore and hunt around?
+\item Do I keep my current stocks, or change my portfolio and pick some new ones?
+\item As an online marketer, do you try a new ad, or keep the current one?
+\item As a doctor, do you treat your patients with tried and tested medication, or do you prescribe a new and promising experimental treatment?
+\end{itemize}
+
+Though MAB models are already powerful of their own accord, a recent generalization, known as the \pkg{contextual} Multi-Armed Bandit (cMAB), adds one important element to the equation: in addition to past decisions and their rewards, cMAB agents are able to make use of side information on the state of the world at each t, right before making their decision. In other words, an agentthat follows the advice of a cMAB policy may decide differently in different contexts.
+
+This access to side information has proven to make cMAB algorithms an even better fit to many real-life decision problems. Do you show a certain add to returning customers, to new ones, or both? Do you prescribe a different treatment to male patients, female patients, or both? In the real world, it appears almost no choice exists without its context. So it may be no surprise that cMAB algorithms have found many uses: from recommender systems and advertising to health apps and personalized medicine. This practical applicability has led to a multitude of policies, each with their own strengths and weaknesses.
+
+Still, though cMAB algorithms have gained much traction in both research and industry, they have mostly been studied mathematically and analytically \textendash{} comparisons on simulated, and, importantly, real-life large-scale offline \textquotedblleft{}partial label\textquotedblright{} data sets have been lacking. To this end, the current paper introduces the \pkg{contextual} R package. A package that aims to facilitate the simulation, offline comparison, and evaluation of (Contextual) Multi-Armed bandit policies. Though there exists one R package for basic MAB analysis, there is, as of yet, no extensible and widely applicable R package that is able to analyze and compare, respectively, basic K-armed, Continuum, Adversarial and Contextual Multi-Armed Bandit Algorithms on either simulated or online data.
+
+In section 2, this paper will continue with a more formal definition of MAB and a CMAB problems. In section 3, we will continue with an overview of \pkg{contextual}’s general implementation. In section 4, we list our implemented polices, and simulate a MAB and a cMAB policy. In section 5, we demonstrate how easy it is to add and simulate your own custom policy. In section 6, we replicate two papers, thereby demonstrating how to test policies on offline data sets. Finally, in section  7, we will go over some of the additional features in the package, and conclude with some comments on the current state of the package and possible enhancements.
 
 \section{Contextual Multi-Armed Bandits}
 %% Note: If there is markup in \(sub)section, then it has to be escape as above.
 
-In the canonical multi-armed bandit (MAB) problem a gambler faces a number of slot machines, each with a potentially different payoff. It is the gamblers goal to make as much profit (or, in the case of gambling, as little loss) as possible by sequentially choosing which machine to play, learning from the observations as she goes along.
+On formalizing our Multi-Armed Bandit problem, the aforementioned sequential decision maker's exploit/explore dilemma can be captured by defining a finite set (or \textbf{bandit)} of \textit{K} i.i.d. options (the \textbf{arms }of the bandit\textbf{) }each with their own, unknown\textbf{, }reward distribution \textit{v${}_{1}$,{\dots},v${}_{k}$} with means \textit{$\mu$ {\dots} $\mu$${}_{k}$}. Next we define an \textbf{agent}, who has to decide between the exploration of unknown arms and the exploitation of known arms in \textit{K} in order to maximize its total\textbf{ reward} (that is, to maximize its cumulative reward $\sum_{t=1}^T r_t$ \footnote{or to minimize its cumulative or expected regret}) over a period of time $T$ by following the advice of a \textbf{policy $\boldsymbol{\piup}$} which keeps track of \textbf{parameters} \textbf{\textit{$\boldsymbol{\theta}$}}\textit{ }that are updated when new information (reward \textit{r} awarded by the bandit when the agent has chosen an arm) becomes available. This process is repeated \textit{T} times, where \textit{T} is often defined as the Bandit's "horizon".
 
-\section{Implementation of the contextual R package}
+That is, an agent repeats the following lines one at a time at each time step \textit{t }in \textit{t}=1,2,{\dots},\textit{T}:
+
+\begin{enumerate}
+         \item[1a)] Agent asks policy $\piup$ which of the bandit's K arms to choose
+         \item[1b)] Policy $\piup$ advices action \textit{a${}_{t}$} based on the state of a set of parameters \textit{$\theta$${}_{t}$}
+         \item[2a)] Agent does action \textit{a${}_{t}$} by playing the suggested bandit arm.
+         \item[2b)] Bandit rewards the agent with reward \textit{r${}_{t}$ }for action \textit{a${}_{t}$},
+         \item[3a)] Agent sends the reward\textit{ r${}_{t}$ }to policy $\piup$
+         \item[3b)] Policy $\piup$ uses \textit{r${}_{t}$} to update the policy's set of parameters\textit{ $\theta$${}_{t}$}
+\end{enumerate}
+
+
+\begin{figure}[H]
+  \centering
+    \includegraphics[width=.99\textwidth]{fig/cmab_chart}
+    \label{fig:mab_chart}
+      \caption{Overview MAB formalization towards \pkg{contextual}'s implementation}
+\end{figure}
+
+To allow for side information, that is, to generalize this formalization to a \textit{contextual} Multi-Armed Bandit model, the model needs just one additional step. Again, an agent repeats the following lines for each time step \textit{t} in \textit{t}=1,2,{\dots},\textit{T}:
+
+\begin{enumerate}
+         \item[1a)] Agent checks the bandit for side information that might influence the expression of its arms
+         \item[1b)] Bandit returns feature vector \textit{Xt }
+         \item[2a)] Agent asks policy $\piup$ which of the bandit's K arms to choose given \textit{Xt}
+         \item[2b)] Given \textit{Xt}, policy $\piup$ advices action \textit{a${}_{t}$} based on the state of a set of parameters \textit{$\theta$${}_{t}$${}_{  }$}
+         \item[3a)] Agent does action \textit{a${}_{t}$} by playing the suggested bandit arm.
+         \item[3b)] Bandit rewards the agent with reward \textit{r${}_{t}$ }for action \textit{a${}_{t}$},
+         \item[4a)] The agent sends the reward\textit{ r${}_{t}$ }to policy $\piup$
+         \item[4b)] Policy $\piup$ uses \textit{r${}_{t}$} to update the policy's set of parameters\textit{ $\theta$${}_{t}$${}_{  }$}given \textit{Xt}
+\end{enumerate}
+
+\begin{figure}[H]
+  \centering
+    \includegraphics[width=.99\textwidth]{fig/cmab_chart}
+    \label{fig:cmab_chart}
+      \caption{Overview of cMAB formalization towards \pkg{contextual}'s implementation}
+\end{figure}
+
+As a matter of fact, by setting feature vector \textit{X} to [1] for each \textit{t} in step 1b, the suggested cMAB model perfectly emulates a non-contextual MAB model, easing the comparison and implementation of both MAB and cMAB substantially
+
+\section{Implementation}
 %% Note: If there is markup in \(sub)section, then it has to be escape as above.
 
 In the canonical multi-armed bandit (MAB) problem a gambler faces a number of slot machines, each with a potentially different payoff. It is the gamblers goal to make as much profit (or, in the case of gambling, as little loss) as possible by sequentially choosing which machine to play, learning from the observations as she goes along.
-
-\section{A basic example}
-%% Note: If there is markup in \(sub)section, then it has to be escape as above.
-
-
-
 
 <<include=FALSE>>=
 install.packages("devtools",repos = "http://cran.us.r-project.org")
