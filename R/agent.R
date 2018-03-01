@@ -39,21 +39,21 @@ Agent <- R6::R6Class(
     step = function() {
       private$state$t <- private$state$t + 1
       list(context = bandit_get_context(),
-           action =  policy_get_action(),
-           reward =  bandit_get_reward(),
+           action =  policy_get_advice(),
+           reward =  bandit_do_action(),
            theta  =  policy_set_reward())
     },
     bandit_get_context = function() {
       private$state$context <- bandit$get_context(private$state$t)
       private$state$context
     },
-    policy_get_action = function() {
+    policy_get_advice = function() {
       policy$set_theta(private$theta)
       private$state$action <- policy$get_action(private$state$context, private$state$t)
       private$state$action
     },
-    bandit_get_reward = function() {
-      private$state$reward <- bandit$get_reward(private$state$action,private$state$t)
+    bandit_do_action = function() {
+      private$state$reward <- bandit$do_action(private$state$action,private$state$t)
       private$state$reward
     },
     policy_set_reward = function() {

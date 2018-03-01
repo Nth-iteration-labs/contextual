@@ -40,7 +40,7 @@ AdversarialAgent <- R6::R6Class(
       private$state$t <- private$state$t + 1
       list(context = bandit_get_context(),
            action =  policy_get_action(),
-           reward =  bandit_get_reward(),
+           reward =  bandit_do_action(),
            theta  =  policy_set_reward())
     },
     bandit_get_context = function() {
@@ -52,8 +52,8 @@ AdversarialAgent <- R6::R6Class(
       private$state$action <- policy$get_action(private$state$context, private$state$t)
       private$state$action
     },
-    bandit_get_reward = function() {
-      private$state$reward <- bandit$get_reward(private$state$action,private$state$t)
+    bandit_do_action = function() {
+      private$state$reward <- bandit$do_action(private$state$action,private$state$t)
       private$state$reward
     },
     policy_set_reward = function() {

@@ -14,7 +14,7 @@ test_that("AbstractBandit check", {
   action$choice = 2
 
   expect_error(bandit$get_context(1), ".*implement.")
-  expect_error(bandit$get_reward(action,1), ".*implement.")
+  expect_error(bandit$do_action(action,1), ".*implement.")
   expect_error(bandit$set_weights(1), ".*implement.")
   expect_error(bandit$generate_bandit_data(1), ".*implement.")
 

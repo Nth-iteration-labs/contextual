@@ -71,8 +71,8 @@ AbstractBandit <- R6::R6Class(
       stop("AbstractBandit$get_context() not implemented",
            call. = FALSE)
     },
-    get_reward = function(action, t) {
-      stop("AbstractBandit$get_reward() not implemented",
+    do_action = function(action, t) {
+      stop("AbstractBandit$do_action() not implemented",
            call. = FALSE)
     },
     set_weights = function(W) {

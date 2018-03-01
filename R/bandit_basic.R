@@ -23,7 +23,7 @@ BasicBandit <- R6::R6Class(
     get_context = function(t) {
       private$context_to_list()
     },
-    get_reward = function(action, t) {
+    do_action = function(action, t) {
       private$R <- matrix(runif(self$k) < self$get_weights(), self$k, self$d)
       private$reward_to_list(action, t)
     }

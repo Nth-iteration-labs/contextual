@@ -16,7 +16,7 @@ ContinuumBandit <- R6::R6Class(
     get_context = function(t) {
       private$context_to_list()
     },
-    get_reward = function(action, t) {
+    do_action = function(action, t) {
       reward = list()
       reward$reward <- self$arm_function(action$choice)
       reward

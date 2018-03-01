@@ -17,7 +17,7 @@ OfflineLiBandit <- R6::R6Class(
       private$X <- matrix(private$S$context[[index]], 1, self$d)
       private$context_to_list()
     },
-    get_reward = function(action, index) {
+    do_action = function(action, index) {
       use_ips <- FALSE
       if (use_ips == TRUE) {
         reward_at_index <- as.double(private$S$reward[[index]])
