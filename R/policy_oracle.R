@@ -9,7 +9,7 @@ OraclePolicy <- R6::R6Class(
       super$initialize(name)
     },
     set_parameters = function() {
-      self$parameters <- list('n' = 0, 'mean' = 0)
+      self$theta_to_arms <- list('n' = 0, 'mean' = 0)
     },
     get_action = function(context, t) {
       action$propensity <- 1
@@ -59,7 +59,7 @@ OraclePolicy <- R6::R6Class(
 #'
 #' \describe{
 #'   \item{\code{set_parameters()}}{each policy needs to assign the parameters it wants to keep track of
-#'   to list \code{self$parameters} that has to be defined in \code{set_parameters()}'s body.
+#'   to list \code{self$theta_to_arms} that has to be defined in \code{set_parameters()}'s body.
 #'   The parameters defined here can later be accessed by arm index in the following way:
 #'   \code{theta[[index_of_arm]]$parameter_name}
 #'   }
@@ -96,10 +96,10 @@ OraclePolicy <- R6::R6Class(
 #'
 #' horizon            <- 100L
 #' simulations        <- 100L
-#' weight_per_arm     <- c(0.9, 0.1, 0.1)
+#' arm_weights        <- c(0.9, 0.1, 0.1)
 #'
 #' policy             <- OraclePolicy$new(name = "Oracle")
-#' bandit             <- SyntheticBandit$new(weights = weight_per_arm, precache = FALSE)
+#' bandit             <- SyntheticBandit$new(arm_weights = arm_weights, precache = FALSE)
 #' agent              <- Agent$new(policy, bandit)
 #'
 #' history            <- Simulator$new(agent, horizon, simulations, do_parallel = FALSE)$run()

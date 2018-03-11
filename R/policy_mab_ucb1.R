@@ -1,58 +1,52 @@
 #' @export
-SoftmaxPolicy <- R6::R6Class(
-  "SoftmaxPolicy",
+UCB1Policy <- R6::R6Class(
+  "UCB1Policy",
   portable = FALSE,
   class = FALSE,
   inherit = AbstractPolicy,
   public = list(
-    tau = NULL,
-    initialize = function(tau = 0.1, name = "Softmax") {
+    initialize = function(name = "UCB1") {
       super$initialize(name)
-      self$tau <- tau
     },
     set_parameters = function() {
-      self$parameters <- list('n' = 0, 'mean' = 0)
+      self$theta_to_arms <- list('n' = 0, 'mean' = 0)
     },
     get_action = function(context, t) {
-      z <- sum(exp(unlist(theta$mean)/tau))
-      p <- exp(unlist(theta$mean)/tau)/z
-      action$choice <- categorical_draw(p)
+      action$choice <- which(theta$n == 0)[1]
+      if (!is.na(action$choice)) {
+        return(action)
+      }
+      expected_rewards <- rep(0.0, context$k)
+      for (arm in 1:context$k) {
+        variance <- sqrt( (2*log(sum_of(theta$n))) / theta$n[[arm]])
+        expected_rewards[arm] <- theta$mean[[arm]] + variance
+      }
+      action$choice <- max_in(expected_rewards)
       action
     },
-
     set_reward = function(context, action, reward, t) {
       arm <- action$choice
       reward <- reward$reward
       inc(theta$n[[arm]]) <- 1
       inc(theta$mean[[arm]]) <- (reward - theta$mean[[arm]]) / theta$n[[arm]]
       theta
-    },
-    categorical_draw = function(probs) {
-      arms <- length(probs)
-      cumulative_probability <- 0.0
-      for (i in 1:arms) {
-        inc(cumulative_probability) <- probs[i]
-        if ( cumulative_probability > runif(1) ) return(i)
-      }
-      sample(arms, 1, replace = TRUE)
     }
-
   )
 )
 
-#' Policy: Softmax ..
+#' Policy: UCB1  ..
 #'
-#' \code{SoftmaxPolicy} chooses an arm at
+#' \code{UCB1Policy} chooses an arm at
 #' random (explores) with probability \code{epsilon}, otherwise it
 #' greedily chooses (exploits) the arm with the highest estimated
 #' reward.
 #'
-#' @name SoftmaxPolicy
+#' @name UCB1Policy
 #' @family contextual policies
 #'
 #' @section Usage:
 #' \preformatted{
-#' policy <- SoftmaxPolicy(epsilon = 0.1, name = "SoftmaxPolicy")
+#' policy <- UCB1Policy(epsilon = 0.1, name = "UCB1Policy")
 #' }
 #'
 #' @section Arguments:
@@ -61,7 +55,7 @@ SoftmaxPolicy <- R6::R6Class(
 #'   \item{\code{epsilon}}{
 #'    double, value in the closed interval \code{(0,1]} indicating the probablilty with which
 #'    arms are selected at random (explored).
-#'    Otherwise, \code{SoftmaxPolicy} chooses the best arm (exploits)
+#'    Otherwise, \code{UCB1Policy} chooses the best arm (exploits)
 #'    with a probability of \code{1 - epsilon}
 #'
 #'   }
@@ -74,12 +68,12 @@ SoftmaxPolicy <- R6::R6Class(
 #' @section Methods:
 #'
 #' \describe{
-#'   \item{\code{new(epsilon = 0.1, name = "EpsilonGreedy")}}{ Generates a new \code{SoftmaxPolicy} object. Arguments are defined in the Argument section above.}
+#'   \item{\code{new(epsilon = 0.1, name = "EpsilonGreedy")}}{ Generates a new \code{UCB1Policy} object. Arguments are defined in the Argument section above.}
 #' }
 #'
 #' \describe{
 #'   \item{\code{set_parameters()}}{each policy needs to assign the parameters it wants to keep track of
-#'   to list \code{self$parameters} that has to be defined in \code{set_parameters()}'s body.
+#'   to list \code{self$theta_to_arms} that has to be defined in \code{set_parameters()}'s body.
 #'   The parameters defined here can later be accessed by arm index in the following way:
 #'   \code{theta[[index_of_arm]]$parameter_name}
 #'   }
@@ -120,10 +114,10 @@ SoftmaxPolicy <- R6::R6Class(
 #'
 #' horizon            <- 100L
 #' simulations        <- 100L
-#' weight_per_arm     <- c(0.9, 0.1, 0.1)
+#' arm_weights        <- c(0.9, 0.1, 0.1)
 #'
-#' policy             <- SoftmaxPolicy$new(tau = 0.1, name = "Softmax")
-#' bandit             <- SyntheticBandit$new(weights = weight_per_arm, precache = FALSE)
+#' policy             <- UCB1Policy$new(name = "UCB1")
+#' bandit             <- SyntheticBandit$new(arm_weights = arm_weights, precache = FALSE)
 #' agent              <- Agent$new(policy, bandit)
 #'
 #' history            <- Simulator$new(agent, horizon, simulations, do_parallel = FALSE)$run()

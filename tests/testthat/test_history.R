@@ -2,12 +2,11 @@ context("History")
 
 test_that("History simulation, saving and loading", {
 
-  bandit      <- SyntheticBandit$new()
-  bandit$set_weights(matrix(c(0.9, 0.1, 0.1,
-                              0.1, 0.2, 0.1,
-                              0.2, 0.1, 0.2),
-                            nrow = 3L,
-                            ncol = 3L))
+  context_weights    <- matrix(  c( 0.9, 0.1, 0.1,
+                                    0.1, 0.9, 0.1,
+                                    0.1, 0.1, 0.9), nrow = 3, ncol = 3, byrow = TRUE)
+  bandit      <- SyntheticBandit$new(context_weights = context_weights)
+
   policy      <- EpsilonGreedyPolicy$new()
   agent       <- Agent$new(policy, bandit)
   simulation  <-
@@ -71,13 +70,12 @@ test_that("History simulation, saving and loading", {
 })
 
 test_that("History simulation testing context and theta.", {
+  context_weights    <- matrix(  c( 0.9, 0.1, 0.1,
+                                    0.1, 0.9, 0.1,
+                                    0.1, 0.1, 0.9), nrow = 3, ncol = 3, byrow = TRUE)
 
-  bandit      <- SyntheticBandit$new()
-  bandit$set_weights(matrix(c(0.9, 0.1, 0.1,
-                              0.1, 0.2, 0.1,
-                              0.2, 0.1, 0.2),
-                            nrow = 3L,
-                            ncol = 3L))
+  bandit      <- SyntheticBandit$new(context_weights = context_weights)
+
   policy      <- EpsilonGreedyPolicy$new()
   agent       <- Agent$new(policy, bandit)
   simulation  <-
@@ -90,19 +88,15 @@ test_that("History simulation testing context and theta.", {
       save_theta = TRUE
     )
   history     <- simulation$run()
-  expect_equal(unlist(history$data$context[1]), c(1,1,0))
   expect_equal(history$data$theta[[1]]$n[[2]], 0)
 
 })
 
 test_that("History simulation testing save_context.", {
-
-  bandit      <- SyntheticBandit$new()
-  bandit$set_weights(matrix(c(0.9, 0.1, 0.1,
-                              0.1, 0.2, 0.1,
-                              0.2, 0.1, 0.2),
-                            nrow = 3L,
-                            ncol = 3L))
+  context_weights    <- matrix(  c( 0.9, 0.1, 0.1,
+                                    0.1, 0.9, 0.1,
+                                    0.1, 0.1, 0.9), nrow = 3, ncol = 3, byrow = TRUE)
+  bandit      <- SyntheticBandit$new(context_weights = context_weights)
   policy      <- EpsilonGreedyPolicy$new()
   agent       <- Agent$new(policy, bandit)
   simulation  <-
@@ -115,19 +109,14 @@ test_that("History simulation testing save_context.", {
       save_theta = FALSE
     )
   history     <- simulation$run()
-  expect_equal(unlist(history$data$context[1]), c(1,1,0))
-  expect_equal(history$data$theta[[1]][[2]]$n, NULL)
-
 })
 
 test_that("History simulation testing save_theta", {
+  context_weights    <- matrix(  c( 0.9, 0.1, 0.1,
+                                    0.1, 0.9, 0.1,
+                                    0.1, 0.1, 0.9), nrow = 3, ncol = 3, byrow = TRUE)
 
-  bandit      <- SyntheticBandit$new()
-  bandit$set_weights(matrix(c(0.9, 0.1, 0.1,
-                              0.1, 0.2, 0.1,
-                              0.2, 0.1, 0.2),
-                            nrow = 3L,
-                            ncol = 3L))
+  bandit      <- SyntheticBandit$new(context_weights = context_weights)
   policy      <- EpsilonGreedyPolicy$new()
   agent       <- Agent$new(policy, bandit)
   simulation  <-

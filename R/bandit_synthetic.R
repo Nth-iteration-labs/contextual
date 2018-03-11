@@ -1,4 +1,3 @@
-# create from scratch if not cache, otherwise do cahce
 #' @export
 SyntheticBandit <- R6::R6Class(
   "SyntheticBandit",
@@ -23,22 +22,56 @@ SyntheticBandit <- R6::R6Class(
     reward_family = NULL,
     precache      = NULL,
     has_cache     = NULL,
+
     not_zero_features = NULL,
     random_one_feature = NULL,
+
+    context_weights   = NULL,
+    arm_weights       = NULL,
+    arm_masks         = NULL,
 
     initialize   = function(
       reward_family        = 'Bernoulli',
       reward_means         = 4.0,
       reward_stds          = 1.0,
-      weights              = NULL,
+
+      context_weights      = NULL,
+      arm_weights          = NULL,
+      arm_masks            = NULL,
+
       precache             = TRUE,
       not_zero_features    = TRUE,
-      random_one_feature   = FALSE
+      random_one_feature   = FALSE,
+      weights              = NULL
+
     ) {
 
       if (!(reward_family %in% c("Bernoulli","Gaussian","Poisson"))) {
         stop('Reward family needs to be one of "Bernoulli", "Gaussian" or "Poisson".' , call. = FALSE)
       }
+
+      if (!is.null(weights) & is.null(context_weights)) {
+        # for backwards compatibility - maybe remove?#################
+        self$context_weights      <- weights
+      } else {
+        self$context_weights      <- context_weights
+      }
+
+      self$arm_masks            <- arm_masks
+      self$arm_weights          <- arm_weights
+
+      if (is.vector(self$context_weights)) self$context_weights <- matrix(self$context_weights, nrow = 1L)
+
+      weights = rbind(self$context_weights, self$arm_weights)
+
+      if (!is.null(self$arm_weights) & is.null(self$arm_masks)) {
+        if (dim(weights)[1] == 1) {
+          self$arm_masks <- matrix(rep(1,length(self$arm_weights)),nrow = 1L  )
+        } else {
+          stop('Please set arm_masks for arm_weights.' , call. = FALSE)
+        }
+      }
+
 
       super$initialize(weights)
 
@@ -48,7 +81,7 @@ SyntheticBandit <- R6::R6Class(
       self$reward_means         <- reward_means
       self$reward_stds          <- reward_stds
       self$not_zero_features    <- not_zero_features
-      self$random_one_feature    <- random_one_feature
+      self$random_one_feature   <- random_one_feature
     },
     get_context = function(t) {
       if (self$is_precaching) {
@@ -65,7 +98,7 @@ SyntheticBandit <- R6::R6Class(
     generate_bandit_data = function(n = 1L,
                                     silent = TRUE ) {
       if (!silent) message("Precaching bandit" )
-      private$X <- matrix(0, n , self$d)
+      private$X <- array(0, dim = c(self$d, self$k, n))
       private$O <- matrix(0, self$k, n)
       private$R <- matrix(0, self$k, n)
       private$generate_context(n)
@@ -75,51 +108,48 @@ SyntheticBandit <- R6::R6Class(
     }
   ),
   private = list(
-
     generate_context = function(n = 1L) {
-      if (self$not_zero_features | self$random_one_feature) {
-        private$X[cbind(1L:n, sample(self$d, n, replace = TRUE))] <- 1
+      if (!is.null(self$context_weights)) {
+        context_d <- dim(self$context_weights)[1]
+        context_mask <- matrix(0, n , context_d)
+        if (self$not_zero_features | self$random_one_feature) {
+          context_mask[cbind(1L:n, sample(context_d, n, replace = TRUE))] <- 1
+        }
+        if (!self$random_one_feature) {
+          context_mask <- matrix((context_mask | matrix(sample(c(0, 1), replace = TRUE, size = n * context_d),  n, context_d)), n, context_d)
+        }
+        mode(context_mask) <- 'integer'
+        private$X <- array(0, dim = c(self$d, self$k, n))
+        for (i in 1:n) {
+          context_mask_to_matrix <- matrix( context_mask[i,], context_d, self$k)
+          private$X[,,i] <- rbind(context_mask_to_matrix, self$arm_masks)
+        }
+      } else {
+        private$X <- array(0, dim = c(self$d, self$k, n))
+        for (i in 1:n) {
+          private$X[,,i] <- self$arm_masks
+        }
       }
-      if (!self$random_one_feature) {
-        private$X <- matrix((private$X | matrix(sample(c(0, 1), replace = TRUE, size = n * self$d),  n, self$d)), n, self$d)
-      }
-      mode(private$X) <- 'integer'
+      private$X
     },
-
     generate_oracle = function(n) {
-      Wg <-
-        sweep(array(t(matrix(
-          private$W, self$k , self$d
-        )), dim = c(self$d, self$k, n)),
-        3,
-        private$X,
-        FUN = "*",
-        check.margin = FALSE)
-      private$O <-
-        t(t(colSums(Wg)) / as.vector(rowSums(private$X)))
+      weight_array  <- array(t(matrix( private$W, self$k , self$d, byrow = TRUE )), dim = c(self$d, self$k, n))
+      Wg <- private$X*weight_array
+      private$O <- colSums(Wg) / colSums(private$X)
       private$O[is.nan(private$O)] <- 0
     },
-
     generate_rewards = function(n) {
       rwrd_n <- self$k * n
       if (self$reward_family == 'Bernoulli') {
         private$R <- round((runif(rwrd_n) + private$O) / 2)
-
       } else if (self$reward_family == 'Gaussian') {
         private$R <- (rnorm(rwrd_n, self$reward_means, self$reward_stds) + private$O) / 2
-
       } else if (self$reward_family == 'Poisson') {
         private$R <- (rpois(rwrd_n, self$reward_means) + private$O) / 2
       }
     }
-
   )
 )
-
-#W <- repmat(t(matrix(private$W, self$k , self$d)),n,1) *
-#     as.vector(matrix(t(private$X), n*d, 1 , byrow = TRUE))
-#W <- array(t(W), dim = c(self$k , self$d, n))
-#W <- aperm(W,c(2,1,3))
 
 #' External SyntheticBandit
 #'

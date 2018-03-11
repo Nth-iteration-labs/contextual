@@ -146,7 +146,7 @@ That is, an agent repeats the following lines one at a time at each time step \t
 
 \begin{figure}[H]
   \centering
-    \includegraphics[width=.99\textwidth]{fig/cmab_chart}
+    \includegraphics[width=.99\textwidth]{fig/mab_chart}
     \label{fig:mab_chart}
       \caption{Overview MAB formalization towards \pkg{contextual}'s implementation}
 \end{figure}
@@ -176,7 +176,21 @@ As a matter of fact, by setting feature vector \textit{X} to [1] for each \texti
 \section{Implementation}
 %% Note: If there is markup in \(sub)section, then it has to be escape as above.
 
-In the canonical multi-armed bandit (MAB) problem a gambler faces a number of slot machines, each with a potentially different payoff. It is the gamblers goal to make as much profit (or, in the case of gambling, as little loss) as possible by sequentially choosing which machine to play, learning from the observations as she goes along.
+Here, explain how implementation flows naturally from the above
+
+\begin{figure}[H]
+  \centering
+    \includegraphics[width=.99\textwidth]{fig/contextual_class}
+    \label{fig:contextual_class}
+      \caption{\pkg{contextual} UML Class Diagram}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+    \includegraphics[width=.99\textwidth]{fig/contextual_sequence}
+    \label{fig:contextual_sequence}
+      \caption{\pkg{contextual} UML Sequence Diagram}
+\end{figure}
 
 <<include=FALSE>>=
 install.packages("devtools",repos = "http://cran.us.r-project.org")
@@ -188,22 +202,22 @@ knitr::opts_chunk$set(fig.path="fig/")
 
 library("contextual")
 
-bandit      <- BasicBandit$new()
+horizon            <- 100
+simulations        <- 100
+weight_per_arm     <- c(0.9, 0.1, 0.1)
 
-bandit$set_weights(c(0.1, 0.9))
+policy             <- EpsilonGreedyPolicy$new(epsilon = 0.1, name = "EG")
+bandit             <- SyntheticBandit$new(weights = weight_per_arm)
 
-policy      <- EpsilonGreedyPolicy$new()
+agent              <- Agent$new(policy,bandit)
 
-agent       <- Agent$new(policy, bandit)
+simulator          <- Simulator$new(agents = agent,
+                                    horizon = horizon,
+                                    simulations = simulations)
+history            <- simulator$run()
 
-simulation  <- Simulator$new(agent,
-                             horizon = 100L,
-                             simulations = 100L,
-                             worker_max = 1)
-
-history     <- simulation$run()
-
-Plot$new()$grid(history)
+plot(history, type = "cumulative", regret = TRUE)
+plot(history, type = "arms")
 
 @
 
@@ -252,13 +266,12 @@ on 120 cores:    k3*d3 * 5 policies * 3000 * 10000 --\textgreater{} 691 seconds
 \section{Extra greedy UCB}
 %% Note: If there is markup in \(sub)section, then it has to be escape as above.
 
-In the canonical multi-armed bandit (MAB) problem a gambler faces a number of slot machines, each with a potentially different payoff. It is the gamblers goal to make as much profit (or, in the case of gambling, as little loss) as possible by sequentially choosing which machine to play, learning from the observations as she goes along.
-
+Ladila bladibla.
 
 \section{Conclusions}
 \label{sec:conc4}
 
-The goal of a data analysis is not only to answer a research question based on data but also to collect findings that support that answer. These findings usually take the form of a~table, plot or regression/classification model and are usually presented in articles or reports.
+Placeholder... the goal of a data analysis is not only to answer a research question based on data but also to collect findings that support that answer. These findings usually take the form of a~table, plot or regression/classification model and are usually presented in articles or reports.
 
 \section{Acknowledgments}
 

@@ -14,7 +14,8 @@ OfflineLiBandit <- R6::R6Class(
       private$S <- data_file$get_data_table()
     },
     get_context = function(index) {
-      private$X <- matrix(private$S$context[[index]], 1, self$d)
+      private$X <- array(matrix(private$S$context[[index]], self$d, self$k),
+                         dim = c(self$d, self$k, 1))
       private$context_to_list()
     },
     do_action = function(action, index) {

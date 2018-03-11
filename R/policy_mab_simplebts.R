@@ -18,7 +18,7 @@ SimpleBTSPolicy <- R6::R6Class(
       self$b  <- b
     },
     set_parameters = function() {
-      self$parameters <- list('alpha' = rep(self$b,self$J),  'beta' = rep(self$b,self$J))
+      self$theta_to_arms <- list('alpha' = rep(self$b,self$J),  'beta' = rep(self$b,self$J))
     },
     get_action = function(context, t) {
       point_estimate_of_mean = vector("double", context$k)

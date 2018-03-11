@@ -75,7 +75,8 @@ Plot <- R6::R6Class(
         use_colors = use_colors,
         ci = ci,
         step_size = step_size,
-        start_step = start_step
+        start_step = start_step,
+        rate = rate
       )
       dev.flush()
       par(old.par)
@@ -125,20 +126,19 @@ Plot <- R6::R6Class(
                        use_colors = TRUE,
                        ci = FALSE,
                        step_size = 1,
-                       start_step = 1) {
+                       start_step = 1,
+                       rate = FALSE) {
       history <- check_history_data(history)
       self$max_sim   = history[, max(sim)]
       history <- history[order(agent, t, sim)]
+
+
       if (regret) {
-        ylab_title = "Average expected regret"
-        cs <-
-          history[, list(var = var(oracle - reward) ,
-                         data = mean(oracle - reward)), by = list(t, agent)]
+          ylab_title = "Average expected regret"
+          cs <- history[, list(var = var(oracle - reward) , data = mean(oracle - reward)), by = list(t, agent)]
       } else {
-        ylab_title = "Average reward"
-        cs <-
-          history[, list(var = var(reward) ,
-                         data = mean(reward)), by = list(t, agent)]
+          ylab_title = "Average reward"
+          cs <-  history[, list(var = var(reward) , data = mean(reward)), by = list(t, agent)]
       }
       do_plot(
         cs = cs,
@@ -549,7 +549,8 @@ plot.History <- function(x, ...) {
       use_colors = use_colors,
       ci = ci,
       step_size = step_size,
-      start_step = start_step
+      start_step = start_step,
+      rate = rate
     )
   } else if (type == "optimal") {
     Plot$new()$optimal(

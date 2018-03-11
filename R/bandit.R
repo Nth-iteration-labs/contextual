@@ -15,7 +15,7 @@ AbstractBandit <- R6::R6Class(
       list(
         k = self$k,
         d = self$d,
-        X = private$X[idx,],
+        X = private$X[,, idx],
         O = private$O[, idx]
       )
     },
@@ -62,10 +62,10 @@ AbstractBandit <- R6::R6Class(
     k            = NULL,
     initialize   = function() {
       private$.hash = sub('<environment: (.*)>', '\\1',  capture.output(self))
-      private$X <- matrix(1L, 1L, 1L)
-      private$R <- matrix(0L, 3L, 1L)
-      private$W <- matrix(0L, 3L, 1L)
-      private$O <- matrix(0L, 3L, 1L)
+      private$X <- NULL
+      private$R <- NULL
+      private$W <- NULL
+      private$O <- NULL
     },
     get_context = function(t) {
       stop("AbstractBandit$get_context() not implemented",

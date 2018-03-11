@@ -8,10 +8,11 @@ AbstractPolicy <- R6::R6Class(
     name = "",
     action = NULL,
     theta = NULL,
-    parameters = NULL,
+    theta_to_arms = NULL,
     k = NULL,
     d = NULL,
     initialize = function(name = "Not implemented") {
+      self$theta <- list()
       self$name   <- name
       self$action <- list()
     },
@@ -28,9 +29,10 @@ AbstractPolicy <- R6::R6Class(
            call. = FALSE)
     },
     initialize_theta = function() {
-      theta <- list()
-      for (param_index in 1L:length(parameters)) {
-        theta[[ names(self$parameters)[param_index] ]] <- rep(list(self$parameters[[param_index]]),self$k)
+      if (!is.null(theta_to_arms)) {
+        for (param_index in 1L:length(theta_to_arms)) {
+          theta[[ names(self$theta_to_arms)[param_index] ]] <- rep(list(self$theta_to_arms[[param_index]]),self$k)
+        }
       }
       theta
     },

@@ -1,37 +1,30 @@
 #' @export
-Exp3Policy <- R6::R6Class(
-  "Exp3Policy",
+SoftmaxPolicy <- R6::R6Class(
+  "SoftmaxPolicy",
   portable = FALSE,
   class = FALSE,
   inherit = AbstractPolicy,
   public = list(
-    gamma = NULL,
-    initialize = function(gamma =  0.1, name = "Exp3") {
+    tau = NULL,
+    initialize = function(tau = 0.1, name = "Softmax") {
       super$initialize(name)
-      self$gamma <- gamma
+      self$tau <- tau
     },
     set_parameters = function() {
-      self$parameters <- list('weight' = 1)
+      self$theta_to_arms <- list('n' = 0, 'mean' = 0)
     },
     get_action = function(context, t) {
-      probs <- rep(0.0, context$k)
-      for (i in 1:context$k) {
-         probs[i] <- (1 - gamma) * (theta$weight[[i]] / sum_of(theta$weight))
-      }
-      inc(probs[i])  <- ((gamma) * (1.0 / context$k))
-      action$choice  <- categorical_draw(probs)
+      z <- sum(exp(unlist(theta$mean)/tau))
+      p <- exp(unlist(theta$mean)/tau)/z
+      action$choice <- categorical_draw(p)
       action
     },
+
     set_reward = function(context, action, reward, t) {
-      arm    <- action$choice
+      arm <- action$choice
       reward <- reward$reward
-      probs  <- rep(0.0, context$k)
-      for (i in 1:context$k) {
-         probs[i] <- (1 - gamma) * (theta$weight[[i]] / sum_of(theta$weight))
-         inc(probs[i]) <- gamma  / context$k
-      }
-      growth_factor <- exp((gamma / context$k) * reward / probs[arm])
-      theta$weight[[arm]] <- theta$weight[[arm]] * growth_factor
+      inc(theta$n[[arm]]) <- 1
+      inc(theta$mean[[arm]]) <- (reward - theta$mean[[arm]]) / theta$n[[arm]]
       theta
     },
     categorical_draw = function(probs) {
@@ -43,29 +36,34 @@ Exp3Policy <- R6::R6Class(
       }
       sample(arms, 1, replace = TRUE)
     }
+
   )
 )
 
-#' Policy: Exp3
+#' Policy: Softmax ..
 #'
-#' In \code{Exp3Policy}, "Exp3" stands for "Exponential-weight algorithm for Exploration and Exploitation".
-#' It makes use of a distribution over probabilities that is is a mixture of a
-#' uniform distribution and a distribution which assigns to each action
-#' a probability mass exponential in the estimated cumulative reward for that action.
+#' \code{SoftmaxPolicy} chooses an arm at
+#' random (explores) with probability \code{epsilon}, otherwise it
+#' greedily chooses (exploits) the arm with the highest estimated
+#' reward.
 #'
-#' @name Exp3Policy
+#' @name SoftmaxPolicy
 #' @family contextual policies
 #'
 #' @section Usage:
 #' \preformatted{
-#' policy <- Exp3Policy(gamma = 0.1, name = "Exp3Policy")
+#' policy <- SoftmaxPolicy(epsilon = 0.1, name = "SoftmaxPolicy")
 #' }
 #'
 #' @section Arguments:
 #'
 #' \describe{
-#'   \item{\code{gamma}}{
-#'    double, value in the closed interval \code{(0,1]}, controls the exploration - often refered to as the learning rate
+#'   \item{\code{epsilon}}{
+#'    double, value in the closed interval \code{(0,1]} indicating the probablilty with which
+#'    arms are selected at random (explored).
+#'    Otherwise, \code{SoftmaxPolicy} chooses the best arm (exploits)
+#'    with a probability of \code{1 - epsilon}
+#'
 #'   }
 #'   \item{\code{name}}{
 #'    character string specifying this policy. \code{name}
@@ -76,12 +74,12 @@ Exp3Policy <- R6::R6Class(
 #' @section Methods:
 #'
 #' \describe{
-#'   \item{\code{new(gamma = 0.1, name = "Exp3")}}{ Generates a new \code{Exp3Policy} object. Arguments are defined in the Argument section above.}
+#'   \item{\code{new(epsilon = 0.1, name = "EpsilonGreedy")}}{ Generates a new \code{SoftmaxPolicy} object. Arguments are defined in the Argument section above.}
 #' }
 #'
 #' \describe{
 #'   \item{\code{set_parameters()}}{each policy needs to assign the parameters it wants to keep track of
-#'   to list \code{self$parameters} that has to be defined in \code{set_parameters()}'s body.
+#'   to list \code{self$theta_to_arms} that has to be defined in \code{set_parameters()}'s body.
 #'   The parameters defined here can later be accessed by arm index in the following way:
 #'   \code{theta[[index_of_arm]]$parameter_name}
 #'   }
@@ -103,7 +101,11 @@ Exp3Policy <- R6::R6Class(
 #'
 #' @references
 #'
-#' Auer, P., Cesa-Bianchi, N., Freund, Y., & Schapire, R. E. (2002). The nonstochastic multiarmed bandit problem. SIAM journal on computing, 32(1), 48-77. Strehl, A., & Littman, M. (2004). Exploration via modelbased interval estimation. In International Conference on Machine Learning, number Icml.
+#' Gittins, J., Glazebrook, K., & Weber, R. (2011). Multi-armed bandit allocation indices. John Wiley & Sons. (Original work published 1989)
+#'
+#' Sutton, R. S. (1996). Generalization in reinforcement learning: Successful examples using sparse coarse coding. In Advances in neural information processing systems (pp. 1038-1044).
+#'
+#' Strehl, A., & Littman, M. (2004). Exploration via modelbased interval estimation. In International Conference on Machine Learning, number Icml.
 #'
 #' @seealso
 #'
@@ -118,10 +120,10 @@ Exp3Policy <- R6::R6Class(
 #'
 #' horizon            <- 100L
 #' simulations        <- 100L
-#' weight_per_arm     <- c(0.9, 0.1, 0.1)
+#' arm_weights        <- c(0.9, 0.1, 0.1)
 #'
-#' policy             <- Exp3Policy$new(gamma = 0.1, name = "Exp3")
-#' bandit             <- SyntheticBandit$new(weights = weight_per_arm, precache = FALSE)
+#' policy             <- SoftmaxPolicy$new(tau = 0.1, name = "Softmax")
+#' bandit             <- SyntheticBandit$new(arm_weights = arm_weights, precache = FALSE)
 #' agent              <- Agent$new(policy, bandit)
 #'
 #' history            <- Simulator$new(agent, horizon, simulations, do_parallel = FALSE)$run()

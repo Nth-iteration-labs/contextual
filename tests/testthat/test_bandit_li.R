@@ -2,14 +2,11 @@ context("OfflineLiBandit")
 
 test_that("OfflineLiBandit simulation", {
 
-  bandit      <- SyntheticBandit$new()
-  bandit$set_weights(matrix(
-    c(0.9, 0.0, 0.1,
-      0.1, 0.9, 0.1,
-      0.1, 0.1, 0.9),
-    nrow = 3,
-    ncol = 3
-  ))
+  context_weights    <- matrix(  c( 0.9, 0.1, 0.1,
+                                    0.1, 0.9, 0.1,
+                                    0.1, 0.1, 0.9), nrow = 3, ncol = 3, byrow = TRUE)
+
+  bandit      <- SyntheticBandit$new(context_weights = context_weights)
 
   policy      <- RandomPolicy$new()
 
@@ -30,11 +27,12 @@ test_that("OfflineLiBandit simulation", {
   before$save_data("test.RData")
 
   compare_before_reward <- c(
-    1,1,0,0,0,1,0,0,0,1,1,0,1,0,1,0,1,1,0,1,
-    0,0,0,0,1,0,1,1,0,0,0,1,1,1,0,0,1,0,0,1,
-    0,1,0,0,1,0,0,1,0,0,1,1,0,1,0,1,0,1,0,0,
-    0,0,1,1,1,0,0,1,0,0,1,0,0,0,1,0,1,1,0,0,
-    1,0,1,1,1,1,0,0,1,0,0,0,0,0,1,0,0,0,0,0
+    1,1,0,1,0,0,1,0,0,0,1,0,1,1,1,0,0,1,
+    0,0,0,0,0,1,1,0,0,0,1,0,0,1,1,0,1,0,
+    1,1,0,1,0,0,1,1,1,0,1,0,1,0,1,1,0,1,
+    0,1,0,1,0,0,0,0,1,1,1,1,0,0,0,1,1,0,
+    0,0,1,0,1,1,0,0,1,0,0,1,0,1,0,0,0,0,
+    0,0,1,0,1,0,0,0,0,0
   )
   expect_equal(before$data$reward,compare_before_reward)
 
@@ -59,8 +57,7 @@ test_that("OfflineLiBandit simulation", {
   after <- simulation$run()
 
   compare_after_reward <- c(
-    1,0,0,0,1,1,1,1,0,0,0,0,0,1,0,1,1,0,1,1,
-    0,0,1,1,1,0,1,0,1,0,0,0,1,1,1,0,0,1,0,0
+    1,0,1,0,1,1,1,0,0,0,1,1,1,0,0,1,0,1,1,1,1,1,0,1,0,0,1,1,1,0,1,0,1,0,0,0,1,1
   )
   expect_equal(after$data$reward,compare_after_reward)
 

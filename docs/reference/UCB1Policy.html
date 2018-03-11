@@ -148,7 +148,7 @@ is, amongst others, saved to the History log and displayed in summaries and plot
 </dl>
     <dl class='dl-horizontal'>
 <dt><code>set_parameters()</code></dt><dd><p>each policy needs to assign the parameters it wants to keep track of
-to list <code>self$parameters</code> that has to be defined in <code>set_parameters()</code>'s body.
+to list <code>self$theta_to_arms</code> that has to be defined in <code>set_parameters()</code>'s body.
 The parameters defined here can later be accessed by arm index in the following way:
 <code>theta[[index_of_arm]]$parameter_name</code></p></dd>
 </dl>
@@ -175,6 +175,8 @@ based on the reward received, and, potentially, the current context.</p></dd>
 <code><a href='OfflineLiBandit.html'>OfflineLiBandit</a></code>, <code><a href='SyntheticBandit.html'>SyntheticBandit</a></code></p>
 <p>Other contextual policies: <code><a href='AbstractPolicy.html'>AbstractPolicy</a></code>,
   <code><a href='BTSLogitPolicy.html'>BTSLogitPolicy</a></code>,
+  <code><a href='ContextualEpsilonGreedyPolicy.html'>ContextualEpsilonGreedyPolicy</a></code>,
+  <code><a href='ContextualThompsonSamplingPolicy.html'>ContextualThompsonSamplingPolicy</a></code>,
   <code><a href='EpsilonFirstPolicy.html'>EpsilonFirstPolicy</a></code>,
   <code><a href='EpsilonGreedyPolicy.html'>EpsilonGreedyPolicy</a></code>,
   <code><a href='Exp3Policy.html'>Exp3Policy</a></code>, <code><a href='LinUCBPolicy.html'>LinUCBPolicy</a></code>,

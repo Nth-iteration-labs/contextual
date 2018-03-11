@@ -1,22 +1,23 @@
 #' @export
-LinUCBPolicy <- R6::R6Class(
-  "LinUCBPolicy",
+ContextualEpsilonGreedyPolicy <- R6::R6Class(
+  "ContextualEpsilonGreedyPolicy",
   portable = FALSE,
   class = FALSE,
   inherit = AbstractPolicy,
   public = list(
     alpha = NULL,
-    initialize = function(alpha = 1.0, name = "LinUCB") {
+    epsilon = NULL,
+    initialize = function(epsilon = 0.1, alpha = 1.0, name = "ContextualEpsilonGreedyPolicy") {
       super$initialize(name)
       self$alpha <- alpha
+      self$epsilon <- epsilon
     },
     set_parameters = function() {
-      self$parameters <- list( 'A' = diag(1,self$d), 'b' = rep(0,self$d))
+      self$theta_to_arms <- list( 'A' = diag(1,self$d,self$d), 'b' = rep(0,self$d))
     },
     get_action = function(context, t) {
       expected_rewards <- rep(0.0, context$k)
       X <- context$X
-
       for (arm in 1:context$k) {
 
         A          <-  theta$A[[arm]]
@@ -28,9 +29,13 @@ LinUCBPolicy <- R6::R6Class(
         mean       <-  X %*% theta.hat
         variance   <-  sqrt(tcrossprod(context$X %*% A.inv, X))
 
-        expected_rewards[arm] <- mean + (alpha * variance)
+        expected_rewards[arm] <- mean + alpha * variance
       }
-      action$choice  <- max_in(expected_rewards)
+      if (runif(1) > epsilon) {
+        action$choice <- max_in(expected_rewards)
+      } else {
+        action$choice <- sample.int(context$k, 1, replace = TRUE)
+      }
       action
     },
     set_reward = function(context, action, reward, t) {
@@ -49,16 +54,16 @@ LinUCBPolicy <- R6::R6Class(
 
 #' Policy: LinUCB
 #'
-#' Each time step t, \code{LinUCBPolicy} runs a linear regression that produces coefficients for each context feature \code{d}.
+#' Each time step t, \code{ContextualEpsilonGreedyPolicy} runs a linear regression per arm that produces coefficients for each context feature \code{d}.
 #' It then observes the new context, and generates a predicted payoff or reward together with a confidence interval for each available arm.
 #' It then proceeds to choose the arm with the highest upper confidence bound.
 #'
-#' @name LinUCBPolicy
+#' @name ContextualEpsilonGreedyPolicy
 #' @family contextual policies
 #'
 #' @section Usage:
 #' \preformatted{
-#' policy <- LinUCBPolicy(alpha = 1.0, name = "LinUCB")
+#' policy <- ContextualEpsilonGreedyPolicy(alpha = 1.0, name = "LinUCB")
 #' }
 #'
 #' @section Arguments:
@@ -87,12 +92,12 @@ LinUCBPolicy <- R6::R6Class(
 #' @section Methods:
 #'
 #' \describe{
-#'   \item{\code{new(alpha = 1, name = "LinUCB")}}{ Generates a new \code{LinUCBPolicy} object. Arguments are defined in the Argument section above.}
+#'   \item{\code{new(alpha = 1, name = "LinUCB")}}{ Generates a new \code{ContextualEpsilonGreedyPolicy} object. Arguments are defined in the Argument section above.}
 #' }
 #'
 #' \describe{
 #'   \item{\code{set_parameters()}}{each policy needs to assign the parameters it wants to keep track of
-#'   to list \code{self$parameters} that has to be defined in \code{set_parameters()}'s body.
+#'   to list \code{self$theta_to_arms} that has to be defined in \code{set_parameters()}'s body.
 #'   The parameters defined here can later be accessed by arm index in the following way:
 #'   \code{theta[[index_of_arm]]$parameter_name}
 #'   }
@@ -125,19 +130,6 @@ LinUCBPolicy <- R6::R6Class(
 #' \code{\link{OfflineLiBandit}}, \code{\link{SyntheticBandit}}
 #'
 #'
-#' @examples
-#'
-#' horizon            <- 100L
-#' simulations        <- 100L
-#' weight_per_arm     <- c(0.9, 0.1, 0.1)
-#'
-#' policy             <- LinUCBPolicy$new(alpha = 1.0, name = "LinUCB")
-#' bandit             <- SyntheticBandit$new(weights = weight_per_arm, precache = FALSE)
-#' agent              <- Agent$new(policy, bandit)
-#'
-#' history            <- Simulator$new(agent, horizon, simulations, do_parallel = FALSE)$run()
-#'
-#' plot(history, type = "grid")
 #'
 #'
 NULL

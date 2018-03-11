@@ -35,7 +35,7 @@ is, amongst others, saved to the History log and displayed in summaries and plot
 
 \describe{
 \item{\code{set_parameters()}}{each policy needs to assign the parameters it wants to keep track of
-to list \code{self$parameters} that has to be defined in \code{set_parameters()}'s body.
+to list \code{self$theta_to_arms} that has to be defined in \code{set_parameters()}'s body.
 The parameters defined here can later be accessed by arm index in the following way:
 \code{theta[[index_of_arm]]$parameter_name}
 }
@@ -60,10 +60,10 @@ based on the reward received, and, potentially, the current context.
 
 horizon            <- 100L
 simulations        <- 100L
-weight_per_arm     <- c(0.9, 0.1, 0.1)
+arm_weights        <- c(0.9, 0.1, 0.1)
 
 policy             <- RandomPolicy$new(name = "Random")
-bandit             <- SyntheticBandit$new(weights = weight_per_arm, precache = FALSE)
+bandit             <- SyntheticBandit$new(arm_weights = arm_weights, precache = FALSE)
 agent              <- Agent$new(policy, bandit)
 
 history            <- Simulator$new(agent, horizon, simulations, do_parallel = FALSE)$run()
@@ -84,6 +84,8 @@ Bandit classes: \code{\link{AbstractBandit}}, \code{\link{BasicBandit}},
 
 Other contextual policies: \code{\link{AbstractPolicy}},
   \code{\link{BTSLogitPolicy}},
+  \code{\link{ContextualEpsilonGreedyPolicy}},
+  \code{\link{ContextualThompsonSamplingPolicy}},
   \code{\link{EpsilonFirstPolicy}},
   \code{\link{EpsilonGreedyPolicy}},
   \code{\link{Exp3Policy}}, \code{\link{LinUCBPolicy}},

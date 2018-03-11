@@ -8,6 +8,7 @@ BasicBandit <- R6::R6Class(
     initialize   = function(weights = NULL) {
       super$initialize()
       if (!is.null(weights)) self$set_weights(weights)
+      private$X <- array(1, dim = c(self$d, self$k, 1))
     },
     get_weights = function() {
       private$W
@@ -21,7 +22,7 @@ BasicBandit <- R6::R6Class(
       invisible(private$W)
     },
     get_context = function(t) {
-      private$context_to_list()
+      private$context_to_list(t)
     },
     do_action = function(action, t) {
       private$R <- matrix(runif(self$k) < self$get_weights(), self$k, self$d)

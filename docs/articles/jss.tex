@@ -196,7 +196,7 @@ That is, an agent repeats the following lines one at a time at each time step \t
 
 \begin{figure}[H]
   \centering
-    \includegraphics[width=.99\textwidth]{fig/cmab_chart}
+    \includegraphics[width=.99\textwidth]{fig/mab_chart}
     \label{fig:mab_chart}
       \caption{Overview MAB formalization towards \pkg{contextual}'s implementation}
 \end{figure}
@@ -226,7 +226,21 @@ As a matter of fact, by setting feature vector \textit{X} to [1] for each \texti
 \section{Implementation}
 %% Note: If there is markup in \(sub)section, then it has to be escape as above.
 
-In the canonical multi-armed bandit (MAB) problem a gambler faces a number of slot machines, each with a potentially different payoff. It is the gamblers goal to make as much profit (or, in the case of gambling, as little loss) as possible by sequentially choosing which machine to play, learning from the observations as she goes along.
+Here, explain how implementation flows naturally from the above
+
+\begin{figure}[H]
+  \centering
+    \includegraphics[width=.99\textwidth]{fig/contextual_class}
+    \label{fig:contextual_class}
+      \caption{\pkg{contextual} UML Class Diagram}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+    \includegraphics[width=.99\textwidth]{fig/contextual_sequence}
+    \label{fig:contextual_sequence}
+      \caption{\pkg{contextual} UML Sequence Diagram}
+\end{figure}
 
 
 
@@ -235,22 +249,22 @@ In the canonical multi-armed bandit (MAB) problem a gambler faces a number of sl
 \begin{alltt}
 \hlkwd{library}\hlstd{(}\hlstr{"contextual"}\hlstd{)}
 
-\hlstd{bandit}      \hlkwb{<-} \hlstd{BasicBandit}\hlopt{$}\hlkwd{new}\hlstd{()}
+\hlstd{horizon}            \hlkwb{<-} \hlnum{100}
+\hlstd{simulations}        \hlkwb{<-} \hlnum{100}
+\hlstd{weight_per_arm}     \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{0.9}\hlstd{,} \hlnum{0.1}\hlstd{,} \hlnum{0.1}\hlstd{)}
 
-\hlstd{bandit}\hlopt{$}\hlkwd{set_weights}\hlstd{(}\hlkwd{c}\hlstd{(}\hlnum{0.1}\hlstd{,} \hlnum{0.9}\hlstd{))}
+\hlstd{policy}             \hlkwb{<-} \hlstd{EpsilonGreedyPolicy}\hlopt{$}\hlkwd{new}\hlstd{(}\hlkwc{epsilon} \hlstd{=} \hlnum{0.1}\hlstd{,} \hlkwc{name} \hlstd{=} \hlstr{"EG"}\hlstd{)}
+\hlstd{bandit}             \hlkwb{<-} \hlstd{SyntheticBandit}\hlopt{$}\hlkwd{new}\hlstd{(}\hlkwc{weights} \hlstd{= weight_per_arm)}
 
-\hlstd{policy}      \hlkwb{<-} \hlstd{EpsilonGreedyPolicy}\hlopt{$}\hlkwd{new}\hlstd{()}
+\hlstd{agent}              \hlkwb{<-} \hlstd{Agent}\hlopt{$}\hlkwd{new}\hlstd{(policy,bandit)}
 
-\hlstd{agent}       \hlkwb{<-} \hlstd{Agent}\hlopt{$}\hlkwd{new}\hlstd{(policy, bandit)}
+\hlstd{simulator}          \hlkwb{<-} \hlstd{Simulator}\hlopt{$}\hlkwd{new}\hlstd{(}\hlkwc{agents} \hlstd{= agent,}
+                                    \hlkwc{horizon} \hlstd{= horizon,}
+                                    \hlkwc{simulations} \hlstd{= simulations)}
+\hlstd{history}            \hlkwb{<-} \hlstd{simulator}\hlopt{$}\hlkwd{run}\hlstd{()}
 
-\hlstd{simulation}  \hlkwb{<-} \hlstd{Simulator}\hlopt{$}\hlkwd{new}\hlstd{(agent,}
-                             \hlkwc{horizon} \hlstd{=} \hlnum{100L}\hlstd{,}
-                             \hlkwc{simulations} \hlstd{=} \hlnum{100L}\hlstd{,}
-                             \hlkwc{worker_max} \hlstd{=} \hlnum{1}\hlstd{)}
-
-\hlstd{history}     \hlkwb{<-} \hlstd{simulation}\hlopt{$}\hlkwd{run}\hlstd{()}
-
-\hlstd{Plot}\hlopt{$}\hlkwd{new}\hlstd{()}\hlopt{$}\hlkwd{grid}\hlstd{(history)}
+\hlkwd{plot}\hlstd{(history,} \hlkwc{type} \hlstd{=} \hlstr{"cumulative"}\hlstd{,} \hlkwc{regret} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\hlkwd{plot}\hlstd{(history,} \hlkwc{type} \hlstd{=} \hlstr{"arms"}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -261,7 +275,11 @@ For results, see Figure \ref{fig:fig1} on page \pageref{fig:fig1}.
 \begin{center}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}
-\includegraphics[width=\maxwidth]{fig/fig1-1} \caption[Epsilon Greedy]{Epsilon Greedy}\label{fig:fig1}
+\includegraphics[width=\maxwidth]{fig/fig1-1} \caption[Epsilon Greedy]{Epsilon Greedy}\label{fig:fig11}
+\end{figure}
+
+\begin{figure}
+\includegraphics[width=\maxwidth]{fig/fig1-2} \caption[Epsilon Greedy]{Epsilon Greedy}\label{fig:fig12}
 \end{figure}
 
 
@@ -304,13 +322,12 @@ on 120 cores:    k3*d3 * 5 policies * 3000 * 10000 --\textgreater{} 691 seconds
 \section{Extra greedy UCB}
 %% Note: If there is markup in \(sub)section, then it has to be escape as above.
 
-In the canonical multi-armed bandit (MAB) problem a gambler faces a number of slot machines, each with a potentially different payoff. It is the gamblers goal to make as much profit (or, in the case of gambling, as little loss) as possible by sequentially choosing which machine to play, learning from the observations as she goes along.
-
+Ladila bladibla.
 
 \section{Conclusions}
 \label{sec:conc4}
 
-The goal of a data analysis is not only to answer a research question based on data but also to collect findings that support that answer. These findings usually take the form of a~table, plot or regression/classification model and are usually presented in articles or reports.
+Placeholder... the goal of a data analysis is not only to answer a research question based on data but also to collect findings that support that answer. These findings usually take the form of a~table, plot or regression/classification model and are usually presented in articles or reports.
 
 \section{Acknowledgments}
 

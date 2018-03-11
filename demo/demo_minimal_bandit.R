@@ -7,19 +7,18 @@ ptm <- proc.time()
 CustomBanditLocal <- R6::R6Class(
   "CustomBanditLocal",
   inherit = BasicBandit,
-  portable = FALSE, class = FALSE,
+  portable = TRUE, class = TRUE,
   public = list(
-    initialize   = function() {
-      super$initialize()
-      self$set_weights(c(0.1,0.1,0.9))
+    initialize   = function(weights) {
+      super$initialize(weights)
     }
   )
 )
-
-bandit      <- CustomBanditLocal$new()
+# only works because init with 3  ###########################
+bandit      <- CustomBanditLocal$new(c(0.9,0.1,0.1))
 policy      <- EpsilonGreedyPolicy$new()
 agent       <- Agent$new(policy, bandit)
-simulation  <- Simulator$new(agent, horizon = 100L, simulations = 100L)
+simulation  <- Simulator$new(agent, horizon = 100L, simulations = 100L, do_parallel = FALSE)
 
 history     <- simulation$run()
 

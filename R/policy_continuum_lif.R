@@ -22,7 +22,7 @@ LifPolicy <- R6::R6Class(
       self$x0_start = x0_start
     },
     set_parameters = function() {
-      self$parameters <- list('x0' = x0_start, 'Y' = rep(NA, inttime))
+      self$theta_to_arms <- list('x0' = x0_start, 'Y' = rep(NA, inttime))
     },
     get_action = function(context, t) {
       action$choice = theta$x0[[1]] + amplitude*cos(omega * t)

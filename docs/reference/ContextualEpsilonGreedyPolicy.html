@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Policy: LinUCB — LinUCBPolicy â€¢ contextual</title>
+<title>Policy: LinUCB — ContextualEpsilonGreedyPolicy â€¢ contextual</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -27,11 +27,11 @@
 <script src="../pkgdown.js"></script>
   
   
-<meta property="og:title" content="Policy: LinUCB — LinUCBPolicy" />
+<meta property="og:title" content="Policy: LinUCB — ContextualEpsilonGreedyPolicy" />
 
-<meta property="og:description" content="Algorithm 1 LinUCB with disjoint linear models
-A Contextual-Bandit Approach to
-Personalized News Article Recommendation" />
+<meta property="og:description" content="Each time step t, ContextualEpsilonGreedyPolicy runs a linear regression per arm that produces coefficients for each context feature d.
+It then observes the new context, and generates a predicted payoff or reward together with a confidence interval for each available arm.
+It then proceeds to choose the arm with the highest upper confidence bound." />
 <meta name="twitter:card" content="summary" />
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
@@ -113,24 +113,17 @@ Personalized News Article Recommendation" />
     </div>
 
     
-    <p>Algorithm 1 LinUCB with disjoint linear models
-A Contextual-Bandit Approach to
-Personalized News Article Recommendation</p>
-    
-
-        
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>Lihong Li et all</p>
-<p>Each time step t, <code>LinUCBPolicy</code> runs a linear regression per arm that produces coefficients for each context feature <code>d</code>.
+    <p>Each time step t, <code>ContextualEpsilonGreedyPolicy</code> runs a linear regression per arm that produces coefficients for each context feature <code>d</code>.
 It then observes the new context, and generates a predicted payoff or reward together with a confidence interval for each available arm.
 It then proceeds to choose the arm with the highest upper confidence bound.</p>
     
+
+        
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 
     
     <pre>
-policy &lt;- LinUCBPolicy(alpha = 1.0, name = "LinUCB")
+policy &lt;- ContextualEpsilonGreedyPolicy(alpha = 1.0, name = "LinUCB")
 </pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -154,7 +147,7 @@ is, amongst others, saved to the History log and displayed in summaries and plot
 
     
     <dl class='dl-horizontal'>
-<dt><code>new(alpha = 1, name = "LinUCB")</code></dt><dd><p>Generates a new <code>LinUCBPolicy</code> object. Arguments are defined in the Argument section above.</p></dd>
+<dt><code>new(alpha = 1, name = "LinUCB")</code></dt><dd><p>Generates a new <code>ContextualEpsilonGreedyPolicy</code> object. Arguments are defined in the Argument section above.</p></dd>
 </dl>
     <dl class='dl-horizontal'>
 <dt><code>set_parameters()</code></dt><dd><p>each policy needs to assign the parameters it wants to keep track of
@@ -183,12 +176,11 @@ based on the reward received, and, potentially, the current context.</p></dd>
 <code><a href='OfflineLiBandit.html'>OfflineLiBandit</a></code>, <code><a href='SyntheticBandit.html'>SyntheticBandit</a></code></p>
 <p>Other contextual policies: <code><a href='AbstractPolicy.html'>AbstractPolicy</a></code>,
   <code><a href='BTSLogitPolicy.html'>BTSLogitPolicy</a></code>,
-  <code><a href='ContextualEpsilonGreedyPolicy.html'>ContextualEpsilonGreedyPolicy</a></code>,
   <code><a href='ContextualThompsonSamplingPolicy.html'>ContextualThompsonSamplingPolicy</a></code>,
   <code><a href='EpsilonFirstPolicy.html'>EpsilonFirstPolicy</a></code>,
   <code><a href='EpsilonGreedyPolicy.html'>EpsilonGreedyPolicy</a></code>,
-  <code><a href='Exp3Policy.html'>Exp3Policy</a></code>, <code><a href='OraclePolicy.html'>OraclePolicy</a></code>,
-  <code><a href='RandomPolicy.html'>RandomPolicy</a></code>,
+  <code><a href='Exp3Policy.html'>Exp3Policy</a></code>, <code><a href='LinUCBPolicy.html'>LinUCBPolicy</a></code>,
+  <code><a href='OraclePolicy.html'>OraclePolicy</a></code>, <code><a href='RandomPolicy.html'>RandomPolicy</a></code>,
   <code><a href='SimpleBTSPolicy.html'>SimpleBTSPolicy</a></code>,
   <code><a href='SoftmaxPolicy.html'>SoftmaxPolicy</a></code>,
   <code><a href='ThompsonSamplingPolicy.html'>ThompsonSamplingPolicy</a></code>,
@@ -201,11 +193,11 @@ based on the reward received, and, potentially, the current context.</p></dd>
 <span class='no'>simulations</span>        <span class='kw'>&lt;-</span> <span class='fl'>100L</span>
 <span class='no'>weight_per_arm</span>     <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='fl'>0.9</span>, <span class='fl'>0.1</span>, <span class='fl'>0.1</span>)
 
-<span class='no'>policy</span>             <span class='kw'>&lt;-</span> <span class='no'>LinUCBPolicy</span>$<span class='fu'>new</span>(<span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1.0</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"LinUCB"</span>)
+<span class='no'>policy</span>             <span class='kw'>&lt;-</span> <span class='no'>ContextualEpsilonGreedyPolicy</span>$<span class='fu'>new</span>(<span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1.0</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"LinUCB"</span>)
 <span class='no'>bandit</span>             <span class='kw'>&lt;-</span> <span class='no'>SyntheticBandit</span>$<span class='fu'>new</span>(<span class='kw'>weights</span> <span class='kw'>=</span> <span class='no'>weight_per_arm</span>, <span class='kw'>precache</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='no'>agent</span>              <span class='kw'>&lt;-</span> <span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>policy</span>, <span class='no'>bandit</span>)
 
-<span class='no'>history</span>            <span class='kw'>&lt;-</span> <span class='no'>Simulator</span>$<span class='fu'>new</span>(<span class='no'>agent</span>, <span class='no'>horizon</span>, <span class='no'>simulations</span>, <span class='kw'>do_parallel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)$<span class='fu'>run</span>()</div><div class='output co'>#&gt; <span class='error'>Error in {    index &lt;- 1L    local_history &lt;- History$new(horizon * number_of_agents *         length(sims_agents), save_context, save_theta)    for (sim_agent in sims_agents) {        simulation_index &lt;- sim_agent$sim_index        policy_name &lt;- sim_agent$policy$name        set.seed(simulation_index + set_seed * 42)        if (sim_agent$bandit$is_precaching) {            sim_agent$bandit$generate_bandit_data(n = horizon)        }        if (continouous_counter)             sim_agent$set_t(as.integer((simulation_index - 1L) *                 horizon))        for (t in 1L:horizon) {            step &lt;- sim_agent$step()            if (!is.null(step$reward)) {                local_history$save(index, t, step$action, step$reward,                   policy_name, simulation_index, if (save_context)                     step$context$X                  else NA, if (save_theta)                     step$theta                  else NA)                index &lt;- index + 1L            }        }    }    dth &lt;- local_history$get_data_table()    dth[sim != 0]}: task 1 failed - "incorrect number of dimensions"</span></div><div class='input'>
+<span class='no'>history</span>            <span class='kw'>&lt;-</span> <span class='no'>Simulator</span>$<span class='fu'>new</span>(<span class='no'>agent</span>, <span class='no'>horizon</span>, <span class='no'>simulations</span>, <span class='kw'>do_parallel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)$<span class='fu'>run</span>()</div><div class='output co'>#&gt; <span class='message'>Loading required package: iterators</span></div><div class='output co'>#&gt; <span class='error'>Error in {    index &lt;- 1L    local_history &lt;- History$new(horizon * number_of_agents *         length(sims_agents), save_context, save_theta)    for (sim_agent in sims_agents) {        simulation_index &lt;- sim_agent$sim_index        policy_name &lt;- sim_agent$policy$name        set.seed(simulation_index + set_seed * 42)        if (sim_agent$bandit$is_precaching) {            sim_agent$bandit$generate_bandit_data(n = horizon)        }        if (continouous_counter)             sim_agent$set_t(as.integer((simulation_index - 1L) *                 horizon))        for (t in 1L:horizon) {            step &lt;- sim_agent$step()            if (!is.null(step$reward)) {                local_history$save(index, t, step$action, step$reward,                   policy_name, simulation_index, if (save_context)                     step$context$X                  else NA, if (save_theta)                     step$theta                  else NA)                index &lt;- index + 1L            }        }    }    dth &lt;- local_history$get_data_table()    dth[sim != 0]}: task 1 failed - "non-conformable arrays"</span></div><div class='input'>
 <span class='fu'>plot</span>(<span class='no'>history</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"grid"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in .External2(C_savehistory, file): 'savehistory' can only be used in Rgui and Rterm</span></div><div class='input'>
 
 </div></pre>
@@ -214,8 +206,6 @@ based on the reward received, and, potentially, the current context.</p></dd>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       
-      <li><a href="#details">Details</a></li>
-
       <li><a href="#usage">Usage</a></li>
 
       <li><a href="#arguments">Arguments</a></li>

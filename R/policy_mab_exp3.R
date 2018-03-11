@@ -1,48 +1,72 @@
 #' @export
-RandomPolicy <- R6::R6Class(
-  "RandomPolicy",
+Exp3Policy <- R6::R6Class(
+  "Exp3Policy",
   portable = FALSE,
   class = FALSE,
   inherit = AbstractPolicy,
   public = list(
-    initialize = function(name = "Random") {
+    gamma = NULL,
+    initialize = function(gamma =  0.1, name = "Exp3") {
       super$initialize(name)
+      self$gamma <- gamma
     },
     set_parameters = function() {
-      self$theta_to_arms <- list('n' = 0, 'mean' = 0)
+      self$theta_to_arms <- list('weight' = 1)
     },
     get_action = function(context, t) {
-      action$choice <- sample.int(context$k, 1, replace = TRUE)
-      action$propensity <- 1/context$k
+      probs <- rep(0.0, context$k)
+      for (i in 1:context$k) {
+         probs[i] <- (1 - gamma) * (theta$weight[[i]] / sum_of(theta$weight))
+      }
+      inc(probs[i])  <- ((gamma) * (1.0 / context$k))
+      action$choice  <- categorical_draw(probs)
       action
     },
     set_reward = function(context, action, reward, t) {
       arm    <- action$choice
       reward <- reward$reward
-      inc(theta$n[[arm]]) <- 1
-      inc(theta$mean[[arm]]) <- (reward - theta$mean[[arm]]) / theta$n[[arm]]
+      probs  <- rep(0.0, context$k)
+      for (i in 1:context$k) {
+         probs[i] <- (1 - gamma) * (theta$weight[[i]] / sum_of(theta$weight))
+         inc(probs[i]) <- gamma  / context$k
+      }
+      growth_factor <- exp((gamma / context$k) * reward / probs[arm])
+      theta$weight[[arm]] <- theta$weight[[arm]] * growth_factor
       theta
+    },
+    categorical_draw = function(probs) {
+      arms <- length(probs)
+      cumulative_probability <- 0.0
+      for (i in 1:arms) {
+        inc(cumulative_probability) <- probs[i]
+        if ( cumulative_probability > runif(1) ) return(i)
+      }
+      sample(arms, 1, replace = TRUE)
     }
   )
 )
 
-#' Policy: Random
+#' Policy: Exp3
 #'
-#' \code{RandomPolicy} always explores, choosing arms uniformly at random.
-#' In that respect, \code{RandomPolicy} is the mirror image of a pure greedy policy,
-#' which would always seek to exploit.
+#' In \code{Exp3Policy}, "Exp3" stands for "Exponential-weight algorithm for Exploration and Exploitation".
+#' It makes use of a distribution over probabilities that is is a mixture of a
+#' uniform distribution and a distribution which assigns to each action
+#' a probability mass exponential in the estimated cumulative reward for that action.
 #'
-#' @name RandomPolicy
+#' @name Exp3Policy
 #' @family contextual policies
 #'
 #' @section Usage:
 #' \preformatted{
-#' policy <- RandomPolicy(name = "RandomPolicy")
+#' policy <- Exp3Policy(gamma = 0.1, name = "Exp3Policy")
 #' }
 #'
 #' @section Arguments:
 #'
 #' \describe{
+#'   \item{\code{gamma}}{
+#'    double, value in the closed interval \code{(0,1]}, controls the exploration - often refered to as the learning rate
+#'   }
 #'   \item{\code{name}}{
 #'    character string specifying this policy. \code{name}
 #'    is, amongst others, saved to the History log and displayed in summaries and plots.
@@ -52,7 +76,7 @@ RandomPolicy <- R6::R6Class(
 #' @section Methods:
 #'
 #' \describe{
-#'   \item{\code{new(name = "Random")}}{ Generates a new \code{RandomPolicy} object. Arguments are defined in the Argument section above.}
+#'   \item{\code{new(gamma = 0.1, name = "Exp3")}}{ Generates a new \code{Exp3Policy} object. Arguments are defined in the Argument section above.}
 #' }
 #'
 #' \describe{
@@ -79,7 +103,7 @@ RandomPolicy <- R6::R6Class(
 #'
 #' @references
 #'
-#' Gittins, J., Glazebrook, K., & Weber, R. (2011). Multi-armed bandit allocation indices. John Wiley & Sons. (Original work published 1989)
+#' Auer, P., Cesa-Bianchi, N., Freund, Y., & Schapire, R. E. (2002). The nonstochastic multiarmed bandit problem. SIAM journal on computing, 32(1), 48-77. Strehl, A., & Littman, M. (2004). Exploration via modelbased interval estimation. In International Conference on Machine Learning, number Icml.
 #'
 #' @seealso
 #'
@@ -89,19 +113,22 @@ RandomPolicy <- R6::R6Class(
 #' Bandit classes: \code{\link{AbstractBandit}}, \code{\link{BasicBandit}},
 #' \code{\link{OfflineLiBandit}}, \code{\link{SyntheticBandit}}
 #'
+#'
 #' @examples
 #'
 #' horizon            <- 100L
 #' simulations        <- 100L
 #' arm_weights        <- c(0.9, 0.1, 0.1)
 #'
-#' policy             <- RandomPolicy$new(name = "Random")
+#' policy             <- Exp3Policy$new(gamma = 0.1, name = "Exp3")
 #' bandit             <- SyntheticBandit$new(arm_weights = arm_weights, precache = FALSE)
 #' agent              <- Agent$new(policy, bandit)
 #'
 #' history            <- Simulator$new(agent, horizon, simulations, do_parallel = FALSE)$run()
 #'
 #' plot(history, type = "grid")
+#'
+#' plot(history, type = "arms")
 #'
 #'
 NULL

@@ -11,7 +11,7 @@ BTSLogitPolicy <- R6::R6Class(
       self$alpha <- alpha
     },
     set_parameters = function() {
-      self$parameters <- list( 'A' = diag(1,self$d), 'b' = rep(0,self$d), n = '')
+      self$theta_to_arms <- list( 'A' = diag(1, self$d, self$d), 'b' = rep(0,self$d), n = '')
     },
     get_action = function(context, t) {
       expected_rewards <- rep(0.0, context$k)
