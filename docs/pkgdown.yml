@@ -1,0 +1,29 @@
+pandoc: 1.19.2.1
+pkgdown: 0.1.0.9000
+pkgdown_sha: 17f683717d0a1547f13a08a259b34c58927452d6
+articles:
+  contextual.html: contextual.html
+  contextual.R: contextual.R
+  contextual: contextual.html
+  cmab_chart.pdf: fig/cmab_chart.pdf
+  contextual_class.pdf: fig/contextual_class.pdf
+  contextual_sequence.pdf: fig/contextual_sequence.pdf
+  fig1-1.pdf: fig/fig1-1.pdf
+  fig1-2.pdf: fig/fig1-2.pdf
+  mab_chart.pdf: fig/mab_chart.pdf
+  glossary.html: glossary.html
+  glossary.md: glossary.md
+  glossary: glossary.html
+  jss.bib: jss.bib
+  jss.log: jss.log
+  jss.pdf: jss.pdf
+  jss.Rnw: jss.Rnw
+  jss.tex: jss.tex
+  jsslogo.jpg: jsslogo.jpg
+  literature.html: literature.html
+  literature.md: literature.md
+  literature: literature.html
+  posts.html: posts.html
+  posts.md: posts.md
+  posts: posts.html
+

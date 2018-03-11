@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Policy: Exp3 — Exp3Policy â€¢ contextual</title>
+<title>Policy: Exp3 — Exp3Policy • contextual</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -186,10 +186,10 @@ based on the reward received, and, potentially, the current context.</p></dd>
     <pre class="examples"><div class='input'>
 <span class='no'>horizon</span>            <span class='kw'>&lt;-</span> <span class='fl'>100L</span>
 <span class='no'>simulations</span>        <span class='kw'>&lt;-</span> <span class='fl'>100L</span>
-<span class='no'>weight_per_arm</span>     <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='fl'>0.9</span>, <span class='fl'>0.1</span>, <span class='fl'>0.1</span>)
+<span class='no'>arm_weights</span>        <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='fl'>0.9</span>, <span class='fl'>0.1</span>, <span class='fl'>0.1</span>)
 
 <span class='no'>policy</span>             <span class='kw'>&lt;-</span> <span class='no'>Exp3Policy</span>$<span class='fu'>new</span>(<span class='kw'>gamma</span> <span class='kw'>=</span> <span class='fl'>0.1</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Exp3"</span>)
-<span class='no'>bandit</span>             <span class='kw'>&lt;-</span> <span class='no'>SyntheticBandit</span>$<span class='fu'>new</span>(<span class='kw'>weights</span> <span class='kw'>=</span> <span class='no'>weight_per_arm</span>, <span class='kw'>precache</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='no'>bandit</span>             <span class='kw'>&lt;-</span> <span class='no'>SyntheticBandit</span>$<span class='fu'>new</span>(<span class='kw'>arm_weights</span> <span class='kw'>=</span> <span class='no'>arm_weights</span>, <span class='kw'>precache</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='no'>agent</span>              <span class='kw'>&lt;-</span> <span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>policy</span>, <span class='no'>bandit</span>)
 
 <span class='no'>history</span>            <span class='kw'>&lt;-</span> <span class='no'>Simulator</span>$<span class='fu'>new</span>(<span class='no'>agent</span>, <span class='no'>horizon</span>, <span class='no'>simulations</span>, <span class='kw'>do_parallel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)$<span class='fu'>run</span>()
@@ -233,3 +233,4 @@ based on the reward received, and, potentially, the current context.</p></dd>
 
   </body>
 </html>
+

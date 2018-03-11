@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Policy: LinUCB — LinUCBPolicy â€¢ contextual</title>
+<title>Policy: LinUCB — LinUCBPolicy • contextual</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -195,20 +195,6 @@ based on the reward received, and, potentially, the current context.</p></dd>
   <code><a href='UCB1Policy.html'>UCB1Policy</a></code></p>
     
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='no'>horizon</span>            <span class='kw'>&lt;-</span> <span class='fl'>100L</span>
-<span class='no'>simulations</span>        <span class='kw'>&lt;-</span> <span class='fl'>100L</span>
-<span class='no'>weight_per_arm</span>     <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='fl'>0.9</span>, <span class='fl'>0.1</span>, <span class='fl'>0.1</span>)
-
-<span class='no'>policy</span>             <span class='kw'>&lt;-</span> <span class='no'>LinUCBPolicy</span>$<span class='fu'>new</span>(<span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1.0</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"LinUCB"</span>)
-<span class='no'>bandit</span>             <span class='kw'>&lt;-</span> <span class='no'>SyntheticBandit</span>$<span class='fu'>new</span>(<span class='kw'>weights</span> <span class='kw'>=</span> <span class='no'>weight_per_arm</span>, <span class='kw'>precache</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-<span class='no'>agent</span>              <span class='kw'>&lt;-</span> <span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>policy</span>, <span class='no'>bandit</span>)
-
-<span class='no'>history</span>            <span class='kw'>&lt;-</span> <span class='no'>Simulator</span>$<span class='fu'>new</span>(<span class='no'>agent</span>, <span class='no'>horizon</span>, <span class='no'>simulations</span>, <span class='kw'>do_parallel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)$<span class='fu'>run</span>()</div><div class='output co'>#&gt; <span class='error'>Error in {    index &lt;- 1L    local_history &lt;- History$new(horizon * number_of_agents *         length(sims_agents), save_context, save_theta)    for (sim_agent in sims_agents) {        simulation_index &lt;- sim_agent$sim_index        policy_name &lt;- sim_agent$policy$name        set.seed(simulation_index + set_seed * 42)        if (sim_agent$bandit$is_precaching) {            sim_agent$bandit$generate_bandit_data(n = horizon)        }        if (continouous_counter)             sim_agent$set_t(as.integer((simulation_index - 1L) *                 horizon))        for (t in 1L:horizon) {            step &lt;- sim_agent$step()            if (!is.null(step$reward)) {                local_history$save(index, t, step$action, step$reward,                   policy_name, simulation_index, if (save_context)                     step$context$X                  else NA, if (save_theta)                     step$theta                  else NA)                index &lt;- index + 1L            }        }    }    dth &lt;- local_history$get_data_table()    dth[sim != 0]}: task 1 failed - "incorrect number of dimensions"</span></div><div class='input'>
-<span class='fu'>plot</span>(<span class='no'>history</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"grid"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in .External2(C_savehistory, file): 'savehistory' can only be used in Rgui and Rterm</span></div><div class='input'>
-
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -227,9 +213,7 @@ based on the reward received, and, potentially, the current context.</p></dd>
       <li><a href="#references">References</a></li>
 
       <li><a href="#see-also">See also</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+          </ul>
 
   </div>
 </div>
@@ -248,3 +232,4 @@ based on the reward received, and, potentially, the current context.</p></dd>
 
   </body>
 </html>
+
