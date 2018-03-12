@@ -29,7 +29,7 @@ SyntheticBandit <- R6::R6Class(
 
     context_weights   = NULL,
     arm_weights       = NULL,
-    arm_masks         = NULL,
+    arm_mask         = NULL,
 
     initialize   = function(
       reward_family        = 'Bernoulli',
@@ -38,7 +38,7 @@ SyntheticBandit <- R6::R6Class(
 
       context_weights      = NULL,
       arm_weights          = NULL,
-      arm_masks            = NULL,
+      arm_mask            = NULL,
 
       precache             = TRUE,
       not_zero_features    = TRUE,
@@ -51,7 +51,7 @@ SyntheticBandit <- R6::R6Class(
       }
 
       self$arm_weights          <- arm_weights
-      self$arm_masks            <- arm_masks
+      self$arm_mask            <- arm_mask
 
       self$context_weights      <- context_weights
 
@@ -63,11 +63,11 @@ SyntheticBandit <- R6::R6Class(
 
       weights = rbind(self$context_weights, self$arm_weights)
 
-      if (!is.null(self$arm_weights) & is.null(self$arm_masks)) {
+      if (!is.null(self$arm_weights) & is.null(self$arm_mask)) {
         if (dim(weights)[1] == 1) {
-          self$arm_masks <- matrix(rep(1,length(self$arm_weights)),nrow = 1L  )
+          self$arm_mask <- matrix(rep(1,length(self$arm_weights)),nrow = 1L  )
         } else {
-          stop('Please set arm_masks for arm_weights.' , call. = FALSE)
+          stop('Please set arm_mask for arm_weights.' , call. = FALSE)
         }
       }
       super$initialize(weights)
@@ -119,12 +119,12 @@ SyntheticBandit <- R6::R6Class(
         private$X <- array(0, dim = c(self$d, self$k, n))
         for (i in 1:n) {
           context_mask_to_matrix <- matrix( context_mask[i,], context_d, self$k)
-          private$X[,,i] <- rbind(context_mask_to_matrix, self$arm_masks)
+          private$X[,,i] <- rbind(context_mask_to_matrix, self$arm_mask)
         }
       } else {
         private$X <- array(0, dim = c(self$d, self$k, n))
         for (i in 1:n) {
-          private$X[,,i] <- self$arm_masks
+          private$X[,,i] <- self$arm_mask
         }
       }
       private$X

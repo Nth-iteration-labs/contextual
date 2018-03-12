@@ -15,24 +15,24 @@ source("dev.R")
 # a user visiting is male, language browser is english, etc
 # This adds up to total of *6* context features d=6 every round
 
-horizon             <- 500
-simulations         <- 500
+horizon            <- 50
+simulations        <- 50
 
-arm_weights         <- matrix(  c( 0.3, 0.8, 0.4, 0.8,
-                                   0.3, 0.2, 0.2, 0.5,
-                                   0.4, 0.6, 0.5, 0.2,
-                                   0.2, 0.2, 0.4, 0.4 ), nrow = 4, ncol = 4, byrow = TRUE)
+arm_weights        <- matrix(  c( 0.3, 0.8, 0.4, 0.8,
+                                  0.3, 0.2, 0.2, 0.5,
+                                  0.4, 0.6, 0.5, 0.2,
+                                  0.2, 0.2, 0.4, 0.4 ), nrow = 4, ncol = 4, byrow = TRUE)
 
-arm_masks           <- matrix(  c( 1,   1,   1,   0,
-                                   0,   1,   1,   1,
-                                   1,   1,   0,   1,
-                                   1,   0,   1,   1),   nrow = 4, ncol = 4, byrow = TRUE)
+arm_mask           <- matrix(  c( 1,   1,   1,   0,
+                                  0,   1,   1,   1,
+                                  1,   1,   0,   1,
+                                  1,   0,   1,   1),    nrow = 4, ncol = 4, byrow = TRUE)
 
-context_weights     <- matrix(  c( 0.4, 0.2, 0.2, 0.3,
-                                   0.3, 0.5, 0.3, 0.2), nrow = 2, ncol = 4, byrow = TRUE)
+context_weights    <- matrix(  c( 0.4, 0.2, 0.2, 0.3,
+                                  0.3, 0.5, 0.3, 0.2),  nrow = 2, ncol = 4, byrow = TRUE)
 
 bandit             <- SyntheticBandit$new(arm_weights     = arm_weights,
-                                          arm_masks       = arm_masks,
+                                          arm_mask       = arm_mask,
                                           context_weights = context_weights)
 
 agents             <- list(Agent$new(LinUCBDisjointPolicy$new(), bandit),
@@ -45,8 +45,8 @@ history            <- simulation$run()
 
 plot(history, type = "cumulative")
 
-h <- history$get_data_table()
-plot = Plot$new()
-plot_result = plot$arms( h[agent == "LinUCBHybrid"] )
-plot_result = plot$arms( h[agent == "UCB1"] )
+#h <- history$get_data_table()
+#plot = Plot$new()
+#plot_result = plot$arms( h[agent == "LinUCBHybrid"] )
+#plot_result = plot$arms( h[agent == "UCB1"] )
 
