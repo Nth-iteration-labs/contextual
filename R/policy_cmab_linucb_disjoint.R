@@ -1,12 +1,12 @@
 #' @export
-LinUCBPolicy <- R6::R6Class(
-  "LinUCBPolicy",
+LinUCBDisjointPolicy <- R6::R6Class(
+  "LinUCBDisjointPolicy",
   portable = FALSE,
   class = FALSE,
   inherit = AbstractPolicy,
   public = list(
     alpha = NULL,
-    initialize = function(alpha = 1.0, name = "LinUCB") {
+    initialize = function(alpha = 1.0, name = "LinUCBDisjoint") {
       super$initialize(name)
       self$alpha <- alpha
     },
@@ -14,21 +14,23 @@ LinUCBPolicy <- R6::R6Class(
       self$theta_to_arms <- list( 'A' = diag(1,self$d,self$d), 'b' = rep(0,self$d))
     },
     get_action = function(context, t) {
+
       expected_rewards <- rep(0.0, context$k)
-      X <- context$X
 
       for (arm in 1:self$k) {
 
+        X          <-  context$X[,arm]
         A          <-  theta$A[[arm]]
         b          <-  theta$b[[arm]]
 
-        A.inv      <-  chol2inv(chol(A))
-        theta.hat  <-  A.inv %*% b
+        A_inv      <-  solve(A)
 
-        predicted      <-  X[,arm] %*% theta.hat
-        sd             <-  sqrt(tcrossprod(X[,arm] %*% A.inv, X[,arm]))
+        theta_hat  <-  A_inv %*% b
 
-        expected_rewards[arm] <- predicted + alpha * sd
+        mean       <-  X %*% theta_hat
+        sd         <-  sqrt(tcrossprod(X %*% A_inv, X))
+
+        expected_rewards[arm] <- mean + alpha * sd
       }
       action$choice  <- max_in(expected_rewards)
       action
@@ -47,7 +49,7 @@ LinUCBPolicy <- R6::R6Class(
 )
 
 
-#' Policy: LinUCB
+#' Policy: LinUCB with disjoint linear models
 #'
 #' Algorithm 1 LinUCB with disjoint linear models
 #' A Contextual-Bandit Approach to
@@ -55,16 +57,16 @@ LinUCBPolicy <- R6::R6Class(
 #'
 #' Lihong Li et all
 #'
-#' Each time step t, \code{LinUCBPolicy} runs a linear regression per arm that produces coefficients for each context feature \code{d}.
+#' Each time step t, \code{LinUCBDisjointPolicy} runs a linear regression per arm that produces coefficients for each context feature \code{d}.
 #' It then observes the new context, and generates a predicted payoff or reward together with a confidence interval for each available arm.
 #' It then proceeds to choose the arm with the highest upper confidence bound.
 #'
-#' @name LinUCBPolicy
+#' @name LinUCBDisjointPolicy
 #' @family contextual policies
 #'
 #' @section Usage:
 #' \preformatted{
-#' policy <- LinUCBPolicy(alpha = 1.0, name = "LinUCB")
+#' policy <- LinUCBDisjointPolicy(alpha = 1.0, name = "LinUCB")
 #' }
 #'
 #' @section Arguments:
@@ -93,7 +95,7 @@ LinUCBPolicy <- R6::R6Class(
 #' @section Methods:
 #'
 #' \describe{
-#'   \item{\code{new(alpha = 1, name = "LinUCB")}}{ Generates a new \code{LinUCBPolicy} object. Arguments are defined in the Argument section above.}
+#'   \item{\code{new(alpha = 1, name = "LinUCB")}}{ Generates a new \code{LinUCBDisjointPolicy} object. Arguments are defined in the Argument section above.}
 #' }
 #'
 #' \describe{

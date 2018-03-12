@@ -86,7 +86,7 @@ Plot <- R6::R6Class(
                           grid = FALSE,
                           xlim = NULL,
                           legend = TRUE,
-                          regret = FALSE,
+                          regret = TRUE,
                           use_colors = TRUE,
                           ci = FALSE,
                           step_size = 1,

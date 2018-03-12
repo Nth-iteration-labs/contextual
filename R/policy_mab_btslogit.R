@@ -20,7 +20,7 @@ BTSLogitPolicy <- R6::R6Class(
         A          <-  theta$A[[arm]]
         b          <-  theta$b[[arm]]
 
-        A.inv      <-  chol2inv(chol(A))
+        A.inv      <-  solve(A)
         theta.hat  <-  A.inv %*% b
         mean       <-  X %*% theta.hat
 
@@ -46,7 +46,7 @@ BTSLogitPolicy <- R6::R6Class(
 
 #' Policy: BTSLogitPolicy
 #'
-#' Each time step t, \code{LinUCBPolicy} runs a linear regression that produces coefficients for each context feature \code{d}.
+#' Each time step t, \code{BTS} runs a linear regression that produces coefficients for each context feature \code{d}.
 #' It then observes the new context, and generates a predicted payoff or reward together with a confidence interval for each available arm.
 #' It then proceeds to choose the arm with the highest upper confidence bound.
 #'

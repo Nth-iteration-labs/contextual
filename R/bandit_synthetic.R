@@ -14,9 +14,10 @@ SyntheticBandit <- R6::R6Class(
     }
   ),
   public = list(
-
-    d             = NULL,
-    k             = NULL,
+    k             = NULL, # n of arms
+    d             = NULL, # n of context features
+    x_d           = NULL, # subset n of CONTEXT FEATURES
+    a_d           = NULL, # subset n of ARM FEATURES
     reward_means  = NULL,
     reward_stds   = NULL,
     reward_family = NULL,
@@ -41,8 +42,7 @@ SyntheticBandit <- R6::R6Class(
 
       precache             = TRUE,
       not_zero_features    = TRUE,
-      random_one_feature   = FALSE,
-      weights              = NULL
+      random_one_feature   = FALSE
 
     ) {
 
@@ -50,17 +50,16 @@ SyntheticBandit <- R6::R6Class(
         stop('Reward family needs to be one of "Bernoulli", "Gaussian" or "Poisson".' , call. = FALSE)
       }
 
-      if (!is.null(weights) & is.null(context_weights)) {
-        # for backwards compatibility - maybe remove?#################
-        self$context_weights      <- weights
-      } else {
-        self$context_weights      <- context_weights
-      }
-
-      self$arm_masks            <- arm_masks
       self$arm_weights          <- arm_weights
+      self$arm_masks            <- arm_masks
+
+      self$context_weights      <- context_weights
 
       if (is.vector(self$context_weights)) self$context_weights <- matrix(self$context_weights, nrow = 1L)
+      if (is.vector(self$arm_weights)) self$arm_weights <- matrix(self$arm_weights, nrow = 1L)
+
+      self$x_d <- dim(self$context_weights)[1]
+      self$a_d <- dim(self$arm_weights)[1]
 
       weights = rbind(self$context_weights, self$arm_weights)
 
@@ -71,8 +70,6 @@ SyntheticBandit <- R6::R6Class(
           stop('Please set arm_masks for arm_weights.' , call. = FALSE)
         }
       }
-
-
       super$initialize(weights)
 
       self$has_cache            <- FALSE

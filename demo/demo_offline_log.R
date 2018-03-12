@@ -37,7 +37,7 @@ bandit <- OfflineLiBandit$new(data_file = log_S, k = 3, d = 3)
 agents <-
   list(
     Agent$new(EpsilonGreedyPolicy$new(0.1, "\U190-greedy"), bandit),
-    Agent$new(LinUCBPolicy$new(1.0, "LinUCB"), bandit),
+    Agent$new(LinUCBDisjointPolicy$new(1.0, "LinUCB"), bandit),
     Agent$new(RandomPolicy$new("Random"), bandit)
   )
 

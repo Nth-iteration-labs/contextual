@@ -43,7 +43,7 @@ test_that("OfflineLiBandit simulation", {
 
   bandit      <- OfflineLiBandit$new(log_S, 3, 3)
 
-  policy      <- LinUCBPolicy$new(1.0)
+  policy      <- LinUCBDisjointPolicy$new(1.0)
   agent       <- Agent$new(policy, bandit)
   simulation  <-
     Simulator$new(

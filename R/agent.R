@@ -21,8 +21,10 @@ Agent <- R6::R6Class(
                                                "No weights have been set - please
                                                set_weights(W) on your Bandit object."),
                                        call. = FALSE)
-      self$policy$k <- self$bandit$k
-      self$policy$d <- self$bandit$d
+      self$policy$k   <- self$bandit$k
+      self$policy$d   <- self$bandit$d
+      if (!is.null(self$bandit$x_d)) self$policy$x_d <- self$bandit$x_d
+      if (!is.null(self$bandit$a_d)) self$policy$a_d <- self$bandit$a_d
       self$reset()
     },
     reset = function() {

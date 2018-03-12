@@ -39,6 +39,9 @@ Contextual <- R6::R6Class(
     sum_of = function(x)
     {
       sum(unlist(x))
+    },
+    inv = function(M) {
+      chol2inv(chol(M))
     }
   )
 )

@@ -15,11 +15,12 @@ AbstractBandit <- R6::R6Class(
       list(
         k = self$k,
         d = self$d,
+        x_d = self$x_d,
+        x_a = self$x_a,
         X = private$X[,, idx],
         O = private$O[, idx]
       )
     },
-
     max_in = function(x, equal_is_random = TRUE)
     {
       y <- seq_along(x)[x == max(x)]
@@ -58,8 +59,10 @@ AbstractBandit <- R6::R6Class(
     }
   ),
   public = list(
-    d            = NULL,
-    k            = NULL,
+    k             = NULL, # n of arms
+    d             = NULL, # n of context features
+    x_d           = NULL, # subset n of CONTEXT FEATURES
+    a_d           = NULL, # subset n of (OVERLAPPING) ARM FEATURES
     initialize   = function() {
       private$.hash = sub('<environment: (.*)>', '\\1',  capture.output(self))
       private$X <- NULL

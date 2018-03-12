@@ -23,7 +23,7 @@ ContextualEpsilonGreedyPolicy <- R6::R6Class(
         A          <-  theta$A[[arm]]
         b          <-  theta$b[[arm]]
 
-        A.inv      <-  chol2inv(chol(A))
+        A.inv      <-  solve(chol(A))
         theta.hat  <-  A.inv %*% b
 
         mean       <-  X %*% theta.hat

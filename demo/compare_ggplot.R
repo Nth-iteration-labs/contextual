@@ -12,7 +12,7 @@ context_weights    <- matrix(  c( 0.9, 0.1, 0.1,
 bandit             <- SyntheticBandit$new(context_weights = context_weights, precache = TRUE)
 
 agents             <- list( Agent$new(RandomPolicy$new("Random"), bandit),
-                            Agent$new(LinUCBPolicy$new(1.0, "LinUCB"), bandit) )
+                            Agent$new(LinUCBDisjointPolicy$new(1.0, "LinUCB"), bandit) )
 
 simulation         <- Simulator$new(agents, horizon, simulations, do_parallel = TRUE)
 history            <- simulation$run()

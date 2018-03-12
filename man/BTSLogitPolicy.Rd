@@ -4,7 +4,7 @@
 \alias{BTSLogitPolicy}
 \title{Policy: BTSLogitPolicy}
 \description{
-Each time step t, \code{LinUCBPolicy} runs a linear regression that produces coefficients for each context feature \code{d}.
+Each time step t, \code{BTS} runs a linear regression that produces coefficients for each context feature \code{d}.
 It then observes the new context, and generates a predicted payoff or reward together with a confidence interval for each available arm.
 It then proceeds to choose the arm with the highest upper confidence bound.
 }
@@ -21,7 +21,9 @@ Other contextual policies: \code{\link{AbstractPolicy}},
   \code{\link{ContextualThompsonSamplingPolicy}},
   \code{\link{EpsilonFirstPolicy}},
   \code{\link{EpsilonGreedyPolicy}},
-  \code{\link{Exp3Policy}}, \code{\link{LinUCBPolicy}},
+  \code{\link{Exp3Policy}},
+  \code{\link{LinUCBDisjointPolicy}},
+  \code{\link{LinUCBHybridPolicy}},
   \code{\link{OraclePolicy}}, \code{\link{RandomPolicy}},
   \code{\link{SimpleBTSPolicy}},
   \code{\link{SoftmaxPolicy}},

@@ -13,7 +13,7 @@ agents             <- list( Agent$new(EpsilonGreedyPolicy$new(0.1, "\U190-greedy
                             Agent$new(RandomPolicy$new("Random"), bandit),
                             Agent$new(OraclePolicy$new("Oracle"), bandit),
                             Agent$new(Exp3Policy$new(0.1, "Exp3"), bandit),
-                            Agent$new(LinUCBPolicy$new(1.0, "LinUCB"), bandit) )
+                            Agent$new(LinUCBDisjointPolicy$new(1.0, "LinUCB"), bandit) )
 
 simulation         <- Simulator$new(agents, horizon, simulations, do_parallel = TRUE)
 history            <- simulation$run()
