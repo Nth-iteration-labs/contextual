@@ -11,8 +11,8 @@ AbstractPolicy <- R6::R6Class(
     theta_to_arms = NULL,
     k             = NULL, # n of arms
     d             = NULL, # n of context features
-    x_d           = NULL, # subset n of CONTEXT FEATURES
-    a_d           = NULL, # subset n of (OVERLAPPING) ARM FEATURES
+    d_context           = NULL, # subset n of CONTEXT FEATURES
+    d_arms           = NULL, # subset n of ARM FEATURES
     initialize = function(name = "Not implemented") {
       self$theta <- list()
       self$name   <- name

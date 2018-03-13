@@ -1,10 +1,6 @@
 # ok, some rules: arm specific features always at the end
 # and arm specific features are not k, but a ...
 
-# call X feature array, with X arm features, and X_a context features.. (make that even X_c ,and X_ca?)
-
-# could also use full feature vector as ....?
-
 #' @export
 LinUCBHybridPolicy <- R6::R6Class(
   "LinUCBHybridPolicy",
@@ -19,10 +15,9 @@ LinUCBHybridPolicy <- R6::R6Class(
     },
     set_parameters = function() {
       self$theta <- list('A0' = diag(1,self$d,self$d), 'b0' = rep(0,self$d))
-      self$theta_to_arms <- list( 'A' = diag(1,self$a_d,self$a_d), 'B' = matrix(0,self$a_d,self$d), 'b' = rep(0,self$a_d))
+      self$theta_to_arms <- list( 'A' = diag(1,self$d_arms,self$d_arms), 'B' = matrix(0,self$d_arms,self$d), 'b' = rep(0,self$d_arms))
     },
     get_action = function(context, t) {
-
 
       expected_rewards <- rep(0.0, self$k)
 
@@ -36,20 +31,20 @@ LinUCBHybridPolicy <- R6::R6Class(
         B          <-  theta$B[[arm]]
         b          <-  theta$b[[arm]]
 
-        X          <- matrix(context$X[,arm])
-        X_a        <- matrix(context$X[(self$x_d + 1):self$d,arm])
+        x          <- matrix(context$X[,arm])
+        x_a        <- matrix(context$X[(self$d_context + 1):self$d,arm])
 
         A0_inv <- solve(A0)
         A_inv <- solve(A)
 
         theta_hat  <-  A_inv %*% (b - B %*% beta_hat)
 
-        sd <- sqrt(  (t(X) %*% A0_inv %*% X) -
-                     2*(t(X) %*% A0_inv %*% t(B) %*% A_inv %*% X_a) +
-                     (t(X_a) %*% A_inv %*% X_a) +
-                     (t(X_a) %*% A_inv %*% B %*% A0_inv %*% t(B) %*% A_inv %*% X_a))
+        sd <- sqrt(  (t(x) %*% A0_inv %*% x) -
+                     2*(t(x) %*% A0_inv %*% t(B) %*% A_inv %*% x_a) +
+                     (t(x_a) %*% A_inv %*% x_a) +
+                     (t(x_a) %*% A_inv %*% B %*% A0_inv %*% t(B) %*% A_inv %*% x_a))
 
-        mean <- (t(X) %*% beta_hat)  +  (t(X_a) %*% theta_hat)
+        mean <- (t(x) %*% beta_hat)  +  (t(x_a) %*% theta_hat)
 
 
         expected_rewards[arm] <- mean + alpha * sd
@@ -59,11 +54,13 @@ LinUCBHybridPolicy <- R6::R6Class(
     },
     set_reward = function(context, action, reward, t) {
 
+      #################### unpack thetas ####################
+
       arm            <- action$choice
       reward         <- reward$reward
 
-      X              <- matrix(context$X[,arm])
-      X_a            <- matrix(context$X[(self$x_d + 1):self$d,arm])
+      x              <- matrix(context$X[,arm])
+      x_a            <- matrix(context$X[(self$d_context + 1):self$d,arm])
 
       A0             <- theta$A0
       b0             <- theta$b0
@@ -71,22 +68,23 @@ LinUCBHybridPolicy <- R6::R6Class(
       B              <- theta$B[[arm]]
       b              <- theta$b[[arm]]
 
-      ###################################################################
+      #################### update thetas ####################
 
       A_inv          <- solve(A)
 
       A0             <- A0 + (t(B) %*% A_inv %*% B)
       b0             <- b0 + (t(B) %*% A_inv %*% b)
 
-      A <- A + X_a %*% t(X_a)
-      B <- B + X_a %*% t(X)
-      b <- b + reward * X_a
+      A <- A + x_a %*% t(x_a)
+      B <- B + x_a %*% t(x)
+      b <- b + reward * x_a
+
 
       A_inv          <- solve(A)
-      A0             <- A0 + (X %*% t(X)) - (t(B) %*% A_inv %*% B)
-      b0             <- b0 + (reward * X) - (t(B) %*% A_inv %*% b)
+      A0             <- A0 + (x %*% t(x)) - (t(B) %*% A_inv %*% B)
+      b0             <- b0 + (reward * x) - (t(B) %*% A_inv %*% b)
 
-      ####################################################################
+      #################### pack thetas ####################
 
       theta$A0       <- A0
       theta$b0       <- b0

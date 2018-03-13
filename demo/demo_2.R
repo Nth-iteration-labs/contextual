@@ -1,10 +1,9 @@
 setwd("~/GitHub/contextual/demo")
 source("dev.R")
 
-# naming!!! we have feature matrix X ... with arm features, and context features.
-# so matrix X, with d nr total features. also, with d_a arm features, and d_c context feautres
-# also, sub-feature matrices X_a and X_c .. and vectors x_a and x_c etc.
-# or something along these lines.
+# synopsis: we have feature matrix X, that can contain with arm features and context features.
+# This matrix X has d total features, split into d_a arm features, and d_c context features.
+# Also, sub-feature matrices are called respectively X_a and X_c, and vectors x_a and x_c
 
 # Here, we simulate a 4 armed bandit, k=4.
 # Per arm, there are 4 arm-based features,
@@ -15,7 +14,7 @@ source("dev.R")
 # a user visiting is male, language browser is english, etc
 # This adds up to total of *6* context features d=6 every round
 
-horizon            <- 50
+horizon            <- 1000
 simulations        <- 50
 
 arm_weights        <- matrix(  c( 0.3, 0.8, 0.4, 0.8,
@@ -32,13 +31,15 @@ context_weights    <- matrix(  c( 0.4, 0.2, 0.2, 0.3,
                                   0.3, 0.5, 0.3, 0.2),  nrow = 2, ncol = 4, byrow = TRUE)
 
 bandit             <- SyntheticBandit$new(arm_weights     = arm_weights,
-                                          arm_mask       = arm_mask,
+                                          arm_mask        = arm_mask,
                                           context_weights = context_weights)
 
-agents             <- list(Agent$new(LinUCBDisjointPolicy$new(), bandit),
+agents             <- list(Agent$new(RandomPolicy$new(), bandit),
+                           Agent$new(LinUCBDisjointPolicy$new(), bandit),
                            Agent$new(LinUCBHybridPolicy$new(), bandit),
                            Agent$new(UCB1Policy$new(), bandit),
-                           Agent$new(ContextualThompsonSamplingPolicy$new(), bandit))
+                           Agent$new(ContextualThompsonSamplingPolicy$new(), bandit),
+                           Agent$new(OraclePolicy$new(), bandit))
 
 simulation         <- Simulator$new(agents, horizon, simulations, do_parallel = TRUE)
 history            <- simulation$run()

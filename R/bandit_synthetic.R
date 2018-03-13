@@ -15,9 +15,9 @@ SyntheticBandit <- R6::R6Class(
   ),
   public = list(
     k             = NULL, # n of arms
-    d             = NULL, # n of context features
-    x_d           = NULL, # subset n of CONTEXT FEATURES
-    a_d           = NULL, # subset n of ARM FEATURES
+    d             = NULL, # n of features
+    d_context     = NULL, # subset n of context features
+    d_arms        = NULL, # subset n of arm features
     reward_means  = NULL,
     reward_stds   = NULL,
     reward_family = NULL,
@@ -29,7 +29,7 @@ SyntheticBandit <- R6::R6Class(
 
     context_weights   = NULL,
     arm_weights       = NULL,
-    arm_mask         = NULL,
+    arm_mask          = NULL,
 
     initialize   = function(
       reward_family        = 'Bernoulli',
@@ -38,7 +38,7 @@ SyntheticBandit <- R6::R6Class(
 
       context_weights      = NULL,
       arm_weights          = NULL,
-      arm_mask            = NULL,
+      arm_mask             = NULL,
 
       precache             = TRUE,
       not_zero_features    = TRUE,
@@ -51,15 +51,15 @@ SyntheticBandit <- R6::R6Class(
       }
 
       self$arm_weights          <- arm_weights
-      self$arm_mask            <- arm_mask
+      self$arm_mask             <- arm_mask
 
       self$context_weights      <- context_weights
 
       if (is.vector(self$context_weights)) self$context_weights <- matrix(self$context_weights, nrow = 1L)
       if (is.vector(self$arm_weights)) self$arm_weights <- matrix(self$arm_weights, nrow = 1L)
 
-      self$x_d <- dim(self$context_weights)[1]
-      self$a_d <- dim(self$arm_weights)[1]
+      self$d_context <- dim(self$context_weights)[1]
+      self$d_arms <- dim(self$arm_weights)[1]
 
       weights = rbind(self$context_weights, self$arm_weights)
 
