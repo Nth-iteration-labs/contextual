@@ -1,18 +1,20 @@
 setwd("~/GitHub/contextual/demo")
 source("dev.R")
 
-# synopsis: we have feature matrix X, that can contain with arm features and context features.
-# This matrix X has d total features, split into d_a arm features, and d_c context features.
+
+# Synopsis: we have feature matrix X, that can contain arm features (always there for an arm)
+# and context features (changing each time step t, yet at t the same for all arms)
+# This matrix X has d total features, split into d_arm arm features, and d_context context features.
 # Also, sub-feature matrices are called respectively X_a and X_c, and vectors x_a and x_c
 
-# Here, we simulate a 4 armed bandit, k=4.
-# Per arm, there are 4 arm-based features,
+# For exampe, here, we simulate a 4 armed bandit, k=4.
+# Per arm, there are 4 arm-based features d_arm,
 # for example, if arms are articles:
-# article== sports 1|0 / article == science 1|0, etc
-# Also, there is a set of 2 features that are specific
+# article is sports 1|0 / science 1|0 / culture 1|0 /  economics 1|0
+# Also, there is a set of d_ccntext 2 features that are specific
 # for a particular time step, for example,
-# a user visiting is male, language browser is english, etc
-# This adds up to total of *6* context features d=6 every round
+# a user visiting is female 1|0 / language browser is english 1|0
+# This adds up to total of *6* features d=6 every round
 
 horizon            <- 1000
 simulations        <- 50

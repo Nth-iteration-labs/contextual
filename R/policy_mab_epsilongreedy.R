@@ -6,16 +6,13 @@ EpsilonGreedyPolicy <- R6::R6Class(
   inherit = AbstractPolicy,
   public = list(
     epsilon = NULL,
-
     initialize = function(epsilon = 0.1, name = "EpsilonGreedy") {
       super$initialize(name)
       self$epsilon <- epsilon
     },
-
     set_parameters = function() {
       self$theta_to_arms <- list('n' = 0, 'mean' = 0)
     },
-
     get_action = function(context, t) {
       if (runif(1) > epsilon) {
         action$choice <- max_in(theta$mean)
@@ -26,17 +23,13 @@ EpsilonGreedyPolicy <- R6::R6Class(
       }
       action
     },
-
     set_reward = function(context, action, reward, t) {
       arm <- action$choice
       reward <- reward$reward
-
       inc(theta$n[[arm]])    <- 1
       inc(theta$mean[[arm]]) <- (reward - theta$mean[[arm]]) / theta$n[[arm]]
-
       theta
     }
-
   )
 )
 

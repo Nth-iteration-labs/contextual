@@ -1,5 +1,4 @@
-# ok, some rules: arm specific features always at the end
-# and arm specific features are not k, but a ...
+# ok, important rule: arm specific features always at the end of total feauture matrix or vector
 
 #' @export
 LinUCBHybridPolicy <- R6::R6Class(
@@ -18,7 +17,6 @@ LinUCBHybridPolicy <- R6::R6Class(
       self$theta_to_arms <- list( 'A' = diag(1,self$d_arms,self$d_arms), 'B' = matrix(0,self$d_arms,self$d), 'b' = rep(0,self$d_arms))
     },
     get_action = function(context, t) {
-
       expected_rewards <- rep(0.0, self$k)
 
       beta_hat <- solve(theta$A0) %*% theta$b0
@@ -36,7 +34,7 @@ LinUCBHybridPolicy <- R6::R6Class(
         A0_inv <- solve(A0)
         A_inv <- solve(A)
 
-        ################## compute reward per arm ######################################
+        ################## compute expected reward per arm #############################
 
         theta_hat  <-  A_inv %*% (b - B %*% beta_hat)
 
@@ -47,10 +45,11 @@ LinUCBHybridPolicy <- R6::R6Class(
 
         mean <- (t(x) %*% beta_hat)  +  (t(x_a) %*% theta_hat)
 
-
         expected_rewards[arm] <- mean + alpha * sd
-
       }
+
+      ################## choose arm with highest expected reward #######################
+
       action$choice  <- max_in(expected_rewards)
       action
     },
@@ -69,7 +68,7 @@ LinUCBHybridPolicy <- R6::R6Class(
       B              <- theta$B[[arm]]
       b              <- theta$b[[arm]]
 
-      #################### update thetas ###############################################
+      #################### update thetas with returned reward & arm choice #############
 
       A_inv          <- solve(A)
       A0             <- A0 + (t(B) %*% A_inv %*% B)
@@ -95,7 +94,6 @@ LinUCBHybridPolicy <- R6::R6Class(
     }
   )
 )
-
 
 #' Policy: LinUCB with hybrid linear models
 #'

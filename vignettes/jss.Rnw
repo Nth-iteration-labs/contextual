@@ -15,8 +15,12 @@
 \usepackage{txfonts}
 \usepackage{mathdots}
 \usepackage{float}
+\usepackage{algorithm}
+\usepackage{algorithmic}
 %\usepackage[classicReIm]{kpfonts}
 %\usepackage[pdftex]{graphicx}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
 
 \usepackage{natbib}
 \usepackage[british]{babel} % for correct word hyphenation
@@ -39,12 +43,17 @@
 \Plaintitle{contextual: Simulating Contextual Multi-Armed Bandit Problems in R} %% without formatting
 \Shorttitle{\pkg{contextual}} %% a short title (if necessary)
 
+
+
 %% an abstract and keywords
 \Abstract{
 
-Contextual multi-armed bandits have been gaining ever more popularity due to their effectiveness in solving previously computationally intractable partial information sequential decision problems - from online advertising and recommender systems to clinical trial design and personalized medicine. A popularity both inspired by and inspiring an ever-growing body of predominantly analytically oriented research on ever more sophisticated Contextual Bandit algorithms. At the same time, there are as of yet surprisingly few options that enable researchers and practitioners to simulate and compare the wealth of new and existing Bandit algorithms in a practical, standardized and extensible way. To help close this gap between analytical research and real-life application the current paper introduces the R package \pkg{contextual}: a user-friendly and easily extensible framework that facilitates the comparison of, amongst others, contextual and non-contextual Bandit policies through both simulation and offline analysis.
-
+Contextual multi-armed bandits have been gaining ever more popularity due to their effectiveness in solving previously computationally intractable partial information sequential decision problems - from online advertising and recommender systems to clinical trial design and personalized medicine. A popularity both inspired by and inspiring an ever-growing body of predominantly analytically oriented research on ever more sophisticated Contextual Bandit algorithms. At the same time, there are as of yet surprisingly few options that enable researchers and practitioners to simulate and compare the wealth of new and existing Bandit algorithms in a practical, standardized and extensible way. To help close this gap between analytical research and real-life application the current paper introduces the object-oriented R package \pkg{contextual}: a user-friendly and, though its clear object oriented structure, easily extensible framework that facilitates the comparison of, amongst others, contextual and non-contextual Bandit policies through both simulation and offline analysis. Furthermore, as the data generated in cMAB settings are often extremely large, much care has been taken to enable easy parallisation right out of the box.
 }
+
+
+
+
 
 \Keywords{contextual multi-armed bandits, simulation, sequential experimentation, \proglang{R}}
 \Plainkeywords{contextual multi-armed bandits, simulation, sequential experimentation, R}
@@ -95,21 +104,23 @@ Contextual multi-armed bandits have been gaining ever more popularity due to the
 
 \begin{document}
 
-A vignette for the \cite{contextual} paper.
+%% A vignette for the \cite{contextual} paper. #########################################RJKJLKJLKJDFDFSDFOIOPEIRPERE
 
 %% include your article here, just as usual
 %% Note that you should use the \pkg{}, \proglang{} and \code{} commands.
 
 
-
-
-
-
+<<include=FALSE>>=
+install.packages("devtools",repos = "http://cran.us.r-project.org")
+devtools::install_github("Nth-iteration-labs/contextual")
+knitr::opts_chunk$set(fig.path="fig/")
+knitr::opts_chunk$set(fig.pos = 'H')
+@
 
 \section{Introduction}
 %% Note: If there is markup in \(sub)section, then it has to be escape as above.
 
-There are many real-world situations in which we repeatedly have to decide between a set of options, yet only learn about the best course of action by testing one choice after the other, one step at a time. Such problems are deceptively easy to state but have proven to have broad statistical and practical implications and applications. To get a better grip on such decision problems, and to learn why specific strategies might be more successful than others, they have been studied extensively under the moniker of \textquotedblleft{}Multi-Armed Bandit\textquotedblright{} problems. Here, these multi-armed bandits are defined as a statistical and machine learning concept in which a so-called agent follows the advice of an algorithm or \textquotedblleft{}policy\textquotedblright{} to optimize the overall reward it receives in a sequential decision problem with limited information. That is, a MAB policy suggests an agent when to explore new options and when to exploit known ones \textendash{} where, importantly, for each decision, at each time step t, the only new information the agent acquires is the reward for its latest decision. The agent remains in the dark about the potential rewards of the unchosen options and about any other information outside of current and past rewards and choices made.
+There are many real-world situations in which we repeatedly have to decide between a set of options, yet only learn about the best course of action by testing one choice after the other, one step at a time. Such problems are deceptively easy to state but have proven to have broad statistical and practical implications and applications. To get a better grip on such decision problems, and to learn why specific strategies might be more successful than others, they have been studied extensively under the title of \textquotedblleft{}Multi-Armed Bandit\textquotedblright{} problems. Here,  multi-armed bandits are defined as a statistical and machine learning concept in which a so-called agent follows the advice of an algorithm or \textquotedblleft{}policy\textquotedblright{} to optimize the overall reward it receives in a sequential decision problem with limited information. That is, a MAB policy suggests an agent when to explore new options and when to exploit known ones \textendash{} where, importantly, for each decision, at each time step t, the only new information the agent acquires is the reward for its latest decision. The agent remains in the dark about the potential rewards of the unchosen options and about any other information outside of current and past rewards and choices made.
 
 
 In that respect, MAB problems reflect dilemmas we all encounter on a daily basis: do you stick to what you know and receive an expected result ("exploit") or choose something you don't know all that much about and potentially learn something new ("explore")?
@@ -129,14 +140,42 @@ This access to side information makes cMAB algorithms even more adept to many re
 
 Yet though cMAB algorithms have gained much traction in both research and industry, they have mostly been studied mathematically and analytically \textendash{} as of yet, comparisons on simulated, and, importantly, real-life large-scale offline \textquotedblleft{}partial label\textquotedblright{} data sets have been lacking. To this end, the current paper introduces the \pkg{contextual} R package. A package that aims to facilitate the simulation, offline comparison, and evaluation of (Contextual) Multi-Armed bandit policies. Though there exists one R package for basic MAB analysis, there is, as of yet, no extensible and widely applicable R package that is able to analyze and compare, respectively, basic K-armed, Continuum, Adversarial and Contextual Multi-Armed Bandit Algorithms on either simulated or online data.
 
-In section 2, this paper will continue with a more formal definition of MAB and a CMAB problems. In section 3, we will continue with an overview of \pkg{contextual}’s general implementation. In section 4, we list our implemented polices, and simulate a MAB and a cMAB policy. In section 5, we demonstrate how easy it is to add and simulate your own custom policy. In section 6, we replicate two papers, thereby demonstrating how to test policies on offline data sets. Finally, in section  7, we will go over some of the additional features in the package, and conclude with some comments on the current state of the package and possible enhancements.
+In section 2, this paper will continue with a more formal definition of MAB and a CMAB problems and relate it to our implementation. In section 3, we will continue with an overview of \pkg{contextual}’s object oriented structure In section 4, we list the polices that are available by default, and simulate some MAB and a cMAB policy. In section 5, we demonstrate how easy it is to extend contextual with a policy (RVE: NOTE TO SELF: also custom  bandit?) of your own. In section 6, we replicate two papers, thereby demonstrating how to test policies on offline data sets. Finally, in section  7, we will go over some of the additional features in the package, and conclude with some comments on the current state of the package and possible enhancements.
 
-\section{Contextual Multi-Armed Bandits}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section{From formalisation to implementation}
 %% Note: If there is markup in \(sub)section, then it has to be escape as above.
 
-On formalizing our Multi-Armed Bandit problem, the aforementioned sequential decision maker's exploit/explore dilemma can be captured by defining a finite set (or \textbf{bandit)} of \textit{K} i.i.d. options (the \textbf{arms }of the bandit\textbf{) }each with their own, unknown\textbf{, }reward distribution \textit{v${}_{1}$,{\dots},v${}_{k}$} with means \textit{$\mu$ {\dots} $\mu$${}_{k}$}. Next we define an \textbf{agent}, who has to decide between the exploration of unknown arms and the exploitation of known arms in \textit{K} in order to maximize its total\textbf{ reward} (that is, to maximize its cumulative reward $\sum_{t=1}^T r_t$ \footnote{or to minimize its cumulative or expected regret}) over a period of time $T$ by following the advice of a \textbf{policy $\boldsymbol{\piup}$} which keeps track of \textbf{parameters} \textbf{\textit{$\boldsymbol{\theta}$}}\textit{ }that are updated when new information (reward \textit{r} awarded by the bandit when the agent has chosen an arm) becomes available. This process is repeated \textit{T} times, where \textit{T} is often defined as the Bandit's "horizon".
+As stated above, a MAB problems can formaly stated with deceptive ease. First, state the number of arms \emph{k}, and the horizon, or number of rounds \emph{T}. Then, for each round \emph{t}= \{ 1, \ldots, T \}:
 
-That is, an agent repeats the following lines one at a time at each time step \textit{t }in \textit{t}=1,2,{\dots},\textit{T}:
+\begin{enumerate}
+         \item[1)] An reward vector is generated \(r_{t}=\left( r_{1,t},  \dots, r_{k,t}\right)\)
+         \item[2)] Agent A chooses an arm at \(a_{t} \in \left\{ 1, \dots, k \right\}\)
+         \item[3)] Agent A receives a reward \(r_{a_{t},t}\)
+\end{enumerate}
+
+Where the goal of the agent is to miminize expected cumulative regret:
+
+\begin{itemize}
+         \item \( R_{T} = \mathbb{E}\left[ \textstyle \sum_{T}^{t=1}(r_{a*,t-r}) \right] = \mathbb{E}\left[ \textstyle \sum_{T}^{t=1}(\mu*-\mu_{a_{t}}) \right] \)
+\end{itemize}
+
+On implementing this basic formaliztion, the aforementioned sequential decision maker's exploit/explore dilemma can be captured by defining a finite set (or \textbf{bandit)} of \textit{K} i.i.d. options (the \textbf{arms }of the bandit\textbf{) }each with their own, unknown\textbf{, }reward distribution \textit{v${}_{1}$,{\dots},v${}_{k}$} with means \textit{$\mu$ {\dots} $\mu$${}_{k}$}. Next we define an \textbf{agent}, who has to decide between the exploration of unknown arms and the exploitation of known arms in \textit{K} in order to maximize its total\textbf{ reward} (that is, to maximize its cumulative reward $\sum_{t=1}^T r_t$ \footnote{or to minimize its cumulative or expected regret}) over a period of time $T$ by following the advice of a \textbf{policy $\boldsymbol{\piup}$} which keeps track of \textbf{parameters} \textbf{\textit{$\boldsymbol{\theta}$}}\textit{ }that are updated when new information (reward \textit{r} awarded by the bandit when the agent has chosen an arm) becomes available. This process is repeated \textit{T} times, where \textit{T} is often defined as the Bandit's "horizon".
+
+In summary, an agent repeats the following lines one at a time at each time step \textit{t }in \textit{t}=1,2,{\dots},\textit{T}:
 
 \begin{enumerate}
          \item[1a)] Agent asks policy $\piup$ which of the bandit's K arms to choose
@@ -147,7 +186,6 @@ That is, an agent repeats the following lines one at a time at each time step \t
          \item[3b)] Policy $\piup$ uses \textit{r${}_{t}$} to update the policy's set of parameters\textit{ $\theta$${}_{t}$}
 \end{enumerate}
 
-
 \begin{figure}[H]
   \centering
     \includegraphics[width=.99\textwidth]{fig/mab_chart}
@@ -155,7 +193,16 @@ That is, an agent repeats the following lines one at a time at each time step \t
       \caption{Overview MAB formalization towards \pkg{contextual}'s implementation}
 \end{figure}
 
-To allow for side information, that is, to generalize this formalization to a \textit{contextual} Multi-Armed Bandit model, the model needs just one additional step. Again, an agent repeats the following lines for each time step \textit{t} in \textit{t}=1,2,{\dots},\textit{T}:
+To allow for side information, that is, to generalize this formalization to a \textit{contextual} Multi-Armed Bandit model, we need to state the number of feature \emph{d}, and add one first step to our model:
+
+\begin{enumerate}
+         \item[1)] A contextual feature vector is observed, \(x_{t}=\left( x_{1,t},  \dots, x_{d,t}\right)\)
+         \item[2)] An reward vector is generated \(r_{t}=\left( r_{1,t},  \dots, r_{k,t}\right)\)
+         \item[3)] Agent A chooses an arm at \(a_{t} \in \left\{ 1, \dots, k \right\}\)
+         \item[4)] Agent A receives a reward \(r_{a_{t},t}\)
+\end{enumerate}
+
+From which follows that in our implementation, an agent repeats the following lines for each time step \textit{t} in \textit{t}=1,2,{\dots},\textit{T}:
 
 \begin{enumerate}
          \item[1a)] Agent checks the bandit for side information that might influence the expression of its arms
@@ -175,12 +222,357 @@ To allow for side information, that is, to generalize this formalization to a \t
       \caption{Overview of cMAB formalization towards \pkg{contextual}'s implementation}
 \end{figure}
 
-As a matter of fact, by setting feature vector \textit{X} to [1] for each \textit{t} in step 1b, the suggested cMAB model perfectly emulates a non-contextual MAB model, easing the comparison and implementation of both MAB and cMAB substantially
+As a matter of fact, when excluding a contextual feature, the suggested cMAB model perfectly emulates a non-contextual MAB model, easing the comparison and implementation of both MAB and cMAB substantially.
 
-\section{Implementation}
+
+
+
+
+
+
+
+
+
+
+\section{Object-oriented setup of the package}
 %% Note: If there is markup in \(sub)section, then it has to be escape as above.
 
-Here, explain how implementation flows naturally from the above
+Statistical computational methods, in R or otherwise,  are often made available through single-use scripts. Usually, these scripts are meant to give a basic idea of a statistical method, technique or algorithm in the context of a scientific paper. This is of no direct consequence within that particular setting. But when a set of well-researched interrelated algorithms find growing academic, practical and commercial adoption, it becomes crucial to offer a more standardized and more accessible way to compare different methods and algorithms.
+
+A concern has become particularly pressing in the cMAB literature, where there is a tendency to publish analytical formalizations without any readily available script or implementation - while there is, at the same time, an ever growing interest in the practical application of cMAB algorithms.
+
+The contextual package means to address this by making available an easily extendible framework, together with a library containing clear example implementations of several of the best known and most popular Contextual Bandit algorithms. For us, it made the most sense to create such a package in R. Firstly, as R is currently the de facto language for the dissemination of new statistical methods, techniques, and algorithms, while also being widely used in industry to simulate and test both new and existing algorithms. This makes it a sensible arena to bring together the interests, source code and data of both research and industry.
+
+At the same time, it was clear to us that it would be of critical importance to make our R based framework as clear and as easily extensible as possible. We, therefore, chose to build our Object Oriented package on the R6 Object system. In contrast to the older S3 and S4 object systems, R6 methods are mutable and belong to their objects. That means that R6 objects behave, feel and look more like objects in computer languages like Python and Java. Together with its speed, simplicity, and clarity, we think contextual's use of R6 has indeed to enabled to achieve all of the aforemetioned goals.
+
+The R6 package allows the creation of classes with reference semantics, similar to R's built-in reference classes. Yet compared to reference classes, R6 classes are simpler and lighter-weight, and they are not built on S4 classes, so they do not require the methods package. At the same time, classes do allow public and private members, and they support inheritance, even when the classes are defined in different packages. One R6 class can inherit from another. In other words, you can have super- and sub-classes. Subclasses can have additional methods, and they can also have methods that override the superclass methods.
+
+This enabled us to translate the basic cMAB formalization from section 2 almost one on one to a clear object oriented structure. To clarify how our objects hang together, we created two UML diagrams. The UML class diagram shown in figure X visualizes the structure of our package by showcasing contextual's classes, attributes, and relationships between classes. The UML sequence diagram in figure X, on the other hand, shows how contextuals's classes behave over time. It depicts the objects and classes involved over one time step t, and it displays a basic version of the sequence of messages exchanged between all of contextual's basic objects.
+
+
+
+
+\section{Basic use of the package}
+
+Here, we show how to simulate some bandits, with their current implementation.
+
+\subsection{Epsilon First}
+
+For figures, see Figure \ref{fig:fig1} on page \pageref{fig:fig1}.
+
+The policy:
+
+\begin{algorithm}
+\caption{Epsilon First}
+\label{Alg:EpsilonFirst}
+\begin{algorithmic}
+\REQUIRE \(   \eta \in \mathbb{Z}^{+} \)  , number of time steps $t$ in the exploration phase
+\STATE \( n_{a} \leftarrow 0 \) for all arms a \(  \in \left\{ 1, \dots, k \right\} \)  (count how many times an arm has been chosen)
+\STATE \( \hat{\mu}_{a} \leftarrow 0 \) for all arms a  \(   \in \left\{ 1, \dots, k \right\} \)  (estimate of expected reward per arm)
+% Run through time points:
+\FOR{$t=1, \dots, T$}
+	% Run through arms. Step 1, select which one to play
+	\IF {\(t \leq \eta\)}
+	       \STATE play a random arm out of all arms a \(   \in \left\{ 1, \dots, k \right\} \)
+	\ELSE
+	        \STATE play arm \(a_t = \argmax_a  \hat{\mu}_{t=\eta,a}  \) with ties broken arbitrarily
+	\ENDIF
+	\STATE observe real-valued payoff $r_t$
+	% Update:
+	\STATE \( n_{a_{t}} \leftarrow n_{a_{t-1}} + 1  \)
+   \STATE \( \hat{\mu}_{t,a_{t}} \leftarrow   \cfrac{r_t - \hat{\mu}_{t-1,a_{t}} }{n_{a_{t}}}   \)
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
+
+The EpsilonFirstPolicy class:
+
+<<eval=FALSE, size='small'>>=
+EpsilonFirstPolicy <- R6::R6Class(
+  public = list(
+    first = NULL,
+    initialize = function(first = 100, name = "EpsilonFirst") {
+      super$initialize(name)
+      self$first <- first
+    },
+    set_parameters = function() {
+      self$theta_to_arms <- list('n' = 0, 'mean' = 0)
+    },
+    get_action = function(context, t) {
+      if (sum_of(theta$n) < first) {
+        action$choice          <- sample.int(context$k, 1, replace = TRUE)
+        action$propensity   <- (1/context$k)
+      } else {
+        action$choice          <- max_in(theta$mean, equal_is_random = FALSE)
+        action$propensity   <- 1
+      }
+      action
+    },
+    set_reward = function(context, action, reward, t) {
+      arm      <- action$choice
+      reward   <- reward$reward
+
+      inc(theta$n[[arm]]) <- 1
+      if (sum_of(theta$n) < first - 1)
+        inc(theta$mean[[arm]] ) <- (reward - theta$mean[[arm]]) / theta$n[[arm]]
+
+      theta
+    }
+  )
+)
+@
+
+Running the policy:
+
+<<label=fig1plot, size='small',  message = FALSE, fig.keep='none'>>=
+
+library("contextual")
+
+horizon            <- 100
+simulations        <- 100
+arm_weights        <- c(0.9, 0.1, 0.1)
+
+policy             <- EpsilonFirstPolicy$new(first = 50, name = "EFirst")
+bandit             <- SyntheticBandit$new(arm_weights = arm_weights)
+
+agent              <- Agent$new(policy,bandit)
+
+simulator          <- Simulator$new(agents = agent,
+                                    horizon = horizon,
+                                    simulations = simulations)
+
+history            <- simulator$run()
+
+
+par(mfrow = c(1, 2),mar = c(5, 5, 1, 1))
+plot(history, type = "cumulative")
+plot(history, type = "arms")
+
+@
+
+\begin{center}
+<<label=fig1, fig.width=10, fig.height=4, fig.keep='high', echo=FALSE, message=FALSE, out.extra='', fig.cap="Epsilon First">>=
+<<fig1plot>>
+@
+\end{center}
+
+
+\subsection{Epsilon Greedy}
+
+
+For figures, see Figure \ref{fig:fig2} on page \pageref{fig:fig2}.
+
+The algorithm:
+
+\begin{algorithm}
+\caption{Epsilon Greedy}
+\label{Alg:EpsilonGreedy}
+\begin{algorithmic}
+\REQUIRE \(    \epsilon  \in \left[ 0,1 \right] \) - exploration tuning parameter
+\STATE \( n_{a} \leftarrow 0 \) for all arms a \(  \in \left\{ 1, \dots, k \right\} \)  (count how many times an arm has been chosen)
+\STATE \( \hat{\mu}_{a} \leftarrow 0 \) for all arms a  \(   \in \left\{ 1, \dots, k \right\} \)  (estimate of expected reward per arm)
+% Run through time points:
+\FOR{$t=1, \dots, T$}
+	% Run through arms. Step 1, select which one to play
+	\IF {sample from $\mathcal{N}(0,1) > \epsilon$}
+		\STATE play arm \(a_t = \argmax_a  \hat{\mu}_{t-1,a}  \) with ties broken arbitrarily
+	\ELSE
+		\STATE play a random arm out of all arms a \(  \in \left\{ 1, \dots, k \right\} \)
+	\ENDIF
+	\STATE observe real-valued payoff $r_t$
+	% Update:
+	\STATE \( n_{a_{t}} \leftarrow n_{a_{t-1}} + 1  \)
+   \STATE \( \hat{\mu}_{t,a_{t}} \leftarrow   \cfrac{r_t - \hat{\mu}_{t-1,a_{t}} }{n_{a_{t}}}   \)
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
+Translated to the EpsilonGreedyPolicy class:
+
+<<eval=FALSE, size='small'>>=
+EpsilonGreedyPolicy <- R6::R6Class(
+  public = list(
+    epsilon = NULL,
+    initialize = function(epsilon = 0.1, name = "EGreedy") {
+      super$initialize(name)
+      self$epsilon <- epsilon
+    },
+    set_parameters = function() {
+      self$theta_to_arms <- list('n' = 0, 'mean' = 0)
+    },
+    get_action = function(context, t) {
+      if (runif(1) > epsilon) {
+        action$choice <- max_in(theta$mean)
+        action$propensity <- 1 - self$epsilon
+      } else {
+        action$choice <- sample.int(context$k, 1, replace = TRUE)
+        action$propensity <- epsilon*(1/context$k)
+      }
+      action
+    },
+    set_reward = function(context, action, reward, t) {
+      arm <- action$choice
+      reward <- reward$reward
+      inc(theta$n[[arm]])    <- 1
+      inc(theta$mean[[arm]]) <- (reward - theta$mean[[arm]]) / theta$n[[arm]]
+      theta
+    }
+  )
+)
+@
+
+How to run it:
+
+<<label=fig2plot, size='small',  message = FALSE, fig.keep='none'>>=
+
+library("contextual")
+
+horizon            <- 100
+simulations        <- 100
+arm_weights        <- c(0.9, 0.1, 0.1)
+
+policy             <- EpsilonGreedyPolicy$new(epsilon = 0.1, name = "EG")
+bandit             <- SyntheticBandit$new(arm_weights = arm_weights)
+
+agent              <- Agent$new(policy,bandit)
+
+simulator          <- Simulator$new(agents = agent,
+                                    horizon = horizon,
+                                    simulations = simulations)
+
+history            <- simulator$run()
+
+
+par(mfrow = c(1, 2),mar = c(5, 5, 1, 1))
+plot(history, type = "cumulative")
+plot(history, type = "arms")
+
+@
+
+\begin{center}
+<<label=fig2, fig.width=10, fig.height=4, fig.keep='high', echo=FALSE, message=FALSE, out.extra='', fig.cap="Epsilon Greedy">>=
+<<fig2plot>>
+@
+\end{center}
+
+\subsection{Contextual Bandit: LinUCB with Linear Disjoint Models}
+
+The algorithm:
+
+\begin{algorithm}
+\caption{LinUCB with linear disjoint models}
+\label{Alg:LinUCBDisjoint}
+\begin{algorithmic}
+\REQUIRE $\alpha$ \(  \in \mathbb{R}^{+} \), exploration tuning parameter
+% Run through time points:
+\FOR{$t=1, \dots, T$}
+          \STATE Observe features of all arms \(  a \in \mathcal{A}_{t}: x_{t,a} \in \mathbb{R}^{d}\)
+	% Run through arms. Step 1, select which one to play
+	\FOR{ \(  a \in \mathcal{A}_{t}\)}
+	          \IF{\(a\) is new}
+		      \STATE \(A_{a} \leftarrow I_{d}  \)  (d-dimensional identity matrix)
+		      \STATE \(b_{a} \leftarrow 0_{d\times1}   \) (d-dimensional zero vector)
+		\ENDIF
+		\STATE \( \hat{\theta}_{a} \leftarrow A_{a}^{-1}b_{a} \)
+		\STATE \( p_{t,a} \leftarrow \hat{\theta}_{a}^{T} + \alpha  \sqrt{ x_{t,a}^{T} A_{a}^{-1}x_{t,a}} \)
+	\ENDFOR
+	% allocate to arm
+	\STATE Play arm \(a_t = \argmax_a  p_{t,a}  \) with ties broken arbitrarily and observe real-valued payoff $r_t$
+	% Update:
+           \STATE \( A_{a_{t}} \leftarrow A_{a_{t}}+ x_{t,a_{t}}x_{t,a_{t}}^{T} \)
+           \STATE  \( b_{a_{t}} \leftarrow b_{a_{t}}+ r_{t}x_{t,a_{t}}  \)
+\ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
+This is how the algorithm works: at each step, we run a linear regression with the data we have collected so far such that we have a coefficient for each context feature. We then observe our new context, and generate a predicted payoff using our model. We also generate a confidence interval for that predicted payoff for each of the three arms. We then choose the arm with the highest upper confidence bound.
+
+For figures, see Figure \ref{fig:fig3} on page \pageref{fig:fig3}.
+
+<<eval=FALSE, size='small'>>=
+#' @export
+LinUCBDisjointPolicy <- R6::R6Class(
+  public = list(
+    alpha = NULL,
+    initialize = function(alpha = 1.0, name = "LinUCBDisjoint") {
+      super$initialize(name)
+      self$alpha <- alpha
+    },
+    set_parameters = function() {
+      self$theta_to_arms <- list( 'A' = diag(1,self$d,self$d), 'b' = rep(0,self$d))
+    },
+    get_action = function(context, t) {
+      expected_rewards <- rep(0.0, context$k)
+      for (arm in 1:self$k) {
+        X          <-  context$X[,arm]
+        A          <-  theta$A[[arm]]
+        b          <-  theta$b[[arm]]
+        A_inv      <-  solve(A)
+
+        theta_hat  <-  A_inv %*% b
+        mean       <-  X %*% theta_hat
+        sd         <-  sqrt(tcrossprod(X %*% A_inv, X))
+        expected_rewards[arm] <- mean + alpha * sd
+      }
+      action$choice  <- max_in(expected_rewards)
+      action
+    },
+    set_reward = function(context, action, reward, t) {
+      arm <- action$choice
+      reward <- reward$reward
+      Xa <- context$X[,arm]
+
+      inc(theta$A[[arm]]) <- outer(Xa, Xa)
+      inc(theta$b[[arm]]) <- reward * Xa
+
+      theta
+    }
+  )
+)
+
+@
+
+
+<<label=fig3plot, size='small',  message = FALSE, fig.keep='none'>>=
+
+horizon          <- 100L
+simulations      <- 300L
+                              # k=1  k=2  k=3           columns represent arms
+context_weights  <- matrix(  c( 0.9, 0.1, 0.1,  # d=1
+                                0.1, 0.9, 0.1,  # d=2
+                                0.1, 0.1, 0.9), # d=3   rows for context features
+
+                                nrow = 3, ncol = 3, byrow = TRUE)
+
+bandit           <- SyntheticBandit$new(context_weights = context_weights)
+
+agents           <- list(Agent$new(EpsilonGreedyPolicy$new(0.1, "Egreedy"), bandit),
+                         Agent$new(OraclePolicy$new("Oracle"), bandit),
+                         Agent$new(LinUCBDisjointPolicy$new(1.0, "LinUCB"), bandit))
+
+simulation       <- Simulator$new(agents, horizon, simulations)
+history          <- simulation$run()
+
+par(mfrow = c(1, 2),mar = c(5, 5, 1, 1))
+plot(history, type = "cumulative")
+plot(history, type = "cumulative", regret = FALSE)
+
+@
+
+\begin{center}
+<<label=fig3, fig.width=10, fig.height=4, fig.keep='high', echo=FALSE, message=FALSE, out.extra='', fig.cap="LinUCB algorithm with linear disjoint models, following Li et al. (2010)">>=
+<<fig3plot>>
+@
+\end{center}
+
+\section{Extending the package}
+
+Here, we show how to extend contextual to implement a basic Contextual Bandit algoriithm.
+
+\section{Replications with offline data}
+
+Here we replicate some papers with a huge offline dataset..
 
 \begin{figure}[H]
   \centering
@@ -195,53 +587,6 @@ Here, explain how implementation flows naturally from the above
     \label{fig:contextual_sequence}
       \caption{\pkg{contextual} UML Sequence Diagram}
 \end{figure}
-
-<<include=FALSE>>=
-install.packages("devtools",repos = "http://cran.us.r-project.org")
-devtools::install_github("Nth-iteration-labs/contextual")
-knitr::opts_chunk$set(fig.path="fig/")
-@
-
-<<label=fig1plot, message = FALSE, fig.keep='none'>>=
-
-library("contextual")
-
-horizon            <- 100
-simulations        <- 100
-weight_per_arm     <- c(0.9, 0.1, 0.1)
-
-policy             <- EpsilonGreedyPolicy$new(epsilon = 0.1, name = "EG")
-bandit             <- SyntheticBandit$new(weights = weight_per_arm)
-
-agent              <- Agent$new(policy,bandit)
-
-simulator          <- Simulator$new(agents = agent,
-                                    horizon = horizon,
-                                    simulations = simulations)
-history            <- simulator$run()
-
-plot(history, type = "cumulative", regret = TRUE)
-plot(history, type = "arms")
-
-@
-
-For results, see Figure \ref{fig:fig1} on page \pageref{fig:fig1}.
-
-
-\begin{center}
-<<label=fig1, fig.keep='high', echo=FALSE, message=FALSE, fig.cap="Epsilon Greedy">>=
-<<fig1plot>>
-@
-\end{center}
-
-\section{Object orientation: extending contextual}
-%% Note: If there is markup in \(sub)section, then it has to be escape as above.
-
-The R6 package allows the creation of classes with reference semantics, similar to R's built-in reference classes. Compared to reference classes, R6 classes are simpler and lighter-weight, and they are not built on S4 classes so they do not require the methods package. These classes allow public and private members, and they support inheritance, even when the classes are defined in different packages.
-
-One R6 class can inherit from another. In other words, you can have super- and sub-classes.
-
-Subclasses can have additional methods, and they can also have methods that override the superclass methods. In this example of a custom \pkg{contextual} bandit, we’ll extend BasicBandit and override the initialize() method..
 
 \section{Special features}
 %% Note: If there is markup in \(sub)section, then it has to be escape as above.
@@ -274,6 +619,7 @@ Ladila bladibla.
 
 \section{Conclusions}
 \label{sec:conc4}
+
 
 Placeholder... the goal of a data analysis is not only to answer a research question based on data but also to collect findings that support that answer. These findings usually take the form of a~table, plot or regression/classification model and are usually presented in articles or reports.
 

@@ -10,12 +10,11 @@ context_weights    <- matrix(  c( 0.9, 0.1, 0.1,
 bandit             <- SyntheticBandit$new(context_weights = context_weights, precache = TRUE)
 
 agents             <- list( Agent$new(EpsilonGreedyPolicy$new(0.1, "\U190-greedy"), bandit),
-                            Agent$new(RandomPolicy$new("Random"), bandit),
                             Agent$new(OraclePolicy$new("Oracle"), bandit),
-                            Agent$new(Exp3Policy$new(0.1, "Exp3"), bandit),
                             Agent$new(LinUCBDisjointPolicy$new(1.0, "LinUCB"), bandit) )
 
 simulation         <- Simulator$new(agents, horizon, simulations, do_parallel = TRUE)
 history            <- simulation$run()
 
-plot(history, type = "grid")
+plot(history, type = "cumulative")
+plot(history, type = "cumulative", reward = FALSE)

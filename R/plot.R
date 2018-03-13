@@ -201,7 +201,7 @@ Plot <- R6::R6Class(
       cs$arm_count <- as.double((unlist(cs$arm_count)/max_sim) * 100L)
       old.par <- par(no.readonly = TRUE)
       # par(mar = c(bottom, left, top, right))
-      par(mar = c(5, 5, 1, 1))
+      par(mar = c(5, 5, 1, 1))   ##########################################################remember and reset?
       eg = expand.grid(t = seq(1.0, max_t, 1), choice = seq(1.0, max_arm, 1))
       cs <- merge(cs, eg, all = TRUE)
       cs[is.na(cs)] <- 0.0
@@ -265,7 +265,7 @@ Plot <- R6::R6Class(
         dev.hold()
 
       cs <- cs[order(agent, t)]
-
+      par(mar = c(5, 5, 1, 1)) #######################################################  ### parmar things
       if (ci) {
         # 95% confidence
         ci_range <- cs$data + outer(sqrt(cs$var)/sqrt(self$max_sim), c(1.64, -1.64))
