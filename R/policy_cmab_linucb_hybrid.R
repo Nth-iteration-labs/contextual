@@ -25,17 +25,18 @@ LinUCBHybridPolicy <- R6::R6Class(
 
       for (arm in 1:self$k) {
 
-        A0         <-  theta$A0
+        ################## unpack thetas ##############################################
 
+        A0         <-  theta$A0
         A          <-  theta$A[[arm]]
         B          <-  theta$B[[arm]]
         b          <-  theta$b[[arm]]
-
         x          <- matrix(context$X[,arm])
         x_a        <- matrix(context$X[(self$d_context + 1):self$d,arm])
-
         A0_inv <- solve(A0)
         A_inv <- solve(A)
+
+        ################## compute reward per arm ######################################
 
         theta_hat  <-  A_inv %*% (b - B %*% beta_hat)
 
@@ -48,17 +49,17 @@ LinUCBHybridPolicy <- R6::R6Class(
 
 
         expected_rewards[arm] <- mean + alpha * sd
+
       }
       action$choice  <- max_in(expected_rewards)
       action
     },
     set_reward = function(context, action, reward, t) {
 
-      #################### unpack thetas ####################
+      #################### unpack thetas ###############################################
 
       arm            <- action$choice
       reward         <- reward$reward
-
       x              <- matrix(context$X[,arm])
       x_a            <- matrix(context$X[(self$d_context + 1):self$d,arm])
 
@@ -68,10 +69,9 @@ LinUCBHybridPolicy <- R6::R6Class(
       B              <- theta$B[[arm]]
       b              <- theta$b[[arm]]
 
-      #################### update thetas ####################
+      #################### update thetas ###############################################
 
       A_inv          <- solve(A)
-
       A0             <- A0 + (t(B) %*% A_inv %*% B)
       b0             <- b0 + (t(B) %*% A_inv %*% b)
 
@@ -79,12 +79,11 @@ LinUCBHybridPolicy <- R6::R6Class(
       B <- B + x_a %*% t(x)
       b <- b + reward * x_a
 
-
       A_inv          <- solve(A)
       A0             <- A0 + (x %*% t(x)) - (t(B) %*% A_inv %*% B)
       b0             <- b0 + (reward * x) - (t(B) %*% A_inv %*% b)
 
-      #################### pack thetas ####################
+      #################### pack thetas ################################################
 
       theta$A0       <- A0
       theta$b0       <- b0
