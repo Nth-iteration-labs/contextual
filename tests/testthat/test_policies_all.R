@@ -7,8 +7,6 @@ test_that("Exp3", {
   bandit      <- SyntheticBandit$new(arm_weights  = arm_weights)
   expect_identical(typeof(bandit), "environment")
 
-  expect_identical(bandit$get_weights(), matrix(c(0.1,0.9,0.1),1,3))
-
   policy      <- Exp3Policy$new(0.1, "Exp3")
   expect_identical(typeof(policy), "environment")
 

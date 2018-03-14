@@ -1,15 +1,17 @@
 setwd("~/GitHub/contextual/demo")
 source("dev.R")
-horizon            <- 3000
+horizon            <- 1000
 simulations        <- 50
 
 # all is not well here yet :)
 
+
+# this would be the weights that randomize over all arms -> users
 arm_weights        <- matrix(  c( 0.2, 0.7, 0.2, 0.7,
                                   0.5, 0.2, 0.7, 0.2), nrow = 2, ncol = 4, byrow = TRUE)
 
-
-context_weights    <- matrix(  c( 0.7, 0.2, 0.2, 0.3,
+# this would be weights that randomize over arms -> articles
+context_weights    <- matrix(  c( 0.7, 0.2, 0.2, 0.6,
                                   0.3, 0.5, 0.7, 0.2),  nrow = 2, ncol = 4, byrow = TRUE)
 
 bandit             <- SyntheticBandit$new(arm_weights     = arm_weights,

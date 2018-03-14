@@ -362,7 +362,7 @@ plot(history, type = "arms")
 
 \subsection{Epsilon Greedy}
 
-This is an algorithm for continuously balancing exploration with exploitation. (In ‘greedy’ experiments, the lever with highest known payout is always pulled except when a random action is taken). A randomly chosen arm is pulled a fraction \epsilon of the time. The other 1-\epsilon of the time, the arm with highest known payout is pulled.
+This is an algorithm for continuously balancing exploration with exploitation. A randomly chosen arm is pulled a fraction $\epsilon$ of the time. The other 1-$\epsilon$ of the time, the arm with highest known payout is pulled.
 
 For figures, see Figure \ref{fig:fig2} on page \pageref{fig:fig2}.
 
@@ -571,7 +571,104 @@ plot(history, type = "cumulative", regret = FALSE)
 
 \section{Extending the package}
 
-Here, we show how to extend contextual to implement a basic Contextual Bandit algoriithm.
+Through its R6 based object system, it's relatively easy to extend contextual. Below, we demonstrate how to make use of that extensibility through the implementation of a PoissonRewardBandit extending contextual's BasicBandit class, and of an PoissonRewardBandit version of the Epsilon Greedy policy presented above.
+
+<<label=fig4plot, size='small',  message = FALSE, fig.keep='none'>>=
+
+PoissonRewardBandit <- R6::R6Class(
+  "PoissonRewardBandit",
+  # Class extends BasicBandit
+  inherit = BasicBandit,
+  public = list(
+    initialize   = function(weights) {
+      super$initialize(weights)
+    },
+    # Overrides BasicBandit's do_action to generate Poisson based rewards
+    do_action = function(action, t) {
+      reward_means = c(2,2,2)
+      private$R <- matrix(rpois(3, reward_means) < self$get_weights(), self$k, self$d)*1
+      private$reward_to_list(action, t)
+    }
+  )
+)
+
+EpsilonGreedyAnnealingPolicy <- R6::R6Class(
+  "EpsilonGreedyAnnealingPolicy",
+  # Class extends EpsilonGreedyPolicy
+  inherit = EpsilonGreedyPolicy,
+  portable = FALSE,
+  class = FALSE,
+  public = list(
+    get_action = function(context, t) {
+      # Override get_action to make annealing
+      epsilon = 1 / log(t + 0.0000001)
+      if (runif(1) > epsilon) {
+        action$choice <- max_in(theta$mean)
+        action$propensity <- 1 - self$epsilon
+      } else {
+        action$choice <- sample.int(context$k, 1, replace = TRUE)
+        action$propensity <- epsilon*(1/context$k)
+      }
+      action
+    }
+  )
+)
+
+weights     <- c(7,1,2)
+bandit      <- PoissonRewardBandit$new(weights)
+agents      <- list( Agent$new(EpsilonGreedyPolicy$new(0.1, "EG Annealing"), bandit),
+                     Agent$new(EpsilonGreedyAnnealingPolicy$new(0.1, "EG"), bandit) )
+simulation  <- Simulator$new(agents, horizon = 200L, simulations = 100L)
+
+history     <- simulation$run()
+
+par(mfrow = c(1, 2),mar = c(5, 5, 1, 1))
+plot(history, type = "cumulative")
+plot(history, type = "average", regret = FALSE)
+
+@
+
+\begin{center}
+<<label=fig4, fig.width=10, fig.height=4, fig.keep='high', echo=FALSE, message=FALSE, out.extra='', fig.cap="Extending BasicBandit and EpsilonGreedyPolicy">>=
+<<fig4plot>>
+@
+\end{center}
+
+
+\section{Simulation and Offline evaluation Bandits}
+
+\subsection{Simulation}
+
+Some info on the implemented simulating Bandits, inc strengths and weakenesses.
+
+*** Basic very simple ***
+
+*** Based on modeling ***
+
+\subsection{Offline evaluation}
+
+\subsubsection{Offline evaluation through LiLogBandit}
+
+Though it is, as demonstrated in the previous section, relatively easy to create basic simulators to test simple MAB and cMAB policies, the creation of more complex simulations that generate more complex contexts for more demanding policies can become very complicated very fast. So much so, that the implementation of such simulators regularly becomes more complex than the analysis and implementation of the policies themselves. More seriously, even when succeeding in surpassing these technical challenges, it remains an open question if an evaluation based on simulated data reflects real-world applications, as modeling by definition introduces bias.
+
+But there exists another, unbiased approach to testing MAB and cMAB policies. This approach makes use of widely available offline sources of data and can pre-empt the issues of bias and model complexity. It also offers the secondary advantages that offline data is both widely available and reflective of real-world online interactions. But there is one catch, that is particular to the evaluation of MAB problems: when we seek to make use of offline data, we miss out on user feedback when a policy advices a different arm than the one the user selected. In other words, offline data is only "partially labeled" with respect to any Bandit policies, as bandit evaluations only contain user feedback for arms that were displayed to the agent but include no information on other arms.
+
+*** explain how li log algorithm helps here***
+
+*** insert algorithm ***
+
+
+*** insert code ***
+
+
+\subsubsection{Offline evaluation through DoublyRobustBandit}
+
+
+
+*** insert algorithm ***
+
+
+*** insert code ***
 
 \section{Replications with offline data}
 

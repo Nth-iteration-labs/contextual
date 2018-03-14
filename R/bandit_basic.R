@@ -25,7 +25,7 @@ BasicBandit <- R6::R6Class(
       private$context_to_list(t)
     },
     do_action = function(action, t) {
-      private$R <- matrix(runif(self$k) < self$get_weights(), self$k, self$d)
+      private$R <- as.double(matrix(runif(self$k) < self$get_weights(), self$k, self$d))
       private$reward_to_list(action, t)
     }
   )
