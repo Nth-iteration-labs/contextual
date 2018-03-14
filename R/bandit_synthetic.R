@@ -1,5 +1,7 @@
 # this class is becoming messy!
 # replace by something more elegant...
+# or better, keep it, make it smaller/simple (single random context)
+# and do another bandit thats more elegant
 
 #' @export
 SyntheticBandit <- R6::R6Class(

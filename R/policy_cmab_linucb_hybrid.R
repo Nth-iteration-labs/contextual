@@ -39,9 +39,9 @@ LinUCBHybridPolicy <- R6::R6Class(
         theta_hat  <-  A_inv %*% (b - B %*% beta_hat)
 
         sd <- sqrt(  (t(x) %*% A0_inv %*% x) -
-                     2*(t(x) %*% A0_inv %*% t(B) %*% A_inv %*% x_a) +
-                     (t(x_a) %*% A_inv %*% x_a) +
-                     (t(x_a) %*% A_inv %*% B %*% A0_inv %*% t(B) %*% A_inv %*% x_a))
+                       2*(t(x) %*% A0_inv %*% t(B) %*% A_inv %*% x_a) +
+                       (t(x_a) %*% A_inv %*% x_a) +
+                       (t(x_a) %*% A_inv %*% B %*% A0_inv %*% t(B) %*% A_inv %*% x_a))
 
         mean <- (t(x) %*% beta_hat)  +  (t(x_a) %*% theta_hat)
 
