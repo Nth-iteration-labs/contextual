@@ -303,6 +303,8 @@ Here, we show how to simulate some bandits, with their current implementation.
 
 \subsection{Epsilon First}
 
+In this algorithm, also known as AB(C) testing, a pure exploration phase is followed by a pure exploitation phase. The Epsilon First policy is equivalant to the setup of a randomized controlled trial (RCT): a study design where people are allocated at random to receive one of several clinical interventions. One of these interventions is the control. This control may be a standard practice, a placebo, or no intervention at all. On completion of the RCT, the best solution at that point is then suggested to be the superior "evidence based" option for everyone, at all times.
+
 For figures, see Figure \ref{fig:fig1} on page \pageref{fig:fig1}.
 
 The policy:
@@ -415,6 +417,7 @@ Running the policy:
 
 \subsection{Epsilon Greedy}
 
+This is an algorithm for continuously balancing exploration with exploitation. (In ‘greedy’ experiments, the lever with highest known payout is always pulled except when a random action is taken). A randomly chosen arm is pulled a fraction \epsilon of the time. The other 1-\epsilon of the time, the arm with highest known payout is pulled.
 
 For figures, see Figure \ref{fig:fig2} on page \pageref{fig:fig2}.
 

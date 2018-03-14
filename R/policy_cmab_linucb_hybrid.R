@@ -14,7 +14,7 @@ LinUCBHybridPolicy <- R6::R6Class(
     },
     set_parameters = function() {
       self$theta <- list('A0' = diag(1,self$d,self$d), 'b0' = rep(0,self$d))
-      self$theta_to_arms <- list( 'A' = diag(1,self$d_arms,self$d_arms), 'B' = matrix(0,self$d_arms,self$d), 'b' = rep(0,self$d_arms))
+      self$theta_to_arms <- list( 'A' = diag(1,self$d_context,self$d_context), 'B' = matrix(0,self$d_context,self$d), 'b' = rep(0,self$d_context))
     },
     get_action = function(context, t) {
       expected_rewards <- rep(0.0, self$k)
@@ -30,7 +30,7 @@ LinUCBHybridPolicy <- R6::R6Class(
         B          <-  theta$B[[arm]]
         b          <-  theta$b[[arm]]
         x          <- matrix(context$X[,arm])
-        x_a        <- matrix(context$X[(self$d_context + 1):self$d,arm])
+        x_a        <- matrix(context$X[1:self$d_context,arm])
         A0_inv <- solve(A0)
         A_inv <- solve(A)
 
@@ -60,7 +60,7 @@ LinUCBHybridPolicy <- R6::R6Class(
       arm            <- action$choice
       reward         <- reward$reward
       x              <- matrix(context$X[,arm])
-      x_a            <- matrix(context$X[(self$d_context + 1):self$d,arm])
+      x_a            <- matrix(context$X[1:self$d_context,arm])
 
       A0             <- theta$A0
       b0             <- theta$b0

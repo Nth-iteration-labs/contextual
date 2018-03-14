@@ -1,3 +1,6 @@
+# this class is becoming messy!
+# replace by something more elegant...
+
 #' @export
 SyntheticBandit <- R6::R6Class(
   "SyntheticBandit",
@@ -67,7 +70,7 @@ SyntheticBandit <- R6::R6Class(
         if (dim(weights)[1] == 1) {
           self$arm_mask <- matrix(rep(1,length(self$arm_weights)),nrow = 1L  )
         } else {
-          stop('Please set arm_mask for arm_weights.' , call. = FALSE)
+          #stop('Please set arm_mask for arm_weights.' , call. = FALSE)
         }
       }
       super$initialize(weights)
@@ -107,22 +110,27 @@ SyntheticBandit <- R6::R6Class(
   private = list(
     generate_context = function(n = 1L) {
       if (!is.null(self$context_weights)) {
-        context_d <- dim(self$context_weights)[1]
-        context_mask <- matrix(0, n , context_d)
+        self$d_context <- dim(self$context_weights)[1]
+        context_mask <- matrix(0, n , self$d_context)
         if (self$not_zero_features | self$random_one_feature) {
-          context_mask[cbind(1L:n, sample(context_d, n, replace = TRUE))] <- 1
+          context_mask[cbind(1L:n, sample(self$d_context, n, replace = TRUE))] <- 1
         }
         if (!self$random_one_feature) {
-          context_mask <- matrix((context_mask | matrix(sample(c(0, 1), replace = TRUE, size = n * context_d),  n, context_d)), n, context_d)
+          context_mask <- matrix((context_mask | matrix(sample(c(0, 1), replace = TRUE, size = n * self$d_context),  n, self$d_context)), n, self$d_context)
         }
         mode(context_mask) <- 'integer'
         private$X <- array(0, dim = c(self$d, self$k, n))
         for (i in 1:n) {
-          context_mask_to_matrix <- matrix( context_mask[i,], context_d, self$k)
+          context_mask_to_matrix <- matrix( context_mask[i,], self$d_context, self$k)
+          if (self$d_arms > 1 && !is.null(self$arm_weights))
+            self$arm_mask = matrix(round(runif(self$d_arms)),nrow = self$d_arms,ncol = self$k)
           private$X[,,i] <- rbind(context_mask_to_matrix, self$arm_mask)
         }
       } else {
         private$X <- array(0, dim = c(self$d, self$k, n))
+
+        if (self$d_arms > 1 && !is.null(self$arm_weights))
+          self$arm_mask = matrix(round(runif(self$d)),nrow=self$d_arms,ncol = self$k)
         for (i in 1:n) {
           private$X[,,i] <- self$arm_mask
         }
