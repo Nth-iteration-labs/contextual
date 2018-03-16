@@ -33,7 +33,7 @@ ContextualThompsonSamplingPolicy <- R6::R6Class(
 
       inc(theta$B)    <- X %*% t(X)
       inc(theta$f)    <- X * reward
-      theta$mu_hat    <- solve(theta$B ) %*% theta$f   ### diag added  #+ diag(1, self$d, self$d)
+      theta$mu_hat    <- solve(theta$B ) %*% theta$f
 
       theta
     },
