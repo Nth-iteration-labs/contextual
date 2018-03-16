@@ -17,15 +17,12 @@ ContextualThompsonSamplingPolicy <- R6::R6Class(
     },
     set_parameters = function() {
       self$v     <- self$R * sqrt(24 / self$epsilon * self$d * log(1 / self$delta))
-      self$theta_to_arms  <- list( 'B'  = diag(1, self$d, self$d), 'f'  = rep(0, self$d), 'mu_hat' = rep(0, self$d))
+      self$theta  <- list( 'B'  = diag(1, self$d, self$d), 'f'  = rep(0, self$d), 'mu_hat' = rep(0, self$d))
     },
     get_action = function(context, t) {
       X <- context$X
-      expected_rewards <- rep(0.0, context$k)
-      for (arm in 1:context$k) {
-        mu_tilde = as.vector(self$mvrnorm(1, theta$mu_hat[[arm]], self$v^2 * solve(theta$B[[arm]])))
-        expected_rewards[arm] <- t(X[,arm]) %*% mu_tilde
-      }
+      mu_tilde = as.vector(self$mvrnorm(1, theta$mu_hat, self$v^2 * solve(theta$B)))
+      expected_rewards = X %*% mu_tilde
       action$choice <- max_in(expected_rewards)
       action
     },
@@ -34,9 +31,9 @@ ContextualThompsonSamplingPolicy <- R6::R6Class(
       arm <- action$choice
       X      <- context$X[,arm]
 
-      inc(theta$B[[arm]])    <- X %*% t(X)
-      inc(theta$f[[arm]])    <- X * reward
-      theta$mu_hat[[arm]]    <- solve(theta$B[[arm]] ) %*% theta$f[[arm]]   ### diag added  #+ diag(1, self$d, self$d)
+      inc(theta$B)    <- X %*% t(X)
+      inc(theta$f)    <- X * reward
+      theta$mu_hat    <- solve(theta$B ) %*% theta$f   ### diag added  #+ diag(1, self$d, self$d)
 
       theta
     },
