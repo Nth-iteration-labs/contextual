@@ -76,7 +76,6 @@ SyntheticBandit <- R6::R6Class(
         }
       }
       super$initialize(weights)
-
       self$has_cache            <- FALSE
       self$is_precaching        <- precache
       self$reward_family        <- reward_family
@@ -123,6 +122,8 @@ SyntheticBandit <- R6::R6Class(
         mode(context_mask) <- 'integer'
         private$X <- array(0, dim = c(self$d, self$k, n))
         for (i in 1:n) {
+
+          #context_mask_to_matrix <- matrix(sample(c(0, 1), replace = TRUE, size = self$d_context * self$k), self$d_context, self$k )              #
           context_mask_to_matrix <- matrix( context_mask[i,], self$d_context, self$k)
           if (self$d_arms > 1 && !is.null(self$arm_weights))
             self$arm_mask = matrix(round(runif(self$d_arms)),nrow = self$d_arms,ncol = self$k)
@@ -137,6 +138,7 @@ SyntheticBandit <- R6::R6Class(
           private$X[,,i] <- self$arm_mask
         }
       }
+
       private$X
     },
     generate_oracle = function(n) {

@@ -1,12 +1,14 @@
 setwd("~/GitHub/contextual/demo")
 source("dev.R")
 
-horizon            <- 1000L
-simulations        <- 10L
+horizon            <- 20L
+simulations        <- 30L
 context_weights    <- matrix(  c( 0.9, 0.1, 0.1,
                                   0.1, 0.9, 0.1,
                                   0.1, 0.1, 0.9,
-                                  0.1, 0.1, 0.1), nrow = 3, ncol = 3, byrow = TRUE)
+                                  0.1, 0.9, 0.1,
+                                  0.9, 0.1, 0.1,
+                                  0.1, 0.1, 0.9), nrow = 6, ncol = 3, byrow = TRUE)
 
 bandit             <- SyntheticBandit$new(context_weights = context_weights, precache = TRUE)
 
@@ -18,4 +20,3 @@ simulation         <- Simulator$new(agents, horizon, simulations, do_parallel = 
 history            <- simulation$run()
 
 plot(history, type = "cumulative")
-plot(history, type = "cumulative", reward = FALSE)

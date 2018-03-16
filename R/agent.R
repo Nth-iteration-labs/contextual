@@ -23,9 +23,6 @@ Agent <- R6::R6Class(
                                        call. = FALSE)
       self$policy$k   <- self$bandit$k
       self$policy$d   <- self$bandit$d
-
-      if (!is.null(self$bandit$d_context)) self$policy$d_context <- self$bandit$d_context
-      if (!is.null(self$bandit$d_arms)) self$policy$d_arms <- self$bandit$d_arms
       self$reset()
     },
     reset = function() {

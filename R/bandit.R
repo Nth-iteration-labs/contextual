@@ -15,8 +15,6 @@ AbstractBandit <- R6::R6Class(
       list(
         k = self$k,
         d = self$d,
-        d_context = self$d_context,
-        d_arms = self$d_arms,
         X = private$X[,, idx],
         O = private$O[, idx]
       )
@@ -61,8 +59,6 @@ AbstractBandit <- R6::R6Class(
   public = list(
     k             = NULL, # n of arms
     d             = NULL, # n of context features
-    d_context           = NULL, # subset n of CONTEXT FEATURES
-    d_arms           = NULL, # subset n of ARM FEATURES
     initialize   = function() {
       private$.hash = sub('<environment: (.*)>', '\\1',  capture.output(self))
       private$X <- NULL
