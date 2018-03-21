@@ -2,6 +2,7 @@ compare_ggplot                          Compare ggplot with own plotting solutio
 demo_1                                  Temporary d1
 demo_2                                  Temporary d2
 demo_3                                  Temporary d3
+demo_contextual                         Demo of contextual bandit
 demo_live_chart                         Serial MAB demo script
 demo_minimal_bandit                     How to define custom bandits inline
 demo_offline_log                        Demo of Li's offline testing policy

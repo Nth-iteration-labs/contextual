@@ -1,14 +1,11 @@
 setwd("~/GitHub/contextual/demo")
 source("dev.R")
 
-horizon            <- 20L
-simulations        <- 30L
+horizon            <- 1000L
+simulations        <- 10L
 context_weights    <- matrix(  c( 0.9, 0.1, 0.1,
                                   0.1, 0.9, 0.1,
-                                  0.1, 0.1, 0.9,
-                                  0.1, 0.9, 0.1,
-                                  0.9, 0.1, 0.1,
-                                  0.1, 0.1, 0.9), nrow = 6, ncol = 3, byrow = TRUE)
+                                  0.1, 0.1, 0.9), nrow = 3, ncol = 3, byrow = TRUE)
 
 bandit             <- SyntheticBandit$new(context_weights = context_weights, precache = TRUE)
 
@@ -16,7 +13,7 @@ agents             <- list( Agent$new(EpsilonGreedyPolicy$new(0.1, "\U190-greedy
                             Agent$new(ContextualThompsonSamplingPolicy$new(), bandit),
                             Agent$new(LinUCBDisjointPolicy$new(1.0, "LinUCB"), bandit) )
 
-simulation         <- Simulator$new(agents, horizon, simulations, do_parallel = F)
+simulation         <- Simulator$new(agents, horizon, simulations)
 history            <- simulation$run()
 
 plot(history, type = "cumulative")

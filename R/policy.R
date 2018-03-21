@@ -9,8 +9,8 @@ AbstractPolicy <- R6::R6Class(
     action = NULL,
     theta = NULL,
     theta_to_arms = NULL,
-    k             = NULL, # n of arms
-    d             = NULL, # n of context features
+    k             = NULL,
+    d             = NULL,
     initialize = function(name = "Not implemented") {
       self$theta <- list()
       self$name   <- name

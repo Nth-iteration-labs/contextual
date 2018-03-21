@@ -22,8 +22,7 @@ Contextual <- R6::R6Class(
     "dec<-" = function(x, value) {
       x - value
     },
-    max_in = function(x, equal_is_random = TRUE)
-    {
+    max_in = function(x, equal_is_random = TRUE) {
       x <- unlist(x)
       y <- seq_along(x)[x == max(x)]
       if (length(y) > 1L)  {
@@ -36,8 +35,10 @@ Contextual <- R6::R6Class(
         return(y)
       }
     },
-    sum_of = function(x)
-    {
+    normalize = function(M) {
+      M / sqrt(sum(M^2))
+    },
+    sum_of = function(x) {
       sum(unlist(x))
     },
     inv = function(M) {

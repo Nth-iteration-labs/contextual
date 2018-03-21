@@ -1,8 +1,3 @@
-# this class is becoming messy!
-# replace by something more elegant...
-# or better, keep it, make it smaller/simple (single random context)
-# and do another bandit thats more elegant
-
 #' @export
 SyntheticBandit <- R6::R6Class(
   "SyntheticBandit",
@@ -19,10 +14,9 @@ SyntheticBandit <- R6::R6Class(
     }
   ),
   public = list(
-    k             = NULL, # n of arms
-    d             = NULL, # n of features
-    d_context     = NULL, # subset n of context features
-    d_arms        = NULL, # subset n of arm features
+
+    d             = NULL,
+    k             = NULL,
     reward_means  = NULL,
     reward_stds   = NULL,
     reward_family = NULL,
@@ -34,7 +28,7 @@ SyntheticBandit <- R6::R6Class(
 
     context_weights   = NULL,
     arm_weights       = NULL,
-    arm_mask          = NULL,
+    arm_masks         = NULL,
 
     initialize   = function(
       reward_family        = 'Bernoulli',
@@ -43,11 +37,12 @@ SyntheticBandit <- R6::R6Class(
 
       context_weights      = NULL,
       arm_weights          = NULL,
-      arm_mask             = NULL,
+      arm_masks            = NULL,
 
       precache             = TRUE,
       not_zero_features    = TRUE,
-      random_one_feature   = FALSE
+      random_one_feature   = FALSE,
+      weights              = NULL
 
     ) {
 
@@ -55,27 +50,31 @@ SyntheticBandit <- R6::R6Class(
         stop('Reward family needs to be one of "Bernoulli", "Gaussian" or "Poisson".' , call. = FALSE)
       }
 
-      self$arm_weights          <- arm_weights
-      self$arm_mask             <- arm_mask
+      if (!is.null(weights) & is.null(context_weights)) {
+        # for backwards compatibility - maybe remove?#################
+        self$context_weights      <- weights
+      } else {
+        self$context_weights      <- context_weights
+      }
 
-      self$context_weights      <- context_weights
+      self$arm_masks            <- arm_masks
+      self$arm_weights          <- arm_weights
 
       if (is.vector(self$context_weights)) self$context_weights <- matrix(self$context_weights, nrow = 1L)
-      if (is.vector(self$arm_weights)) self$arm_weights <- matrix(self$arm_weights, nrow = 1L)
-
-      self$d_context <- dim(self$context_weights)[1]
-      self$d_arms <- dim(self$arm_weights)[1]
 
       weights = rbind(self$context_weights, self$arm_weights)
 
-      if (!is.null(self$arm_weights) & is.null(self$arm_mask)) {
+      if (!is.null(self$arm_weights) & is.null(self$arm_masks)) {
         if (dim(weights)[1] == 1) {
-          self$arm_mask <- matrix(rep(1,length(self$arm_weights)),nrow = 1L  )
+          self$arm_masks <- matrix(rep(1,length(self$arm_weights)),nrow = 1L  )
         } else {
-          #stop('Please set arm_mask for arm_weights.' , call. = FALSE)
+          stop('Please set arm_masks for arm_weights.' , call. = FALSE)
         }
       }
+
+
       super$initialize(weights)
+
       self$has_cache            <- FALSE
       self$is_precaching        <- precache
       self$reward_family        <- reward_family
@@ -111,34 +110,26 @@ SyntheticBandit <- R6::R6Class(
   private = list(
     generate_context = function(n = 1L) {
       if (!is.null(self$context_weights)) {
-        self$d_context <- dim(self$context_weights)[1]
-        context_mask <- matrix(0, n , self$d_context)
+        context_d <- dim(self$context_weights)[1]
+        context_mask <- matrix(0, n , context_d)
         if (self$not_zero_features | self$random_one_feature) {
-          context_mask[cbind(1L:n, sample(self$d_context, n, replace = TRUE))] <- 1
+          context_mask[cbind(1L:n, sample(context_d, n, replace = TRUE))] <- 1
         }
         if (!self$random_one_feature) {
-          context_mask <- matrix((context_mask | matrix(sample(c(0, 1), replace = TRUE, size = n * self$d_context),  n, self$d_context)), n, self$d_context)
+          context_mask <- matrix((context_mask | matrix(sample(c(0, 1), replace = TRUE, size = n * context_d),  n, context_d)), n, context_d)
         }
         mode(context_mask) <- 'integer'
         private$X <- array(0, dim = c(self$d, self$k, n))
         for (i in 1:n) {
-
-          #context_mask_to_matrix <- matrix(sample(c(0, 1), replace = TRUE, size = self$d_context * self$k), self$d_context, self$k )              #
-          context_mask_to_matrix <- matrix( context_mask[i,], self$d_context, self$k)
-          if (self$d_arms > 1 && !is.null(self$arm_weights))
-            self$arm_mask = matrix(round(runif(self$d_arms)),nrow = self$d_arms,ncol = self$k)
-          private$X[,,i] <- rbind(context_mask_to_matrix, self$arm_mask)
+          context_mask_to_matrix <- matrix( context_mask[i,], context_d, self$k)
+          private$X[,,i] <- rbind(context_mask_to_matrix, self$arm_masks)
         }
       } else {
         private$X <- array(0, dim = c(self$d, self$k, n))
-
-        if (self$d_arms > 1 && !is.null(self$arm_weights))
-          self$arm_mask = matrix(round(runif(self$d)),nrow=self$d_arms,ncol = self$k)
         for (i in 1:n) {
-          private$X[,,i] <- self$arm_mask
+          private$X[,,i] <- self$arm_masks
         }
       }
-
       private$X
     },
     generate_oracle = function(n) {
