@@ -18,6 +18,12 @@ Sys.setenv(R_GSCMD = "C:\\Program Files\\gs\\gs9.22\\bin\\gswin64c.exe")
 
 # prio 1
 
+
+# regres <- glm(reward ~ matrix(unlist(b$context),nrow = dim(b)[1],byrow = TRUE),
+# family = binomial(link = "probit"), data = b)
+
+# names are now the differing element in plots, change!
+
 # gittins ... policy
 
 # comparison doc of all bandit algo's: strengths, weakneseses (computational eff, context / non, variance, etc)

@@ -8,3 +8,5 @@ inst/doc
 demo/dadada.R
 tests/testthat/Rplots.pdf
 tests/testthat/Rplots.pdf
+data/webscope/**
+yahoodb-journal

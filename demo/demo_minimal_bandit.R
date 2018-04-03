@@ -12,9 +12,13 @@ PoissonRewardBandit <- R6::R6Class(
     },
     # Overrides BasicBandit's do_action to generate Poisson based rewards
     do_action = function(action, t) {
-      reward_means = c(2,2,2)
-      private$R <- matrix(rpois(3, reward_means) < self$get_weights(), self$k, self$d)*1
-      private$reward_to_list(action, t)
+      reward_means <- c(2,2,2)
+      private$R    <- matrix(rpois(3, reward_means) < self$get_weights(), self$k, self$d)*1
+      rewardlist   <- list(
+        reward     = private$R[action$choice],
+        opimal     = private$R[which.max(private$R)]
+      )
+      rewardlist
     }
   )
 )
@@ -43,12 +47,12 @@ EpsilonGreedyAnnealingPolicy <- R6::R6Class(
 
 weights     <- c(7,1,2)
 bandit      <- PoissonRewardBandit$new(weights)
-agents      <- list( Agent$new(EpsilonGreedyPolicy$new(0.1, "EG Annealing"), bandit),
-                     Agent$new(EpsilonGreedyAnnealingPolicy$new(0.1, "EG"), bandit) )
-simulation  <- Simulator$new(agents, horizon = 200L, simulations = 100L)
+agents      <- list( Agent$new(EpsilonGreedyPolicy$new(0.2, "EG"), bandit),
+                     Agent$new(EpsilonGreedyAnnealingPolicy$new(0.2, "EG Annealing"), bandit) )
+simulation  <- Simulator$new(agents, horizon = 600L, simulations = 50L)
 
 history     <- simulation$run()
 
 par(mfrow = c(1, 2),mar = c(5, 5, 1, 1))
-plot(history, type = "cumulative")
+plot(history, type = "cumulative", rate = TRUE)
 plot(history, type = "average", regret = FALSE)

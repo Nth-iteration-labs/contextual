@@ -3,7 +3,7 @@ ThompsonSamplingPolicy <- R6::R6Class(
   "ThompsonSamplingPolicy",
   portable = FALSE,
   class = FALSE,
-  inherit = AbstractPolicy,
+  inherit = Policy,
   public = list(
     alpha = 1,
     beta = 1,
@@ -100,22 +100,26 @@ ThompsonSamplingPolicy <- R6::R6Class(
 #'
 #' Thompson, W. R. (1933). On the likelihood that one unknown probability exceeds another in view of the evidence of two samples. Biometrika, 25(3/4), 285-294.
 #'
+#' Chapelle, O., & Li, L. (2011). An empirical evaluation of thompson sampling. In Advances in neural information processing systems (pp. 2249-2257).
+#'
+#' Agrawal, S., & Goyal, N. (2013, February). Thompson sampling for contextual bandits with linear payoffs. In International Conference on Machine Learning (pp. 127-135).b
+#'
 #' @seealso
 #'
 #' Core contextual classes: \code{\link{Contextual}}, \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
-#' Bandit classes: \code{\link{AbstractBandit}}, \code{\link{BasicBandit}},
-#' \code{\link{OfflineLiBandit}}, \code{\link{SyntheticBandit}}
+#' Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBandit}},
+#' \code{\link{RejectionSamplingOfflineBandit}}, \code{\link{SyntheticBandit}}
 #'
 #' @examples
 #'
 #' horizon            <- 100L
 #' simulations        <- 100L
-#' arm_weights        <- c(0.9, 0.1, 0.1)
+#' weights        <- c(0.9, 0.1, 0.1)
 #'
 #' policy             <- ThompsonSamplingPolicy$new(alpha = 1, beta = 1, name = "TSampling")
-#' bandit             <- SyntheticBandit$new(arm_weights = arm_weights, precache = FALSE)
+#' bandit             <- SyntheticBandit$new(weights = weights, precaching = FALSE)
 #' agent              <- Agent$new(policy, bandit)
 #'
 #' history            <- Simulator$new(agent, horizon, simulations, do_parallel = FALSE)$run()

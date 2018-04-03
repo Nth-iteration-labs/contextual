@@ -1,6 +1,6 @@
 #' @export
-OfflineLiBandit <- R6::R6Class(
-  "OfflineLiBandit",
+RejectionSamplingOfflineBandit <- R6::R6Class(
+  "RejectionSamplingOfflineBandit",
   inherit = BasicBandit,
   portable = TRUE,
   class = FALSE,
@@ -14,27 +14,20 @@ OfflineLiBandit <- R6::R6Class(
       private$S <- data_file$get_data_table()
     },
     get_context = function(index) {
-      private$X <- array(matrix(private$S$context[[index]], self$d, self$k),
-                         dim = c(self$d, self$k, 1))
-      private$context_to_list()
+      private$X <- array(matrix(private$S$context[[index]], self$d, self$k), dim = c(self$d, self$k, 1))
+      contextlist <- list(
+        k = self$k,
+        d = self$d,
+        X = private$X[,,1]
+      )
+      contextlist
     },
     do_action = function(action, index) {
-      use_ips <- FALSE
-      if (use_ips == TRUE) {
-        reward_at_index <- as.double(private$S$reward[[index]])
-        reward_at_index <- reward_at_index/as.double(private$S$propensity[[index]])
-
-        #cost .. blabla
-
-      } else {
-        reward_at_index <- as.double(private$S$reward[[index]])
-      }
-
-      if (private$S$choice[[index]] == action$choice | use_ips == TRUE) {
+      reward_at_index <- as.double(private$S$reward[[index]])
+      if (private$S$choice[[index]] == action$choice) {
         list(
           reward = reward_at_index,
-          is_optimal = as.integer(private$S$is_optimal[[index]]),
-          oracle = as.double(private$S$oracle[[index]])
+          opimal = as.double(private$S$opimal[[index]])
         )
       } else {
         NULL
@@ -43,9 +36,10 @@ OfflineLiBandit <- R6::R6Class(
   )
 )
 
-#' Bandit: Li Offline Evaluation
+#' Bandit: Rejection Sampling Offline Evaluation
 #'
-#' \code{OfflineLiBandit} uses data from a randomly assigned policy for offline evaluation.
+#' \code{RejectionSamplingOfflineBandit} uses data from a randomly assigned policy for offline evaluation.
+#'
 #' The key assumption of the method is that the individual events are i.i.d., and
 #' that the logging policy chose each arm at each time step uniformly at random.
 #' Take care: if A is a stationary policy that does not change over trials,
@@ -53,12 +47,12 @@ OfflineLiBandit <- R6::R6Class(
 #' scoring (Langford et al., 2008; Strehl et al., 2011) and related
 #' techniques like doubly robust estimation (Dudik et al., 2011).
 #'
-#' @name OfflineLiBandit
+#' @name RejectionSamplingOfflineBandit
 #' @family contextual bandits
 #'
 #' @section Usage:
 #' \preformatted{
-#' bandit <- OfflineLiBandit(data_file, k, d)
+#' bandit <- RejectionSamplingOfflineBandit(data_file, k, d)
 #' }
 #'
 #'
@@ -70,7 +64,7 @@ OfflineLiBandit <- R6::R6Class(
 #' @seealso
 #'
 #' Core contextual classes: \code{\link{Contextual}}, \code{\link{Simulator}},
-#' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}, \code{\link{AbstractPolicy}}
+#' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}, \code{\link{Policy}}
 #'
 #' @examples
 #'

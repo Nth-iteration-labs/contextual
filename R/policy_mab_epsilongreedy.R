@@ -3,7 +3,7 @@ EpsilonGreedyPolicy <- R6::R6Class(
   "EpsilonGreedyPolicy",
   portable = FALSE,
   class = FALSE,
-  inherit = AbstractPolicy,
+  inherit = Policy,
   public = list(
     epsilon = NULL,
     initialize = function(epsilon = 0.1, name = "EpsilonGreedy") {
@@ -100,23 +100,25 @@ EpsilonGreedyPolicy <- R6::R6Class(
 #'
 #' Strehl, A., & Littman, M. (2004). Exploration via modelbased interval estimation. In International Conference on Machine Learning, number Icml.
 #'
+#' Yue, Y., Broder, J., Kleinberg, R., & Joachims, T. (2012). The k-armed dueling bandits problem. Journal of Computer and System Sciences, 78(5), 1538-1556.
+#'
 #' @seealso
 #'
 #' Core contextual classes: \code{\link{Contextual}}, \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
-#' Bandit classes: \code{\link{AbstractBandit}}, \code{\link{BasicBandit}},
-#' \code{\link{OfflineLiBandit}}, \code{\link{SyntheticBandit}}
+#' Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBandit}},
+#' \code{\link{RejectionSamplingOfflineBandit}}, \code{\link{SyntheticBandit}}
 #'
 #'
 #' @examples
 #'
 #' horizon            <- 100L
 #' simulations        <- 100L
-#' arm_weights        <- c(0.9, 0.1, 0.1)
+#' weights        <- c(0.9, 0.1, 0.1)
 #'
 #' policy             <- EpsilonGreedyPolicy$new(epsilon = 0.1, name = "EpsilonGreedy")
-#' bandit             <- SyntheticBandit$new(arm_weights = arm_weights, precache = FALSE)
+#' bandit             <- SyntheticBandit$new(weights = weights, precaching = FALSE)
 #' agent              <- Agent$new(policy, bandit)
 #'
 #' history            <- Simulator$new(agent, horizon, simulations, do_parallel = FALSE)$run()

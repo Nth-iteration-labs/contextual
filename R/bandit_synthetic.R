@@ -4,15 +4,6 @@ SyntheticBandit <- R6::R6Class(
   inherit = BasicBandit,
   portable = TRUE,
   class = FALSE,
-  active = list(
-    is_precaching = function(value) {
-      if (missing(value)) {
-        private$precaching
-      } else {
-        private$precaching <- value
-      }
-    }
-  ),
   public = list(
 
     d             = NULL,
@@ -20,71 +11,44 @@ SyntheticBandit <- R6::R6Class(
     reward_means  = NULL,
     reward_stds   = NULL,
     reward_family = NULL,
-    precache      = NULL,
     has_cache     = NULL,
-
+    precaching    = NULL,
     not_zero_features = NULL,
     random_one_feature = NULL,
-
-    context_weights   = NULL,
-    arm_weights       = NULL,
-    arm_masks         = NULL,
-
+    weights   = NULL,
     initialize   = function(
       reward_family        = 'Bernoulli',
       reward_means         = 4.0,
       reward_stds          = 1.0,
-
-      context_weights      = NULL,
-      arm_weights          = NULL,
-      arm_masks            = NULL,
-
-      precache             = TRUE,
+      weights              = NULL,
+      precaching           = TRUE,
       not_zero_features    = TRUE,
-      random_one_feature   = FALSE,
-      weights              = NULL
-
+      random_one_feature   = FALSE
     ) {
-
       if (!(reward_family %in% c("Bernoulli","Gaussian","Poisson"))) {
         stop('Reward family needs to be one of "Bernoulli", "Gaussian" or "Poisson".' , call. = FALSE)
       }
 
-      if (!is.null(weights) & is.null(context_weights)) {
-        # for backwards compatibility - maybe remove?#################
-        self$context_weights      <- weights
-      } else {
-        self$context_weights      <- context_weights
-      }
-
-      self$arm_masks            <- arm_masks
-      self$arm_weights          <- arm_weights
-
-      if (is.vector(self$context_weights)) self$context_weights <- matrix(self$context_weights, nrow = 1L)
-
-      weights = rbind(self$context_weights, self$arm_weights)
-
-      if (!is.null(self$arm_weights) & is.null(self$arm_masks)) {
-        if (dim(weights)[1] == 1) {
-          self$arm_masks <- matrix(rep(1,length(self$arm_weights)),nrow = 1L  )
-        } else {
-          stop('Please set arm_masks for arm_weights.' , call. = FALSE)
-        }
-      }
-
+      if (is.vector(self$weights)) self$weights <- matrix(self$weights, nrow = 1L)
 
       super$initialize(weights)
-
       self$has_cache            <- FALSE
-      self$is_precaching        <- precache
+      self$precaching           <- precaching
       self$reward_family        <- reward_family
       self$reward_means         <- reward_means
       self$reward_stds          <- reward_stds
       self$not_zero_features    <- not_zero_features
       self$random_one_feature   <- random_one_feature
     },
+    set_weights = function(local_W) {
+      if (is.vector(local_W)) private$W <- matrix(local_W, nrow = 1L)
+      if (is.matrix(local_W)) private$W <- local_W
+      self$d <- as.integer(dim(private$W)[1])
+      self$k <- as.integer(dim(private$W)[2])
+      invisible(private$W)
+    },
     get_context = function(t) {
-      if (self$is_precaching) {
+      if (self$precaching) {
         private$context_to_list(t)
       } else {
         self$generate_bandit_data(n = 1L)
@@ -102,37 +66,32 @@ SyntheticBandit <- R6::R6Class(
       private$O <- matrix(0, self$k, n)
       private$R <- matrix(0, self$k, n)
       private$generate_context(n)
-      private$generate_oracle(n)
+      private$generate_weights(n)
       private$generate_rewards(n)
       self$has_cache <- TRUE
     }
   ),
   private = list(
+    W = NULL,
+    R = NULL,
+    X = NULL,
+    O = NULL,
     generate_context = function(n = 1L) {
-      if (!is.null(self$context_weights)) {
-        context_d <- dim(self$context_weights)[1]
-        context_mask <- matrix(0, n , context_d)
-        if (self$not_zero_features | self$random_one_feature) {
-          context_mask[cbind(1L:n, sample(context_d, n, replace = TRUE))] <- 1
-        }
-        if (!self$random_one_feature) {
-          context_mask <- matrix((context_mask | matrix(sample(c(0, 1), replace = TRUE, size = n * context_d),  n, context_d)), n, context_d)
-        }
-        mode(context_mask) <- 'integer'
-        private$X <- array(0, dim = c(self$d, self$k, n))
-        for (i in 1:n) {
-          context_mask_to_matrix <- matrix( context_mask[i,], context_d, self$k)
-          private$X[,,i] <- rbind(context_mask_to_matrix, self$arm_masks)
-        }
-      } else {
-        private$X <- array(0, dim = c(self$d, self$k, n))
-        for (i in 1:n) {
-          private$X[,,i] <- self$arm_masks
-        }
+      context_mask <- matrix(0, n , self$d)
+      if (self$not_zero_features | self$random_one_feature) {
+        context_mask[cbind(1L:n, sample(self$d, n, replace = TRUE))] <- 1
+      }
+      if (!self$random_one_feature) {
+        context_mask <- matrix((context_mask | matrix(sample(c(0, 1), replace = TRUE, size = n * self$d),  n, self$d)), n, self$d)
+      }
+      mode(context_mask) <- 'integer'
+      private$X <- array(0, dim = c(self$d, self$k, n))
+      for (i in 1:n) {
+        private$X[,,i] <- matrix( context_mask[i,], self$d, self$k)
       }
       private$X
     },
-    generate_oracle = function(n) {
+    generate_weights = function(n) {
       weight_array  <- array(t(matrix( private$W, self$k , self$d, byrow = TRUE )), dim = c(self$d, self$k, n))
       Wg <- private$X*weight_array
       private$O <- colSums(Wg) / colSums(private$X)
@@ -147,6 +106,34 @@ SyntheticBandit <- R6::R6Class(
       } else if (self$reward_family == 'Poisson') {
         private$R <- (rpois(rwrd_n, self$reward_means) + private$O) / 2
       }
+    },
+    context_to_list = function(t) {
+      if (self$precaching) idx <- t else idx <- 1
+      list(
+        k = self$k,
+        d = self$d,
+        X = private$X[,, idx]
+      )
+    },
+    max_in = function(x, equal_is_random = TRUE)
+    {
+      y <- seq_along(x)[x == max(x)]
+      if (length(y) > 1L)  {
+        if (equal_is_random) {
+          return(sample(y, 1L, replace = TRUE))
+        } else {
+          return(y[1])
+        }
+      } else {
+        return(y)
+      }
+    },
+    reward_to_list = function(action, t) {
+      if (self$precaching) idx <- t else idx <- 1
+      list(
+        reward = private$R[action$choice, idx],
+        opimal = as.double(private$R[private$max_in(private$O[, idx]), idx])
+      )
     }
   )
 )

@@ -3,7 +3,7 @@ OraclePolicy <- R6::R6Class(
   "OraclePolicy",
   portable = FALSE,
   class = FALSE,
-  inherit = AbstractPolicy,
+  inherit = Policy,
   public = list(
     initialize = function(name = "Oracle") {
       super$initialize(name)
@@ -88,23 +88,9 @@ OraclePolicy <- R6::R6Class(
 #' Core contextual classes: \code{\link{Contextual}}, \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
-#' Bandit classes: \code{\link{AbstractBandit}}, \code{\link{BasicBandit}},
-#' \code{\link{OfflineLiBandit}}, \code{\link{SyntheticBandit}}
+#' Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBandit}},
+#' \code{\link{RejectionSamplingOfflineBandit}}, \code{\link{SyntheticBandit}}
 #'
-#'
-#' @examples
-#'
-#' horizon            <- 100L
-#' simulations        <- 100L
-#' arm_weights        <- c(0.9, 0.1, 0.1)
-#'
-#' policy             <- OraclePolicy$new(name = "Oracle")
-#' bandit             <- SyntheticBandit$new(arm_weights = arm_weights, precache = FALSE)
-#' agent              <- Agent$new(policy, bandit)
-#'
-#' history            <- Simulator$new(agent, horizon, simulations, do_parallel = FALSE)$run()
-#'
-#' plot(history, type = "grid")
 #'
 #'
 NULL

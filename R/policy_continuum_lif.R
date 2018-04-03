@@ -3,7 +3,7 @@ LifPolicy <- R6::R6Class(
   "LifPolicy",
   portable = FALSE,
   class = FALSE,
-  inherit = AbstractPolicy,
+  inherit = Policy,
   public = list(
     first = NULL,
 

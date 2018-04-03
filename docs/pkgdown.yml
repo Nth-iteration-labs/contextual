@@ -10,7 +10,11 @@ articles:
   contextual_sequence.pdf: fig/contextual_sequence.pdf
   fig1-1.pdf: fig/fig1-1.pdf
   fig1-2.pdf: fig/fig1-2.pdf
-  mab_chart.pdf: fig/mab_chart.pdf
+  fig1plot-1.pdf: fig/fig1plot-1.pdf
+  fig2-1.pdf: fig/fig2-1.pdf
+  fig3-1.pdf: fig/fig3-1.pdf
+  fig4-1.pdf: fig/fig4-1.pdf
+  fig4-2.pdf: fig/fig4-2.pdf
   glossary.html: glossary.html
   glossary.md: glossary.md
   glossary: glossary.html

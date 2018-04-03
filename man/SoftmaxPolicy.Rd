@@ -68,10 +68,10 @@ based on the reward received, and, potentially, the current context.
 
 horizon            <- 100L
 simulations        <- 100L
-arm_weights        <- c(0.9, 0.1, 0.1)
+weights        <- c(0.9, 0.1, 0.1)
 
 policy             <- SoftmaxPolicy$new(tau = 0.1, name = "Softmax")
-bandit             <- SyntheticBandit$new(arm_weights = arm_weights, precache = FALSE)
+bandit             <- SyntheticBandit$new(weights = weights, precaching = FALSE)
 agent              <- Agent$new(policy, bandit)
 
 history            <- Simulator$new(agent, horizon, simulations, do_parallel = FALSE)$run()
@@ -93,19 +93,18 @@ Strehl, A., & Littman, M. (2004). Exploration via modelbased interval estimation
 Core contextual classes: \code{\link{Contextual}}, \code{\link{Simulator}},
 \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 
-Bandit classes: \code{\link{AbstractBandit}}, \code{\link{BasicBandit}},
-\code{\link{OfflineLiBandit}}, \code{\link{SyntheticBandit}}
+Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBandit}},
+\code{\link{RejectionSamplingOfflineBandit}}, \code{\link{SyntheticBandit}}
 
-Other contextual policies: \code{\link{AbstractPolicy}},
-  \code{\link{BTSLogitPolicy}},
-  \code{\link{ContextualEpsilonGreedyPolicy}},
+Other contextual policies: \code{\link{BTSLogitPolicy}},
   \code{\link{ContextualThompsonSamplingPolicy}},
   \code{\link{EpsilonFirstPolicy}},
   \code{\link{EpsilonGreedyPolicy}},
   \code{\link{Exp3Policy}},
   \code{\link{LinUCBDisjointPolicy}},
   \code{\link{LinUCBHybridPolicy}},
-  \code{\link{OraclePolicy}}, \code{\link{RandomPolicy}},
+  \code{\link{OraclePolicy}}, \code{\link{Policy}},
+  \code{\link{RandomPolicy}},
   \code{\link{SimpleBTSPolicy}},
   \code{\link{ThompsonSamplingPolicy}},
   \code{\link{UCB1Policy}}

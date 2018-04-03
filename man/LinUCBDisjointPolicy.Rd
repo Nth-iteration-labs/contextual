@@ -86,18 +86,17 @@ Li, L., Chu, W., Langford, J., & Schapire, R. E. (2010, April). A contextual-ban
 Core contextual classes: \code{\link{Contextual}}, \code{\link{Simulator}},
 \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 
-Bandit classes: \code{\link{AbstractBandit}}, \code{\link{BasicBandit}},
-\code{\link{OfflineLiBandit}}, \code{\link{SyntheticBandit}}
+Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBandit}},
+\code{\link{RejectionSamplingOfflineBandit}}, \code{\link{SyntheticBandit}}
 
-Other contextual policies: \code{\link{AbstractPolicy}},
-  \code{\link{BTSLogitPolicy}},
-  \code{\link{ContextualEpsilonGreedyPolicy}},
+Other contextual policies: \code{\link{BTSLogitPolicy}},
   \code{\link{ContextualThompsonSamplingPolicy}},
   \code{\link{EpsilonFirstPolicy}},
   \code{\link{EpsilonGreedyPolicy}},
   \code{\link{Exp3Policy}},
   \code{\link{LinUCBHybridPolicy}},
-  \code{\link{OraclePolicy}}, \code{\link{RandomPolicy}},
+  \code{\link{OraclePolicy}}, \code{\link{Policy}},
+  \code{\link{RandomPolicy}},
   \code{\link{SimpleBTSPolicy}},
   \code{\link{SoftmaxPolicy}},
   \code{\link{ThompsonSamplingPolicy}},

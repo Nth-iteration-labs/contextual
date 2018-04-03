@@ -93,7 +93,7 @@ Simulator <- R6::R6Class(
           simulation_index <- sim_agent$sim_index
           policy_name <- sim_agent$policy$name
           set.seed(simulation_index + set_seed*42)
-          if (sim_agent$bandit$is_precaching ) {
+          if (sim_agent$bandit$precaching ) {
             sim_agent$bandit$generate_bandit_data(n = horizon)
           }
           if (continouous_counter) sim_agent$set_t(as.integer((simulation_index - 1L) * horizon))
@@ -123,38 +123,6 @@ Simulator <- R6::R6Class(
       foreach_results <- data.table::rbindlist(foreach_results)
       self$history$set_data_table(foreach_results)
       self$history
-    },
-    object_size = function() {
-      cat(paste("Simulator: ", self$hash),"\n")
-      cat(paste("  Size of history:    ",
-                format(object.size(self$history$data), units = "auto")),"\n")
-      cat(paste("    Size of t:        ",
-                format(object.size(self$history$data$t), units = "auto")),"\n")
-      cat(paste("    Size of sim:      ",
-                format(object.size(self$history$data$sim), units = "auto")),"\n")
-      cat(paste("    Size of arm:      ",
-                format(object.size(self$history$data$arm), units = "auto")),"\n")
-      cat(paste("    Size of r:        ",
-                format(object.size(self$history$data$reward), units = "auto")),"\n")
-      cat(paste("    Size of opt:      ",
-                format(object.size(self$history$data$is_optimal), units = "auto")),"\n")
-      cat(paste("    Size of oracle:   ",
-                format(object.size(self$history$data$oracle), units = "auto")),"\n")
-      cat(paste("    Size of agent:    ",
-                format(object.size(self$history$data$agent), units = "auto")),"\n")
-      cat(paste("    Size of context:  ",
-                format(object.size(self$history$data$context), units = "auto")),"\n")
-      cat(paste("    Size of theta:    ",
-                format(object.size(self$history$data$theta), units = "auto")),"\n")
-
-      agent_hashes <- list()
-      for (a in 1L:self$number_of_agents) {
-        if (!(self$agents[[a]]$bandit$hash %in% agent_hashes)) {
-          agent_hashes <- list(agent_hashes,self$agents[[a]]$bandit$hash)
-          self$agents[[a]]$object_size()
-        }
-      }
-      invisible(self)
     }
   )
 )

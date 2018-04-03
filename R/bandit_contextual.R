@@ -1,53 +1,53 @@
 #' @export
 ContextualBandit <- R6::R6Class(
   "ContextualBandit",
-  inherit = AbstractBandit,
+  inherit = Bandit,
   portable = TRUE,
   class = FALSE,
+  private = list(
+    R = NULL,
+    X = NULL
+  ),
   public = list(
-    user_model = NULL,
-    num_users = NULL,
-    k = NULL,
-    d = NULL,
+    user_model    = NULL,
+    num_users     = NULL,
+    u             = NULL,
     precaching = FALSE,
     initialize  = function(k, d, num_users = 1, user_model = NA, seed = 42) {  # carefull with this seed..
-      super$initialize()
       set.seed(seed)
-      self$k <- k
-      self$d <- d
-      self$user_model <- user_model
-      self$num_users <- num_users
+      self$num_users                     <- num_users
+      self$user_model                    <- user_model
+      self$k                             <- k
+      self$d                             <- d
+      self$u                             <- d
       if (is.na(self$user_model & num_users > 0)) {
-        self$user_model = matrix(sample(c(0, 1), replace = TRUE, size = self$num_users * self$d), self$num_users ,self$d )
+        self$user_model  <- matrix(sample(c(0, 1), replace = TRUE, size = num_users * d), num_users, d )
       }
     },
     get_context = function(t) {
-      private$X <- matrix(runif(self$d*self$k),self$d,self$k)
-      private$O  <- rep(0,self$k)
-      user_features <- NA
+      private$X                          <- matrix(runif(self$d*self$k),self$d,self$k)
+      user_features                      <- NA
       if (self$num_users > 0) {
-        user <- sample(self$num_users,1,replace = TRUE)
-        user_features <- self$user_model[user,]
-        private$O = user_features %*% private$X
+        user                             <- sample(self$num_users,1,replace = TRUE)
+        user_features                    <- self$user_model[user,]
+        weights                          <- user_features %*% private$X
       } else {
-        private$O <- colSums(private$X)/self$d
+        weights                          <- colSums(private$X)/self$d
       }
-      private$R <- rep(0,self$k)
-      private$R[which.max(private$O)] = 1
+      private$R                          <- rep(0,self$k)
+      private$R[which.max(weights)]      <- 1
       contextlist <- list(
         k = self$k,
         d = self$d,
         X = private$X,
-        O = private$O,
         U = user_features
       )
       contextlist
     },
     do_action = function(action, t) {
       rewardlist <- list(
-        reward = private$R[action$choice],
-        is_optimal = (private$R[action$choice] ==  private$R[which.max(private$O)]),
-        oracle = private$R[which.max(private$O)]
+        reward     = private$R[action$choice],
+        opimal     = private$R[which.max(private$R)]
       )
       rewardlist
     }

@@ -22,7 +22,7 @@ History <- R6::R6Class(
         choice          = rep(0.0,     n),
         reward          = rep(0.0,     n),
         is_optimal      = rep(0L,      n),
-        oracle          = rep(0.0,     n),
+        opimal          = rep(0.0,     n),
         propensity      = rep(0.0,     n),
         agent           = rep("",      n)
       )
@@ -44,16 +44,11 @@ History <- R6::R6Class(
 
       index <- as.integer(index)
 
-
-      if (!is.null(reward$is_optimal))
-        if(reward$is_optimal) is_optimal <- 1L else is_optimal <- 0L
-      else is_optimal <- NA
-
       if (!is.null(action$propensity)) propensity <- action$propensity
       else propensity <- NA
 
-      if (!is.null(reward$oracle)) oracle <- reward$oracle
-      else  oracle <- NA
+      if (!is.null(reward$opimal)) opimal <- reward$opimal
+      else  opimal <- NA
 
       data.table::set(
         data,
@@ -64,8 +59,8 @@ History <- R6::R6Class(
           s,
           action$choice,
           reward$reward,
-          is_optimal,
-          oracle,
+          as.integer(reward$reward == opimal),
+          opimal,
           propensity,
           policy_name
         )

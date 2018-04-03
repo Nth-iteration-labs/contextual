@@ -3,7 +3,7 @@ Exp3Policy <- R6::R6Class(
   "Exp3Policy",
   portable = FALSE,
   class = FALSE,
-  inherit = AbstractPolicy,
+  inherit = Policy,
   public = list(
     gamma = NULL,
     initialize = function(gamma =  0.1, name = "Exp3") {
@@ -110,18 +110,18 @@ Exp3Policy <- R6::R6Class(
 #' Core contextual classes: \code{\link{Contextual}}, \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
-#' Bandit classes: \code{\link{AbstractBandit}}, \code{\link{BasicBandit}},
-#' \code{\link{OfflineLiBandit}}, \code{\link{SyntheticBandit}}
+#' Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBandit}},
+#' \code{\link{RejectionSamplingOfflineBandit}}, \code{\link{SyntheticBandit}}
 #'
 #'
 #' @examples
 #'
 #' horizon            <- 100L
 #' simulations        <- 100L
-#' arm_weights        <- c(0.9, 0.1, 0.1)
+#' weights        <- c(0.9, 0.1, 0.1)
 #'
 #' policy             <- Exp3Policy$new(gamma = 0.1, name = "Exp3")
-#' bandit             <- SyntheticBandit$new(arm_weights = arm_weights, precache = FALSE)
+#' bandit             <- SyntheticBandit$new(weights = weights, precaching = FALSE)
 #' agent              <- Agent$new(policy, bandit)
 #'
 #' history            <- Simulator$new(agent, horizon, simulations, do_parallel = FALSE)$run()

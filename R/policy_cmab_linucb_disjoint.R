@@ -3,7 +3,7 @@ LinUCBDisjointPolicy <- R6::R6Class(
   "LinUCBDisjointPolicy",
   portable = FALSE,
   class = FALSE,
-  inherit = AbstractPolicy,
+  inherit = Policy,
   public = list(
     alpha = NULL,
     initialize = function(alpha = 1.0, name = "LinUCBDisjoint") {
@@ -129,8 +129,8 @@ LinUCBDisjointPolicy <- R6::R6Class(
 #' Core contextual classes: \code{\link{Contextual}}, \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
-#' Bandit classes: \code{\link{AbstractBandit}}, \code{\link{BasicBandit}},
-#' \code{\link{OfflineLiBandit}}, \code{\link{SyntheticBandit}}
+#' Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBandit}},
+#' \code{\link{RejectionSamplingOfflineBandit}}, \code{\link{SyntheticBandit}}
 #'
 #'
 #'

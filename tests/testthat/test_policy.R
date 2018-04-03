@@ -1,8 +1,8 @@
-context("AbstractPolicy")
+context("Policy")
 
 test_that("Policy check", {
 
-  policy <- AbstractPolicy$new()
+  policy <- Policy$new()
   expect_identical(typeof(policy), "environment")
 
   expect_error(policy$get_action(1,2), ".*implement.")

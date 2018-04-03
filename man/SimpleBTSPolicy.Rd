@@ -14,17 +14,15 @@ policy <- SimpleBTSPolicy(alpha = 1.0, name = "LinUCB")
 }
 
 \seealso{
-Other contextual policies: \code{\link{AbstractPolicy}},
-  \code{\link{BTSLogitPolicy}},
-  \code{\link{ContextualEpsilonGreedyPolicy}},
+Other contextual policies: \code{\link{BTSLogitPolicy}},
   \code{\link{ContextualThompsonSamplingPolicy}},
   \code{\link{EpsilonFirstPolicy}},
   \code{\link{EpsilonGreedyPolicy}},
   \code{\link{Exp3Policy}},
   \code{\link{LinUCBDisjointPolicy}},
   \code{\link{LinUCBHybridPolicy}},
-  \code{\link{OraclePolicy}}, \code{\link{RandomPolicy}},
-  \code{\link{SoftmaxPolicy}},
+  \code{\link{OraclePolicy}}, \code{\link{Policy}},
+  \code{\link{RandomPolicy}}, \code{\link{SoftmaxPolicy}},
   \code{\link{ThompsonSamplingPolicy}},
   \code{\link{UCB1Policy}}
 }

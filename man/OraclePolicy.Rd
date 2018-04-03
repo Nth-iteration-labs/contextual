@@ -57,22 +57,6 @@ based on the reward received, and, potentially, the current context.
 }
 }
 
-\examples{
-
-horizon            <- 100L
-simulations        <- 100L
-arm_weights        <- c(0.9, 0.1, 0.1)
-
-policy             <- OraclePolicy$new(name = "Oracle")
-bandit             <- SyntheticBandit$new(arm_weights = arm_weights, precache = FALSE)
-agent              <- Agent$new(policy, bandit)
-
-history            <- Simulator$new(agent, horizon, simulations, do_parallel = FALSE)$run()
-
-plot(history, type = "grid")
-
-
-}
 \references{
 Gittins, J., Glazebrook, K., & Weber, R. (2011). Multi-armed bandit allocation indices. John Wiley & Sons. (Original work published 1989)
 }
@@ -80,18 +64,16 @@ Gittins, J., Glazebrook, K., & Weber, R. (2011). Multi-armed bandit allocation i
 Core contextual classes: \code{\link{Contextual}}, \code{\link{Simulator}},
 \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 
-Bandit classes: \code{\link{AbstractBandit}}, \code{\link{BasicBandit}},
-\code{\link{OfflineLiBandit}}, \code{\link{SyntheticBandit}}
+Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBandit}},
+\code{\link{RejectionSamplingOfflineBandit}}, \code{\link{SyntheticBandit}}
 
-Other contextual policies: \code{\link{AbstractPolicy}},
-  \code{\link{BTSLogitPolicy}},
-  \code{\link{ContextualEpsilonGreedyPolicy}},
+Other contextual policies: \code{\link{BTSLogitPolicy}},
   \code{\link{ContextualThompsonSamplingPolicy}},
   \code{\link{EpsilonFirstPolicy}},
   \code{\link{EpsilonGreedyPolicy}},
   \code{\link{Exp3Policy}},
   \code{\link{LinUCBDisjointPolicy}},
-  \code{\link{LinUCBHybridPolicy}},
+  \code{\link{LinUCBHybridPolicy}}, \code{\link{Policy}},
   \code{\link{RandomPolicy}},
   \code{\link{SimpleBTSPolicy}},
   \code{\link{SoftmaxPolicy}},

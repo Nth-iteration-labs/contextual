@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Policy: Softmax .. — SoftmaxPolicy • contextual</title>
+<title>Policy: LinUCB with hybrid linear models — LinUCBHybridPolicy • contextual</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -27,12 +27,11 @@
 <script src="../pkgdown.js"></script>
   
   
-<meta property="og:title" content="Policy: Softmax .. — SoftmaxPolicy" />
+<meta property="og:title" content="Policy: LinUCB with hybrid linear models — LinUCBHybridPolicy" />
 
-<meta property="og:description" content="SoftmaxPolicy chooses an arm at
-random (explores) with probability epsilon, otherwise it
-greedily chooses (exploits) the arm with the highest estimated
-reward." />
+<meta property="og:description" content="Algorithm 1 LinUCB with hybrid linear models
+A Contextual-Bandit Approach to
+Personalized News Article Recommendation" />
 <meta name="twitter:card" content="summary" />
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
@@ -110,41 +109,52 @@ reward." />
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Policy: Softmax ..</h1>
+    <h1>Policy: LinUCB with hybrid linear models</h1>
     </div>
 
     
-    <p><code>SoftmaxPolicy</code> chooses an arm at
-random (explores) with probability <code>epsilon</code>, otherwise it
-greedily chooses (exploits) the arm with the highest estimated
-reward.</p>
+    <p>Algorithm 1 LinUCB with hybrid linear models
+A Contextual-Bandit Approach to
+Personalized News Article Recommendation</p>
     
 
         
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Lihong Li et all</p>
+<p>Each time step t, <code>LinUCBHybridPolicy</code> runs a linear regression per arm that produces coefficients for each context feature <code>d</code>.
+It then observes the new context, and generates a predicted payoff or reward together with a confidence interval for each available arm.
+It then proceeds to choose the arm with the highest upper confidence bound.</p>
+    
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 
     
     <pre>
-policy &lt;- SoftmaxPolicy(epsilon = 0.1, name = "SoftmaxPolicy")
+policy &lt;- LinUCBHybridPolicy(alpha = 1.0, name = "LinUCB")
 </pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
 
     
     <dl class='dl-horizontal'>
-<dt><code>epsilon</code></dt><dd><p>double, value in the closed interval <code>(0,1]</code> indicating the probablilty with which
-arms are selected at random (explored).
-Otherwise, <code>SoftmaxPolicy</code> chooses the best arm (exploits)
-with a probability of <code>1 - epsilon</code></p></dd>
+<dt><code>alpha</code></dt><dd><p>double, a positive real value R+</p></dd>
 <dt><code>name</code></dt><dd><p>character string specifying this policy. <code>name</code>
 is, amongst others, saved to the History log and displayed in summaries and plots.</p></dd>
+</dl>
+    
+    <h2 class="hasAnchor" id="parameters"><a class="anchor" href="#parameters"></a>Parameters</h2>
+
+    
+    <dl class='dl-horizontal'>
+<dt><code>A</code></dt><dd><p>d*d identity matrix</p></dd>
+<dt><code>b</code></dt><dd><p>a zero vector of length d</p></dd>
 </dl>
     
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     
     <dl class='dl-horizontal'>
-<dt><code>new(epsilon = 0.1, name = "EpsilonGreedy")</code></dt><dd><p>Generates a new <code>SoftmaxPolicy</code> object. Arguments are defined in the Argument section above.</p></dd>
+<dt><code>new(alpha = 1, name = "LinUCB")</code></dt><dd><p>Generates a new <code>LinUCBHybridPolicy</code> object. Arguments are defined in the Argument section above.</p></dd>
 </dl>
     <dl class='dl-horizontal'>
 <dt><code>set_parameters()</code></dt><dd><p>each policy needs to assign the parameters it wants to keep track of
@@ -163,9 +173,7 @@ based on the reward received, and, potentially, the current context.</p></dd>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Gittins, J., Glazebrook, K., &amp; Weber, R. (2011). Multi-armed bandit allocation indices. John Wiley &amp; Sons. (Original work published 1989)</p>
-<p>Sutton, R. S. (1996). Generalization in reinforcement learning: Successful examples using sparse coarse coding. In Advances in neural information processing systems (pp. 1038-1044).</p>
-<p>Strehl, A., &amp; Littman, M. (2004). Exploration via modelbased interval estimation. In International Conference on Machine Learning, number Icml.</p>
+    <p>Li, L., Chu, W., Langford, J., &amp; Schapire, R. E. (2010, April). A contextual-bandit approach to personalized news article recommendation. In Proceedings of the 19th international conference on World wide web (pp. 661-670). ACM.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -181,43 +189,32 @@ based on the reward received, and, potentially, the current context.</p></dd>
   <code><a href='EpsilonGreedyPolicy.html'>EpsilonGreedyPolicy</a></code>,
   <code><a href='Exp3Policy.html'>Exp3Policy</a></code>,
   <code><a href='LinUCBDisjointPolicy.html'>LinUCBDisjointPolicy</a></code>,
-  <code><a href='LinUCBHybridPolicy.html'>LinUCBHybridPolicy</a></code>,
   <code><a href='OraclePolicy.html'>OraclePolicy</a></code>, <code><a href='RandomPolicy.html'>RandomPolicy</a></code>,
   <code><a href='SimpleBTSPolicy.html'>SimpleBTSPolicy</a></code>,
+  <code><a href='SoftmaxPolicy.html'>SoftmaxPolicy</a></code>,
   <code><a href='ThompsonSamplingPolicy.html'>ThompsonSamplingPolicy</a></code>,
   <code><a href='UCB1Policy.html'>UCB1Policy</a></code></p>
     
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='no'>horizon</span>            <span class='kw'>&lt;-</span> <span class='fl'>100L</span>
-<span class='no'>simulations</span>        <span class='kw'>&lt;-</span> <span class='fl'>100L</span>
-<span class='no'>arm_weights</span>        <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='fl'>0.9</span>, <span class='fl'>0.1</span>, <span class='fl'>0.1</span>)
-
-<span class='no'>policy</span>             <span class='kw'>&lt;-</span> <span class='no'>SoftmaxPolicy</span>$<span class='fu'>new</span>(<span class='kw'>tau</span> <span class='kw'>=</span> <span class='fl'>0.1</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Softmax"</span>)
-<span class='no'>bandit</span>             <span class='kw'>&lt;-</span> <span class='no'>SyntheticBandit</span>$<span class='fu'>new</span>(<span class='kw'>arm_weights</span> <span class='kw'>=</span> <span class='no'>arm_weights</span>, <span class='kw'>precache</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='error'>Error in .subset2(public_bind_env, "initialize")(...): unused argument (arm_weights = c(0.9, 0.1, 0.1))</span></div><div class='input'><span class='no'>agent</span>              <span class='kw'>&lt;-</span> <span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>policy</span>, <span class='no'>bandit</span>)</div><div class='output co'>#&gt; <span class='error'>Error in .subset2(public_bind_env, "initialize")(...): object 'bandit' not found</span></div><div class='input'>
-<span class='no'>history</span>            <span class='kw'>&lt;-</span> <span class='no'>Simulator</span>$<span class='fu'>new</span>(<span class='no'>agent</span>, <span class='no'>horizon</span>, <span class='no'>simulations</span>, <span class='kw'>do_parallel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)$<span class='fu'>run</span>()</div><div class='output co'>#&gt; <span class='error'>Error in .subset2(public_bind_env, "initialize")(...): object 'agent' not found</span></div><div class='input'>
-<span class='fu'>plot</span>(<span class='no'>history</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"grid"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in .External2(C_savehistory, file): 'savehistory' can only be used in Rgui and Rterm</span></div><div class='input'>
-<span class='fu'>plot</span>(<span class='no'>history</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"arms"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in .External2(C_savehistory, file): 'savehistory' can only be used in Rgui and Rterm</span></div><div class='input'>
-
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       
+      <li><a href="#details">Details</a></li>
+
       <li><a href="#usage">Usage</a></li>
 
       <li><a href="#arguments">Arguments</a></li>
+
+      <li><a href="#parameters">Parameters</a></li>
 
       <li><a href="#methods">Methods</a></li>
 
       <li><a href="#references">References</a></li>
 
       <li><a href="#see-also">See also</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+          </ul>
 
   </div>
 </div>

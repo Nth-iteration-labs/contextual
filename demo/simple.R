@@ -7,7 +7,7 @@ context_weights    <- matrix(  c( 0.4, 0.15,
                                   0.4, 0.6),  nrow = 2, ncol = 2, byrow = TRUE )
 
 policy             <- SimpleBTSPolicy$new()
-bandit             <- SyntheticBandit$new(context_weights = context_weights, precache = TRUE, random_one_feature = TRUE)
+bandit             <- SyntheticBandit$new(context_weights = context_weights, precaching = TRUE, random_one_feature = TRUE)
 
 agent              <- Agent$new(policy, bandit)
 

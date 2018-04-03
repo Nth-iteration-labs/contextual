@@ -5,7 +5,10 @@ demo_3                                  Temporary d3
 demo_contextual                         Demo of contextual bandit
 demo_live_chart                         Serial MAB demo script
 demo_minimal_bandit                     How to define custom bandits inline
-demo_offline_log                        Demo of Li's offline testing policy
 dev                                     Dev support file
 simple                                  Simple
 test                                    Temporary test file
+demo_offline_doubly_robust              DR
+demo_offline_rejection_sampling         RS
+yahoo_to_monet                          YtM
+yahoo_to_monet_2                        YtM2

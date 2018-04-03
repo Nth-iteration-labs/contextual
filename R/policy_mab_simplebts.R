@@ -3,7 +3,7 @@ SimpleBTSPolicy <- R6::R6Class(
   "SimpleBTSPolicy",
   portable = FALSE,
   class = FALSE,
-  inherit = AbstractPolicy,
+  inherit = Policy,
   public = list(
     J = NULL,
     a = NULL,

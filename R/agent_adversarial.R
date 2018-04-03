@@ -61,10 +61,6 @@ AdversarialAgent <- R6::R6Class(
         private$theta <- policy$set_reward(private$state$context, private$state$action, private$state$reward, private$state$t )
         private$theta
       }
-    },
-    object_size = function() {
-      cat(paste("Agent: ", hash),"\n")
-      bandit$object_size()
     }
   )
 )

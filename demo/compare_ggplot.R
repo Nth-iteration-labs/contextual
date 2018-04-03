@@ -9,7 +9,7 @@ context_weights    <- matrix(  c( 0.9, 0.1, 0.1,
                                   0.1, 0.9, 0.1,
                                   0.1, 0.1, 0.9), nrow = 3, ncol = 3, byrow = TRUE)
 
-bandit             <- SyntheticBandit$new(context_weights = context_weights, precache = TRUE)
+bandit             <- SyntheticBandit$new(context_weights = context_weights, precaching = TRUE)
 
 agents             <- list( Agent$new(RandomPolicy$new("Random"), bandit),
                             Agent$new(LinUCBDisjointPolicy$new(1.0, "LinUCB"), bandit) )

@@ -3,7 +3,7 @@ BTSLogitPolicy <- R6::R6Class(
   "BTSLogitPolicy",
   portable = FALSE,
   class = FALSE,
-  inherit = AbstractPolicy,
+  inherit = Policy,
   public = list(
     alpha = NULL,
     initialize = function(alpha = 1.0, name = "BTSLogit") {

@@ -22,16 +22,6 @@ The \code{\{contextual\}} package enables you to simulate and analyze
 contextual multi-armed bandit algorithms with poise.
 }
 
-\section{Arguments}{
-
-
-\describe{
-\item{\code{hash}}{
-Returns an unique hash for any instantiated \code{\{contextual\}} child object. This hash value is acquired from the R6 object's environment.
-}
-}
-}
-
 \section{Methods}{
 
 
@@ -109,5 +99,5 @@ Frank E Harrell Jr, with contributions from Charles Dupont and many others. (201
 \seealso{
 Online: \href{https://nth-iteration-labs.github.io/contextual/index.html}{Documentation}
 
-Other contextual classes: \code{\link{AbstractBandit}}
+Other contextual classes: \code{\link{Bandit}}
 }

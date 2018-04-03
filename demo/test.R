@@ -6,7 +6,7 @@ simulations        <- 100L
 weight_per_arm     <- c(0.9, 0.1, 0.1)
 
 policy             <- EpsilonFirstPolicy$new(first = 50, name = "EpsilonFirst")
-bandit             <- SyntheticBandit$new(weights = weight_per_arm, precache = FALSE)
+bandit             <- SyntheticBandit$new(weights = weight_per_arm, precaching = FALSE)
 agent              <- Agent$new(policy, bandit)
 
 history            <- Simulator$new(agent, horizon, simulations, do_parallel = FALSE)$run()

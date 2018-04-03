@@ -1,12 +1,11 @@
 #' @export
 ContinuumBandit <- R6::R6Class(
   "ContinuumBandit",
-  inherit = AbstractBandit,
+  inherit = Bandit,
   portable = TRUE,
   class = FALSE,
   public = list(
     arm_function = NULL,
-
     initialize   = function(FUN) {
       super$initialize()
       self$arm_function = FUN
@@ -14,12 +13,15 @@ ContinuumBandit <- R6::R6Class(
       self$k = 1
     },
     get_context = function(t) {
-      private$context_to_list()
+      contextlist <- list()
+      contextlist$k = self$k
+      contextlist$d = self$d
+      contextlist
     },
     do_action = function(action, t) {
-      reward = list()
-      reward$reward <- self$arm_function(action$choice)
-      reward
+      rewardlist = list()
+      rewardlist$reward <- self$arm_function(action$choice)
+      rewardlist
     }
   )
 )

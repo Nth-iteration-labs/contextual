@@ -4,18 +4,7 @@ Contextual <- R6::R6Class(
   "Contextual",
   portable = FALSE,
   class = FALSE,
-  private = list(.hash = NULL),
-  active = list(
-    hash = function(value) {
-      if (missing(value)) {
-        private$.hash
-      }
-    }
-  ),
   public = list(
-    initialize = function() {
-      private$.hash = sub('<environment: (.*)>', '\\1',  capture.output(self))
-    },
     "inc<-" = function(x, value) {
       x + value
     },
@@ -63,13 +52,6 @@ Contextual <- R6::R6Class(
 #' The \code{\{contextual\}} package enables you to simulate and analyze
 #' contextual multi-armed bandit algorithms with poise.
 #'
-#' @section Arguments:
-#'
-#' \describe{
-#'   \item{\code{hash}}{
-#'   Returns an unique hash for any instantiated \code{\{contextual\}} child object. This hash value is acquired from the R6 object's environment.
-#'   }
-#' }
 #'
 #' @section Methods:
 #'

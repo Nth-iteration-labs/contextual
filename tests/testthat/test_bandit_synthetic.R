@@ -1,6 +1,6 @@
 context("SyntheticBandit")
 
-## add precache = FALSE and much more..
+## add precaching = FALSE and much more..
 
 test_that("SyntheticBandit simulation", {
   bandit      <- SyntheticBandit$new()
@@ -10,7 +10,7 @@ test_that("SyntheticBandit simulation", {
 
   expect_equal(bandit$k, 2)
   expect_equal(bandit$d, 2)
-  expect_true(bandit$is_precaching)
+  expect_true(bandit$precaching)
 
   bandit$set_weights(c(0.1, 0.9))
   expect_equal(bandit$k, 2)

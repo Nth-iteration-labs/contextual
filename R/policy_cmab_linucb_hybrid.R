@@ -5,16 +5,18 @@ LinUCBHybridPolicy <- R6::R6Class(
   "LinUCBHybridPolicy",
   portable = FALSE,
   class = FALSE,
-  inherit = AbstractPolicy,
+  inherit = Policy,
   public = list(
     alpha = NULL,
-    initialize = function(alpha = 1.0, name = "LinUCBHybrid") {
+    u = NULL,
+    initialize = function(alpha = 1.0, user_features = 0, name = "LinUCBHybrid") {
       super$initialize(name)
       self$alpha <- alpha
+      self$u <- user_features
     },
     set_parameters = function() {
-      self$theta <- list('A0' = diag(1,self$d,self$d), 'b0' = rep(0,self$d))
-      self$theta_to_arms <- list( 'A' = diag(1,self$d,self$d), 'B' = matrix(0,self$d,self$d), 'b' = rep(0,self$d))
+      self$theta <- list('A0' = diag(1,self$u,self$u), 'b0' = rep(0,self$u))
+      self$theta_to_arms <- list( 'A' = diag(1,self$d,self$d), 'B' = matrix(0,self$d,self$u), 'b' = rep(0,self$d))
     },
     get_action = function(context, t) {
       expected_rewards <- rep(0.0, self$k)
@@ -29,8 +31,8 @@ LinUCBHybridPolicy <- R6::R6Class(
         A          <-  theta$A[[arm]]
         B          <-  theta$B[[arm]]
         b          <-  theta$b[[arm]]
-        x          <- matrix(context$X[,arm])
-        x_a        <- matrix(context$U)
+        x          <-  matrix(context$X[,arm])
+        x_u        <-  matrix(context$U)
         A0_inv <- solve(A0)
         A_inv <- solve(A)
 
@@ -39,11 +41,11 @@ LinUCBHybridPolicy <- R6::R6Class(
         theta_hat  <-  A_inv %*% (b - B %*% beta_hat)
 
         sd <- sqrt(  (t(x) %*% A0_inv %*% x) -
-                       2*(t(x) %*% A0_inv %*% t(B) %*% A_inv %*% x_a) +
-                       (t(x_a) %*% A_inv %*% x_a) +
-                       (t(x_a) %*% A_inv %*% B %*% A0_inv %*% t(B) %*% A_inv %*% x_a))
+                       2*(t(x) %*% A0_inv %*% t(B) %*% A_inv %*% x_u) +
+                       (t(x_u) %*% A_inv %*% x_u) +
+                       (t(x_u) %*% A_inv %*% B %*% A0_inv %*% t(B) %*% A_inv %*% x_u))
 
-        mean <- (t(x) %*% beta_hat)  +  (t(x_a) %*% theta_hat)
+        mean <- (t(x) %*% beta_hat)  +  (t(x_u) %*% theta_hat)
 
         expected_rewards[arm] <- mean + alpha * sd
       }
@@ -60,7 +62,7 @@ LinUCBHybridPolicy <- R6::R6Class(
       arm            <- action$choice
       reward         <- reward$reward
       x              <- matrix(context$X[,arm])
-      x_a            <- matrix(context$U)
+      x_u            <- matrix(context$U)
 
       A0             <- theta$A0
       b0             <- theta$b0
@@ -74,9 +76,9 @@ LinUCBHybridPolicy <- R6::R6Class(
       A0             <- A0 + (t(B) %*% A_inv %*% B)
       b0             <- b0 + (t(B) %*% A_inv %*% b)
 
-      A <- A + x_a %*% t(x_a)
-      B <- B + x_a %*% t(x)
-      b <- b + reward * x_a
+      A <- A + x_u %*% t(x_u)
+      B <- B + x_u %*% t(x)
+      b <- b + reward * x_u
 
       A_inv          <- solve(A)
       A0             <- A0 + (x %*% t(x)) - (t(B) %*% A_inv %*% B)
@@ -175,8 +177,8 @@ LinUCBHybridPolicy <- R6::R6Class(
 #' Core contextual classes: \code{\link{Contextual}}, \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
-#' Bandit classes: \code{\link{AbstractBandit}}, \code{\link{BasicBandit}},
-#' \code{\link{OfflineLiBandit}}, \code{\link{SyntheticBandit}}
+#' Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBandit}},
+#' \code{\link{RejectionSamplingOfflineBandit}}, \code{\link{SyntheticBandit}}
 #'
 #'
 #'
