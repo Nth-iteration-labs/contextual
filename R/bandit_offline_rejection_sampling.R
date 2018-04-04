@@ -22,7 +22,7 @@ RejectionSamplingOfflineBandit <- R6::R6Class(
       )
       contextlist
     },
-    do_action = function(action, index) {
+    do_action = function(context, action, index) {
       reward_at_index <- as.double(private$S$reward[[index]])
       if (private$S$choice[[index]] == action$choice) {
         list(

@@ -11,7 +11,7 @@ PoissonRewardBandit <- R6::R6Class(
       super$initialize(weights)
     },
     # Overrides BasicBandit's do_action to generate Poisson based rewards
-    do_action = function(action, t) {
+    do_action = function(context, action, t) {
       reward_means <- c(2,2,2)
       private$R    <- matrix(rpois(3, reward_means) < self$get_weights(), self$k, self$d)*1
       rewardlist   <- list(

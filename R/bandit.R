@@ -12,7 +12,7 @@ Bandit <- R6::R6Class(
       # Return a list with self$k, self$d and, where applicable, a context vector X.
       list(k = n_arms, d = n_features, X = context)
     },
-    do_action = function(action, t) {
+    do_action = function(context, action, t) {
       stop("Bandit subclass needs to implement bandit$do_action()", call. = FALSE)
       # Return a list with the reward and, if known, the reward of the best arm.
       list(reward = reward_for_choice_made, optimal = optimal_reward)

@@ -55,7 +55,7 @@ SyntheticBandit <- R6::R6Class(
         private$context_to_list(t = 1)
       }
     },
-    do_action = function(action, t) {
+    do_action = function(context, action, t) {
       private$reward_to_list(action, t)
     },
 

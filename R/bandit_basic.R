@@ -31,7 +31,7 @@ BasicBandit <- R6::R6Class(
       )
       contextlist
     },
-    do_action = function(action, t) {
+    do_action = function(context, action, t) {
       private$R <- as.double(matrix(runif(self$k) < self$get_weights(), self$k, self$d))
       rewardlist <- list(
         reward     = private$R[action$choice],

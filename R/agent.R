@@ -48,7 +48,7 @@ Agent <- R6::R6Class(
       private$state$action
     },
     bandit_do_action = function() {
-      private$state$reward <- bandit$do_action(private$state$action,private$state$t)
+      private$state$reward <- bandit$do_action(private$state$context, private$state$action,private$state$t)
       private$state$reward
     },
     policy_set_reward = function() {

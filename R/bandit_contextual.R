@@ -44,7 +44,7 @@ ContextualBandit <- R6::R6Class(
       )
       contextlist
     },
-    do_action = function(action, t) {
+    do_action = function(context, action, t) {
       rewardlist <- list(
         reward     = private$R[action$choice],
         opimal     = private$R[which.max(private$R)]

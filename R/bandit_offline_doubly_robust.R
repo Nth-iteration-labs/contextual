@@ -14,6 +14,8 @@ DoublyRobustOfflineBandit <- R6::R6Class(
       private$S <- data_file$get_data_table()
 
       # do doubly robust stuff here - regression model?
+      # ips not, since that's in S?
+      # then combine both, following paper, and return reward accordingly?
 
     },
     get_context = function(index) {
@@ -26,7 +28,7 @@ DoublyRobustOfflineBandit <- R6::R6Class(
       )
       contextlist
     },
-    do_action = function(action, index) {
+    do_action = function(context, action, index) {
 
       # results of previous policy
 
