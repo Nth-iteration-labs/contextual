@@ -93,6 +93,7 @@ Simulator <- R6::R6Class(
           simulation_index <- sim_agent$sim_index
           policy_name <- sim_agent$policy$name
           set.seed(simulation_index + set_seed*42)
+          sim_agent$bandit$pre_calculate()
           if (sim_agent$bandit$precaching ) {
             sim_agent$bandit$generate_bandit_data(n = horizon)
           }

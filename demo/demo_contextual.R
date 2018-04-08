@@ -3,7 +3,7 @@ source("dev.R")
 
 
 horizon            <- 1000L
-simulations        <- 3L
+simulations        <- 10L
 bandit             <- ContextualBandit$new(k = 5, d = 6)
 
 agents             <- list( Agent$new(EpsilonGreedyPolicy$new(0.1, "\U190-greedy"), bandit),
@@ -18,8 +18,8 @@ plot(history, type = "cumulative", rate = TRUE)
 
 ###
 
-horizon            <- 1000L
-simulations        <- 3L
+horizon            <- 2000L
+simulations        <- 10L
 bandit             <- ContextualBandit$new(k = 5, d = 6, num_users = 7)
 
 agents             <- list( Agent$new(EpsilonGreedyPolicy$new(0.1, "\U190-greedy"), bandit),

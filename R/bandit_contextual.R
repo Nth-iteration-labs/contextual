@@ -13,15 +13,16 @@ ContextualBandit <- R6::R6Class(
     num_users     = NULL,
     u             = NULL,
     precaching = FALSE,
-    initialize  = function(k, d, num_users = 1, user_model = NA, seed = 42) {  # carefull with this seed..
-      set.seed(seed)
+    initialize  = function(k, d, num_users = 1, user_model = NA) {
       self$num_users                     <- num_users
       self$user_model                    <- user_model
       self$k                             <- k
       self$d                             <- d
       self$u                             <- d
-      if (is.na(self$user_model & num_users > 0)) {
-        self$user_model  <- matrix(sample(c(0, 1), replace = TRUE, size = num_users * d), num_users, d )
+    },
+    pre_calculate = function() {
+      if (is.na(self$user_model & self$num_users > 0)) {
+        self$user_model  <- matrix(sample(c(0, 1), replace = TRUE, size = self$num_users * self$d), self$num_users, self$d )
       }
     },
     get_context = function(t) {
