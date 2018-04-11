@@ -13,7 +13,7 @@ horizon     <- 3000
 simulations <- 10
 n_subjects  <- 100
 
-bandit      <- BernoulliBandit$new(n_subjects = n_subjects, arm_one_shape = c(1.5,1.5), arm_two_shape = c(1.5,1.5), poisson_subjects = TRUE)
+bandit      <- BernoulliBandit$new(n_subjects = n_subjects, arm_one_shape = c(1.5,1.5), arm_two_shape = c(1.5,1.5), poisson_subjects = TRUE, lambda = 4)
 
 ##################### eGreedy ###################
 
