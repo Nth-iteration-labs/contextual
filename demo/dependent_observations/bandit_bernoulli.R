@@ -6,19 +6,19 @@ BernoulliBandit <- R6::R6Class(
   class = FALSE,
   public = list(
     n_subjects       = NULL, # number of subjects in trial
-    probs_arm_one    = NULL, # n_subjects random deviates for arm one
-    probs_arm_two    = NULL, # n_subjects random deviates for arm two
-    probs_users      = NULL, # n_subjects random poisson deviates for probs
+    probs_arm_one    = NULL, # random deviates for arm one
+    probs_arm_two    = NULL, # random deviates for arm two
+    probs_users      = NULL, # random poisson deviates for per user sampling probability
     arm_one_shape    = NULL, # non-negative parameters of the Beta distribution arm one
     arm_two_shape    = NULL, # non-negative parameters of the Beta distribution arm two
     poisson_subjects = NULL, # use poisson distribution to generate user probabilities
-    lambda           = NULL,
+    lambda           = NULL, # lambda of poisson distribution generating per user sampling probability
     precaching       = FALSE,
-    initialize  = function(n_subjects, arm_one_shape = c(10,10), arm_two_shape = c(10,10), poisson_subjects = TRUE, lambda = 2) {
+    initialize  = function(n_subjects, arm_one_shape = c(10,10), arm_two_shape = c(10,10), poisson_user_sampling = TRUE, lambda = 2) {
       self$k                              <- 2                # two armed bandit
       self$d                              <- 1                # one context feature, which user
       self$n_subjects                     <- n_subjects       # number of subjects..
-      self$lambda                         <- lambda
+      self$lambda                         <- lambda           # lambda of poisson distribution generating per user sampling probability
       self$poisson_subjects               <- poisson_subjects # use poisson distribution to generate user probabilities
       self$arm_one_shape                  <- arm_one_shape    # non-negative parameters of the Beta distribution arm one
       self$arm_two_shape                  <- arm_two_shape    # non-negative parameters of the Beta distribution arm two

@@ -4,7 +4,6 @@
 setwd("~/GitHub/contextual/demo")
 source("dev.R")
 
-# import BernoulliBandit
 source("./dependent_observations/bandit_bernoulli.R")
 
 ##################### Settings ##################
@@ -12,8 +11,13 @@ source("./dependent_observations/bandit_bernoulli.R")
 horizon     <- 3000
 simulations <- 10
 n_subjects  <- 100
+lambda      <- 4
 
-bandit      <- BernoulliBandit$new(n_subjects = n_subjects, arm_one_shape = c(1.5,1.5), arm_two_shape = c(1.5,1.5), poisson_subjects = TRUE, lambda = 4)
+bandit      <- BernoulliBandit$new( n_subjects = n_subjects,
+                                    arm_one_shape = c(1.5, 1.5),
+                                    arm_two_shape = c(1.5, 1.5),
+                                    poisson_user_sampling = TRUE,
+                                    lambda = 2 )
 
 ##################### eGreedy ###################
 
@@ -30,8 +34,8 @@ history     <- Simulator$new(agents = agents,
                              save_theta = FALSE,
                              do_parallel = TRUE)$run()
 
-#plot(history, type = "cumulative", regret = FALSE)
-#plot(history, type = "cumulative", rate = TRUE)
+plot(history, type = "cumulative", regret = FALSE)
+plot(history, type = "cumulative", rate = TRUE)
 plot(history, type = "cumulative", rate = FALSE)
 
 ##################### Thompson ###################
