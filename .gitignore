@@ -9,4 +9,5 @@ demo/dadada.R
 tests/testthat/Rplots.pdf
 tests/testthat/Rplots.pdf
 data/webscope/**
+demo/data/**
 yahoodb-journal

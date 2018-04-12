@@ -87,7 +87,14 @@ History <- R6::R6Class(
       invisible(self)
     },
     load_data = function(filename) {
-      private$.data <- readRDS(filename)
+      # check on if table info not null too?
+      if (nrow(private$.data) > 1) {
+        temp_data     <- readRDS(filename)
+        private$.data <- rbind(private$.data, temp_data)
+        temp_data     <- NULL
+      } else {
+        private$.data <- readRDS(filename)
+      }
       invisible(self)
     },
     get_data_frame = function() {

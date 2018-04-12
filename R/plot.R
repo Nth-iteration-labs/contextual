@@ -344,9 +344,15 @@ Plot <- R6::R6Class(
       title(xlab = "Time Step")
       title(ylab = ylab_title)
       box()
+
+      if (ylab_title == "cumulative regret - rate") {
+        legend_position <- "topright"
+      } else {
+        legend_position <- "topleft"
+      }
       if (legend)
         legend(
-          "topleft",
+          legend_position,
           NULL,
           agent_levels,
           col = cl,
