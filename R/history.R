@@ -30,8 +30,7 @@ History <- R6::R6Class(
       if (self$save_theta)   private$.data$theta   <- rep(list(),  n)
       invisible(self)
     },
-    save = function(
-                       index,
+    save = function(   index,
                        t,
                        action,
                        reward,
@@ -39,7 +38,6 @@ History <- R6::R6Class(
                        s,
                        context_value = NA,
                        theta_value = NA
-
                      ) {
 
       index <- as.integer(index)
@@ -83,17 +81,19 @@ History <- R6::R6Class(
                          format(Sys.time(), "%y%m%d_%H%M%S"),
                          ".RData",
                          sep = "")
-      saveRDS(private$.data, file = filename, compress = FALSE)
+      saveRDS(private$.data, file = filename, compress = TRUE)
       invisible(self)
     },
-    load_data = function(filename) {
-      # check on if table info not null too?
+    load_data = function(filename, nth_rows = 0) {
+      # check on if table info not NULL too?
       if (nrow(private$.data) > 1) {
         temp_data     <- readRDS(filename)
+        if (nth_rows > 0) temp_data <- temp_data[t %% nth_rows == 0]
         private$.data <- rbind(private$.data, temp_data)
         temp_data     <- NULL
       } else {
         private$.data <- readRDS(filename)
+        if (nth_rows > 0) private$.data <- private$.data[t %% nth_rows == 0]
       }
       invisible(self)
     },

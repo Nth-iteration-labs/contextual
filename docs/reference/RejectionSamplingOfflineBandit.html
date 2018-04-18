@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Policy: BTSLogitPolicy — BTSLogitPolicy • contextual</title>
+<title>Bandit: Rejection Sampling Offline Evaluation — RejectionSamplingOfflineBandit • contextual</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -27,11 +27,9 @@
 <script src="../pkgdown.js"></script>
   
   
-<meta property="og:title" content="Policy: BTSLogitPolicy — BTSLogitPolicy" />
+<meta property="og:title" content="Bandit: Rejection Sampling Offline Evaluation — RejectionSamplingOfflineBandit" />
 
-<meta property="og:description" content="Each time step t, BTS runs a linear regression that produces coefficients for each context feature d.
-It then observes the new context, and generates a predicted payoff or reward together with a confidence interval for each available arm.
-It then proceeds to choose the arm with the highest upper confidence bound." />
+<meta property="og:description" content="RejectionSamplingOfflineBandit uses data from a randomly assigned policy for offline evaluation." />
 <meta name="twitter:card" content="summary" />
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
@@ -109,48 +107,59 @@ It then proceeds to choose the arm with the highest upper confidence bound." />
       <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Policy: BTSLogitPolicy</h1>
+    <h1>Bandit: Rejection Sampling Offline Evaluation</h1>
     </div>
 
     
-    <p>Each time step t, <code>BTS</code> runs a linear regression that produces coefficients for each context feature <code>d</code>.
-It then observes the new context, and generates a predicted payoff or reward together with a confidence interval for each available arm.
-It then proceeds to choose the arm with the highest upper confidence bound.</p>
+    <p><code>RejectionSamplingOfflineBandit</code> uses data from a randomly assigned policy for offline evaluation.</p>
     
 
         
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>The key assumption of the method is that the individual events are i.i.d., and
+that the logging policy chose each arm at each time step uniformly at random.
+Take care: if A is a stationary policy that does not change over trials,
+data may be used more efficiently via propensity
+scoring (Langford et al., 2008; Strehl et al., 2011) and related
+techniques like doubly robust estimation (Dudik et al., 2011).</p>
+    
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 
     
     <pre>
-policy &lt;- BTSLogitPolicy(alpha = 1.0, name = "LinUCB")
+bandit &lt;- RejectionSamplingOfflineBandit(data_file, k, d)
 </pre>
+    
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>Li, L., Chu, W., Langford, J., &amp; Wang, X. (2011, February). Unbiased offline evaluation of contextual-bandit-based news article recommendation algorithms. In Proceedings of the fourth ACM international conference on Web search and data mining (pp. 297-306). ACM.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p>Other contextual policies: <code><a href='ContextualThompsonSamplingPolicy.html'>ContextualThompsonSamplingPolicy</a></code>,
-  <code><a href='EpsilonFirstPolicy.html'>EpsilonFirstPolicy</a></code>,
-  <code><a href='EpsilonGreedyPolicy.html'>EpsilonGreedyPolicy</a></code>,
-  <code><a href='Exp3Policy.html'>Exp3Policy</a></code>,
-  <code><a href='LinUCBDisjointPolicy.html'>LinUCBDisjointPolicy</a></code>,
-  <code><a href='LinUCBHybridPolicy.html'>LinUCBHybridPolicy</a></code>,
-  <code><a href='OraclePolicy.html'>OraclePolicy</a></code>, <code><a href='Policy.html'>Policy</a></code>,
-  <code><a href='RandomPolicy.html'>RandomPolicy</a></code>,
-  <code><a href='SimpleBTSPolicy.html'>SimpleBTSPolicy</a></code>,
-  <code><a href='SoftmaxPolicy.html'>SoftmaxPolicy</a></code>,
-  <code><a href='ThompsonSamplingPolicy.html'>ThompsonSamplingPolicy</a></code>,
-  <code><a href='UCB1Policy.html'>UCB1Policy</a></code></p>
+    <p>Core contextual classes: <code><a href='Contextual.html'>Contextual</a></code>, <code><a href='Simulator.html'>Simulator</a></code>,
+<code><a href='Agent.html'>Agent</a></code>, <code><a href='History.html'>History</a></code>, <code><a href='Plot.html'>Plot</a></code>, <code><a href='Policy.html'>Policy</a></code></p>
+<p>Other contextual bandits: <code><a href='DoublyRobustOfflineBandit.html'>DoublyRobustOfflineBandit</a></code></p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'>
+<span class='no'>horizon</span>            <span class='kw'>&lt;-</span> <span class='fl'>100L</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       
+      <li><a href="#details">Details</a></li>
+
       <li><a href="#usage">Usage</a></li>
 
+      <li><a href="#references">References</a></li>
+
       <li><a href="#see-also">See also</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

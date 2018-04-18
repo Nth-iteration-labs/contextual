@@ -100,7 +100,7 @@ Contextual bandit algorithms have been gaining in popularity due to their effect
 
 \begin{document}
 
-%% A vignette for the \cite{contextual} paper. #########################################RJKJLKJLKJDFDFSDFOIOPEIRPERE
+%% A vignette for the \cite{contextual} paper. #########################################
 
 %% include your article here, just as usual
 %% Note that you should use the \pkg{}, \proglang{} and \code{} commands.
@@ -184,7 +184,7 @@ We set out to develop an implementation that stays close to the previous formali
          \item \code{Plot}: generates plots based on History data. It can be invoked by calling plot(x) for a History instance.
 \end{itemize}
 
-Importantly, any particular \code{Bandit} or \code{Policy} class has to inherit from, and implement the methods of, its respective abstract superclass. From this follows that in our framework, on being run by the Simulator, an Agent repeatedly executes the next few lines for every \textit{t} in \textit{t}=1,2,{\dots},\textit{T} (see also \ref{fig:cmab_chart})
+Importantly, any particular \code{Bandit} or \code{Policy} class has to inherit from, and implement the functions of, its respective abstract superclass. From this follows that in our framework, on being run by the Simulator, an Agent repeatedly executes the next few lines for every \textit{t} in \textit{t}=1,2,{\dots},\textit{T} (see also \ref{fig:cmab_chart})
 
 \begin{enumerate}
          \item[1a)] Agent checks the bandit for side information that might influence the expression of its arms
@@ -196,6 +196,8 @@ Importantly, any particular \code{Bandit} or \code{Policy} class has to inherit 
          \item[4a)] The agent sends the reward\textit{ r${}_{t}$ }to policy $\piup$
          \item[4b)] Policy $\piup$ uses \textit{r${}_{t}$} to update the policy's set of parameters\textit{ $\theta$${}_{t}$${}_{  }$}g iven \textit{Xt}
 \end{enumerate}
+
+Where we assume that at each time step t, all information necessary to choose an arm is summarized using a limited set of parameters denoted $\theta_t$, whose dimensionality is much smaller than of the log of all historical interactions.
 
 \begin{figure}[H]
   \centering
@@ -217,7 +219,7 @@ Importantly, any particular \code{Bandit} or \code{Policy} class has to inherit 
 \section{Object-oriented setup of the package}
 %% Note: If there is markup in \(sub)section, then it has to be escape as above.
 
-\subsection{The R6 Class System}
+\subsection{R6 Class System}
 
 Statistical computational methods, in R or otherwise,  are often made available through single-use scripts. Usually, these scripts are meant to give a basic idea of a statistical method, technique or algorithm in the context of a scientific paper. This is of no direct consequence within that particular setting. But when a set of well-researched interrelated algorithms find growing academic, practical and commercial adoption, it becomes crucial to offer a more standardized and more accessible way to compare different methods and algorithms.
 
@@ -229,24 +231,164 @@ At the same time, it was clear to us that it would be of critical importance to 
 
 The R6 package allows the creation of classes with reference semantics, similar to R's built-in reference classes. Yet compared to reference classes, R6 classes are simpler and lighter-weight, and they are not built on S4 classes, so they do not require the methods package. At the same time, classes do allow public and private members, and they support inheritance, even when the classes are defined in different packages. One R6 class can inherit from another. In other words, you can have super- and sub-classes. Subclasses can have additional methods, and they can also have methods that override the superclass methods.
 
-This enabled us to translate the basic cMAB formalization from section 2 almost one on one to a clear object oriented structure. To clarify how our objects hang together, we created two UML diagrams. The UML class diagram shown in figure X visualizes the structure of our package by showcasing contextual's classes, attributes, and relationships between classes. The UML sequence diagram in figure X, on the other hand, shows how contextuals's classes behave over time. It depicts the objects and classes involved over one time step t, and it displays a basic version of the sequence of messages exchanged between all of contextual's basic objects.
+This enabled us to translate the basic cMAB formalization from section 2 almost one on one to a clear object oriented structure. To clarify how our objects hang together, we created two UML diagrams (UML, or "Unified Modeling Language"  is a modeling language that provides a standard way to visualize the overall class structure and general design of a software application or framework). The UML class diagram shown in figure X visualizes the structure of our package by showcasing contextual's classes, attributes, and relationships between classes. The UML sequence diagram in figure X, on the other hand, shows how contextuals's classes behave over time. It depicts the objects and classes involved over one time step t, and it displays a basic version of the sequence of messages exchanged between all of contextual's basic objects.
 
 
 \subsection{Main classes}
 
-Let's now take a closer look at both UML diagrams, and go over each of our classes one by one.
+At least policy, and often the bandit, ...Two of the classes more in depth, as those are the ones that generally need to be extended for the evaluation of Policies. Let's now take a closer look at both UML diagrams, and go over each of our classes one by one.
 
 \subsubsection{Bandit}
 
+The abstract class \code{Bandit} is the super class of any \code{Bandit} subclass that is to be implemented in contextual. As it is an abstract class, it declares methods, but contains no implementation. That is, every \code{Bandit} class in the contextual package inherits from and has to implement the methods of by this class.
+
+In practice, this implies that any \code{Bandit} subclass needs to set \code{self\$k} to the number of arms, and \code{self\$d} to the number of context features during its initialisation. On meeting this requirement, the \code{Bandit} is then required to implement \code{get_context()} and \code{do_action()}:
+
+<<eval=FALSE, size='small'>>=
+Bandit <- R6::R6Class(
+  public = list(
+    k             = NULL,  # number of arms (integer)
+    d             = NULL,  # dimension of context feature (integer)
+    precaching    = FALSE, # pregenerate context & reward matrices? (boolean)
+
+    get_context = function(t) {
+      stop("Bandit subclass needs to implement bandit$get_context()")
+      # return a list with self$k, self$d and, where applicable, context vector X.
+      list(k = n_arms, d = n_features, X = context)
+    },
+    do_action = function(action, t) {
+      stop("Bandit subclass needs to implement bandit$do_action()")
+      # return a list with the reward and, if known, the reward of the best arm.
+      list(reward = reward_for_choice_made, optimal = optimal_reward)
+    },
+    generate_bandit_data = function(n) {
+      # called when precaching is TRUE. Pregenerates contexts and rewards.
+      stop("Bandit subclass needs to implement bandit$generate_cache()
+           when bandit$precaching is TRUE.",
+    }
+  )
+)
+@
+
+Where possible, it is advisable to pregenerate or precache Bandit contexts and rewards, as this is computationally much more efficient than the repeated generation of these vectors. To facilitate this, during initialisation contextual calls \code{generate_bandit_data()} for every Bandit where \code{self$precaching} is \code{TRUE}.
+
+Contextual makes several Bandits available out of the box. For each Bandit, there is at least one example script, to be found in the package's  \code{demo} directory. The currently available Bandits are:
+
+\begin{itemize}
+         \item \code{BasicBandit}: this basic k-armed bandit synthetically generates rewards based on a weigh vector that has to set at instantiation. It does not return context vector X.
+         \item \code{ContextualBandit}: a basic contextual bandit synthetically that generates contextual rewards based on randomly set weights. It can simulate mixed user (cross-arm) and article (arm) feature vectors, following its parameters k, d and num\_users.
+         \item \code{ContinuumBandit}: a basic example of a continuum bandit.
+         \item \code{SyntheticBandit}: an example of a more complex and versatile synthetic bandit, that pregenerates its context and reward vectores.
+         \item \code{LiBandit}: a basic example of a bandit that makes use of offline data - here, an implementation of Li(2232)
+         \item \code{OfflineBandit}: an example of a more complex offline bandit, that applies the doubly robust estimation technique to policy evaluation
+\end{itemize}
+
+These prefab bandits can be used to test policies without further adue. But they can also serve as superclasses for new custom Bandit subclasses. Or as templates for new Bandit implementation(s) that directly subclass the Bandit superclass.
+
 \subsubsection{Policy}
+
+Next to \code{Bandit}, the second crucial contexual superclass is \code{Policy}. Just like \code{Bandit}, this abstract class also declares methods without offering an implementation - but here, it is all \code{Policy} subclasses that have to implement them. Specifically, any policy, an therefor every Policy subclass, has to implement at least \code{set_parameters()}, and, particularly, \code{get_action()} and \code{set_reward()}:
+
+<<eval=FALSE, size='small'>>=
+Policy <- R6::R6Class(
+  public = list(
+    name          = "",
+    action        = NULL,    # action list
+    theta         = NULL,    # list of all parameters theta
+    theta_to_arms = NULL,    # theta to arms list
+    initialize = function(name = "Not implemented") {
+      self$name   <- name    # each policy has a name
+      self$theta  <- list()  # list that keeps track of all parameter values
+      self$action <- list()  # initiatlisation of action list for internal use
+    },
+    get_action = function(context, t) {
+      # chooses arm based on self$theta and context, returns its index in action$choice
+      stop("Policy$get_action() has not been implemented.", call. = FALSE)
+    },
+    set_reward = function(context, action, reward, t) {
+      # updates parameters in theta based on reward awarded by bandit to chosen arm
+      stop("Policy$set_reward() has not been implemented.", call. = FALSE)
+    },
+    set_parameters = function() {
+      # policy parameters (not theta!) initialization happens here
+      stop("Policy$set_parameters() has not been implemented.", call. = FALSE)
+    },
+    initialize_theta = function() {
+      # implementation not shown - called during contextual's initialisation
+      # copies theta_to_arms k times, makes the copies available through theta
+    }
+  )
+)
+@
 
 \subsubsection{Agent}
 
+To ease the encapsulation of isolated (parallel) Bandit and Policy simulations, an Agent class takes one Bandit subclass and one Policy subclass as its arguments:
+
+<<eval=FALSE, size='small'>>=
+policy             <- EpsilonGreedyPolicy$new(epsilon = 0.1, name = "EG")
+bandit             <- SyntheticBandit$new(weights = c(0.9, 0.1, 0.1))
+agent              <- Agent$new(policy,bandit)
+@
+
+It binds Bandit and Policy classes together, keeps track of time through its private variable \code{state$t}, and makes sure that, at each time step t, all four main Bandit and Policy cMAB methods are called in their correct order:
+
+<<eval=FALSE, size='small'>>=
+Agent <- R6::R6Class(
+  public = list(
+    #...
+    step = function() {
+      private$state$t <- private$state$t + 1
+      list(context = bandit_get_context(),
+           action  = policy_get_advice(),
+           reward  = bandit_do_action(),
+           theta   = policy_set_reward())
+    }
+    #...
+  )
+)
+@
+
 \subsubsection{Simulation}
+
+An instance of a Simulator class takes (at least) an Agent or a list of Agents, the horizon, and number of simulations to complete a basic contextual simulation setup. When run, by calling \code{simulator_instance$run()}, its starts cloning and then running Agents, potentially dividing the agents over different parallel nodes. It then receives and accumulates all results, and saves these into an History object:
+
+<<eval=FALSE, size='small'>>=
+history <- Simulator$new(agents = agent, horizon = 100, simulations = 100)$run()
+@
 
 \subsubsection{History}
 
+History objects aggregates the data acquired during a Simulation in its private data.table log. You can plot() a History object, summarize() it, or, amongst others, obtain either a data.frame() or a data.table() of said log:
+
+<<eval=FALSE, size='small'>>=
+history_dt <- history$get_data_table()
+@
+
 \subsubsection{Plot}
+
+The Plot class takes an History object, and offers several default types of plot:
+
+\begin{itemize}
+         \item \code{average}: plots the average reward or regret over all simulations per Agent (that is, each Bandit and Policy combo) over time.
+         \item \code{cumulative}: plots the average reward or regret over all simulations per Agent over time.
+         \item \code{optimal}: if data on optimal choice is available, "optimal" plots how often the best or optimal arm was chosen on average at each timestep, in percentages, over all simulations per Agent.
+         \item \code{grid}: plots a combination of the previous plots in a 2x2 grid.
+         \item \code{arms}: plots ratio of arms chosen on average at each time step, in percentages, totaling 100%.
+
+\end{itemize}
+
+Plot objects can be instantiated directly, or, more common, by calling plot() with a History instance plus plot type for arguments.
+
+<<eval=FALSE, size='small'>>=
+# plot a history object through default generic plot() function
+plot(history, type = "grid")
+plot(history, type = "arms")
+
+# or use the Plot class directly
+p1 <- Plot$new()$cumulative(history)
+p2 <- Plot$new()$average(history)
+@
 
 \section{Basic use of the package}
 

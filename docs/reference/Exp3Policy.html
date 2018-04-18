@@ -166,17 +166,16 @@ based on the reward received, and, potentially, the current context.</p></dd>
 
     <p>Core contextual classes: <code><a href='Contextual.html'>Contextual</a></code>, <code><a href='Simulator.html'>Simulator</a></code>,
 <code><a href='Agent.html'>Agent</a></code>, <code><a href='History.html'>History</a></code>, <code><a href='Plot.html'>Plot</a></code></p>
-<p>Bandit classes: <code><a href='AbstractBandit.html'>AbstractBandit</a></code>, <code><a href='BasicBandit.html'>BasicBandit</a></code>,
-<code><a href='OfflineLiBandit.html'>OfflineLiBandit</a></code>, <code><a href='SyntheticBandit.html'>SyntheticBandit</a></code></p>
-<p>Other contextual policies: <code><a href='AbstractPolicy.html'>AbstractPolicy</a></code>,
-  <code><a href='BTSLogitPolicy.html'>BTSLogitPolicy</a></code>,
-  <code><a href='ContextualEpsilonGreedyPolicy.html'>ContextualEpsilonGreedyPolicy</a></code>,
+<p>Bandit classes: <code><a href='Bandit.html'>Bandit</a></code>, <code><a href='BasicBandit.html'>BasicBandit</a></code>,
+<code><a href='RejectionSamplingOfflineBandit.html'>RejectionSamplingOfflineBandit</a></code>, <code><a href='SyntheticBandit.html'>SyntheticBandit</a></code></p>
+<p>Other contextual policies: <code><a href='BTSLogitPolicy.html'>BTSLogitPolicy</a></code>,
   <code><a href='ContextualThompsonSamplingPolicy.html'>ContextualThompsonSamplingPolicy</a></code>,
   <code><a href='EpsilonFirstPolicy.html'>EpsilonFirstPolicy</a></code>,
   <code><a href='EpsilonGreedyPolicy.html'>EpsilonGreedyPolicy</a></code>,
   <code><a href='LinUCBDisjointPolicy.html'>LinUCBDisjointPolicy</a></code>,
   <code><a href='LinUCBHybridPolicy.html'>LinUCBHybridPolicy</a></code>,
-  <code><a href='OraclePolicy.html'>OraclePolicy</a></code>, <code><a href='RandomPolicy.html'>RandomPolicy</a></code>,
+  <code><a href='OraclePolicy.html'>OraclePolicy</a></code>, <code><a href='Policy.html'>Policy</a></code>,
+  <code><a href='RandomPolicy.html'>RandomPolicy</a></code>,
   <code><a href='SimpleBTSPolicy.html'>SimpleBTSPolicy</a></code>,
   <code><a href='SoftmaxPolicy.html'>SoftmaxPolicy</a></code>,
   <code><a href='ThompsonSamplingPolicy.html'>ThompsonSamplingPolicy</a></code>,
@@ -187,13 +186,16 @@ based on the reward received, and, potentially, the current context.</p></dd>
     <pre class="examples"><div class='input'>
 <span class='no'>horizon</span>            <span class='kw'>&lt;-</span> <span class='fl'>100L</span>
 <span class='no'>simulations</span>        <span class='kw'>&lt;-</span> <span class='fl'>100L</span>
-<span class='no'>arm_weights</span>        <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='fl'>0.9</span>, <span class='fl'>0.1</span>, <span class='fl'>0.1</span>)
+<span class='no'>weights</span>        <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='fl'>0.9</span>, <span class='fl'>0.1</span>, <span class='fl'>0.1</span>)
 
 <span class='no'>policy</span>             <span class='kw'>&lt;-</span> <span class='no'>Exp3Policy</span>$<span class='fu'>new</span>(<span class='kw'>gamma</span> <span class='kw'>=</span> <span class='fl'>0.1</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"Exp3"</span>)
-<span class='no'>bandit</span>             <span class='kw'>&lt;-</span> <span class='no'>SyntheticBandit</span>$<span class='fu'>new</span>(<span class='kw'>arm_weights</span> <span class='kw'>=</span> <span class='no'>arm_weights</span>, <span class='kw'>precache</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='error'>Error in .subset2(public_bind_env, "initialize")(...): unused argument (arm_weights = c(0.9, 0.1, 0.1))</span></div><div class='input'><span class='no'>agent</span>              <span class='kw'>&lt;-</span> <span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>policy</span>, <span class='no'>bandit</span>)</div><div class='output co'>#&gt; <span class='error'>Error in .subset2(public_bind_env, "initialize")(...): object 'bandit' not found</span></div><div class='input'>
-<span class='no'>history</span>            <span class='kw'>&lt;-</span> <span class='no'>Simulator</span>$<span class='fu'>new</span>(<span class='no'>agent</span>, <span class='no'>horizon</span>, <span class='no'>simulations</span>, <span class='kw'>do_parallel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)$<span class='fu'>run</span>()</div><div class='output co'>#&gt; <span class='error'>Error in .subset2(public_bind_env, "initialize")(...): object 'agent' not found</span></div><div class='input'>
-<span class='fu'>plot</span>(<span class='no'>history</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"grid"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in .External2(C_savehistory, file): 'savehistory' can only be used in Rgui and Rterm</span></div><div class='input'>
-<span class='fu'>plot</span>(<span class='no'>history</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"arms"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in .External2(C_savehistory, file): 'savehistory' can only be used in Rgui and Rterm</span></div><div class='input'>
+<span class='no'>bandit</span>             <span class='kw'>&lt;-</span> <span class='no'>SyntheticBandit</span>$<span class='fu'>new</span>(<span class='kw'>weights</span> <span class='kw'>=</span> <span class='no'>weights</span>, <span class='kw'>precaching</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='no'>agent</span>              <span class='kw'>&lt;-</span> <span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>policy</span>, <span class='no'>bandit</span>)
+
+<span class='no'>history</span>            <span class='kw'>&lt;-</span> <span class='no'>Simulator</span>$<span class='fu'>new</span>(<span class='no'>agent</span>, <span class='no'>horizon</span>, <span class='no'>simulations</span>, <span class='kw'>do_parallel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)$<span class='fu'>run</span>()
+
+<span class='fu'>plot</span>(<span class='no'>history</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"grid"</span>)</div><div class='img'><img src='Exp3Policy-1.png' alt='' width='700' height='432.632880098887' /></div><div class='img'><img src='Exp3Policy-2.png' alt='' width='700' height='432.632880098887' /></div><div class='img'><img src='Exp3Policy-3.png' alt='' width='700' height='432.632880098887' /></div><div class='img'><img src='Exp3Policy-4.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
+<span class='fu'>plot</span>(<span class='no'>history</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"arms"</span>)</div><div class='img'><img src='Exp3Policy-5.png' alt='' width='700' height='432.632880098887' /></div><div class='input'>
 
 </div></pre>
   </div>

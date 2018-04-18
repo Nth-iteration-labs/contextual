@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6350 64-bit) (preloaded format=pdflatex 2017.10.23)  28 MAR 2018 17:30
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6350 64-bit) (preloaded format=pdflatex 2017.10.23)  1 APR 2018 15:40
 entering extended mode
 **./jss.tex
 (jss.tex
@@ -1121,10 +1121,10 @@ Overfull \hbox (5.47499pt too wide) has occurred while \output is active
 
 pdfTeX warning: pdflatex.exe (file ./fig/cmab_chart.pdf): PDF inclusion: found 
 PDF version <1.7>, but at most version <1.5> allowed
-<fig/cmab_chart.pdf, id=137, 616.3025pt x 177.6507pt>
+<fig/cmab_chart.pdf, id=153, 616.3025pt x 177.6507pt>
 File: fig/cmab_chart.pdf Graphic file (type pdf)
  <use fig/cmab_chart.pdf>
-Package pdftex.def Info: fig/cmab_chart.pdf used on input line 245.
+Package pdftex.def Info: fig/cmab_chart.pdf used on input line 247.
 (pdftex.def)             Requested size: 438.22963pt x 126.32262pt.
 
 Overfull \hbox (5.47499pt too wide) has occurred while \output is active
@@ -1143,74 +1143,124 @@ Overfull \hbox (5.47499pt too wide) has occurred while \output is active
  []
 
 [5]
+Package color Info: Redefining color shadecolor on input line 291.
+LaTeX Font Info:    Font shape `T1/txtt/m/it' in size <10> not available
+(Font)              Font shape `T1/txtt/m/sl' tried instead on input line 295.
+LaTeX Font Info:    Font shape `T1/txtt/bx/it' in size <10> not available
+(Font)              Font shape `T1/txtt/bx/sl' tried instead on input line 295.
 
-LaTeX Warning: Reference `fig:fig1' on page 6 undefined on input line 292.
+
+Overfull \hbox (15.65732pt too wide) in paragraph at lines 320--321
+\T1/txr/m/n/10.95 ing ini-tial-isa-tion con-tex-tual calls \T1/txtt/m/n/10.95 g
+enerate_bandit_data() \T1/txr/m/n/10.95 for every Ban-dit where \T1/txtt/m/n/10
+.95 self$precaching
+ []
 
 
-LaTeX Warning: Reference `fig:fig1' on page 6 undefined on input line 292.
-
-Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
-put line 297.
-Package color Info: Redefining color shadecolor on input line 323.
-LaTeX Font Info:    Try loading font information for TS1+txtt on input line 333
-.
-(C:\Users\robin\AppData\Roaming\MiKTeX\2.9\tex\latex\txfonts\ts1txtt.fd
-File: ts1txtt.fd 2000/12/15 v3.1
-)
 Overfull \hbox (5.47499pt too wide) has occurred while \output is active
 \T1/txr/m/n/10.95 6 []
  []
 
 [6]
-Package color Info: Redefining color shadecolor on input line 364.
+Package color Info: Redefining color shadecolor on input line 340.
 
+Overfull \hbox (14.29993pt too wide) in paragraph at lines 354--354
+[]      []\T1/txtt/m/sl/10 # chooses arm based on self$theta and context, retur
+ns its index in action$choice[][] 
+ []
 
-LaTeX Warning: Reference `fig:fig2' on page 7 undefined on input line 400.
+LaTeX Font Info:    Try loading font information for TS1+txtt on input line 366
+.
+(C:\Users\robin\AppData\Roaming\MiKTeX\2.9\tex\latex\txfonts\ts1txtt.fd
+File: ts1txtt.fd 2000/12/15 v3.1
+)
+LaTeX Font Info:    Font shape `TS1/txtt/m/it' in size <10> not available
+(Font)              Font shape `TS1/txtt/m/sl' tried instead on input line 366.
 
-
-LaTeX Warning: Reference `fig:fig2' on page 7 undefined on input line 400.
-
-Package color Info: Redefining color shadecolor on input line 430.
+Package color Info: Redefining color shadecolor on input line 380.
 
 Overfull \hbox (5.47499pt too wide) has occurred while \output is active
 [] \T1/txr/m/n/10.95 7
  []
 
 [7]
-Package color Info: Redefining color shadecolor on input line 468.
+Package color Info: Redefining color shadecolor on input line 392.
+
+Overfull \hbox (52.5588pt too wide) in paragraph at lines 413--414
+\T1/txr/m/n/10.95 sim-u-la-tions to com-plete a ba-sic con-tex-tual sim-u-la-ti
+on setup. When run, by call-ing \T1/txtt/m/n/10.95 simulator_instance$run()\T1/
+txr/m/n/10.95 ,
+ []
+
+Package color Info: Redefining color shadecolor on input line 416.
+Package color Info: Redefining color shadecolor on input line 428.
 
 Overfull \hbox (5.47499pt too wide) has occurred while \output is active
 \T1/txr/m/n/10.95 8 []
  []
 
 [8]
+Package color Info: Redefining color shadecolor on input line 451.
+
+
+LaTeX Warning: Reference `fig:fig1' on page 9 undefined on input line 472.
+
+
+LaTeX Warning: Reference `fig:fig1' on page 9 undefined on input line 472.
+
+Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
+put line 477.
+Package color Info: Redefining color shadecolor on input line 503.
+
 Overfull \hbox (5.47499pt too wide) has occurred while \output is active
 [] \T1/txr/m/n/10.95 9
  []
 
 [9]
-
-LaTeX Warning: Reference `fig:fig3' on page 10 undefined on input line 531.
-
-
-LaTeX Warning: Reference `fig:fig3' on page 10 undefined on input line 531.
-
-Package color Info: Redefining color shadecolor on input line 534.
-LaTeX Font Info:    Font shape `T1/txtt/m/it' in size <10> not available
-(Font)              Font shape `T1/txtt/m/sl' tried instead on input line 536.
-LaTeX Font Info:    Font shape `TS1/txtt/m/it' in size <10> not available
-(Font)              Font shape `TS1/txtt/m/sl' tried instead on input line 536.
-
-Package color Info: Redefining color shadecolor on input line 581.
+Package color Info: Redefining color shadecolor on input line 544.
 
 Overfull \hbox (10.94998pt too wide) has occurred while \output is active
 \T1/txr/m/n/10.95 10 []
  []
 
 [10]
-Package color Info: Redefining color shadecolor on input line 617.
 
-Overfull \hbox (19.34491pt too wide) in paragraph at lines 630--630
+LaTeX Warning: Reference `fig:fig2' on page 11 undefined on input line 580.
+
+
+LaTeX Warning: Reference `fig:fig2' on page 11 undefined on input line 580.
+
+Package color Info: Redefining color shadecolor on input line 610.
+
+Overfull \hbox (10.94998pt too wide) has occurred while \output is active
+[] \T1/txr/m/n/10.95 11
+ []
+
+[11]
+Package color Info: Redefining color shadecolor on input line 648.
+
+Overfull \hbox (10.94998pt too wide) has occurred while \output is active
+\T1/txr/m/n/10.95 12 []
+ []
+
+[12]
+
+LaTeX Warning: Reference `fig:fig3' on page 13 undefined on input line 711.
+
+
+LaTeX Warning: Reference `fig:fig3' on page 13 undefined on input line 711.
+
+Package color Info: Redefining color shadecolor on input line 714.
+
+Overfull \hbox (10.94998pt too wide) has occurred while \output is active
+[] \T1/txr/m/n/10.95 13
+ []
+
+[13]
+Package color Info: Redefining color shadecolor on input line 761.
+Package color Info: Redefining color shadecolor on input line 797.
+
+Overfull \hbox (19.34491pt too wide) in paragraph at lines 810--810
 []      []\T1/txtt/m/n/10 private[][]$[][]R[] []<-[] []\T1/txtt/bx/n/10 matrix[
 ][]\T1/txtt/m/n/10 ([][]\T1/txtt/bx/n/10 rpois[][]\T1/txtt/m/n/10 ([][]3[][], r
 eward_means)[] []<[] []self[][]$[][]\T1/txtt/bx/n/10 get_weights[][]\T1/txtt/m/
@@ -1218,7 +1268,7 @@ n/10 (), self[][]$[][]k, self[][]$[][]d)[][]*[][]1[][]
  []
 
 
-Overfull \hbox (3.61494pt too wide) in paragraph at lines 660--660
+Overfull \hbox (3.61494pt too wide) in paragraph at lines 840--840
 [][]\T1/txtt/m/n/10 agents[]      []<-[] []\T1/txtt/bx/n/10 list[][]\T1/txtt/m/
 n/10 ( Agent[][]$[][]\T1/txtt/bx/n/10 new[][]\T1/txtt/m/n/10 (EpsilonGreedyPoli
 cy[][]$[][]\T1/txtt/bx/n/10 new[][]\T1/txtt/m/n/10 ([][]0.1[][],[] []"EG Anneal
@@ -1226,7 +1276,7 @@ ing"[][]), bandit),[][]
  []
 
 
-Overfull \hbox (3.61494pt too wide) in paragraph at lines 661--661
+Overfull \hbox (3.61494pt too wide) in paragraph at lines 841--841
 []                     []\T1/txtt/m/n/10 Agent[][]$[][]\T1/txtt/bx/n/10 new[][]
 \T1/txtt/m/n/10 (EpsilonGreedyAnnealingPolicy[][]$[][]\T1/txtt/bx/n/10 new[][]\
 T1/txtt/m/n/10 ([][]0.1[][],[] []"EG"[][]), bandit) )[][] 
@@ -1234,96 +1284,96 @@ T1/txtt/m/n/10 ([][]0.1[][],[] []"EG"[][]), bandit) )[][]
 
 
 Overfull \hbox (10.94998pt too wide) has occurred while \output is active
-[] \T1/txr/m/n/10.95 11
- []
-
-[11]
-Overfull \hbox (10.94998pt too wide) has occurred while \output is active
-\T1/txr/m/n/10.95 12 []
- []
-
-[12] <fig/contextual_class.pdf, id=241, 1016.29688pt x 1010.65079pt>
-File: fig/contextual_class.pdf Graphic file (type pdf)
-
-<use fig/contextual_class.pdf>
-Package pdftex.def Info: fig/contextual_class.pdf used on input line 719.
-(pdftex.def)             Requested size: 438.22963pt x 435.78966pt.
-
-Overfull \hbox (10.94998pt too wide) has occurred while \output is active
-[] \T1/txr/m/n/10.95 13
- []
-
-[13] <fig/contextual_sequence.pdf, id=249, 1250.27354pt x 1578.60947pt>
-File: fig/contextual_sequence.pdf Graphic file (type pdf)
-
-<use fig/contextual_sequence.pdf>
-Package pdftex.def Info: fig/contextual_sequence.pdf used on input line 726.
-(pdftex.def)             Requested size: 438.22963pt x 553.31648pt.
-
-Overfull \hbox (10.94998pt too wide) has occurred while \output is active
 \T1/txr/m/n/10.95 14 []
  []
 
-[14pdfTeX warning (ext4): destination with the same identifier (name{figure.2})
- has been already used, duplicate ignored
-
-\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
-                                                  \fi \fi 
-l.730 
-       <./fig/contextual_class.pdf>]
+[14]
 Overfull \hbox (10.94998pt too wide) has occurred while \output is active
 [] \T1/txr/m/n/10.95 15
  []
 
-[15pdfTeX warning (ext4): destination with the same identifier (name{figure.3})
- has been already used, duplicate ignored
+[15] <fig/contextual_class.pdf, id=269, 1016.29688pt x 1010.65079pt>
+File: fig/contextual_class.pdf Graphic file (type pdf)
 
-\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
-                                                  \fi \fi 
-l.736 \section{The art of optimal parallelisation}
-                                                   <./fig/contextual_sequence.p
-df>]
-No file jss.bbl.
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 773.
-
-Underfull \hbox (badness 10000) in paragraph at lines 773--773
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 773--773
-
- []
-
+<use fig/contextual_class.pdf>
+Package pdftex.def Info: fig/contextual_class.pdf used on input line 899.
+(pdftex.def)             Requested size: 438.22963pt x 435.78966pt.
 
 Overfull \hbox (10.94998pt too wide) has occurred while \output is active
 \T1/txr/m/n/10.95 16 []
  []
 
-[16]
+[16] <fig/contextual_sequence.pdf, id=282, 1250.27354pt x 1578.60947pt>
+File: fig/contextual_sequence.pdf Graphic file (type pdf)
+
+<use fig/contextual_sequence.pdf>
+Package pdftex.def Info: fig/contextual_sequence.pdf used on input line 906.
+(pdftex.def)             Requested size: 438.22963pt x 553.31648pt.
+
 Overfull \hbox (10.94998pt too wide) has occurred while \output is active
 [] \T1/txr/m/n/10.95 17
  []
 
-[17]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 773.
+[17pdfTeX warning (ext4): destination with the same identifier (name{figure.2})
+ has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.910 
+       <./fig/contextual_class.pdf>]
+Overfull \hbox (10.94998pt too wide) has occurred while \output is active
+\T1/txr/m/n/10.95 18 []
+ []
+
+[18pdfTeX warning (ext4): destination with the same identifier (name{figure.3})
+ has been already used, duplicate ignored
+
+\AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
+                                                  \fi \fi 
+l.916 \section{The art of optimal parallelisation}
+                                                   <./fig/contextual_sequence.p
+df>]
+No file jss.bbl.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 953.
+
+Underfull \hbox (badness 10000) in paragraph at lines 953--953
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 953--953
+
+ []
+
+
+Overfull \hbox (10.94998pt too wide) has occurred while \output is active
+[] \T1/txr/m/n/10.95 19
+ []
+
+[19]
+Overfull \hbox (10.94998pt too wide) has occurred while \output is active
+\T1/txr/m/n/10.95 20 []
+ []
+
+[20]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 953.
  (jss.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 773.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 773.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 953.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 953.
 Package rerunfilecheck Info: File `jss.out' has not changed.
-(rerunfilecheck)             Checksum: 9697F71BABA1A4F7316795966B0A3A22;2758.
+(rerunfilecheck)             Checksum: 6169150CE513847386988A4980CE4D20;3090.
 
 
 LaTeX Warning: There were undefined references.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 773.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 953.
  ) 
 Here is how much of TeX's memory you used:
- 9581 strings out of 493323
- 133307 string characters out of 3139065
- 230265 words of memory out of 3000000
- 12766 multiletter control sequences out of 15000+200000
- 78182 words of font info for 128 fonts, out of 3000000 for 9000
+ 9599 strings out of 493323
+ 133635 string characters out of 3139065
+ 233935 words of memory out of 3000000
+ 12772 multiletter control sequences out of 15000+200000
+ 78564 words of font info for 129 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
  35i,9n,34p,960b,688s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/base/8r.enc}<C:/Users/robin/AppD
@@ -1333,21 +1383,22 @@ Data/Roaming/MiKTeX/2.9/fonts/type1/public/txfonts/rtxi.pfb><C:/Users/robin/App
 Data/Roaming/MiKTeX/2.9/fonts/type1/public/txfonts/rtxmi.pfb><C:/Users/robin/Ap
 pData/Roaming/MiKTeX/2.9/fonts/type1/public/txfonts/rtxr.pfb><C:/Users/robin/Ap
 pData/Roaming/MiKTeX/2.9/fonts/type1/public/txfonts/t1xbtt.pfb><C:/Users/robin/
-AppData/Roaming/MiKTeX/2.9/fonts/type1/public/txfonts/t1xtt.pfb><C:/Users/robin
-/AppData/Roaming/MiKTeX/2.9/fonts/type1/public/txfonts/t1xtt.pfb><C:/Users/robi
-n/AppData/Roaming/MiKTeX/2.9/fonts/type1/public/txfonts/tcxtt.pfb><C:/Users/rob
-in/AppData/Roaming/MiKTeX/2.9/fonts/type1/public/txfonts/txex.pfb><C:/Users/rob
-in/AppData/Roaming/MiKTeX/2.9/fonts/type1/public/txfonts/txmia.pfb><C:/Users/ro
-bin/AppData/Roaming/MiKTeX/2.9/fonts/type1/public/txfonts/txsy.pfb><C:/Users/ro
-bin/AppData/Roaming/MiKTeX/2.9/fonts/type1/public/txfonts/txsyb.pfb><C:/Program
- Files/MiKTeX 2.9/fonts/type1/urw/helvetic/uhvr8a.pfb><C:/Program Files/MiKTeX 
-2.9/fonts/type1/urw/times/utmb8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/u
-rw/times/utmb8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmr8a.p
-fb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmr8a.pfb><C:/Program Fi
-les/MiKTeX 2.9/fonts/type1/urw/times/utmri8a.pfb>
-Output written on jss.pdf (17 pages, 300336 bytes).
+AppData/Roaming/MiKTeX/2.9/fonts/type1/public/txfonts/t1xbtt.pfb><C:/Users/robi
+n/AppData/Roaming/MiKTeX/2.9/fonts/type1/public/txfonts/t1xtt.pfb><C:/Users/rob
+in/AppData/Roaming/MiKTeX/2.9/fonts/type1/public/txfonts/t1xtt.pfb><C:/Users/ro
+bin/AppData/Roaming/MiKTeX/2.9/fonts/type1/public/txfonts/tcxtt.pfb><C:/Users/r
+obin/AppData/Roaming/MiKTeX/2.9/fonts/type1/public/txfonts/txex.pfb><C:/Users/r
+obin/AppData/Roaming/MiKTeX/2.9/fonts/type1/public/txfonts/txmia.pfb><C:/Users/
+robin/AppData/Roaming/MiKTeX/2.9/fonts/type1/public/txfonts/txsy.pfb><C:/Users/
+robin/AppData/Roaming/MiKTeX/2.9/fonts/type1/public/txfonts/txsyb.pfb><C:/Progr
+am Files/MiKTeX 2.9/fonts/type1/urw/helvetic/uhvr8a.pfb><C:/Program Files/MiKTe
+X 2.9/fonts/type1/urw/times/utmb8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1
+/urw/times/utmb8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmr8a
+.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmr8a.pfb><C:/Program 
+Files/MiKTeX 2.9/fonts/type1/urw/times/utmri8a.pfb>
+Output written on jss.pdf (20 pages, 317920 bytes).
 PDF statistics:
- 368 PDF objects out of 1000 (max. 8388607)
- 113 named destinations out of 1000 (max. 500000)
- 216 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 407 PDF objects out of 1000 (max. 8388607)
+ 124 named destinations out of 1000 (max. 500000)
+ 248 words of extra memory for PDF output out of 10000 (max. 10000000)
 

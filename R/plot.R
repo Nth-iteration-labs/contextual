@@ -18,10 +18,13 @@ Plot <- R6::R6Class(
                     ci = FALSE,
                     step_size = 1,
                     start_step = 1,
-                    rate = FALSE) {
-
-
-
+                    rate = FALSE,
+                    color_step = 1,
+                    lty_step = 1,
+                    lwd = 1,
+                    ylim = NULL,
+                    legend_labels = NULL,
+                    legend_title = NULL) {
       history <- check_history_data(history)
       history <- history[t <= history[, max(t), by = c("sim")][, min(V1)]]
       old.par <- par(no.readonly = TRUE)
@@ -39,7 +42,13 @@ Plot <- R6::R6Class(
         ci = FALSE,
         step_size = step_size,
         start_step = start_step,
-        rate = FALSE
+        rate = FALSE,
+        color_step = color_step,
+        lty_step = lty_step,
+        lwd = lwd,
+        ylim = ylim,
+        legend_labels = legend_labels,
+        legend_title = legend_title
       )
       par(mar = c(3, 5, 1, 1))
       self$optimal(
@@ -50,7 +59,13 @@ Plot <- R6::R6Class(
         use_colors = use_colors,
         ci = ci,
         step_size = step_size,
-        start_step = start_step
+        start_step = start_step,
+        color_step = color_step,
+        lty_step = lty_step,
+        lwd = lwd,
+        ylim = ylim,
+        legend_labels = legend_labels,
+        legend_title = legend_title
       )
       par(mar = c(3, 5, 1, 2))
       self$cumulative(
@@ -63,7 +78,13 @@ Plot <- R6::R6Class(
         ci = ci,
         step_size = step_size,
         start_step = start_step,
-        rate = rate
+        rate = rate,
+        color_step = color_step,
+        lty_step = lty_step,
+        lwd = lwd,
+        ylim = ylim,
+        legend_labels = legend_labels,
+        legend_title = legend_title
       )
       par(mar = c(3, 5, 1, 2))
       self$average(
@@ -76,7 +97,13 @@ Plot <- R6::R6Class(
         ci = ci,
         step_size = step_size,
         start_step = start_step,
-        rate = rate
+        rate = rate,
+        color_step = color_step,
+        lty_step = lty_step,
+        lwd = lwd,
+        ylim = ylim,
+        legend_labels = legend_labels,
+        legend_title = legend_title
       )
       dev.flush()
       par(old.par)
@@ -91,7 +118,13 @@ Plot <- R6::R6Class(
                           ci = FALSE,
                           step_size = 1,
                           start_step = 1,
-                          rate = FALSE) {
+                          rate = FALSE,
+                          color_step = 1,
+                          lty_step = 1,
+                          lwd = 1,
+                          ylim = NULL,
+                          legend_labels = NULL,
+                          legend_title = NULL) {
 
       history <- check_history_data(history)
       self$max_sim   = history[, max(sim)]
@@ -100,7 +133,7 @@ Plot <- R6::R6Class(
 
       if (regret) {
         ylab_title = "cumulative expected regret"
-        if (rate)ylab_title = "cumulative regret - rate"
+        if (rate) ylab_title = "cumulative regret - rate"
         if (rate) history$cumsum = history[, cumsum(opimal - reward)/t, by = list(agent, sim)]$V1
         else history$cumsum = history[, cumsum(opimal - reward), by = list(agent, sim)]$V1
         cs <-
@@ -108,14 +141,29 @@ Plot <- R6::R6Class(
                          data = mean(cumsum)), by = list(t, agent)]
       } else {
         ylab_title = "cumulative reward"
-        if (rate)ylab_title = "cumulative reward - rate"
+        if (rate) ylab_title = "cumulative reward - rate"
         if (rate) history$cumsum = history[, cumsum(reward)/t, by = list(agent, sim)]$V1
         else history$cumsum = history[, cumsum(reward), by = list(agent, sim)]$V1
         cs <-
           history[, list(var = var(cumsum),
                          data = mean(cumsum)), by = list(t, agent)]
       }
-      do_plot(cs, ylab_title, use_colors, ci, legend, grid, NULL, step_size, start_step)
+      do_plot(
+        cs = cs,
+        ylab_title = ylab_title,
+        use_colors = use_colors,
+        ci = ci,
+        legend = legend,
+        grid = grid,
+        step_size = step_size,
+        start_step = start_step,
+        color_step = color_step,
+        lty_step = lty_step,
+        lwd = lwd,
+        ylim = ylim,
+        legend_labels = legend_labels,
+        legend_title = legend_title
+      )
       invisible(self)
     },
     average = function(history,
@@ -127,7 +175,13 @@ Plot <- R6::R6Class(
                        ci = FALSE,
                        step_size = 1,
                        start_step = 1,
-                       rate = FALSE) {
+                       rate = FALSE,
+                       color_step = 1,
+                       lty_step = 1,
+                       lwd = 1,
+                       ylim = NULL,
+                       legend_labels = NULL,
+                       legend_title = NULL) {
       history <- check_history_data(history)
       self$max_sim   = history[, max(sim)]
       history <- history[order(agent, t, sim)]
@@ -148,7 +202,13 @@ Plot <- R6::R6Class(
         legend = legend,
         grid = grid,
         step_size = step_size,
-        start_step= start_step
+        start_step = start_step,
+        color_step = color_step,
+        lty_step = lty_step,
+        lwd = lwd,
+        ylim = ylim,
+        legend_labels = legend_labels,
+        legend_title = legend_title
       )
       invisible(self)
     },
@@ -159,7 +219,13 @@ Plot <- R6::R6Class(
                        use_colors = TRUE,
                        ci = FALSE,
                        step_size = 1,
-                       start_step = 1) {
+                       start_step = 1,
+                       color_step = 1,
+                       lty_step = 1,
+                       lwd = 1,
+                       ylim = NULL,
+                       legend_labels = NULL,
+                       legend_title = NULL) {
       history <- check_history_data(history)
       self$max_sim   = history[, max(sim)]
       history <- history[order(agent, t, sim)]
@@ -176,7 +242,13 @@ Plot <- R6::R6Class(
         grid = grid,
         #ylim = c(0, 100),
         step_size = step_size,
-        start_step = start_step
+        start_step = start_step,
+        color_step = color_step,
+        lty_step = lty_step,
+        lwd = lwd,
+        ylim = ylim,
+        legend_labels = legend_labels,
+        legend_title = legend_title
       )
       invisible(self)
     },
@@ -186,7 +258,10 @@ Plot <- R6::R6Class(
                     legend = TRUE,
                     use_colors = TRUE,
                     step_size = 1,
-                    start_step = 1) {
+                    start_step = 1,
+                    ylim = NULL,
+                    legend_labels = NULL,
+                    legend_title = NULL) {
       history <- check_history_data(history)
       ylab_title = "Arm Choice %"
       agent_levels <- levels(as.factor(history$agent))
@@ -201,7 +276,7 @@ Plot <- R6::R6Class(
       cs$arm_count <- as.double((unlist(cs$arm_count)/max_sim) * 100L)
       old.par <- par(no.readonly = TRUE)
       # par(mar = c(bottom, left, top, right))
-      par(mar = c(5, 5, 1, 1))   ##########################################################remember and reset?
+      par(mar = c(5, 5, 1, 1))
       eg = expand.grid(t = seq(1.0, max_t, 1), choice = seq(1.0, max_arm, 1))
       cs <- merge(cs, eg, all = TRUE)
       cs[is.na(cs)] <- 0.0
@@ -260,12 +335,18 @@ Plot <- R6::R6Class(
                        grid = FALSE,
                        ylim = NULL,
                        step_size = 1,
-                       start_step = 1) {
+                       start_step = 1,
+                       color_step = 1,
+                       lty_step = 1,
+                       lwd = 1,
+                       legend_labels = NULL,
+                       legend_title = NULL) {
       if (grid == FALSE)
         dev.hold()
 
       cs <- cs[order(agent, t)]
-      par(mar = c(5, 5, 1, 1)) #######################################################  ### parmar things
+      old.par <- par(no.readonly = TRUE)
+      par(mar = c(5, 5, 1, 1))
       if (ci) {
         # 95% confidence
         ci_range <- cs$data + outer(sqrt(cs$var)/sqrt(self$max_sim), c(1.64, -1.64))
@@ -275,13 +356,19 @@ Plot <- R6::R6Class(
       }
       plot.new()
       agent_levels <- levels(as.factor(cs$agent))
-      cl <- gg_color_hue(length(agent_levels))
+      n_agents = length(agent_levels)
+      cl <- gg_color_hue(round(n_agents/color_step))
+      cl <- rep(cl, round(color_step))
+      lt <- rep(1,n_agents)
+      if (lty_step > 1) {
+        lt <- rep(1:round(lty_step), each = round(n_agents/lty_step))
+      }
       if (ci) {
-        min_ylim = cs[t>=start_step][, min(ci_lower)]
-        max_ylim = cs[t>=start_step][, max(ci_upper)]
+        min_ylim = cs[t >= start_step][, min(ci_lower)]
+        max_ylim = cs[t >= start_step][, max(ci_upper)]
       } else {
-        min_ylim = cs[t>=start_step][, min(data)]
-        max_ylim = cs[t>=start_step][, max(data)]
+        min_ylim = cs[t >= start_step][, min(data)]
+        max_ylim = cs[t >= start_step][, max(data)]
       }
       if (!is.null(ylim)) {
         min_ylim <- ylim[1]
@@ -289,9 +376,7 @@ Plot <- R6::R6Class(
       }
       plot.window(xlim = c(start_step, cs[, max(t)]),
                   ylim = c(min_ylim, max_ylim))
-
       if (use_colors) {
-        cl <- gg_color_hue(length(agent_levels))
         if (ci) {
           color <- 1
           for (agent_name in agent_levels) {
@@ -305,20 +390,21 @@ Plot <- R6::R6Class(
             color <- color + 1
           }
         }
-        color <- 1
+        line_counter <- 1
         for (agent_name in agent_levels) {
           step_seq <- seq(start_step, nrow(cs[cs$agent == agent_name]), step_size)
           lines(
             cs[cs$agent == agent_name][step_seq]$t,
             cs[cs$agent == agent_name][step_seq]$data,
-            lwd = 1,
-            lty = 1,
-            col = adjustcolor(cl[color], alpha.f = 0.9),
+            lwd = lwd,
+            lty = lt[line_counter],
+            col = adjustcolor(cl[line_counter], alpha.f = 0.9),
             type = "l"
           )
-          color <- color + 1
+          line_counter <- line_counter + 1
         }
       } else {
+        line_counter <- 1
         for (agent_name in agent_levels) {
           step_seq <- seq(start_step, nrow(cs[cs$agent == agent_name]), step_size)
           if (ci) {
@@ -332,11 +418,12 @@ Plot <- R6::R6Class(
           lines(
             cs[cs$agent == agent_name][step_seq]$t,
             cs[cs$agent == agent_name][step_seq]$data,
-            lwd = 1,
-            lty = 1,
+            lwd = lwd,
+            lty = lt[line_counter],
             col = rgb(0.2, 0.2, 0.2, 0.8),
             type = "l"
           )
+          line_counter <- line_counter + 1
         }
       }
       axis(1)
@@ -350,18 +437,24 @@ Plot <- R6::R6Class(
       } else {
         legend_position <- "topleft"
       }
-      if (legend)
+      if (legend) {
+
+        if (!is.null(legend_labels)) agent_levels = legend_labels
+        if (use_colors == FALSE) cl = rgb(0.2, 0.2, 0.2, 0.8)
         legend(
           legend_position,
           NULL,
           agent_levels,
           col = cl,
-          lwd = 1,
-          lty = 1,
+          title = legend_title,
+          lwd = lwd,
+          lty = lt,
           bg = "white"
         )
+      }
       if (grid == FALSE)
         dev.flush()
+      par(old.par)
     },
     gg_color_hue = function(n) {
       hues = seq(15, 375, length = n + 1)
@@ -412,7 +505,10 @@ Plot <- R6::R6Class(
                   xlim = NULL,
                   legend = TRUE,
                   step_size = 1,
-                  start_step = 1) {
+                  start_step = 1,
+                  ylim = NULL,
+                  legend_labels = NULL,
+                  legend_title = NULL) {
       history <- check_history_data(history)
       if (grid == FALSE)
         dev.hold()
@@ -471,17 +567,11 @@ Plot <- R6::R6Class(
 
 #' @export
 plot.History <- function(x, ...) {
-  # need to extract these values from the ellipsis, as this function overrides
-  # plot(x, ...) for the History class, and needs to have the exact same (x,..)
-  # signature
-
   args <- eval(substitute(alist(...)))
-
   if ("type" %in% names(args))
     type = args$type
   else
     type = "cumulative"
-
   if ("args" %in% names(args))
     grid = args$grid
   else
@@ -502,29 +592,46 @@ plot.History <- function(x, ...) {
     use_colors = args$use_colors
   else
     use_colors = TRUE
-
   if ("ci" %in% names(args))
     ci = args$ci
   else
     ci = FALSE
-
   if ("step_size" %in% names(args))
     step_size = args$step_size
   else
     step_size = 1
-
+  if ("color_step" %in% names(args))
+    color_step = args$color_step
+  else
+    color_step = 1
+  if ("lty_step" %in% names(args))
+    lty_step = args$lty_step
+  else
+    lty_step = 1
+  if ("lwd" %in% names(args))
+    lwd = args$lwd
+  else
+    lwd = 1
   if ("start_step" %in% names(args))
     start_step = args$start_step
   else
     start_step = 1
-
+  if ("ylim" %in% names(args))
+    ylim = eval(args$ylim)
+  else
+    ylim = NULL
+  if ("legend_labels" %in% names(args))
+    legend_labels = eval(args$legend_labels)
+  else
+    legend_labels = NULL
+  if ("legend_title" %in% names(args))
+    legend_title = args$legend_title
+  else
+    legend_title = NULL
   if ("rate" %in% names(args))
     rate = args$rate
   else
     rate = FALSE
-
-
-
 
   if (type == "grid") {
     Plot$new()$grid(x,
@@ -533,7 +640,13 @@ plot.History <- function(x, ...) {
                     ci = ci,
                     step_size = step_size,
                     start_step = start_step,
-                    rate = rate)
+                    color_step = color_step,
+                    lty_step = lty_step,
+                    lwd = lwd,
+                    rate = rate,
+                    ylim = ylim,
+                    legend_labels = legend_labels,
+                    legend_title = legend_title)
   } else if (type == "cumulative") {
     Plot$new()$cumulative(
       x,
@@ -544,7 +657,13 @@ plot.History <- function(x, ...) {
       ci = ci,
       step_size = step_size,
       start_step = start_step,
-      rate = rate
+      color_step = color_step,
+      lty_step = lty_step,
+      lwd = lwd,
+      rate = rate,
+      ylim = ylim,
+      legend_labels = legend_labels,
+      legend_title = legend_title
     )
   } else if (type == "average") {
     Plot$new()$average(
@@ -556,7 +675,13 @@ plot.History <- function(x, ...) {
       ci = ci,
       step_size = step_size,
       start_step = start_step,
-      rate = rate
+      color_step = color_step,
+      lty_step = lty_step,
+      lwd = lwd,
+      rate = rate,
+      ylim = ylim,
+      legend_labels = legend_labels,
+      legend_title = legend_title
     )
   } else if (type == "optimal") {
     Plot$new()$optimal(
@@ -567,7 +692,13 @@ plot.History <- function(x, ...) {
       use_colors = use_colors,
       ci = ci,
       step_size = step_size,
-      start_step = start_step
+      start_step = start_step,
+      color_step = color_step,
+      lwd = lwd,
+      lty_step = lty_step,
+      ylim = ylim,
+      legend_labels = legend_labels,
+      legend_title = legend_title
     )
   } else if (type == "arms") {
     Plot$new()$arms(
@@ -576,7 +707,10 @@ plot.History <- function(x, ...) {
       legend = legend,
       use_colors = use_colors,
       step_size = step_size,
-      start_step = start_step
+      start_step = start_step,
+      ylim = ylim,
+      legend_labels = legend_labels,
+      legend_title = legend_title
     )
   }
 }
