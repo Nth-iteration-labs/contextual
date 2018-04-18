@@ -11,13 +11,8 @@ source("./dependent_observations/bandit_bernoulli.R")
 horizon     <- 3000
 simulations <- 10
 n_subjects  <- 100
-lambda      <- 4
 
-bandit      <- BernoulliBandit$new( n_subjects = n_subjects,
-                                    arm_one_shape = c(1.5, 1.5),
-                                    arm_two_shape = c(1.5, 1.5),
-                                    poisson_user_sampling = TRUE,
-                                    lambda = 2 )
+bandit      <- BernoulliBandit$new( n_subjects = 50, arm_one_shape = c(1.5, 1.5), arm_two_shape = c(1.5, 1.5) )
 
 ##################### eGreedy ###################
 
@@ -30,12 +25,8 @@ agents      <- list(Agent$new(PartiallyPooledEgreedyPolicy$new(epsilon = 0.1, n_
 
 history     <- Simulator$new(agents = agents,
                              horizon = horizon,
-                             simulations = simulations,
-                             save_theta = FALSE,
-                             do_parallel = TRUE)$run()
+                             simulations = simulations, do_parallel = FALSE)$run()
 
-plot(history, type = "cumulative", regret = FALSE)
-plot(history, type = "cumulative", rate = TRUE)
 plot(history, type = "cumulative", rate = FALSE)
 
 ##################### Thompson ###################
@@ -48,12 +39,8 @@ agents      <- list(Agent$new(PooledThompsonPolicy$new(name = "PooledT"), bandit
 
 history     <- Simulator$new(agents = agents,
                              horizon = horizon,
-                             simulations = simulations,
-                             save_theta = FALSE,
-                             do_parallel = TRUE)$run()
+                             simulations = simulations)$run()
 
-plot(history, type = "cumulative", regret = FALSE)
-plot(history, type = "cumulative", rate = TRUE)
 plot(history, type = "cumulative", rate = FALSE)
 
 ##################### UCB ########################
@@ -67,11 +54,7 @@ agents      <- list(Agent$new(PooledUCBPolicy$new(name = "PooledUCB"), bandit),
 
 history     <- Simulator$new(agents = agents,
                              horizon = horizon,
-                             simulations = simulations,
-                             save_theta = FALSE,
-                             do_parallel = TRUE)$run()
+                             simulations = simulations)$run()
 
-plot(history, type = "cumulative", regret = FALSE)
-plot(history, type = "cumulative", rate = TRUE)
 plot(history, type = "cumulative", rate = FALSE)
 

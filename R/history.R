@@ -63,15 +63,17 @@ History <- R6::R6Class(
           policy_name
         )
       )
-      if (self$save_context & !self$save_theta) {
-        data.table::set(data, index, 9L , list(list(context_value)))
-      } else if (!self$save_context & self$save_theta) {
-        data.table::set(data, index, 9L, list(list(theta_value)))
-        ## if split over mult col
-        #data[index, (paste0("X.", seq_along(context))) := context]
-      } else if (self$save_context & self$save_theta) {
-        data.table::set(data, index, 9L, list(list(context_value)))
-        data.table::set(data, index, 10L , list(list(theta_value)))
+      if (self$save_context | self$save_theta) {
+        if (!self$save_theta) {
+          data.table::set(data, index, 9L , list(list(context_value)))
+        } else if (!self$save_context) {
+          data.table::set(data, index, 9L, list(list(theta_value)))
+          ## if split over mult col
+          #data[index, (paste0("X.", seq_along(context))) := context]
+        } else {
+          data.table::set(data, index, 9L, list(list(context_value)))
+          data.table::set(data, index, 10L , list(list(theta_value)))
+        }
       }
       invisible(self)
     },
