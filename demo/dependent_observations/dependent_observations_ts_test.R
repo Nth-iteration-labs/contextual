@@ -10,7 +10,7 @@ options(mc.cores = parallel::detectCores())
 
 ##################### Settings ##################
 
-horizon     <- 300
+horizon     <- 30
 simulations <- 10
 n_subjects  <- 100
 
@@ -25,9 +25,13 @@ agents      <- list(Agent$new(PartiallyPooledThompsonPolicy$new(n_subjects = n_s
                     Agent$new(PooledThompsonPolicy$new(name = "PooledT"), bandit),
                     Agent$new(UnpooledThompsonPolicy$new(n_subjects = n_subjects, name = "UnpooledT"), bandit))
 
+ptm         <- proc.time()
+
 history     <- Simulator$new(agents = agents,
                              horizon = horizon,
                              simulations = simulations,
                              do_parallel = FALSE)$run()
+
+print(proc.time() - ptm)
 
 plot(history, type = "cumulative", rate = FALSE)

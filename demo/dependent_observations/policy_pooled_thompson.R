@@ -109,30 +109,31 @@ PartiallyPooledThompsonPolicy <- R6::R6Class(
       n_subjects <- self$n_subjects
       n <- theta$n[[1]]
       l <- theta$l[[1]]
-      self$fit_a <-
+      txt <- capture.output(self$fit_a <-
         stan(
           "beta_binom_hier_a.stan",
           data = c("n_subjects", "n", "l"),
           iter = 20,
           warmup = 10,
-          chains = 1,
-          seed = 1234  ### TODO: use main seed here!
-        )
+          chains = 1
+
+          #seed = 1234  ### TODO: use main seed here!
+        ))
       self$theta_a <- summary(self$fit_a, pars = c("theta"))$summary[, "mean"]
       self$kappa_a <- summary(self$fit_a, pars = c("kappa"))$summary[, "mean"]
       self$phi_a <- summary(self$fit_a, pars = c("phi"))$summary[, "mean"]
       n_subjects <- self$n_subjects
       n <- theta$n[[2]]
       l <- theta$l[[2]]
-      self$fit_b <-
+      txt <- capture.output(self$fit_b <-
         stan(
           "beta_binom_hier_b.stan",
           data = c("n_subjects", "n", "l"),
           iter = 20,
           warmup = 10,
-          chains = 1,
-          seed = 1234  ### TODO: use main seed here!
-        )
+          chains = 1
+
+        ))
       self$theta_b <- summary(self$fit_b, pars = c("theta"))$summary[, "mean"]
       self$kappa_b <- summary(self$fit_b, pars = c("kappa"))$summary[, "mean"]
       self$phi_b <- summary(self$fit_b, pars = c("phi"))$summary[, "mean"]
@@ -171,16 +172,16 @@ PartiallyPooledThompsonPolicy <- R6::R6Class(
           n_subjects <- self$n_subjects
           n <- theta$n[[1]]
           l <- theta$l[[1]]
-          self$fit_a <-
+          txt <- capture.output(self$fit_a <-
             stan(
               "beta_binom_hier_a.stan",
               data = c("n_subjects", "n", "l"),
               iter = 20,
               warmup = 10,
               init = init_val_a,
-              chains = 1,
-              seed = 1234
-            )
+              chains = 1
+
+            ))
           self$theta_a <- summary(self$fit_a, pars = c("theta"))$summary[, "mean"]
           self$kappa_a <- summary(self$fit_a, pars = c("kappa"))$summary[, "mean"]
           self$phi_a <- summary(self$fit_a, pars = c("phi"))$summary[, "mean"]
@@ -201,16 +202,16 @@ PartiallyPooledThompsonPolicy <- R6::R6Class(
           n_subjects <- self$n_subjects
           n <- theta$n[[2]]
           l <- theta$l[[2]]
-          self$fit_b <-
+          txt <- capture.output(self$fit_b <-
             stan(
               "beta_binom_hier_b.stan",
               data = c("n_subjects", "n", "l"),
               iter = 20,
               warmup = 10,
               init = init_val_b,
-              chains = 1,
-              seed = 1234
-            )
+              chains = 1
+
+            ))
           self$theta_b <- summary(self$fit_b, pars = c("theta"))$summary[, "mean"]
           self$kappa_b <- summary(self$fit_b, pars = c("kappa"))$summary[, "mean"]
           self$phi_b <- summary(self$fit_b, pars = c("phi"))$summary[, "mean"]
