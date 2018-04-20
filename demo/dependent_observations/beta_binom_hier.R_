@@ -1,0 +1,161 @@
+#########################################################################
+
+# Example of a Policy
+
+#########################################################################
+
+library("rstan")
+setwd("~/GitHub/contextual/demo/dependent_observations")
+
+rstan_options(auto_write = TRUE)
+options(mc.cores = parallel::detectCores())
+
+######### Initialization ###########
+
+# Set up the following:
+
+# We have J is the number of subjects:
+
+n_subjects <- 10
+
+J <- n_subjects # Given by user/parameter
+
+## N (total interactions for population per arm)
+
+N_a <- 0
+N_b <- 0
+
+# For each subject, we keep track of:
+
+## n (total interactions for that subject per arm)
+
+n_a <- rep(0, J)
+n_b <- rep(0, J)
+
+## l (number of successes for that subject)
+
+l_a <- rep(0, J)
+l_b <- rep(0, J)
+
+# Also we need to keep track of total parameters
+
+## theta, phi, kappa (for computing posterior)
+## For this we just run Stan once so that we can use the parameters in a loop later
+
+fit_a <-
+  stan(
+    "beta_binom_hier_a.stan",
+    data = c("J", "n_a", "l_a"),
+    iter = 20,
+    warmup = 10,
+    chains = 1,
+    seed = 1234
+  )
+theta_a <- summary(fit_a, pars = c("theta"))$summary[, "mean"]
+kappa_a <- summary(fit_a, pars = c("kappa"))$summary[, "mean"]
+phi_a <- summary(fit_a, pars = c("phi"))$summary[, "mean"]
+
+fit_b <-
+  stan(
+    "beta_binom_hier_b.stan",
+    data = c("J", "n_b", "l_b"),
+    iter = 20,
+    warmup = 10,
+    chains = 1,
+    seed = 1234
+  )
+theta_b <- summary(fit_b, pars = c("theta"))$summary[, "mean"]
+kappa_b <- summary(fit_b, pars = c("kappa"))$summary[, "mean"]
+phi_b <- summary(fit_b, pars = c("phi"))$summary[, "mean"]
+
+# Furthermore, we need to keep a list theta_samples
+
+theta_samples_a <- extract(fit_a, pars = c("theta"))$theta
+phi_samples_a <- extract(fit_a, pars = c("phi"))$phi
+kappa_samples_a <- extract(fit_a, pars = c("kappa"))$kappa
+
+theta_samples_b <- extract(fit_b, pars = c("theta"))$theta
+phi_samples_b <- extract(fit_b, pars = c("phi"))$phi
+kappa_samples_b <- extract(fit_b, pars = c("kappa"))$kappa
+
+######## Getting an Action #########
+
+# Get Theta from posterior of arm A and arm B
+# Using n_a %% 10 and n_b %% 10 we select the current theta
+# If we haven't seen a user yet, we just use Theta from Stan that is just random theta, is that okay?
+# Or if n_a == 0, then do random sample from beta(kappa*phi,kappa*(1-phi))?
+# Select arm with highest theta_sample(K_a%%10) theta_samples(K_b%%10)
+
+if (theta_samples_a[n_a %% 10 + 1, userid] > theta_samples_b[n_b %% 10 +
+                                                             1, userid]) {
+  return arm_a # Or whatever that variable is called/how you do it
+} else {
+  return arm_b # Same
+}
+
+######## Setting a Reward ##########
+
+# After 10 (total, so over all users) rewards for an arm, update it
+# Stan code that updates posterior
+# Retrieve theta, kappa and phi to use in next update
+# And retrieve the theta's from 10 samples, to use for each sample
+
+# First update user parameters
+if (action == arm_a) {
+  n_a[userid] <- n_a[userid] + 1
+  l_a[userid] <- l_a[userid] + reward
+  N_a <- N_a + 1
+  if (N_a %% 10 == 0) {
+    init_val_a <-
+      list(list(
+        theta = theta_a,
+        kappa = kappa_a,
+        phi = phi_a
+      ))
+    fit_a <-
+      stan(
+        "beta_binom_hier_a.stan",
+        data = c("J", "n_a", "l_a"),
+        iter = 20,
+        warmup = 10,
+        init = init_val_a,
+        chains = 1,
+        seed = 1234
+      )
+    theta_a <- summary(fit_a, pars = c("theta"))$summary[, "mean"]
+    kappa_a <- summary(fit_a, pars = c("kappa"))$summary[, "mean"]
+    phi_a <- summary(fit_a, pars = c("phi"))$summary[, "mean"]
+    theta_samples_a <- extract(fit_a, pars = c("theta"))$theta
+    phi_samples_a <- extract(fit_a, pars = c("phi"))$phi
+    kappa_samples_a <- extract(fit_a, pars = c("kappa"))$kappa
+  }
+} else {
+  # arm b
+  n_b[userid] <- n_b[userid] + 1
+  l_b[userid] <- l_b[userid] + reward
+  N_b <- N_b + 1
+  if (N_b %% 10 == 0) {
+    init_val_b <-
+      list(list(
+        theta = theta_b,
+        kappa = kappa_b,
+        phi = phi_b
+      ))
+    fit_b <-
+      stan(
+        "beta_binom_hier_b.stan",
+        data = c("J", "n_b", "l_b"),
+        iter = 20,
+        warmup = 10,
+        init = init_val_b,
+        chains = 1,
+        seed = 1234
+      )
+    theta_b <- summary(fit_b, pars = c("theta"))$summary[, "mean"]
+    kappa_b <- summary(fit_b, pars = c("kappa"))$summary[, "mean"]
+    phi_b <- summary(fit_b, pars = c("phi"))$summary[, "mean"]
+    theta_samples_b <- extract(fit_b, pars = c("theta"))$theta
+    phi_samples_b <- extract(fit_b, pars = c("phi"))$phi
+    kappa_samples_b <- extract(fit_b, pars = c("kappa"))$kappa
+  }
+}
