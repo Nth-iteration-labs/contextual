@@ -47,6 +47,18 @@ Simulator <- R6::R6Class(
     reset = function() {
       self$history <- History$new(self$horizon * self$number_of_agents * self$simulations)
       self$sims_per_agent_list <-  matrix(list(), self$simulations, self$number_of_agents)
+      # make policy names unique by appending sequence numbers to duplicates.
+      policy_name_list <- list()
+      for (agent_index in 1L:self$number_of_agents) {
+
+        current_policy_name <- self$agents[[agent_index]]$policy$name
+        policy_name_list <- c(policy_name_list,current_policy_name)
+        current_policy_name_occurrences <- length(policy_name_list[policy_name_list == current_policy_name])
+        if (current_policy_name_occurrences > 1) {
+          self$agents[[agent_index]]$policy$name <- paste0(current_policy_name,'.',current_policy_name_occurrences)
+        }
+      }
+      # clone bandits and policies
       for (sim_index in 1L:self$simulations) {
         for (agent_index in 1L:self$number_of_agents) {
           self$sims_per_agent_list[sim_index, agent_index]  <- list(self$agents[[agent_index]]$clone(deep = FALSE))
