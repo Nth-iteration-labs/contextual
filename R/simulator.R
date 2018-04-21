@@ -62,7 +62,6 @@ Simulator <- R6::R6Class(
       for (sim_index in 1L:self$simulations) {
         for (agent_index in 1L:self$number_of_agents) {
           self$sims_per_agent_list[sim_index, agent_index]  <- list(self$agents[[agent_index]]$clone(deep = FALSE))
-
           self$sims_per_agent_list[[sim_index, agent_index]]$reset()
           self$sims_per_agent_list[[sim_index, agent_index]]$bandit <- self$sims_per_agent_list[[sim_index, agent_index]]$bandit$clone(deep = TRUE)
           self$sims_per_agent_list[[sim_index, agent_index]]$policy <- self$sims_per_agent_list[[sim_index, agent_index]]$policy$clone(deep = FALSE)  ## save theta here if deep, then contextual class gone though
@@ -97,7 +96,7 @@ Simulator <- R6::R6Class(
         .inorder = TRUE,
         .export = c("History"),
         .noexport = c("sims_per_agent_list","history"),
-        .packages = c("data.table","itertools")
+        .packages = c("data.table","itertools","rstan")
       ) %fun% {
         index <- 1L
         local_history <- History$new( horizon * number_of_agents * length(sims_agents), save_context, save_theta )
