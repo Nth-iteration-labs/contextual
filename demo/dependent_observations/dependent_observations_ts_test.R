@@ -5,13 +5,11 @@ library("rstan")
 setwd("~/GitHub/contextual/demo/dependent_observations")
 source("../dev.R")
 source("./bandit_bernoulli.R")
-rstan_options(auto_write = TRUE)
-options(mc.cores = parallel::detectCores())
 
 ##################### Settings ##################
 
-horizon     <- 3000
-simulations <- 30
+horizon     <- 300
+simulations <- 100
 n_subjects  <- 100
 
 bandit      <- BernoulliBandit$new( n_subjects = 50, arm_one_shape = c(1.5, 1.5), arm_two_shape = c(1.5, 1.5) )
@@ -21,7 +19,17 @@ bandit      <- BernoulliBandit$new( n_subjects = 50, arm_one_shape = c(1.5, 1.5)
 # import UnpooledThompson and PooledThompson policies
 source("./policy_pooled_thompson.R")
 
-agents      <- list(Agent$new(PartiallyPooledThompsonPolicy$new(n_subjects = n_subjects, name = "PartialT"), bandit),
+# do Stan modeling
+print("Start Stan Modeling")
+rstan_options(auto_write = TRUE)
+options(mc.cores = parallel::detectCores())
+cmod   <- rstan::stanc(file = "beta_binom_hier_a.stan")
+model  <- rstan::stan_model(stanc_ret = cmod, save_dso = TRUE, auto_write = TRUE )
+print("End Stan Modeling")
+
+agents      <- list(Agent$new(PartiallyPooledThompsonPolicy$new(n_subjects = n_subjects,
+                                                                stan_model = model,
+                                                                name = "PartialT"), bandit),
                     Agent$new(PooledThompsonPolicy$new(name = "PooledT"), bandit),
                     Agent$new(UnpooledThompsonPolicy$new(n_subjects = n_subjects, name = "UnpooledT"), bandit))
 

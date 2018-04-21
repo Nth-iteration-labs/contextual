@@ -1,3 +1,5 @@
+library("rstan")
+
 UnpooledThompsonPolicy <- R6::R6Class(
   "UnpooledThompsonPolicy",
   portable = FALSE,
@@ -92,9 +94,11 @@ PartiallyPooledThompsonPolicy <- R6::R6Class(
     theta_samples_b = NULL,
     fit_a = NULL,
     fit_b = NULL,
-    initialize = function(n_subjects = 1, name = "PartiallyPooledThompsonPolicy") {
+    stan_model = NULL,
+    initialize = function(n_subjects = 1, stan_model, name = "PartiallyPooledThompsonPolicy") {
       super$initialize(name)
       self$n_subjects = n_subjects
+      self$stan_model = stan_model
     },
     set_parameters = function() {
       self$theta <- list(n = list(rep(0,self$n_subjects),rep(0,self$n_subjects)),  # TODO: make this into k-arms 0, not 0,0
@@ -105,44 +109,25 @@ PartiallyPooledThompsonPolicy <- R6::R6Class(
       n_subjects <- self$n_subjects
       n <- theta$n[[1]]
       l <- theta$l[[1]]
-
-
-
-
-      #capture.output(
-      fit_a <-
-        stan(
-          "beta_binom_hier_a.stan",
-          data = c("n_subjects", "n", "l"),
-          iter = 20,
-          warmup = 10,
-          chains = 1
-          #refresh = -1
-          #seed = 1234  ### TODO: use main seed here!
-        )
-      #)
+      capture.output(fit_a <- rstan::sampling(self$stan_model,
+                      data = c("n_subjects", "n", "l"),
+                      iter = 20,
+                      warmup = 10,
+                      chains = 1))
       self$theta_a <- summary(fit_a, pars = c("theta"))$summary[, "mean"]
       self$kappa_a <- summary(fit_a, pars = c("kappa"))$summary[, "mean"]
       self$phi_a <- summary(fit_a, pars = c("phi"))$summary[, "mean"]
       n_subjects <- self$n_subjects
       n <- theta$n[[2]]
       l <- theta$l[[2]]
-      #capture.output(
-      fit_b <-
-        stan(
-          "beta_binom_hier_b.stan",
-          data = c("n_subjects", "n", "l"),
-          iter = 20,
-          warmup = 10,
-          chains = 1
-        )
-      #)
+      capture.output(fit_b <- rstan::sampling(self$stan_model,
+                        data = c("n_subjects", "n", "l"),
+                        iter = 20,
+                        warmup = 10,
+                        chains = 1))
       self$theta_b <- summary(fit_b, pars = c("theta"))$summary[, "mean"]
       self$kappa_b <- summary(fit_b, pars = c("kappa"))$summary[, "mean"]
       self$phi_b <- summary(fit_b, pars = c("phi"))$summary[, "mean"]
-
-      # Furthermore, we need to keep a list theta_samples
-
       self$theta_samples_a <- extract(fit_a, pars = c("theta"))$theta
       self$theta_samples_b <- extract(fit_b, pars = c("theta"))$theta
     },
@@ -173,18 +158,12 @@ PartiallyPooledThompsonPolicy <- R6::R6Class(
           n_subjects <- self$n_subjects
           n <- theta$n[[1]]
           l <- theta$l[[1]]
-          #capture.output(
-          fit_a <-
-            stan(
-              "beta_binom_hier_a.stan",
-              data = c("n_subjects", "n", "l"),
-              iter = 20,
-              warmup = 10,
-              init = init_val_a,
-              #refresh = -1,
-              chains = 1
-            )
-          #)
+          capture.output(fit_a <- rstan::sampling(self$stan_model,
+                            data = c("n_subjects", "n", "l"),
+                            iter = 20,
+                            init = init_val_a,
+                            warmup = 10,
+                            chains = 1))
           self$theta_a <- summary(fit_a, pars = c("theta"))$summary[, "mean"]
           self$kappa_a <- summary(fit_a, pars = c("kappa"))$summary[, "mean"]
           self$phi_a <- summary(fit_a, pars = c("phi"))$summary[, "mean"]
@@ -205,18 +184,12 @@ PartiallyPooledThompsonPolicy <- R6::R6Class(
           n_subjects <- self$n_subjects
           n <- theta$n[[2]]
           l <- theta$l[[2]]
-          #capture.output(
-          fit_b <-
-            stan(
-              "beta_binom_hier_b.stan",
-              data = c("n_subjects", "n", "l"),
-              iter = 20,
-              warmup = 10,
-              init = init_val_b,
-              chains = 1
-              #refresh = -1
-            )
-          #)
+          capture.output(fit_b <- rstan::sampling(self$stan_model,
+                            data = c("n_subjects", "n", "l"),
+                            iter = 20,
+                            init = init_val_b,
+                            warmup = 10,
+                            chains = 1))
           self$theta_b <- summary(fit_b, pars = c("theta"))$summary[, "mean"]
           self$kappa_b <- summary(fit_b, pars = c("kappa"))$summary[, "mean"]
           self$phi_b <- summary(fit_b, pars = c("phi"))$summary[, "mean"]
