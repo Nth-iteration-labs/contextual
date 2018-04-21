@@ -89,11 +89,7 @@ PartiallyPooledThompsonPolicy <- R6::R6Class(
     kappa_b = NULL,
     phi_b = NULL,
     theta_samples_a = NULL,
-    phi_samples_a = NULL,       # why? deleted.
-    kappa_samples_a = NULL,     # why? deleted.
     theta_samples_b = NULL,
-    phi_samples_b = NULL,       # why? deleted.
-    kappa_samples_b = NULL,     # why? deleted.
     fit_a = NULL,
     fit_b = NULL,
     initialize = function(n_subjects = 1, name = "PartiallyPooledThompsonPolicy") {
@@ -109,39 +105,46 @@ PartiallyPooledThompsonPolicy <- R6::R6Class(
       n_subjects <- self$n_subjects
       n <- theta$n[[1]]
       l <- theta$l[[1]]
-      txt <- capture.output(self$fit_a <-
+
+
+
+
+      #capture.output(
+      fit_a <-
         stan(
           "beta_binom_hier_a.stan",
           data = c("n_subjects", "n", "l"),
           iter = 20,
           warmup = 10,
           chains = 1
-
+          #refresh = -1
           #seed = 1234  ### TODO: use main seed here!
-        ))
-      self$theta_a <- summary(self$fit_a, pars = c("theta"))$summary[, "mean"]
-      self$kappa_a <- summary(self$fit_a, pars = c("kappa"))$summary[, "mean"]
-      self$phi_a <- summary(self$fit_a, pars = c("phi"))$summary[, "mean"]
+        )
+      #)
+      self$theta_a <- summary(fit_a, pars = c("theta"))$summary[, "mean"]
+      self$kappa_a <- summary(fit_a, pars = c("kappa"))$summary[, "mean"]
+      self$phi_a <- summary(fit_a, pars = c("phi"))$summary[, "mean"]
       n_subjects <- self$n_subjects
       n <- theta$n[[2]]
       l <- theta$l[[2]]
-      txt <- capture.output(self$fit_b <-
+      #capture.output(
+      fit_b <-
         stan(
           "beta_binom_hier_b.stan",
           data = c("n_subjects", "n", "l"),
           iter = 20,
           warmup = 10,
           chains = 1
-
-        ))
-      self$theta_b <- summary(self$fit_b, pars = c("theta"))$summary[, "mean"]
-      self$kappa_b <- summary(self$fit_b, pars = c("kappa"))$summary[, "mean"]
-      self$phi_b <- summary(self$fit_b, pars = c("phi"))$summary[, "mean"]
+        )
+      #)
+      self$theta_b <- summary(fit_b, pars = c("theta"))$summary[, "mean"]
+      self$kappa_b <- summary(fit_b, pars = c("kappa"))$summary[, "mean"]
+      self$phi_b <- summary(fit_b, pars = c("phi"))$summary[, "mean"]
 
       # Furthermore, we need to keep a list theta_samples
 
-      self$theta_samples_a <- extract(self$fit_a, pars = c("theta"))$theta
-      self$theta_samples_b <- extract(self$fit_b, pars = c("theta"))$theta
+      self$theta_samples_a <- extract(fit_a, pars = c("theta"))$theta
+      self$theta_samples_b <- extract(fit_b, pars = c("theta"))$theta
     },
     get_action = function(context, t) {
       userid <- context$user_context
@@ -156,8 +159,6 @@ PartiallyPooledThompsonPolicy <- R6::R6Class(
       arm      <- action$choice
       userid   <- context$user_context
       reward   <- reward$reward
-
-      # First update user parameters
       if (arm == 1) {
         theta$n[[1]][userid] <- theta$n[[1]][userid] + 1
         theta$l[[1]][userid] <- theta$l[[1]][userid] + reward
@@ -172,20 +173,22 @@ PartiallyPooledThompsonPolicy <- R6::R6Class(
           n_subjects <- self$n_subjects
           n <- theta$n[[1]]
           l <- theta$l[[1]]
-          txt <- capture.output(self$fit_a <-
+          #capture.output(
+          fit_a <-
             stan(
               "beta_binom_hier_a.stan",
               data = c("n_subjects", "n", "l"),
               iter = 20,
               warmup = 10,
               init = init_val_a,
+              #refresh = -1,
               chains = 1
-
-            ))
-          self$theta_a <- summary(self$fit_a, pars = c("theta"))$summary[, "mean"]
-          self$kappa_a <- summary(self$fit_a, pars = c("kappa"))$summary[, "mean"]
-          self$phi_a <- summary(self$fit_a, pars = c("phi"))$summary[, "mean"]
-          self$theta_samples_a <- extract(self$fit_a, pars = c("theta"))$theta
+            )
+          #)
+          self$theta_a <- summary(fit_a, pars = c("theta"))$summary[, "mean"]
+          self$kappa_a <- summary(fit_a, pars = c("kappa"))$summary[, "mean"]
+          self$phi_a <- summary(fit_a, pars = c("phi"))$summary[, "mean"]
+          self$theta_samples_a <- extract(fit_a, pars = c("theta"))$theta
         }
       } else {
         # arm b
@@ -202,7 +205,8 @@ PartiallyPooledThompsonPolicy <- R6::R6Class(
           n_subjects <- self$n_subjects
           n <- theta$n[[2]]
           l <- theta$l[[2]]
-          txt <- capture.output(self$fit_b <-
+          #capture.output(
+          fit_b <-
             stan(
               "beta_binom_hier_b.stan",
               data = c("n_subjects", "n", "l"),
@@ -210,14 +214,13 @@ PartiallyPooledThompsonPolicy <- R6::R6Class(
               warmup = 10,
               init = init_val_b,
               chains = 1
-
-            ))
-          self$theta_b <- summary(self$fit_b, pars = c("theta"))$summary[, "mean"]
-          self$kappa_b <- summary(self$fit_b, pars = c("kappa"))$summary[, "mean"]
-          self$phi_b <- summary(self$fit_b, pars = c("phi"))$summary[, "mean"]
-          self$theta_samples_b <- extract(self$fit_b, pars = c("theta"))$theta
-          self$phi_samples_b <- extract(self$fit_b, pars = c("phi"))$phi
-          self$kappa_samples_b <- extract(self$fit_b, pars = c("kappa"))$kappa
+              #refresh = -1
+            )
+          #)
+          self$theta_b <- summary(fit_b, pars = c("theta"))$summary[, "mean"]
+          self$kappa_b <- summary(fit_b, pars = c("kappa"))$summary[, "mean"]
+          self$phi_b <- summary(fit_b, pars = c("phi"))$summary[, "mean"]
+          self$theta_samples_b <- extract(fit_b, pars = c("theta"))$theta
         }
       }
       theta

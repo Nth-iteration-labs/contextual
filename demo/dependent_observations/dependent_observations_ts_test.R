@@ -10,8 +10,8 @@ options(mc.cores = parallel::detectCores())
 
 ##################### Settings ##################
 
-horizon     <- 30
-simulations <- 10
+horizon     <- 3000
+simulations <- 30
 n_subjects  <- 100
 
 bandit      <- BernoulliBandit$new( n_subjects = 50, arm_one_shape = c(1.5, 1.5), arm_two_shape = c(1.5, 1.5) )
