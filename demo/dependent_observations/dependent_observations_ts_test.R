@@ -40,6 +40,6 @@ history     <- Simulator$new(agents = agents,
                              simulations = simulations,
                              do_parallel = TRUE)$run()
 
-message(proc.time() - ptm)
+print(proc.time() - ptm)
 
 plot(history, type = "cumulative", rate = FALSE)

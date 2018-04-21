@@ -24,7 +24,8 @@ Suggests:
     covr,
     knitr,
     rmarkdown,
-    devtools
+    devtools,
+    rstan
 VignetteBuilder: knitr
 URL: https://github.com/Nth-iteration-labs/contextual
 BugReports: https://github.com/Nth-iteration-labs/contextual/issues

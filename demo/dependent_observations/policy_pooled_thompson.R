@@ -108,8 +108,8 @@ PartiallyPooledThompsonPolicy <- R6::R6Class(
       l <- theta$l[[1]]
       capture.output(fit_a <- rstan::sampling(self$stan_model,
                       data = c("n_subjects", "n", "l"),
-                      iter = 2000,
-                      warmup = 1000,
+                      iter = 200,
+                      warmup = 100,
                       refresh = 0,
                       chains = 1))
       self$theta_a <- summary(fit_a, pars = c("theta"))$summary[, "mean"]
@@ -120,8 +120,8 @@ PartiallyPooledThompsonPolicy <- R6::R6Class(
       l <- theta$l[[2]]
       capture.output(fit_b <- rstan::sampling(self$stan_model,
                         data = c("n_subjects", "n", "l"),
-                        iter = 2000,
-                        warmup = 1000,
+                        iter = 200,
+                        warmup = 100,
                         refresh = 0,
                         chains = 1))
       self$theta_b <- summary(fit_b, pars = c("theta"))$summary[, "mean"]
@@ -159,9 +159,9 @@ PartiallyPooledThompsonPolicy <- R6::R6Class(
           l <- theta$l[[1]]
           capture.output(fit_a <- rstan::sampling(self$stan_model,
                             data = c("n_subjects", "n", "l"),
-                            iter = 2000,
+                            iter = 200,
                             init = init_val_a,
-                            warmup = 1000,
+                            warmup = 100,
                             refresh = 0,
                             chains = 1))
           self$theta_a <- summary(fit_a, pars = c("theta"))$summary[, "mean"]
@@ -185,9 +185,9 @@ PartiallyPooledThompsonPolicy <- R6::R6Class(
           l <- theta$l[[2]]
           capture.output(fit_b <- rstan::sampling(self$stan_model,
                             data = c("n_subjects", "n", "l"),
-                            iter = 2000,
+                            iter = 200,
                             init = init_val_b,
-                            warmup = 1000,
+                            warmup = 100,
                             refresh = 0,
                             chains = 1))
           self$theta_b <- summary(fit_b, pars = c("theta"))$summary[, "mean"]
