@@ -115,15 +115,17 @@ Simulator <- R6::R6Class(
         .packages = par_packages
       ) %fun% {
         index <- 1L
-        local_history <- History$new( horizon * number_of_agents * length(sims_agents), save_context, save_theta )
-        agent_progress_counter <- 0
+        sim_agent_counter <- 0
+        sim_agent_total <- length(sims_agents)
+        local_history <- History$new( horizon * number_of_agents * sim_agent_total, save_context, save_theta)
         for (sim_agent in sims_agents) {
-          agent_progress_counter <- agent_progress_counter + 1
+          sim_agent_counter <- sim_agent_counter + 1
           if (write_progress_file) {
-            cat(paste0(as.character(Sys.time()),
-                       ", Process: ", i,
-                       ", Sim: ", agent_progress_counter, "\n"), file = "progress.txt", append = TRUE)
-            # TODO: add sim x of x, process i of i
+            cat(paste0(format(Sys.time(), format = "%H:%M:%OS6"),
+                       ", Worker: ", i,
+                       ", Sim: ", sim_agent_counter,
+                       " of ", sim_agent_total,"\n"),
+                file = "progress.txt", append = TRUE)
           }
           simulation_index <- sim_agent$sim_index
           policy_name <- sim_agent$policy$name
@@ -132,7 +134,6 @@ Simulator <- R6::R6Class(
           if (sim_agent$bandit$precaching ) {
             sim_agent$bandit$generate_bandit_data(n = horizon)
           }
-
           if (continouous_counter) sim_agent$set_t(as.integer((simulation_index - 1L) * horizon))
           for (t in 1L:horizon) {
             step <- sim_agent$step()
