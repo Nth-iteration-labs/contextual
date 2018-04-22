@@ -55,7 +55,7 @@ Simulator <- R6::R6Class(
       if (self$write_progress_file) cat(paste0(""), file = "progress.txt", append = FALSE)
       self$history <- History$new(self$horizon * self$number_of_agents * self$simulations)
       self$sims_per_agent_list <-  matrix(list(), self$simulations, self$number_of_agents)
-      # make policy names unique by appending sequence numbers to duplicates.
+      # make policy names unique by appending sequence numbers to duplicates
       policy_name_list <- list()
       for (agent_index in 1L:self$number_of_agents) {
 
@@ -66,7 +66,8 @@ Simulator <- R6::R6Class(
           self$agents[[agent_index]]$policy$name <- paste0(current_policy_name,'.',current_policy_name_occurrences)
         }
       }
-      # clone bandits and policies
+      # clone, precache and precalculate bandits and policies where relevant
+      message("Cloning, precaching and precalculating bandits and policies")
       for (sim_index in 1L:self$simulations) {
         for (agent_index in 1L:self$number_of_agents) {
           self$sims_per_agent_list[sim_index, agent_index]  <- list(self$agents[[agent_index]]$clone(deep = FALSE))
@@ -79,6 +80,7 @@ Simulator <- R6::R6Class(
       }
     },
     run = function() {
+      # run foreach either parallel or not, create workers
       `%fun%` <- foreach::`%do%`
       workers <- 1
       if (self$do_parallel) {
@@ -91,6 +93,7 @@ Simulator <- R6::R6Class(
         `%fun%` <- foreach::`%dopar%`
         message("Postworkercreation")
       }
+      # copy some variables to local scope
       horizon <- self$horizon
       sims_per_agent_list <- self$sims_per_agent_list
       number_of_agents <- self$number_of_agents
@@ -101,6 +104,7 @@ Simulator <- R6::R6Class(
       set_seed <- self$set_seed
       sa_iterator <- itertools::isplitRows(sims_per_agent_list, chunks = workers)
       par_packages <- c(c("data.table","itertools"),include_packages)
+      # running the main simulation loop
       foreach_results <- foreach::foreach(
         sims_agents = sa_iterator,
         i = iterators::icount(),
@@ -115,8 +119,12 @@ Simulator <- R6::R6Class(
         agent_progress_counter <- 0
         for (sim_agent in sims_agents) {
           agent_progress_counter <- agent_progress_counter + 1
-          if (write_progress_file)
-            cat(paste0("Process: ", i, " Sim: ", agent_progress_counter, "\n") , file = "progress.txt", append = TRUE)
+          if (write_progress_file) {
+            cat(paste0(as.character(Sys.time()),
+                       ", Process: ", i,
+                       ", Sim: ", agent_progress_counter, "\n"), file = "progress.txt", append = TRUE)
+            # TODO: add sim x of x, process i of i
+          }
           simulation_index <- sim_agent$sim_index
           policy_name <- sim_agent$policy$name
           set.seed(simulation_index + set_seed*42)
@@ -149,7 +157,6 @@ Simulator <- R6::R6Class(
       if (self$do_parallel) {
         parallel::stopCluster(cl)
       }
-      #foreach_results <- as.data.table(foreach_results)
       self$history$set_data_table(foreach_results)
       self$history
     }
