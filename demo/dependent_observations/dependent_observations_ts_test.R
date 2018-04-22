@@ -10,9 +10,9 @@ source("./bandit_bernoulli.R")
 
 horizon     <- 3000
 simulations <- 100
-n_subjects  <- 100
+n_subjects  <- 50
 
-bandit      <- BernoulliBandit$new( n_subjects = 50, arm_one_shape = c(1.5, 1.5), arm_two_shape = c(1.5, 1.5) )
+bandit      <- BernoulliBandit$new( n_subjects = n_subjects, arm_one_shape = c(1.5, 1.5), arm_two_shape = c(1.5, 1.5) )
 
 ##################### Thompson ###################
 
@@ -39,7 +39,8 @@ ptm         <- proc.time()
 history     <- Simulator$new(agents = agents,
                              horizon = horizon,
                              simulations = simulations,
-                             do_parallel = TRUE)$run()
+                             do_parallel = FALSE,
+                             include_packages = "rstan")$run()
 
 print(proc.time() - ptm)
 

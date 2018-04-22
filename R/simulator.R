@@ -22,6 +22,8 @@ Simulator <- R6::R6Class(
     sims_per_agent_list = NULL,
     continouous_counter = NULL,
     set_seed = NULL,
+    write_progress_file = NULL,
+    include_packages = NULL,
     initialize = function(agents,
                           horizon = 100L,
                           simulations = 100L,
@@ -30,7 +32,9 @@ Simulator <- R6::R6Class(
                           do_parallel = TRUE,
                           worker_max = 7,
                           continouous_counter = FALSE,
-                          set_seed = 0) {
+                          set_seed = 0,
+                          write_progress_file = TRUE,
+                          include_packages = NULL) {
       self$horizon <- horizon
       self$simulations <- simulations
       self$save_theta <- save_theta
@@ -42,11 +46,13 @@ Simulator <- R6::R6Class(
       self$do_parallel <- do_parallel
       self$continouous_counter <- continouous_counter
       self$set_seed <- set_seed
+      self$write_progress_file <- write_progress_file
+      self$include_packages <- include_packages
       self$reset()
     },
     reset = function() {
       # create empty progress.txt file
-      cat(paste0(""), file = "progress.txt", append = FALSE)
+      if (self$write_progress_file) cat(paste0(""), file = "progress.txt", append = FALSE)
       self$history <- History$new(self$horizon * self$number_of_agents * self$simulations)
       self$sims_per_agent_list <-  matrix(list(), self$simulations, self$number_of_agents)
       # make policy names unique by appending sequence numbers to duplicates.
@@ -90,9 +96,11 @@ Simulator <- R6::R6Class(
       number_of_agents <- self$number_of_agents
       save_context <- self$save_context
       save_theta <- self$save_theta
+      write_progress_file <- self$write_progress_file
       continouous_counter <- self$continouous_counter
       set_seed <- self$set_seed
       sa_iterator <- itertools::isplitRows(sims_per_agent_list, chunks = workers)
+      par_packages <- c(c("data.table","itertools"),include_packages)
       foreach_results <- foreach::foreach(
         sims_agents = sa_iterator,
         i = iterators::icount(),
@@ -100,14 +108,15 @@ Simulator <- R6::R6Class(
         .combine = function(x,y)rbindlist(list(x,y)),
         .export = c("History"),
         .noexport = c("sims_per_agent_list","history"),
-        .packages = c("data.table","itertools","rstan")  ########### conditional!
+        .packages = par_packages
       ) %fun% {
         index <- 1L
         local_history <- History$new( horizon * number_of_agents * length(sims_agents), save_context, save_theta )
         agent_progress_counter <- 0
         for (sim_agent in sims_agents) {
           agent_progress_counter <- agent_progress_counter + 1
-          cat(paste0("Process: ",i," Sim: ",agent_progress_counter,"\n"), file = "progress.txt", append = TRUE)
+          if (write_progress_file)
+            cat(paste0("Process: ", i, " Sim: ", agent_progress_counter, "\n") , file = "progress.txt", append = TRUE)
           simulation_index <- sim_agent$sim_index
           policy_name <- sim_agent$policy$name
           set.seed(simulation_index + set_seed*42)
