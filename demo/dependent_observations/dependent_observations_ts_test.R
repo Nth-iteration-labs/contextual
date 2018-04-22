@@ -8,8 +8,8 @@ source("./bandit_bernoulli.R")
 
 ##################### Settings ##################
 
-horizon     <- 3000
-simulations <- 100
+horizon     <- 30
+simulations <- 10
 n_subjects  <- 100
 
 bandit      <- BernoulliBandit$new( n_subjects = 50, arm_one_shape = c(1.5, 1.5), arm_two_shape = c(1.5, 1.5) )
@@ -23,12 +23,13 @@ source("./policy_pooled_thompson.R")
 message("Start Stan Modeling phase")
 rstan_options(auto_write = TRUE)
 options(mc.cores = parallel::detectCores())
-cmod   <- rstan::stanc(file = "beta_binom_hier_a.stan")
-model  <- rstan::stan_model(stanc_ret = cmod, save_dso = TRUE, auto_write = TRUE )
+model  <- rstan::stan_model(file = "beta_binom_hier_model.stan", save_dso = TRUE, auto_write = TRUE )
 message("End Stan modeling phase")
 
 agents      <- list(Agent$new(PartiallyPooledThompsonPolicy$new(n_subjects = n_subjects,
                                                                 stan_model = model,
+                                                                warm_up = 10,
+                                                                iter = 20,
                                                                 name = "PartialT"), bandit),
                     Agent$new(PooledThompsonPolicy$new(name = "PooledT"), bandit),
                     Agent$new(UnpooledThompsonPolicy$new(n_subjects = n_subjects, name = "UnpooledT"), bandit))

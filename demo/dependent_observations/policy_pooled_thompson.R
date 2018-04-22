@@ -94,10 +94,18 @@ PartiallyPooledThompsonPolicy <- R6::R6Class(
     fit_a = NULL,
     fit_b = NULL,
     stan_model = NULL,
-    initialize = function(n_subjects = 1, stan_model, name = "PartiallyPooledThompsonPolicy") {
+    warm_up = NULL,
+    iter = NULL,
+    initialize = function(n_subjects = 1,
+                          stan_model,
+                          warm_up = 100,
+                          iter = 200,
+                          name = "PartiallyPooledThompsonPolicy") {
       super$initialize(name)
       self$n_subjects = n_subjects
       self$stan_model = stan_model
+      self$warm_up = warm_up
+      self$iter = iter
     },
     set_parameters = function() {
       self$theta <- list(n = list(rep(0,self$n_subjects),rep(0,self$n_subjects)),  # TODO: make this into k-arms 0, not 0,0
@@ -108,8 +116,8 @@ PartiallyPooledThompsonPolicy <- R6::R6Class(
       l <- theta$l[[1]]
       capture.output(fit_a <- rstan::sampling(self$stan_model,
                       data = c("n_subjects", "n", "l"),
-                      iter = 200,
-                      warmup = 100,
+                      iter = self$iter,
+                      warmup = self$warm_up,
                       refresh = 0,
                       chains = 1))
       self$theta_a <- summary(fit_a, pars = c("theta"))$summary[, "mean"]
@@ -120,8 +128,8 @@ PartiallyPooledThompsonPolicy <- R6::R6Class(
       l <- theta$l[[2]]
       capture.output(fit_b <- rstan::sampling(self$stan_model,
                         data = c("n_subjects", "n", "l"),
-                        iter = 200,
-                        warmup = 100,
+                        iter = self$iter ,
+                        warmup = self$warm_up,
                         refresh = 0,
                         chains = 1))
       self$theta_b <- summary(fit_b, pars = c("theta"))$summary[, "mean"]
@@ -159,9 +167,9 @@ PartiallyPooledThompsonPolicy <- R6::R6Class(
           l <- theta$l[[1]]
           capture.output(fit_a <- rstan::sampling(self$stan_model,
                             data = c("n_subjects", "n", "l"),
-                            iter = 200,
+                            iter = self$iter ,
                             init = init_val_a,
-                            warmup = 100,
+                            warmup = self$warm_up,
                             refresh = 0,
                             chains = 1))
           self$theta_a <- summary(fit_a, pars = c("theta"))$summary[, "mean"]
@@ -185,9 +193,9 @@ PartiallyPooledThompsonPolicy <- R6::R6Class(
           l <- theta$l[[2]]
           capture.output(fit_b <- rstan::sampling(self$stan_model,
                             data = c("n_subjects", "n", "l"),
-                            iter = 200,
+                            iter = self$iter ,
                             init = init_val_b,
-                            warmup = 100,
+                            warmup = self$warm_up,
                             refresh = 0,
                             chains = 1))
           self$theta_b <- summary(fit_b, pars = c("theta"))$summary[, "mean"]
