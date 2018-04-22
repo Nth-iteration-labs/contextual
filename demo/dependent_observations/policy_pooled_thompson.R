@@ -98,8 +98,8 @@ PartiallyPooledThompsonPolicy <- R6::R6Class(
     iter = NULL,
     initialize = function(n_subjects = 1,
                           stan_model,
-                          warm_up = 100,
-                          iter = 200,
+                          warm_up = 10,
+                          iter = 20,
                           name = "PartiallyPooledThompsonPolicy") {
       super$initialize(name)
       self$n_subjects = n_subjects

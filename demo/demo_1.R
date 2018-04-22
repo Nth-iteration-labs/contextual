@@ -13,7 +13,7 @@ agent              <- Agent$new(policy,bandit)
 history            <- Simulator$new(agents = agent,
                                     horizon = horizon,
                                     simulations = simulations,
-                                    save_theta = TRUE,
+                                    save_theta = FALSE,
                                     do_parallel = TRUE)$run()
 
 plot(history, type = "grid")

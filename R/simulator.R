@@ -45,6 +45,8 @@ Simulator <- R6::R6Class(
       self$reset()
     },
     reset = function() {
+      # create empty progress.txt file
+      cat(paste0(""), file = "progress.txt", append = FALSE)
       self$history <- History$new(self$horizon * self$number_of_agents * self$simulations)
       self$sims_per_agent_list <-  matrix(list(), self$simulations, self$number_of_agents)
       # make policy names unique by appending sequence numbers to duplicates.
@@ -90,17 +92,22 @@ Simulator <- R6::R6Class(
       save_theta <- self$save_theta
       continouous_counter <- self$continouous_counter
       set_seed <- self$set_seed
+      sa_iterator <- itertools::isplitRows(sims_per_agent_list, chunks = workers)
       foreach_results <- foreach::foreach(
-        sims_agents = itertools::isplitRows(sims_per_agent_list, chunks = workers),
+        sims_agents = sa_iterator,
         i = iterators::icount(),
         .inorder = TRUE,
+        .combine = function(x,y)rbindlist(list(x,y)),
         .export = c("History"),
         .noexport = c("sims_per_agent_list","history"),
-        .packages = c("data.table","itertools","rstan")
+        .packages = c("data.table","itertools","rstan")  ########### conditional!
       ) %fun% {
         index <- 1L
         local_history <- History$new( horizon * number_of_agents * length(sims_agents), save_context, save_theta )
+        agent_progress_counter <- 0
         for (sim_agent in sims_agents) {
+          agent_progress_counter <- agent_progress_counter + 1
+          cat(paste0("Process: ",i," Sim: ",agent_progress_counter,"\n"), file = "progress.txt", append = TRUE)
           simulation_index <- sim_agent$sim_index
           policy_name <- sim_agent$policy$name
           set.seed(simulation_index + set_seed*42)
@@ -108,6 +115,7 @@ Simulator <- R6::R6Class(
           if (sim_agent$bandit$precaching ) {
             sim_agent$bandit$generate_bandit_data(n = horizon)
           }
+
           if (continouous_counter) sim_agent$set_t(as.integer((simulation_index - 1L) * horizon))
           for (t in 1L:horizon) {
             step <- sim_agent$step()
@@ -132,7 +140,7 @@ Simulator <- R6::R6Class(
       if (self$do_parallel) {
         parallel::stopCluster(cl)
       }
-      foreach_results <- data.table::rbindlist(foreach_results)
+      #foreach_results <- as.data.table(foreach_results)
       self$history$set_data_table(foreach_results)
       self$history
     }
