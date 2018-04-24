@@ -92,14 +92,15 @@ Simulator <- R6::R6Class(
           # Windows
           cl <- parallel::makeCluster(workers, useXDR = FALSE)
         } else {
-          cl <- parallel::makeCluster(workers, useXDR = FALSE, type="FORK")
+          cl <- parallel::makeCluster(workers, useXDR = FALSE, type = "FORK")
           if (grepl('darwin', version$os)) {
-            # Osx   - potential future osx/linux specific implementation settings go here
+            # macOS - potential future osx/linux specific implementation settings go here
           } else {
             # Linux - potential future osx/linux specific implementation settings go here
           }
         }
-
+        message(paste0("Cores available: ",nr_cores))
+        message(paste0("Workers assigned: ",workers))
         doParallel::registerDoParallel(cl)
         `%fun%` <- foreach::`%dopar%`
         message("Postworkercreation")

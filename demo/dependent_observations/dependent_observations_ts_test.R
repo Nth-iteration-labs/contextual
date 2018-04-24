@@ -1,16 +1,21 @@
 ##################### Imports ###################
 
 #library(contextual)
-library("rstan")
-setwd("~/GitHub/contextual/demo/dependent_observations")
+if (!require(rstan)) {
+  install.packages("rstan")
+  library("rstan")
+}
+
+setwd("~/GitHub/contextual/demo/dependent_observations") ## change this
 source("../dev.R")
 source("./bandit_bernoulli.R")
 
 ##################### Settings ##################
 
-horizon     <- 3000
+horizon     <- 100
 simulations <- 10
 n_subjects  <- 50
+workers     <- 55
 
 bandit      <- BernoulliBandit$new( n_subjects = n_subjects, arm_one_shape = c(1.5, 1.5), arm_two_shape = c(1.5, 1.5) )
 
@@ -39,7 +44,7 @@ history     <- Simulator$new(agents = agents,
                              horizon = horizon,
                              simulations = simulations,
                              do_parallel = TRUE,
-                             worker_max   = 120,
+                             worker_max   = workers,
                              include_packages = "rstan")$run()
 
 print(proc.time() - ptm)
