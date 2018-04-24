@@ -6,12 +6,20 @@ if ("package:contextual" %in% search()) detach("package:contextual", unload = T)
 rm(list = ls())
 # Garbage collection to free up memory, cleaning up after rm.
 gc()
+# Check if devtools installed, if not, install
+if (!require(devtools)) {
+  install.packages("devtools")
+  devtools::install_github("r-lib/testthat")
+}
 # Install package dependencies if needed...
 devtools::install_deps()
 # And load package dependencies, since do not load the package itself.
 devtools::load_all()
-# Set path to GhostScript command, necessary for local as-cran check.
-Sys.setenv(R_GSCMD = "C:\\Program Files\\gs\\gs9.22\\bin\\gswin64c.exe")
+# Set path to GhostScript command in Windows necessary for local as-cran check.
+if (grepl('w|W', .Platform$OS.type)) {
+  # Windows
+  Sys.setenv(R_GSCMD = "C:\\Program Files\\gs\\gs9.22\\bin\\gswin64c.exe")
+}
 
 
 # TODO LIST --------------------------------------------------------------------

@@ -2,6 +2,7 @@
 .Rhistory
 .RData
 .Ruserdata
+progress.txt
 packrat/lib*/
 *.RData
 inst/doc
@@ -11,3 +12,4 @@ tests/testthat/Rplots.pdf
 data/webscope/**
 demo/data/**
 yahoodb-journal
+

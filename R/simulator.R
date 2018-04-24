@@ -88,7 +88,18 @@ Simulator <- R6::R6Class(
         nr_cores <- parallel::detectCores()
         if (nr_cores >= 3) workers <- nr_cores - 1                              # nocov
         if (workers > worker_max) workers <- worker_max
-        cl <- parallel::makeCluster(workers, useXDR = FALSE)                    # type="FORK" only linux
+        if (grepl('w|W', .Platform$OS.type)) {
+          # Windows
+          cl <- parallel::makeCluster(workers, useXDR = FALSE)
+        } else {
+          cl <- parallel::makeCluster(workers, useXDR = FALSE, type="FORK")
+          if (grepl('darwin', version$os)) {
+            # Osx   - potential future osx/linux specific implementation settings go here
+          } else {
+            # Linux - potential future osx/linux specific implementation settings go here
+          }
+        }
+
         doParallel::registerDoParallel(cl)
         `%fun%` <- foreach::`%dopar%`
         message("Postworkercreation")

@@ -8,8 +8,8 @@ source("./bandit_bernoulli.R")
 
 ##################### Settings ##################
 
-horizon     <- 100
-simulations <- 14
+horizon     <- 3000
+simulations <- 10
 n_subjects  <- 50
 
 bandit      <- BernoulliBandit$new( n_subjects = n_subjects, arm_one_shape = c(1.5, 1.5), arm_two_shape = c(1.5, 1.5) )
@@ -39,6 +39,7 @@ history     <- Simulator$new(agents = agents,
                              horizon = horizon,
                              simulations = simulations,
                              do_parallel = TRUE,
+                             worker_max   = 120,
                              include_packages = "rstan")$run()
 
 print(proc.time() - ptm)
