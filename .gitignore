@@ -12,3 +12,5 @@ tests/testthat/Rplots.pdf
 data/webscope/*
 demo/data/*
 yahoodb-journal
+progress.txt
+**/progress.txt
