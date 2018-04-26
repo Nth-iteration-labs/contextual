@@ -192,7 +192,7 @@ In section 2, this paper will continue with a more formal definition of MAB and 
 
 \subsection{Formalisation}
 
-In formalizing the described cMAB problem, a (k-armed) \textbf{bandit} $B$ can be defined as a set of $k$ distributions $B=\{D_{1},\dots ,D_{k}\}}$, where each distribution is associated with the I.I.D. rewards delivered by one of the $k\in \mathbb {N} ^{+}}$ arms. We then define an algorithm or \textbf{policy} $\piup$, that seeks to maximize its total \textbf{reward} (that is, to maximize its cumulative reward $\sum_{t=1}^T r_t$ or minimize its cumulative regret---see equation \ref{eq:1}). This \textbf{policy} observes information on the current state of the world represented as a $d$-dimensional contextual feature vector \(x_{t}=\left( x_{1,t},  \dots, x_{d,t}\right)\). Based on earlier payoffs, the \textbf{policy} then selects one of the \textbf{bandit} $B$'s arms by choosing an action a \(a_{t} \in \left\{ 1, \dots, k \right\}\), and receives reward \(r_{a_{t},t}\), the expectation of which depends both the context and the reward history of that particular arm. With this observation \( (x_{t,a_t},a_{t},r_{t,a_t}) \), the policy now updates its arm-selection strategy through some investigation of how contexts, actions and rewards hang together. These steps are then repeated \textit{T} times, where \textit{T} is often named the \textbf{horizon}.
+In formalizing the described cMAB problem, a (k-armed) \textbf{bandit} $B$ can be defined as a set of $k$ distributions $B=\{D_{1},\dots ,D_{k}\}}$, where each distribution is associated with the I.I.D. rewards delivered by one of the $k\in \mathbb {N} ^{+}}$ arms. We then define an algorithm or \textbf{policy} $\piup$, that seeks to maximize its total \textbf{reward} (that is, to maximize its cumulative reward $\sum_{t=1}^T r_t$ or minimize its cumulative regret---see equation \ref{eq:1}). This \textbf{policy} observes information on the current state of the world represented as a $d$-dimensional contextual feature vector \(x_{t}=\left( x_{1,t},  \dots, x_{d,t}\right)\). Based on earlier payoffs, the \textbf{policy} then selects one of the \textbf{bandit} $B$'s arms by choosing an action a \(a_{t} \in \left\{ 1, \dots, k \right\}\), and receives reward \(r_{a_{t},t}\), the expectation of which depends both the context and the reward history of that particular arm. With this observation \( (x_{t,a_t},a_{t},r_{t,a_t}) \), the policy now updates its arm-selection strategy through some investigation of how these contexts, actions and rewards hang together. These steps are then repeated \textit{T} times, where \textit{T} is often named the \textbf{horizon}.
 
 Schematically, for each round \emph{t}= \{1, \ldots, T\}:
 
@@ -243,16 +243,6 @@ Where we assume that at each time step t, all information necessary to choose an
     \label{fig:cmab_chart}
       \caption{Basic overview \pkg{contextual}'s structure}
 \end{figure}
-
-
-
-
-
-
-
-
-
-
 
 \section{Object-oriented setup of the package}
 %% Note: If there is markup in \(sub)section, then it has to be escape as above.

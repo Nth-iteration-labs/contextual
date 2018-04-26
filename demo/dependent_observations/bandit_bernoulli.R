@@ -11,15 +11,15 @@ BernoulliBandit <- R6::R6Class(
     probs_users      = NULL, # random poisson deviates for per user sampling probability
     arm_one_shape    = NULL, # non-negative parameters of the Beta distribution arm one
     arm_two_shape    = NULL, # non-negative parameters of the Beta distribution arm two
-    poisson_subjects = NULL, # use poisson distribution to generate user probabilities
+    subject_poisson_sampling = NULL, # use poisson distribution to generate user probabilities
     lambda           = NULL, # lambda of poisson distribution generating per user sampling probability
     precaching       = FALSE,
-    initialize  = function(n_subjects, arm_one_shape = c(10,10), arm_two_shape = c(10,10), poisson_subjects = TRUE, lambda = 2) {
+    initialize  = function(n_subjects, arm_one_shape = c(10,10), arm_two_shape = c(10,10), subject_poisson_sampling = FALSE, lambda = 2) {
       self$k                              <- 2                # two armed bandit
       self$d                              <- 1                # one context feature, which user
       self$n_subjects                     <- n_subjects       # number of subjects
       self$lambda                         <- lambda           # lambda of poisson distribution generating per user sampling probability
-      self$poisson_subjects               <- poisson_subjects # use poisson distribution to generate user probabilities?
+      self$subject_poisson_sampling               <- subject_poisson_sampling # use poisson distribution to generate user probabilities?
       self$arm_one_shape                  <- arm_one_shape    # non-negative parameters of the Beta distribution arm one
       self$arm_two_shape                  <- arm_two_shape    # non-negative parameters of the Beta distribution arm two
     },
@@ -31,7 +31,7 @@ BernoulliBandit <- R6::R6Class(
 
     },
     get_context = function(t) {
-      if (self$poisson_subjects) {
+      if (self$subject_poisson_sampling) {
         user_ctxt = sample(1:self$n_subjects, 1, prob = self$probs_users)
       } else {
         user_ctxt = sample(1:self$n_subjects, 1)

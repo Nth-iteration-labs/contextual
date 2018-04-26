@@ -201,16 +201,6 @@ Where we assume that at each time step t, all information necessary to choose an
       \caption{Basic overview \pkg{contextual}'s structure}
 \end{figure}
 
-
-
-
-
-
-
-
-
-
-
 \section{Object-oriented setup of the package}
 %% Note: If there is markup in \(sub)section, then it has to be escape as above.
 
