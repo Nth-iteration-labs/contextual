@@ -30,7 +30,7 @@ Simulator <- R6::R6Class(
                           save_context = FALSE,
                           save_theta = FALSE,
                           do_parallel = TRUE,
-                          worker_max = 7,
+                          worker_max = NULL,
                           continouous_counter = FALSE,
                           set_seed = 0,
                           write_progress_file = TRUE,
@@ -51,6 +51,7 @@ Simulator <- R6::R6Class(
       self$reset()
     },
     reset = function() {
+      set.seed(self$set_seed)
       # create empty progress.txt file
       if (self$write_progress_file) cat(paste0(""), file = "progress.txt", append = FALSE)
       self$history <- History$new(self$horizon * self$number_of_agents * self$simulations)
@@ -87,7 +88,9 @@ Simulator <- R6::R6Class(
         message("Preworkercreation")
         nr_cores <- parallel::detectCores()
         if (nr_cores >= 3) workers <- nr_cores - 1                              # nocov
-        if (workers > worker_max) workers <- worker_max
+        if (!is.null(worker_max)) {
+          if (workers > worker_max) workers <- worker_max
+        }
         if (grepl('w|W', .Platform$OS.type)) {
           # Windows
           cl <- parallel::makeCluster(workers, useXDR = FALSE)
@@ -141,7 +144,8 @@ Simulator <- R6::R6Class(
           }
           simulation_index <- sim_agent$sim_index
           policy_name <- sim_agent$policy$name
-          set.seed(simulation_index + set_seed*42)
+          local_curent_seed <- simulation_index + set_seed*42
+          set.seed(local_curent_seed)
           sim_agent$bandit$pre_calculate()
           if (sim_agent$bandit$precaching ) {
             sim_agent$bandit$generate_bandit_data(n = horizon)

@@ -84,15 +84,9 @@ PartiallyPooledThompsonPolicy <- R6::R6Class(
   public = list(
     n_subjects = NULL,
     theta_a = NULL,
-    kappa_a = NULL,
-    phi_a = NULL,
     theta_b = NULL,
-    kappa_b = NULL,
-    phi_b = NULL,
     theta_samples_a = NULL,
     theta_samples_b = NULL,
-    fit_a = NULL,
-    fit_b = NULL,
     stan_model = NULL,
     warm_up = NULL,
     iter = NULL,
@@ -120,21 +114,17 @@ PartiallyPooledThompsonPolicy <- R6::R6Class(
                       warmup = self$warm_up,
                       refresh = 0,
                       chains = 1))
-      self$theta_a <- summary(fit_a, pars = c("theta"))$summary[, "mean"]
-      self$kappa_a <- summary(fit_a, pars = c("kappa"))$summary[, "mean"]
-      self$phi_a <- summary(fit_a, pars = c("phi"))$summary[, "mean"]
+      self$theta_a <- rstan::summary(fit_a, pars = c("theta"))$summary[, "mean"]
       n_subjects <- self$n_subjects
       n <- theta$n[[2]]
       l <- theta$l[[2]]
       capture.output(fit_b <- rstan::sampling(self$stan_model,
                         data = c("n_subjects", "n", "l"),
-                        iter = self$iter ,
+                        iter = self$iter,
                         warmup = self$warm_up,
                         refresh = 0,
                         chains = 1))
       self$theta_b <- summary(fit_b, pars = c("theta"))$summary[, "mean"]
-      self$kappa_b <- summary(fit_b, pars = c("kappa"))$summary[, "mean"]
-      self$phi_b <- summary(fit_b, pars = c("phi"))$summary[, "mean"]
       self$theta_samples_a <- extract(fit_a, pars = c("theta"))$theta
       self$theta_samples_b <- extract(fit_b, pars = c("theta"))$theta
     },
@@ -158,9 +148,7 @@ PartiallyPooledThompsonPolicy <- R6::R6Class(
         if (theta$N[[1]] %% 10 == 0) {
           init_val_a <-
             list(list(
-              theta = self$theta_a,
-              kappa = self$kappa_a,
-              phi = self$phi_a
+              theta = self$theta_a
             ))
           n_subjects <- self$n_subjects
           n <- theta$n[[1]]
@@ -172,10 +160,8 @@ PartiallyPooledThompsonPolicy <- R6::R6Class(
                             warmup = self$warm_up,
                             refresh = 0,
                             chains = 1))
-          self$theta_a <- summary(fit_a, pars = c("theta"))$summary[, "mean"]
-          self$kappa_a <- summary(fit_a, pars = c("kappa"))$summary[, "mean"]
-          self$phi_a <- summary(fit_a, pars = c("phi"))$summary[, "mean"]
-          self$theta_samples_a <- extract(fit_a, pars = c("theta"))$theta
+          self$theta_a <- rstan::summary(fit_a, pars = c("theta"))$summary[, "mean"]
+          self$theta_samples_a <- rstan::extract(fit_a, pars = c("theta"))$theta
         }
       } else {
         theta$n[[2]][userid] <- theta$n[[2]][userid] + 1
@@ -184,9 +170,7 @@ PartiallyPooledThompsonPolicy <- R6::R6Class(
         if (theta$N[[2]] %% 10 == 0) {
           init_val_b <-
             list(list(
-              theta = self$theta_b,
-              kappa = self$kappa_b,
-              phi = self$phi_b
+              theta = self$theta_b
             ))
           n_subjects <- self$n_subjects
           n <- theta$n[[2]]
@@ -198,10 +182,8 @@ PartiallyPooledThompsonPolicy <- R6::R6Class(
                             warmup = self$warm_up,
                             refresh = 0,
                             chains = 1))
-          self$theta_b <- summary(fit_b, pars = c("theta"))$summary[, "mean"]
-          self$kappa_b <- summary(fit_b, pars = c("kappa"))$summary[, "mean"]
-          self$phi_b <- summary(fit_b, pars = c("phi"))$summary[, "mean"]
-          self$theta_samples_b <- extract(fit_b, pars = c("theta"))$theta
+          self$theta_b <- rstan::summary(fit_b, pars = c("theta"))$summary[, "mean"]
+          self$theta_samples_b <- rstan::extract(fit_b, pars = c("theta"))$theta
         }
       }
       theta
