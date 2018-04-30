@@ -38,7 +38,7 @@ History <- R6::R6Class(
                        s,
                        context_value = NA,
                        theta_value = NA
-                     ) {
+    ) {
 
       index <- as.integer(index)
 
@@ -80,9 +80,9 @@ History <- R6::R6Class(
     save_data = function(filename = NA) {
       if (is.na(filename))
         filename <- paste("contextual_data_",
-                         format(Sys.time(), "%y%m%d_%H%M%S"),
-                         ".RData",
-                         sep = "")
+                          format(Sys.time(), "%y%m%d_%H%M%S"),
+                          ".RData",
+                          sep = "")
       saveRDS(private$.data, file = filename, compress = TRUE)
       invisible(self)
     },
@@ -113,11 +113,18 @@ History <- R6::R6Class(
       private$.data <- dt
       invisible(self)
     },
+    clear_data_table = function() {
+      private$.data <- private$.data[0,]
+      invisible(self)
+    },
     delete_empty_rows = function() {
       private$.data <- private$.data[sim > 0 & t > 0]
       private$.data <- private$.data[, t := seq_len(.N), by = c("agent", "sim")]
       #private$.data[ , max(t), by = c("agent","sim")][,min(V1), by = c("agent")][,V1]
       invisible(self)
+    },
+    finalize = function() {
+      self$clear_data_table()
     }
   ),
   active = list(

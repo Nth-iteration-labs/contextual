@@ -2,7 +2,8 @@
 
 setwd("~/GitHub/contextual/demo/dependent_observations")
 
-#library(contextual)
+# library(contextual)
+# Todo: why not finding Contextual at first run new system? bv
 
 source("../dev.R")
 source("./bandit_bernoulli.R")
@@ -12,11 +13,13 @@ source("./policy_pooled_thompson.R")
 
 ##################### Settings ###################
 
-horizon        <- 10
-simulations    <- 10
+horizon        <- 10000
+simulations    <- 100
+worker_max     <- 66 # Setting for Amazon EC2 c5.18xlarge instance
+# 72 vCPU, 144 GiB of memory and 25 Gbps network
+subjects       <- list(10,50,100,500,1000)
 betas          <- list(c(1.5, 1.5),c(5, 5))
-subjects       <- list(5,10,50,100,500,1000)
-do_poisson     <- list(FALSE,TRUE)
+do_poisson     <- list(TRUE,FALSE)
 poisson_lambda <- 7.58
 data_dir       <- "data/"
 
@@ -34,16 +37,15 @@ model  <- rstan::stan_model(file = "beta_binom_hier_model.stan", save_dso = TRUE
 
 ##################### Simulate ###################
 
-# total number of simulations: 9 x 6 x 2 x 2 = 216
+# total number of simulations: (9) 1 x 6 x 2 x 2 = 216
 
 ptm         <- proc.time()
-agents      <- list()
 
-for (dp in do_poisson) {
-  for (sn in subjects)   {
+for (sn in subjects)   {
+  for (dp in do_poisson) {
     for (beta in betas)    {
 
-      sim_str     <- paste0("_b",beta[1],"_s",sn,"_p",as.numeric(dp))
+      sim_str     <- paste0("_b",beta[1],"_s",sn,"_p",as.numeric(dp),"_r100")
 
       ##################### Bandit ####################
 
@@ -56,44 +58,85 @@ for (dp in do_poisson) {
       ##################### Thompson Sampling Policies ########
 
       agent       <- Agent$new(PartiallyPooledThompsonPolicy$new(n_subjects = sn, stan_model = model, warm_up = 10, iter = 20, name = paste0("PartialThompson",sim_str)), bandit)
-      history     <- Simulator$new(agents = agent, horizon = horizon, simulations = simulations, include_packages = "rstan", worker_max = 50)$run()
+      history     <- Simulator$new(agents = agent, horizon = horizon, simulations = simulations, include_packages = "rstan", worker_max = worker_max)$run()
       history$save_data(paste0(data_dir,"PartialThompson",sim_str,".RData"))
+      history$clear_data_table()
+      rm(history,agent)
+      gc()
+      Sys.sleep(1) # additional cleanup time, helps some edge cases.
 
       agent       <- Agent$new(PooledThompsonPolicy$new(name = paste0("PooledThompson",sim_str)), bandit)
-      history     <- Simulator$new(agents = agent, horizon = horizon, simulations = simulations, worker_max = 50)$run()
+      history     <- Simulator$new(agents = agent, horizon = horizon, simulations = simulations, worker_max = worker_max)$run()
       history$save_data(paste0(data_dir,"PooledThompson",sim_str,".RData"))
+      history$clear_data_table()
+      rm(history,agent)
+      gc()
+      Sys.sleep(1)
 
       agent       <- Agent$new(UnpooledThompsonPolicy$new(n_subjects = sn, name = paste0("UnpooledThompson",sim_str)), bandit)
-      history     <- Simulator$new(agents = agent, horizon = horizon, simulations = simulations, worker_max = 50)$run()
+      history     <- Simulator$new(agents = agent, horizon = horizon, simulations = simulations, worker_max = worker_max)$run()
       history$save_data(paste0(data_dir,"UnpooledThompson",sim_str,".RData"))
+      history$clear_data_table()
+      rm(history,agent)
+      gc()
+      Sys.sleep(1)
 
       ##################### Egreedy Policies #################
 
       agent       <- Agent$new(PartiallyPooledEgreedyPolicy$new(epsilon = 0.1, n_subjects = sn, name = paste0("PartialEG",sim_str)), bandit)
-      history     <- Simulator$new(agents = agent, horizon = horizon, simulations = simulations, worker_max = 50)$run()
+      history     <- Simulator$new(agents = agent, horizon = horizon, simulations = simulations, worker_max = worker_max)$run()
       history$save_data(paste0(data_dir,"PartialEG",sim_str,".RData"))
+      history$clear_data_table()
+      rm(history,agent)
+      gc()
+      Sys.sleep(1)
+
 
       agent       <- Agent$new(UnpooledEgreedyPolicy$new(epsilon = 0.1, n_subjects = sn, name = paste0("UnpooledEG",sim_str)), bandit)
-      history     <- Simulator$new(agents = agent, horizon = horizon, simulations = simulations, worker_max = 50)$run()
+      history     <- Simulator$new(agents = agent, horizon = horizon, simulations = simulations, worker_max = worker_max)$run()
       history$save_data(paste0(data_dir,"UnpooledEG",sim_str,".RData"))
+      history$clear_data_table()
+      rm(history,agent)
+      gc()
+      Sys.sleep(1)
+
 
       agent       <- Agent$new(PooledEgreedyPolicy$new(epsilon = 0.1, name = paste0("PooledEG",sim_str)), bandit)
-      history     <- Simulator$new(agents = agent, horizon = horizon, simulations = simulations, worker_max = 50)$run()
+      history     <- Simulator$new(agents = agent, horizon = horizon, simulations = simulations, worker_max = worker_max)$run()
       history$save_data(paste0(data_dir,"PooledEG",sim_str,".RData"))
+      history$clear_data_table()
+      rm(history,agent)
+      gc()
+      Sys.sleep(1)
 
       ##################### UCB Policies #####################
 
       agent       <- Agent$new(PartiallyPooledUCBPolicy$new(n_subjects = sn, name = paste0("PartialUCB",sim_str)), bandit)
-      history     <- Simulator$new(agents = agent, horizon = horizon, simulations = simulations, worker_max = 50)$run()
+      history     <- Simulator$new(agents = agent, horizon = horizon, simulations = simulations, worker_max = worker_max)$run()
       history$save_data(paste0(data_dir,"PartialUCB",sim_str,".RData"))
+      history$clear_data_table()
+      rm(history,agent)
+      gc()
+      Sys.sleep(1)
+
 
       agent       <- Agent$new(PooledUCBPolicy$new(name = paste0("PooledUCB",sim_str)), bandit)
-      history     <- Simulator$new(agents = agent, horizon = horizon, simulations = simulations, worker_max = 50)$run()
+      history     <- Simulator$new(agents = agent, horizon = horizon, simulations = simulations, worker_max = worker_max)$run()
       history$save_data(paste0(data_dir,"PooledUCB",sim_str,".RData"))
+      history$clear_data_table()
+      rm(history,agent)
+      gc()
+      Sys.sleep(1)
+
 
       agent       <- Agent$new(UnpooledUCBPolicy$new(n_subjects = sn, name = paste0("UnpooledUCB",sim_str)), bandit)
-      history     <- Simulator$new(agents = agent, horizon = horizon, simulations = simulations, worker_max = 50)$run()
+      history     <- Simulator$new(agents = agent, horizon = horizon, simulations = simulations, worker_max = worker_max)$run()
       history$save_data(paste0(data_dir,"UnpooledUCB",sim_str,".RData"))
+      history$clear_data_table()
+      rm(history,agent)
+      gc()
+      Sys.sleep(1)
+
 
     }
   }

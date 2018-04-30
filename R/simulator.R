@@ -24,6 +24,7 @@ Simulator <- R6::R6Class(
     set_seed = NULL,
     write_progress_file = NULL,
     include_packages = NULL,
+    cl = NULL,
     initialize = function(agents,
                           horizon = 100L,
                           simulations = 100L,
@@ -52,8 +53,12 @@ Simulator <- R6::R6Class(
     },
     reset = function() {
       set.seed(self$set_seed)
-      # create empty progress.txt file
-      if (self$write_progress_file) cat(paste0(""), file = "progress.txt", append = FALSE)
+
+      # create empty progress.log file
+      if (self$write_progress_file) cat(paste0(""), file = "progress.log", append = FALSE)
+      # clear doparallel.log
+      if (self$write_progress_file) cat(paste0(""), file = "doparallel.log", append = FALSE)
+
       self$history <- History$new(self$horizon * self$number_of_agents * self$simulations)
       self$sims_per_agent_list <-  matrix(list(), self$simulations, self$number_of_agents)
       # make policy names unique by appending sequence numbers to duplicates
@@ -93,9 +98,14 @@ Simulator <- R6::R6Class(
         }
         if (grepl('w|W', .Platform$OS.type)) {
           # Windows
-          cl <- parallel::makeCluster(workers, useXDR = FALSE)
+          self$cl <- parallel::makeCluster(workers, useXDR = FALSE, type = "PSOCK", methods = FALSE, port = 11999, outfile = "doparallel.log")
         } else {
-          cl <- parallel::makeCluster(workers, useXDR = FALSE, type = "FORK")
+          # Linux or MacOS
+          # Problem with fork, seems to pup up irregularly:
+          # cl <- parallel::makeCluster(workers, useXDR = FALSE, type = "FORK", methods=FALSE, port=11999, outfile = "doparallel.log")
+          # https://stackoverflow.com/questions/9486952/remove-zombie-processes-using-parallel-package
+          # so to make sure we are ok, we use PSOCK everywhere for now:
+          self$cl <- parallel::makeCluster(workers, useXDR = FALSE, type = "PSOCK", methods = FALSE, port = 11999, outfile = "doparallel.log")
           if (grepl('darwin', version$os)) {
             # macOS - potential future osx/linux specific implementation settings go here
           } else {
@@ -104,7 +114,7 @@ Simulator <- R6::R6Class(
         }
         message(paste0("Cores available: ",nr_cores))
         message(paste0("Workers assigned: ",workers))
-        doParallel::registerDoParallel(cl)
+        doParallel::registerDoParallel(self$cl)
         `%fun%` <- foreach::`%dopar%`
         message("Postworkercreation")
       }
@@ -129,6 +139,7 @@ Simulator <- R6::R6Class(
         .noexport = c("sims_per_agent_list","history"),
         .packages = par_packages
       ) %fun% {
+        # parallelize the longest running part, here sim from t=1 till the horizon
         index <- 1L
         sim_agent_counter <- 0
         sim_agent_total <- length(sims_agents)
@@ -140,7 +151,7 @@ Simulator <- R6::R6Class(
                        ", Worker: ", i,
                        ", Sim: ", sim_agent_counter,
                        " of ", sim_agent_total,"\n"),
-                file = "progress.txt", append = TRUE)
+                file = "progress.log", append = TRUE)
           }
           simulation_index <- sim_agent$sim_index
           policy_name <- sim_agent$policy$name
@@ -172,10 +183,21 @@ Simulator <- R6::R6Class(
         dth[sim != 0]
       }
       if (self$do_parallel) {
-        parallel::stopCluster(cl)
+        #parallel::stopCluster(cl)
       }
       self$history$set_data_table(foreach_results)
       self$history
+    },
+    finalize = function() {
+      if (self$do_parallel) {
+        try({
+          parallel::stopCluster(self$cl)
+        })
+        stopImplicitCluster()
+        # Making sure that we are closing all processes that were
+        # spawned but not terminated by the foreach loop.
+        closeAllConnections()
+      }
     }
   )
 )

@@ -20,6 +20,8 @@ Agent <- R6::R6Class(
       self$policy$d   <- self$bandit$d
       self$reset()
     },
+    finalize = function() {
+    },
     reset = function() {
       self$policy$set_parameters()
       private$state$t       <- 0
