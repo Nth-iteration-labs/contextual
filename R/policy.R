@@ -3,7 +3,6 @@ Policy <- R6::R6Class(
   "Policy",
   portable = FALSE,
   class = FALSE,
-  inherit = Contextual,
   public = list(
     name          = "",
     action        = NULL,

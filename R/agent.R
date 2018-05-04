@@ -3,7 +3,6 @@ Agent <- R6::R6Class(
   "Agent",
   portable = FALSE,
   class = FALSE,
-  inherit = Contextual,
   private = list(
     theta = NULL,
     state = NULL

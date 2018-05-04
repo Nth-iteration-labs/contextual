@@ -115,24 +115,11 @@ SyntheticBandit <- R6::R6Class(
         X = private$X[,, idx]
       )
     },
-    max_in = function(x, equal_is_random = TRUE)
-    {
-      y <- seq_along(x)[x == max(x)]
-      if (length(y) > 1L)  {
-        if (equal_is_random) {
-          return(sample(y, 1L, replace = TRUE))
-        } else {
-          return(y[1])
-        }
-      } else {
-        return(y)
-      }
-    },
     reward_to_list = function(action, t) {
       if (self$precaching) idx <- t else idx <- 1
       list(
         reward = private$R[action$choice, idx],
-        opimal = as.double(private$R[private$max_in(private$O[, idx]), idx])
+        opimal = as.double(private$R[max_in(private$O[, idx]), idx])
       )
     }
   )

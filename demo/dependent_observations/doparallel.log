@@ -1,0 +1,33 @@
+starting worker pid=1896 on localhost:11999 at 22:19:41.169
+starting worker pid=6004 on localhost:11999 at 22:19:41.310
+starting worker pid=11760 on localhost:11999 at 22:19:41.450
+Loading required package: contextual
+Loading required package: contextual
+Error getting parent environment: loaded contextual, but parent search failed
+Error getting parent environment: loaded contextual, but parent search failed
+Loading required package: contextual
+Loading required package: iterators
+Loading required package: iterators
+Loading required package: ggplot2
+Error getting parent environment: loaded contextual, but parent search failed
+Loading required package: ggplot2
+Loading required package: iterators
+Loading required package: ggplot2
+Loading required package: StanHeaders
+Loading required package: StanHeaders
+Loading required package: StanHeaders
+rstan (Version 2.17.3, GitRev: 2e1f913d3ca3)
+For execution on a local, multicore CPU with excess RAM we recommend calling
+options(mc.cores = parallel::detectCores()).
+To avoid recompilation of unchanged Stan programs, we recommend calling
+rstan_options(auto_write = TRUE)
+rstan (Version 2.17.3, GitRev: 2e1f913d3ca3)
+For execution on a local, multicore CPU with excess RAM we recommend calling
+options(mc.cores = parallel::detectCores()).
+To avoid recompilation of unchanged Stan programs, we recommend calling
+rstan_options(auto_write = TRUE)
+rstan (Version 2.17.3, GitRev: 2e1f913d3ca3)
+For execution on a local, multicore CPU with excess RAM we recommend calling
+options(mc.cores = parallel::detectCores()).
+To avoid recompilation of unchanged Stan programs, we recommend calling
+rstan_options(auto_write = TRUE)

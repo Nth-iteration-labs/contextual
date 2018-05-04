@@ -17,8 +17,10 @@ horizon        <- 10000
 simulations    <- 100
 worker_max     <- 66 # Setting for Amazon EC2 c5.18xlarge instance
 # 72 vCPU, 144 GiB of memory and 25 Gbps network
-subjects       <- list(10,50,100,500,1000)
+subjects       <- list(5,10,50,100,500,1000)
 betas          <- list(c(1.5, 1.5),c(5, 5))
+
+
 do_poisson     <- list(TRUE,FALSE)
 poisson_lambda <- 7.58
 data_dir       <- "data/"
@@ -33,19 +35,22 @@ if (!require(rstan)) {
 message("Stan Modeling phase")
 rstan_options(auto_write = TRUE)
 options(mc.cores = parallel::detectCores())
-model  <- rstan::stan_model(file = "beta_binom_hier_model.stan", save_dso = TRUE, auto_write = TRUE )
+model  <- rstan::stan_model(file = "beta_binom_hier_model.stan",
+                            save_dso = TRUE, auto_write = TRUE )
 
 ##################### Simulate ###################
 
-# total number of simulations: (9) 1 x 6 x 2 x 2 = 216
+# total number of simulations: 9 x 6 x 2 x 2 = 216
 
 ptm         <- proc.time()
+
+# could also use expand, indeed
 
 for (sn in subjects)   {
   for (dp in do_poisson) {
     for (beta in betas)    {
 
-      sim_str     <- paste0("_b",beta[1],"_s",sn,"_p",as.numeric(dp),"_r100")
+      sim_str     <- paste0("_b",beta[1],"_s",sn,"_p",as.numeric(dp),"_r",simulations)
 
       ##################### Bandit ####################
 

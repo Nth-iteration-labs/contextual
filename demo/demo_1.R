@@ -15,8 +15,6 @@ history            <- Simulator$new(agents = agent,
                                     simulations = simulations,
                                     save_theta = FALSE,
                                     do_parallel = TRUE)$run()
-
-plot(history, type = "grid")
 plot(history, type = "arms")
 
 h <- history$get_data_table()

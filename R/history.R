@@ -4,7 +4,6 @@ History <- R6::R6Class(
   "History",
   portable = FALSE,
   class = TRUE,
-  inherit = Contextual,
   public = list(
     n = 1000,
     save_theta = NULL,
@@ -16,6 +15,7 @@ History <- R6::R6Class(
       self$reset()
     },
     reset = function() {
+      self$clear_data_table()
       private$.data <- data.table::data.table(
         t               = rep(0L,      n),
         sim             = rep(0L,      n),

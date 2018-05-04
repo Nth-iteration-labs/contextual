@@ -3,7 +3,6 @@ AdversarialAgent <- R6::R6Class(
   "AdversarialAgent",
   portable = FALSE,
   class = FALSE,
-  inherit = Contextual,
   private = list(
     theta = NULL,
     state = NULL
