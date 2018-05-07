@@ -19,7 +19,7 @@ BernoulliBandit <- R6::R6Class(
       self$d                              <- 1                # one context feature, which user
       self$n_subjects                     <- n_subjects       # number of subjects
       self$lambda                         <- lambda           # lambda of poisson distribution generating per user sampling probability
-      self$subject_poisson_sampling               <- subject_poisson_sampling # use poisson distribution to generate user probabilities?
+      self$subject_poisson_sampling       <- subject_poisson_sampling # use poisson distribution to generate user probabilities?
       self$arm_one_shape                  <- arm_one_shape    # non-negative parameters of the Beta distribution arm one
       self$arm_two_shape                  <- arm_two_shape    # non-negative parameters of the Beta distribution arm two
     },

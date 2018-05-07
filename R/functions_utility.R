@@ -32,3 +32,31 @@ sum_of = function(x) {
 inv = function(M) {
   chol2inv(chol(M))
 }
+#' @export
+is_rstudio = function() {
+  .Platform$GUI == "RStudio"
+}
+#' @export
+set_external = function(ext = TRUE,
+                        width = 10,
+                        height = 6) {
+  if (self$is_rstudio()) {
+    if (isTRUE(ext)) {
+      sysname <- tolower(Sys.info()["sysname"])
+      device.name <- "x11"
+      switch(sysname,
+             darwin = {
+               device.name = "quartz"
+             },
+             windows = {
+               device.name = "windows"
+             })
+      options("device" = device.name)
+      R.devices::devOptions(sysname, width = width, height = height)
+    } else{
+      options("device" = "RStudioGD")
+    }
+    graphics.off()
+  }
+  invisible(self)
+}

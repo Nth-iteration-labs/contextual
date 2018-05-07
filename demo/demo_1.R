@@ -15,6 +15,9 @@ history            <- Simulator$new(agents = agent,
                                     simulations = simulations,
                                     save_theta = FALSE,
                                     do_parallel = TRUE)$run()
-plot(history, type = "arms")
 
-h <- history$get_data_table()
+plot(history, type = "arms")
+plot(history, type = "cumulative", regret = FALSE)
+
+cum_reward <- history$get_cumulative_reward()
+print(cum_reward)

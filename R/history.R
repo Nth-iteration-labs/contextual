@@ -77,6 +77,32 @@ History <- R6::R6Class(
       }
       invisible(self)
     },
+    cumulative = function(final = TRUE, regret = TRUE, rate = FALSE) {
+      if (regret) {
+        private$.data$temp <- private$.data$opimal - private$.data$reward
+      } else {
+        private$.data$temp <- private$.data$reward
+      }
+      if (rate) {
+        private$.data$cum_reward_rate <- private$.data[, cumsum(temp)/t, by = list(agent, sim)]$V1
+        cum_rewards <- private$.data[, list(cum_reward_rate_var = var(cum_reward_rate),
+                                            cum_reward_rate = mean(cum_reward_rate)), by = list(t, agent)]
+      } else {
+        private$.data$cum_reward <- private$.data[, cumsum(temp), by = list(agent, sim)]$V1
+        cum_rewards <- private$.data[, list(cum_reward_var = var(cum_reward),
+                                            cum_reward = mean(cum_reward)), by = list(t, agent)]
+      }
+      if (final) {
+        agent_levels <- levels(as.factor(cum_rewards$agent))
+        final_cum_rewards <- list()
+        for (agent_name in agent_levels) {
+          final_cum_rewards[[agent_name]] <- tail(cum_rewards[cum_rewards$agent == agent_name], n = 1)[[4]]
+        }
+        final_cum_rewards
+      } else {
+        cum_rewards
+      }
+    },
     save_data = function(filename = NA) {
       if (is.na(filename))
         filename <- paste("contextual_data_",

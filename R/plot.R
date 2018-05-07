@@ -9,6 +9,9 @@ Plot <- R6::R6Class(
     initialize = function() {
       self$max_sim = 0
     },
+
+    ############################ plot types ############################
+
     cumulative = function(history, grid = FALSE, xlim = NULL, legend = TRUE, regret = TRUE, use_colors = TRUE, ci = FALSE, step_size = 1, start_step = 1, rate = FALSE, color_step = 1, lty_step = 1, lwd = 1, ylim = NULL, legend_labels = NULL, legend_border = NULL, legend_title = NULL) {
       history <- check_history_data(history)
       if (regret) {
@@ -53,7 +56,7 @@ Plot <- R6::R6Class(
       invisible(self)
     },
 
-    ############################
+    ############################ main plot function  ############################
 
     do_plot = function(cs, ylab_title, use_colors = FALSE, ci = FALSE, legend = TRUE, grid = FALSE, ylim = NULL, step_size = 1, start_step = 1, color_step = 1, lty_step = 1, lwd = 1, legend_labels = NULL, legend_border = NULL, legend_title = NULL) {
       if (grid == FALSE) {
@@ -71,7 +74,7 @@ Plot <- R6::R6Class(
       }
       plot.new()
       agent_levels <- levels(as.factor(cs$agent))
-      n_agents = length(agent_levels)
+      n_agents <- length(agent_levels)
       cl <- gg_color_hue(round(n_agents/color_step))
       cl <- rep(cl, round(color_step))
       lt <- rep(1,n_agents)
@@ -89,8 +92,8 @@ Plot <- R6::R6Class(
         min_ylim <- ylim[1]
         max_ylim <- ylim[2]
       }
-      plot.window(xlim = c(start_step, cs[, max(t)]),
-                  ylim = c(min_ylim, max_ylim))
+      plot.window(xlim = c(start_step, cs[, max(t)]), ylim = c(min_ylim, max_ylim))
+
       if (use_colors) {
         if (ci) {
           color <- 1
@@ -146,21 +149,20 @@ Plot <- R6::R6Class(
       title(xlab = "Time Step")
       title(ylab = ylab_title)
       box()
+
+
       if (ylab_title == "cumulative regret - rate") {
         legend_position <- "topright"
       } else {
         legend_position <- "topleft"
       }
       if (legend) {
-
         if (!is.null(legend_labels)) agent_levels = legend_labels
-
         if (!is.null(legend_border))  {
           bty = "n"
         } else {
           bty = "o"
         }
-
         if (use_colors == FALSE) cl = rgb(0.2, 0.2, 0.2, 0.8)
         legend(
           legend_position,
@@ -179,6 +181,9 @@ Plot <- R6::R6Class(
         par(old.par)
       }
     },
+
+    ############################ arms plot ############################
+
     arms = function(history, grid = FALSE, xlim = NULL, legend = TRUE, use_colors = TRUE, step_size = 1, start_step = 1, ylim = NULL, legend_labels = NULL, legend_border = NULL, legend_title = NULL) {
       if (grid == FALSE) {
         dev.hold()
@@ -253,32 +258,6 @@ Plot <- R6::R6Class(
     gg_color_hue = function(n) {
       hues = seq(15, 375, length = n + 1)
       hcl(h = hues, l = 65, c = 100)[1:n]
-    },
-    is_rstudio = function() {
-      .Platform$GUI == "RStudio"
-    },
-    set_external = function(ext = TRUE,
-                            width = 10,
-                            height = 6) {
-      if (self$is_rstudio()) {
-        if (isTRUE(ext)) {
-          sysname <- tolower(Sys.info()["sysname"])
-          device.name <- "x11"
-          switch(sysname,
-                 darwin = {
-                   device.name = "quartz"
-                 },
-                 windows = {
-                   device.name = "windows"
-                 })
-          options("device" = device.name)
-          R.devices::devOptions(sysname, width = width, height = height)
-        } else{
-          options("device" = "RStudioGD")
-        }
-        graphics.off()
-      }
-      invisible(self)
     },
     check_history_data = function(history) {
       if (!data.table::is.data.table(history)) {
