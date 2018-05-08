@@ -9,9 +9,9 @@ set_external(ext = TRUE, width = 10, height = 6)
 \arguments{
 \item{ext}{A \code{logical} indicating whether the graph should be done externally or internally in RStudio.}
 
-\item{width}{Width in pixels of the external window}
+\item{width}{Width in pixels of the popup window}
 
-\item{height}{Height in pixels of the external window}
+\item{height}{Height in pixels of the popup window}
 }
 \description{
 Checks to see if the user is in RStudio. If so, then it changes the device to a popup window.
