@@ -45,7 +45,10 @@ history     <- Simulator$new(agents = agents,
                              reindex_t = TRUE,
                              do_parallel = TRUE)$run()
 
+history$save_data(paste0(data_dir,"LiEG.RData"))
+
 ##################### Plot #############################
+
 
 plot(history, type = "cumulative", regret = FALSE, rate = TRUE )
 
