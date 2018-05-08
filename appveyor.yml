@@ -12,6 +12,7 @@ install:
 
 environment:
   R_VERSION: release
+  PKGTYPE: source
 
 cache:
   - C:\RLibrary
