@@ -149,6 +149,14 @@ History <- R6::R6Class(
       #private$.data[ , max(t), by = c("agent","sim")][,min(V1), by = c("agent")][,V1]
       invisible(self)
     },
+    reindex_t = function(truncate = TRUE) {
+      private$.data <- private$.data[, t := seq_len(.N), by = c("agent", "sim")]
+      if (truncate) {
+        min_t_anywhere <- min(private$.data[, .(count = uniqueN(t)), by = c("agent","sim")]$count)
+        private$.data <- private$.data[t <= min_t_anywhere]
+      }
+      invisible(self)
+    },
     finalize = function() {
       self$clear_data_table()
     }

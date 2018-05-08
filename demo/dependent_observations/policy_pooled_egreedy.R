@@ -12,7 +12,7 @@ UnpooledEgreedyPolicy <- R6::R6Class(
       self$n_subjects <- n_subjects
     },
     set_parameters = function() {
-      self$theta <- list(n = rep(list(list(0,0)),self$n_subjects), mu = rep(list(list(0,0)), self$n_subjects))
+      self$theta <- list(n = rep(list(as.list(rep(0, self$k))),self$n_subjects), mu = rep(list(as.list(rep(0, self$k))), self$n_subjects))
     },
     get_action = function(context, t) {
       if (runif(1) > epsilon) {
@@ -81,24 +81,15 @@ PartiallyPooledEgreedyPolicy <- R6::R6Class(
     },
     set_parameters = function() {
       # here, n 1/1  because of beta...
-      self$theta         <- list(n = rep(list(list(1,1)),self$n_subjects), mu = rep(list(list(0,0)),self$n_subjects))
+      self$theta         <- list(n = rep(list(as.list(rep(1, self$k))),self$n_subjects), mu = rep(list(as.list(rep(0, self$k))),self$n_subjects))
       self$theta_to_arms <- list('N' = 0, 'MU' = 0)
     },
     get_action = function(context, t) {
       user <- context$user_context
       if (runif(1) > epsilon) {
-        # Calculate p_a_i_hat and p_b_i_hat
-        beta <- 1/sqrt(theta$n[[user]][[1]] + theta$n[[user]][[2]])
-        p_a_mean <- theta$MU[[1]]
-        p_b_mean <- theta$MU[[2]]
-        p_a_hat  <- beta * p_a_mean + (1 - beta) * theta$mu[[user]][[1]]
-        p_b_hat  <- beta * p_b_mean + (1 - beta) * theta$mu[[user]][[2]]
-        # Take maximum of the two
-        if (p_a_hat > p_b_hat) {
-          action$choice <- 1
-        } else {
-          action$choice <- 2
-        }
+        beta <- 1 / sqrt(sum_of(theta$n[[user]]))
+        p_hat  <- beta * unlist(theta$MU) + (1 - beta) * unlist(theta$mu[[user]])
+        action$choice <- max_in(p_hat)
       } else {
         action$choice <- sample.int(context$k, 1, replace = TRUE)
       }
@@ -110,8 +101,8 @@ PartiallyPooledEgreedyPolicy <- R6::R6Class(
       reward <- reward$reward
       inc(theta$n[[user]][[arm]])     <- 1
       inc(theta$mu[[user]][[arm]])    <- (reward - theta$mu[[user]][[arm]]) / theta$n[[user]][[arm]]
-      inc(theta$N[[arm]])        <- 1
-      inc(theta$MU[[arm]])       <- (reward - theta$MU[[arm]]) / theta$N[[arm]]
+      inc(theta$N[[arm]])             <- 1
+      inc(theta$MU[[arm]])            <- (reward - theta$MU[[arm]]) / theta$N[[arm]]
       theta
     }
   )

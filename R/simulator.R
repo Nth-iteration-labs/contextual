@@ -24,6 +24,7 @@ Simulator <- R6::R6Class(
     write_progress_file = NULL,
     include_packages = NULL,
     cl = NULL,
+    reindex_t = NULL,
     initialize = function(agents,
                           horizon = 100L,
                           simulations = 100L,
@@ -34,7 +35,9 @@ Simulator <- R6::R6Class(
                           continouous_counter = FALSE,
                           set_seed = 0,
                           write_progress_file = TRUE,
-                          include_packages = NULL) {
+                          include_packages = NULL,
+                          reindex_t = FALSE) {
+      self$reindex_t <- reindex_t
       self$horizon <- horizon
       self$simulations <- simulations
       self$save_theta <- save_theta
@@ -123,6 +126,7 @@ Simulator <- R6::R6Class(
       number_of_agents <- self$number_of_agents
       save_context <- self$save_context
       save_theta <- self$save_theta
+      reindex_t <- self$reindex_t
       write_progress_file <- self$write_progress_file
       continouous_counter <- self$continouous_counter
       set_seed <- self$set_seed
@@ -185,6 +189,7 @@ Simulator <- R6::R6Class(
         #parallel::stopCluster(cl)
       }
       self$history$set_data_table(foreach_results)
+      if(reindex_t) self$history$reindex_t()
       self$history
     },
     finalize = function() {

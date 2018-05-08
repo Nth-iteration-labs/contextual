@@ -8,10 +8,10 @@ LiSamplingOfflineBandit <- R6::R6Class(
     S = NULL
   ),
   public = list(
-    initialize   = function(data_file, k, d) {
+    initialize   = function(data_stream, k, d) {
       self$k <- k
       self$d <- d
-      private$S <- data_file$get_data_table()
+      private$S <- data_stream$get_data_table()
     },
     get_context = function(index) {
       private$X <- array(matrix(private$S$context[[index]], self$d, self$k), dim = c(self$d, self$k, 1))
@@ -36,7 +36,7 @@ LiSamplingOfflineBandit <- R6::R6Class(
   )
 )
 
-#' Bandit: Rejection Sampling Offline Evaluation
+#' Bandit: Li Sampling Offline Evaluation
 #'
 #' \code{LiSamplingOfflineBandit} uses data from a randomly assigned policy for offline evaluation.
 #'
@@ -52,7 +52,7 @@ LiSamplingOfflineBandit <- R6::R6Class(
 #'
 #' @section Usage:
 #' \preformatted{
-#' bandit <- LiSamplingOfflineBandit(data_file, k, d)
+#' bandit <- LiSamplingOfflineBandit(data_stream, k, d)
 #' }
 #'
 #'

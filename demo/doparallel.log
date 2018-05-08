@@ -1,0 +1,30 @@
+starting worker pid=4784 on localhost:11999 at 20:25:41.811
+starting worker pid=7468 on localhost:11999 at 20:25:42.150
+starting worker pid=6248 on localhost:11999 at 20:25:42.322
+Loading required package: contextual
+loaded contextual and set parent environment
+Loading required package: iterators
+Loading required package: contextual
+loaded contextual and set parent environment
+Loading required package: iterators
+Loading required package: contextual
+loaded contextual and set parent environment
+Loading required package: iterators
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCK0node -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCK0node -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCK0node -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCK0node -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCK0node -> unserialize
+Execution halted
+Error in unserialize(node$con) : error reading from connection
+Calls: <Anonymous> ... doTryCatch -> recvData -> recvData.SOCK0node -> unserialize
+Execution halted
