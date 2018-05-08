@@ -1,6 +1,6 @@
 #' @export
-RejectionSamplingOfflineBandit <- R6::R6Class(
-  "RejectionSamplingOfflineBandit",
+LiSamplingOfflineBandit <- R6::R6Class(
+  "LiSamplingOfflineBandit",
   inherit = BasicBandit,
   portable = TRUE,
   class = FALSE,
@@ -38,7 +38,7 @@ RejectionSamplingOfflineBandit <- R6::R6Class(
 
 #' Bandit: Rejection Sampling Offline Evaluation
 #'
-#' \code{RejectionSamplingOfflineBandit} uses data from a randomly assigned policy for offline evaluation.
+#' \code{LiSamplingOfflineBandit} uses data from a randomly assigned policy for offline evaluation.
 #'
 #' The key assumption of the method is that the individual events are i.i.d., and
 #' that the logging policy chose each arm at each time step uniformly at random.
@@ -47,12 +47,12 @@ RejectionSamplingOfflineBandit <- R6::R6Class(
 #' scoring (Langford et al., 2008; Strehl et al., 2011) and related
 #' techniques like doubly robust estimation (Dudik et al., 2011).
 #'
-#' @name RejectionSamplingOfflineBandit
+#' @name LiSamplingOfflineBandit
 #' @family contextual bandits
 #'
 #' @section Usage:
 #' \preformatted{
-#' bandit <- RejectionSamplingOfflineBandit(data_file, k, d)
+#' bandit <- LiSamplingOfflineBandit(data_file, k, d)
 #' }
 #'
 #'
@@ -63,7 +63,7 @@ RejectionSamplingOfflineBandit <- R6::R6Class(
 #'
 #' @seealso
 #'
-#' Core contextual classes: \code{\link{Contextual}}, \code{\link{Simulator}},
+#' Core contextual classes: \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}, \code{\link{Policy}}
 #'
 #' @examples

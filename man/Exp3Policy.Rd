@@ -72,7 +72,7 @@ agent              <- Agent$new(policy, bandit)
 
 history            <- Simulator$new(agent, horizon, simulations, do_parallel = FALSE)$run()
 
-plot(history, type = "grid")
+plot(history, type = "cumulative")
 
 plot(history, type = "arms")
 
@@ -82,11 +82,11 @@ plot(history, type = "arms")
 Auer, P., Cesa-Bianchi, N., Freund, Y., & Schapire, R. E. (2002). The nonstochastic multiarmed bandit problem. SIAM journal on computing, 32(1), 48-77. Strehl, A., & Littman, M. (2004). Exploration via modelbased interval estimation. In International Conference on Machine Learning, number Icml.
 }
 \seealso{
-Core contextual classes: \code{\link{Contextual}}, \code{\link{Simulator}},
+Core contextual classes: \code{\link{Simulator}},
 \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 
 Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBandit}},
-\code{\link{RejectionSamplingOfflineBandit}}, \code{\link{SyntheticBandit}}
+\code{\link{LiSamplingOfflineBandit}}, \code{\link{SyntheticBandit}}
 
 Other contextual policies: \code{\link{BTSLogitPolicy}},
   \code{\link{ContextualThompsonSamplingPolicy}},

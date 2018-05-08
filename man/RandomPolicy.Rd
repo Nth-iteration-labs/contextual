@@ -60,7 +60,7 @@ based on the reward received, and, potentially, the current context.
 
 horizon            <- 100L
 simulations        <- 100L
-weights        <- c(0.9, 0.1, 0.1)
+weights            <- c(0.9, 0.1, 0.1)
 
 policy             <- RandomPolicy$new(name = "Random")
 bandit             <- SyntheticBandit$new(weights = weights, precaching = FALSE)
@@ -68,7 +68,7 @@ agent              <- Agent$new(policy, bandit)
 
 history            <- Simulator$new(agent, horizon, simulations, do_parallel = FALSE)$run()
 
-plot(history, type = "grid")
+plot(history, type = "cumulative")
 
 
 }
@@ -76,11 +76,11 @@ plot(history, type = "grid")
 Gittins, J., Glazebrook, K., & Weber, R. (2011). Multi-armed bandit allocation indices. John Wiley & Sons. (Original work published 1989)
 }
 \seealso{
-Core contextual classes: \code{\link{Contextual}}, \code{\link{Simulator}},
+Core contextual classes: \code{\link{Simulator}},
 \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 
 Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBandit}},
-\code{\link{RejectionSamplingOfflineBandit}}, \code{\link{SyntheticBandit}}
+\code{\link{LiSamplingOfflineBandit}}, \code{\link{SyntheticBandit}}
 
 Other contextual policies: \code{\link{BTSLogitPolicy}},
   \code{\link{ContextualThompsonSamplingPolicy}},

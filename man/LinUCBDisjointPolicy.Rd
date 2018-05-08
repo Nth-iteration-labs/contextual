@@ -83,11 +83,11 @@ based on the reward received, and, potentially, the current context.
 Li, L., Chu, W., Langford, J., & Schapire, R. E. (2010, April). A contextual-bandit approach to personalized news article recommendation. In Proceedings of the 19th international conference on World wide web (pp. 661-670). ACM.
 }
 \seealso{
-Core contextual classes: \code{\link{Contextual}}, \code{\link{Simulator}},
+Core contextual classes: \code{\link{Simulator}},
 \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 
 Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBandit}},
-\code{\link{RejectionSamplingOfflineBandit}}, \code{\link{SyntheticBandit}}
+\code{\link{LiSamplingOfflineBandit}}, \code{\link{SyntheticBandit}}
 
 Other contextual policies: \code{\link{BTSLogitPolicy}},
   \code{\link{ContextualThompsonSamplingPolicy}},

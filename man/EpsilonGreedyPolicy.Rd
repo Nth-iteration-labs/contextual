@@ -76,7 +76,7 @@ agent              <- Agent$new(policy, bandit)
 
 history            <- Simulator$new(agent, horizon, simulations, do_parallel = FALSE)$run()
 
-plot(history, type = "grid")
+plot(history, type = "cumulative")
 
 plot(history, type = "arms")
 
@@ -92,11 +92,11 @@ Strehl, A., & Littman, M. (2004). Exploration via modelbased interval estimation
 Yue, Y., Broder, J., Kleinberg, R., & Joachims, T. (2012). The k-armed dueling bandits problem. Journal of Computer and System Sciences, 78(5), 1538-1556.
 }
 \seealso{
-Core contextual classes: \code{\link{Contextual}}, \code{\link{Simulator}},
+Core contextual classes: \code{\link{Simulator}},
 \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 
 Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBandit}},
-\code{\link{RejectionSamplingOfflineBandit}}, \code{\link{SyntheticBandit}}
+\code{\link{LiSamplingOfflineBandit}}, \code{\link{SyntheticBandit}}
 
 Other contextual policies: \code{\link{BTSLogitPolicy}},
   \code{\link{ContextualThompsonSamplingPolicy}},

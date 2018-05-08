@@ -61,11 +61,11 @@ based on the reward received, and, potentially, the current context.
 Gittins, J., Glazebrook, K., & Weber, R. (2011). Multi-armed bandit allocation indices. John Wiley & Sons. (Original work published 1989)
 }
 \seealso{
-Core contextual classes: \code{\link{Contextual}}, \code{\link{Simulator}},
+Core contextual classes: \code{\link{Simulator}},
 \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 
 Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBandit}},
-\code{\link{RejectionSamplingOfflineBandit}}, \code{\link{SyntheticBandit}}
+\code{\link{LiSamplingOfflineBandit}}, \code{\link{SyntheticBandit}}
 
 Other contextual policies: \code{\link{BTSLogitPolicy}},
   \code{\link{ContextualThompsonSamplingPolicy}},

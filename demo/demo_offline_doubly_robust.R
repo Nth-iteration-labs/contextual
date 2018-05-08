@@ -22,7 +22,7 @@ simulation  <-
 
 before <- simulation$run()
 before$save_data("test.RData")
-#plot(before, type = "grid")
+#plot(before, type = "cumulative")
 
 b <- before$get_data_table()
 
@@ -33,7 +33,7 @@ log_S <- History$new()
 log_S$load_data("test.RData")
 
 bandit <- DoublyRobustOfflineBandit$new(data_file = log_S, k = 3, d = 2)
-#bandit <- RejectionSamplingOfflineBandit$new(data_file = log_S, k = 3, d = 2)
+#bandit <- LiSamplingOfflineBandit$new(data_file = log_S, k = 3, d = 2)
 
 agents <-
   list(
@@ -52,7 +52,7 @@ simulation <-
   )
 
 after <- simulation$run()
-plot(after, type = "grid")
+plot(after, type = "cumulative")
 
 a <- after$get_data_table()
 

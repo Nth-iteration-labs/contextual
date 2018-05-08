@@ -83,17 +83,17 @@ RandomPolicy <- R6::R6Class(
 #'
 #' @seealso
 #'
-#' Core contextual classes: \code{\link{Contextual}}, \code{\link{Simulator}},
+#' Core contextual classes: \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
 #' Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBandit}},
-#' \code{\link{RejectionSamplingOfflineBandit}}, \code{\link{SyntheticBandit}}
+#' \code{\link{LiSamplingOfflineBandit}}, \code{\link{SyntheticBandit}}
 #'
 #' @examples
 #'
 #' horizon            <- 100L
 #' simulations        <- 100L
-#' weights        <- c(0.9, 0.1, 0.1)
+#' weights            <- c(0.9, 0.1, 0.1)
 #'
 #' policy             <- RandomPolicy$new(name = "Random")
 #' bandit             <- SyntheticBandit$new(weights = weights, precaching = FALSE)
@@ -101,7 +101,7 @@ RandomPolicy <- R6::R6Class(
 #'
 #' history            <- Simulator$new(agent, horizon, simulations, do_parallel = FALSE)$run()
 #'
-#' plot(history, type = "grid")
+#' plot(history, type = "cumulative")
 #'
 #'
 NULL

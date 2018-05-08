@@ -16,4 +16,4 @@ agents             <- list( Agent$new(EpsilonGreedyPolicy$new(0.1, "\U190-greedy
 simulation         <- Simulator$new(agents, horizon, simulations, do_parallel = FALSE)
 history            <- simulation$run()
 
-plot(history, type = "grid")
+plot(history, type = "cumulative")

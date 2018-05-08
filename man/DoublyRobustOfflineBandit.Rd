@@ -25,8 +25,8 @@ Dudík, M., Langford, J., & Li, L. (2011). Doubly robust policy evaluation and l
 Dudík, M., Erhan, D., Langford, J., & Li, L. (2014). Doubly robust policy evaluation and optimization. Statistical Science, 485-511.
 }
 \seealso{
-Core contextual classes: \code{\link{Contextual}}, \code{\link{Simulator}},
+Core contextual classes: \code{\link{Simulator}},
 \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}, \code{\link{Policy}}
 
-Other contextual bandits: \code{\link{RejectionSamplingOfflineBandit}}
+Other contextual bandits: \code{\link{LiSamplingOfflineBandit}}
 }

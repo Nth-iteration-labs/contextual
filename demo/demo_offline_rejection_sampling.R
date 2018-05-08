@@ -28,7 +28,7 @@ simulation  <-
 
 before <- simulation$run()
 before$save_data("test.RData")
-plot(before, type = "grid")
+plot(before, type = "cumulative")
 
 b <- before$get_data_table()
 
@@ -37,7 +37,7 @@ b <- before$get_data_table()
 log_S <- History$new()
 log_S$load_data("test.RData")
 
-bandit <- RejectionSamplingOfflineBandit$new(data_file = log_S, k = 3, d = 3)
+bandit <- LiSamplingOfflineBandit$new(data_file = log_S, k = 3, d = 3)
 
 agents <-
   list(
@@ -55,6 +55,6 @@ simulation <-
   )
 
 after <- simulation$run()
-plot(after, type = "grid")
+plot(after, type = "cumulative")
 a <- after$get_data_table()
 if (file.exists("test.RData")) file.remove("test.RData")

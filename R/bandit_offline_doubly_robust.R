@@ -86,7 +86,7 @@ DoublyRobustOfflineBandit <- R6::R6Class(
 #'
 #' @seealso
 #'
-#' Core contextual classes: \code{\link{Contextual}}, \code{\link{Simulator}},
+#' Core contextual classes: \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}, \code{\link{Policy}}
 #'
 #' @examples
