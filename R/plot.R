@@ -16,19 +16,19 @@ Plot <- R6::R6Class(
       history <- check_history_data(history)
       if (regret) {
         if (rate) {
-          ylab_title = "cumulative regret - rate"
+          ylab_title = "Cumulative regret - rate"
           history$cumsum = history[, cumsum(opimal - reward)/t, by = list(agent, sim)]$V1
         } else {
-          ylab_title = "cumulative expected regret"
+          ylab_title = "Cumulative expected regret"
           history$cumsum = history[, cumsum(opimal - reward), by = list(agent, sim)]$V1
         }
         cs <- history[, list(var = var(cumsum) , data = mean(cumsum)), by = list(t, agent)]
       } else {
         if (rate) {
-          ylab_title = "cumulative reward - rate"
+          ylab_title = "Cumulative reward - rate"
           history$cumsum = history[, cumsum(reward)/t, by = list(agent, sim)]$V1
         } else {
-          ylab_title = "cumulative reward"
+          ylab_title = "Cumulative reward"
           history$cumsum = history[, cumsum(reward), by = list(agent, sim)]$V1
         }
         cs <- history[, list(var = var(cumsum), data = mean(cumsum)), by = list(t, agent)]
@@ -146,12 +146,12 @@ Plot <- R6::R6Class(
       }
       axis(1)
       axis(2)
-      title(xlab = "Time Step")
+      title(xlab = "Time step")
       title(ylab = ylab_title)
       box()
 
 
-      if (ylab_title == "cumulative regret - rate") {
+      if (ylab_title == "Cumulative regret - rate") {
         legend_position <- "topright"
       } else {
         legend_position <- "topleft"
@@ -191,7 +191,7 @@ Plot <- R6::R6Class(
         par(mar = c(5, 5, 1, 1))
       }
       history <- check_history_data(history)
-      ylab_title = "Arm Choice %"
+      ylab_title = "Arm choice %"
       agent_levels <- levels(as.factor(history$agent))
       if (length(agent_levels) > 1)
         warning("## Arm percentage plot always plots the results of just one agent.", call. = FALSE)

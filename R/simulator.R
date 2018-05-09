@@ -142,7 +142,6 @@ Simulator <- R6::R6Class(
         .noexport = c("sims_per_agent_list","history"),
         .packages = par_packages
       ) %fun% {
-        # parallelize the longest running part, here sim from t=1 till the horizon
         index <- 1L
         sim_agent_counter <- 0
         sim_agent_total <- length(sims_agents)

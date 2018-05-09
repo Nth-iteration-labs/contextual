@@ -9,8 +9,8 @@ source("./policy_pooled_egreedy.R")
 
 ##################### Settings #########################
 
-horizon        <- 570061
-simulations    <- 1
+horizon        <- 57000
+simulations    <- 10
 
 data_dir       <- "data/"
 
@@ -42,19 +42,16 @@ agents      <- list( Agent$new(UnpooledEgreedyPolicy$new(epsilon = 0.1, n_subjec
 history     <- Simulator$new(agents = agents,
                              horizon = horizon,
                              simulations = simulations,
+                             continouous_counter = TRUE,
                              reindex_t = TRUE,
                              do_parallel = TRUE)$run()
 
-history$save_data(paste0(data_dir,"LiEG.RData"))
+history$save_data(paste0(data_dir,"LiEG_10.RData"))
 
 ##################### Plot #############################
 
+# history$load_data(paste0(data_dir,"LiEG_#SIMS#.RData"))
 
 plot(history, type = "cumulative", regret = FALSE, rate = TRUE )
-
-
-
-
-
-
+plot(history, type = "cumulative", regret = FALSE )
 
