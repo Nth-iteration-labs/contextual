@@ -61,9 +61,10 @@ Simulator <- R6::R6Class(
       # clear doparallel.log
       if (self$write_progress_file) cat(paste0(""), file = "doparallel.log", append = FALSE)
 
+      # (re)create history's data.table
       self$history <- History$new(self$horizon * self$number_of_agents * self$simulations)
       self$sims_per_agent_list <-  matrix(list(), self$simulations, self$number_of_agents)
-      # make policy names unique by appending sequence numbers to duplicates
+      # unique policy names through appending sequence numbers to duplicates
       policy_name_list <- list()
       for (agent_index in 1L:self$number_of_agents) {
 
@@ -120,7 +121,7 @@ Simulator <- R6::R6Class(
         `%fun%` <- foreach::`%dopar%`
         message("Postworkercreation")
       }
-      # copy some variables to local scope
+      # copy relevant variables to local environment
       horizon <- self$horizon
       sims_per_agent_list <- self$sims_per_agent_list
       number_of_agents <- self$number_of_agents
@@ -130,7 +131,9 @@ Simulator <- R6::R6Class(
       write_progress_file <- self$write_progress_file
       continouous_counter <- self$continouous_counter
       set_seed <- self$set_seed
+      # calculate chunk size
       sa_iterator <- itertools::isplitRows(sims_per_agent_list, chunks = workers)
+      # include packages that are used in parallel processes
       par_packages <- c(c("data.table","itertools"),include_packages)
       # running the main simulation loop
       foreach_results <- foreach::foreach(
@@ -184,11 +187,8 @@ Simulator <- R6::R6Class(
         dth <- local_history$get_data_table()
         dth[sim != 0]
       }
-      if (self$do_parallel) {
-        #parallel::stopCluster(cl)
-      }
       self$history$set_data_table(foreach_results)
-      if(reindex_t) self$history$reindex_t()
+      if (reindex_t) self$history$reindex_t()
       self$history
     },
     finalize = function() {
@@ -198,7 +198,7 @@ Simulator <- R6::R6Class(
         })
         stopImplicitCluster()
         # Making sure that we are closing all processes that were
-        # spawned but not terminated by the foreach loop.
+        # spawned but (potentially) not terminated by the foreach loop.
         closeAllConnections()
       }
     }

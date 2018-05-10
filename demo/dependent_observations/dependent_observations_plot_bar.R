@@ -55,18 +55,20 @@ regret_df_plot$subpolicies <- factor(regret_df_plot$subpolicies, levels = list("
 
 p <- ggplot(regret_df_plot, aes(subjects, regret, fill = as.factor(subpolicies))) +
   geom_bar(position = "dodge", stat = "identity") +
+  theme_minimal() +
   facet_grid(poisson + betas ~ policies) +
   theme(legend.title = element_blank()) +
   theme(legend.position = "bottom") +
   xlab("Users") +
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),panel.border = element_rect(colour = "black", fill=NA, size=0.5)) +
   ylab("Cumulative regret")
 print(p)
 
-write.table(regret_df_plot,
-            file = "end_regret_table.csv",
-            sep = ",",
-            row.names = FALSE)
+#write.table(regret_df_plot,
+#            file = "end_regret_table.csv",
+#            sep = ",",
+#            row.names = FALSE)
 
-rm(regret_df_plot)
+#rm(regret_df_plot)
 
 

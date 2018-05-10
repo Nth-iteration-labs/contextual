@@ -53,7 +53,7 @@ DoublyRobustOfflineBandit <- R6::R6Class(
       if (private$S$choice[[index]] == action$choice) {
         list(
           reward = self$ips_weighed_reward(reward_at_index, propensity_at_index),
-          opimal = self$ips_weighed_reward(as.double(private$S$opimal[[index]]), propensity_at_index)
+          optimal_reward_value = self$ips_weighed_reward(as.double(private$S$optimal_reward_value[[index]]), propensity_at_index)
         )
       } else {
         NULL

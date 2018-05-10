@@ -25,8 +25,14 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+<!-- docsearch -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+<link href="../docsearch.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+
+
 <meta property="og:title" content="Policy: Contextual Thompson Sampling with Linear Payoffs — ContextualThompsonSamplingPolicy" />
 
 <meta property="og:description" content="ContextualThompsonSamplingPolicy works by maintaining a prior on the the mu_hat rewards of its arms.
@@ -35,6 +41,8 @@ for each arm from its prior and picking the arm with the highest value.
 When an arm is pulled and a Bernoulli reward is observed, it modifies the prior based on the reward.
 This procedure is repeated for the next arm pull." />
 <meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -49,7 +57,7 @@ This procedure is repeated for the next arm pull." />
   <body>
     <div class="container template-reference-topic">
       <header>
-      <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
@@ -57,8 +65,12 @@ This procedure is repeated for the next arm pull." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">contextual</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">contextual</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.0.0.9012</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -68,7 +80,7 @@ This procedure is repeated for the next arm pull." />
   </a>
 </li>
 <li>
-  <a href="../articles/contextual.html">Get Started</a>
+  <a href="../articles/contextual.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -101,6 +113,13 @@ This procedure is repeated for the next arm pull." />
   </a>
 </li>
       </ul>
+      
+      <form class="navbar-form navbar-right" role="search">
+        <div class="form-group">
+          <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
+        </div>
+      </form>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -108,12 +127,15 @@ This procedure is repeated for the next arm pull." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Policy: Contextual Thompson Sampling with Linear Payoffs</h1>
+    <small class="dont-index">Source: <a href='https://github.com/Nth-iteration-labs/contextual/blob/master/R/policy_cmab_thompsonsampling.R'><code>R/policy_cmab_thompsonsampling.R</code></a></small>
+    <div class="hidden name"><code>ContextualThompsonSamplingPolicy.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p><code>ContextualThompsonSamplingPolicy</code> works by maintaining a prior on the the mu_hat rewards of its arms.
 In this, it follows a beta–binomial model with parameters alpha and beta, sampling values
@@ -121,6 +143,7 @@ for each arm from its prior and picking the arm with the highest value.
 When an arm is pulled and a Bernoulli reward is observed, it modifies the prior based on the reward.
 This procedure is repeated for the next arm pull.</p>
     
+    </div>
 
         
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
@@ -167,10 +190,10 @@ based on the reward received, and, potentially, the current context.</p></dd>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p>Core contextual classes: <code><a href='Contextual.html'>Contextual</a></code>, <code><a href='Simulator.html'>Simulator</a></code>,
+    <div class='dont-index'><p>Core contextual classes: <code><a href='Simulator.html'>Simulator</a></code>,
 <code><a href='Agent.html'>Agent</a></code>, <code><a href='History.html'>History</a></code>, <code><a href='Plot.html'>Plot</a></code></p>
 <p>Bandit classes: <code><a href='Bandit.html'>Bandit</a></code>, <code><a href='BasicBandit.html'>BasicBandit</a></code>,
-<code><a href='RejectionSamplingOfflineBandit.html'>RejectionSamplingOfflineBandit</a></code>, <code><a href='SyntheticBandit.html'>SyntheticBandit</a></code></p>
+<code><a href='LiSamplingOfflineBandit.html'>LiSamplingOfflineBandit</a></code>, <code><a href='SyntheticBandit.html'>SyntheticBandit</a></code></p>
 <p>Other contextual policies: <code><a href='BTSLogitPolicy.html'>BTSLogitPolicy</a></code>,
   <code><a href='EpsilonFirstPolicy.html'>EpsilonFirstPolicy</a></code>,
   <code><a href='EpsilonGreedyPolicy.html'>EpsilonGreedyPolicy</a></code>,
@@ -182,7 +205,7 @@ based on the reward received, and, potentially, the current context.</p></dd>
   <code><a href='SimpleBTSPolicy.html'>SimpleBTSPolicy</a></code>,
   <code><a href='SoftmaxPolicy.html'>SoftmaxPolicy</a></code>,
   <code><a href='ThompsonSamplingPolicy.html'>ThompsonSamplingPolicy</a></code>,
-  <code><a href='UCB1Policy.html'>UCB1Policy</a></code></p>
+  <code><a href='UCB1Policy.html'>UCB1Policy</a></code></p></div>
     
 
   </div>
@@ -215,6 +238,25 @@ based on the reward received, and, potentially, the current context.</p></dd>
 
       </footer>
    </div>
+
+  
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+<script>
+  docsearch({
+    
+    
+    apiKey: 'API_KEY',
+    indexName: 'INDEX_NAME',
+    inputSelector: 'input#search-input.form-control',
+    transformData: function(hits) {
+      return hits.map(function (hit) {
+        hit.url = updateHitURL(hit);
+        return hit;
+      });
+    }
+  });
+</script>
+
 
   </body>
 </html>

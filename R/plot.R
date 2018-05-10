@@ -17,10 +17,10 @@ Plot <- R6::R6Class(
       if (regret) {
         if (rate) {
           ylab_title = "Cumulative regret - rate"
-          history$cumsum = history[, cumsum(opimal - reward)/t, by = list(agent, sim)]$V1
+          history$cumsum = history[, cumsum(optimal_reward_value - reward)/t, by = list(agent, sim)]$V1
         } else {
           ylab_title = "Cumulative expected regret"
-          history$cumsum = history[, cumsum(opimal - reward), by = list(agent, sim)]$V1
+          history$cumsum = history[, cumsum(optimal_reward_value - reward), by = list(agent, sim)]$V1
         }
         cs <- history[, list(var = var(cumsum) , data = mean(cumsum)), by = list(t, agent)]
       } else {
@@ -40,7 +40,7 @@ Plot <- R6::R6Class(
       history <- check_history_data(history)
       if (regret) {
           ylab_title = "Average expected regret"
-          cs <- history[, list(var = var(opimal - reward) , data = mean(opimal - reward)), by = list(t, agent)]
+          cs <- history[, list(var = var(optimal_reward_value - reward) , data = mean(optimal_reward_value - reward)), by = list(t, agent)]
       } else {
           ylab_title = "Average reward"
           cs <-  history[, list(var = var(reward) , data = mean(reward)), by = list(t, agent)]
@@ -51,7 +51,7 @@ Plot <- R6::R6Class(
     optimal = function(history, grid = FALSE, xlim = NULL, legend = TRUE, use_colors = TRUE, ci = FALSE, step_size = 1, start_step = 1, color_step = 1, lty_step = 1, lwd = 1, ylim = NULL, legend_labels = NULL, legend_border = NULL, legend_title = NULL) {
       history <- check_history_data(history)
       ylab_title = "Optimal arm"
-      cs <- history[, list(var = var(is_optimal * 100), data = mean(is_optimal) * 100), by = list(t, agent)]
+      cs <- history[, list(var = var(choice_is_optimal * 100), data = mean(choice_is_optimal) * 100), by = list(t, agent)]
       do_plot( cs = cs, ylab_title = ylab_title, use_colors = use_colors, ci = ci, legend = legend, grid = grid, step_size = step_size, start_step = start_step, color_step = color_step, lty_step = lty_step, lwd = lwd, ylim = ylim, legend_labels = legend_labels, legend_border = legend_border, legend_title = legend_title)#ylim = c(0, 100)
       invisible(self)
     },

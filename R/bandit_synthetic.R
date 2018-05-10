@@ -119,7 +119,7 @@ SyntheticBandit <- R6::R6Class(
       if (self$precaching) idx <- t else idx <- 1
       list(
         reward = private$R[action$choice, idx],
-        opimal = as.double(private$R[max_in(private$O[, idx]), idx])
+        optimal_reward_value = as.double(private$R[max_in(private$O[, idx]), idx])
       )
     }
   )

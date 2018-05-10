@@ -25,9 +25,17 @@
 <link href="pkgdown.css" rel="stylesheet">
 <script src="jquery.sticky-kit.min.js"></script>
 <script src="pkgdown.js"></script>
-  
-  
+
+
+<!-- docsearch -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+<link href="docsearch.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+
+
 <meta property="og:title" content="Authors" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -42,7 +50,7 @@
   <body>
     <div class="container template-authors">
       <header>
-      <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
@@ -50,8 +58,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="index.html">contextual</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="index.html">contextual</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.0.0.9012</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -61,7 +73,7 @@
   </a>
 </li>
 <li>
-  <a href="articles/contextual.html">Get Started</a>
+  <a href="articles/contextual.html">Get started</a>
 </li>
 <li>
   <a href="reference/index.html">Reference</a>
@@ -94,6 +106,13 @@
   </a>
 </li>
       </ul>
+      
+      <form class="navbar-form navbar-right" role="search">
+        <div class="form-group">
+          <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
+        </div>
+      </form>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -101,19 +120,19 @@
       
       </header>
 
-      <div class="row">
-  <div class="contents col-md-12">
+<div class="row">
+  <div class="contents col-md-9">
     <div class="page-header">
       <h1>Authors</h1>
     </div>
 
     <ul class="list-unstyled">
       <li>
-        <p><strong>Robin van Emden</strong>. Author, maintainer. <a href='https://orcid.org/0000-0001-5820-8638' target='orcid.widget'><img src='https://members.orcid.org/sites/default/files/vector_iD_icon.svg' class='orcid'></a>
+        <p><strong>Robin van Emden</strong>. Author, maintainer. <a href='https://orcid.org/0000-0001-5820-8638' target='orcid.widget'><img src='https://members.orcid.org/sites/default/files/vector_iD_icon.svg' class='orcid' height='16'></a>
         </p>
       </li>
       <li>
-        <p><strong>Maurits Kaptein</strong>. Contributor. <a href='https://orcid.org/0000-0002-6316-7524' target='orcid.widget'><img src='https://members.orcid.org/sites/default/files/vector_iD_icon.svg' class='orcid'></a>
+        <p><strong>Maurits Kaptein</strong>. Contributor. <a href='https://orcid.org/0000-0002-6316-7524' target='orcid.widget'><img src='https://members.orcid.org/sites/default/files/vector_iD_icon.svg' class='orcid' height='16'></a>
         </p>
       </li>
     </ul>
@@ -134,6 +153,25 @@
 
       </footer>
    </div>
+
+  
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+<script>
+  docsearch({
+    
+    
+    apiKey: 'API_KEY',
+    indexName: 'INDEX_NAME',
+    inputSelector: 'input#search-input.form-control',
+    transformData: function(hits) {
+      return hits.map(function (hit) {
+        hit.url = updateHitURL(hit);
+        return hit;
+      });
+    }
+  });
+</script>
+
 
   </body>
 </html>

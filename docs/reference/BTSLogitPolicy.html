@@ -25,14 +25,22 @@
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script>
 <script src="../pkgdown.js"></script>
-  
-  
+
+
+<!-- docsearch -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css" />
+<link href="../docsearch.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
+
+
 <meta property="og:title" content="Policy: BTSLogitPolicy — BTSLogitPolicy" />
 
 <meta property="og:description" content="Each time step t, BTS runs a linear regression that produces coefficients for each context feature d.
 It then observes the new context, and generates a predicted payoff or reward together with a confidence interval for each available arm.
 It then proceeds to choose the arm with the highest upper confidence bound." />
 <meta name="twitter:card" content="summary" />
+
+
 <!-- mathjax -->
 <script src='https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'></script>
 
@@ -47,7 +55,7 @@ It then proceeds to choose the arm with the highest upper confidence bound." />
   <body>
     <div class="container template-reference-topic">
       <header>
-      <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
@@ -55,8 +63,12 @@ It then proceeds to choose the arm with the highest upper confidence bound." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">contextual</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">contextual</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.0.0.9012</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
@@ -66,7 +78,7 @@ It then proceeds to choose the arm with the highest upper confidence bound." />
   </a>
 </li>
 <li>
-  <a href="../articles/contextual.html">Get Started</a>
+  <a href="../articles/contextual.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -99,6 +111,13 @@ It then proceeds to choose the arm with the highest upper confidence bound." />
   </a>
 </li>
       </ul>
+      
+      <form class="navbar-form navbar-right" role="search">
+        <div class="form-group">
+          <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
+        </div>
+      </form>
+      
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
@@ -106,17 +125,21 @@ It then proceeds to choose the arm with the highest upper confidence bound." />
       
       </header>
 
-      <div class="row">
+<div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Policy: BTSLogitPolicy</h1>
+    <small class="dont-index">Source: <a href='https://github.com/Nth-iteration-labs/contextual/blob/master/R/policy_mab_btslogit.R'><code>R/policy_mab_btslogit.R</code></a></small>
+    <div class="hidden name"><code>BTSLogitPolicy.Rd</code></div>
     </div>
 
+    <div class="ref-description">
     
     <p>Each time step t, <code>BTS</code> runs a linear regression that produces coefficients for each context feature <code>d</code>.
 It then observes the new context, and generates a predicted payoff or reward together with a confidence interval for each available arm.
 It then proceeds to choose the arm with the highest upper confidence bound.</p>
     
+    </div>
 
         
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
@@ -128,7 +151,7 @@ policy &lt;- BTSLogitPolicy(alpha = 1.0, name = "LinUCB")
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <p>Other contextual policies: <code><a href='ContextualThompsonSamplingPolicy.html'>ContextualThompsonSamplingPolicy</a></code>,
+    <div class='dont-index'><p>Other contextual policies: <code><a href='ContextualThompsonSamplingPolicy.html'>ContextualThompsonSamplingPolicy</a></code>,
   <code><a href='EpsilonFirstPolicy.html'>EpsilonFirstPolicy</a></code>,
   <code><a href='EpsilonGreedyPolicy.html'>EpsilonGreedyPolicy</a></code>,
   <code><a href='Exp3Policy.html'>Exp3Policy</a></code>,
@@ -139,7 +162,7 @@ policy &lt;- BTSLogitPolicy(alpha = 1.0, name = "LinUCB")
   <code><a href='SimpleBTSPolicy.html'>SimpleBTSPolicy</a></code>,
   <code><a href='SoftmaxPolicy.html'>SoftmaxPolicy</a></code>,
   <code><a href='ThompsonSamplingPolicy.html'>ThompsonSamplingPolicy</a></code>,
-  <code><a href='UCB1Policy.html'>UCB1Policy</a></code></p>
+  <code><a href='UCB1Policy.html'>UCB1Policy</a></code></p></div>
     
 
   </div>
@@ -166,6 +189,25 @@ policy &lt;- BTSLogitPolicy(alpha = 1.0, name = "LinUCB")
 
       </footer>
    </div>
+
+  
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script>
+<script>
+  docsearch({
+    
+    
+    apiKey: 'API_KEY',
+    indexName: 'INDEX_NAME',
+    inputSelector: 'input#search-input.form-control',
+    transformData: function(hits) {
+      return hits.map(function (hit) {
+        hit.url = updateHitURL(hit);
+        return hit;
+      });
+    }
+  });
+</script>
+
 
   </body>
 </html>

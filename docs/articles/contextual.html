@@ -9,7 +9,9 @@
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.7.1/clipboard.min.js" integrity="sha384-cV+rhyOuRHc9Ub/91rihWcGmMmCXDeksTtCihMupQHSsi8GIIRDG0ThDc3HGQFJ3" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../jquery.sticky-kit.min.js"></script><script src="../pkgdown.js"></script><meta property="og:title" content="Introduction to contextual">
+<script src="../jquery.sticky-kit.min.js"></script><script src="../pkgdown.js"></script><!-- docsearch --><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css">
+<link href="../docsearch.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="Introduction to contextual">
 <meta property="og:description" content="">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
@@ -18,8 +20,8 @@
 <![endif]-->
 </head>
 <body>
-    <div class="container template-vignette">
-      <header><div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container template-article">
+      <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
@@ -27,8 +29,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="../index.html">contextual</a>
+      <span class="navbar-brand">
+        <a class="navbar-link" href="../index.html">contextual</a>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.0.0.9012</span>
+      </span>
     </div>
+
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
@@ -38,7 +44,7 @@
   </a>
 </li>
 <li>
-  <a href="../articles/contextual.html">Get Started</a>
+  <a href="../articles/contextual.html">Get started</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -70,7 +76,13 @@
   </a>
 </li>
       </ul>
+<form class="navbar-form navbar-right" role="search">
+        <div class="form-group">
+          <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
 </div>
+      </form>
+      
+    </div>
 <!--/.nav-collapse -->
   </div>
 <!--/.container -->
@@ -79,17 +91,20 @@
 
       
       </header><div class="row">
-  <div class="col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1>Introduction to contextual</h1>
                         <h4 class="author">Robin van Emden</h4>
             
-            <h4 class="date">2018-04-17</h4>
-          </div>
+            <h4 class="date">2018-05-10</h4>
+      
+      <small class="dont-index">Source: <a href="https://github.com/Nth-iteration-labs/contextual/blob/master/vignettes/contextual.Rmd"><code>vignettes/contextual.Rmd</code></a></small>
+      <div class="hidden name"><code>contextual.Rmd</code></div>
+
+    </div>
 
     
     
-<div class="contents">
 <p>Vignettes are long form documentation commonly included in packages. Because they are part of the distribution of the package, they need to be as compact as possible. The <code>html_vignette</code> output type provides a custom style sheet (and tweaks some options) to ensure that the resulting html is as small as possible. The <code>html_vignette</code> format:</p>
 <ul>
 <li>Never uses retina figures</li>
@@ -115,7 +130,7 @@
 <p>The figure sizes have been customised so that you can easily put two images side-by-side.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>)
 <span class="kw">plot</span>(<span class="dv">10</span><span class="op">:</span><span class="dv">1</span>)</code></pre></div>
-<p><img src="contextual_files/figure-html/unnamed-chunk-1-1.png" width="672"><img src="contextual_files/figure-html/unnamed-chunk-1-2.png" width="672"></p>
+<p><img src="contextual_files/figure-html/unnamed-chunk-1-1.png" width="700"><img src="contextual_files/figure-html/unnamed-chunk-1-2.png" width="700"></p>
 <p>You can enable figure captions by <code>fig_caption: yes</code> in YAML:</p>
 <pre><code>output:
   rmarkdown::html_vignette:
@@ -295,7 +310,6 @@
 <li id="fn1"><p>A footnote here.<a href="#fnref1">↩</a></p></li>
 </ol>
 </div>
-</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -325,5 +339,21 @@
       </footer>
 </div>
 
-  </body>
+  
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js"></script><script>
+  docsearch({
+    
+    
+    apiKey: 'API_KEY',
+    indexName: 'INDEX_NAME',
+    inputSelector: 'input#search-input.form-control',
+    transformData: function(hits) {
+      return hits.map(function (hit) {
+        hit.url = updateHitURL(hit);
+        return hit;
+      });
+    }
+  });
+</script>
+</body>
 </html>

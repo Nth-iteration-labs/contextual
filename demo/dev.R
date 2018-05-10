@@ -78,7 +78,7 @@ if (grepl('w|W', .Platform$OS.type)) {
 #data.table::set(data, index, 2L, s)
 #data.table::set(data, index, 3L, action$choice)
 #data.table::set(data, index, 4L, reward[[1]])
-#data.table::set(data, index, 5L, is_optimal)
+#data.table::set(data, index, 5L, choice_is_optimal)
 #data.table::set(data, index, 6L, reward$oracle)
 #data.table::set(data, index, 7L, policy_name)
 

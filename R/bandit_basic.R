@@ -35,7 +35,7 @@ BasicBandit <- R6::R6Class(
       private$R <- as.double(matrix(runif(self$k) < self$get_weights(), self$k, self$d))
       rewardlist <- list(
         reward     = private$R[action$choice],
-        opimal     = private$R[which.max(private$R)]
+        optimal_reward_value     = private$R[which.max(private$R)]
       )
       rewardlist
     }

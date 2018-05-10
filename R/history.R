@@ -21,8 +21,8 @@ History <- R6::R6Class(
         sim             = rep(0L,      n),
         choice          = rep(0.0,     n),
         reward          = rep(0.0,     n),
-        is_optimal      = rep(0L,      n),
-        opimal          = rep(0.0,     n),
+        choice_is_optimal      = rep(0L,      n),
+        optimal_reward_value          = rep(0.0,     n),
         propensity      = rep(0.0,     n),
         agent           = rep("",      n)
       )
@@ -45,8 +45,8 @@ History <- R6::R6Class(
       if (!is.null(action$propensity)) propensity <- action$propensity
       else propensity <- NA
 
-      if (!is.null(reward$opimal)) opimal <- reward$opimal
-      else  opimal <- NA
+      if (!is.null(reward$optimal_reward_value)) optimal_reward_value <- reward$optimal_reward_value
+      else  optimal_reward_value <- NA
 
       data.table::set(
         data,
@@ -57,8 +57,8 @@ History <- R6::R6Class(
           s,
           action$choice,
           reward$reward,
-          as.integer(reward$reward == opimal),
-          opimal,
+          as.integer(reward$reward == optimal_reward_value),
+          optimal_reward_value,
           propensity,
           policy_name
         )
@@ -79,7 +79,7 @@ History <- R6::R6Class(
     },
     cumulative = function(final = TRUE, regret = TRUE, rate = FALSE) {
       if (regret) {
-        private$.data$temp <- private$.data$opimal - private$.data$reward
+        private$.data$temp <- private$.data$optimal_reward_value - private$.data$reward
       } else {
         private$.data$temp <- private$.data$reward
       }

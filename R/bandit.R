@@ -21,7 +21,7 @@ Bandit <- R6::R6Class(
     do_action = function(context, action, t) {
       stop("Bandit subclass needs to implement bandit$do_action()", call. = FALSE)
       # Return a list with the reward and, if known, the reward of the best arm.
-      list(reward = reward_for_choice_made, optimal = optimal_reward)
+      list(reward = reward_for_choice_made, optimal = optimal_reward_value)
     },
     generate_bandit_data = function(n) {
       # Called when precaching is TRUE. Pregenerate contexts and rewards here.

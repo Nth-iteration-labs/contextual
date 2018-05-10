@@ -18,6 +18,6 @@ history            <- Simulator$new(agents = agent,
 
 plot(history, type = "arms")
 plot(history, type = "cumulative", regret = FALSE)
-
-cum_reward <- history$get_cumulative_reward()
+h <- history$get_data_table()
+cum_reward <- history$cumulative()
 print(cum_reward)

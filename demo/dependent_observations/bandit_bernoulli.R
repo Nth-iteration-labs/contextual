@@ -46,7 +46,7 @@ BernoulliBandit <- R6::R6Class(
     do_action = function(context, action, t) {
       subject              <- context$user_context
       rewardlist           <- list()
-      rewardlist$opimal    <- rbinom(1, 1, max(self$probs_arm_one[subject], self$probs_arm_two[subject]))
+      rewardlist$optimal_reward_value    <- rbinom(1, 1, max(self$probs_arm_one[subject], self$probs_arm_two[subject]))
       if (action$choice == 1)
         rewardlist$reward  <- rbinom(1, 1, self$probs_arm_one[subject])
       else

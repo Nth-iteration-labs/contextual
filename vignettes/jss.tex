@@ -289,7 +289,7 @@ Bandit <- R6::\hlkwd{R6Class}(
     do_action = \hlkwd{function}(action, t) \{
       \hlkwd{stop}(\hlstr{"Bandit subclass needs to implement bandit$\hlkwd{do_action}()"})
 \hlcom{      # return a list with the reward and, if known, the reward of the best arm.}
-      \hlkwd{list}(reward = reward_for_choice_made, optimal = optimal_reward)
+      \hlkwd{list}(reward = reward_for_choice_made, optimal = optimal_reward_value)
     \},
     generate_bandit_data = \hlkwd{function}(n) \{
 \hlcom{      # called when precaching is TRUE. Pregenerates contexts and rewards.}

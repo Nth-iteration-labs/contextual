@@ -2,7 +2,7 @@
 % Please edit documentation in R/bandit_offline_li_sampling.R
 \name{LiSamplingOfflineBandit}
 \alias{LiSamplingOfflineBandit}
-\title{Bandit: Rejection Sampling Offline Evaluation}
+\title{Bandit: Li Sampling Offline Evaluation}
 \description{
 \code{LiSamplingOfflineBandit} uses data from a randomly assigned policy for offline evaluation.
 }
@@ -17,7 +17,7 @@ techniques like doubly robust estimation (Dudik et al., 2011).
 \section{Usage}{
 
 \preformatted{
-bandit <- LiSamplingOfflineBandit(data_file, k, d)
+bandit <- LiSamplingOfflineBandit(data_stream, k, d)
 }
 }
 
