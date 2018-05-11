@@ -9,22 +9,22 @@ History <- R6::R6Class(
     save_theta = NULL,
     save_context = NULL,
     initialize = function(n = 1, save_context = FALSE, save_theta = FALSE) {
-      self$n <- n
-      self$save_context <- save_context
-      self$save_theta   <- save_theta
+      self$n                          <- n
+      self$save_context               <- save_context
+      self$save_theta                 <- save_theta
       self$reset()
     },
     reset = function() {
       self$clear_data_table()
       private$.data <- data.table::data.table(
-        t               = rep(0L,      n),
-        sim             = rep(0L,      n),
-        choice          = rep(0.0,     n),
-        reward          = rep(0.0,     n),
-        choice_is_optimal      = rep(0L,      n),
+        t                             = rep(0L,      n),
+        sim                           = rep(0L,      n),
+        choice                        = rep(0.0,     n),
+        reward                        = rep(0.0,     n),
+        choice_is_optimal             = rep(0L,      n),
         optimal_reward_value          = rep(0.0,     n),
-        propensity      = rep(0.0,     n),
-        agent           = rep("",      n)
+        propensity                    = rep(0.0,     n),
+        agent                         = rep("",      n)
       )
       if (self$save_context) private$.data$context <- rep(list(),  n)
       if (self$save_theta)   private$.data$theta   <- rep(list(),  n)
@@ -113,8 +113,7 @@ History <- R6::R6Class(
       invisible(self)
     },
     load_data = function(filename, nth_rows = 0) {
-      # check on if table info not NULL too?
-      if (nrow(private$.data) > 1) {
+      if (nrow(private$.data) > 1 && private$.data$agent[[1]] != "") {
         temp_data     <- readRDS(filename)
         if (nth_rows > 0) temp_data <- temp_data[t %% nth_rows == 0]
         private$.data <- rbind(private$.data, temp_data)
@@ -123,6 +122,7 @@ History <- R6::R6Class(
         private$.data <- readRDS(filename)
         if (nth_rows > 0) private$.data <- private$.data[t %% nth_rows == 0]
       }
+      if ( "opimal" %in% colnames(private$.data)) setnames(private$.data, old = "opimal", new = "optimal_reward_value")
       invisible(self)
     },
     get_data_frame = function() {

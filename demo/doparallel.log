@@ -1,12 +1,12 @@
-starting worker pid=8528 on localhost:11999 at 13:41:24.295
-starting worker pid=7304 on localhost:11999 at 13:41:24.429
-starting worker pid=2012 on localhost:11999 at 13:41:24.551
+starting worker pid=11116 on localhost:11999 at 16:10:48.273
+starting worker pid=1212 on localhost:11999 at 16:10:48.493
+starting worker pid=9104 on localhost:11999 at 16:10:48.665
+Loading required package: contextual
 Loading required package: contextual
 Loading required package: contextual
 loaded contextual and set parent environment
-Loading required package: contextual
+loaded contextual and set parent environment
 loaded contextual and set parent environment
 Loading required package: iterators
 Loading required package: iterators
-loaded contextual and set parent environment
 Loading required package: iterators
