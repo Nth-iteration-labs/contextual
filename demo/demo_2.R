@@ -19,5 +19,5 @@ history            <- simulation$run()
 plot(history, type = "cumulative", regret = TRUE)
 plot(history, type = "cumulative", regret = FALSE)
 
-cum_reward <- history$cumulative(final = TRUE, rate = FALSE, regret = FALSE)
-str(cum_reward)
+print(history)
+summary(history)

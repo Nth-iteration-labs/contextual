@@ -92,6 +92,7 @@ History <- R6::R6Class(
         cum_rewards <- private$.data[, list(cum_reward_var = var(cum_reward),
                                             cum_reward = mean(cum_reward)), by = list(t, agent)]
       }
+      private$.data$temp = NULL
       if (final) {
         agent_levels <- levels(as.factor(cum_rewards$agent))
         final_cum_rewards <- list()
@@ -102,6 +103,7 @@ History <- R6::R6Class(
       } else {
         cum_rewards
       }
+
     },
     save_data = function(filename = NA) {
       if (is.na(filename))
@@ -159,6 +161,9 @@ History <- R6::R6Class(
     },
     finalize = function() {
       self$clear_data_table()
+    },
+    print_data = function() {
+      str(private$.data)
     }
   ),
   active = list(

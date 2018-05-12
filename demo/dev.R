@@ -24,22 +24,11 @@ if (grepl('w|W', .Platform$OS.type)) {
 
 # TODO LIST --------------------------------------------------------------------
 
-# prio 1
-
-
-# regres <- glm(reward ~ matrix(unlist(b$context),nrow = dim(b)[1],byrow = TRUE),
-# family = binomial(link = "probit"), data = b)
-
-# names are now the differing element in plots, change!
-
-# gittins ... policy
-
 # comparison doc of all bandit algo's: strengths, weakneseses (computational eff, context / non, variance, etc)
 # add most basic sim
 # and add most basic bandit addition example..
 # and maybe annealing?
 
-# TODO: keep track where you are in sim.. PROGRESS - through sockets?
 # TODO: is optimal arm the absolute optimal arm, or the oracle optimal arm?
 # TODO: check when NA saved to history (ie in the case of oracle/optimal not known etc)
 # TODO: make sure output/summary is nicely formatted and collected
@@ -63,6 +52,7 @@ if (grepl('w|W', .Platform$OS.type)) {
 
 # TODO: blog about all this, do JS versions
 
+# gittins ... policy
 
 # PERFORMANCE DATA  ------------------------------------------------------------
 

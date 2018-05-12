@@ -24,10 +24,10 @@ regret_df <- data.frame(matrix(ncol = 8, nrow = 0))
 cols <- c("horizon", "simulations", "subjects", "betas", "poisson", "policies", "subpolicies", "regret")
 colnames(regret_df) <- cols
 
-# could also have used:
+# Could, of course, also have used R's expand.grid() function:
 # combinations        <- expand.grid(subjects,betas,do_poisson,policies,subpolicies )
 # names(combinations) <- c("subjects","betas","do_poisson","policies","subpolicies")
-# but nested loop seems more comprehensive here
+# ... but nested loops seemed more comprehensive here.
 
 ### Load and manipulate data, plot grids of line charts if do_line_charts TRUE
 

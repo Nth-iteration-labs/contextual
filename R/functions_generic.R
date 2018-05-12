@@ -163,3 +163,40 @@ plot.History <- function(x, ...) {
     )
   }
 }
+
+#' @export
+print.History <- function(x, ...) {
+  x$print_data()
+}
+
+#' @export
+summary.History <- function(x, ...) {
+  p <- do.call(
+    rbind,
+    Map(
+      data.frame,
+      cumulative_regret = x$cumulative(
+        final = TRUE,
+        rate = FALSE,
+        regret = FALSE
+      ),
+      cumulative_regret_rate = x$cumulative(
+        final = TRUE,
+        rate = TRUE,
+        regret = FALSE
+      ),
+      cumulative_reward = x$cumulative(
+        final = TRUE,
+        rate = FALSE,
+        regret = TRUE
+      ),
+      cumulative_reward_rate = x$cumulative(
+        final = TRUE,
+        rate = TRUE,
+        regret = TRUE
+      )
+    )
+  )
+  print(p)
+}
+
