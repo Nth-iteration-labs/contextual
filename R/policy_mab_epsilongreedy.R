@@ -1,5 +1,5 @@
 #' @export
-EpsilonGreedyPolicy <- R6::R6Class(
+EpsilonGreedyPolicy          <- R6::R6Class(
   "EpsilonGreedyPolicy",
   portable = FALSE,
   class = FALSE,
@@ -8,27 +8,27 @@ EpsilonGreedyPolicy <- R6::R6Class(
     epsilon = NULL,
     initialize = function(epsilon = 0.1, name = "EpsilonGreedy") {
       super$initialize(name)
-      self$epsilon <- epsilon
+      self$epsilon           <- epsilon
     },
     set_parameters = function() {
-      self$theta_to_arms <- list('n' = 0, 'mean' = 0)
+      self$theta_to_arms     <- list('n' = 0, 'mean' = 0)
     },
     get_action = function(context, t) {
-      if (runif(1) > epsilon) {
-        action$choice <- max_in(theta$mean)
-        action$propensity <- 1 - self$epsilon
+      if (runif(1) > self$epsilon) {
+        self$action$choice        <- max_in(self$theta$mean)
+        self$action$propensity    <- 1 - self$epsilon
       } else {
-        action$choice <- sample.int(context$k, 1, replace = TRUE)
-        action$propensity <- epsilon*(1/context$k)
+        self$action$choice        <- sample.int(context$k, 1, replace = TRUE)
+        self$action$propensity    <- self$epsilon*(1/context$k)
       }
-      action
+      self$action
     },
     set_reward = function(context, action, reward, t) {
-      arm <- action$choice
-      reward <- reward$reward
-      inc(theta$n[[arm]])    <- 1
-      inc(theta$mean[[arm]]) <- (reward - theta$mean[[arm]]) / theta$n[[arm]]
-      theta
+      arm                    <- action$choice
+      reward                 <- reward$reward
+      inc(self$theta$n[[arm]])    <- 1
+      inc(self$theta$mean[[arm]]) <- (reward - self$theta$mean[[arm]]) / self$theta$n[[arm]]
+      self$theta
     }
   )
 )

@@ -15,7 +15,6 @@ agents             <- list( Agent$new(EpsilonGreedyPolicy$new(0.1, "EpsilonGreed
 simulation         <- Simulator$new(agents, horizon, simulations, do_parallel = FALSE)
 history            <- simulation$run()
 
-#plot(history, type = "cumulative", rate = TRUE)
 plot(history, type = "cumulative", regret = TRUE)
 plot(history, type = "cumulative", regret = FALSE)
 

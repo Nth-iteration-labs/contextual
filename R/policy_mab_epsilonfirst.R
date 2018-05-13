@@ -1,5 +1,5 @@
 #' @export
-EpsilonFirstPolicy <- R6::R6Class(
+EpsilonFirstPolicy              <- R6::R6Class(
   "EpsilonFirstPolicy",
   portable = FALSE,
   class = FALSE,
@@ -8,29 +8,29 @@ EpsilonFirstPolicy <- R6::R6Class(
     first = NULL,
     initialize = function(first = 100, name = "EpsilonFirst") {
       super$initialize(name)
-      self$first <- first
+      self$first                <- first
     },
     set_parameters = function() {
-      self$theta_to_arms <- list('n' = 0, 'mean' = 0)
+      self$theta_to_arms        <- list('n' = 0, 'mean' = 0)
     },
     get_action = function(context, t) {
       if (sum_of(theta$n) < first) {
-        action$choice          <- sample.int(context$k, 1, replace = TRUE)
-        action$propensity   <- (1/context$k)
+        action$choice           <- sample.int(context$k, 1, replace = TRUE)
+        action$propensity       <- (1/context$k)
       } else {
-        action$choice          <- max_in(theta$mean, equal_is_random = FALSE)
-        action$propensity   <- 1
+        action$choice           <- max_in(theta$mean, equal_is_random = FALSE)
+        action$propensity       <- 1
       }
       action
     },
     set_reward = function(context, action, reward, t) {
-      arm      <- action$choice
-      reward   <- reward$reward
+      arm                       <- action$choice
+      reward                    <- reward$reward
 
-      inc(theta$n[[arm]]) <- 1
-      if (sum_of(theta$n) < first - 1)
+      inc(theta$n[[arm]])       <- 1
+      if (sum_of(theta$n) < first - 1) {
         inc(theta$mean[[arm]] ) <- (reward - theta$mean[[arm]]) / theta$n[[arm]]
-
+      }
       theta
     }
   )

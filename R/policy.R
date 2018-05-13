@@ -30,12 +30,12 @@ Policy <- R6::R6Class(
     initialize_theta = function() {
       # Called during contextual's initialisation.
       # Copies theta_to_arms k times, makes the copies available through theta.
-      if (!is.null(theta_to_arms)) {
-        for (param_index in 1L:length(theta_to_arms)) {
-          theta[[ names(self$theta_to_arms)[param_index] ]] <- rep(list(self$theta_to_arms[[param_index]]),self$k)
+      if (!is.null(self$theta_to_arms)) {
+        for (param_index in 1L:length(self$theta_to_arms)) {
+          self$theta[[ names(self$theta_to_arms)[param_index] ]] <- rep(list(self$theta_to_arms[[param_index]]),self$k)
         }
       }
-      theta
+      self$theta
     },
     set_theta = function(theta) {
       self$theta <- theta
