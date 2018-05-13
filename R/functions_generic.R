@@ -170,27 +170,27 @@ print.History <- function(x, ...) {
 }
 
 #' @export
-summary.History <- function(x, ...) {
+summary.History <- function(object, ...) {
   p <- do.call(
     rbind,
     Map(
       data.frame,
-      cumulative_regret = x$cumulative(
+      cumulative_regret = object$cumulative(
         final = TRUE,
         rate = FALSE,
         regret = FALSE
       ),
-      cumulative_regret_rate = x$cumulative(
+      cumulative_regret_rate = object$cumulative(
         final = TRUE,
         rate = TRUE,
         regret = FALSE
       ),
-      cumulative_reward = x$cumulative(
+      cumulative_reward = object$cumulative(
         final = TRUE,
         rate = FALSE,
         regret = TRUE
       ),
-      cumulative_reward_rate = x$cumulative(
+      cumulative_reward_rate = object$cumulative(
         final = TRUE,
         rate = TRUE,
         regret = TRUE

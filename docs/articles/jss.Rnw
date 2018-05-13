@@ -478,8 +478,8 @@ history            <- simulator$run()
 
 
 par(mfrow = c(1, 2),mar = c(5, 5, 1, 1))
-plot(history, type = "cumulative")
-plot(history, type = "arms")
+plot(history, type = "cumulative", grid = TRUE)
+plot(history, type = "arms", grid = TRUE)
 
 @
 
@@ -579,8 +579,8 @@ history            <- simulator$run()
 
 
 par(mfrow = c(1, 2),mar = c(5, 5, 1, 1))
-plot(history, type = "cumulative")
-plot(history, type = "arms")
+plot(history, type = "cumulative", grid = TRUE)
+plot(history, type = "arms", grid = TRUE)
 
 @
 
@@ -688,8 +688,8 @@ simulation         <- Simulator$new(agents, horizon, simulations, do_parallel = 
 history            <- simulation$run()
 
 par(mfrow = c(1, 2),mar = c(5, 5, 1, 1))
-plot(history, type = "cumulative")
-plot(history, type = "cumulative", regret = FALSE)
+plot(history, type = "cumulative", grid = TRUE)
+plot(history, type = "cumulative", regret = FALSE, grid = TRUE)
 
 @
 
@@ -748,8 +748,8 @@ simulation  <- Simulator$new(agents, horizon = 200L, simulations = 100L, do_para
 history     <- simulation$run()
 
 par(mfrow = c(1, 2),mar = c(5, 5, 1, 1))
-plot(history, type = "cumulative")
-plot(history, type = "average", regret = FALSE)
+plot(history, type = "cumulative", grid = TRUE)
+plot(history, type = "average", regret = FALSE, grid = TRUE)
 
 @
 

@@ -6,6 +6,6 @@ contextual.Rproj
 ^\.travis\.yml$
 ^codecov\.yml$
 ^appveyor\.yml$
-^_pkgdown.yaml$
+^_pkgdown.yml$
 ^docs$
 ^vignettes/jss.*

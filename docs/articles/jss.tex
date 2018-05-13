@@ -554,8 +554,8 @@ Running the policy:
 
 
 \hlkwd{par}\hlstd{(}\hlkwc{mfrow} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{2}\hlstd{),}\hlkwc{mar} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{5}\hlstd{,} \hlnum{5}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{))}
-\hlkwd{plot}\hlstd{(history,} \hlkwc{type} \hlstd{=} \hlstr{"cumulative"}\hlstd{)}
-\hlkwd{plot}\hlstd{(history,} \hlkwc{type} \hlstd{=} \hlstr{"arms"}\hlstd{)}
+\hlkwd{plot}\hlstd{(history,} \hlkwc{type} \hlstd{=} \hlstr{"cumulative"}\hlstd{,} \hlkwc{grid} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\hlkwd{plot}\hlstd{(history,} \hlkwc{type} \hlstd{=} \hlstr{"arms"}\hlstd{,} \hlkwc{grid} \hlstd{=} \hlnum{TRUE}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -563,11 +563,7 @@ Running the policy:
 \begin{center}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}[H]
-\includegraphics[width=\maxwidth,]{fig/fig1-1} \caption[Epsilon First]{Epsilon First}\label{fig:fig11}
-\end{figure}
-
-\begin{figure}[H]
-\includegraphics[width=\maxwidth,]{fig/fig1-2} \caption[Epsilon First]{Epsilon First}\label{fig:fig12}
+\includegraphics[width=\maxwidth,]{fig/fig1-1} \caption[Epsilon First]{Epsilon First}\label{fig:fig1}
 \end{figure}
 
 
@@ -669,8 +665,8 @@ How to run it:
 
 
 \hlkwd{par}\hlstd{(}\hlkwc{mfrow} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{2}\hlstd{),}\hlkwc{mar} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{5}\hlstd{,} \hlnum{5}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{))}
-\hlkwd{plot}\hlstd{(history,} \hlkwc{type} \hlstd{=} \hlstr{"cumulative"}\hlstd{)}
-\hlkwd{plot}\hlstd{(history,} \hlkwc{type} \hlstd{=} \hlstr{"arms"}\hlstd{)}
+\hlkwd{plot}\hlstd{(history,} \hlkwc{type} \hlstd{=} \hlstr{"cumulative"}\hlstd{,} \hlkwc{grid} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\hlkwd{plot}\hlstd{(history,} \hlkwc{type} \hlstd{=} \hlstr{"arms"}\hlstd{,} \hlkwc{grid} \hlstd{=} \hlnum{TRUE}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -678,11 +674,7 @@ How to run it:
 \begin{center}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}[H]
-\includegraphics[width=\maxwidth,]{fig/fig2-1} \caption[Epsilon Greedy]{Epsilon Greedy}\label{fig:fig21}
-\end{figure}
-
-\begin{figure}[H]
-\includegraphics[width=\maxwidth,]{fig/fig2-2} \caption[Epsilon Greedy]{Epsilon Greedy}\label{fig:fig22}
+\includegraphics[width=\maxwidth,]{fig/fig2-1} \caption[Epsilon Greedy]{Epsilon Greedy}\label{fig:fig2}
 \end{figure}
 
 
@@ -791,8 +783,8 @@ For figures, see Figure \ref{fig:fig3} on page \pageref{fig:fig3}.
 \hlstd{history}            \hlkwb{<-} \hlstd{simulation}\hlopt{$}\hlkwd{run}\hlstd{()}
 
 \hlkwd{par}\hlstd{(}\hlkwc{mfrow} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{2}\hlstd{),}\hlkwc{mar} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{5}\hlstd{,} \hlnum{5}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{))}
-\hlkwd{plot}\hlstd{(history,} \hlkwc{type} \hlstd{=} \hlstr{"cumulative"}\hlstd{)}
-\hlkwd{plot}\hlstd{(history,} \hlkwc{type} \hlstd{=} \hlstr{"cumulative"}\hlstd{,} \hlkwc{regret} \hlstd{=} \hlnum{FALSE}\hlstd{)}
+\hlkwd{plot}\hlstd{(history,} \hlkwc{type} \hlstd{=} \hlstr{"cumulative"}\hlstd{,} \hlkwc{grid} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\hlkwd{plot}\hlstd{(history,} \hlkwc{type} \hlstd{=} \hlstr{"cumulative"}\hlstd{,} \hlkwc{regret} \hlstd{=} \hlnum{FALSE}\hlstd{,} \hlkwc{grid} \hlstd{=} \hlnum{TRUE}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -800,11 +792,7 @@ For figures, see Figure \ref{fig:fig3} on page \pageref{fig:fig3}.
 \begin{center}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}[H]
-\includegraphics[width=\maxwidth,]{fig/fig3-1} \caption[LinUCB algorithm with linear disjoint models, following Li et al]{LinUCB algorithm with linear disjoint models, following Li et al. (2010)}\label{fig:fig31}
-\end{figure}
-
-\begin{figure}[H]
-\includegraphics[width=\maxwidth,]{fig/fig3-2} \caption[LinUCB algorithm with linear disjoint models, following Li et al]{LinUCB algorithm with linear disjoint models, following Li et al. (2010)}\label{fig:fig32}
+\includegraphics[width=\maxwidth,]{fig/fig3-1} \caption[LinUCB algorithm with linear disjoint models, following Li et al]{LinUCB algorithm with linear disjoint models, following Li et al. (2010)}\label{fig:fig3}
 \end{figure}
 
 
@@ -841,8 +829,8 @@ Through its R6 based object system, it's relatively easy to extend \pkg{contextu
   \hlstr{"EpsilonGreedyAnnealingPolicy"}\hlstd{,}
   \hlcom{# Class extends EpsilonGreedyPolicy}
   \hlkwc{inherit} \hlstd{= EpsilonGreedyPolicy,}
-  \hlkwc{portable} \hlstd{=} \hlnum{TRUE}\hlstd{,}
-  \hlkwc{class} \hlstd{=} \hlnum{TRUE}\hlstd{,}
+  \hlkwc{portable} \hlstd{=} \hlnum{FALSE}\hlstd{,}
+  \hlkwc{class} \hlstd{=} \hlnum{FALSE}\hlstd{,}
   \hlkwc{public} \hlstd{=} \hlkwd{list}\hlstd{(}
     \hlcom{# Override get_action, use annealing epsilon}
     \hlkwc{get_action} \hlstd{=} \hlkwa{function}\hlstd{(}\hlkwc{context}\hlstd{,} \hlkwc{t}\hlstd{) \{}
@@ -856,32 +844,21 @@ Through its R6 based object system, it's relatively easy to extend \pkg{contextu
 \hlstd{bandit}      \hlkwb{<-} \hlstd{PoissonRewardBandit}\hlopt{$}\hlkwd{new}\hlstd{(weights)}
 \hlstd{agents}      \hlkwb{<-} \hlkwd{list}\hlstd{( Agent}\hlopt{$}\hlkwd{new}\hlstd{(EpsilonGreedyPolicy}\hlopt{$}\hlkwd{new}\hlstd{(}\hlnum{0.1}\hlstd{,} \hlstr{"EG Annealing"}\hlstd{), bandit),}
                      \hlstd{Agent}\hlopt{$}\hlkwd{new}\hlstd{(EpsilonGreedyAnnealingPolicy}\hlopt{$}\hlkwd{new}\hlstd{(}\hlnum{0.1}\hlstd{,} \hlstr{"EG"}\hlstd{), bandit) )}
-\end{alltt}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in EpsilonGreedyAnnealingPolicy\$new(0.1, "{}EG"{}): Sub and superclass must both be portable or non-portable.}}\begin{alltt}
 \hlstd{simulation}  \hlkwb{<-} \hlstd{Simulator}\hlopt{$}\hlkwd{new}\hlstd{(agents,} \hlkwc{horizon} \hlstd{=} \hlnum{200L}\hlstd{,} \hlkwc{simulations} \hlstd{=} \hlnum{100L}\hlstd{,} \hlkwc{do_parallel} \hlstd{=} \hlnum{FALSE}\hlstd{)}
 
 \hlstd{history}     \hlkwb{<-} \hlstd{simulation}\hlopt{$}\hlkwd{run}\hlstd{()}
 
 \hlkwd{par}\hlstd{(}\hlkwc{mfrow} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{2}\hlstd{),}\hlkwc{mar} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{5}\hlstd{,} \hlnum{5}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{))}
-\hlkwd{plot}\hlstd{(history,} \hlkwc{type} \hlstd{=} \hlstr{"cumulative"}\hlstd{)}
-\hlkwd{plot}\hlstd{(history,} \hlkwc{type} \hlstd{=} \hlstr{"average"}\hlstd{,} \hlkwc{regret} \hlstd{=} \hlnum{FALSE}\hlstd{)}
+\hlkwd{plot}\hlstd{(history,} \hlkwc{type} \hlstd{=} \hlstr{"cumulative"}\hlstd{,} \hlkwc{grid} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\hlkwd{plot}\hlstd{(history,} \hlkwc{type} \hlstd{=} \hlstr{"average"}\hlstd{,} \hlkwc{regret} \hlstd{=} \hlnum{FALSE}\hlstd{,} \hlkwc{grid} \hlstd{=} \hlnum{TRUE}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
 
 \begin{center}
 \begin{knitrout}
-\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
-
-
-{\ttfamily\noindent\bfseries\color{errorcolor}{\#\# Error in EpsilonGreedyAnnealingPolicy\$new(0.1, "{}EG"{}): Sub and superclass must both be portable or non-portable.}}\end{kframe}\begin{figure}[H]
-\includegraphics[width=\maxwidth,]{fig/fig4-1} \caption[Extending BasicBandit and EpsilonGreedyPolicy]{Extending BasicBandit and EpsilonGreedyPolicy}\label{fig:fig41}
-\end{figure}
-
-\begin{figure}[H]
-\includegraphics[width=\maxwidth,]{fig/fig4-2} \caption[Extending BasicBandit and EpsilonGreedyPolicy]{Extending BasicBandit and EpsilonGreedyPolicy}\label{fig:fig42}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}[H]
+\includegraphics[width=\maxwidth,]{fig/fig4-1} \caption[Extending BasicBandit and EpsilonGreedyPolicy]{Extending BasicBandit and EpsilonGreedyPolicy}\label{fig:fig4}
 \end{figure}
 
 
