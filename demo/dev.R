@@ -21,6 +21,9 @@ if (grepl('w|W', .Platform$OS.type)) {
   Sys.setenv(R_GSCMD = "C:\\Program Files\\gs\\gs9.22\\bin\\gswin64c.exe")
 }
 
+#goodpractice
+#setwd("~/GitHub")
+#gp("contextual")
 
 # TODO LIST --------------------------------------------------------------------
 

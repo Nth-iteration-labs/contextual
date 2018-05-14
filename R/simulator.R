@@ -1,6 +1,6 @@
-#' @import foreach
-#' @import doParallel
-#' @import itertools
+#' @importFrom foreach %dopar% %do%
+#' @importFrom doParallel registerDoParallel stopImplicitCluster
+#' @importFrom itertools isplitRows
 #'
 #' @export
 Simulator <- R6::R6Class(
@@ -196,7 +196,7 @@ Simulator <- R6::R6Class(
         try({
           parallel::stopCluster(self$cl)
         })
-        stopImplicitCluster()
+        doParallel::stopImplicitCluster()
         # Making sure that we are closing all processes that were
         # spawned but (potentially) not terminated by the foreach loop.
         closeAllConnections()

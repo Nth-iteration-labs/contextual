@@ -14,7 +14,7 @@ history            <- Simulator$new(agents = agent,
                                     horizon = horizon,
                                     simulations = simulations,
                                     save_theta = FALSE,
-                                    do_parallel = FALSE)$run()
+                                    do_parallel = TRUE)$run()
 
 plot(history, type = "arms")
 plot(history, type = "cumulative", regret = TRUE)

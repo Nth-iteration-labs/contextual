@@ -21,8 +21,8 @@ ContextualThompsonSamplingPolicy <- R6::R6Class(
     },
     get_action = function(context, t) {
       X <- context$X
-      mu_tilde = self$mvrnorm(1, theta$mu_hat, self$v^2 * solve(theta$B))
-      expected_rewards = t(X) %*% t(mu_tilde)
+      mu_tilde <- self$mvrnorm(1, theta$mu_hat, self$v^2 * solve(theta$B))
+      expected_rewards <- t(X) %*% t(mu_tilde)
       action$choice <- max_in(expected_rewards)
       action
     },

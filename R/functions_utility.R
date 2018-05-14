@@ -13,7 +13,7 @@
 #' x
 #'
 #' @export
-"inc<-" = function(x, value) {
+"inc<-" <- function(x, value) {
   x + value
 }
 #' Decrement
@@ -29,7 +29,7 @@
 #' x
 #'
 #' @export
-"dec<-" = function(x, value) {
+"dec<-" <- function(x, value) {
   x - value
 }
 #' Get maximum value
@@ -47,7 +47,7 @@
 #'
 #'
 #' @export
-max_in = function(x, equal_is_random = TRUE) {
+max_in <- function(x, equal_is_random = TRUE) {
   x <- unlist(x)
   y <- seq_along(x)[x == max(x)]
   if (length(y) > 1L)  {
@@ -67,7 +67,7 @@ max_in = function(x, equal_is_random = TRUE) {
 #' @param M matrix
 #'
 #' @export
-normalize = function(M) {
+normalize <- function(M) {
   M / sqrt(sum(M^2))
 }
 #' Normalize
@@ -77,7 +77,7 @@ normalize = function(M) {
 #' @param x vector
 #'
 #' @export
-sum_of = function(x) {
+sum_of <- function(x) {
   sum(unlist(x))
 }
 #' Inverse from Choleski (or QR) Decomposition.
@@ -87,7 +87,7 @@ sum_of = function(x) {
 #' @param M matrix
 #'
 #' @export
-inv = function(M) {
+inv <- function(M) {
   chol2inv(chol(M))
 }
 #' Check if in RStudio
@@ -100,7 +100,7 @@ inv = function(M) {
 #' is_rstudio()
 #'
 #' @export
-is_rstudio = function() {
+is_rstudio <- function() {
   .Platform$GUI == "RStudio"
 }
 #' @title Change Default Graphing Device from RStudio
@@ -133,9 +133,10 @@ is_rstudio = function() {
 #' }
 #'
 #' @importFrom grDevices graphics.off
+#' @importFrom R.devices devOptions
 #'
 #' @export
-set_external = function(ext = TRUE,
+set_external <- function(ext = TRUE,
                         width = 10,
                         height = 6) {
   if (is_rstudio()) {
@@ -144,10 +145,10 @@ set_external = function(ext = TRUE,
       device.name <- "x11"
       switch(sysname,
              darwin = {
-               device.name = "quartz"
+               device.name <- "quartz"
              },
              windows = {
-               device.name = "windows"
+               device.name <- "windows"
              })
       options("device" = device.name)
       R.devices::devOptions(sysname, width = width, height = height)

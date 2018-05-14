@@ -21,7 +21,7 @@ SimpleBTSPolicy <- R6::R6Class(
       self$theta_to_arms <- list('alpha' = rep(self$b,self$J),  'beta' = rep(self$b,self$J))
     },
     get_action = function(context, t) {
-      point_estimate_of_mean = vector("double", context$k)
+      point_estimate_of_mean <- vector("double", context$k)
       for (arm in 1:context$k) {
         one_replicate <- sample(self$J, 1)
         r_alpha <- theta$alpha[[arm]][one_replicate]

@@ -2,77 +2,77 @@
 plot.History <- function(x, ...) {
   args <- eval(substitute(alist(...)))
   if ("type" %in% names(args))
-    type = eval(args$type)
+    type <- eval(args$type)
   else
-    type = "cumulative"
+    type <- "cumulative"
   if ("args" %in% names(args))
-    grid = eval(args$grid)
+    grid <- eval(args$grid)
   else
-    grid = FALSE
+    grid <- FALSE
   if ("xlim" %in% names(args))
-    xlim = eval(args$xlim)
+    xlim <- eval(args$xlim)
   else
-    xlim = NULL
+    xlim <- NULL
   if ("legend" %in% names(args))
-    legend = eval(args$legend)
+    legend <- eval(args$legend)
   else
-    legend = TRUE
+    legend <- TRUE
   if ("regret" %in% names(args))
-    regret = eval(args$regret)
+    regret <- eval(args$regret)
   else
-    regret = TRUE
+    regret <- TRUE
   if ("use_colors" %in% names(args))
-    use_colors = eval(args$use_colors)
+    use_colors <- eval(args$use_colors)
   else
-    use_colors = TRUE
+    use_colors <- TRUE
   if ("ci" %in% names(args))
-    ci = eval(args$ci)
+    ci <- eval(args$ci)
   else
-    ci = FALSE
+    ci <- FALSE
   if ("step_size" %in% names(args))
-    step_size = eval(args$step_size)
+    step_size <- eval(args$step_size)
   else
-    step_size = 1
+    step_size <- 1
   if ("color_step" %in% names(args))
-    color_step = eval(args$color_step)
+    color_step <- eval(args$color_step)
   else
-    color_step = 1
+    color_step <- 1
   if ("lty_step" %in% names(args))
-    lty_step = eval(args$lty_step)
+    lty_step <- eval(args$lty_step)
   else
-    lty_step = 1
+    lty_step <- 1
   if ("lwd" %in% names(args))
-    lwd = eval(args$lwd)
+    lwd <- eval(args$lwd)
   else
-    lwd = 1
+    lwd <- 1
   if ("start_step" %in% names(args))
-    start_step = eval(args$start_step)
+    start_step <- eval(args$start_step)
   else
-    start_step = 1
+    start_step <- 1
   if ("ylim" %in% names(args))
-    ylim = eval(args$ylim)
+    ylim <- eval(args$ylim)
   else
-    ylim = NULL
+    ylim <- NULL
   if ("legend_labels" %in% names(args))
-    legend_labels = eval(args$legend_labels)
+    legend_labels <- eval(args$legend_labels)
   else
-    legend_labels = NULL
+    legend_labels <- NULL
   if ("legend_border" %in% names(args))
-    legend_border = eval(args$legend_border)
+    legend_border <- eval(args$legend_border)
   else
-    legend_border = NULL
+    legend_border <- NULL
   if ("legend_title" %in% names(args))
-    legend_title = eval(args$legend_title)
+    legend_title <- eval(args$legend_title)
   else
-    legend_title = NULL
+    legend_title <- NULL
   if ("rate" %in% names(args))
-    rate = eval(args$rate)
+    rate <- eval(args$rate)
   else
-    rate = FALSE
+    rate <- FALSE
   if ("grid" %in% names(args))
-    grid = eval(args$grid)
+    grid <- eval(args$grid)
   else
-    grid = FALSE
+    grid <- FALSE
   if (type == "grid") {
     Plot$new()$grid(x,
                     xlim = xlim,

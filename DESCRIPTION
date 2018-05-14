@@ -13,7 +13,6 @@ LazyData: true
 RoxygenNote: 6.0.1
 Imports:
     R6,
-    MASS,
     data.table,
     R.devices,
     foreach,

@@ -31,7 +31,7 @@ Policy <- R6::R6Class(
       # Called during contextual's initialisation.
       # Copies theta_to_arms k times, makes the copies available through theta.
       if (!is.null(self$theta_to_arms)) {
-        for (param_index in 1L:length(self$theta_to_arms)) {
+        for (param_index in seq_along(self$theta_to_arms)) {
           self$theta[[ names(self$theta_to_arms)[param_index] ]] <- rep(list(self$theta_to_arms[[param_index]]),self$k)
         }
       }

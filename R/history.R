@@ -1,4 +1,4 @@
-#' @import data.table
+#' @importFrom data.table data.table set
 #' @export
 History <- R6::R6Class(
   "History",
@@ -92,7 +92,7 @@ History <- R6::R6Class(
         cum_rewards <- private$.data[, list(cum_reward_var = var(cum_reward),
                                             cum_reward = mean(cum_reward)), by = list(t, agent)]
       }
-      private$.data$temp = NULL
+      private$.data$temp <- NULL
       if (final) {
         agent_levels <- levels(as.factor(cum_rewards$agent))
         final_cum_rewards <- list()

@@ -15,25 +15,25 @@ LifPolicy <- R6::R6Class(
 
     initialize = function(inttime,amplitude,learnrate,omega,x0_start, name = "LockInFeedback") {
       super$initialize(name)
-      self$inttime = inttime
-      self$amplitude = amplitude
-      self$learnrate = learnrate
-      self$omega = omega
-      self$x0_start = x0_start
+      self$inttime   <- inttime
+      self$amplitude <- amplitude
+      self$learnrate <- learnrate
+      self$omega     <- omega
+      self$x0_start  <- x0_start
     },
     set_parameters = function() {
       self$theta_to_arms <- list('x0' = x0_start, 'Y' = rep(NA, inttime))
     },
     get_action = function(context, t) {
-      action$choice = theta$x0[[1]] + amplitude*cos(omega * t)
+      action$choice <- theta$x0[[1]] + amplitude*cos(omega * t)
       action
     },
     set_reward = function(context, action, reward, t) {
       reward   <- reward$reward
-      y = amplitude*cos(omega * t)*reward
-      theta$Y[[1]] <- c(y, theta$Y[[1]])[1:length(theta$Y[[1]])]
+      y <- amplitude*cos(omega * t)*reward
+      theta$Y[[1]] <- c(y, theta$Y[[1]])[seq_along(theta$Y[[1]])]
       if (t > inttime)
-        theta$x0[[1]] = theta$x0[[1]] + learnrate * sum( theta$Y[[1]] ) / inttime
+        theta$x0[[1]] <- theta$x0[[1]] + learnrate * sum( theta$Y[[1]] ) / inttime
       theta
     }
   )
