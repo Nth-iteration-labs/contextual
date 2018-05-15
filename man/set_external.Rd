@@ -25,7 +25,8 @@ Linux: x11()
 
 Windows: windows()
 
-Note, this setting is not permanent. Thus, the behavioral change will last until the end of the session.
+Note, this setting is not permanent. Thus, the behavioral change will last
+until the end of the session.
 
 Also, the active graphing environment will be killed.
 As a result, any graphs that are open will be deleted. You will have to regraph them.

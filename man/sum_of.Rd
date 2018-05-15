@@ -2,13 +2,19 @@
 % Please edit documentation in R/functions_utility.R
 \name{sum_of}
 \alias{sum_of}
-\title{Normalize}
+\title{Sum of list}
 \usage{
 sum_of(x)
 }
 \arguments{
-\item{x}{vector}
+\item{x}{List}
 }
 \description{
-Returns sum of values in vector
+Returns the sum of the values of the elements of a list \code{x}.
+}
+\examples{
+
+theta = list(par_one = list(1,2,3), par_two = list(2,3,4))
+sum_of(theta$par_one)
+
 }

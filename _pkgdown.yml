@@ -18,6 +18,16 @@ reference:
     desc: "Contextual's Policy implementations."
     contents:
       - ends_with("Policy")
+  - title: "Utility functions"
+    desc: "Contextual utility functions."
+    contents:
+      - dec<-
+      - inc<-
+      - inv
+      - sum_of
+      - max_in
+      - is_rstudio
+      - set_external
 template:
   params:
     docsearch:

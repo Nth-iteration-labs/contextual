@@ -12,3 +12,7 @@ inv(M)
 \description{
 Invert a symmetric, positive definite square matrix from its Choleski decomposition.
 }
+\examples{
+inv(cbind(1, 1:3, c(1,3,7)))
+
+}

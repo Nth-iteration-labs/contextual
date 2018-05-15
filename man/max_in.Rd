@@ -21,3 +21,9 @@ the index of one of the tied maxima is returned at random.
 If \code{equal_is_random} is \code{FALSE},
 the maximum with the lowest index number is returned.
 }
+\examples{
+
+theta = list(par_one = list(1,2,3), par_two = list(2,3,4))
+max_in(theta$par_one)
+
+}

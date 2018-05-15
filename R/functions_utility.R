@@ -45,6 +45,10 @@
 #' @param x vector of values
 #' @param equal_is_random boolean
 #'
+#' @examples
+#'
+#' theta = list(par_one = list(1,2,3), par_two = list(2,3,4))
+#' max_in(theta$par_one)
 #'
 #' @export
 max_in <- function(x, equal_is_random = TRUE) {
@@ -60,21 +64,16 @@ max_in <- function(x, equal_is_random = TRUE) {
     return(y)
   }
 }
-#' Normalize
+#' Sum of list
 #'
-#' Returns normalized matrix.
+#' Returns the sum of the values of the elements of a list \code{x}.
 #'
-#' @param M matrix
+#' @param x List
 #'
-#' @export
-normalize <- function(M) {
-  M / sqrt(sum(M^2))
-}
-#' Normalize
+#' @examples
 #'
-#' Returns sum of values in vector
-#'
-#' @param x vector
+#' theta = list(par_one = list(1,2,3), par_two = list(2,3,4))
+#' sum_of(theta$par_one)
 #'
 #' @export
 sum_of <- function(x) {
@@ -85,6 +84,9 @@ sum_of <- function(x) {
 #' Invert a symmetric, positive definite square matrix from its Choleski decomposition.
 #'
 #' @param M matrix
+#'
+#' @examples
+#' inv(cbind(1, 1:3, c(1,3,7)))
 #'
 #' @export
 inv <- function(M) {
@@ -118,7 +120,8 @@ is_rstudio <- function() {
 #'
 #' Windows: windows()
 #'
-#' Note, this setting is not permanent. Thus, the behavioral change will last until the end of the session.
+#' Note, this setting is not permanent. Thus, the behavioral change will last
+#' until the end of the session.
 #'
 #' Also, the active graphing environment will be killed.
 #' As a result, any graphs that are open will be deleted. You will have to regraph them.
