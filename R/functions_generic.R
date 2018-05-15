@@ -1,3 +1,18 @@
+#' Plot Method for Contextual History
+#'
+#' plot.history, a method for the plot generic. It is designed for a quick look at History data.
+#'
+#' @name plot.history
+#' @family contextual
+#'
+#' @seealso
+#'
+#' Core contextual classes: \code{\link{Simulator}},
+#' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
+#'
+#' Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBandit}},
+#' \code{\link{LiSamplingOfflineBandit}}, \code{\link{SyntheticBandit}}
+#'
 #' @export
 plot.History <- function(x, ...) {
   args <- eval(substitute(alist(...)))
@@ -164,11 +179,43 @@ plot.History <- function(x, ...) {
   }
 }
 
+
+#' Print Method for Contextual History
+#'
+#' print.history, a method for the print generic. It is designed for a quick look at History data.
+#'
+#' @name print.history
+#' @family contextual
+#'
+#' @seealso
+#'
+#' Core contextual classes: \code{\link{Simulator}},
+#' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
+#'
+#' Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBandit}},
+#' \code{\link{LiSamplingOfflineBandit}}, \code{\link{SyntheticBandit}}
+#'
 #' @export
 print.History <- function(x, ...) {
   x$print_data()
 }
 
+#' Summary Method for Contextual History
+#'
+#' summary.history, a method for the summary generic. It is designed for a quick summary of History data.
+#'
+#' @name summary.history
+#' @family contextual
+#'
+#' @seealso
+#'
+#' Core contextual classes: \code{\link{Simulator}},
+#' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
+#'
+#' Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBandit}},
+#' \code{\link{LiSamplingOfflineBandit}}, \code{\link{SyntheticBandit}}
+#'
+#' @export
 #' @export
 summary.History <- function(object, ...) {
   p <- do.call(

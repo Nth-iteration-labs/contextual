@@ -85,5 +85,7 @@ Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBandit}},
 \code{\link{LiSamplingOfflineBandit}}, \code{\link{SyntheticBandit}}
 
 Other contextual: \code{\link{History}},
-  \code{\link{Plot}}, \code{\link{Simulator}}
+  \code{\link{Plot}}, \code{\link{Simulator}},
+  \code{\link{plot.history}}, \code{\link{print.history}},
+  \code{\link{summary.history}}
 }

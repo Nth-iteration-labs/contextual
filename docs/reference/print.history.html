@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>History — History • contextual</title>
+<title>Print Method for Contextual History — print.history • contextual</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -33,11 +33,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="History — History" />
+<meta property="og:title" content="Print Method for Contextual History — print.history" />
 
-<meta property="og:description" content="The R6 class History keeps a log of all Simulator interactions
-in its internal data.table. It also provides basic data summaries,
-and can save or load simulation log data files." />
+<meta property="og:description" content="print.history, a method for the print generic. It is designed for a quick look at History data." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -128,81 +126,29 @@ and can save or load simulation log data files." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>History</h1>
-    <small class="dont-index">Source: <a href='https://github.com/Nth-iteration-labs/contextual/blob/master/R/history.R'><code>R/history.R</code></a></small>
-    <div class="hidden name"><code>History.Rd</code></div>
+    <h1>Print Method for Contextual History</h1>
+    <small class="dont-index">Source: <a href='https://github.com/Nth-iteration-labs/contextual/blob/master/R/functions_generic.R'><code>R/functions_generic.R</code></a></small>
+    <div class="hidden name"><code>print.history.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>The R6 class <code>History</code> keeps a log of all <code>Simulator</code> interactions
-in its internal <code>data.table</code>. It also provides basic data summaries,
-and can save or load simulation log data files.</p>
+    <p>print.history, a method for the print generic. It is designed for a quick look at History data.</p>
     
     </div>
 
+    <pre class="usage"><span class='co'># S3 method for History</span>
+<span class='fu'>print</span>(<span class='no'>x</span>, <span class='no'>...</span>)</pre>
         
-    <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
-
-    
-    <pre>
-History &lt;- History$new(n = 1, save_context = FALSE, save_theta = FALSE)
-</pre>
-    
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-
-    
-    <dl class='dl-horizontal'>
-<dt><code>n</code></dt><dd><p><code>integer</code>. The number of rows, to be preallocated during initialization.</p></dd>
-<dt><code>save_context</code></dt><dd><p><code>logical</code>. Save context vectors <code>X</code> when writing simulation data?</p></dd>
-<dt><code>save_theta</code></dt><dd><p><code>logical</code>. Save parameter lists <code>theta</code> when writing simulation data?</p></dd>
-    </dl>
-    
-    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
-
-    
-    <dl class='dl-horizontal'>
-    <dt><code>reset()</code></dt><dd><p>Resets a <code>History</code> instance to its original initialisation values.</p></dd>
-<dt><code>save(index,
-                   t,
-                   action,
-                   reward,
-                   policy_name,
-                   simulation_index,
-                   context_value = NA,
-                   theta_value = NA)</code></dt><dd><p>Saves one row of simulation data.</p></dd>
-<dt><code>save_data(filename = NA)</code></dt><dd><p>Writes the <code>History</code> log file in its default data.table format,
-with <code>filename</code> as the name of the file which the data is to be written to.</p></dd>
-<dt><code>load_data = function(filename, nth_rows = 0)</code></dt><dd><p>Reads a <code>History</code> log file in its default <code>data.table</code> format,
-with <code>filename</code> as the name of the file which the data are to be read from.
-If <code>nth_rows</code> is larger than 0, every <code>nth_rows</code> of data is read instead of the
-full data file. This can be of use with (a first) analysis of very large data files.</p></dd>
-<dt><code>get_data_frame()</code></dt><dd><p>Returns the <code>History</code> log as a <code>data.frame</code>.</p></dd>
-<dt><code>get_data_table()</code></dt><dd><p>Returns the <code>History</code> log as a <code>data.table</code>.</p></dd>
-<dt><code>set_data_table(dt)</code></dt><dd><p>Sets the <code>History</code> log with the data in <code>data.table</code> <code>dt</code>.</p></dd>
-<dt><code>clear_data_table()</code></dt><dd><p>Clears the <code>History</code> log.</p></dd>
-<dt><code>delete_empty_rows()</code></dt><dd><p>Deletes all empty rows in the <code>History</code> log and reindexes the <code>t</code> column grouped
-by agent and simulation.</p></dd>
-<dt><code>reindex_t(truncate = TRUE)</code></dt><dd><p>Removes empty rows from the <code>History</code> log, reindexes the <code>t</code> column, and,
-if <code>truncate</code> is <code>TRUE</code>, truncates the resulting data to the shortest simulation
-grouped by agent and simulation.</p></dd>
-<dt><code>print_data()</code></dt><dd><p>Prints a summary of the <code>History</code> log.</p></dd>
-<dt><code>cumulative(final = TRUE, regret = TRUE, rate = FALSE)</code></dt><dd><p>Returns cumulative reward (when <code>regret</code> is <code>FALSE</code>) or regret. When <code>final</code> is <code>TRUE</code>,
-it only returns the final value. When <code>final</code> is FALSE, it returns a <code>data.table</code> containing all
-cumulative reward or regret values from 1 to T.
-When <code>rate</code> is <code>TRUE</code>, cumulative reward or regret are divided by column <code>t</code> before any values
-are returned.</p></dd>
-</dl>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Core contextual classes: <code><a href='Simulator.html'>Simulator</a></code>,
-<code><a href='Agent.html'>Agent</a></code>, <code>History</code>, <code><a href='Plot.html'>Plot</a></code></p>
+<code><a href='Agent.html'>Agent</a></code>, <code><a href='History.html'>History</a></code>, <code><a href='Plot.html'>Plot</a></code></p>
 <p>Bandit classes: <code><a href='Bandit.html'>Bandit</a></code>, <code><a href='BasicBandit.html'>BasicBandit</a></code>,
 <code><a href='LiSamplingOfflineBandit.html'>LiSamplingOfflineBandit</a></code>, <code><a href='SyntheticBandit.html'>SyntheticBandit</a></code></p>
-<p>Other contextual: <code><a href='Agent.html'>Agent</a></code>, <code><a href='Plot.html'>Plot</a></code>,
+<p>Other contextual: <code><a href='Agent.html'>Agent</a></code>,
+  <code><a href='History.html'>History</a></code>, <code><a href='Plot.html'>Plot</a></code>,
   <code><a href='Simulator.html'>Simulator</a></code>, <code><a href='plot.history.html'>plot.history</a></code>,
-  <code><a href='print.history.html'>print.history</a></code>,
   <code><a href='summary.history.html'>summary.history</a></code></p></div>
     
 
@@ -211,12 +157,6 @@ are returned.</p></dd>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       
-      <li><a href="#usage">Usage</a></li>
-
-      <li><a href="#arguments">Arguments</a></li>
-
-      <li><a href="#methods">Methods</a></li>
-
       <li><a href="#see-also">See also</a></li>
           </ul>
 

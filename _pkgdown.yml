@@ -28,6 +28,12 @@ reference:
       - max_in
       - is_rstudio
       - set_external
+  - title: "Generic functions"
+    desc: "Generic ontextual functions."
+    contents:
+      - summary.history
+      - print.history
+      - plot.history
 template:
   params:
     docsearch:
