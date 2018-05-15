@@ -68,7 +68,7 @@ agent              <- Agent$new(policy, bandit)
 
 history            <- Simulator$new(agent, horizon, simulations, do_parallel = FALSE)$run()
 
-plot(history, type = "cumulative")
+plot(history, type = "arms")
 
 
 }
