@@ -181,7 +181,7 @@ We set out to develop an implementation that stays close to the previous formali
          \item \code{Plot}: The R6 class \code{Plot} generates plots based on \code{History} data. It is usually actually invoked by calling the generic \code{plot(h)}, where \code{h} is an \code{History} class instance.
 \end{itemize}
 
-From this follows that in our framework, on being run by the Simulator, an Agent repeatedly performs the following operations at every \textit{t} in \textit{t}=1,2,{\dots},\textit{T} (see also Figure ~\ref{fig:cmab_chart})
+Buiding on these basic classes a Simulator loops over Agents to repeatedly perform the following operations at every \textit{t} in \textit{t}=1,2,{\dots},\textit{T} (see also Figure ~\ref{fig:cmab_chart})
 
 \begin{enumerate}
          \item[1a)] \code{Agent} asks the \code{Bandit} for side information that might influence the expression of its arms by calling \code{Bandit$get_context()}
@@ -202,12 +202,6 @@ Where we assume that at each time step t, all information necessary to choose an
     \label{fig:cmab_chart}
       \caption{Basic model of the logical flow of an \pkg{contextual}. The extension from MAB towards cMAB models is higlighted in red. }
 \end{figure}
-
-
-
-
-
-
 
 
 

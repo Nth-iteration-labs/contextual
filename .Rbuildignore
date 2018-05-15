@@ -9,3 +9,4 @@ contextual.Rproj
 ^_pkgdown.yml$
 ^docs$
 ^vignettes/jss.*
+^LICENSE\.md$
