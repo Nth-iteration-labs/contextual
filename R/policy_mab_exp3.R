@@ -13,7 +13,7 @@ Exp3Policy <- R6::R6Class(
     set_parameters = function() {
       self$theta_to_arms <- list('weight' = 1)
     },
-    get_action = function(context, t) {
+    get_action = function(t, context) {
       probs <- rep(0.0, context$k)
       for (i in 1:context$k) {
          probs[i] <- (1 - gamma) * (theta$weight[[i]] / sum_of(theta$weight))
@@ -22,7 +22,7 @@ Exp3Policy <- R6::R6Class(
       action$choice  <- categorical_draw(probs)
       action
     },
-    set_reward = function(context, action, reward, t) {
+    set_reward = function(t, context, action, reward) {
       arm    <- action$choice
       reward <- reward$reward
       probs  <- rep(0.0, context$k)

@@ -15,7 +15,7 @@ ThompsonSamplingPolicy <- R6::R6Class(
     set_parameters = function() {
       self$theta_to_arms <- list('n' = 0, 'p' = 0.0, 'succes' = 0, 'mean' = 0.0)
     },
-    get_action = function(context, t) {
+    get_action = function(t, context) {
       for (arm in 1:context$k) {
         theta$mean[arm] <-  rbeta(
           1, alpha + theta$succes[[arm]], beta + theta$n[[arm]] - theta$succes[[arm]]
@@ -24,7 +24,7 @@ ThompsonSamplingPolicy <- R6::R6Class(
       action$choice <- max_in(theta$mean)
       action
     },
-    set_reward = function(context, action, reward, t) {
+    set_reward = function(t, context, action, reward) {
       arm    <- action$choice
       reward <- reward$reward
 

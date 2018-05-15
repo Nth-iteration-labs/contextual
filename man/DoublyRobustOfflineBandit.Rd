@@ -28,5 +28,6 @@ Dudík, M., Erhan, D., Langford, J., & Li, L. (2014). Doubly robust policy evalu
 Core contextual classes: \code{\link{Simulator}},
 \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}, \code{\link{Policy}}
 
-Other contextual bandits: \code{\link{LiSamplingOfflineBandit}}
+Other contextual bandits: \code{\link{Bandit}},
+  \code{\link{LiSamplingOfflineBandit}}
 }

@@ -1,5 +1,5 @@
 {
-  "index_name": "INDEX_NAME",
+  "index_name": "nth_iteration_labs_contextual",
   "start_urls": [
     {
       "url": "/index.html",

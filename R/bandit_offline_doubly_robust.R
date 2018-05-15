@@ -28,7 +28,7 @@ DoublyRobustOfflineBandit <- R6::R6Class(
       )
       contextlist
     },
-    do_action = function(context, action, index) {
+    get_reward = function(index, context, action) {
 
       # results of previous policy
 

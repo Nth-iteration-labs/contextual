@@ -168,7 +168,7 @@ Simulator <- R6::R6Class(
           }
           if (continouous_counter) sim_agent$set_t(as.integer((simulation_index - 1L) * horizon))
           for (t in 1L:horizon) {
-            step <- sim_agent$step()
+            step <- sim_agent$do_step()
             if (!is.null(step$reward)) {
               local_history$save(
                 index,

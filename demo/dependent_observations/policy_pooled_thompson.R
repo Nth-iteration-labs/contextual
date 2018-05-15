@@ -14,7 +14,7 @@ UnpooledThompsonPolicy <- R6::R6Class(
       self$theta <- list(p = rep(list(list(0,0)),self$n_subjects),
                          n = rep(list(list(0,0)),self$n_subjects))
     },
-    get_action = function(context, t) {
+    get_action = function(t, context) {
       user             <- context$user_context
       expected_rewards <- rep(0.0, self$k)
       for (arm in 1:self$k) {
@@ -29,7 +29,7 @@ UnpooledThompsonPolicy <- R6::R6Class(
       action$choice  <- max_in(expected_rewards)
       action
     },
-    set_reward = function(context, action, reward, t) {
+    set_reward = function(t, context, action, reward) {
       arm    <- action$choice
       user   <- context$user_context
       reward <- reward$reward
@@ -53,7 +53,7 @@ PooledThompsonPolicy <- R6::R6Class(
     set_parameters = function() {
       self$theta_to_arms <- list('N' = 0, 'P' = 0)
     },
-    get_action = function(context, t) {
+    get_action = function(t, context) {
       expected_rewards <- rep(0.0, self$k)
       for (arm in 1:self$k) {
         a <- theta$P[[arm]] * theta$N[[arm]]
@@ -67,7 +67,7 @@ PooledThompsonPolicy <- R6::R6Class(
       action$choice  <- max_in(expected_rewards)
       action
     },
-    set_reward = function(context, action, reward, t) {
+    set_reward = function(t, context, action, reward) {
       arm <- action$choice
       reward <- reward$reward
       inc(theta$N[[arm]]) <- 1
@@ -128,7 +128,7 @@ PartiallyPooledThompsonPolicy <- R6::R6Class(
       self$theta_samples_a <- extract(fit_a, pars = c("theta"))$theta
       self$theta_samples_b <- extract(fit_b, pars = c("theta"))$theta
     },
-    get_action = function(context, t) {
+    get_action = function(t, context) {
       userid <- context$user_context
       if (self$theta_samples_a[theta$n[[1]][userid] %% 10 + 1, userid] > self$theta_samples_b[theta$n[[2]][userid] %% 10 + 1, userid]) {
         action$choice = 1
@@ -137,7 +137,7 @@ PartiallyPooledThompsonPolicy <- R6::R6Class(
       }
       action
     },
-    set_reward = function(context, action, reward, t) {
+    set_reward = function(t, context, action, reward) {
       arm      <- action$choice
       userid   <- context$user_context
       reward   <- reward$reward

@@ -9,8 +9,8 @@ PoissonRewardBandit <- R6::R6Class(
     initialize = function(weights) {
       super$initialize(weights)
     },
-    # Overrides BasicBandit's do_action to generate Poisson based rewards
-    do_action = function(context, action, t) {
+    # Overrides BasicBandit's get_reward to generate Poisson based rewards
+    get_reward = function(t, context, action) {
       reward_means = c(2,2,2)
       private$R <- matrix(rpois(3, reward_means) < self$get_weights(), self$k, self$d)*1
       list(
@@ -25,12 +25,11 @@ EpsilonGreedyAnnealingPolicy <- R6::R6Class(
   # Class extends EpsilonGreedyPolicy
   inherit = EpsilonGreedyPolicy,
   portable = FALSE,
-  class = FALSE,
   public = list(
     # Override get_action, use annealing epsilon
-    get_action = function(context, t) {
+    get_action = function(t, context) {
       self$epsilon <- 1 / log(t + 0.0000001)
-      super$get_action(context, t)
+      super$get_action(t, context)
     }
   )
 )

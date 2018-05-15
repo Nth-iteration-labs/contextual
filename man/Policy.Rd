@@ -2,16 +2,21 @@
 % Please edit documentation in R/policy.R
 \name{Policy}
 \alias{Policy}
-\title{Policy: Abstract Root Class}
+\title{Policy}
 \description{
-The R6 class \code{Policy} is the root of all policies implemented by \code{\{contextual\}}.
-That is, every \code{Policy} class in the \code{\{contextual\}} package has to inherit from, and implement the methods of,
-the \code{Policy} superclass.
+The R6 class \code{Policy} is the parent class of all \code{Policy} implementations in
+\code{\{contextual\}}. Classes that extend this abstract \code{Policy}
+superclass are expected to take into account the current \code{d} dimensional \code{context},
+together with a limited set of parameters denoted \code{theta} (summarizing all past actions),
+to choose one of a \code{Bandit}'s arms at each time step \code{t}.
+On choosing one of the {k} arms of the Bandit and receiving its corresponding \code{reward},
+the \code{Policy} then uses the current \code{context}, \code{action} and \code{reward} to
+update its set of parameters \code{theta}.
 }
 \section{Usage}{
 
 \preformatted{
-policy <- Policy()
+  policy <- Policy$new()
 }
 }
 
@@ -20,8 +25,8 @@ policy <- Policy()
 
 \describe{
 \item{\code{name}}{
-character string specifying this policy. \code{name}
-is, amongst others, saved to the History log and displayed in summaries and plots.
+A character string identifying this \code{Policy} It is, amongst others, saved to the \code{History} log
+and displayed in summaries and plots.
 }
 }
 }
@@ -30,28 +35,28 @@ is, amongst others, saved to the History log and displayed in summaries and plot
 
 
 \describe{
-\item{\code{new(alpha = 1, name = "LinUCB")}}{ Generates a new \code{LinUCBDisjointPolicy} object. Arguments are defined in the Argument section above.}
+\item{\code{new(name)}}{
+Generates and initializes a new \code{Policy} object.
+A \code{Policy} needs to add the parameters it needs to keep track of to list \code{self$theta}
+during the \code{Policy}'s initialisation.
 }
 
-\describe{
-\item{\code{set_parameters()}}{each policy needs to assign the parameters it wants to keep track of
-to list \code{self$theta_to_arms} that has to be defined in \code{set_parameters()}'s body.
-The parameters defined here can later be accessed by arm index in the following way:
-\code{theta[[index_of_arm]]$parameter_name}
-}
-}
-
-\describe{
-\item{\code{get_action(context)}}{
-here, a policy decides which arm to choose, based on the current values
-of its parameters and, potentially, the current context.
-}
+\item{\code{set_parameters()}}{
+This helper function, called during a Policy's initialisation, assigns the values
+it finds in list \code{self$theta_to_arms} to each of the Policy's k arms.
+The parameters defined here can then be accessed by arm index in the following way:
+\code{theta[[index_of_arm]]$parameter_name}.
 }
 
-\describe{
-\item{\code{set_reward(reward, context)}}{
-in \code{set_reward(reward, context)}, a policy updates its parameter values
-based on the reward received, and, potentially, the current context.
+\item{\code{get_action(t, context)}}{
+Here, a \code{Policy} chooses an arm to play based on the current values
+of its parameters \code{theta} and the current \code{context}.
+Returns an \code{action} list that contains the index of the suggested arm as \code{action$choice}.
+}
+
+\item{\code{set_reward(t, context, action, reward)}}{
+\code{set_reward} updates parameter values in \code{theta}
+based on the \code{action} taken, the \code{reward} received, and the current \code{context}.
 }
 }
 }

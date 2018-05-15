@@ -13,7 +13,7 @@ EpsilonGreedyPolicy          <- R6::R6Class(
     set_parameters = function() {
       self$theta_to_arms     <- list('n' = 0, 'mean' = 0)
     },
-    get_action = function(context, t) {
+    get_action = function(t, context) {
       if (runif(1) > self$epsilon) {
         self$action$choice        <- max_in(self$theta$mean)
         self$action$propensity    <- 1 - self$epsilon
@@ -23,7 +23,7 @@ EpsilonGreedyPolicy          <- R6::R6Class(
       }
       self$action
     },
-    set_reward = function(context, action, reward, t) {
+    set_reward = function(t, context, action, reward) {
       arm                    <- action$choice
       reward                 <- reward$reward
       inc(self$theta$n[[arm]])    <- 1

@@ -11,12 +11,12 @@ OraclePolicy <- R6::R6Class(
     set_parameters = function() {
       self$theta_to_arms <- list('n' = 0, 'mean' = 0)
     },
-    get_action = function(context, t) {
+    get_action = function(t, context) {
       action$propensity <- 1
       action$choice <- max_in(context$O)
       action
     },
-    set_reward = function(context, action, reward, t) {
+    set_reward = function(t, context, action, reward) {
       arm    <- action$choice
       reward <- reward$reward
       inc(theta$n[[arm]]) <- 1

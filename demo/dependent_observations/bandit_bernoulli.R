@@ -43,7 +43,7 @@ BernoulliBandit <- R6::R6Class(
       )
       contextlist
     },
-    do_action = function(context, action, t) {
+    get_reward = function(t, context, action) {
       subject              <- context$user_context
       rewardlist           <- list()
       rewardlist$optimal_reward_value    <- rbinom(1, 1, max(self$probs_arm_one[subject], self$probs_arm_two[subject]))

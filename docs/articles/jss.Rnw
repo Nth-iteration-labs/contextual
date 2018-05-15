@@ -168,24 +168,29 @@ R^{\pi}_{T} = \max_{a^{*}= 1, \dots, k} \sum^{T}_{t=1}(r_{a^{*}_t,x_t}) - \sum^{
 We set out to develop an implementation that stays close to the previous formalisation, while offering maximum flexibility and extendibility. As an added bonus, this kept the class structure of the package elegant and simple, with the following five classes forming the backbone of the package:
 
 \begin{itemize}
-         \item \code{Bandit}: generates rewards and contexts. These can be generated synthetically, based on offline data, etc.
-         \item \code{Policy}: observes the context and the rewards of a \code{Bandit}, uses these observations to update of a set of parameters $\theta$, and decides which arm to choose next.
-         \item \code{Agent}: takes care of the flow of information between and the running of one \code{Bandit}/\code{Policy} pair.
-         \item \code{Simulation}: the entry point of any \pkg{contextual} simulation. It encapsulates one or more \code{Agents}, clones them if necessary, runs the \code{Agents}, and saves the log of all of the \code{Agents} interactions to a \code{History} object.
+         \item \code{Bandit}: The R6 class \code{Bandit} is the parent class of all \code{Bandits} implemented in \code{\{contextual\}}. Classes that extend the abstract superclass \code{Bandit} are responsible for both the generation of \code{d} dimensional \code{context} vectors \code{X} and the \code{k} I.I.D. distributions each generating a \code{reward} for each of its \code{k} arms at each time step \code{t}. \code{Bandit} subclasses may (pre)generate these values synthetically, based on offline data, etc.
+
+         \item \code{Policy}: The R6 class \code{Policy} is the parent class of all \code{Policy} implementations in \code{\{contextual\}}. Classes that extend this abstract \code{Policy} superclass are expected to take into account the current \code{d} dimensional \code{context}, together with a limited set of parameters denoted \code{theta} (summarizing all past actions), to choose one of a \code{Bandit}'s arms at each time step \code{t}. On choosing one of the {k} arms of the Bandit and receiving its corresponding \code{reward}, the \code{Policy} then uses the current \code{context}, \code{action} and \code{reward} to update its set of parameters \code{theta}.
+
+         \item \code{Agent}: The R6 class \code{Agent} is responsible for the state, flow of information between and the running of one \code{Bandit}/\code{Policy} pair. As such, multiple \code{Agent}s can be run in parallel with each separate Agent keeping track of \code{t} and the parameters in \code{theta} for its assigned \code{Policy} and \code{Bandit} pair.
+
+         \item \code{Simulation}: The R6 class \code{Simulation} is the entry point of any \pkg{contextual} simulation. It encapsulates one or more \code{Agents}, clones them if necessary, runs the \code{Agents}, and saves the log of all of the \code{Agents} interactions to a \code{History} object.
+
          \item \code{History}: encapsulates an R \code{data.table}, keeps a log of all interactions, and provides data summaries.
-         \item \code{Plot}: generates plots based on \code{History} data. It can also be invoked by calling the generic \code{plot(h)}, where \code{h} is an \code{History} class instance.
+
+         \item \code{Plot}: The R6 class \code{Plot} generates plots based on \code{History} data. It can also be invoked by calling the generic \code{plot(h)}, where \code{h} is an \code{History} class instance.
 \end{itemize}
 
-Importantly, any particular \code{Bandit} or \code{Policy} class has to inherit from, and implement the functions of, its respective abstract superclass. From this follows that in our framework, on being run by the Simulator, an Agent repeatedly performs the following operations at every \textit{t} in \textit{t}=1,2,{\dots},\textit{T} (see also Figure ~\ref{fig:cmab_chart})
+From this follows that in our framework, on being run by the Simulator, an Agent repeatedly performs the following operations at every \textit{t} in \textit{t}=1,2,{\dots},\textit{T} (see also Figure ~\ref{fig:cmab_chart})
 
 \begin{enumerate}
-         \item[1a)] \code{Agent} asks the \code{Bandit} for side information that might influence the expression of its arms.
+         \item[1a)] \code{Agent} asks the \code{Bandit} for side information that might influence the expression of its arms by calling \code{Bandit$get_context()}
          \item[1b)] \code{Bandit} returns feature vector \textit{Xt}.
-         \item[2a)] \code{Agent} asks \code{Policy} $\piup$ which of the \code{Bandit}'s k arms to choose given \textit{Xt}.
-         \item[2b)] Given \textit{Xt}, \code{Policy} $\piup$ advices action \textit{a${}_{t}$} based on the state of a set of parameters \textit{$\theta$${}_{t}$${}_{  }$}.
-         \item[3a)] \code{Agent} does action \textit{a${}_{t}$} by playing the suggested \code{Bandit} arm.
-         \item[3b)] \code{Bandit} rewards the \code{Agent} with reward \textit{r${}_{t}$ }for action \textit{a${}_{t}$}.
-         \item[4a)] The \code{Agent} sends the reward\textit{ r${}_{t}$ }to \code{Policy} $\piup$.
+         \item[2a)] \code{Agent} asks \code{Policy} $\piup$ which of the \code{Bandit}'s k arms to choose given \textit{Xt} by calling \code{Policy$get_advice(Xt)}
+         \item[2b)] \code{Policy} $\piup$ returns action \textit{a${}_{t}$} based on the state of its parameters \textit{$\theta$${}_{t}$${}_{  }$}.
+         \item[3a)] \code{Agent} does action \textit{a${}_{t}$} by playing the suggested \code{Bandit} arm through a call to \code{Bandit$do_action(Xt, at)}
+         \item[3b)] \code{Bandit} rewards the \code{Agent} by returning reward \textit{r${}_{t}$ }for action \textit{a${}_{t}$}.
+         \item[4a)] The \code{Agent} sends the reward\textit{ r${}_{t}$ }to \code{Policy} $\piup$ by calling \code{Policy$set_reward(Xt,at,rt))}
          \item[4b)] \code{Policy} $\piup$ uses \textit{r${}_{t}$} to update the \code{Policy}'s set of parameters\textit{ $\theta$${}_{t}$${}_{  }$} given \textit{Xt}.
 \end{enumerate}
 

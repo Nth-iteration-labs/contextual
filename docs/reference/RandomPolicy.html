@@ -212,8 +212,8 @@ based on the reward received, and, potentially, the current context.</p></dd>
 <span class='no'>bandit</span>             <span class='kw'>&lt;-</span> <span class='no'>SyntheticBandit</span>$<span class='fu'>new</span>(<span class='kw'>weights</span> <span class='kw'>=</span> <span class='no'>weights</span>, <span class='kw'>precaching</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='no'>agent</span>              <span class='kw'>&lt;-</span> <span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>policy</span>, <span class='no'>bandit</span>)
 
-<span class='no'>history</span>            <span class='kw'>&lt;-</span> <span class='no'>Simulator</span>$<span class='fu'>new</span>(<span class='no'>agent</span>, <span class='no'>horizon</span>, <span class='no'>simulations</span>, <span class='kw'>do_parallel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)$<span class='fu'>run</span>()</div><div class='output co'>#&gt; <span class='message'>Cloning, precaching and precalculating bandits and policies</span></div><div class='input'>
-<span class='fu'>plot</span>(<span class='no'>history</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"cumulative"</span>)</div><div class='img'><img src='RandomPolicy-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='no'>history</span>            <span class='kw'>&lt;-</span> <span class='no'>Simulator</span>$<span class='fu'>new</span>(<span class='no'>agent</span>, <span class='no'>horizon</span>, <span class='no'>simulations</span>, <span class='kw'>do_parallel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)$<span class='fu'>run</span>()</div><div class='output co'>#&gt; <span class='message'>Cloning, precaching and precalculating bandits and policies</span></div><div class='output co'>#&gt; <span class='error'>Error in {    index &lt;- 1L    sim_agent_counter &lt;- 0    sim_agent_total &lt;- length(sims_agents)    local_history &lt;- History$new(horizon * number_of_agents *         sim_agent_total, save_context, save_theta)    for (sim_agent in sims_agents) {        sim_agent_counter &lt;- sim_agent_counter + 1        if (write_progress_file) {            cat(paste0(format(Sys.time(), format = "%H:%M:%OS6"),                 ", Worker: ", i, ", Sim: ", sim_agent_counter,                 " of ", sim_agent_total, "\n"), file = "progress.log",                 append = TRUE)        }        simulation_index &lt;- sim_agent$sim_index        policy_name &lt;- sim_agent$policy$name        local_curent_seed &lt;- simulation_index + set_seed * 42        set.seed(local_curent_seed)        sim_agent$bandit$pre_calculate()        if (sim_agent$bandit$precaching) {            sim_agent$bandit$generate_bandit_data(n = horizon)        }        if (continouous_counter)             sim_agent$set_t(as.integer((simulation_index - 1L) *                 horizon))        for (t in 1L:horizon) {            step &lt;- sim_agent$do_step()            if (!is.null(step$reward)) {                local_history$save(index, t, step$action, step$reward,                   policy_name, simulation_index, if (save_context)                     step$context$X                  else NA, if (save_theta)                     step$theta                  else NA)                index &lt;- index + 1L            }        }    }    dth &lt;- local_history$get_data_table()    dth[sim != 0]}: task 1 failed - "$ operator is invalid for atomic vectors"</span></div><div class='input'>
+<span class='fu'>plot</span>(<span class='no'>history</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"cumulative"</span>)</div><div class='output co'>#&gt; <span class='error'>Error in .External2(C_savehistory, file): 'savehistory' can only be used in Rgui and Rterm</span></div><div class='input'>
 
 </div></pre>
   </div>
@@ -255,8 +255,8 @@ based on the reward received, and, potentially, the current context.</p></dd>
   docsearch({
     
     
-    apiKey: 'API_KEY',
-    indexName: 'INDEX_NAME',
+    apiKey: '7d3ef95d72d5a68e705ce87f9919b959',
+    indexName: 'nth_iteration_labs_contextual',
     inputSelector: 'input#search-input.form-control',
     transformData: function(hits) {
       return hits.map(function (hit) {

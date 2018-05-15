@@ -18,7 +18,7 @@ LinUCBHybridPolicy <- R6::R6Class(
       self$theta <- list('A0' = diag(1,self$u,self$u), 'b0' = rep(0,self$u))
       self$theta_to_arms <- list( 'A' = diag(1,self$d,self$d), 'B' = matrix(0,self$d,self$u), 'b' = rep(0,self$d))
     },
-    get_action = function(context, t) {
+    get_action = function(t, context) {
       expected_rewards <- rep(0.0, self$k)
 
       beta_hat <- solve(theta$A0) %*% theta$b0
@@ -55,7 +55,7 @@ LinUCBHybridPolicy <- R6::R6Class(
       action$choice  <- max_in(expected_rewards)
       action
     },
-    set_reward = function(context, action, reward, t) {
+    set_reward = function(t, context, action, reward) {
 
       #################### unpack thetas ###############################################
 

@@ -14,7 +14,7 @@ UnpooledEgreedyPolicy <- R6::R6Class(
     set_parameters = function() {
       self$theta <- list(n = rep(list(as.list(rep(0, self$k))),self$n_subjects), mu = rep(list(as.list(rep(0, self$k))), self$n_subjects))
     },
-    get_action = function(context, t) {
+    get_action = function(t, context) {
       if (runif(1) > epsilon) {
         action$choice <- which.max(unlist(theta$mu[[context$user_context]]))
       } else {
@@ -22,7 +22,7 @@ UnpooledEgreedyPolicy <- R6::R6Class(
       }
       action
     },
-    set_reward = function(context, action, reward, t) {
+    set_reward = function(t, context, action, reward) {
       arm    <- action$choice
       user   <- context$user_context
       reward <- reward$reward
@@ -48,7 +48,7 @@ PooledEgreedyPolicy <- R6::R6Class(
     set_parameters = function() {
       self$theta_to_arms <- list('N' = 0, 'MU' = 0)
     },
-    get_action = function(context, t) {
+    get_action = function(t, context) {
       if (runif(1) > epsilon) {
         action$choice <- max_in(theta$MU)
       } else {
@@ -56,7 +56,7 @@ PooledEgreedyPolicy <- R6::R6Class(
       }
       action
     },
-    set_reward = function(context, action, reward, t) {
+    set_reward = function(t, context, action, reward) {
       arm <- action$choice
       reward <- reward$reward
       inc(theta$N[[arm]])    <- 1
@@ -84,7 +84,7 @@ PartiallyPooledEgreedyPolicy <- R6::R6Class(
       self$theta         <- list(n = rep(list(as.list(rep(1, self$k))),self$n_subjects), mu = rep(list(as.list(rep(0, self$k))),self$n_subjects))
       self$theta_to_arms <- list('N' = 0, 'MU' = 0)
     },
-    get_action = function(context, t) {
+    get_action = function(t, context) {
       user <- context$user_context
       if (runif(1) > epsilon) {
         beta <- 1 / sqrt(sum_of(theta$n[[user]]))
@@ -95,7 +95,7 @@ PartiallyPooledEgreedyPolicy <- R6::R6Class(
       }
       action
     },
-    set_reward = function(context, action, reward, t) {
+    set_reward = function(t, context, action, reward) {
       arm    <- action$choice
       user   <- context$user_context
       reward <- reward$reward

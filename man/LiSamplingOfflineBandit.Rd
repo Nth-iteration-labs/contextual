@@ -33,5 +33,6 @@ Li, L., Chu, W., Langford, J., & Wang, X. (2011, February). Unbiased offline eva
 Core contextual classes: \code{\link{Simulator}},
 \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}, \code{\link{Policy}}
 
-Other contextual bandits: \code{\link{DoublyRobustOfflineBandit}}
+Other contextual bandits: \code{\link{Bandit}},
+  \code{\link{DoublyRobustOfflineBandit}}
 }

@@ -13,7 +13,7 @@ LinUCBDisjointPolicy <- R6::R6Class(
     set_parameters = function() {
       self$theta_to_arms <- list( 'A' = diag(1,self$d,self$d), 'b' = rep(0,self$d))
     },
-    get_action = function(context, t) {
+    get_action = function(t, context) {
 
       expected_rewards <- rep(0.0, context$k)
 
@@ -35,7 +35,7 @@ LinUCBDisjointPolicy <- R6::R6Class(
       action$choice  <- max_in(expected_rewards)
       action
     },
-    set_reward = function(context, action, reward, t) {
+    set_reward = function(t, context, action, reward) {
       arm <- action$choice
       reward <- reward$reward
       Xa <- context$X[,arm]

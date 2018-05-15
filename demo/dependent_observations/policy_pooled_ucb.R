@@ -14,7 +14,7 @@ UnpooledUCBPolicy <- R6::R6Class(
     set_parameters = function() {
       self$theta <- list('n_total' = rep(0,self$n_subjects), n = rep(list(list(0,0)),self$n_subjects), p = rep(list(list(0,0)), self$n_subjects))
     },
-    get_action = function(context, t) {
+    get_action = function(t, context) {
       user <- context$user_context
       if (self$theta$n_total[[user]] < self$k) {
         for (arm in 1:self$k) {
@@ -32,7 +32,7 @@ UnpooledUCBPolicy <- R6::R6Class(
       action$choice  <- max_in(expected_rewards)
       action
     },
-    set_reward = function(context, action, reward, t) {
+    set_reward = function(t, context, action, reward) {
       arm    <- action$choice
       user   <- context$user_context
       reward <- reward$reward
@@ -58,7 +58,7 @@ PooledUCBPolicy <- R6::R6Class(
       self$theta_to_arms <- list('P' = 0, 'N' = 0)
       self$theta <- list('N_total' = 0)
     },
-    get_action = function(context, t) {
+    get_action = function(t, context) {
       if (self$theta$N_total < self$k) {
         for (arm in 1:self$k) {
           if (theta$N[[arm]] == 0) {
@@ -75,7 +75,7 @@ PooledUCBPolicy <- R6::R6Class(
       action$choice  <- max_in(expected_rewards)
       action
     },
-    set_reward = function(context, action, reward, t) {
+    set_reward = function(t, context, action, reward) {
       arm <- action$choice
       reward <- reward$reward
       inc(theta$N_total)  <- 1
@@ -101,7 +101,7 @@ PartiallyPooledUCBPolicy <- R6::R6Class(
       self$theta <- list('N_total' = 0, 'n_total' = rep(0,self$n_subjects), n = rep(list(list(0,0)),self$n_subjects), p = rep(list(list(0,0)), self$n_subjects))
       self$theta_to_arms <- list('P' = 0, 'N' = 0)
     },
-    get_action = function(context, t) {
+    get_action = function(t, context) {
       user <- context$user_context
       if (self$theta$n_total[[user]] < self$k) {
         for (arm in 1:self$k) {
@@ -122,7 +122,7 @@ PartiallyPooledUCBPolicy <- R6::R6Class(
       action$choice  <- max_in(expected_rewards)
       action
     },
-    set_reward = function(context, action, reward, t) {
+    set_reward = function(t, context, action, reward) {
       arm    <- action$choice
       user   <- context$user_context
       reward <- reward$reward

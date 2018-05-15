@@ -55,8 +55,8 @@ SyntheticBandit <- R6::R6Class(
         private$context_to_list(t = 1)
       }
     },
-    do_action = function(context, action, t) {
-      private$reward_to_list(action, t)
+    get_reward = function(t, context, action) {
+      private$reward_to_list(t, action)
     },
 
     generate_bandit_data = function(n = 1L,
@@ -115,7 +115,7 @@ SyntheticBandit <- R6::R6Class(
         X = private$X[,, idx]
       )
     },
-    reward_to_list = function(action, t) {
+    reward_to_list = function(t, action) {
       if (self$precaching) idx <- t else idx <- 1
       list(
         reward = private$R[action$choice, idx],

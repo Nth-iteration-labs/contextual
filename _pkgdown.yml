@@ -20,5 +20,5 @@ reference:
 template:
   params:
     docsearch:
-      api_key: API_KEY
-      index_name: INDEX_NAME
+      api_key: 7d3ef95d72d5a68e705ce87f9919b959
+      index_name: nth_iteration_labs_contextual

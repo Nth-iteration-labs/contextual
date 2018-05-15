@@ -16,7 +16,7 @@ RandomPolicy <- R6::R6Class(
       action$propensity <- 1/context$k
       action
     },
-    set_reward = function(context, action, reward, t) {
+    set_reward = function(t, context, action, reward) {
       arm    <- action$choice
       reward <- reward$reward
       inc(theta$n[[arm]]) <- 1

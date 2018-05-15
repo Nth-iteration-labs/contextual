@@ -13,7 +13,7 @@ EpsilonFirstPolicy              <- R6::R6Class(
     set_parameters = function() {
       self$theta_to_arms        <- list('n' = 0, 'mean' = 0)
     },
-    get_action = function(context, t) {
+    get_action = function(t, context) {
       if (sum_of(theta$n) < first) {
         action$choice           <- sample.int(context$k, 1, replace = TRUE)
         action$propensity       <- (1/context$k)
@@ -23,7 +23,7 @@ EpsilonFirstPolicy              <- R6::R6Class(
       }
       action
     },
-    set_reward = function(context, action, reward, t) {
+    set_reward = function(t, context, action, reward) {
       arm                       <- action$choice
       reward                    <- reward$reward
 
