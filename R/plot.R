@@ -278,36 +278,45 @@ Plot <- R6::R6Class(
   )
 )
 
-#' External Plot
+#' Plot
 #'
-#' Plot intro
+#' The R6 class \code{Plot} generates plots based on \code{History} data.
+#' It is usually actually invoked by calling the generic \code{plot(h)}, where \code{h}
+#' is an \code{History} class instance.
+#'
+#' @name Plot
+#' @family contextual
 #'
 #' @section Usage:
-#' \preformatted{b <- Plot$new()
-#'
-#' b$reset()
-#'
-#' print(b)
+#' \preformatted{
+#' Plot <- Plot$new()
 #' }
 #'
-#' @section Arguments:
+#' @section Methods:
+#'
 #' \describe{
-#'   \item{b}{A \code{Plot} object.}
-#' }
 #'
-#' @section Details:
-#' \code{$new()} starts a new Plot, it uses \code{\link[base]{pipe}}.
-#' R does \emph{not} wait for the process to finish, but returns
-#' immediately.
+#'   \item{\code{cumulative(history)}}{
+#'      Returns a plot of cumulative regret or reward over time.
+#'   }
+#'   \item{\code{average(history)}}{
+#'      Returns a plot of average regret or reward over time.
+#'   }
+#'   \item{\code{optimal(history)}}{
+#'      Returns a plot of the percentage the optimal arm was chosen over time.
+#'   }
+#'   \item{\code{arms(history)}}{
+#'      Returns a plot of the ratio with which each arm was chosen over time.
+#'   }
 #'
-#' @importFrom R6 R6Class
-#' @name Plot
-#' @examples
-#'\dontrun{}
+#'  }
+#'
+#' @seealso
+#'
+#' Core contextual classes: \code{\link{Simulator}},
+#' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
+#'
+#' Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBandit}},
+#' \code{\link{LiSamplingOfflineBandit}}, \code{\link{SyntheticBandit}}
 #'
 NULL
-
-# variance plot optimal arm --> is the arm set in advance? / sqrt(max_sim)?
-# REALLY needs refactoring again.
-
-# TODO: use of (...)

@@ -31,16 +31,16 @@ this is the place to do so.
 }
 
 \item{\code{get_context(t)}}{
-Generate or retrieve \code{k}
-(the number of \code{Bandit} arms), \code{d} (the number of \code{context} features),
-and context vector \code{X} for the current time step \code{t} and return these as
-\code{list(k = n_arms, d = n_features, X = context)}.
+Returns a named list \code{list(k = n_arms, d = n_features, X = context)}
+with the current \code{d} dimensional \code{context} feature vector \code{X} together with the number of arms \code{k}.
 }
 
 \item{\code{get_reward(t, context, action)}}{
-Return the \code{reward} for a particular \code{action} as previously selected by a \code{Policy}, and,
-if known, the reward of the current best arm as \code{list(reward = reward_for_choice_made,
-     optimal = optimal_reward_value)}.
+Returns the named list \code{list(reward = reward_for_choice_made,
+     optimal = optimal_reward_value)} containing the \code{reward}
+for the \code{action} previously returned by \code{policy} and,
+optionally, the \code{optimal} reward
+at the current time \code{t}.
 }
 
 \item{\code{generate_bandit_data()}}{

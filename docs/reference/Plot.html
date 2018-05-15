@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>External Plot — Plot • contextual</title>
+<title>Plot — Plot • contextual</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -33,9 +33,11 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="External Plot — Plot" />
+<meta property="og:title" content="Plot — Plot" />
 
-<meta property="og:description" content="Plot intro" />
+<meta property="og:description" content="The R6 class Plot generates plots based on History data.
+It is usually actually invoked by calling the generic plot(h), where h
+is an History class instance." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -126,14 +128,16 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>External Plot</h1>
+    <h1>Plot</h1>
     <small class="dont-index">Source: <a href='https://github.com/Nth-iteration-labs/contextual/blob/master/R/plot.R'><code>R/plot.R</code></a></small>
     <div class="hidden name"><code>Plot.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Plot intro</p>
+    <p>The R6 class <code>Plot</code> generates plots based on <code>History</code> data.
+It is usually actually invoked by calling the generic <code>plot(h)</code>, where <code>h</code>
+is an <code>History</code> class instance.</p>
     
     </div>
 
@@ -141,31 +145,30 @@
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 
     
-    <pre>b &lt;- Plot$new()
-    b$reset()
-    print(b)
+    <pre>
+Plot &lt;- Plot$new()
 </pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     
     <dl class='dl-horizontal'>
-<dt>b</dt><dd><p>A <code>Plot</code> object.</p></dd>
-</dl>
+    <dt><code>cumulative(history)</code></dt><dd><p>Returns a plot of cumulative regret or reward over time.</p></dd>
+<dt><code>average(history)</code></dt><dd><p>Returns a plot of average regret or reward over time.</p></dd>
+<dt><code>optimal(history)</code></dt><dd><p>Returns a plot of the percentage the optimal arm was chosen over time.</p></dd>
+<dt><code>arms(history)</code></dt><dd><p>Returns a plot of the ratio with which each arm was chosen over time.</p></dd>
+    </dl>
     
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    
-    <p><code>$new()</code> starts a new Plot, it uses <code><a href='http://www.rdocumentation.org/packages/base/topics/connections'>pipe</a></code>.
-R does <em>not</em> wait for the process to finish, but returns
-immediately.</p>
+    <div class='dont-index'><p>Core contextual classes: <code><a href='Simulator.html'>Simulator</a></code>,
+<code><a href='Agent.html'>Agent</a></code>, <code><a href='History.html'>History</a></code>, <code>Plot</code></p>
+<p>Bandit classes: <code><a href='Bandit.html'>Bandit</a></code>, <code><a href='BasicBandit.html'>BasicBandit</a></code>,
+<code><a href='LiSamplingOfflineBandit.html'>LiSamplingOfflineBandit</a></code>, <code><a href='SyntheticBandit.html'>SyntheticBandit</a></code></p>
+<p>Other contextual: <code><a href='Agent.html'>Agent</a></code>,
+  <code><a href='History.html'>History</a></code>, <code><a href='Simulator.html'>Simulator</a></code></p></div>
     
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"># NOT RUN {
-# }
-<div class='input'>
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -173,12 +176,10 @@ immediately.</p>
       
       <li><a href="#usage">Usage</a></li>
 
-      <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#methods">Methods</a></li>
 
-      <li><a href="#details">Details</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+      <li><a href="#see-also">See also</a></li>
+          </ul>
 
   </div>
 </div>

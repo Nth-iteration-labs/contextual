@@ -1,6 +1,21 @@
 setwd("~/GitHub/contextual/demo")
 source("dev.R")
 
+ horizon            <- 100L
+ simulations        <- 100L
+ weights            <- c(0.9, 0.1, 0.1)
+
+ policy             <- RandomPolicy$new(name = "Random")
+ bandit             <- SyntheticBandit$new(weights = weights, precaching = FALSE)
+ agent              <- Agent$new(policy, bandit)
+
+ history            <- Simulator$new(agent, horizon, simulations, do_parallel = FALSE)$run()
+
+ plot(history, type = "arms")
+
+
+###################
+
 PoissonRewardBandit <- R6::R6Class(
   "PoissonRewardBandit",
   # Class extends BasicBandit

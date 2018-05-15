@@ -2,35 +2,47 @@
 % Please edit documentation in R/plot.R
 \name{Plot}
 \alias{Plot}
-\title{External Plot}
+\title{Plot}
 \description{
-Plot intro
+The R6 class \code{Plot} generates plots based on \code{History} data.
+It is usually actually invoked by calling the generic \code{plot(h)}, where \code{h}
+is an \code{History} class instance.
 }
 \section{Usage}{
 
-\preformatted{b <- Plot$new()
-
-b$reset()
-
-print(b)
+\preformatted{
+Plot <- Plot$new()
 }
 }
 
-\section{Arguments}{
+\section{Methods}{
+
 
 \describe{
-\item{b}{A \code{Plot} object.}
+
+\item{\code{cumulative(history)}}{
+Returns a plot of cumulative regret or reward over time.
+}
+\item{\code{average(history)}}{
+Returns a plot of average regret or reward over time.
+}
+\item{\code{optimal(history)}}{
+Returns a plot of the percentage the optimal arm was chosen over time.
+}
+\item{\code{arms(history)}}{
+Returns a plot of the ratio with which each arm was chosen over time.
+}
+
 }
 }
 
-\section{Details}{
+\seealso{
+Core contextual classes: \code{\link{Simulator}},
+\code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 
-\code{$new()} starts a new Plot, it uses \code{\link[base]{pipe}}.
-R does \emph{not} wait for the process to finish, but returns
-immediately.
-}
+Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBandit}},
+\code{\link{LiSamplingOfflineBandit}}, \code{\link{SyntheticBandit}}
 
-\examples{
-\dontrun{}
-
+Other contextual: \code{\link{Agent}},
+  \code{\link{History}}, \code{\link{Simulator}}
 }

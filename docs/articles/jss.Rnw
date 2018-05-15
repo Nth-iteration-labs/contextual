@@ -174,11 +174,11 @@ We set out to develop an implementation that stays close to the previous formali
 
          \item \code{Agent}: The R6 class \code{Agent} is responsible for the state, flow of information between and the running of one \code{Bandit}/\code{Policy} pair. As such, multiple \code{Agent}s can be run in parallel with each separate Agent keeping track of \code{t} and the parameters in \code{theta} for its assigned \code{Policy} and \code{Bandit} pair.
 
-         \item \code{Simulation}: The R6 class \code{Simulation} is the entry point of any \pkg{contextual} simulation. It encapsulates one or more \code{Agents}, clones them if necessary, runs the \code{Agents}, and saves the log of all of the \code{Agents} interactions to a \code{History} object.
+         \item \code{Simulator}: The R6 class \code{Simulator} is the entry point of any \pkg{contextual} simulation. It encapsulates one or more \code{Agents} (in parallel, by default), clones them if necessary, runs the \code{Agents}, and saves the log of all of the \code{Agents} interactions to a \code{History} object.
 
-         \item \code{History}: encapsulates an R \code{data.table}, keeps a log of all interactions, and provides data summaries.
+         \item \code{History}: The R6 class \code{History} keeps a log of all \code{Simulator} interactions in its internal \code{data.table}. It also provides basic data summaries, and can save and load simulation data.
 
-         \item \code{Plot}: The R6 class \code{Plot} generates plots based on \code{History} data. It can also be invoked by calling the generic \code{plot(h)}, where \code{h} is an \code{History} class instance.
+         \item \code{Plot}: The R6 class \code{Plot} generates plots based on \code{History} data. It is usually actually invoked by calling the generic \code{plot(h)}, where \code{h} is an \code{History} class instance.
 \end{itemize}
 
 From this follows that in our framework, on being run by the Simulator, an Agent repeatedly performs the following operations at every \textit{t} in \textit{t}=1,2,{\dots},\textit{T} (see also Figure ~\ref{fig:cmab_chart})

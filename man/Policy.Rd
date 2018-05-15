@@ -37,8 +37,10 @@ and displayed in summaries and plots.
 \describe{
 \item{\code{new(name)}}{
 Generates and initializes a new \code{Policy} object.
-A \code{Policy} needs to add the parameters it needs to keep track of to list \code{self$theta}
-during the \code{Policy}'s initialisation.
+}
+
+\item{\code{initialize(name)}}{
+#TODO
 }
 
 \item{\code{set_parameters()}}{
@@ -49,14 +51,17 @@ The parameters defined here can then be accessed by arm index in the following w
 }
 
 \item{\code{get_action(t, context)}}{
-Here, a \code{Policy} chooses an arm to play based on the current values
-of its parameters \code{theta} and the current \code{context}.
-Returns an \code{action} list that contains the index of the suggested arm as \code{action$choice}.
+Calculates which arm to play based on the current values in named list \code{theta}
+and the current \code{context}. Returns a named list
+\code{list(choice = arm_chosen_by_policy)} that holds the index of the arm
+to play.
 }
 
 \item{\code{set_reward(t, context, action, reward)}}{
-\code{set_reward} updates parameter values in \code{theta}
-based on the \code{action} taken, the \code{reward} received, and the current \code{context}.
+Returns the named list
+\code{list(reward = reward_for_choice_made, optimal = optimal_reward_value)} containing the \code{reward}
+for the \code{action} previously returned by \code{policy} and, optionally, the \code{optimal} reward
+at the current time \code{t}.
 }
 }
 }

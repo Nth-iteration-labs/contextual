@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>External Simulator — Simulator • contextual</title>
+<title>Simulator — Simulator • contextual</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -33,9 +33,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="External Simulator — Simulator" />
+<meta property="og:title" content="Simulator — Simulator" />
 
-<meta property="og:description" content="Simulator intro" />
+<meta property="og:description" content="The R6 class Simulator is the entry point of any contextual
+simulation. It encapsulates one or more Agents, clones them if necessary,
+runs the Agents (in parallel, by default), and saves the log of all of the Agents
+interactions to a History object." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -126,14 +129,17 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>External Simulator</h1>
+    <h1>Simulator</h1>
     <small class="dont-index">Source: <a href='https://github.com/Nth-iteration-labs/contextual/blob/master/R/simulator.R'><code>R/simulator.R</code></a></small>
     <div class="hidden name"><code>Simulator.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Simulator intro</p>
+    <p>The R6 class <code>Simulator</code> is the entry point of any <span class="pkg">contextual</span>
+simulation. It encapsulates one or more <code>Agents</code>, clones them if necessary,
+runs the <code>Agents</code> (in parallel, by default), and saves the log of all of the <code>Agents</code>
+interactions to a <code>History</code> object.</p>
     
     </div>
 
@@ -141,31 +147,70 @@
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 
     
-    <pre>b &lt;- Simulator$new()
-    b$reset()
-    print(b)
+    <pre>
+simulator &lt;- Simulator$new(agents,
+                           horizon = 100L,
+                           simulations = 100L,
+                           save_context = FALSE,
+                           save_theta = FALSE,
+                           do_parallel = TRUE,
+                           worker_max = NULL,
+                           continouous_counter = FALSE,
+                           set_seed = 0,
+                           write_progress_file = TRUE,
+                           include_packages = NULL,
+                           reindex_t = FALSE)
 </pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
 
     
     <dl class='dl-horizontal'>
-<dt>b</dt><dd><p>A <code>Simulator</code> object.</p></dd>
-</dl>
+<dt><code>agents</code></dt><dd><p>An <code>Agent</code> instance, or a <code>list</code> of <code>Agent</code> instances to be run
+by the instantiated <code>Simulator</code>.</p></dd>
+<dt><code>horizon</code></dt><dd><p><code>integer</code>. The T time steps to run the instantiated <code>Simulator</code>, where <em>t</em> = 1, &#8230;, T.</p></dd>
+<dt><code>simulations</code></dt><dd><p><code>integer</code>. How many times to repeat each agent's simulation over <em>t</em> = 1, &#8230;, T,
+with a new seed on each repeat (itself deterministically derived from set_seed).</p></dd>
+<dt><code>save_context</code></dt><dd><p><code>logical</code>. Save the context vectors <code>X</code> on running the <code>Simulator</code>?</p></dd>
+<dt><code>save_theta</code></dt><dd><p><code>logical</code>. Save the parameter list <code>theta</code> on running the <code>Simulator</code>?</p></dd>
+<dt><code>do_parallel</code></dt><dd><p><code>logical</code>. Run <code>Simulator</code> processes in parallel?</p></dd>
+<dt><code>worker_max</code></dt><dd><p><code>integer</code>. Specifies how many parallel workers are to be used, when <code>do_parallel</code>
+is <code>TRUE</code>. If unspecified, the amount of workers defaults to <code>max(workers_available)-1</code>.</p></dd>
+<dt><code>continouous_counter</code></dt><dd><p><code>logical</code>. Of use to, amongst others, offline Bandits.
+If <code>continouous_counter</code> is set to <code>TRUE</code>, the current <code>Simulator</code>
+iterates over all rows in a data set for each repeated simulation.
+If <code>FALSE</code>, it splits the data into <code>simulations</code> parts,
+and a different subset of the data for each repeat of an agent's simulation.</p></dd>
+<dt><code>set_seed</code></dt><dd><p><code>integer</code>. Sets the seed of R‘s random number generator for the current <code>Simulator</code>.</p></dd>
+<dt><code>write_progress_file</code></dt><dd><p><code>logical</code>. If <code>TRUE</code>, <code>Simulator</code> writes <code>progress.log</code> and <code>doparallel.log</code>
+files to the current working directory, allowing you to keep track of <code>workers</code>, iterations,
+and potential errors when running a <code>Simulator</code> in parallel.</p></dd>
+<dt><code>include_packages</code></dt><dd><p><code>List</code>. List of packages that (one of) the policies depend on. If a <code>Policy</code> requires an
+R package to be loaded, this option can be used to load that package on each of the workers.
+Ignored if <code>do_parallel</code> is <code>FALSE</code>.</p></dd>
+<dt><code>reindex_t</code></dt><dd><p><code>logical</code>. If <code>TRUE</code>, removes empty rows from the <code>History</code> log,
+reindexes the <code>t</code> column, and truncates the resulting data to the shortest simulation
+grouped by agent and simulation.</p></dd>
+    </dl>
     
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     
-    <p><code>$new()</code> starts a new Simulator, it uses <code><a href='http://www.rdocumentation.org/packages/base/topics/connections'>pipe</a></code>.
-R does <em>not</em> wait for the process to finish, but returns
-immediately.</p>
+    <dl class='dl-horizontal'>
+    <dt><code>reset()</code></dt><dd><p>Resets a <code>Simulator</code> instance to its original initialisation values.</p></dd>
+    <dt><code>run()</code></dt><dd><p>Runs a <code>Simulator</code> instance.</p></dd>
+    </dl>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>Core contextual classes: <code>Simulator</code>,
+<code><a href='Agent.html'>Agent</a></code>, <code><a href='History.html'>History</a></code>, <code><a href='Plot.html'>Plot</a></code></p>
+<p>Bandit classes: <code><a href='Bandit.html'>Bandit</a></code>, <code><a href='BasicBandit.html'>BasicBandit</a></code>,
+<code><a href='LiSamplingOfflineBandit.html'>LiSamplingOfflineBandit</a></code>, <code><a href='SyntheticBandit.html'>SyntheticBandit</a></code></p>
+<p>Other contextual: <code><a href='Agent.html'>Agent</a></code>,
+  <code><a href='History.html'>History</a></code>, <code><a href='Plot.html'>Plot</a></code></p></div>
     
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"># NOT RUN {
-# }
-<div class='input'>
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -175,10 +220,10 @@ immediately.</p>
 
       <li><a href="#arguments">Arguments</a></li>
 
-      <li><a href="#details">Details</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+      <li><a href="#methods">Methods</a></li>
+
+      <li><a href="#see-also">See also</a></li>
+          </ul>
 
   </div>
 </div>

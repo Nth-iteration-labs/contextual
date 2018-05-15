@@ -11,7 +11,7 @@ RandomPolicy <- R6::R6Class(
     set_parameters = function() {
       self$theta_to_arms <- list('n' = 0, 'mean' = 0)
     },
-    get_action = function(context, t) {
+    get_action = function(t, context) {
       action$choice <- sample.int(context$k, 1, replace = TRUE)
       action$propensity <- 1/context$k
       action
@@ -101,7 +101,7 @@ RandomPolicy <- R6::R6Class(
 #'
 #' history            <- Simulator$new(agent, horizon, simulations, do_parallel = FALSE)$run()
 #'
-#' plot(history, type = "cumulative")
+#' plot(history, type = "arms")
 #'
 #'
 NULL

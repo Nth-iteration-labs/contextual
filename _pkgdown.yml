@@ -4,9 +4,10 @@ reference:
   - title: "Core"
     desc: "Contextual's core classes."
     contents:
-      - Simulator
+      - Bandit
+      - Policy
       - Agent
-      - AdversarialAgent
+      - Simulator
       - History
       - Plot
   - title: "Bandits"

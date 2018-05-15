@@ -161,13 +161,13 @@ each generating a <code>reward</code> for each of its <code>k</code> arms at eac
     <dt><code>pre_calculate()</code></dt><dd><p>Called right after <code>Simulator</code> sets its seed,
 but before it starts iterating over all time steps <code>t</code> in T. If you need to initialize random values in a <code>Policy</code>,
 this is the place to do so.</p></dd>
-    <dt><code>get_context(t)</code></dt><dd><p>Generate or retrieve <code>k</code>
-(the number of <code>Bandit</code> arms), <code>d</code> (the number of <code>context</code> features),
-and context vector <code>X</code> for the current time step <code>t</code> and return these as
-<code>list(k = n_arms, d = n_features, X = context)</code>.</p></dd>
-    <dt><code>get_reward(t, context, action)</code></dt><dd><p>Return the <code>reward</code> for a particular <code>action</code> as previously selected by a <code>Policy</code>, and,
-if known, the reward of the current best arm as <code>list(reward = reward_for_choice_made,
-     optimal = optimal_reward_value)</code>.</p></dd>
+    <dt><code>get_context(t)</code></dt><dd><p>Returns a named list <code>list(k = n_arms, d = n_features, X = context)</code>
+with the current <code>d</code> dimensional <code>context</code> feature vector <code>X</code> together with the number of arms <code>k</code>.</p></dd>
+    <dt><code>get_reward(t, context, action)</code></dt><dd><p>Returns the named list <code>list(reward = reward_for_choice_made,
+     optimal = optimal_reward_value)</code> containing the <code>reward</code>
+for the <code>action</code> previously returned by <code>policy</code> and,
+optionally, the <code>optimal</code> reward
+at the current time <code>t</code>.</p></dd>
     <dt><code>generate_bandit_data()</code></dt><dd><p>A helper function that is called before <code>Simulator</code> starts iterating over all time steps <code>t</code> in T.
 This function is called when <code>bandit$precaching</code> has been set to <code>TRUE</code>.
 Pregenerate <code>contexts</code> and <code>rewards</code> here.</p></dd>

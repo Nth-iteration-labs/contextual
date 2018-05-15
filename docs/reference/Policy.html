@@ -171,18 +171,20 @@ and displayed in summaries and plots.</p></dd>
 
     
     <dl class='dl-horizontal'>
-<dt><code>new(name)</code></dt><dd><p>Generates and initializes a new <code>Policy</code> object.
-A <code>Policy</code> needs to add the parameters it needs to keep track of to list <code>self$theta</code>
-during the <code>Policy</code>'s initialisation.</p></dd>
+<dt><code>new(name)</code></dt><dd><p>Generates and initializes a new <code>Policy</code> object.</p></dd>
+    <dt><code>initialize(name)</code></dt><dd><p>#TODO</p></dd>
     <dt><code>set_parameters()</code></dt><dd><p>This helper function, called during a Policy's initialisation, assigns the values
 it finds in list <code>self$theta_to_arms</code> to each of the Policy's k arms.
 The parameters defined here can then be accessed by arm index in the following way:
 <code>theta[[index_of_arm]]$parameter_name</code>.</p></dd>
-    <dt><code>get_action(t, context)</code></dt><dd><p>Here, a <code>Policy</code> chooses an arm to play based on the current values
-of its parameters <code>theta</code> and the current <code>context</code>.
-Returns an <code>action</code> list that contains the index of the suggested arm as <code>action$choice</code>.</p></dd>
-    <dt><code>set_reward(t, context, action, reward)</code></dt><dd><p><code>set_reward</code> updates parameter values in <code>theta</code>
-based on the <code>action</code> taken, the <code>reward</code> received, and the current <code>context</code>.</p></dd>
+    <dt><code>get_action(t, context)</code></dt><dd><p>Calculates which arm to play based on the current values in named list <code>theta</code>
+and the current <code>context</code>. Returns a named list
+<code>list(choice = arm_chosen_by_policy)</code> that holds the index of the arm
+to play.</p></dd>
+    <dt><code>set_reward(t, context, action, reward)</code></dt><dd><p>Returns the named list
+<code>list(reward = reward_for_choice_made, optimal = optimal_reward_value)</code> containing the <code>reward</code>
+for the <code>action</code> previously returned by <code>policy</code> and, optionally, the <code>optimal</code> reward
+at the current time <code>t</code>.</p></dd>
 </dl>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>

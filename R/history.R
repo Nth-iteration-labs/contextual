@@ -5,7 +5,7 @@ History <- R6::R6Class(
   portable = FALSE,
   class = TRUE,
   public = list(
-    n = 1000,
+    n = NULL,
     save_theta = NULL,
     save_context = NULL,
     initialize = function(n = 1, save_context = FALSE, save_theta = FALSE) {
@@ -35,7 +35,7 @@ History <- R6::R6Class(
                        action,
                        reward,
                        policy_name,
-                       s,
+                       simulation_index,
                        context_value = NA,
                        theta_value = NA
     ) {
@@ -54,7 +54,7 @@ History <- R6::R6Class(
         1L:8L,
         list(
           t,
-          s,
+          simulation_index,
           action$choice,
           reward$reward,
           as.integer(reward$reward == optimal_reward_value),
@@ -159,11 +159,11 @@ History <- R6::R6Class(
       }
       invisible(self)
     },
-    finalize = function() {
-      self$clear_data_table()
-    },
     print_data = function() {
       str(private$.data)
+    },
+    finalize = function() {
+      self$clear_data_table()
     }
   ),
   active = list(
@@ -180,31 +180,102 @@ History <- R6::R6Class(
   )
 )
 
-#' External History
+#' History
 #'
-#' History intro
+#' The R6 class \code{History} keeps a log of all \code{Simulator} interactions
+#' in its internal \code{data.table}. It also provides basic data summaries,
+#' and can save or load simulation log data files.
+#'
+#' @name History
+#' @family contextual
 #'
 #' @section Usage:
-#' \preformatted{b <- History$new()
-#'
-#' b$reset()
-#'
-#' print(b)
+#' \preformatted{
+#' History <- History$new(n = 1, save_context = FALSE, save_theta = FALSE)
 #' }
 #'
 #' @section Arguments:
+#'
 #' \describe{
-#'   \item{b}{A \code{History} object.}
+#'   \item{\code{n}}{
+#'      \code{integer}. The number of rows, to be preallocated during initialization.
+#'   }
+#'   \item{\code{save_context}}{
+#'     \code{logical}. Save context vectors \code{X} when writing simulation data?
+#'   }
+#'   \item{\code{save_theta}}{
+#'     \code{logical}. Save parameter lists \code{theta} when writing simulation data?
+#'   }
+#'
+#'
 #' }
 #'
-#' @section Details:
-#' \code{$new()} starts a new History, it uses \code{\link[base]{pipe}}.
-#' R does \emph{not} wait for the process to finish, but returns
-#' immediately.
+#' @section Methods:
 #'
-#' @importFrom R6 R6Class
-#' @name History
-#' @examples
-#'\dontrun{}
+#' \describe{
+#'
+#'   \item{\code{reset()}}{
+#'      Resets a \code{History} instance to its original initialisation values.
+#'   }
+#'   \item{\code{save(index,
+#'                    t,
+#'                    action,
+#'                    reward,
+#'                    policy_name,
+#'                    simulation_index,
+#'                    context_value = NA,
+#'                    theta_value = NA)}}{
+#'      Saves one row of simulation data.
+#'   }
+#'   \item{\code{save_data(filename = NA)}}{
+#'      Writes the \code{History} log file in its default data.table format,
+#'      with \code{filename} as the name of the file which the data is to be written to.
+#'   }
+#'   \item{\code{load_data = function(filename, nth_rows = 0)}}{
+#'      Reads a \code{History} log file in its default \code{data.table} format,
+#'      with \code{filename} as the name of the file which the data are to be read from.
+#'      If \code{nth_rows} is larger than 0, every \code{nth_rows} of data is read instead of the
+#'      full data file. This can be of use with (a first) analysis of very large data files.
+#'   }
+#'   \item{\code{get_data_frame()}}{
+#'      Returns the \code{History} log as a \code{data.frame}.
+#'   }
+#'   \item{\code{get_data_table()}}{
+#'      Returns the \code{History} log as a \code{data.table}.
+#'   }
+#'   \item{\code{set_data_table(dt)}}{
+#'      Sets the \code{History} log with the data in \code{data.table} \code{dt}.
+#'   }
+#'   \item{\code{clear_data_table()}}{
+#'      Clears the \code{History} log.
+#'   }
+#'   \item{\code{delete_empty_rows()}}{
+#'      Deletes all empty rows in the \code{History} log and reindexes the \code{t} column grouped
+#'      by agent and simulation.
+#'   }
+#'   \item{\code{reindex_t(truncate = TRUE)}}{
+#'      Removes empty rows from the \code{History} log, reindexes the \code{t} column, and,
+#'      if \code{truncate} is \code{TRUE}, truncates the resulting data to the shortest simulation
+#'      grouped by agent and simulation.
+#'   }
+#'   \item{\code{print_data()}}{
+#'      Prints a summary of the \code{History} log.
+#'   }
+#'   \item{\code{cumulative(final = TRUE, regret = TRUE, rate = FALSE)}}{
+#'      Returns cumulative reward (when \code{regret} is \code{FALSE}) or regret. When \code{final} is \code{TRUE},
+#'      it only returns the final value. When \code{final} is FALSE, it returns a \code{data.table} containing all
+#'      cumulative reward or regret values from 1 to T.
+#'      When \code{rate} is \code{TRUE}, cumulative reward or regret are divided by column \code{t} before any values
+#'      are returned.
+#'   }
+#'  }
+#'
+#' @seealso
+#'
+#' Core contextual classes: \code{\link{Simulator}},
+#' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
+#'
+#' Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBandit}},
+#' \code{\link{LiSamplingOfflineBandit}}, \code{\link{SyntheticBandit}}
 #'
 NULL

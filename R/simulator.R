@@ -205,31 +205,110 @@ Simulator <- R6::R6Class(
   )
 )
 
-#' External Simulator
+
+#' Simulator
 #'
-#' Simulator intro
+#' The R6 class \code{Simulator} is the entry point of any \pkg{contextual}
+#' simulation. It encapsulates one or more \code{Agents}, clones them if necessary,
+#' runs the \code{Agents} (in parallel, by default), and saves the log of all of the \code{Agents}
+#' interactions to a \code{History} object.
+#'
+#' @name Simulator
+#' @family contextual
 #'
 #' @section Usage:
-#' \preformatted{b <- Simulator$new()
-#'
-#' b$reset()
-#'
-#' print(b)
+#' \preformatted{
+#' simulator <- Simulator$new(agents,
+#'                            horizon = 100L,
+#'                            simulations = 100L,
+#'                            save_context = FALSE,
+#'                            save_theta = FALSE,
+#'                            do_parallel = TRUE,
+#'                            worker_max = NULL,
+#'                            continouous_counter = FALSE,
+#'                            set_seed = 0,
+#'                            write_progress_file = TRUE,
+#'                            include_packages = NULL,
+#'                            reindex_t = FALSE)
 #' }
 #'
 #' @section Arguments:
+#'
 #' \describe{
-#'   \item{b}{A \code{Simulator} object.}
+#'   \item{\code{agents}}{
+#'     An \code{Agent} instance, or a \code{list} of \code{Agent} instances to be run
+#'     by the instantiated \code{Simulator}.
+#'   }
+#'   \item{\code{horizon}}{
+#'     \code{integer}. The T time steps to run the instantiated \code{Simulator}, where \emph{t} = \{1, \ldots, T\}.
+#'   }
+#'   \item{\code{simulations}}{
+#'     \code{integer}. How many times to repeat each agent's simulation over \emph{t} = \{1, \ldots, T\},
+#'     with a new seed on each repeat (itself deterministically derived from set_seed).
+#'   }
+#'   \item{\code{save_context}}{
+#'     \code{logical}. Save the context vectors \code{X} on running the \code{Simulator}?
+#'   }
+#'   \item{\code{save_theta}}{
+#'     \code{logical}. Save the parameter list \code{theta} on running the \code{Simulator}?
+#'   }
+#'   \item{\code{do_parallel}}{
+#'      \code{logical}. Run \code{Simulator} processes in parallel?
+#'   }
+#'   \item{\code{worker_max}}{
+#'      \code{integer}. Specifies how many parallel workers are to be used, when \code{do_parallel}
+#'      is \code{TRUE}. If unspecified, the amount of workers defaults to \code{max(workers_available)-1}.
+#'
+#'   }
+#'   \item{\code{continouous_counter}}{
+#'      \code{logical}. Of use to, amongst others, offline Bandits.
+#'      If \code{continouous_counter} is set to \code{TRUE}, the current \code{Simulator}
+#'      iterates over all rows in a data set for each repeated simulation.
+#'      If \code{FALSE}, it splits the data into \code{simulations} parts,
+#'      and a different subset of the data for each repeat of an agent's simulation.
+#'   }
+#'   \item{\code{set_seed}}{
+#'      \code{integer}. Sets the seed of R‘s random number generator for the current \code{Simulator}.
+#'   }
+#'   \item{\code{write_progress_file}}{
+#'       \code{logical}. If \code{TRUE}, \code{Simulator} writes \code{progress.log} and \code{doparallel.log}
+#'       files to the current working directory, allowing you to keep track of \code{workers}, iterations,
+#'       and potential errors when running a \code{Simulator} in parallel.
+#'   }
+#'   \item{\code{include_packages}}{
+#'       \code{List}. List of packages that (one of) the policies depend on. If a \code{Policy} requires an
+#'       R package to be loaded, this option can be used to load that package on each of the workers.
+#'       Ignored if \code{do_parallel} is \code{FALSE}.
+#'   }
+#'   \item{\code{reindex_t}}{
+#'      \code{logical}. If \code{TRUE}, removes empty rows from the \code{History} log,
+#'      reindexes the \code{t} column, and truncates the resulting data to the shortest simulation
+#'      grouped by agent and simulation.
+#'   }
+#'
+#'
 #' }
 #'
-#' @section Details:
-#' \code{$new()} starts a new Simulator, it uses \code{\link[base]{pipe}}.
-#' R does \emph{not} wait for the process to finish, but returns
-#' immediately.
+#' @section Methods:
 #'
-#' @importFrom R6 R6Class
-#' @name Simulator
-#' @examples
-#'\dontrun{}
+#' \describe{
+#'
+#'   \item{\code{reset()}}{
+#'      Resets a \code{Simulator} instance to its original initialisation values.
+#'   }
+#'
+#'   \item{\code{run()}}{
+#'      Runs a \code{Simulator} instance.
+#'    }
+#'
+#'  }
+#'
+#' @seealso
+#'
+#' Core contextual classes: \code{\link{Simulator}},
+#' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
+#'
+#' Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBandit}},
+#' \code{\link{LiSamplingOfflineBandit}}, \code{\link{SyntheticBandit}}
 #'
 NULL

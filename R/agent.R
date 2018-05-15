@@ -61,10 +61,11 @@ Agent <- R6::R6Class(
 
 #' Agent
 #'
-#' \code{Agent}: The R6 class \code{Agent} is responsible for the state, flow of information
-#' between and the running of one \code{Bandit}/\code{Policy} pair.
+#' The R6 class \code{Agent} is responsible for the state, flow of information
+#' between and the running of one \code{Bandit} and \code{Policy} pair.
 #' As such, multiple \code{Agent}s can be run in parallel with each separate Agent keeping
-#' track of \code{t} and the parameters in \code{theta} for its assigned \code{Policy} and \code{Bandit} pair.
+#' track of \code{t} and the parameters in named list \code{theta} for its assigned \code{Policy}
+#' and \code{Bandit} pair.
 #'
 #' @name Agent
 #' @family contextual
@@ -98,28 +99,34 @@ Agent <- R6::R6Class(
 #'   }
 #'
 #'   \item{\code{do_step()}}{
-#'       This convenience function completes one time step \code{t} by consecutively calling
-#'       bandit_get_context(), policy_get_action(), bandit_get_reward() and policy_set_reward().
+#'      Convenience function: completes one time step \code{t} by consecutively calling
+#'      bandit_get_context(), policy_get_action(), bandit_get_reward() and policy_set_reward().
 #'    }
 #'
 #'   \item{\code{bandit_get_context()}}{
-#'      Calls \code{bandit$get_context(t)}, which returns the current \code{d} dimensional \code{context}
-#'      feature vector \code{X} in a list together with the number of arms and context features as
-#'      \code{list(k = n_arms, d = n_features, X = context)}.
+#'      Calls \code{bandit$get_context(t)}, which returns a named list \code{list(k = n_arms, d = n_features, X = context)}
+#'      with the current \code{d} dimensional \code{context} feature vector \code{X} together with the number of arms \code{k}.
 #'    }
 #'
 #'   \item{\code{policy_get_action()}}{
-#'      Calls \code{policy$get_action(t, X)}, which chooses an arm to play based on the current values
-#'      of its parameters \code{theta} and the current \code{context}.
-#'      Returns an \code{action} list that contains the index of the suggested arm as \code{action$choice}.
-#'
+#'      Calls \code{policy$get_action(t, X)}, whereupon \code{policy} decides on an arm to play based on the
+#'      current values of its parameters in named list \code{theta} and the current \code{context}.
+#'      Returns a named list \code{list(choice = arm_chosen_by_policy)} that holds the index of the arm
+#'      to play as suggested by \code{policy}.
 #'    }
+#'
 #'   \item{\code{bandit_get_reward()}}{
-
+#'      Calls \code{bandit$get_reward(t, context, action)} which returns the named list
+#'      \code{list(reward = reward_for_choice_made, optimal = optimal_reward_value)} containing the \code{reward}
+#'      for the \code{action} previously returned by \code{policy} and, optionally, the \code{optimal} reward
+#'      at the current time \code{t}.
+#'
 #'    }
 #'
 #'   \item{\code{policy_set_reward()}}{
-#'
+#'     Calls \code{policy$set_reward(t, context, action, reward)}, updating the set of parameter values in \code{theta}
+#'     based on the \code{action} taken, the \code{reward} received, and the current \code{context}.
+#'     Returns the updated list of parameters in named list \code{theta}.
 #'    }
 #'
 #'   }
