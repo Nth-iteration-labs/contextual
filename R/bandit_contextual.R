@@ -55,7 +55,7 @@ ContextualBandit <- R6::R6Class(
   )
 )
 
-#' External ContextualBandit
+#' Bandit: ContextualBandit
 #'
 #' ContextualBandit intro
 #'

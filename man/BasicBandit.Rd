@@ -2,7 +2,7 @@
 % Please edit documentation in R/bandit_basic.R
 \name{BasicBandit}
 \alias{BasicBandit}
-\title{External BasicBandit}
+\title{Bandit: BasicBandit}
 \description{
 BasicBandit intro
 }

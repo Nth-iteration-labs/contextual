@@ -7,6 +7,11 @@
 \usage{
 \method{plot}{History}(x, ...)
 }
+\arguments{
+\item{x}{A \code{History} object.}
+
+\item{...}{Further plotting parameters.}
+}
 \description{
 plot.history, a method for the plot generic. It is designed for a quick look at History data.
 }

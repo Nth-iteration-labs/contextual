@@ -7,6 +7,11 @@
 \usage{
 \method{print}{History}(x, ...)
 }
+\arguments{
+\item{x}{A \code{History} object.}
+
+\item{...}{Further plotting parameters.}
+}
 \description{
 print.history, a method for the print generic. It is designed for a quick look at History data.
 }

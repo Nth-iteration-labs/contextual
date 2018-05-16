@@ -2,7 +2,7 @@
 % Please edit documentation in R/bandit_synthetic.R
 \name{SyntheticBandit}
 \alias{SyntheticBandit}
-\title{External SyntheticBandit}
+\title{Bandit: SyntheticBandit}
 \description{
 SyntheticBandit intro
 }

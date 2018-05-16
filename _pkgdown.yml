@@ -29,7 +29,7 @@ reference:
       - is_rstudio
       - set_external
   - title: "Generic functions"
-    desc: "Generic ontextual functions."
+    desc: "Contextual generic  functions."
     contents:
       - summary.history
       - print.history

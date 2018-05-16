@@ -7,9 +7,18 @@
 \usage{
 \method{summary}{History}(object, ...)
 }
+\arguments{
+\item{object}{A \code{History} object.}
+
+\item{...}{Further summary parameters.}
+}
 \description{
 summary.history, a method for the summary generic. It is designed for a quick summary of History data.
 }
+\section{Arguments}{
+
+}
+
 \seealso{
 Core contextual classes: \code{\link{Simulator}},
 \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}

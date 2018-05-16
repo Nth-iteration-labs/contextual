@@ -125,7 +125,7 @@ SyntheticBandit <- R6::R6Class(
   )
 )
 
-#' External SyntheticBandit
+#' Bandit: SyntheticBandit
 #'
 #' SyntheticBandit intro
 #'

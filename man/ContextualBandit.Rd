@@ -2,7 +2,7 @@
 % Please edit documentation in R/bandit_contextual.R
 \name{ContextualBandit}
 \alias{ContextualBandit}
-\title{External ContextualBandit}
+\title{Bandit: ContextualBandit}
 \description{
 ContextualBandit intro
 }

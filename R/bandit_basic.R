@@ -42,7 +42,7 @@ BasicBandit <- R6::R6Class(
   )
 )
 
-#' External BasicBandit
+#' Bandit: BasicBandit
 #'
 #' BasicBandit intro
 #'

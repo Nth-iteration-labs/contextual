@@ -5,6 +5,9 @@
 #' @name plot.history
 #' @family contextual
 #'
+#' @param x A \code{History} object.
+#' @param ... Further plotting parameters.
+#'
 #' @seealso
 #'
 #' Core contextual classes: \code{\link{Simulator}},
@@ -187,6 +190,9 @@ plot.History <- function(x, ...) {
 #' @name print.history
 #' @family contextual
 #'
+#' @param x A \code{History} object.
+#' @param ... Further plotting parameters.
+#'
 #' @seealso
 #'
 #' Core contextual classes: \code{\link{Simulator}},
@@ -206,6 +212,11 @@ print.History <- function(x, ...) {
 #'
 #' @name summary.history
 #' @family contextual
+#'
+#' @section Arguments:
+#'
+#' @param object A \code{History} object.
+#' @param ... Further summary parameters.
 #'
 #' @seealso
 #'
