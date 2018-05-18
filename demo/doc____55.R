@@ -5,14 +5,15 @@ source("dev.R")
  simulations        <- 100L
  weights            <- c(0.9, 0.1, 0.1)
 
- policy             <- RandomPolicy$new(name = "Random")
+ policy             <- UCB1Policy$new(name = "UCB1")
  bandit             <- SyntheticBandit$new(weights = weights, precaching = FALSE)
  agent              <- Agent$new(policy, bandit)
 
  history            <- Simulator$new(agent, horizon, simulations, do_parallel = FALSE)$run()
 
- plot(history, type = "arms")
+ plot(history, type = "cumulative")
 
+ plot(history, type = "arms")
 
 ###################
 

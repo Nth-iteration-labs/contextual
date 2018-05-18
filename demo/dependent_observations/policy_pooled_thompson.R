@@ -33,9 +33,9 @@ UnpooledThompsonPolicy <- R6::R6Class(
       arm    <- action$choice
       user   <- context$user_context
       reward <- reward$reward
-      inc(theta$n[[user]][[arm]]) <- 1
-      inc(theta$p[[user]][[arm]]) <- (reward - theta$p[[user]][[arm]]) / theta$n[[user]][[arm]]
-      theta
+      inc(self$theta$n[[user]][[arm]]) <- 1
+      inc(self$theta$p[[user]][[arm]]) <- (reward - self$theta$p[[user]][[arm]]) / self$theta$n[[user]][[arm]]
+      self$theta
     }
   )
 )
@@ -56,8 +56,8 @@ PooledThompsonPolicy <- R6::R6Class(
     get_action = function(t, context) {
       expected_rewards <- rep(0.0, self$k)
       for (arm in 1:self$k) {
-        a <- theta$P[[arm]] * theta$N[[arm]]
-        b <- theta$N[[arm]] - a
+        a <- self$theta$P[[arm]] * self$theta$N[[arm]]
+        b <- self$theta$N[[arm]] - a
         if (a == 0 || b == 0) {
           expected_rewards[[arm]] = rbeta(1,1,1)
         } else {
@@ -70,9 +70,9 @@ PooledThompsonPolicy <- R6::R6Class(
     set_reward = function(t, context, action, reward) {
       arm <- action$choice
       reward <- reward$reward
-      inc(theta$N[[arm]]) <- 1
-      inc(theta$P[[arm]]) <- (reward - theta$P[[arm]]) / theta$N[[arm]]
-      theta
+      inc(self$theta$N[[arm]]) <- 1
+      inc(self$theta$P[[arm]]) <- (reward - self$theta$P[[arm]]) / self$theta$N[[arm]]
+      self$theta
     }
   )
 )
@@ -106,8 +106,8 @@ PartiallyPooledThompsonPolicy <- R6::R6Class(
                          l = list(rep(0,self$n_subjects),rep(0,self$n_subjects)))  # TODO: make this into k-arms 0, not 0,0
       self$theta_to_arms <- list('N' = 0)
       n_subjects <- self$n_subjects
-      n <- theta$n[[1]]
-      l <- theta$l[[1]]
+      n <- self$theta$n[[1]]
+      l <- self$theta$l[[1]]
       capture.output(fit_a <- rstan::sampling(self$stan_model,
                       data = c("n_subjects", "n", "l"),
                       iter = self$iter,
@@ -116,8 +116,8 @@ PartiallyPooledThompsonPolicy <- R6::R6Class(
                       chains = 1))
       self$theta_a <- rstan::summary(fit_a, pars = c("theta"))$summary[, "mean"]
       n_subjects <- self$n_subjects
-      n <- theta$n[[2]]
-      l <- theta$l[[2]]
+      n <- self$theta$n[[2]]
+      l <- self$theta$l[[2]]
       capture.output(fit_b <- rstan::sampling(self$stan_model,
                         data = c("n_subjects", "n", "l"),
                         iter = self$iter,
@@ -142,17 +142,17 @@ PartiallyPooledThompsonPolicy <- R6::R6Class(
       userid   <- context$user_context
       reward   <- reward$reward
       if (arm == 1) {
-        theta$n[[1]][userid] <- theta$n[[1]][userid] + 1
-        theta$l[[1]][userid] <- theta$l[[1]][userid] + reward
-        theta$N[[1]] <- theta$N[[1]] + 1
-        if (theta$N[[1]] %% 10 == 0) {
+        self$theta$n[[1]][userid] <- self$theta$n[[1]][userid] + 1
+        self$theta$l[[1]][userid] <- self$theta$l[[1]][userid] + reward
+        self$theta$N[[1]] <- self$theta$N[[1]] + 1
+        if (self$theta$N[[1]] %% 10 == 0) {
           init_val_a <-
             list(list(
-              theta = self$theta_a
+              self$theta = self$theta_a
             ))
           n_subjects <- self$n_subjects
-          n <- theta$n[[1]]
-          l <- theta$l[[1]]
+          n <- self$theta$n[[1]]
+          l <- self$theta$l[[1]]
           capture.output(fit_a <- rstan::sampling(self$stan_model,
                             data = c("n_subjects", "n", "l"),
                             iter = self$iter ,
@@ -164,17 +164,17 @@ PartiallyPooledThompsonPolicy <- R6::R6Class(
           self$theta_samples_a <- rstan::extract(fit_a, pars = c("theta"))$theta
         }
       } else {
-        theta$n[[2]][userid] <- theta$n[[2]][userid] + 1
-        theta$l[[2]][userid] <- theta$l[[2]][userid] + reward
-        theta$N[[2]] <- theta$N[[2]] + 1
-        if (theta$N[[2]] %% 10 == 0) {
+        self$theta$n[[2]][userid] <- self$theta$n[[2]][userid] + 1
+        self$theta$l[[2]][userid] <- self$theta$l[[2]][userid] + reward
+        self$theta$N[[2]] <- self$theta$N[[2]] + 1
+        if (self$theta$N[[2]] %% 10 == 0) {
           init_val_b <-
             list(list(
-              theta = self$theta_b
+              self$theta = self$theta_b
             ))
           n_subjects <- self$n_subjects
-          n <- theta$n[[2]]
-          l <- theta$l[[2]]
+          n <- self$theta$n[[2]]
+          l <- self$theta$l[[2]]
           capture.output(fit_b <- rstan::sampling(self$stan_model,
                             data = c("n_subjects", "n", "l"),
                             iter = self$iter ,
@@ -186,7 +186,7 @@ PartiallyPooledThompsonPolicy <- R6::R6Class(
           self$theta_samples_b <- rstan::extract(fit_b, pars = c("theta"))$theta
         }
       }
-      theta
+      self$theta
     }
   )
 )

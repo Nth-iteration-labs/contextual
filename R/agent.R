@@ -4,8 +4,7 @@ Agent <- R6::R6Class(
   portable = FALSE,
   class = FALSE,
   private = list(
-    state = NULL,
-    step  = NULL
+    t = NULL
   ),
   public = list(
     policy = NULL,
@@ -21,40 +20,22 @@ Agent <- R6::R6Class(
     },
     reset = function() {
       self$policy$set_parameters()
-      private$state$t             <- 0
-      private$state$theta         <- self$policy$initialize_theta()
-      private$step$context        <- matrix()
-      private$step$action         <- list()
-      private$step$reward         <- list()
+      self$policy$initialize_theta()
+      private$t <- 0
     },
     set_t = function(t) {
       private$state$t <- t
     },
+    get_t = function(t) {
+      t
+    },
     do_step = function() {
-      private$state$t <- private$state$t + 1
-      list(context = bandit_get_context(),
-           action  = policy_get_action(),
-           reward  = bandit_get_reward(),
-           theta   = policy_set_reward())
-    },
-    bandit_get_context = function() {
-      private$step$context <- bandit$get_context(private$state$t)
-      private$step$context
-    },
-    policy_get_action = function() {
-      policy$set_theta(private$state$theta)
-      private$step$action <- policy$get_action(private$state$t, private$step$context)
-      private$step$action
-    },
-    bandit_get_reward = function() {
-      private$step$reward <- bandit$get_reward(private$state$t,private$step$context, private$step$action)
-      private$step$reward
-    },
-    policy_set_reward = function() {
-      if (!is.null(private$step$reward)) {
-        private$state$theta <- policy$set_reward(private$state$t, private$step$context, private$step$action, private$step$reward)
-        private$state$theta
-      }
+      private$t <- private$t + 1
+      context = bandit$get_context(private$t)
+      action  = policy$get_action(private$t, context)
+      reward  = bandit$get_reward(private$t, context, action)
+      theta = policy$set_reward(private$t, context, action, reward)
+      list(context = context, action = action,reward = reward,theta = theta)
     }
   )
 )
@@ -95,38 +76,12 @@ Agent <- R6::R6Class(
 #' \describe{
 #'
 #'   \item{\code{set_t(t)}}{
-#'      Setter function, sets the state of the current time step variable \code{t}.
+#'      Setter function, sets the state of the state variable holding the current time step \code{t}.
 #'   }
 #'
 #'   \item{\code{do_step()}}{
-#'      Convenience function: completes one time step \code{t} by consecutively calling
-#'      bandit_get_context(), policy_get_action(), bandit_get_reward() and policy_set_reward().
-#'    }
-#'
-#'   \item{\code{bandit_get_context()}}{
-#'      Calls \code{bandit$get_context(t)}, which returns a named list \code{list(k = n_arms, d = n_features, X = context)}
-#'      with the current \code{d} dimensional \code{context} feature vector \code{X} together with the number of arms \code{k}.
-#'    }
-#'
-#'   \item{\code{policy_get_action()}}{
-#'      Calls \code{policy$get_action(t, X)}, whereupon \code{policy} decides on an arm to play based on the
-#'      current values of its parameters in named list \code{theta} and the current \code{context}.
-#'      Returns a named list \code{list(choice = arm_chosen_by_policy)} that holds the index of the arm
-#'      to play as suggested by \code{policy}.
-#'    }
-#'
-#'   \item{\code{bandit_get_reward()}}{
-#'      Calls \code{bandit$get_reward(t, context, action)} which returns the named list
-#'      \code{list(reward = reward_for_choice_made, optimal = optimal_reward_value)} containing the \code{reward}
-#'      for the \code{action} previously returned by \code{policy} and, optionally, the \code{optimal} reward
-#'      at the current time \code{t}.
-#'
-#'    }
-#'
-#'   \item{\code{policy_set_reward()}}{
-#'     Calls \code{policy$set_reward(t, context, action, reward)}, updating the set of parameter values in \code{theta}
-#'     based on the \code{action} taken, the \code{reward} received, and the current \code{context}.
-#'     Returns the updated list of parameters in named list \code{theta}.
+#'      Completes one time step \code{t} by consecutively calling
+#'      \code{bandit$get_context()}, \code{policy$get_action()}, \code{bandit$get_reward()} and \code{policy$set_reward()}.
 #'    }
 #'
 #'   }

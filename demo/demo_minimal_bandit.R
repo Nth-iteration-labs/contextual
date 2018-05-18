@@ -34,7 +34,7 @@ EpsilonGreedyAnnealingPolicy <- R6::R6Class(
       # Override get_action to make annealing
       epsilon = 1 / log(t + 0.0000001)
       if (runif(1) > epsilon) {
-        action$choice <- maxcontext_in(theta$mean)
+        action$choice <- maxcontext_in(self$theta$mean)
         action$propensity <- 1 - self$epsilon
       } else {
         action$choice <- sample.int(context$k, 1, replace = TRUE)

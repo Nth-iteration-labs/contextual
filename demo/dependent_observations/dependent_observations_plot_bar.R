@@ -11,7 +11,7 @@ horizon         <- 10000
 simulations     <- 100
 subjects        <- list(50,100,500,1000)
 betas           <- list(c(1.5, 1.5),c(5, 5))
-do_poisson      <- list(FALSE, TRUE)
+do_poisson      <- list(FALSE) #TRUE)
 
 policies        <- list("EG","UCB","Thompson")
 subpolicies     <- list("Partial", "Pooled", "Unpooled" )
@@ -61,7 +61,7 @@ regret_df_plot$subpolicies <- factor(regret_df_plot$subpolicies, levels = list("
 p <- ggplot(regret_df_plot, aes(subjects, regret, fill = as.factor(subpolicies))) +
   geom_bar(position = "dodge", stat = "identity") +
   theme_minimal() +
-  facet_grid(poisson + betas ~ policies) +
+  facet_grid(betas ~ policies) +
   theme(legend.title = element_blank()) +
   theme(legend.position = "bottom") +
   xlab("Users") +

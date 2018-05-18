@@ -68,7 +68,7 @@ based on the reward received, and, potentially, the current context.
 
 horizon            <- 100L
 simulations        <- 100L
-weights        <- c(0.9, 0.1, 0.1)
+weights            <- c(0.9, 0.1, 0.1)
 
 policy             <- UCB1Policy$new(name = "UCB1")
 bandit             <- SyntheticBandit$new(weights = weights, precaching = FALSE)

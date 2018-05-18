@@ -12,14 +12,14 @@ UCB1Policy <- R6::R6Class(
       self$theta_to_arms <- list('n' = 0, 'mean' = 0)
     },
     get_action = function(t, context) {
-      action$choice <- which(theta$n == 0)[1]
+      action$choice <- which(self$theta$n == 0)[1]
       if (!is.na(action$choice)) {
         return(action)
       }
       expected_rewards <- rep(0.0, context$k)
       for (arm in 1:context$k) {
-        variance <- sqrt( (2*log(sum_of(theta$n))) / theta$n[[arm]])
-        expected_rewards[arm] <- theta$mean[[arm]] + variance
+        variance <- sqrt( (2*log(sum_of(self$theta$n))) / self$theta$n[[arm]])
+        expected_rewards[arm] <- self$theta$mean[[arm]] + variance
       }
       action$choice <- max_in(expected_rewards)
       action
@@ -27,9 +27,9 @@ UCB1Policy <- R6::R6Class(
     set_reward = function(t, context, action, reward) {
       arm <- action$choice
       reward <- reward$reward
-      inc(theta$n[[arm]]) <- 1
-      inc(theta$mean[[arm]]) <- (reward - theta$mean[[arm]]) / theta$n[[arm]]
-      theta
+      inc(self$theta$n[[arm]]) <- 1
+      inc(self$theta$mean[[arm]]) <- (reward - self$theta$mean[[arm]]) / self$theta$n[[arm]]
+      self$theta
     }
   )
 )
@@ -114,7 +114,7 @@ UCB1Policy <- R6::R6Class(
 #'
 #' horizon            <- 100L
 #' simulations        <- 100L
-#' weights        <- c(0.9, 0.1, 0.1)
+#' weights            <- c(0.9, 0.1, 0.1)
 #'
 #' policy             <- UCB1Policy$new(name = "UCB1")
 #' bandit             <- SyntheticBandit$new(weights = weights, precaching = FALSE)

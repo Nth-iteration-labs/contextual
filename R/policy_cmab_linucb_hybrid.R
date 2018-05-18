@@ -21,16 +21,16 @@ LinUCBHybridPolicy <- R6::R6Class(
     get_action = function(t, context) {
       expected_rewards <- rep(0.0, self$k)
 
-      beta_hat <- solve(theta$A0) %*% theta$b0
+      beta_hat <- solve(self$theta$A0) %*% self$theta$b0
 
       for (arm in 1:self$k) {
 
         ################## unpack thetas ##############################################
 
-        A0         <-  theta$A0
-        A          <-  theta$A[[arm]]
-        B          <-  theta$B[[arm]]
-        b          <-  theta$b[[arm]]
+        A0         <-  self$theta$A0
+        A          <-  self$theta$A[[arm]]
+        B          <-  self$theta$B[[arm]]
+        b          <-  self$theta$b[[arm]]
         x          <-  matrix(context$X[,arm])
         x_u        <-  matrix(context$U)
         A0_inv <- solve(A0)
@@ -64,11 +64,11 @@ LinUCBHybridPolicy <- R6::R6Class(
       x              <- matrix(context$X[,arm])
       x_u            <- matrix(context$U)
 
-      A0             <- theta$A0
-      b0             <- theta$b0
-      A              <- theta$A[[arm]]
-      B              <- theta$B[[arm]]
-      b              <- theta$b[[arm]]
+      A0             <- self$theta$A0
+      b0             <- self$theta$b0
+      A              <- self$theta$A[[arm]]
+      B              <- self$theta$B[[arm]]
+      b              <- self$theta$b[[arm]]
 
       #################### update thetas with returned reward & arm choice #############
 
@@ -86,13 +86,13 @@ LinUCBHybridPolicy <- R6::R6Class(
 
       #################### pack thetas ################################################
 
-      theta$A0       <- A0
-      theta$b0       <- b0
-      theta$A[[arm]] <- A
-      theta$B[[arm]] <- B
-      theta$b[[arm]] <- b
+      self$theta$A0       <- A0
+      self$theta$b0       <- b0
+      self$theta$A[[arm]] <- A
+      self$theta$B[[arm]] <- B
+      self$theta$b[[arm]] <- b
 
-      theta
+      self$theta
     }
   )
 )

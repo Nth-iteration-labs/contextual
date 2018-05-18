@@ -14,4 +14,6 @@ demo/data/*
 yahoodb-journal
 progress.txt
 **/progress.txt
+**/doparallel.log
+**/progress.log
 docs/reference/RandomPolicy-1.png

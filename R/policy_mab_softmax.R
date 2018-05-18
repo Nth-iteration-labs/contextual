@@ -14,8 +14,8 @@ SoftmaxPolicy <- R6::R6Class(
       self$theta_to_arms <- list('n' = 0, 'mean' = 0)
     },
     get_action = function(t, context) {
-      z <- sum(exp(unlist(theta$mean)/tau))
-      p <- exp(unlist(theta$mean)/tau)/z
+      z <- sum(exp(unlist(self$theta$mean)/tau))
+      p <- exp(unlist(self$theta$mean)/tau)/z
       action$choice <- categorical_draw(p)
       action
     },
@@ -23,9 +23,9 @@ SoftmaxPolicy <- R6::R6Class(
     set_reward = function(t, context, action, reward) {
       arm <- action$choice
       reward <- reward$reward
-      inc(theta$n[[arm]]) <- 1
-      inc(theta$mean[[arm]]) <- (reward - theta$mean[[arm]]) / theta$n[[arm]]
-      theta
+      inc(self$theta$n[[arm]]) <- 1
+      inc(self$theta$mean[[arm]]) <- (reward - self$theta$mean[[arm]]) / self$theta$n[[arm]]
+      self$theta
     },
     categorical_draw = function(probs) {
       arms <- length(probs)

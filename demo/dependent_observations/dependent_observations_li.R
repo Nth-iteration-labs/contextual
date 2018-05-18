@@ -50,11 +50,20 @@ history     <- Simulator$new(agents = agents,
 history$save_data(paste0(data_dir,"LiEG_1000.RData"))
 
 ##################### Plot #############################
+
+setwd("~/GitHub/contextual/demo/dependent_observations")
+
+source("dev.R")
+
+data_dir       <- "data/"
+
 history = History$new()
 history$clear_data_table()
 history$load_data(paste0(data_dir,"LiEG_all_1000.RData"))
 
-plot(history, type = "cumulative", regret = FALSE, rate = TRUE)
-plot(history, type = "cumulative", regret = FALSE, rate = TRUE, ylim = c(0.01,0.016))
-#plot(history, type = "cumulative", regret = FALSE )
+h <- history$get_data_table()
+
+h$agent <- factor(h$agent, levels = list("PartialEG","UnpooledEG", "PooledEG"))
+plot.History(h, type = "cumulative", regret = FALSE, rate = TRUE, ylim = c(0.01,0.016))
+
 

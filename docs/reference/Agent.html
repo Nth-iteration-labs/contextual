@@ -67,7 +67,7 @@ and Bandit pair." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">contextual</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.0.0.9012</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.0.0.90518</span>
       </span>
     </div>
 
@@ -169,22 +169,9 @@ its <code>k</code> arms at each time step <code>t</code>.</p></dd>
 
     
     <dl class='dl-horizontal'>
-    <dt><code>set_t(t)</code></dt><dd><p>Setter function, sets the state of the current time step variable <code>t</code>.</p></dd>
-    <dt><code>do_step()</code></dt><dd><p>Convenience function: completes one time step <code>t</code> by consecutively calling
-bandit_get_context(), policy_get_action(), bandit_get_reward() and policy_set_reward().</p></dd>
-    <dt><code>bandit_get_context()</code></dt><dd><p>Calls <code>bandit$get_context(t)</code>, which returns a named list <code>list(k = n_arms, d = n_features, X = context)</code>
-with the current <code>d</code> dimensional <code>context</code> feature vector <code>X</code> together with the number of arms <code>k</code>.</p></dd>
-    <dt><code>policy_get_action()</code></dt><dd><p>Calls <code>policy$get_action(t, X)</code>, whereupon <code>policy</code> decides on an arm to play based on the
-current values of its parameters in named list <code>theta</code> and the current <code>context</code>.
-Returns a named list <code>list(choice = arm_chosen_by_policy)</code> that holds the index of the arm
-to play as suggested by <code>policy</code>.</p></dd>
-    <dt><code>bandit_get_reward()</code></dt><dd><p>Calls <code>bandit$get_reward(t, context, action)</code> which returns the named list
-<code>list(reward = reward_for_choice_made, optimal = optimal_reward_value)</code> containing the <code>reward</code>
-for the <code>action</code> previously returned by <code>policy</code> and, optionally, the <code>optimal</code> reward
-at the current time <code>t</code>.</p></dd>
-    <dt><code>policy_set_reward()</code></dt><dd><p>Calls <code>policy$set_reward(t, context, action, reward)</code>, updating the set of parameter values in <code>theta</code>
-based on the <code>action</code> taken, the <code>reward</code> received, and the current <code>context</code>.
-Returns the updated list of parameters in named list <code>theta</code>.</p></dd>
+    <dt><code>set_t(t)</code></dt><dd><p>Setter function, sets the state of the state variable holding the current time step <code>t</code>.</p></dd>
+    <dt><code>do_step()</code></dt><dd><p>Completes one time step <code>t</code> by consecutively calling
+<code>bandit$get_context()</code>, <code>policy$get_action()</code>, <code>bandit$get_reward()</code> and <code>policy$set_reward()</code>.</p></dd>
     </dl>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>

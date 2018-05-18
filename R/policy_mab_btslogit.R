@@ -17,8 +17,8 @@ BTSLogitPolicy <- R6::R6Class(
       expected_rewards <- rep(0.0, context$k)
       X <- context$X
       for (arm in 1:context$k) {
-        A          <-  theta$A[[arm]]
-        b          <-  theta$b[[arm]]
+        A          <-  self$theta$A[[arm]]
+        b          <-  self$theta$b[[arm]]
 
         A.inv      <-  solve(A)
         theta.hat  <-  A.inv %*% b
@@ -35,10 +35,10 @@ BTSLogitPolicy <- R6::R6Class(
       reward <- reward$reward
       X <- context$X
 
-      inc(theta$A[[arm]]) <- outer(X, X)
-      inc(theta$b[[arm]]) <- reward * X
+      inc(self$theta$A[[arm]]) <- outer(X, X)
+      inc(self$theta$b[[arm]]) <- reward * X
 
-      theta
+      self$theta
     }
   )
 )

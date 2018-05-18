@@ -35,10 +35,6 @@ Policy <- R6::R6Class(
           self$theta[[ names(self$theta_to_arms)[param_index] ]] <- rep(list(self$theta_to_arms[[param_index]]),self$k)
         }
       }
-      self$theta
-    },
-    set_theta = function(theta) {
-      self$theta <- theta
     }
   )
 )

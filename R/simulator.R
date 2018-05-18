@@ -1,6 +1,7 @@
 #' @importFrom foreach %dopar% %do%
 #' @importFrom doParallel registerDoParallel stopImplicitCluster
 #' @importFrom itertools isplitRows
+#' @importFrom data.table rbindlist
 #'
 #' @export
 Simulator <- R6::R6Class(
@@ -140,7 +141,7 @@ Simulator <- R6::R6Class(
         sims_agents = sa_iterator,
         i = iterators::icount(),
         .inorder = TRUE,
-        .combine = function(x,y)rbindlist(list(x,y)),
+        .combine = function(x,y)data.table::rbindlist(list(x,y)),
         .export = c("History"),
         .noexport = c("sims_per_agent_list","history"),
         .packages = par_packages

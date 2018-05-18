@@ -127,6 +127,10 @@ History <- R6::R6Class(
       if ( "opimal" %in% colnames(private$.data)) setnames(private$.data, old = "opimal", new = "optimal_reward_value")
       invisible(self)
     },
+    leave_nth = function(nth_rows = 0) {
+      private$.data <- private$.data[t %% nth_rows == 0]
+      reindex_t()
+    },
     get_data_frame = function() {
       as.data.frame(private$.data)
     },

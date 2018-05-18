@@ -16,7 +16,7 @@ UnpooledEgreedyPolicy <- R6::R6Class(
     },
     get_action = function(t, context) {
       if (runif(1) > epsilon) {
-        action$choice <- which.max(unlist(theta$mu[[context$user_context]]))
+        action$choice <- which.max(unlist(self$theta$mu[[context$user_context]]))
       } else {
         action$choice <- sample.int(context$k, 1, replace = TRUE)
       }
@@ -26,9 +26,9 @@ UnpooledEgreedyPolicy <- R6::R6Class(
       arm    <- action$choice
       user   <- context$user_context
       reward <- reward$reward
-      inc(theta$n[[user]][[arm]])    <- 1
-      inc(theta$mu[[user]][[arm]])   <- (reward - theta$mu[[user]][[arm]]) / theta$n[[user]][[arm]]
-      theta
+      inc(self$theta$n[[user]][[arm]])    <- 1
+      inc(self$theta$mu[[user]][[arm]])   <- (reward - self$theta$mu[[user]][[arm]]) / self$theta$n[[user]][[arm]]
+      self$theta
     }
   )
 )
@@ -50,7 +50,7 @@ PooledEgreedyPolicy <- R6::R6Class(
     },
     get_action = function(t, context) {
       if (runif(1) > epsilon) {
-        action$choice <- max_in(theta$MU)
+        action$choice <- max_in(self$theta$MU)
       } else {
         action$choice <- sample.int(context$k, 1, replace = TRUE)
       }
@@ -59,9 +59,9 @@ PooledEgreedyPolicy <- R6::R6Class(
     set_reward = function(t, context, action, reward) {
       arm <- action$choice
       reward <- reward$reward
-      inc(theta$N[[arm]])    <- 1
-      inc(theta$MU[[arm]]) <- (reward - theta$MU[[arm]]) / theta$N[[arm]]
-      theta
+      inc(self$theta$N[[arm]])    <- 1
+      inc(self$theta$MU[[arm]]) <- (reward - self$theta$MU[[arm]]) / self$theta$N[[arm]]
+      self$theta
     }
   )
 )
@@ -87,8 +87,8 @@ PartiallyPooledEgreedyPolicy <- R6::R6Class(
     get_action = function(t, context) {
       user <- context$user_context
       if (runif(1) > epsilon) {
-        beta <- 1 / sqrt(sum_of(theta$n[[user]]))
-        p_hat  <- beta * unlist(theta$MU) + (1 - beta) * unlist(theta$mu[[user]])
+        beta <- 1 / sqrt(sum_of(self$theta$n[[user]]))
+        p_hat  <- beta * unlist(self$theta$MU) + (1 - beta) * unlist(self$theta$mu[[user]])
         action$choice <- max_in(p_hat)
       } else {
         action$choice <- sample.int(context$k, 1, replace = TRUE)
@@ -99,11 +99,11 @@ PartiallyPooledEgreedyPolicy <- R6::R6Class(
       arm    <- action$choice
       user   <- context$user_context
       reward <- reward$reward
-      inc(theta$n[[user]][[arm]])     <- 1
-      inc(theta$mu[[user]][[arm]])    <- (reward - theta$mu[[user]][[arm]]) / theta$n[[user]][[arm]]
-      inc(theta$N[[arm]])             <- 1
-      inc(theta$MU[[arm]])            <- (reward - theta$MU[[arm]]) / theta$N[[arm]]
-      theta
+      inc(self$theta$n[[user]][[arm]])     <- 1
+      inc(self$theta$mu[[user]][[arm]])    <- (reward - self$theta$mu[[user]][[arm]]) / self$theta$n[[user]][[arm]]
+      inc(self$theta$N[[arm]])             <- 1
+      inc(self$theta$MU[[arm]])            <- (reward - self$theta$MU[[arm]]) / self$theta$N[[arm]]
+      self$theta
     }
   )
 )

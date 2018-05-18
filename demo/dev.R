@@ -27,14 +27,14 @@ if (grepl('w|W', .Platform$OS.type)) {
 
 # TODO LIST --------------------------------------------------------------------
 
+# nth-rows, thinning out, plot, history....
+
+##### writing: work out regret..
+
 # comparison doc of all bandit algo's: strengths, weakneseses (computational eff, context / non, variance, etc)
-# add most basic sim
-# and add most basic bandit addition example..
-# and maybe annealing?
 
 # TODO: is optimal arm the absolute optimal arm, or the oracle optimal arm?
 # TODO: check when NA saved to history (ie in the case of oracle/optimal not known etc)
-# TODO: make sure output/summary is nicely formatted and collected
 # TODO: propensity
 # TODO: confidence interval --> check and test if all well
 
@@ -42,19 +42,17 @@ if (grepl('w|W', .Platform$OS.type)) {
 # TODO: visualisation(s) from thesis
 # TODO: MODEL type input
 # TODO: make sure enough checks on inputs..
-# TODO: check if without precalc faster on 128 cores.
 # TODO: seperate context and theta results tables?
-# TODO: fix external plot device on linux -> for live plot
 # TODO: time calculation, benchmarking per policy, how?
+
+# prio 3
+
+# TODO: blog about all this, do JS versions
+# TODO: fix external plot device on linux -> for live plot
 # TODO: UCB1, exp3, exp4, epoch.. ?? Which other policies, particularly cMAB
 # TODO: Implement more interesting policies, Maurits and others
 # TODO: Ability to add/remove arms
 # TODO: Adversarial
-
-# general
-
-# TODO: blog about all this, do JS versions
-
 # gittins ... policy
 
 # PERFORMANCE DATA  ------------------------------------------------------------
@@ -67,38 +65,38 @@ if (grepl('w|W', .Platform$OS.type)) {
 
 # devtools::use_appveyor()
 
-#data.table::set(data, index, 1L, t)
-#data.table::set(data, index, 2L, s)
-#data.table::set(data, index, 3L, action$choice)
-#data.table::set(data, index, 4L, reward[[1]])
-#data.table::set(data, index, 5L, choice_is_optimal)
-#data.table::set(data, index, 6L, reward$oracle)
-#data.table::set(data, index, 7L, policy_name)
+# data.table::set(data, index, 1L, t)
+# data.table::set(data, index, 2L, s)
+# data.table::set(data, index, 3L, action$choice)
+# data.table::set(data, index, 4L, reward[[1]])
+# data.table::set(data, index, 5L, choice_is_optimal)
+# data.table::set(data, index, 6L, reward$oracle)
+# data.table::set(data, index, 7L, policy_name)
 
 # at end of oracle_generate can do
 # if (FALSE) {
 # sineChange <- function(x,y,M){
 #  M[x,y] + 4 * sin((x - y*6.4)/60)  # Y would be t ..
-#}
-#vecSineChange <- Vectorize(sineChange,vectorize.args = c('x','y'))
-#private$O <- outer(1:nrow(private$O),
-#                   1:ncol(private$O),
-#                   vecSineChange,
-#                   private$O )
-#}
+# }
+# vecSineChange <- Vectorize(sineChange,vectorize.args = c('x','y'))
+# private$O <- outer(1:nrow(private$O),
+#                    1:ncol(private$O),
+#                    vecSineChange,
+#                    private$O )
+# }
 
 # history --> grid
-#if (history[agent == "TSampling",.N] > 0) {                               ## this needs to be more generic!!!
-#  self$ts(history, grid = TRUE, legend = TRUE)
-#} else {
-#  self$average(history, grid = TRUE, legend = FALSE, regret = TRUE)
-#}
+# if (history[agent == "TSampling",.N] > 0) {                               ## this needs to be more generic!!!
+#   self$ts(history, grid = TRUE, legend = TRUE)
+# } else {
+#   self$average(history, grid = TRUE, legend = FALSE, regret = TRUE)
+# }
 
-#ggplot(data = cs, aes(
-#  x = t,
-#  y = mean,
-#  ymin = ci_lower,
-#  ymax = ci_upper
+# ggplot(data = cs, aes(
+#    x = t,
+#    y = mean,
+#    ymin = ci_lower,
+#    ymax = ci_upper
 #)) +
 #  geom_line(aes(color = agent)) + geom_ribbon(aes(fill = agent), alpha = 0.3)
 ##geom_smooth(method = "lm",
@@ -106,9 +104,6 @@ if (grepl('w|W', .Platform$OS.type)) {
 ## aes(fill = agent, color = agent),
 ## alpha = 0.5, se = FALSE)
 #gp
-
-# options(WordPressLogin = c(admin = 'd323mb3r!ap'), WordPressURL = 'https://pavlov.tech/xmlrpc.php')
-# knit2wp('posts.Rmd', title = 'Blogging directly from R using RWordPress', publish = FALSE)
 
 # think about rmax if not boolean!!! Rmax.reward!!!?
 #To make sure that all arms receive at least one pull, arms

@@ -20,8 +20,8 @@ LinUCBDisjointPolicy <- R6::R6Class(
       for (arm in 1:self$k) {
 
         X          <-  context$X[,arm]
-        A          <-  theta$A[[arm]]
-        b          <-  theta$b[[arm]]
+        A          <-  self$theta$A[[arm]]
+        b          <-  self$theta$b[[arm]]
 
         A_inv      <-  solve(A)
 
@@ -40,10 +40,10 @@ LinUCBDisjointPolicy <- R6::R6Class(
       reward <- reward$reward
       Xa <- context$X[,arm]
 
-      inc(theta$A[[arm]]) <- outer(Xa, Xa)
-      inc(theta$b[[arm]]) <- reward * Xa
+      inc(self$theta$A[[arm]]) <- outer(Xa, Xa)
+      inc(self$theta$b[[arm]]) <- reward * Xa
 
-      theta
+      self$theta
     }
   )
 )

@@ -18,7 +18,7 @@ UnpooledUCBPolicy <- R6::R6Class(
       user <- context$user_context
       if (self$theta$n_total[[user]] < self$k) {
         for (arm in 1:self$k) {
-          if (theta$n[[user]][[arm]] == 0) {
+          if (self$theta$n[[user]][[arm]] == 0) {
             action$choice <- arm
             return(action)
           }
@@ -26,8 +26,8 @@ UnpooledUCBPolicy <- R6::R6Class(
       }
       expected_rewards <- rep(0.0, self$k)
       for (arm in 1:self$k) {
-        expected_rewards[[arm]] <- theta$p[[user]][[arm]] +
-          sqrt(2*log(theta$n_total[[user]])/theta$n[[user]][[arm]])
+        expected_rewards[[arm]] <- self$theta$p[[user]][[arm]] +
+          sqrt(2*log(self$theta$n_total[[user]])/self$theta$n[[user]][[arm]])
       }
       action$choice  <- max_in(expected_rewards)
       action
@@ -36,10 +36,10 @@ UnpooledUCBPolicy <- R6::R6Class(
       arm    <- action$choice
       user   <- context$user_context
       reward <- reward$reward
-      inc(theta$n_total[[user]])  <- 1
-      inc(theta$n[[user]][[arm]]) <- 1
-      inc(theta$p[[user]][[arm]]) <- (reward - theta$p[[user]][[arm]]) / theta$n[[user]][[arm]]
-      theta
+      inc(self$theta$n_total[[user]])  <- 1
+      inc(self$theta$n[[user]][[arm]]) <- 1
+      inc(self$theta$p[[user]][[arm]]) <- (reward - self$theta$p[[user]][[arm]]) / self$theta$n[[user]][[arm]]
+      self$theta
     }
   )
 )
@@ -61,7 +61,7 @@ PooledUCBPolicy <- R6::R6Class(
     get_action = function(t, context) {
       if (self$theta$N_total < self$k) {
         for (arm in 1:self$k) {
-          if (theta$N[[arm]] == 0) {
+          if (self$theta$N[[arm]] == 0) {
              action$choice <- arm
              return(action)
           }
@@ -69,8 +69,8 @@ PooledUCBPolicy <- R6::R6Class(
       }
       expected_rewards <- rep(0.0, self$k)
       for (arm in 1:self$k) {
-        expected_rewards[[arm]] <- theta$P[[arm]] +
-          sqrt(2*log(theta$N_total)/theta$N[[arm]])
+        expected_rewards[[arm]] <- self$theta$P[[arm]] +
+          sqrt(2*log(self$theta$N_total)/self$theta$N[[arm]])
       }
       action$choice  <- max_in(expected_rewards)
       action
@@ -78,10 +78,10 @@ PooledUCBPolicy <- R6::R6Class(
     set_reward = function(t, context, action, reward) {
       arm <- action$choice
       reward <- reward$reward
-      inc(theta$N_total)  <- 1
-      inc(theta$N[[arm]]) <- 1
-      inc(theta$P[[arm]]) <- (reward - theta$P[[arm]]) / theta$N[[arm]]
-      theta
+      inc(self$theta$N_total)  <- 1
+      inc(self$theta$N[[arm]]) <- 1
+      inc(self$theta$P[[arm]]) <- (reward - self$theta$P[[arm]]) / self$theta$N[[arm]]
+      self$theta
     }
   )
 )
@@ -105,7 +105,7 @@ PartiallyPooledUCBPolicy <- R6::R6Class(
       user <- context$user_context
       if (self$theta$n_total[[user]] < self$k) {
         for (arm in 1:self$k) {
-          if (theta$n[[user]][[arm]] == 0) {
+          if (self$theta$n[[user]][[arm]] == 0) {
             action$choice <- arm
             return(action)
           }
@@ -114,8 +114,8 @@ PartiallyPooledUCBPolicy <- R6::R6Class(
       expected_rewards <- rep(0.0, self$k)
       beta = 1/sqrt(self$theta$n_total[[user]])
       for (arm in 1:self$k) {
-        p_mean <- theta$P[[arm]] + sqrt(2*log(theta$N_total)/theta$N[[arm]])
-        p_choice <- theta$p[[user]][[arm]] + sqrt(2*log(theta$n_total[[user]])/theta$n[[user]][[arm]])
+        p_mean <- self$theta$P[[arm]] + sqrt(2*log(self$theta$N_total)/self$theta$N[[arm]])
+        p_choice <- self$theta$p[[user]][[arm]] + sqrt(2*log(self$theta$n_total[[user]])/self$theta$n[[user]][[arm]])
         p_hat = (beta * p_mean + (1-beta) * p_choice)
         expected_rewards[[arm]] = p_hat
       }
@@ -126,13 +126,13 @@ PartiallyPooledUCBPolicy <- R6::R6Class(
       arm    <- action$choice
       user   <- context$user_context
       reward <- reward$reward
-      inc(theta$n_total[[user]])  <- 1
-      inc(theta$n[[user]][[arm]]) <- 1
-      inc(theta$p[[user]][[arm]]) <- (reward - theta$p[[user]][[arm]]) / theta$n[[user]][[arm]]
-      inc(theta$N_total)     <- 1
-      inc(theta$N[[arm]])    <- 1
-      inc(theta$P[[arm]])    <- (reward - theta$P[[arm]]) / theta$N[[arm]]
-      theta
+      inc(self$theta$n_total[[user]])  <- 1
+      inc(self$theta$n[[user]][[arm]]) <- 1
+      inc(self$theta$p[[user]][[arm]]) <- (reward - self$theta$p[[user]][[arm]]) / self$theta$n[[user]][[arm]]
+      inc(self$theta$N_total)     <- 1
+      inc(self$theta$N[[arm]])    <- 1
+      inc(self$theta$P[[arm]])    <- (reward - self$theta$P[[arm]]) / self$theta$N[[arm]]
+      self$theta
     }
   )
 )

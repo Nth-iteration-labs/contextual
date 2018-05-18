@@ -25,16 +25,16 @@ LifPolicy <- R6::R6Class(
       self$theta_to_arms <- list('x0' = x0_start, 'Y' = rep(NA, inttime))
     },
     get_action = function(t, context) {
-      action$choice <- theta$x0[[1]] + amplitude*cos(omega * t)
+      action$choice <- self$theta$x0[[1]] + amplitude*cos(omega * t)
       action
     },
     set_reward = function(t, context, action, reward) {
       reward   <- reward$reward
       y <- amplitude*cos(omega * t)*reward
-      theta$Y[[1]] <- c(y, theta$Y[[1]])[seq_along(theta$Y[[1]])]
+      self$theta$Y[[1]] <- c(y, self$theta$Y[[1]])[seq_along(self$theta$Y[[1]])]
       if (t > inttime)
-        theta$x0[[1]] <- theta$x0[[1]] + learnrate * sum( theta$Y[[1]] ) / inttime
-      theta
+        self$theta$x0[[1]] <- self$theta$x0[[1]] + learnrate * sum( self$theta$Y[[1]] ) / inttime
+      self$theta
     }
   )
 )
