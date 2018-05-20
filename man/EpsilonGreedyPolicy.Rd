@@ -68,7 +68,7 @@ based on the reward received, and, potentially, the current context.
 
 horizon            <- 100L
 simulations        <- 100L
-weights        <- c(0.9, 0.1, 0.1)
+weights            <- c(0.9, 0.1, 0.1)
 
 policy             <- EpsilonGreedyPolicy$new(epsilon = 0.1, name = "EpsilonGreedy")
 bandit             <- SyntheticBandit$new(weights = weights, precaching = FALSE)
@@ -92,22 +92,24 @@ Strehl, A., & Littman, M. (2004). Exploration via modelbased interval estimation
 Yue, Y., Broder, J., Kleinberg, R., & Joachims, T. (2012). The k-armed dueling bandits problem. Journal of Computer and System Sciences, 78(5), 1538-1556.
 }
 \seealso{
-Core contextual classes: \code{\link{Simulator}},
+Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 
-Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBandit}},
-\code{\link{LiSamplingOfflineBandit}}, \code{\link{SyntheticBandit}}
-
-Other contextual policies: \code{\link{BTSLogitPolicy}},
+Other contextual subclasses: \code{\link{BTSLogitPolicy}},
+  \code{\link{BasicBandit}},
+  \code{\link{ContextualBandit}},
   \code{\link{ContextualThompsonSamplingPolicy}},
+  \code{\link{ContinuumBandit}},
+  \code{\link{DoublyRobustOfflineBandit}},
   \code{\link{EpsilonFirstPolicy}},
   \code{\link{Exp3Policy}},
+  \code{\link{LiSamplingOfflineBandit}},
+  \code{\link{LifPolicy}},
   \code{\link{LinUCBDisjointPolicy}},
   \code{\link{LinUCBHybridPolicy}},
-  \code{\link{OraclePolicy}}, \code{\link{Policy}},
-  \code{\link{RandomPolicy}},
-  \code{\link{SimpleBTSPolicy}},
+  \code{\link{OraclePolicy}}, \code{\link{RandomPolicy}},
   \code{\link{SoftmaxPolicy}},
+  \code{\link{SyntheticBandit}},
   \code{\link{ThompsonSamplingPolicy}},
   \code{\link{UCB1Policy}}
 }

@@ -68,22 +68,24 @@ based on the reward received, and, potentially, the current context.
 Thompson, W. R. (1933). On the likelihood that one unknown probability exceeds another in view of the evidence of two samples. Biometrika, 25(3/4), 285-294.
 }
 \seealso{
-Core contextual classes: \code{\link{Simulator}},
+Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 
-Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBandit}},
-\code{\link{LiSamplingOfflineBandit}}, \code{\link{SyntheticBandit}}
-
-Other contextual policies: \code{\link{BTSLogitPolicy}},
+Other contextual subclasses: \code{\link{BTSLogitPolicy}},
+  \code{\link{BasicBandit}},
+  \code{\link{ContextualBandit}},
+  \code{\link{ContinuumBandit}},
+  \code{\link{DoublyRobustOfflineBandit}},
   \code{\link{EpsilonFirstPolicy}},
   \code{\link{EpsilonGreedyPolicy}},
   \code{\link{Exp3Policy}},
+  \code{\link{LiSamplingOfflineBandit}},
+  \code{\link{LifPolicy}},
   \code{\link{LinUCBDisjointPolicy}},
   \code{\link{LinUCBHybridPolicy}},
-  \code{\link{OraclePolicy}}, \code{\link{Policy}},
-  \code{\link{RandomPolicy}},
-  \code{\link{SimpleBTSPolicy}},
+  \code{\link{OraclePolicy}}, \code{\link{RandomPolicy}},
   \code{\link{SoftmaxPolicy}},
+  \code{\link{SyntheticBandit}},
   \code{\link{ThompsonSamplingPolicy}},
   \code{\link{UCB1Policy}}
 }

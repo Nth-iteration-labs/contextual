@@ -17,7 +17,7 @@ techniques like doubly robust estimation (Dudik et al., 2011).
 \section{Usage}{
 
 \preformatted{
-bandit <- LiSamplingOfflineBandit(data_stream, k, d)
+   bandit <- LiSamplingOfflineBandit(data_stream, k, d)
 }
 }
 
@@ -30,9 +30,23 @@ horizon            <- 100L
 Li, L., Chu, W., Langford, J., & Wang, X. (2011, February). Unbiased offline evaluation of contextual-bandit-based news article recommendation algorithms. In Proceedings of the fourth ACM international conference on Web search and data mining (pp. 297-306). ACM.
 }
 \seealso{
-Core contextual classes: \code{\link{Simulator}},
-\code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}, \code{\link{Policy}}
+Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
+\code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 
-Other contextual bandits: \code{\link{Bandit}},
-  \code{\link{DoublyRobustOfflineBandit}}
+Other contextual subclasses: \code{\link{BTSLogitPolicy}},
+  \code{\link{BasicBandit}},
+  \code{\link{ContextualBandit}},
+  \code{\link{ContextualThompsonSamplingPolicy}},
+  \code{\link{ContinuumBandit}},
+  \code{\link{DoublyRobustOfflineBandit}},
+  \code{\link{EpsilonFirstPolicy}},
+  \code{\link{EpsilonGreedyPolicy}},
+  \code{\link{Exp3Policy}}, \code{\link{LifPolicy}},
+  \code{\link{LinUCBDisjointPolicy}},
+  \code{\link{LinUCBHybridPolicy}},
+  \code{\link{OraclePolicy}}, \code{\link{RandomPolicy}},
+  \code{\link{SoftmaxPolicy}},
+  \code{\link{SyntheticBandit}},
+  \code{\link{ThompsonSamplingPolicy}},
+  \code{\link{UCB1Policy}}
 }

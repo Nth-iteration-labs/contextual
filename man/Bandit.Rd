@@ -2,6 +2,9 @@
 % Please edit documentation in R/bandit.R
 \name{Bandit}
 \alias{Bandit}
+\alias{pre_calculate}
+\alias{get_context}
+\alias{generate_bandit_data}
 \title{Bandit}
 \description{
 The R6 class \code{Bandit} is the parent class of all \code{Bandits} implemented in \code{\{contextual\}}.
@@ -52,12 +55,10 @@ Pregenerate \code{contexts} and \code{rewards} here.
 }
 
 \seealso{
-Core contextual classes: \code{\link{Simulator}},
+Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 
-Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBandit}},
-\code{\link{LiSamplingOfflineBandit}}, \code{\link{SyntheticBandit}}
+Bandit subclass examples: \code{\link{BasicBandit}}, \code{\link{ContextualBandit}},  \code{\link{LiSamplingOfflineBandit}}
 
-Other contextual bandits: \code{\link{DoublyRobustOfflineBandit}},
-  \code{\link{LiSamplingOfflineBandit}}
+Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 }

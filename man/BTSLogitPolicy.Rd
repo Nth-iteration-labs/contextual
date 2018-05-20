@@ -16,16 +16,24 @@ policy <- BTSLogitPolicy(alpha = 1.0, name = "LinUCB")
 }
 
 \seealso{
-Other contextual policies: \code{\link{ContextualThompsonSamplingPolicy}},
+Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
+\code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
+
+Other contextual subclasses: \code{\link{BasicBandit}},
+  \code{\link{ContextualBandit}},
+  \code{\link{ContextualThompsonSamplingPolicy}},
+  \code{\link{ContinuumBandit}},
+  \code{\link{DoublyRobustOfflineBandit}},
   \code{\link{EpsilonFirstPolicy}},
   \code{\link{EpsilonGreedyPolicy}},
   \code{\link{Exp3Policy}},
+  \code{\link{LiSamplingOfflineBandit}},
+  \code{\link{LifPolicy}},
   \code{\link{LinUCBDisjointPolicy}},
   \code{\link{LinUCBHybridPolicy}},
-  \code{\link{OraclePolicy}}, \code{\link{Policy}},
-  \code{\link{RandomPolicy}},
-  \code{\link{SimpleBTSPolicy}},
+  \code{\link{OraclePolicy}}, \code{\link{RandomPolicy}},
   \code{\link{SoftmaxPolicy}},
+  \code{\link{SyntheticBandit}},
   \code{\link{ThompsonSamplingPolicy}},
   \code{\link{UCB1Policy}}
 }

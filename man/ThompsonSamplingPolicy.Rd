@@ -86,23 +86,25 @@ Thompson, W. R. (1933). On the likelihood that one unknown probability exceeds a
 Chapelle, O., & Li, L. (2011). An empirical evaluation of thompson sampling. In Advances in neural information processing systems (pp. 2249-2257).
 
 Agrawal, S., & Goyal, N. (2013, February). Thompson sampling for contextual bandits with linear payoffs. In International Conference on Machine Learning (pp. 127-135).b
+
+Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
+\code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 }
 \seealso{
-Core contextual classes: \code{\link{Simulator}},
-\code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
-
-Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBandit}},
-\code{\link{LiSamplingOfflineBandit}}, \code{\link{SyntheticBandit}}
-
-Other contextual policies: \code{\link{BTSLogitPolicy}},
+Other contextual subclasses: \code{\link{BTSLogitPolicy}},
+  \code{\link{BasicBandit}},
+  \code{\link{ContextualBandit}},
   \code{\link{ContextualThompsonSamplingPolicy}},
+  \code{\link{ContinuumBandit}},
+  \code{\link{DoublyRobustOfflineBandit}},
   \code{\link{EpsilonFirstPolicy}},
   \code{\link{EpsilonGreedyPolicy}},
   \code{\link{Exp3Policy}},
+  \code{\link{LiSamplingOfflineBandit}},
+  \code{\link{LifPolicy}},
   \code{\link{LinUCBDisjointPolicy}},
   \code{\link{LinUCBHybridPolicy}},
-  \code{\link{OraclePolicy}}, \code{\link{Policy}},
-  \code{\link{RandomPolicy}},
-  \code{\link{SimpleBTSPolicy}},
-  \code{\link{SoftmaxPolicy}}, \code{\link{UCB1Policy}}
+  \code{\link{OraclePolicy}}, \code{\link{RandomPolicy}},
+  \code{\link{SoftmaxPolicy}},
+  \code{\link{SyntheticBandit}}, \code{\link{UCB1Policy}}
 }

@@ -20,7 +20,7 @@ Simulator <- R6::R6Class(
     save_theta = NULL,
     do_parallel = NULL,
     sims_per_agent_list = NULL,
-    continouous_counter = NULL,
+    continuous_counter = NULL,
     set_seed = NULL,
     write_progress_file = NULL,
     include_packages = NULL,
@@ -33,7 +33,7 @@ Simulator <- R6::R6Class(
                           save_theta = FALSE,
                           do_parallel = TRUE,
                           worker_max = NULL,
-                          continouous_counter = FALSE,
+                          continuous_counter = FALSE,
                           set_seed = 0,
                           write_progress_file = TRUE,
                           include_packages = NULL,
@@ -48,7 +48,7 @@ Simulator <- R6::R6Class(
       self$number_of_agents <- length(agents)
       self$worker_max <- worker_max
       self$do_parallel <- do_parallel
-      self$continouous_counter <- continouous_counter
+      self$continuous_counter <- continuous_counter
       self$set_seed <- set_seed
       self$write_progress_file <- write_progress_file
       self$include_packages <- include_packages
@@ -130,7 +130,7 @@ Simulator <- R6::R6Class(
       save_theta <- self$save_theta
       reindex_t <- self$reindex_t
       write_progress_file <- self$write_progress_file
-      continouous_counter <- self$continouous_counter
+      continuous_counter <- self$continuous_counter
       set_seed <- self$set_seed
       # calculate chunk size
       sa_iterator <- itertools::isplitRows(sims_per_agent_list, chunks = workers)
@@ -167,7 +167,7 @@ Simulator <- R6::R6Class(
           if (sim_agent$bandit$precaching ) {
             sim_agent$bandit$generate_bandit_data(n = horizon)
           }
-          if (continouous_counter) sim_agent$set_t(as.integer((simulation_index - 1L) * horizon))
+          if (continuous_counter) sim_agent$set_t(as.integer((simulation_index - 1L) * horizon))
           for (t in 1L:horizon) {
             step <- sim_agent$do_step()
             if (!is.null(step$reward)) {
@@ -215,7 +215,7 @@ Simulator <- R6::R6Class(
 #' interactions to a \code{History} object.
 #'
 #' @name Simulator
-#' @family contextual
+#' @aliases run
 #'
 #' @section Usage:
 #' \preformatted{
@@ -226,7 +226,7 @@ Simulator <- R6::R6Class(
 #'                            save_theta = FALSE,
 #'                            do_parallel = TRUE,
 #'                            worker_max = NULL,
-#'                            continouous_counter = FALSE,
+#'                            continuous_counter = FALSE,
 #'                            set_seed = 0,
 #'                            write_progress_file = TRUE,
 #'                            include_packages = NULL,
@@ -245,13 +245,13 @@ Simulator <- R6::R6Class(
 #'   }
 #'   \item{\code{simulations}}{
 #'     \code{integer}. How many times to repeat each agent's simulation over \emph{t} = \{1, \ldots, T\},
-#'     with a new seed on each repeat (itself deterministically derived from set_seed).
+#'     with a new seed on each repeat (itself deterministically derived from set\_seed).
 #'   }
 #'   \item{\code{save_context}}{
-#'     \code{logical}. Save the context vectors \code{X} on running the \code{Simulator}?
+#'     \code{logical}. Save the context vectors \code{X} to the History log during a simulation?
 #'   }
 #'   \item{\code{save_theta}}{
-#'     \code{logical}. Save the parameter list \code{theta} on running the \code{Simulator}?
+#'     \code{logical}. Save the parameter list \code{theta} to the History log during a simulation?
 #'   }
 #'   \item{\code{do_parallel}}{
 #'      \code{logical}. Run \code{Simulator} processes in parallel?
@@ -261,9 +261,9 @@ Simulator <- R6::R6Class(
 #'      is \code{TRUE}. If unspecified, the amount of workers defaults to \code{max(workers_available)-1}.
 #'
 #'   }
-#'   \item{\code{continouous_counter}}{
+#'   \item{\code{continuous_counter}}{
 #'      \code{logical}. Of use to, amongst others, offline Bandits.
-#'      If \code{continouous_counter} is set to \code{TRUE}, the current \code{Simulator}
+#'      If \code{continuous_counter} is set to \code{TRUE}, the current \code{Simulator}
 #'      iterates over all rows in a data set for each repeated simulation.
 #'      If \code{FALSE}, it splits the data into \code{simulations} parts,
 #'      and a different subset of the data for each repeat of an agent's simulation.
@@ -306,10 +306,11 @@ Simulator <- R6::R6Class(
 #'
 #' @seealso
 #'
-#' Core contextual classes: \code{\link{Simulator}},
+#' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
-#' Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBandit}},
-#' \code{\link{LiSamplingOfflineBandit}}, \code{\link{SyntheticBandit}}
+#' Bandit subclass examples: \code{\link{BasicBandit}}, \code{\link{ContextualBandit}},  \code{\link{LiSamplingOfflineBandit}}
+#'
+#' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 #'
 NULL

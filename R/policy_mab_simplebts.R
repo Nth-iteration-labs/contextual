@@ -45,10 +45,16 @@ SimpleBTSPolicy <- R6::R6Class(
 
 #' Policy: SimpleBTSPolicy
 #'
+#' 
 #' Each time step t, \code{SimpleBTSPolicy} runs ...
 #'
 #' @name SimpleBTSPolicy
-#' @family contextual policies
+#'
+#' @seealso
+#'
+#' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
+#' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
+#'
 #'
 #' @section Usage:
 #' \preformatted{

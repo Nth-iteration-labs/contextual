@@ -2,6 +2,10 @@
 % Please edit documentation in R/policy.R
 \name{Policy}
 \alias{Policy}
+\alias{get_action}
+\alias{set_reward}
+\alias{set_parameters}
+\alias{initialize_theta}
 \title{Policy}
 \description{
 The R6 class \code{Policy} is the parent class of all \code{Policy} implementations in
@@ -67,22 +71,10 @@ at the current time \code{t}.
 }
 
 \seealso{
-Core contextual classes: \code{\link{Simulator}},
+Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 
-Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBandit}},
-\code{\link{LiSamplingOfflineBandit}}, \code{\link{SyntheticBandit}}
+Bandit subclass examples: \code{\link{BasicBandit}}, \code{\link{ContextualBandit}},  \code{\link{LiSamplingOfflineBandit}}
 
-Other contextual policies: \code{\link{BTSLogitPolicy}},
-  \code{\link{ContextualThompsonSamplingPolicy}},
-  \code{\link{EpsilonFirstPolicy}},
-  \code{\link{EpsilonGreedyPolicy}},
-  \code{\link{Exp3Policy}},
-  \code{\link{LinUCBDisjointPolicy}},
-  \code{\link{LinUCBHybridPolicy}},
-  \code{\link{OraclePolicy}}, \code{\link{RandomPolicy}},
-  \code{\link{SimpleBTSPolicy}},
-  \code{\link{SoftmaxPolicy}},
-  \code{\link{ThompsonSamplingPolicy}},
-  \code{\link{UCB1Policy}}
+Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 }

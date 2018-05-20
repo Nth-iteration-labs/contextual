@@ -2,7 +2,7 @@
 setwd("~/GitHub/contextual/demo")
 source("dev.R")
 
-PoissonRewardBandit <- R6::R6Class(
+VeryMinimalBandit <- R6::R6Class(
   "PoissonRewardBandit",
   # Class extends BasicBandit
   inherit = BasicBandit,

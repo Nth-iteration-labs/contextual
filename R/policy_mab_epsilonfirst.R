@@ -44,8 +44,12 @@ EpsilonFirstPolicy              <- R6::R6Class(
 #' estimated payoff. From thereon \code{EpsilonFirstPolicy} will only choose that particular
 #' arm, never looking back (keep on exploiting that arm for ever).
 #'
+#' @section Algorithm:
+#'
+#' ![](algo_epsilonfirst.jpg "epsilon first algorithm")
+#'
 #' @name EpsilonFirstPolicy
-#' @family contextual policies
+#' @family contextual subclasses
 #'
 #' @section Usage:
 #' \preformatted{
@@ -103,18 +107,15 @@ EpsilonFirstPolicy              <- R6::R6Class(
 #'
 #' @seealso
 #'
-#' Core contextual classes: \code{\link{Simulator}},
+#' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
-#'
-#' Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBandit}},
-#' \code{\link{LiSamplingOfflineBandit}}, \code{\link{SyntheticBandit}}
 #'
 #'
 #' @examples
 #'
 #' horizon            <- 100L
 #' simulations        <- 100L
-#' weights        <- c(0.9, 0.1, 0.1)
+#' weights            <- c(0.9, 0.1, 0.1)
 #'
 #' policy             <- EpsilonFirstPolicy$new(first = 50, name = "EpsilonFirst")
 #' bandit             <- SyntheticBandit$new(weights = weights, precaching = FALSE)
@@ -123,7 +124,6 @@ EpsilonFirstPolicy              <- R6::R6Class(
 #' history            <- Simulator$new(agent, horizon, simulations, do_parallel = FALSE)$run()
 #'
 #' plot(history, type = "cumulative")
-#'
 #' plot(history, type = "arms")
 #'
 #'

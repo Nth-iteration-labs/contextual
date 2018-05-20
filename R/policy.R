@@ -53,7 +53,7 @@ Policy <- R6::R6Class(
 #' update its set of parameters \code{theta}.
 #'
 #' @name Policy
-#' @family contextual policies
+#' @aliases get_action set_reward set_parameters initialize_theta
 #'
 #' @section Usage:
 #' \preformatted{
@@ -104,10 +104,11 @@ Policy <- R6::R6Class(
 #'
 #' @seealso
 #'
-#' Core contextual classes: \code{\link{Simulator}},
+#' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
-#' Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBandit}},
-#' \code{\link{LiSamplingOfflineBandit}}, \code{\link{SyntheticBandit}}
+#' Bandit subclass examples: \code{\link{BasicBandit}}, \code{\link{ContextualBandit}},  \code{\link{LiSamplingOfflineBandit}}
+#'
+#' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 #'
 NULL

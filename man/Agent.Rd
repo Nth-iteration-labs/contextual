@@ -2,6 +2,9 @@
 % Please edit documentation in R/agent.R
 \name{Agent}
 \alias{Agent}
+\alias{do_step}
+\alias{get_t}
+\alias{set_t}
 \title{Agent}
 \description{
 The R6 class \code{Agent} is responsible for the state, flow of information
@@ -52,14 +55,10 @@ Completes one time step \code{t} by consecutively calling
 }
 
 \seealso{
-Core contextual classes: \code{\link{Simulator}},
+Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 
-Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBandit}},
-\code{\link{LiSamplingOfflineBandit}}, \code{\link{SyntheticBandit}}
+Bandit subclass examples: \code{\link{BasicBandit}}, \code{\link{ContextualBandit}},  \code{\link{LiSamplingOfflineBandit}}
 
-Other contextual: \code{\link{History}},
-  \code{\link{Plot}}, \code{\link{Simulator}},
-  \code{\link{plot.history}}, \code{\link{print.history}},
-  \code{\link{summary.history}}
+Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 }

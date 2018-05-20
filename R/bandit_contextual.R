@@ -58,6 +58,9 @@ ContextualBandit <- R6::R6Class(
 #' Bandit: ContextualBandit
 #'
 #' ContextualBandit intro
+#' 
+#' @name ContextualBandit
+#' @family contextual subclasses
 #'
 #' @section Usage:
 #' \preformatted{b <- ContextualBandit$new()
@@ -77,8 +80,11 @@ ContextualBandit <- R6::R6Class(
 #' R does \emph{not} wait for the process to finish, but returns
 #' immediately.
 #'
-#' @importFrom R6 R6Class
-#' @name ContextualBandit
+#' @seealso
+#'
+#' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
+#' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
+#'
 #' @examples
 #'\dontrun{}
 #'

@@ -42,6 +42,9 @@ LifPolicy <- R6::R6Class(
 #' Policy: LiF
 #'
 #' LifPolicy intro
+
+#' @name LifPolicy
+#' @family contextual subclasses
 #'
 #' @section Usage:
 #' \preformatted{b <- LifPolicy$new()
@@ -61,8 +64,11 @@ LifPolicy <- R6::R6Class(
 #' R does \emph{not} wait for the process to finish, but returns
 #' immediately.
 #'
-#' @importFrom R6 R6Class
-#' @name LifPolicy
+#' @seealso
+#'
+#' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
+#' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
+#'
 #' @examples
 #'\dontrun{}
 #'

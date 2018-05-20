@@ -4,7 +4,7 @@ source("dev.R")
 policy             <- EpsilonGreedyPolicy$new(epsilon = 0.1)
 bandit             <- SyntheticBandit$new(weights = c(0.9, 0.1, 0.1))
 agent              <- Agent$new(policy,bandit)
-history            <- Simulator$new(agents = agent, horizon = 100, simulations = 100, do_parallel = FALSE)$run()
+history            <- Simulator$new(agents = agent, horizon = 100, simulations = 100, do_parallel = FALSE, continuous_counter = TRUE)$run()
 
 summary(history)
 

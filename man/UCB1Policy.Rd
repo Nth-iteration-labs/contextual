@@ -90,22 +90,24 @@ Sutton, R. S. (1996). Generalization in reinforcement learning: Successful examp
 Strehl, A., & Littman, M. (2004). Exploration via modelbased interval estimation. In International Conference on Machine Learning, number Icml.
 }
 \seealso{
-Core contextual classes: \code{\link{Simulator}},
+Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 
-Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBandit}},
-\code{\link{LiSamplingOfflineBandit}}, \code{\link{SyntheticBandit}}
-
-Other contextual policies: \code{\link{BTSLogitPolicy}},
+Other contextual subclasses: \code{\link{BTSLogitPolicy}},
+  \code{\link{BasicBandit}},
+  \code{\link{ContextualBandit}},
   \code{\link{ContextualThompsonSamplingPolicy}},
+  \code{\link{ContinuumBandit}},
+  \code{\link{DoublyRobustOfflineBandit}},
   \code{\link{EpsilonFirstPolicy}},
   \code{\link{EpsilonGreedyPolicy}},
   \code{\link{Exp3Policy}},
+  \code{\link{LiSamplingOfflineBandit}},
+  \code{\link{LifPolicy}},
   \code{\link{LinUCBDisjointPolicy}},
   \code{\link{LinUCBHybridPolicy}},
-  \code{\link{OraclePolicy}}, \code{\link{Policy}},
-  \code{\link{RandomPolicy}},
-  \code{\link{SimpleBTSPolicy}},
+  \code{\link{OraclePolicy}}, \code{\link{RandomPolicy}},
   \code{\link{SoftmaxPolicy}},
+  \code{\link{SyntheticBandit}},
   \code{\link{ThompsonSamplingPolicy}}
 }

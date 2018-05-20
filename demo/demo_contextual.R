@@ -10,7 +10,7 @@ agents             <- list( Agent$new(EpsilonGreedyPolicy$new(0.1, "\U190-greedy
                             Agent$new(ContextualThompsonSamplingPolicy$new(), bandit),
                             Agent$new(LinUCBDisjointPolicy$new(0.7, "LinUCB"), bandit) )
 
-simulation         <- Simulator$new(agents, horizon, simulations, do_parallel = TRUE)
+simulation         <- Simulator$new(agents, horizon, simulations, do_parallel = FALSE)
 
 history            <- simulation$run()
 

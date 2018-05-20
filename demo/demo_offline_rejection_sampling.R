@@ -50,7 +50,7 @@ simulation <-
     agents,
     horizon = horizon,
     simulations = simulations,
-    continouous_counter = TRUE,
+    continuous_counter = TRUE,
     do_parallel = FALSE
   )
 

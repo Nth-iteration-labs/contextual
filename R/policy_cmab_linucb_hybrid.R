@@ -110,7 +110,7 @@ LinUCBHybridPolicy <- R6::R6Class(
 #' It then proceeds to choose the arm with the highest upper confidence bound.
 #'
 #' @name LinUCBHybridPolicy
-#' @family contextual policies
+#' @family contextual subclasses
 #'
 #' @section Usage:
 #' \preformatted{
@@ -174,11 +174,9 @@ LinUCBHybridPolicy <- R6::R6Class(
 #'
 #' @seealso
 #'
-#' Core contextual classes: \code{\link{Simulator}},
+#' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
-#' Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBandit}},
-#' \code{\link{LiSamplingOfflineBandit}}, \code{\link{SyntheticBandit}}
 #'
 #'
 #'

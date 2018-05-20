@@ -32,13 +32,13 @@ b <- before$get_data_table()
 log_S <- History$new()
 log_S$load_data("test.RData")
 
-bandit <- DoublyRobustOfflineBandit$new(data_file = log_S, k = 3, d = 2)
-#bandit <- LiSamplingOfflineBandit$new(data_file = log_S, k = 3, d = 2)
+#bandit <- DoublyRobustOfflineBandit$new(data_stream = log_S, k = 3, d = 2)
+bandit <- LiSamplingOfflineBandit$new(data_stream = log_S, k = 3, d = 1)
 
 agents <-
   list(
-    Agent$new(EpsilonGreedyPolicy$new(0.1, "\U190-greedy"), bandit),
-    Agent$new(LinUCBDisjointPolicy$new(1.0, "LinUCB"), bandit)
+    Agent$new(EpsilonGreedyPolicy$new(0.1, "\U190-greedy"), bandit)
+    #Agent$new(LinUCBDisjointPolicy$new(1.0, "LinUCB"), bandit)
   )
 
 simulation <-
@@ -46,7 +46,8 @@ simulation <-
     agents,
     horizon = horizon,
     simulations = simulations,
-    continouous_counter = TRUE,
+    continuous_counter = TRUE,
+    reindex_t = TRUE,
     do_parallel = FALSE,
     save_context = TRUE
   )

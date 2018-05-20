@@ -2,7 +2,7 @@
 % Please edit documentation in R/bandit_continuum.R
 \name{ContinuumBandit}
 \alias{ContinuumBandit}
-\title{Bandit: Continuum}
+\title{Bandit: ContinuumBandit}
 \description{
 ContinuumBandit intro
 }
@@ -33,4 +33,26 @@ immediately.
 \examples{
 \dontrun{}
 
+}
+\seealso{
+Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
+\code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
+
+Other contextual subclasses: \code{\link{BTSLogitPolicy}},
+  \code{\link{BasicBandit}},
+  \code{\link{ContextualBandit}},
+  \code{\link{ContextualThompsonSamplingPolicy}},
+  \code{\link{DoublyRobustOfflineBandit}},
+  \code{\link{EpsilonFirstPolicy}},
+  \code{\link{EpsilonGreedyPolicy}},
+  \code{\link{Exp3Policy}},
+  \code{\link{LiSamplingOfflineBandit}},
+  \code{\link{LifPolicy}},
+  \code{\link{LinUCBDisjointPolicy}},
+  \code{\link{LinUCBHybridPolicy}},
+  \code{\link{OraclePolicy}}, \code{\link{RandomPolicy}},
+  \code{\link{SoftmaxPolicy}},
+  \code{\link{SyntheticBandit}},
+  \code{\link{ThompsonSamplingPolicy}},
+  \code{\link{UCB1Policy}}
 }

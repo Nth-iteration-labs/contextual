@@ -191,7 +191,7 @@ History <- R6::R6Class(
 #' and can save or load simulation log data files.
 #'
 #' @name History
-#' @family contextual
+#' @aliases print_data reindex_t generate_bandit_data delete_empty_rows clear_data_table set_data_table get_data_table set_data_frame get_data_frame leave_nth load_data cumulative save
 #'
 #' @section Usage:
 #' \preformatted{
@@ -229,7 +229,7 @@ History <- R6::R6Class(
 #'                    simulation_index,
 #'                    context_value = NA,
 #'                    theta_value = NA)}}{
-#'      Saves one row of simulation data.
+#'      Saves one row of simulation data. Is generally not called directly, but from a {Simulator} instance.
 #'   }
 #'   \item{\code{save_data(filename = NA)}}{
 #'      Writes the \code{History} log file in its default data.table format,
@@ -254,7 +254,7 @@ History <- R6::R6Class(
 #'      Clears the \code{History} log.
 #'   }
 #'   \item{\code{delete_empty_rows()}}{
-#'      Deletes all empty rows in the \code{History} log and reindexes the \code{t} column grouped
+#'      Deletes all empty rows in the \code{History} log and re-indexes the \code{t} column grouped
 #'      by agent and simulation.
 #'   }
 #'   \item{\code{reindex_t(truncate = TRUE)}}{
@@ -276,10 +276,11 @@ History <- R6::R6Class(
 #'
 #' @seealso
 #'
-#' Core contextual classes: \code{\link{Simulator}},
+#' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
-#' Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBandit}},
-#' \code{\link{LiSamplingOfflineBandit}}, \code{\link{SyntheticBandit}}
+#' Bandit subclass examples: \code{\link{BasicBandit}}, \code{\link{ContextualBandit}},  \code{\link{LiSamplingOfflineBandit}}
+#'
+#' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 #'
 NULL

@@ -71,7 +71,8 @@ DoublyRobustOfflineBandit <- R6::R6Class(
 #' collected by some other policy.
 #'
 #' @name DoublyRobustOfflineBandit
-#' @family contextual bandits
+#' @family contextual subclasses
+#'
 #'
 #' @section Usage:
 #' \preformatted{
@@ -86,8 +87,8 @@ DoublyRobustOfflineBandit <- R6::R6Class(
 #'
 #' @seealso
 #'
-#' Core contextual classes: \code{\link{Simulator}},
-#' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}, \code{\link{Policy}}
+#' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
+#' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
 #' @examples
 #'

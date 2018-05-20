@@ -2,6 +2,13 @@
 % Please edit documentation in R/plot.R
 \name{Plot}
 \alias{Plot}
+\alias{cumulative}
+\alias{average}
+\alias{optimal}
+\alias{arms}
+\alias{do_plot}
+\alias{gg_color_hue}
+\alias{check_history_data}
 \title{Plot}
 \description{
 The R6 class \code{Plot} generates plots based on \code{History} data.
@@ -37,14 +44,10 @@ Returns a plot of the ratio with which each arm was chosen over time.
 }
 
 \seealso{
-Core contextual classes: \code{\link{Simulator}},
+Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 
-Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBandit}},
-\code{\link{LiSamplingOfflineBandit}}, \code{\link{SyntheticBandit}}
+Bandit subclass examples: \code{\link{BasicBandit}}, \code{\link{ContextualBandit}},  \code{\link{LiSamplingOfflineBandit}}
 
-Other contextual: \code{\link{Agent}},
-  \code{\link{History}}, \code{\link{Simulator}},
-  \code{\link{plot.history}}, \code{\link{print.history}},
-  \code{\link{summary.history}}
+Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 }

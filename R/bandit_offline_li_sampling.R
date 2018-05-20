@@ -23,11 +23,12 @@ LiSamplingOfflineBandit <- R6::R6Class(
       contextlist
     },
     get_reward = function(index, context, action) {
-      reward_at_index <- as.double(private$S$reward[[index]])
+      reward_at_index  <- as.double(private$S$reward[[index]])
+      optimal_at_index <- as.double(private$S$optimal_reward_value[[index]])
       if (private$S$choice[[index]] == action$choice) {
         list(
           reward = reward_at_index,
-          optimal_reward_value = as.double(private$S$optimal_reward_value[[index]])
+          optimal_reward_value = optimal_at_index
         )
       } else {
         NULL
@@ -48,14 +49,12 @@ LiSamplingOfflineBandit <- R6::R6Class(
 #' techniques like doubly robust estimation (Dudik et al., 2011).
 #'
 #' @name LiSamplingOfflineBandit
-#' @family contextual bandits
+#' @family contextual subclasses
 #'
 #' @section Usage:
 #' \preformatted{
-#' bandit <- LiSamplingOfflineBandit(data_stream, k, d)
+#'    bandit <- LiSamplingOfflineBandit(data_stream, k, d)
 #' }
-#'
-#'
 #'
 #' @references
 #'
@@ -63,8 +62,8 @@ LiSamplingOfflineBandit <- R6::R6Class(
 #'
 #' @seealso
 #'
-#' Core contextual classes: \code{\link{Simulator}},
-#' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}, \code{\link{Policy}}
+#' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
+#' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
 #' @examples
 #'

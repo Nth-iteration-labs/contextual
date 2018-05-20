@@ -26,8 +26,6 @@ Core contextual classes: \code{\link{Simulator}},
 Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBandit}},
 \code{\link{LiSamplingOfflineBandit}}, \code{\link{SyntheticBandit}}
 
-Other contextual: \code{\link{Agent}},
-  \code{\link{History}}, \code{\link{Plot}},
-  \code{\link{Simulator}}, \code{\link{plot.history}},
+Other contextual: \code{\link{plot.history}},
   \code{\link{print.history}}
 }

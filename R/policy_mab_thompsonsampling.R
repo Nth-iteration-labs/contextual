@@ -46,7 +46,7 @@ ThompsonSamplingPolicy <- R6::R6Class(
 #' This procedure is repeated for the next arm pull.
 #'
 #' @name ThompsonSamplingPolicy
-#' @family contextual policies
+#' @family contextual subclasses
 #'
 #' @section Usage:
 #' \preformatted{
@@ -104,14 +104,9 @@ ThompsonSamplingPolicy <- R6::R6Class(
 #'
 #' Agrawal, S., & Goyal, N. (2013, February). Thompson sampling for contextual bandits with linear payoffs. In International Conference on Machine Learning (pp. 127-135).b
 #'
-#' @seealso
-#'
-#' Core contextual classes: \code{\link{Simulator}},
+#' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
-#'
-#' Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBandit}},
-#' \code{\link{LiSamplingOfflineBandit}}, \code{\link{SyntheticBandit}}
-#'
+
 #' @examples
 #'
 #' horizon            <- 100L

@@ -2,6 +2,7 @@
 % Please edit documentation in R/simulator.R
 \name{Simulator}
 \alias{Simulator}
+\alias{run}
 \title{Simulator}
 \description{
 The R6 class \code{Simulator} is the entry point of any \pkg{contextual}
@@ -19,7 +20,7 @@ simulator <- Simulator$new(agents,
                            save_theta = FALSE,
                            do_parallel = TRUE,
                            worker_max = NULL,
-                           continouous_counter = FALSE,
+                           continuous_counter = FALSE,
                            set_seed = 0,
                            write_progress_file = TRUE,
                            include_packages = NULL,
@@ -40,13 +41,13 @@ by the instantiated \code{Simulator}.
 }
 \item{\code{simulations}}{
 \code{integer}. How many times to repeat each agent's simulation over \emph{t} = {1, \ldots, T},
-with a new seed on each repeat (itself deterministically derived from set_seed).
+with a new seed on each repeat (itself deterministically derived from set\_seed).
 }
 \item{\code{save_context}}{
-\code{logical}. Save the context vectors \code{X} on running the \code{Simulator}?
+\code{logical}. Save the context vectors \code{X} to the History log during a simulation?
 }
 \item{\code{save_theta}}{
-\code{logical}. Save the parameter list \code{theta} on running the \code{Simulator}?
+\code{logical}. Save the parameter list \code{theta} to the History log during a simulation?
 }
 \item{\code{do_parallel}}{
 \code{logical}. Run \code{Simulator} processes in parallel?
@@ -56,9 +57,9 @@ with a new seed on each repeat (itself deterministically derived from set_seed).
 is \code{TRUE}. If unspecified, the amount of workers defaults to \code{max(workers_available)-1}.
 
 }
-\item{\code{continouous_counter}}{
+\item{\code{continuous_counter}}{
 \code{logical}. Of use to, amongst others, offline Bandits.
-If \code{continouous_counter} is set to \code{TRUE}, the current \code{Simulator}
+If \code{continuous_counter} is set to \code{TRUE}, the current \code{Simulator}
 iterates over all rows in a data set for each repeated simulation.
 If \code{FALSE}, it splits the data into \code{simulations} parts,
 and a different subset of the data for each repeat of an agent's simulation.
@@ -102,14 +103,10 @@ Runs a \code{Simulator} instance.
 }
 
 \seealso{
-Core contextual classes: \code{\link{Simulator}},
+Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 
-Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBandit}},
-\code{\link{LiSamplingOfflineBandit}}, \code{\link{SyntheticBandit}}
+Bandit subclass examples: \code{\link{BasicBandit}}, \code{\link{ContextualBandit}},  \code{\link{LiSamplingOfflineBandit}}
 
-Other contextual: \code{\link{Agent}},
-  \code{\link{History}}, \code{\link{Plot}},
-  \code{\link{plot.history}}, \code{\link{print.history}},
-  \code{\link{summary.history}}
+Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 }

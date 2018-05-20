@@ -27,6 +27,8 @@ if (grepl('w|W', .Platform$OS.type)) {
 
 # TODO LIST --------------------------------------------------------------------
 
+# remove some files from gitignore, clean out files from dirs ... and add gitignore.
+
 # nth-rows, thinning out, plot, history....
 
 ##### writing: work out regret..

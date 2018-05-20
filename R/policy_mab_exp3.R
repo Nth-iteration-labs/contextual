@@ -54,7 +54,7 @@ Exp3Policy <- R6::R6Class(
 #' a probability mass exponential in the estimated cumulative reward for that action.
 #'
 #' @name Exp3Policy
-#' @family contextual policies
+#' @family contextual subclasses
 #'
 #' @section Usage:
 #' \preformatted{
@@ -104,14 +104,13 @@ Exp3Policy <- R6::R6Class(
 #' @references
 #'
 #' Auer, P., Cesa-Bianchi, N., Freund, Y., & Schapire, R. E. (2002). The nonstochastic multiarmed bandit problem. SIAM journal on computing, 32(1), 48-77. Strehl, A., & Littman, M. (2004). Exploration via modelbased interval estimation. In International Conference on Machine Learning, number Icml.
+#' Strehl, A., & Littman, M. (2004). Exploration via modelbased interval estimation. In International Conference on Machine Learning, number Icml.
 #'
 #' @seealso
 #'
-#' Core contextual classes: \code{\link{Simulator}},
+#' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
-#' Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBandit}},
-#' \code{\link{LiSamplingOfflineBandit}}, \code{\link{SyntheticBandit}}
 #'
 #'
 #' @examples

@@ -60,7 +60,7 @@ ContextualThompsonSamplingPolicy <- R6::R6Class(
 #' This procedure is repeated for the next arm pull.
 #'
 #' @name ContextualThompsonSamplingPolicy
-#' @family contextual policies
+#' @family contextual subclasses
 #'
 #' @section Usage:
 #' \preformatted{
@@ -116,11 +116,9 @@ ContextualThompsonSamplingPolicy <- R6::R6Class(
 #'
 #' @seealso
 #'
-#' Core contextual classes: \code{\link{Simulator}},
+#' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
-#' Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBandit}},
-#' \code{\link{LiSamplingOfflineBandit}}, \code{\link{SyntheticBandit}}
 #'
 #'
 NULL

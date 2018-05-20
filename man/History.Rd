@@ -2,6 +2,19 @@
 % Please edit documentation in R/history.R
 \name{History}
 \alias{History}
+\alias{print_data}
+\alias{reindex_t}
+\alias{generate_bandit_data}
+\alias{delete_empty_rows}
+\alias{clear_data_table}
+\alias{set_data_table}
+\alias{get_data_table}
+\alias{set_data_frame}
+\alias{get_data_frame}
+\alias{leave_nth}
+\alias{load_data}
+\alias{cumulative}
+\alias{save}
 \title{History}
 \description{
 The R6 class \code{History} keeps a log of all \code{Simulator} interactions
@@ -48,7 +61,7 @@ Resets a \code{History} instance to its original initialisation values.
                    simulation_index,
                    context_value = NA,
                    theta_value = NA)}}{
-Saves one row of simulation data.
+Saves one row of simulation data. Is generally not called directly, but from a {Simulator} instance.
 }
 \item{\code{save_data(filename = NA)}}{
 Writes the \code{History} log file in its default data.table format,
@@ -73,7 +86,7 @@ Sets the \code{History} log with the data in \code{data.table} \code{dt}.
 Clears the \code{History} log.
 }
 \item{\code{delete_empty_rows()}}{
-Deletes all empty rows in the \code{History} log and reindexes the \code{t} column grouped
+Deletes all empty rows in the \code{History} log and re-indexes the \code{t} column grouped
 by agent and simulation.
 }
 \item{\code{reindex_t(truncate = TRUE)}}{
@@ -95,14 +108,10 @@ are returned.
 }
 
 \seealso{
-Core contextual classes: \code{\link{Simulator}},
+Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 
-Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBandit}},
-\code{\link{LiSamplingOfflineBandit}}, \code{\link{SyntheticBandit}}
+Bandit subclass examples: \code{\link{BasicBandit}}, \code{\link{ContextualBandit}},  \code{\link{LiSamplingOfflineBandit}}
 
-Other contextual: \code{\link{Agent}}, \code{\link{Plot}},
-  \code{\link{Simulator}}, \code{\link{plot.history}},
-  \code{\link{print.history}},
-  \code{\link{summary.history}}
+Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 }

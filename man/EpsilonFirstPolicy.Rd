@@ -10,6 +10,12 @@ At that point, the \code{EpsilonFirstPolicy} algorithm checks which arm has the 
 estimated payoff. From thereon \code{EpsilonFirstPolicy} will only choose that particular
 arm, never looking back (keep on exploiting that arm for ever).
 }
+\section{Algorithm}{
+
+
+\figure{algo_epsilonfirst.jpg}{epsilon first algorithm}
+}
+
 \section{Usage}{
 
 \preformatted{
@@ -66,7 +72,7 @@ based on the reward received, and, potentially, the current context.
 
 horizon            <- 100L
 simulations        <- 100L
-weights        <- c(0.9, 0.1, 0.1)
+weights            <- c(0.9, 0.1, 0.1)
 
 policy             <- EpsilonFirstPolicy$new(first = 50, name = "EpsilonFirst")
 bandit             <- SyntheticBandit$new(weights = weights, precaching = FALSE)
@@ -75,7 +81,6 @@ agent              <- Agent$new(policy, bandit)
 history            <- Simulator$new(agent, horizon, simulations, do_parallel = FALSE)$run()
 
 plot(history, type = "cumulative")
-
 plot(history, type = "arms")
 
 
@@ -88,22 +93,24 @@ Sutton, R. S. (1996). Generalization in reinforcement learning: Successful examp
 Strehl, A., & Littman, M. (2004). Exploration via modelbased interval estimation. In International Conference on Machine Learning, number Icml.
 }
 \seealso{
-Core contextual classes: \code{\link{Simulator}},
+Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 
-Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBandit}},
-\code{\link{LiSamplingOfflineBandit}}, \code{\link{SyntheticBandit}}
-
-Other contextual policies: \code{\link{BTSLogitPolicy}},
+Other contextual subclasses: \code{\link{BTSLogitPolicy}},
+  \code{\link{BasicBandit}},
+  \code{\link{ContextualBandit}},
   \code{\link{ContextualThompsonSamplingPolicy}},
+  \code{\link{ContinuumBandit}},
+  \code{\link{DoublyRobustOfflineBandit}},
   \code{\link{EpsilonGreedyPolicy}},
   \code{\link{Exp3Policy}},
+  \code{\link{LiSamplingOfflineBandit}},
+  \code{\link{LifPolicy}},
   \code{\link{LinUCBDisjointPolicy}},
   \code{\link{LinUCBHybridPolicy}},
-  \code{\link{OraclePolicy}}, \code{\link{Policy}},
-  \code{\link{RandomPolicy}},
-  \code{\link{SimpleBTSPolicy}},
+  \code{\link{OraclePolicy}}, \code{\link{RandomPolicy}},
   \code{\link{SoftmaxPolicy}},
+  \code{\link{SyntheticBandit}},
   \code{\link{ThompsonSamplingPolicy}},
   \code{\link{UCB1Policy}}
 }

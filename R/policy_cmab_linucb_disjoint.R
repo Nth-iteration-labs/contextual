@@ -30,7 +30,7 @@ LinUCBDisjointPolicy <- R6::R6Class(
         mean       <-  X %*% theta_hat
         sd         <-  sqrt(tcrossprod(X %*% A_inv, X))
 
-        expected_rewards[arm] <- mean + alpha * sd
+        expected_rewards[arm] <- mean + self$alpha * sd
       }
       action$choice  <- max_in(expected_rewards)
       action
@@ -62,7 +62,7 @@ LinUCBDisjointPolicy <- R6::R6Class(
 #' It then proceeds to choose the arm with the highest upper confidence bound.
 #'
 #' @name LinUCBDisjointPolicy
-#' @family contextual policies
+#' @family contextual subclasses
 #'
 #' @section Usage:
 #' \preformatted{
@@ -126,11 +126,8 @@ LinUCBDisjointPolicy <- R6::R6Class(
 #'
 #' @seealso
 #'
-#' Core contextual classes: \code{\link{Simulator}},
+#' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
-#'
-#' Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBandit}},
-#' \code{\link{LiSamplingOfflineBandit}}, \code{\link{SyntheticBandit}}
 #'
 #'
 #'

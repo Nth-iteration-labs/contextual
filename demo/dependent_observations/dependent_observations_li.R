@@ -43,7 +43,7 @@ agents      <- list( Agent$new(UnpooledEgreedyPolicy$new(epsilon = 0.1, n_subjec
 history     <- Simulator$new(agents = agents,
                              horizon = horizon,
                              simulations = simulations,
-                             #continouous_counter = TRUE,
+                             #continuous_counter = TRUE,
                              reindex_t = TRUE,
                              do_parallel = TRUE)$run()
 

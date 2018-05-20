@@ -41,7 +41,7 @@ EpsilonGreedyPolicy          <- R6::R6Class(
 #' reward.
 #'
 #' @name EpsilonGreedyPolicy
-#' @family contextual policies
+#' @family contextual subclasses
 #'
 #' @section Usage:
 #' \preformatted{
@@ -104,18 +104,16 @@ EpsilonGreedyPolicy          <- R6::R6Class(
 #'
 #' @seealso
 #'
-#' Core contextual classes: \code{\link{Simulator}},
+#' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
-#' Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBandit}},
-#' \code{\link{LiSamplingOfflineBandit}}, \code{\link{SyntheticBandit}}
 #'
 #'
 #' @examples
 #'
 #' horizon            <- 100L
 #' simulations        <- 100L
-#' weights        <- c(0.9, 0.1, 0.1)
+#' weights            <- c(0.9, 0.1, 0.1)
 #'
 #' policy             <- EpsilonGreedyPolicy$new(epsilon = 0.1, name = "EpsilonGreedy")
 #' bandit             <- SyntheticBandit$new(weights = weights, precaching = FALSE)

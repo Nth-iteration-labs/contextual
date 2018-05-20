@@ -51,7 +51,12 @@ BTSLogitPolicy <- R6::R6Class(
 #' It then proceeds to choose the arm with the highest upper confidence bound.
 #'
 #' @name BTSLogitPolicy
-#' @family contextual policies
+#' @family contextual subclasses
+#' 
+#' @seealso
+#'
+#' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
+#' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
 #' @section Usage:
 #' \preformatted{

@@ -40,7 +40,7 @@ Bandit <- R6::R6Class(
 #' \code{Bandit} subclasses may (pre)generate these values synthetically, based on offline data, etc.
 #'
 #' @name Bandit
-#' @family contextual bandits
+#' @aliases pre_calculate get_context generate_bandit_data
 #'
 #' @importFrom R6 R6Class
 #'
@@ -83,10 +83,12 @@ Bandit <- R6::R6Class(
 #'
 #' @seealso
 #'
-#' Core contextual classes: \code{\link{Simulator}},
+#' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
-#' Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBandit}},
-#' \code{\link{LiSamplingOfflineBandit}}, \code{\link{SyntheticBandit}}
+#' Bandit subclass examples: \code{\link{BasicBandit}}, \code{\link{ContextualBandit}},  \code{\link{LiSamplingOfflineBandit}}
+#'
+#' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
+#'
 #'
 NULL

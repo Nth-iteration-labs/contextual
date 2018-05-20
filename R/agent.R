@@ -23,19 +23,23 @@ Agent <- R6::R6Class(
       self$policy$initialize_theta()
       private$t <- 0
     },
-    set_t = function(t) {
-      private$state$t <- t
-    },
-    get_t = function(t) {
-      t
-    },
     do_step = function() {
       private$t <- private$t + 1
-      context = bandit$get_context(private$t)
-      action  = policy$get_action(private$t, context)
-      reward  = bandit$get_reward(private$t, context, action)
-      theta = policy$set_reward(private$t, context, action, reward)
-      list(context = context, action = action,reward = reward,theta = theta)
+      context   <- bandit$get_context(private$t)
+      action    <- policy$get_action (private$t, context)
+      reward    <- bandit$get_reward (private$t, context, action)
+      if (!is.null(reward)) {
+        theta   <- policy$set_reward (private$t, context, action, reward)
+      } else {
+        theta   <- NULL
+      }
+      list(context = context, action = action, reward = reward, theta = theta)
+    },
+    set_t = function(t) {
+      private$t <- t
+    },
+    get_t = function(t) {
+      private$t
     }
   )
 )
@@ -49,7 +53,7 @@ Agent <- R6::R6Class(
 #' and \code{Bandit} pair.
 #'
 #' @name Agent
-#' @family contextual
+#' @aliases do_step get_t set_t
 #'
 #' @section Usage:
 #' \preformatted{
@@ -88,10 +92,11 @@ Agent <- R6::R6Class(
 #'
 #' @seealso
 #'
-#' Core contextual classes: \code{\link{Simulator}},
+#' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
-#' Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBandit}},
-#' \code{\link{LiSamplingOfflineBandit}}, \code{\link{SyntheticBandit}}
+#' Bandit subclass examples: \code{\link{BasicBandit}}, \code{\link{ContextualBandit}},  \code{\link{LiSamplingOfflineBandit}}
+#'
+#' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 #'
 NULL

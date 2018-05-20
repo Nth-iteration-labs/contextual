@@ -26,7 +26,7 @@ ContinuumBandit <- R6::R6Class(
   )
 )
 
-#' Bandit: Continuum
+#' Bandit: ContinuumBandit
 #'
 #' ContinuumBandit intro
 #'
@@ -38,6 +38,10 @@ ContinuumBandit <- R6::R6Class(
 #' print(b)
 #' }
 #'
+#' @name ContinuumBandit
+#' @family contextual subclasses
+#'
+#'
 #' @section Arguments:
 #' \describe{
 #'   \item{b}{A \code{ContinuumBandit} object.}
@@ -48,8 +52,11 @@ ContinuumBandit <- R6::R6Class(
 #' R does \emph{not} wait for the process to finish, but returns
 #' immediately.
 #'
-#' @importFrom R6 R6Class
-#' @name ContinuumBandit
+#' @seealso
+#'
+#' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
+#' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
+#'
 #' @examples
 #'\dontrun{}
 #'
