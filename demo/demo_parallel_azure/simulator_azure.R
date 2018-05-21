@@ -1,3 +1,10 @@
+# AzureSimulator is a copy of contextual's Simulator class
+# with some minor changes that enable it
+# to replace doParallel with doAzureParallel
+# As the amount of workers now needs to be set by hand,
+# the AzureSimulator class contains an additional chunk
+# parameter to split the data in chunk parts
+
 library(doAzureParallel)
 library(contextual)
 
@@ -27,6 +34,7 @@ AzureSimulator <- R6::R6Class(
     initialize = function(agents,
                           horizon = 100L,
                           simulations = 100L,
+                          chunks = 8,
                           save_context = FALSE,
                           save_theta = FALSE,
                           do_parallel = TRUE,
@@ -89,15 +97,11 @@ AzureSimulator <- R6::R6Class(
     },
     run = function() {
 
-
-
-
       # run foreach either parallel or not, create workers
       `%fun%` <- foreach::`%do%`
       workers <- 1
       if (self$do_parallel) {
         message("Preworkercreation")
-
 
         ##################################### additional doAzureParallel configuration #####################################
 
@@ -120,7 +124,9 @@ AzureSimulator <- R6::R6Class(
         # 6. Check that your parallel backend has been registered
         workers = foreach::getDoParWorkers()
 
-        message(paste0("Workers assigned at the start of the current simulation: ",workers))
+        message(paste0("Chunks: ",self$chunks))
+
+        # this does not seem to be working correctly, so use dopar always for this demo
         `%fun%` <- foreach::`%dopar%`
         message("Postworkercreation")
       }
@@ -134,8 +140,9 @@ AzureSimulator <- R6::R6Class(
       write_progress_file <- self$write_progress_file
       continuous_counter <- self$continuous_counter
       set_seed <- self$set_seed
+      chunks <- self$chunks
       # calculate chunk size
-      sa_iterator <- itertools::isplitRows(sims_per_agent_list, chunks = workers)
+      sa_iterator <- itertools::isplitRows(sims_per_agent_list, chunks = chunks)
       # include packages that are used in parallel processes
       par_packages <- c(c("data.table","itertools"),include_packages)
       # running the main simulation loop
@@ -147,7 +154,7 @@ AzureSimulator <- R6::R6Class(
         .export = c("History"),
         .noexport = c("sims_per_agent_list","history"),
         .packages = par_packages
-      ) %fun% {
+      ) %dopar% {
         index <- 1L
         sim_agent_counter <- 0
         sim_agent_total <- length(sims_agents)
