@@ -1,0 +1,21 @@
+{
+  "name": "contextual_test_cluster_one",
+  "vmSize": "Standard_F2",
+  "maxTasksPerNode": 2,
+  "poolSize": {
+    "dedicatedNodes": {
+        "min": 2,
+        "max": 2
+    },
+    "lowPriorityNodes": {
+        "min": 1,
+        "max": 4
+    },
+    "autoscaleFormula": "QUEUE"
+  },
+  "rPackages": {
+    "cran": ["foreach", "data.table", "itertools"],
+    "github": ["Nth-iteration-labs/contextual"]
+  },
+  "commandLine": []
+}

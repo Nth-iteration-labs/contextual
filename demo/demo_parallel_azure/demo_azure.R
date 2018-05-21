@@ -1,5 +1,12 @@
-setwd("~/GitHub/contextual/demo")
-source("dev.R")
+setwd("~/GitHub/contextual/demo/demo_parallel_azure")
+source("simulator_azure.R")
+library(contextual)
+
+## follow setup and install of doAzureParallel
+## at https://github.com/Azure/doAzureParallel
+
+## sample credentials in the same directory as this file
+## add your credentials and save to the current directory
 
 horizon            <- 100L
 simulations        <- 100L
@@ -12,7 +19,7 @@ bandit             <- SyntheticBandit$new(weights = context_weights, precaching 
 agents             <- list( Agent$new(EpsilonGreedyPolicy$new(0.1, "\U190-greedy"), bandit),
                             Agent$new(LinUCBDisjointPolicy$new(1.0, "LinUCB"), bandit) )
 
-simulation         <- Simulator$new(agents, horizon, simulations, do_parallel = FALSE)
+simulation         <- AzureSimulator$new(agents, horizon, simulations, do_parallel = TRUE)
 history            <- simulation$run()
 
 plot(history, type = "cumulative")

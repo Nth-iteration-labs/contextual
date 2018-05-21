@@ -13,6 +13,8 @@ data/webscope/*
 demo/data/*
 yahoodb-journal
 progress.txt
+credentials.json
+**/credentials.json
 **/progress.txt
 **/doparallel.log
 **/progress.log

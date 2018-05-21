@@ -13,3 +13,4 @@ contextual.Rproj
 ^docs$
 ^vignettes/jss.*
 ^LICENSE\.md$
+^credentials\.json$
