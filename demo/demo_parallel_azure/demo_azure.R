@@ -8,7 +8,7 @@ library(contextual)
 ## sample credentials in the same directory as this file
 ## add your credentials and save to the current directory
 
-horizon            <- 100L
+horizon            <- 1000L
 simulations        <- 100L
 context_weights    <- matrix(  c( 0.9, 0.1, 0.1,
                                   0.1, 0.5, 0.1,

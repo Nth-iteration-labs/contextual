@@ -120,7 +120,7 @@ AzureSimulator <- R6::R6Class(
         # 6. Check that your parallel backend has been registered
         workers = foreach::getDoParWorkers()
 
-        message(paste0("Workers assigned: ",workers))
+        message(paste0("Workers assigned at the start of the current simulation: ",workers))
         `%fun%` <- foreach::`%dopar%`
         message("Postworkercreation")
       }
