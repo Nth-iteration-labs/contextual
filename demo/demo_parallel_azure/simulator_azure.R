@@ -31,6 +31,7 @@ AzureSimulator <- R6::R6Class(
     include_packages = NULL,
     cl = NULL,
     reindex_t = NULL,
+    chunks = NULL,
     initialize = function(agents,
                           horizon = 100L,
                           simulations = 100L,
@@ -46,6 +47,7 @@ AzureSimulator <- R6::R6Class(
                           reindex_t = FALSE) {
       self$reindex_t <- reindex_t
       self$horizon <- horizon
+      self$chunks <- chunks
       self$simulations <- simulations
       self$save_theta <- save_theta
       self$save_context <- save_context
