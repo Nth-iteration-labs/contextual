@@ -17,7 +17,8 @@ Imports:
     R.devices,
     foreach,
     doParallel,
-    itertools
+    itertools,
+    here
 Suggests:
     testthat,
     covr,

@@ -4,7 +4,6 @@
 \alias{History}
 \alias{print_data}
 \alias{reindex_t}
-\alias{generate_bandit_data}
 \alias{delete_empty_rows}
 \alias{clear_data_table}
 \alias{set_data_table}

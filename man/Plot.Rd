@@ -2,7 +2,6 @@
 % Please edit documentation in R/plot.R
 \name{Plot}
 \alias{Plot}
-\alias{cumulative}
 \alias{average}
 \alias{optimal}
 \alias{arms}

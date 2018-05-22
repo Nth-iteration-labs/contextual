@@ -1,9 +1,6 @@
 # AzureSimulator is a copy of contextual's Simulator class
 # with some minor changes that enable it
-# to replace doParallel with doAzureParallel
-# As the amount of workers now needs to be set by hand,
-# the AzureSimulator class contains an additional chunk
-# parameter to split the data in chunk parts
+# to replace doParallel with doAzureParallel.
 
 library(doAzureParallel)
 library(contextual)
@@ -105,14 +102,15 @@ AzureSimulator <- R6::R6Class(
       if (self$do_parallel) {
         message("Preworkercreation")
 
-        ##################################### additional doAzureParallel configuration #####################################
+        ##################################### additional doAzureParallel configuration ########################
 
         # 1. Generate your credential and cluster configuration files.
         doAzureParallel::generateClusterConfig("cluster.json")
         doAzureParallel::generateCredentialsConfig("credentials.json")
 
         # 2. Fill out your credential config and cluster config files.
-        # Enter your Azure Batch Account & Azure Storage keys/account-info into your credential config ("credentials.json") and configure your cluster in your cluster config ("cluster.json")
+        # Enter your Azure Batch Account & Azure Storage keys/account-info into your credential
+        # config ("credentials.json") and configure your cluster in your cluster config ("cluster.json")
 
         # 3. Set your credentials - you need to give the R session your credentials to interact with Azure
         doAzureParallel::setCredentials("credentials.json")
@@ -121,14 +119,14 @@ AzureSimulator <- R6::R6Class(
         self$cl <- doAzureParallel::makeCluster("cluster.json")
 
         # 5. Register the pool as your parallel backend
-        doAzureParallel::registerDoAzureParallel(cluster)
+        doAzureParallel::registerDoAzureParallel(self$cl)
 
         # 6. Check that your parallel backend has been registered
         workers = foreach::getDoParWorkers()
 
-        message(paste0("Chunks: ",self$chunks))
+        message(paste0("Workers: ", workers))
+        message(paste0("Chunks: ", self$chunks))
 
-        # this does not seem to be working correctly, so use dopar always for this demo
         `%fun%` <- foreach::`%dopar%`
         message("Postworkercreation")
       }
@@ -156,7 +154,7 @@ AzureSimulator <- R6::R6Class(
         .export = c("History"),
         .noexport = c("sims_per_agent_list","history"),
         .packages = par_packages
-      ) %dopar% {
+      ) %fun% {
         index <- 1L
         sim_agent_counter <- 0
         sim_agent_total <- length(sims_agents)

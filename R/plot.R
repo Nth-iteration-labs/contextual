@@ -285,7 +285,7 @@ Plot <- R6::R6Class(
 #' is an \code{History} class instance.
 #'
 #' @name Plot
-#' @aliases cumulative average optimal arms do_plot gg_color_hue check_history_data
+#' @aliases average optimal arms do_plot gg_color_hue check_history_data
 #'
 #' @section Usage:
 #' \preformatted{
@@ -317,7 +317,7 @@ Plot <- R6::R6Class(
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
 #' Bandit subclass examples: \code{\link{BasicBandit}}, \code{\link{ContextualBandit}},  \code{\link{LiSamplingOfflineBandit}}
-#' 
+#'
 #' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 #'
 NULL

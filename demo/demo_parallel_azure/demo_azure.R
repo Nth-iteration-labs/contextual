@@ -9,17 +9,17 @@ library(contextual)
 ## add your credentials and save to the current directory
 
 horizon            <- 1000L
-simulations        <- 1000L
+simulations        <- 100L
 context_weights    <- matrix(  c( 0.9, 0.1, 0.1,
                                   0.1, 0.5, 0.1,
                                   0.1, 0.1, 0.1), nrow = 3, ncol = 3, byrow = TRUE)
 
 bandit             <- SyntheticBandit$new(weights = context_weights, precaching = TRUE)
 
-agents             <- list( Agent$new(EpsilonGreedyPolicy$new(0.1, "\U190-greedy"), bandit),
-                            Agent$new(LinUCBDisjointPolicy$new(1.0, "LinUCB"), bandit) )
+agents             <- list(Agent$new(EpsilonGreedyPolicy$new(0.1, "\U190-greedy"), bandit),
+                           Agent$new(LinUCBDisjointPolicy$new(1.0, "LinUCB"), bandit))
 
-# the parameter chunks = 10 will split 1000 simulations into 10 batches of 100 simulations
+# the parameter chunks = 100 will split 1000 simulations into 100 batches of 10 simulations
 # where each batch will be processed by one Azure compute node.
 
 simulation         <- AzureSimulator$new(agents, horizon, simulations,
