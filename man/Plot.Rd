@@ -27,18 +27,18 @@ Plot <- Plot$new()
 \describe{
 
 \item{\code{cumulative(history,...)}}{
-Returns a plot of cumulative regret or reward (depending on parameter regret=TRUE/FALSE)
+Writes a plot of cumulative regret or reward (depending on parameter regret=TRUE/FALSE)
 over time.
 }
 \item{\code{average(history,...)}}{
-Returns a plot of average regret or reward (depending on parameter regret=TRUE/FALSE)
+Writes a plot of average regret or reward (depending on parameter regret=TRUE/FALSE)
 over time.
 }
 \item{\code{optimal(history,...)}}{
-Returns a plot of the percentage the optimal arm was chosen over time.
+Writes a plot of the percentage the optimal arm was chosen over time.
 }
 \item{\code{arms(history),...}}{
-Returns a plot of the ratio with which each arm of a simulation was chosen over time.
+Writes a plot of the ratio with which each arm of a simulation was chosen over time.
 If multiple agents are run, only plots the arm plot of the first agent.
 }
 }

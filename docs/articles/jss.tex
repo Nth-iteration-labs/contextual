@@ -185,7 +185,7 @@ Regrettably, though cMAB algorithms have gained traction in both research and in
 In section 2, this paper continues with a more formal definition of MAB and CMAB problems and relate it to our implementation. In section 3, we give an overview of \pkg{contextual}’s object-oriented structure In section 4, we list the policies that are available by default, and simulate two MAB policies and a cMAB policy. In section 5, we demonstrate how easy it is to extend and customize \pkg{contextual} policies and bandits. In section 6, we replicate two papers, thereby demonstrating how to test policies on offline data sets. Finally, in section  7, we will go over some of the additional features in the package and conclude with some comments on the current state of the package and possible enhancements.
 
 \section{From formalization to implementation}
-%% Note: If there is markup in \(sub)section, then it has to be escape as above.
+
 
 In this section, we first present a more formal definition of the contextual Multi-Armed Bandit problem. We then show how this formalization can be translated to a clear and concise class structure. Which leads up to section 3, where we delve a little deeper into the implementation of the described classes.
 
@@ -629,7 +629,6 @@ The Plot class takes an History object, and offers several default types of plot
 \end{itemize}
 
 Plot objects can be instantiated directly, or, more commonly, by calling plot(). In either case, make sure to specify (at least) a History subclass and one of the plot types specified above:
-
 \begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -646,6 +645,36 @@ Plot objects can be instantiated directly, or, more commonly, by calling plot().
 It is also possible to retrieve a data.frame object from an History object, and plot the data in any other way, for instance with ggplot (both with 95% confidence interval):
 
 
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlstd{weights}         \hlkwb{<-} \hlkwd{matrix}\hlstd{(}  \hlkwd{c}\hlstd{(} \hlnum{0.9}\hlstd{,} \hlnum{0.1}\hlstd{,} \hlnum{0.1}\hlstd{,} \hlnum{0.1}\hlstd{,} \hlnum{0.8}\hlstd{,} \hlnum{0.1}\hlstd{,} \hlnum{0.1}\hlstd{,} \hlnum{0.1}\hlstd{,} \hlnum{0.7}\hlstd{),}
+                            \hlkwc{nrow} \hlstd{=} \hlnum{3}\hlstd{,} \hlkwc{ncol} \hlstd{=} \hlnum{3}\hlstd{,} \hlkwc{byrow} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\hlstd{bandit}          \hlkwb{<-} \hlstd{SyntheticBandit}\hlopt{$}\hlkwd{new}\hlstd{(}\hlkwc{weights} \hlstd{= weights)}
+\hlstd{agents}          \hlkwb{<-} \hlkwd{list}\hlstd{(Agent}\hlopt{$}\hlkwd{new}\hlstd{(EpsilonGreedyPolicy}\hlopt{$}\hlkwd{new}\hlstd{(}\hlnum{0.1}\hlstd{,}\hlstr{"EG"}\hlstd{), bandit),}
+                        \hlstd{Agent}\hlopt{$}\hlkwd{new}\hlstd{(LinUCBDisjointPolicy}\hlopt{$}\hlkwd{new}\hlstd{(}\hlnum{1.0}\hlstd{,} \hlstr{"LinUCB"}\hlstd{), bandit))}
+\hlstd{history}         \hlkwb{<-} \hlstd{Simulator}\hlopt{$}\hlkwd{new}\hlstd{(agents,} \hlnum{25}\hlstd{,} \hlnum{300}\hlstd{,} \hlkwc{do_parallel} \hlstd{=} \hlnum{FALSE}\hlstd{)}\hlopt{$}\hlkwd{run}\hlstd{()}
+
+\hlkwd{par}\hlstd{(}\hlkwc{mfrow} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{1}\hlstd{),} \hlkwc{mar} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,}\hlnum{4}\hlstd{,}\hlnum{1}\hlstd{,}\hlnum{1}\hlstd{),} \hlkwc{oma} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{0}\hlstd{,}\hlnum{0}\hlstd{,}\hlnum{0}\hlstd{))}
+\hlkwd{plot}\hlstd{(history,} \hlkwc{type} \hlstd{=} \hlstr{"average"}\hlstd{,} \hlkwc{regret} \hlstd{=} \hlnum{FALSE}\hlstd{,} \hlkwc{ci} \hlstd{=} \hlnum{TRUE}\hlstd{,} \hlkwc{no_internal_par} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{fig/ggplotcompare-1} 
+\begin{kframe}\begin{alltt}
+\hlstd{history_dt} \hlkwb{<-} \hlstd{history}\hlopt{$}\hlkwd{get_data_table}\hlstd{()} \hlcom{# extract data.table from the history object}
+\hlstd{max_sim} \hlkwb{<-} \hlstd{history_dt[,} \hlkwd{max}\hlstd{(sim)]}
+\hlstd{df} \hlkwb{<-} \hlstd{history_dt[,} \hlkwd{list}\hlstd{(}\hlkwc{sd} \hlstd{=} \hlkwd{sd}\hlstd{(reward)} \hlopt{/} \hlkwd{sqrt}\hlstd{(max_sim),} \hlkwc{data} \hlstd{=} \hlkwd{mean}\hlstd{(reward)),}
+                 \hlkwc{by} \hlstd{=} \hlkwd{list}\hlstd{(t, agent)]}
+\hlstd{ci_range} \hlkwb{<-} \hlstd{df}\hlopt{$}\hlstd{data} \hlopt{+} \hlkwd{outer}\hlstd{(df}\hlopt{$}\hlstd{sd,} \hlkwd{c}\hlstd{(}\hlnum{1.96}\hlstd{,} \hlopt{-}\hlnum{1.96}\hlstd{))}
+\hlstd{df} \hlkwb{<-} \hlkwd{cbind}\hlstd{(df, ci_range)}
+\hlkwd{print}\hlstd{(} \hlkwd{ggplot}\hlstd{(}\hlkwc{data} \hlstd{= df,} \hlkwd{aes}\hlstd{(}\hlkwc{x} \hlstd{= t,} \hlkwc{y} \hlstd{= data,} \hlkwc{ymin} \hlstd{= V1,} \hlkwc{ymax} \hlstd{= V2))} \hlopt{+}
+  \hlkwd{geom_line}\hlstd{(}\hlkwd{aes}\hlstd{(}\hlkwc{color} \hlstd{= agent))} \hlopt{+} \hlkwd{geom_ribbon}\hlstd{(}\hlkwd{aes}\hlstd{(}\hlkwc{fill} \hlstd{= agent),} \hlkwc{alpha} \hlstd{=} \hlnum{0.3}\hlstd{)} \hlopt{+}
+  \hlkwd{labs}\hlstd{(}\hlkwc{x} \hlstd{=} \hlkwa{NULL}\hlstd{,} \hlkwc{y} \hlstd{=} \hlstr{"Average reward"}\hlstd{))} \hlcom{# plot the ggplot object}
+\end{alltt}
+\end{kframe}
+\includegraphics[width=\maxwidth]{fig/ggplotcompare-2} 
+
+\end{knitrout}
 \section{Implementing and extending Policy and Bandit subclasses}
 
 Though section 3 provides an introduction to all of contextual's main classes, in practice, most developers and researchers will mostly focus on subclassing policies and bandits of their own. Therefore, the current section first demonstrates how to implement some well-known bandit algorithms, and, secondly, how to create Policy and Bandit sub-subclasses.
@@ -678,7 +707,6 @@ To get an idea of how straightforward it can be to go from a high-level policy d
 \ENDFOR
 \end{algorithmic}
 \end{algorithm}
-
 
 Next, its conversion from the above pseudocode to an EpsilonFirstPolicy class:
 
@@ -721,13 +749,11 @@ Next, its conversion from the above pseudocode to an EpsilonFirstPolicy class:
 \end{kframe}
 \end{knitrout}
 
-At that point, it is easy to run any policy by assigning it to an agent together with one of contextual's Bandit subclasses. Then assign and run the agent via a Simulator instance:
+Following the instantiation of the Agent Bandit/Policy pair it can now be assigned to, and then run on, a Simulator:
 
 \begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{library}\hlstd{(}\hlstr{"contextual"}\hlstd{)}
-
 \hlstd{horizon}            \hlkwb{<-} \hlnum{100}
 \hlstd{simulations}        \hlkwb{<-} \hlnum{100}
 \hlstd{weights}            \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{0.9}\hlstd{,} \hlnum{0.1}\hlstd{,} \hlnum{0.1}\hlstd{)}
@@ -744,27 +770,23 @@ At that point, it is easy to run any policy by assigning it to an agent together
 
 \hlstd{history}            \hlkwb{<-} \hlstd{simulator}\hlopt{$}\hlkwd{run}\hlstd{()}
 
-\hlkwd{par}\hlstd{(}\hlkwc{mfrow} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{2}\hlstd{),}\hlkwc{mar} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{5}\hlstd{,} \hlnum{5}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{))}
+\hlkwd{par}\hlstd{(}\hlkwc{mfrow} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{2}\hlstd{),} \hlkwc{mar} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,}\hlnum{4}\hlstd{,}\hlnum{1}\hlstd{,}\hlnum{1}\hlstd{))}
 \hlkwd{plot}\hlstd{(history,} \hlkwc{type} \hlstd{=} \hlstr{"cumulative"}\hlstd{,} \hlkwc{no_internal_par} \hlstd{=} \hlnum{TRUE}\hlstd{)}
 \hlkwd{plot}\hlstd{(history,} \hlkwc{type} \hlstd{=} \hlstr{"arms"}\hlstd{,} \hlkwc{no_internal_par} \hlstd{=} \hlnum{TRUE}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
-
 \begin{center}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}[H]
-\includegraphics[width=\maxwidth,]{fig/efpolicy-1} \caption[Epsilon First]{Epsilon First}\label{fig:efpolicy1}
-\end{figure}
-
-\begin{figure}[H]
-\includegraphics[width=\maxwidth,]{fig/efpolicy-2} \caption[Epsilon First]{Epsilon First}\label{fig:efpolicy2}
+\includegraphics[width=\maxwidth,]{fig/efpolicy-1} \caption[Epsilon First]{Epsilon First}\label{fig:efpolicy}
 \end{figure}
 
 
 \end{knitrout}
 \end{center}
 
+Importantly, where not otherwise noted, the SyntheticBandit in the code above, and all other Bandits in the current paper refer to (or will be configured as) Bernoulli (or "Binary") bandits: that is, on each $t$ they offer either a reward of $1$ with probability $p$ or a reward of $0$ with probability $p-1$.
 
 \subsection{The Epsilon Greedy Policy}
 
@@ -833,13 +855,11 @@ Converted to an EpsilonGreedyPolicy class:
 \end{kframe}
 \end{knitrout}
 
-Then, just run it again:
+Assign the new class plus our Bernoulli type Bandit to an Agent, assign the Agent to a Simulator, and run it:
 
 \begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlkwd{library}\hlstd{(}\hlstr{"contextual"}\hlstd{)}
-
 \hlstd{horizon}            \hlkwb{<-} \hlnum{100}
 \hlstd{simulations}        \hlkwb{<-} \hlnum{100}
 \hlstd{weights}            \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{0.9}\hlstd{,} \hlnum{0.1}\hlstd{,} \hlnum{0.1}\hlstd{)}
@@ -856,22 +876,16 @@ Then, just run it again:
 
 \hlstd{history}            \hlkwb{<-} \hlstd{simulator}\hlopt{$}\hlkwd{run}\hlstd{()}
 
-
-\hlkwd{par}\hlstd{(}\hlkwc{mfrow} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{2}\hlstd{),}\hlkwc{mar} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{5}\hlstd{,} \hlnum{5}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{))}
+\hlkwd{par}\hlstd{(}\hlkwc{mfrow} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{2}\hlstd{),} \hlkwc{mar} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,}\hlnum{4}\hlstd{,}\hlnum{1}\hlstd{,}\hlnum{1}\hlstd{))}
 \hlkwd{plot}\hlstd{(history,} \hlkwc{type} \hlstd{=} \hlstr{"cumulative"}\hlstd{,} \hlkwc{no_internal_par} \hlstd{=} \hlnum{TRUE}\hlstd{)}
 \hlkwd{plot}\hlstd{(history,} \hlkwc{type} \hlstd{=} \hlstr{"arms"}\hlstd{,} \hlkwc{no_internal_par} \hlstd{=} \hlnum{TRUE}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
-
 \begin{center}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}[H]
-\includegraphics[width=\maxwidth,]{fig/egpolicy-1} \caption[Epsilon Greedy]{Epsilon Greedy}\label{fig:egpolicy1}
-\end{figure}
-
-\begin{figure}[H]
-\includegraphics[width=\maxwidth,]{fig/egpolicy-2} \caption[Epsilon Greedy]{Epsilon Greedy}\label{fig:egpolicy2}
+\includegraphics[width=\maxwidth,]{fig/egpolicy-1} \caption[Epsilon Greedy]{Epsilon Greedy}\label{fig:egpolicy}
 \end{figure}
 
 
@@ -880,13 +894,11 @@ Then, just run it again:
 
 \subsection{Contextual Bandit: LinUCB with Linear Disjoint Models}
 
-As a final example of how to subclass contextual's Bandit superclass, we move from non-contextual algorithms to a contextual one. As described in section 1, contextual bandits can make use of side information to help them choose the current best arm to play. For example, contextual information on a site visitor's country of residence may influence which out of several articles (or arms) will be most popular when placed on the website's front page.
+As a final example of how to subclass contextual's Bandit superclass, we move from non-contextual algorithms to a contextual one. As described in section 1, contextual bandits can make use of side information to help them choose the current best arm to play. For example, contextual information such as a website visitors' location may be related to which article's headline (or arm) on the frontpage of the website will be clicked on most.
 
-Here, we show how to implement and evaluate probably one of the most cited out of all contextual policies, known as the LinUCB algorithm with Linear Disjoint Models. The policy is more complicated than the previous two bandits, but when following its pseudocode description to the letter, it is not all that hard to implement as yet another Bandit subclass.
+Here, we show how to implement and evaluate probably one of the most cited out of all contextual policies, the LinUCB algorithm with Linear Disjoint Models. The policy is more complicated than the previous two bandits, but when following its pseudocode description to the letter, it translates nicely to yet another Bandit subclass.
 
-The algorithm first runs a linear regression with coefficients for each of \code{d} contextual features on the available historical data. Then the algorithm observes the new context and uses this context to generate a predicted reward based on the regression model. Importantly, the algorithm also generates a confidence interval for the predicted payoff for each of \code{k} arms. The policy then chooses the arm with the highest upper confidence bound.
-
-Now, let's first take a look at a high-level description the LinUCB Disjoint algorithm in pseudocode:
+The LinUCBDisjoint algorithm works by running a linear regression with coefficients for each of \code{d} contextual features on the available historical data. Then the algorithm observes the new context and uses this context to generate a predicted reward based on the regression model. Importantly, the algorithm also generates a confidence interval for the predicted payoff for each of \code{k} arms. The policy then chooses the arm with the highest upper confidence bound. In pseudocode:
 
 \begin{algorithm}[H]
 \caption{LinUCB with linear disjoint models}
@@ -914,7 +926,7 @@ Now, let's first take a look at a high-level description the LinUCB Disjoint alg
 \end{algorithmic}
 \end{algorithm}
 
-Next, translate the above pseudocode into a well organised Bandit subclass again:
+Next, translate the above pseudocode into a well organized Bandit subclass again:
 
 \begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -962,6 +974,8 @@ Next, translate the above pseudocode into a well organised Bandit subclass again
 \end{kframe}
 \end{knitrout}
 
+Let us now evaluate this Policy on a synthetic Bernoulli Bandit with three arms and three context features. As you can observe in the code below, each of the synthetic Bandit's arms is on average equally probable to return a reward. At the same time, the (randomized) presence of a context feature has a strong influence on the distribution of rewards over the arms: in the presence of a specific feature, one of the arms is much more likely to offer a reward. In this setting, the EpsilonGreedyPolicy does not do better than chance. But the LinUCBDisjointPolicy is able to learn the relationships between arms, rewards, and features without much difficulty:
+
 \begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
@@ -970,9 +984,9 @@ Next, translate the above pseudocode into a well organised Bandit subclass again
 
                       \hlcom{# k=1  k=2  k=3              -> columns represent arms}
 
-\hlstd{weights}     \hlkwb{<-} \hlkwd{matrix}\hlstd{(}\hlkwd{c}\hlstd{(}\hlnum{0.9}\hlstd{,} \hlnum{0.1}\hlstd{,} \hlnum{0.1}\hlstd{,}     \hlcom{# d=1   -> rows represent}
-                        \hlnum{0.1}\hlstd{,} \hlnum{0.9}\hlstd{,} \hlnum{0.1}\hlstd{,}     \hlcom{# d=2      context features}
-                        \hlnum{0.1}\hlstd{,} \hlnum{0.1}\hlstd{,} \hlnum{0.9}\hlstd{),}    \hlcom{# d=3}
+\hlstd{weights}     \hlkwb{<-} \hlkwd{matrix}\hlstd{(}\hlkwd{c}\hlstd{(}\hlnum{0.8}\hlstd{,} \hlnum{0.1}\hlstd{,} \hlnum{0.1}\hlstd{,}     \hlcom{# d=1   -> rows represent}
+                        \hlnum{0.1}\hlstd{,} \hlnum{0.8}\hlstd{,} \hlnum{0.1}\hlstd{,}     \hlcom{# d=2      context features}
+                        \hlnum{0.1}\hlstd{,} \hlnum{0.1}\hlstd{,} \hlnum{0.8}\hlstd{),}    \hlcom{# d=3}
 
                         \hlkwc{nrow} \hlstd{=} \hlnum{3}\hlstd{,} \hlkwc{ncol} \hlstd{=} \hlnum{3}\hlstd{,} \hlkwc{byrow} \hlstd{=} \hlnum{TRUE}\hlstd{)}
 
@@ -984,21 +998,16 @@ Next, translate the above pseudocode into a well organised Bandit subclass again
 \hlstd{simulation}  \hlkwb{<-} \hlstd{Simulator}\hlopt{$}\hlkwd{new}\hlstd{(agents, horizon, simulations,} \hlkwc{do_parallel} \hlstd{=} \hlnum{FALSE}\hlstd{)}
 \hlstd{history}     \hlkwb{<-} \hlstd{simulation}\hlopt{$}\hlkwd{run}\hlstd{()}
 
-\hlkwd{par}\hlstd{(}\hlkwc{mfrow} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{2}\hlstd{),}\hlkwc{mar} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{5}\hlstd{,} \hlnum{5}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{))}
+\hlkwd{par}\hlstd{(}\hlkwc{mfrow} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{2}\hlstd{),} \hlkwc{mar} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,}\hlnum{4}\hlstd{,}\hlnum{1}\hlstd{,}\hlnum{1}\hlstd{))}
 \hlkwd{plot}\hlstd{(history,} \hlkwc{type} \hlstd{=} \hlstr{"cumulative"}\hlstd{,} \hlkwc{regret} \hlstd{=} \hlnum{FALSE}\hlstd{,} \hlkwc{no_internal_par} \hlstd{=} \hlnum{TRUE}\hlstd{)}
 \hlkwd{plot}\hlstd{(history,} \hlkwc{type} \hlstd{=} \hlstr{"cumulative"}\hlstd{,} \hlkwc{no_internal_par} \hlstd{=} \hlnum{TRUE}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
-
 \begin{center}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}[H]
-\includegraphics[width=\maxwidth,]{fig/lucbpolicy-1} \caption[The contextual LinUCB algorithm with linear disjoint models, following Li et al]{The contextual LinUCB algorithm with linear disjoint models, following Li et al. (2010), compared to a non-contextual basic EpsilonGreedy policy tested on data generated by a contextual synthetic Bandit for two performance measures: left cumulative reward, right expected cumulative regret. }\label{fig:lucbpolicy1}
-\end{figure}
-
-\begin{figure}[H]
-\includegraphics[width=\maxwidth,]{fig/lucbpolicy-2} \caption[The contextual LinUCB algorithm with linear disjoint models, following Li et al]{The contextual LinUCB algorithm with linear disjoint models, following Li et al. (2010), compared to a non-contextual basic EpsilonGreedy policy tested on data generated by a contextual synthetic Bandit for two performance measures: left cumulative reward, right expected cumulative regret. }\label{fig:lucbpolicy2}
+\includegraphics[width=\maxwidth,]{fig/lucbpolicy-1} \caption[The contextual LinUCB algorithm with linear disjoint models, following Li et al]{The contextual LinUCB algorithm with linear disjoint models, following Li et al. (2010), compared to a non-contextual basic EpsilonGreedy policy tested on data generated by a contextual synthetic Bandit for two performance measures: left cumulative reward, right expected cumulative regret. }\label{fig:lucbpolicy}
 \end{figure}
 
 
@@ -1055,21 +1064,16 @@ Of course, the extensibility of contextual does not limit itself to the subclass
 
 \hlstd{history}     \hlkwb{<-} \hlstd{simulation}\hlopt{$}\hlkwd{run}\hlstd{()}
 
-\hlkwd{par}\hlstd{(}\hlkwc{mfrow} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{2}\hlstd{),}\hlkwc{mar} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{5}\hlstd{,} \hlnum{5}\hlstd{,} \hlnum{1}\hlstd{,} \hlnum{1}\hlstd{))}
+\hlkwd{par}\hlstd{(}\hlkwc{mfrow} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{2}\hlstd{),} \hlkwc{mar} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,}\hlnum{4}\hlstd{,}\hlnum{1}\hlstd{,}\hlnum{1}\hlstd{))}
 \hlkwd{plot}\hlstd{(history,} \hlkwc{type} \hlstd{=} \hlstr{"cumulative"}\hlstd{,} \hlkwc{no_internal_par} \hlstd{=} \hlnum{TRUE}\hlstd{)}
 \hlkwd{plot}\hlstd{(history,} \hlkwc{type} \hlstd{=} \hlstr{"average"}\hlstd{,} \hlkwc{regret} \hlstd{=} \hlnum{FALSE}\hlstd{,} \hlkwc{no_internal_par} \hlstd{=} \hlnum{TRUE}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
-
 \begin{center}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}[H]
-\includegraphics[width=\maxwidth,]{fig/fig4-1} \caption[Extending BasicBandit and EpsilonGreedyPolicy]{Extending BasicBandit and EpsilonGreedyPolicy}\label{fig:fig41}
-\end{figure}
-
-\begin{figure}[H]
-\includegraphics[width=\maxwidth,]{fig/fig4-2} \caption[Extending BasicBandit and EpsilonGreedyPolicy]{Extending BasicBandit and EpsilonGreedyPolicy}\label{fig:fig42}
+\includegraphics[width=\maxwidth,]{fig/poissonplot-1} \caption[Extending BasicBandit and EpsilonGreedyPolicy]{Extending BasicBandit and EpsilonGreedyPolicy}\label{fig:poissonplot}
 \end{figure}
 
 
@@ -1114,7 +1118,7 @@ The first, and most important, step in using offline data in policy evaluation i
 \end{algorithmic}
 \end{algorithm}
 
-Converted to a contextual BasicBandit subclass:
+Converted to a contextual BasicBandit subclass and run on a large data set:
 
 \begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -1153,33 +1157,63 @@ Converted to a contextual BasicBandit subclass:
 \hlstd{)}
 
 \hlkwd{library}\hlstd{(data.table)}
+\hlkwd{library}\hlstd{(RCurl)}
+\hlkwd{library}\hlstd{(foreign)}
 
-\hlstd{data_dir}       \hlkwb{<-} \hlstr{"data/"}
-\hlstd{website_data}   \hlkwb{<-} \hlstd{data.table}\hlopt{::}\hlkwd{fread}\hlstd{(}\hlkwd{paste0}\hlstd{(data_dir,}\hlstr{"persuasion.csv"}\hlstd{))}
+\hlstd{url} \hlkwb{<-} \hlstr{"https://raw.githubusercontent.com/Nth-iteration-labs/
+        contextual_data/master/PersuasionAPI/persuasion.csv"}
+
+\hlstd{website_data}   \hlkwb{<-} \hlkwd{getURL}\hlstd{(url)}
+\hlstd{website_data}   \hlkwb{<-} \hlkwd{setDT}\hlstd{(}\hlkwd{read.csv}\hlstd{(}\hlkwd{textConnection}\hlstd{(persuasion_data)))}
 \hlstd{horizon}        \hlkwb{<-} \hlnum{350000L}
 \hlstd{simulations}    \hlkwb{<-} \hlnum{100L}
-\hlstd{bandit}         \hlkwb{<-} \hlstd{BasicLiBandit}\hlopt{$}\hlkwd{new}\hlstd{(website_data,} \hlkwc{arms} \hlstd{=} \hlnum{4}\hlstd{)} \hlcom{# four types of webpages can be presented}
-\hlstd{agent}          \hlkwb{<-} \hlstd{Agent}\hlopt{$}\hlkwd{new}\hlstd{(UCB1Policy}\hlopt{$}\hlkwd{new}\hlstd{(), bandit)}       \hlcom{#}
+\hlstd{bandit}         \hlkwb{<-} \hlstd{BasicLiBandit}\hlopt{$}\hlkwd{new}\hlstd{(website_data,} \hlkwc{arms} \hlstd{=} \hlnum{4}\hlstd{)}
+\hlstd{agent}          \hlkwb{<-} \hlstd{Agent}\hlopt{$}\hlkwd{new}\hlstd{(UCB1Policy}\hlopt{$}\hlkwd{new}\hlstd{(), bandit)}
 \hlstd{history}        \hlkwb{<-} \hlstd{Simulator}\hlopt{$}\hlkwd{new}\hlstd{(agent, horizon, simulations,} \hlkwc{reindex_t} \hlstd{=} \hlnum{TRUE}\hlstd{)}\hlopt{$}\hlkwd{run}\hlstd{()}
 
-\hlkwd{plot}\hlstd{(history,} \hlkwc{type} \hlstd{=} \hlstr{"cumulative"}\hlstd{,} \hlkwc{regret} \hlstd{=} \hlnum{FALSE}\hlstd{,} \hlkwc{rate} \hlstd{=} \hlnum{TRUE}\hlstd{,} \hlkwc{ylim} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{0.0105}\hlstd{,}\hlnum{0.015}\hlstd{))}
+\hlkwd{par}\hlstd{(}\hlkwc{mfrow} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{2}\hlstd{),} \hlkwc{mar} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,}\hlnum{4}\hlstd{,}\hlnum{1}\hlstd{,}\hlnum{1}\hlstd{))}
+\hlkwd{plot}\hlstd{(history,} \hlkwc{type} \hlstd{=} \hlstr{"cumulative"}\hlstd{,} \hlkwc{regret} \hlstd{=} \hlnum{FALSE}\hlstd{,} \hlkwc{rate} \hlstd{=} \hlnum{TRUE}\hlstd{,} \hlkwc{ylim} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{.0105}\hlstd{,} \hlnum{.015}\hlstd{))}
 \hlkwd{plot}\hlstd{(history,} \hlkwc{type} \hlstd{=} \hlstr{"arms"}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
 
+\begin{figure}[H]
+  \centering
+    \includegraphics[width=.99\textwidth]{fig/ucb_offline}
+    \label{fig:ucb_offline}
+      \caption{An UCB1 based bandit evaluated on a Li Bandit. The Bandit itself samples from 350000 rows with clicks for rewards and the display of one of four “persuasive strategies” to users of an online store representing the offline Bandit's four arms.}
+\end{figure}
+
+
 \subsubsection{Offline evaluation through DoublyRobustBandit}
 
-
-
 *** insert algorithm ***
-
-
 *** insert code ***
 
 \section{Replication of existing studies}
 
-Here we replicate some papers with a huge offline dataset..
+Here replication with yahoo dataset
+
+
+\section{Parallelization}
+
+\subsubsection{General}
+
+\subsubsection{Amazon EC2}
+
+\subsubsection{Microsoft Azure}
+
+\subsubsection{Tradeoffs}
+
+\section{Extra greedy UCB}
+
+Ladila bladibla.
+
+\section{Conclusions}
+\label{sec:conc4}
+
+\section{UML Diagrams}
 
 \begin{figure}[H]
   \centering
@@ -1195,44 +1229,9 @@ Here we replicate some papers with a huge offline dataset..
       \caption{\pkg{contextual} UML Sequence Diagram}
 \end{figure}
 
-\section{Special features}
-%% Note: If there is markup in \(sub)section, then it has to be escape as above.
-
-For instance, quantifying variance..
-
-\section{The art of optimal parallelisation}
-%% Note: If there is markup in \(sub)section, then it has to be escape as above.
-
-There is a very intersting trade of between the amount of parallelisation (how many cores, nodes used) the resources needed to compute a certain model, and the amount of data going to and fro the cores.
-
-PERFORMANCE DATA  ------------------------------------------------------------
-
-on 58  cores:    k3*d3 * 5 policies * 300  * 10000 --\textgreater{} 132 seconds
-
-on 120 cores:    k3*d3 * 5 policies * 300  * 10000 --\textgreater{} 390 seconds
-
----
-
-on 58  cores:    k3*d3 * 5 policies * 3000 * 10000 --\textgreater{} 930 seconds
-
-on 120 cores:    k3*d3 * 5 policies * 3000 * 10000 --\textgreater{} 691 seconds
-
-
-
-\section{Extra greedy UCB}
-%% Note: If there is markup in \(sub)section, then it has to be escape as above.
-
-Ladila bladibla.
-
-\section{Conclusions}
-\label{sec:conc4}
-
-
-Placeholder... the goal of a data analysis is not only to answer a research question based on data but also to collect findings that support that answer. These findings usually take the form of a~table, plot or regression/classification model and are usually presented in articles or reports.
-
 \section{Acknowledgments}
 
-Thanks go to CCC.
+Thanks go to my colleagues at the JADS...
 
 %\bibliographystyle{apacite}
 \bibliography{jss}
