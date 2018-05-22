@@ -24,9 +24,9 @@ plot.History <- function(x, ...) {
   else
     type <- "cumulative"
   if ("args" %in% names(args))
-    grid <- eval(args$grid)
+    no_internal_par <- eval(args$no_internal_par)
   else
-    grid <- FALSE
+    no_internal_par <- FALSE
   if ("xlim" %in% names(args))
     xlim <- eval(args$xlim)
   else
@@ -87,26 +87,11 @@ plot.History <- function(x, ...) {
     rate <- eval(args$rate)
   else
     rate <- FALSE
-  if ("grid" %in% names(args))
-    grid <- eval(args$grid)
+  if ("no_internal_par" %in% names(args))
+    no_internal_par <- eval(args$no_internal_par)
   else
-    grid <- FALSE
-  if (type == "grid") {
-    Plot$new()$grid(x,
-                    xlim = xlim,
-                    use_colors = use_colors,
-                    ci = ci,
-                    step_size = step_size,
-                    start_step = start_step,
-                    color_step = color_step,
-                    lty_step = lty_step,
-                    lwd = lwd,
-                    rate = rate,
-                    ylim = ylim,
-                    legend_labels = legend_labels,
-                    legend_border = legend_border,
-                    legend_title = legend_title)
-  } else if (type == "cumulative") {
+    no_internal_par <- FALSE
+  if (type == "cumulative") {
     Plot$new()$cumulative(
       x,
       xlim = xlim,
@@ -124,7 +109,7 @@ plot.History <- function(x, ...) {
       legend_labels = legend_labels,
       legend_border = legend_border,
       legend_title = legend_title,
-      grid = grid
+      no_internal_par = no_internal_par
     )
   } else if (type == "average") {
     Plot$new()$average(
@@ -144,14 +129,13 @@ plot.History <- function(x, ...) {
       legend_labels = legend_labels,
       legend_border = legend_border,
       legend_title = legend_title,
-      grid = grid
+      no_internal_par = no_internal_par
     )
   } else if (type == "optimal") {
     Plot$new()$optimal(
       x,
       xlim = xlim,
       legend = legend,
-      regret = regret,
       use_colors = use_colors,
       ci = ci,
       step_size = step_size,
@@ -163,7 +147,7 @@ plot.History <- function(x, ...) {
       legend_labels = legend_labels,
       legend_border = legend_border,
       legend_title = legend_title,
-      grid = grid
+      no_internal_par = no_internal_par
     )
   } else if (type == "arms") {
     Plot$new()$arms(
@@ -177,7 +161,7 @@ plot.History <- function(x, ...) {
       legend_labels = legend_labels,
       legend_border = legend_border,
       legend_title = legend_title,
-      grid = grid
+      no_internal_par = no_internal_par
     )
   }
 }

@@ -58,5 +58,5 @@ simulation <- Simulator$new(agents, horizon = 200L, simulations = 100L, do_paral
 history <- simulation$run()
 
 par(mfrow = c(1, 2),mar = c(5, 5, 1, 1))
-plot(history, type = "cumulative", grid = TRUE)
-plot(history, type = "average", regret = FALSE, grid = TRUE)
+plot(history, type = "cumulative", no_internal_par = TRUE)
+plot(history, type = "average", regret = FALSE, no_internal_par = TRUE)

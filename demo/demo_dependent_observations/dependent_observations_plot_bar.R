@@ -29,7 +29,7 @@ colnames(regret_df) <- cols
 # names(combinations) <- c("subjects","betas","do_poisson","policies","subpolicies")
 # ... but nested loops seemed more comprehensive here.
 
-### Load and manipulate data, plot grids of line charts if do_line_charts TRUE
+### Load and manipulate data, plot no_internal_pars of line charts if do_line_charts TRUE
 
 for (dp in do_poisson) {
   for (beta in betas)    {
@@ -61,11 +61,11 @@ regret_df_plot$subpolicies <- factor(regret_df_plot$subpolicies, levels = list("
 p <- ggplot(regret_df_plot, aes(subjects, regret, fill = as.factor(subpolicies))) +
   geom_bar(position = "dodge", stat = "identity") +
   theme_minimal() +
-  facet_grid(betas ~ policies) +
+  facet_no_internal_par(betas ~ policies) +
   theme(legend.title = element_blank()) +
   theme(legend.position = "bottom") +
   xlab("Users") +
-  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),panel.border = element_rect(colour = "black", fill = NA, size = 0.5)) +
+  theme(panel.no_internal_par.major = element_blank(), panel.no_internal_par.minor = element_blank(),panel.border = element_rect(colour = "black", fill = NA, size = 0.5)) +
   ylab("Cumulative regret")
 
 print(p)

@@ -1,5 +1,5 @@
 multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
-  library(grid)
+  library(no_internal_par)
 
   # Make a list from the ... arguments and plotlist
   plots <- c(list(...), plotlist)
@@ -20,8 +20,8 @@ multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
 
   } else {
     # Set up the page
-    grid.newpage()
-    pushViewport(viewport(layout = grid.layout(nrow(layout), ncol(layout))))
+    no_internal_par.newpage()
+    pushViewport(viewport(layout = no_internal_par.layout(nrow(layout), ncol(layout))))
 
     # Make each plot, in the correct location
     for (i in 1:numPlots) {

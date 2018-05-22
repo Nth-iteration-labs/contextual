@@ -10,7 +10,7 @@
 \alias{check_history_data}
 \title{Plot}
 \description{
-The R6 class \code{Plot} generates plots based on \code{History} data.
+The R6 class \code{Plot} generates plots from on \code{History} data.
 It is usually actually invoked by calling the generic \code{plot(h)}, where \code{h}
 is an \code{History} class instance.
 }
@@ -26,19 +26,80 @@ Plot <- Plot$new()
 
 \describe{
 
-\item{\code{cumulative(history)}}{
-Returns a plot of cumulative regret or reward over time.
+\item{\code{cumulative(history,...)}}{
+Returns a plot of cumulative regret or reward (depending on parameter regret=TRUE/FALSE)
+over time.
 }
-\item{\code{average(history)}}{
-Returns a plot of average regret or reward over time.
+\item{\code{average(history,...)}}{
+Returns a plot of average regret or reward (depending on parameter regret=TRUE/FALSE)
+over time.
 }
-\item{\code{optimal(history)}}{
+\item{\code{optimal(history,...)}}{
 Returns a plot of the percentage the optimal arm was chosen over time.
 }
-\item{\code{arms(history)}}{
-Returns a plot of the ratio with which each arm was chosen over time.
+\item{\code{arms(history),...}}{
+Returns a plot of the ratio with which each arm of a simulation was chosen over time.
+If multiple agents are run, only plots the arm plot of the first agent.
+}
+}
 }
 
+\section{Plot method arguments}{
+
+
+\describe{
+\item{\code{regret}}{
+\code{(logical, TRUE)} If regret is TRUE, regret will be plotted on the y-axis.
+When regret is set to FALSE, reward will be plotted on the y-axis.
+}
+\item{\code{rate}}{
+(\code{logical, TRUE)} If rate is TRUE, the rate of the regret or reward is plotted.
+}
+\item{\code{no_internal_par}}{
+\code{(logical, FALSE)} If no_internal_par is TRUE, Plot() does not set or adjust plotting parameters.
+This makes it possible to set your own plotting parameters, for instance, when position multiple
+Plots in a no_internal_par.
+}
+\item{\code{legend}}{
+\code{(logical, TRUE)} Print the legend.
+}
+\item{\code{legend_title}}{
+\code{(character , NULL)} Set a legend title.
+}
+\item{\code{legend_labels}}{
+\code{(list , NULL)} Set legend labels to custom values as specificed in this list.
+}
+\item{\code{legend_border}}{
+\code{(logical , NULL)} Set a legend title.
+}
+\item{\code{xlim}}{
+\code{(c(integer,integer), NULL)} Set x-axis limits.
+}
+\item{\code{xlim}}{
+\code{(c(integer,integer), NULL)} Set y-axis limits.
+}
+\item{\code{use_colors}}{
+\code{(logical, TRUE)} If use_colors is set to FALSE, plots will be in grayscale.
+Otherwise, plots will make use of a color palette.
+}
+\item{\code{ci}}{
+\code{(logical, NULL)} If ci is TRUE, Plot() will display 95% confidence intervals.
+}
+\item{\code{step_size}}{
+\code{(integer, NULL)} Plot only for every every t%%step_size==0
+}
+\item{\code{start_step}}{
+\code{(integer, NULL)} Start plotting at t=start_step
+}
+\item{\code{color_step}}{
+\code{(integer, 1)} Linecharts will cycle through agents/color_step colors.
+}
+\item{\code{color_step}}{
+\code{(integer, 1)} Linecharts will cycle through agents/lty_step line types
+}
+\item{\code{lwd}}{
+\code{(integer, 1)} Linecharts will be of lwd width.
+}
 }
 }
 

@@ -11,7 +11,7 @@ Plot <- R6::R6Class(
 
     ############################ plot types ############################
 
-    cumulative = function(history, grid = FALSE, xlim = NULL, legend = TRUE, regret = TRUE, use_colors = TRUE, ci = FALSE, step_size = 1, start_step = 1, rate = FALSE, color_step = 1, lty_step = 1, lwd = 1, ylim = NULL, legend_labels = NULL, legend_border = NULL, legend_title = NULL) {
+    cumulative = function(history, no_internal_par = FALSE, xlim = NULL, legend = TRUE, regret = TRUE, use_colors = TRUE, ci = FALSE, step_size = 1, start_step = 1, rate = FALSE, color_step = 1, lty_step = 1, lwd = 1, ylim = NULL, legend_labels = NULL, legend_border = NULL, legend_title = NULL) {
       history <- check_history_data(history)
       if (regret) {
         if (rate) {
@@ -32,10 +32,10 @@ Plot <- R6::R6Class(
         }
         cs <- history[, list(var = var(cumsum), data = mean(cumsum)), by = list(t, agent)]
       }
-      do_plot(cs = cs, ylab_title = ylab_title, use_colors = use_colors, ci = ci, legend = legend, grid = grid, step_size = step_size, start_step = start_step, color_step = color_step, lty_step = lty_step, lwd = lwd, ylim = ylim, legend_labels = legend_labels, legend_border = legend_border, legend_title = legend_title)
+      do_plot(cs = cs, ylab_title = ylab_title, use_colors = use_colors, ci = ci, legend = legend, no_internal_par = no_internal_par, step_size = step_size, start_step = start_step, color_step = color_step, lty_step = lty_step, lwd = lwd, ylim = ylim, legend_labels = legend_labels, legend_border = legend_border, legend_title = legend_title)
       invisible(self)
     },
-    average = function(history, grid = FALSE, xlim = NULL, legend = TRUE, regret = FALSE, use_colors = TRUE, ci = FALSE, step_size = 1, start_step = 1, rate = FALSE, color_step = 1, lty_step = 1, lwd = 1, ylim = NULL, legend_labels = NULL, legend_border = NULL, legend_title = NULL) {
+    average = function(history, no_internal_par = FALSE, xlim = NULL, legend = TRUE, regret = FALSE, use_colors = TRUE, ci = FALSE, step_size = 1, start_step = 1, rate = FALSE, color_step = 1, lty_step = 1, lwd = 1, ylim = NULL, legend_labels = NULL, legend_border = NULL, legend_title = NULL) {
       history <- check_history_data(history)
       if (regret) {
           ylab_title <- "Average expected regret"
@@ -44,21 +44,21 @@ Plot <- R6::R6Class(
           ylab_title <- "Average reward"
           cs <-  history[, list(var = var(reward) , data = mean(reward)), by = list(t, agent)]
       }
-      do_plot(cs = cs, ylab_title = ylab_title, use_colors = use_colors, ci = ci, legend = legend, grid = grid, step_size = step_size, start_step = start_step, color_step = color_step, lty_step = lty_step, lwd = lwd, ylim = ylim, legend_labels = legend_labels, legend_border = legend_border, legend_title = legend_title)
+      do_plot(cs = cs, ylab_title = ylab_title, use_colors = use_colors, ci = ci, legend = legend, no_internal_par = no_internal_par, step_size = step_size, start_step = start_step, color_step = color_step, lty_step = lty_step, lwd = lwd, ylim = ylim, legend_labels = legend_labels, legend_border = legend_border, legend_title = legend_title)
       invisible(self)
     },
-    optimal = function(history, grid = FALSE, xlim = NULL, legend = TRUE, use_colors = TRUE, ci = FALSE, step_size = 1, start_step = 1, color_step = 1, lty_step = 1, lwd = 1, ylim = NULL, legend_labels = NULL, legend_border = NULL, legend_title = NULL) {
+    optimal = function(history, no_internal_par = FALSE, xlim = NULL, legend = TRUE, use_colors = TRUE, ci = FALSE, step_size = 1, start_step = 1, color_step = 1, lty_step = 1, lwd = 1, ylim = NULL, legend_labels = NULL, legend_border = NULL, legend_title = NULL) {
       history <- check_history_data(history)
       ylab_title <- "Optimal arm"
       cs <- history[, list(var = var(choice_is_optimal * 100), data = mean(choice_is_optimal) * 100), by = list(t, agent)]
-      do_plot( cs = cs, ylab_title = ylab_title, use_colors = use_colors, ci = ci, legend = legend, grid = grid, step_size = step_size, start_step = start_step, color_step = color_step, lty_step = lty_step, lwd = lwd, ylim = ylim, legend_labels = legend_labels, legend_border = legend_border, legend_title = legend_title)#ylim = c(0, 100)
+      do_plot( cs = cs, ylab_title = ylab_title, use_colors = use_colors, ci = ci, legend = legend, no_internal_par = no_internal_par, step_size = step_size, start_step = start_step, color_step = color_step, lty_step = lty_step, lwd = lwd, ylim = ylim, legend_labels = legend_labels, legend_border = legend_border, legend_title = legend_title)#ylim = c(0, 100)
       invisible(self)
     },
 
     ############################ main plot function  ############################
 
-    do_plot = function(cs, ylab_title, use_colors = FALSE, ci = FALSE, legend = TRUE, grid = FALSE, ylim = NULL, step_size = 1, start_step = 1, color_step = 1, lty_step = 1, lwd = 1, legend_labels = NULL, legend_border = NULL, legend_title = NULL) {
-      if (grid == FALSE) {
+    do_plot = function(cs, ylab_title, use_colors = FALSE, ci = FALSE, legend = TRUE, no_internal_par = FALSE, ylim = NULL, step_size = 1, start_step = 1, color_step = 1, lty_step = 1, lwd = 1, legend_labels = NULL, legend_border = NULL, legend_title = NULL) {
+      if (no_internal_par == FALSE) {
         dev.hold()
         old.par <- par(no.readonly = TRUE)
         par(mar = c(5, 5, 1, 1))
@@ -175,7 +175,7 @@ Plot <- R6::R6Class(
           bg = "white"
         )
       }
-      if (grid == FALSE) {
+      if (no_internal_par == FALSE) {
         dev.flush()
         par(old.par)
       }
@@ -183,8 +183,8 @@ Plot <- R6::R6Class(
 
     ############################ arms plot ############################
 
-    arms = function(history, grid = FALSE, xlim = NULL, legend = TRUE, use_colors = TRUE, step_size = 1, start_step = 1, ylim = NULL, legend_labels = NULL, legend_border = NULL, legend_title = NULL) {
-      if (grid == FALSE) {
+    arms = function(history, no_internal_par = FALSE, xlim = NULL, legend = TRUE, use_colors = TRUE, step_size = 1, start_step = 1, ylim = NULL, legend_labels = NULL, legend_border = NULL, legend_title = NULL) {
+      if (no_internal_par == FALSE) {
         dev.hold()
         old.par <- par(no.readonly = TRUE)
         par(mar = c(5, 5, 1, 1))
@@ -248,7 +248,7 @@ Plot <- R6::R6Class(
           inset = c(0.08, 0.1)
         )
       }
-      if (grid == FALSE) {
+      if (no_internal_par == FALSE) {
         dev.flush()
         par(old.par)
       }
@@ -280,7 +280,7 @@ Plot <- R6::R6Class(
 
 #' Plot
 #'
-#' The R6 class \code{Plot} generates plots based on \code{History} data.
+#' The R6 class \code{Plot} generates plots from on \code{History} data.
 #' It is usually actually invoked by calling the generic \code{plot(h)}, where \code{h}
 #' is an \code{History} class instance.
 #'
@@ -296,20 +296,81 @@ Plot <- R6::R6Class(
 #'
 #' \describe{
 #'
-#'   \item{\code{cumulative(history)}}{
-#'      Returns a plot of cumulative regret or reward over time.
+#'   \item{\code{cumulative(history,...)}}{
+#'      Writes a plot of cumulative regret or reward (depending on parameter regret=TRUE/FALSE)
+#'      over time.
 #'   }
-#'   \item{\code{average(history)}}{
-#'      Returns a plot of average regret or reward over time.
+#'   \item{\code{average(history,...)}}{
+#'      Writes a plot of average regret or reward (depending on parameter regret=TRUE/FALSE)
+#'      over time.
 #'   }
-#'   \item{\code{optimal(history)}}{
-#'      Returns a plot of the percentage the optimal arm was chosen over time.
+#'   \item{\code{optimal(history,...)}}{
+#'      Writes a plot of the percentage the optimal arm was chosen over time.
 #'   }
-#'   \item{\code{arms(history)}}{
-#'      Returns a plot of the ratio with which each arm was chosen over time.
+#'   \item{\code{arms(history),...}}{
+#'      Writes a plot of the ratio with which each arm of a simulation was chosen over time.
+#'      If multiple agents are run, only plots the arm plot of the first agent.
 #'   }
-#'
 #'  }
+#'
+#' @section Plot method arguments:
+#'
+#' \describe{
+#'   \item{\code{regret}}{
+#'      \code{(logical, TRUE)} If regret is TRUE, regret will be plotted on the y-axis.
+#'      When regret is set to FALSE, reward will be plotted on the y-axis.
+#'   }
+#'   \item{\code{rate}}{
+#'      (\code{logical, TRUE)} If rate is TRUE, the rate of the regret or reward is plotted.
+#'   }
+#'   \item{\code{no_internal_par}}{
+#'      \code{(logical, FALSE)} If no_internal_par is TRUE, Plot() does not set or adjust plotting parameters.
+#'      This makes it possible to set your own plotting parameters, for instance, when position multiple
+#'      Plots in a no_internal_par.
+#'   }
+#'   \item{\code{legend}}{
+#'      \code{(logical, TRUE)} Print the legend.
+#'   }
+#'   \item{\code{legend_title}}{
+#'      \code{(character , NULL)} Set a legend title.
+#'   }
+#'   \item{\code{legend_labels}}{
+#'      \code{(list , NULL)} Set legend labels to custom values as specificed in this list.
+#'   }
+#'   \item{\code{legend_border}}{
+#'      \code{(logical , NULL)} Set a legend title.
+#'   }
+#'   \item{\code{xlim}}{
+#'      \code{(c(integer,integer), NULL)} Set x-axis limits.
+#'   }
+#'   \item{\code{xlim}}{
+#'      \code{(c(integer,integer), NULL)} Set y-axis limits.
+#'   }
+#'   \item{\code{use_colors}}{
+#'      \code{(logical, TRUE)} If use_colors is set to FALSE, plots will be in grayscale.
+#'      Otherwise, plots will make use of a color palette.
+#'   }
+#'   \item{\code{ci}}{
+#'      \code{(logical, NULL)} If ci is TRUE, Plot() will display 95% confidence intervals.
+#'   }
+#'   \item{\code{step_size}}{
+#'      \code{(integer, NULL)} Plot only for every every t%%step_size==0
+#'   }
+#'   \item{\code{start_step}}{
+#'      \code{(integer, NULL)} Start plotting at t=start_step
+#'   }
+#'   \item{\code{color_step}}{
+#'      \code{(integer, 1)} Linecharts will cycle through agents/color_step colors.
+#'   }
+#'   \item{\code{color_step}}{
+#'      \code{(integer, 1)} Linecharts will cycle through agents/lty_step line types
+#'   }
+#'   \item{\code{lwd}}{
+#'      \code{(integer, 1)} Linecharts will be of lwd width.
+#'   }
+#'  }
+#'
+#'
 #'
 #' @seealso
 #'

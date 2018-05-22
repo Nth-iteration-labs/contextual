@@ -35,7 +35,7 @@ for (dp in do_poisson) {
           plot_log$load_data(paste0(data_dir,sim_str))
         }
         if (i == 1) { do_legend <- TRUE } else {do_legend <- FALSE }
-        plot(plot_log, grid = TRUE, type = "cumulative", rate = FALSE, legend = do_legend,
+        plot(plot_log, no_internal_par = TRUE, type = "cumulative", rate = FALSE, legend = do_legend,
              legend_labels = subpolicies, legend_border = FALSE, ylim = c(1,1650))
         title(outer = FALSE, main = pol, adj = 0.96, line = -1.3, font.main = 1, cex.main = 1.0, col.main = "black")
         if (i > 1) {

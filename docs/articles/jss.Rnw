@@ -549,7 +549,6 @@ The Plot class takes an History object, and offers several default types of plot
          \item \code{average}: plots the average reward or regret over all simulations per Agent (that is, each Bandit and Policy combo) over time.
          \item \code{cumulative}: plots the average reward or regret over all simulations per Agent over time.
          \item \code{optimal}: if data on optimal choice is available, "optimal" plots how often the best or optimal arm was chosen on average at each timestep, in percentages, over all simulations per Agent.
-         \item \code{grid}: plots a combination of the previous plots in a 2x2 grid.
          \item \code{arms}: plots ratio of arms chosen on average at each time step, in percentages, totaling 100%.
 
 \end{itemize}
@@ -558,7 +557,6 @@ Plot objects can be instantiated directly, or, more commonly, by calling plot().
 
 <<eval=FALSE, size='small'>>=
 # plot a history object through default generic plot() function
-plot(history, type = "grid")
 plot(history, type = "arms")
 
 # or use the Plot class directly
@@ -566,7 +564,8 @@ p1 <- Plot$new()$cumulative(history)
 p2 <- Plot$new()$average(history)
 @
 
-Some other plot arguments:
+It is also possible to retrieve a data.frame object from an History object, and plot the data in any other way, for instance with ggplot (both with 95% confidence interval):
+
 
 \section{Implementing and extending Policy and Bandit subclasses}
 
@@ -661,10 +660,9 @@ simulator          <- Simulator$new(agents = agent,
 
 history            <- simulator$run()
 
-
 par(mfrow = c(1, 2),mar = c(5, 5, 1, 1))
-plot(history, type = "cumulative", grid = TRUE)
-plot(history, type = "arms", grid = TRUE)
+plot(history, type = "cumulative", no_internal_par = TRUE)
+plot(history, type = "arms", no_internal_par = TRUE)
 
 @
 
@@ -762,8 +760,8 @@ history            <- simulator$run()
 
 
 par(mfrow = c(1, 2),mar = c(5, 5, 1, 1))
-plot(history, type = "cumulative", grid = TRUE)
-plot(history, type = "arms", grid = TRUE)
+plot(history, type = "cumulative", no_internal_par = TRUE)
+plot(history, type = "arms", no_internal_par = TRUE)
 
 @
 
@@ -876,8 +874,8 @@ simulation  <- Simulator$new(agents, horizon, simulations, do_parallel = FALSE)
 history     <- simulation$run()
 
 par(mfrow = c(1, 2),mar = c(5, 5, 1, 1))
-plot(history, type = "cumulative", regret = FALSE, grid = TRUE)
-plot(history, type = "cumulative", grid = TRUE)
+plot(history, type = "cumulative", regret = FALSE, no_internal_par = TRUE)
+plot(history, type = "cumulative", no_internal_par = TRUE)
 @
 
 \begin{center}
@@ -890,7 +888,7 @@ plot(history, type = "cumulative", grid = TRUE)
 
 Of course, the extensibility of contextual does not limit itself to the subclassing of Policy classes. Through its R6 based object system, it is also easy to extend and override any other \pkg{contextual} super-  or subclass. Below, we demonstrate how to make use of that extensibility through the implementation of a PoissonRewardBandit extending \pkg{contextual}'s BasicBandit class, and of an EpsilonGreedyAnnealingPolicy version of the Epsilon Greedy policy that we introduced in section 4.2.
 
-<<label=fig4plot, size='small',  message = FALSE, fig.keep='none'>>=
+<<label=poisson, size='small',  message = FALSE, fig.keep='none'>>=
 
 PoissonRewardBandit <- R6::R6Class(
   "PoissonRewardBandit",
@@ -936,14 +934,14 @@ simulation  <- Simulator$new(agents, horizon, simulations, do_parallel = FALSE)
 history     <- simulation$run()
 
 par(mfrow = c(1, 2),mar = c(5, 5, 1, 1))
-plot(history, type = "cumulative", grid = TRUE)
-plot(history, type = "average", regret = FALSE, grid = TRUE)
+plot(history, type = "cumulative", no_internal_par = TRUE)
+plot(history, type = "average", regret = FALSE, no_internal_par = TRUE)
 
 @
 
 \begin{center}
-<<label=fig4, fig.width=10, fig.height=4, fig.keep='high', echo=FALSE, message=FALSE, out.extra='', fig.cap="Extending BasicBandit and EpsilonGreedyPolicy">>=
-<<fig4plot>>
+<<label=poissonplot, fig.width=10, fig.height=4, fig.keep='high', echo=FALSE, message=FALSE, out.extra='', fig.cap="Extending BasicBandit and EpsilonGreedyPolicy">>=
+<<poisson>>
 @
 \end{center}
 

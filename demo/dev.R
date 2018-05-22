@@ -87,11 +87,11 @@ if (grepl('w|W', .Platform$OS.type)) {
 #                    private$O )
 # }
 
-# history --> grid
+# history --> no_internal_par
 # if (history[agent == "TSampling",.N] > 0) {                               ## this needs to be more generic!!!
-#   self$ts(history, grid = TRUE, legend = TRUE)
+#   self$ts(history, no_internal_par = TRUE, legend = TRUE)
 # } else {
-#   self$average(history, grid = TRUE, legend = FALSE, regret = TRUE)
+#   self$average(history, no_internal_par = TRUE, legend = FALSE, regret = TRUE)
 # }
 
 # ggplot(data = cs, aes(
