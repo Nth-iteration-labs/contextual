@@ -58,7 +58,7 @@ ContextualBandit <- R6::R6Class(
 #' Bandit: ContextualBandit
 #'
 #' ContextualBandit intro
-#' 
+#'
 #' @name ContextualBandit
 #' @family contextual subclasses
 #'
@@ -84,8 +84,5 @@ ContextualBandit <- R6::R6Class(
 #'
 #' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
-#'
-#' @examples
-#'\dontrun{}
 #'
 NULL

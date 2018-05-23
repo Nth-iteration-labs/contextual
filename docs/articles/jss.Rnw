@@ -1056,7 +1056,6 @@ plot(history, type = "arms")
       \caption{An UCB1 based bandit evaluated on a Li Bandit. The Bandit itself samples from 350000 rows with clicks for rewards and the display of one of four “persuasive strategies” to users of an online store representing the offline Bandit's four arms.}
 \end{figure}
 
-
 \subsubsection{Offline evaluation through DoublyRobustBandit}
 
 *** insert algorithm ***
@@ -1087,6 +1086,8 @@ Time is of the essence...
 \section{Extra greedy UCB}
 
 Now with extra greedy!
+
+And lock in feedback too? And dueling? and..
 
 \section{Conclusion}
 \label{sec:conc4}

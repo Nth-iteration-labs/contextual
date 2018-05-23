@@ -30,10 +30,6 @@ R does \emph{not} wait for the process to finish, but returns
 immediately.
 }
 
-\examples{
-\dontrun{}
-
-}
 \seealso{
 Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}

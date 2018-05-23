@@ -197,8 +197,6 @@ print.History <- function(x, ...) {
 #' @name summary.history
 #' @family contextual
 #'
-#' @section Arguments:
-#'
 #' @param object A \code{History} object.
 #' @param ... Further summary parameters.
 #'

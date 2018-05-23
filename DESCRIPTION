@@ -26,7 +26,7 @@ Suggests:
     rmarkdown,
     devtools,
     rstan,
-    ggplot
+    ggplot2
 VignetteBuilder: knitr
 URL: https://github.com/Nth-iteration-labs/contextual
 BugReports: https://github.com/Nth-iteration-labs/contextual/issues

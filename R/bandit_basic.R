@@ -72,7 +72,4 @@ BasicBandit <- R6::R6Class(
 #' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
-#' @examples
-#'\dontrun{}
-#'
 NULL
