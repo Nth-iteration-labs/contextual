@@ -1175,7 +1175,7 @@ And lock in feedback too? And dueling? and..
 
 \section{Acknowledgments}
 
-Thanks go to my colleagues at the JADS...
+Thanks go to my colleagues at the Jheronimus Academy of Data Science and Tilburg University!
 
 %\bibliographystyle{apacite}
 \bibliography{jss}
