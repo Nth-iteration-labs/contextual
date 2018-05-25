@@ -1,5 +1,8 @@
-setwd("~/GitHub/contextual/demo")
-source("dev.R")
+library(contextual)
+library(here)
+setwd(here("demo","demo_div"))
+
+source("../dev.R")
 
 # run a simulation
 horizon            <- 25

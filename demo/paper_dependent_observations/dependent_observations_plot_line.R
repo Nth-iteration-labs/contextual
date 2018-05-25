@@ -1,7 +1,7 @@
-##################### Imports ####################
+library(contextual)
+library(here)
+setwd(here("demo","paper_dependent_observations"))
 
-setwd("~/GitHub/contextual/demo/dependent_observations")
-# library(contextual)
 source("../dev.R")
 
 ##################### Settings ###################

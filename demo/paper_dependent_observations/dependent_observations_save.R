@@ -1,11 +1,9 @@
-##################### Imports ####################
-
-setwd("~/GitHub/contextual/demo/dependent_observations")
-
-# library(contextual)
-# Todo: why not finding Contextual at first run new system? bv
+library(contextual)
+library(here)
+setwd(here("demo","paper_dependent_observations"))
 
 source("../dev.R")
+
 source("./bandit_bernoulli.R")
 source("./policy_pooled_egreedy.R")
 source("./policy_pooled_ucb.R")
@@ -27,10 +25,8 @@ data_dir       <- "data/"
 
 ##################### Create Stan Model ##########
 
-if (!require(rstan)) {
-  install.packages("rstan")
-  library("rstan")
-}
+
+library("rstan")
 
 message("Stan Modeling phase")
 rstan_options(auto_write = TRUE)

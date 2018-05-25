@@ -1,5 +1,3 @@
-# make N/n into n_arm n_arm_user or n_a n_au etc
-
 UnpooledUCBPolicy <- R6::R6Class(
   "UnpooledUCBPolicy",
   portable = FALSE,

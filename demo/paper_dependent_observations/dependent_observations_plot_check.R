@@ -1,6 +1,7 @@
-### Imports
+library(contextual)
+library(here)
+setwd(here("demo","paper_dependent_observations"))
 
-setwd("~/GitHub/contextual/demo/dependent_observations")
 source("../dev.R")
 
 data_dir        <- "D:/data/"

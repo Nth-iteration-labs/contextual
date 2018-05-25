@@ -17,15 +17,14 @@ Imports:
     R.devices,
     foreach,
     doParallel,
-    itertools,
-    here
+    itertools
 Suggests:
     testthat,
     covr,
     knitr,
+    here,
     rmarkdown,
     devtools,
-    rstan,
     ggplot2
 VignetteBuilder: knitr
 URL: https://github.com/Nth-iteration-labs/contextual

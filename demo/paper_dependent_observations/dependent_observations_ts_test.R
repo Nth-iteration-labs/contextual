@@ -1,13 +1,11 @@
-##################### Imports ###################
+library(contextual)
+library(here)
+library("rstan")
 
-#library(contextual)
-if (!require(rstan)) {
-  install.packages("rstan")
-  library("rstan")
-}
+setwd(here("demo","paper_dependent_observations"))
 
-setwd("~/GitHub/contextual/demo/dependent_observations") ## change this
 source("../dev.R")
+
 source("./bandit_bernoulli.R")
 
 ##################### Settings ##################

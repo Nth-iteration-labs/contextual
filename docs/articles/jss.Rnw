@@ -49,7 +49,7 @@
 %% an abstract and keywords
 \Abstract{
 
-Contextual bandit algorithms have been gaining in popularity due to their effectiveness and flexibility in the online evaluation of partial information sequential decision problems - from online advertising and recommender systems to clinical trial design and personalized medicine. At the same time, there are as of yet surprisingly few options that enable researchers and practitioners to simulate and compare the wealth of new and existing Bandit algorithms in a practical, standardized and extensible way. To help close this gap between analytical research and real-life application the current paper introduces the object-oriented R package \pkg{contextual}: a user-friendly and, through its clear object oriented structure, easily extensible framework that facilitates the parallel comparison of contextual and non-contextual Bandit policies by means of both simulation and offline analysis.
+Contextual bandit algorithms have been gaining in popularity due to their effectiveness and flexibility in the online evaluation of partial information sequential decision problems - from online advertising and recommender systems to clinical trial design and personalized medicine. At the same time, there are as of yet surprisingly few options that enable researchers and practitioners to simulate and compare the wealth of new and existing Bandit algorithms in a practical, standardized and extensible way. To help close this gap between analytical research and practical evaluation towards real-life applications the current paper introduces the object-oriented R package \pkg{contextual}: a user-friendly and, through its clear object-oriented structure, easily extensible framework that facilitates parallelized comparison of contextual and non-contextual Bandit policies through both simulation and offline analysis.
 }
 
 \Keywords{contextual multi-armed bandits, simulation, sequential experimentation, \proglang{R}}
@@ -131,24 +131,25 @@ There are many real-world situations in which we have to decide between a set of
 \item As a doctor, do you treat your patients with tried and tested medication, or do you prescribe a new and promising experimental treatment?
 \end{itemize}
 
-Every one of these issues represents another take on the same underlying dilemma: when to explore, versus when to exploit. To get a better grip on such decision problems, and to learn if and when specific strategies might be more successful than others, such explore/exploit dilemmas have been studied extensively under the umbrella of the "Multi-Armed Bandit" problem (MAB problem). Here, an algorithm or "policy" repeatedly selects one out of a limited set of options or "arms," each with its particular (hidden) payout distribution. Every time the policy selects another arm, it receives a reward from the "multi-armed bandit," which represents all available arms together with their hidden reward distributions. The policy itself continuously seeks to maximize its average rewards over time by balancing the exploration of arms with more uncertain payoffs with the exploitation of arms that offer the highest current expected payoff. Importantly, on each repeated choice, the policy only receives a reward for the chosen arm: he or she remains in the dark about the potential rewards of the unchosen arms.
+Every one of these issues represents another take on the same underlying dilemma: when to explore, versus when to exploit. To get a better grip on such decision problems, and to learn if and when specific strategies might be more successful than others, such explore/exploit dilemmas have been studied extensively under the umbrella of the "Multi-Armed Bandit" (MAB) problem.
+Here, the term "Multi-Armed Bandit" refers to a group of slot machines or "one-armed bandits"---one-armed, as old slot machines used to possess a lever, and bandits, as slot machines tend to pick your pockets.  By analogy, a "Multi-Armed Bandit" is a slot machine with multiple lever arms to pull, each one paying out at a different expected rate. The "Multi-Armed Bandit problem," then, refers to the challenge of designing a good strategy or "policy" for pulling the levers without any prior knowledge of their payout rate. A good policy continuously seeks to maximize the gambler's average rewards over time by balancing the exploration of arms with more uncertain payoffs with the exploitation of arms that offer the highest current expected payoff.
 
-A recent MAB generalization known as the \textit{contextual} Multi-Armed Bandit (cMAB) builds on the previous formalization by adding one crucial element: contextual information. Such contextual multi-armed bandits are actually known by many different names in about as many different fields of research: as "bandit problems with side observations", "bandit problems with side information", "associative reinforcement learning", "reinforcement learning with immediate reward", "associative bandit problems", or "bandit problems with covariates". However, the term "contextual Multi-Armed Bandit," as coined by Langford and Zhang, seems both the most generally used and the most concise, so that is the term we will stick to in the current paper.
+A recent MAB generalization known as the \textit{contextual} Multi-Armed Bandit (cMAB) builds on the previous by adding one crucial element: contextual information.Contextual multi-armed bandits are actually known by many different names in about as many different fields of research: as "bandit problems with side observations", "bandit problems with side information", "associative reinforcement learning", "reinforcement learning with immediate reward", "associative bandit problems", or "bandit problems with covariates". However, the term "contextual Multi-Armed Bandit," as coined by Langford and Zhang, seems both the most generally used and the most concise, so that is the term we will stick to in the current paper.
 
-Still, however they are named, all cMAB policy differentiate themselves by definition from their MAB cousins in that can make use of features that reflect the current state of the world--features that can then be mapped onto available arms or actions. This access to side information makes cMAB algorithms even more relevant to many real-life decision problems than its MAB progenitors. To follow up on our previous examples: do you show a particular add to returning customers, to new ones, or both? Do you prescribe a different treatment to male patients, female patients, or both? In the real world, it appears almost no choice exists without some contextual information that can be mined or mapped. So it may be no surprise that cMAB algorithms have found many applications: from recommender systems and advertising to health apps and personalized medicine--inspiring a multitude of new, often analytically derived bandit algorithms or policies, each with their strengths and weaknesses.
+Still, however named, all cMAB policies differentiate themselves, by definition, from their MAB cousins in that can make use of features that reflect the current state of the world---features that can then be mapped onto available arms or actions. This access to side information makes cMAB algorithms even more relevant to many real-life decision problems than its MAB progenitors. To follow up on our previous examples: do you show a particular add to returning customers, to new ones, or both? Do you prescribe a different treatment to male patients, female patients, or both? In the real world, it appears no choice exists without some contextual information that can be mined or mapped. So it may be no surprise that cMAB algorithms have found many applications: from recommender systems and advertising to health apps and personalized medicine---inspiring a multitude of new, often analytically derived bandit algorithms or policies, each with their strengths and weaknesses.
 
-Regrettably, though cMAB algorithms have gained traction in both research and industry, comparisons on simulated, and, importantly, real-life, large-scale offline \textquotedblleft{}partial label\textquotedblright{} data sets have relatively lagged behind. To this end, the current paper introduces the \pkg{contextual} R package. \pkg{contextual} aims to facilitate the simulation, offline comparison, and evaluation of (Contextual) Multi-Armed bandit policies. There exist a few other frameworks that enable the analysis of offline datasets in some capacity, such as Microsoft's Vowpal Wabbit, and the MAB focussed python package Striatum. But, as of yet, no extensible and widely applicable R package that can analyze and compare, respectively, K-armed, Continuum, Adversarial and Contextual Multi-Armed Bandit Algorithms on either simulated or offline data.
+Regrettably, though cMAB algorithms have gained both academic and commercial acclaim, comparisons on simulated, and, importantly, real-life, large-scale offline \textquotedblleft{}partial label\textquotedblright{} data sets have relatively lagged behind. To this end, the current paper introduces the \pkg{contextual} R package. \pkg{contextual} aims to facilitate the simulation, offline comparison, and evaluation of (Contextual) Multi-Armed bandit policies. There exist a few other frameworks that enable the analysis of offline datasets in some capacity, such as Microsoft's Vowpal Wabbit, and the MAB focussed python packages Striatum and SMPyBandits. But, as of yet, no extensible and widely applicable R package that can analyze and compare, respectively, K-armed, Continuum, Adversarial and Contextual Multi-Armed Bandit Algorithms on either simulated or offline data.
 
 In section 2, this paper continues with a more formal definition of MAB and CMAB problems and relate it to our implementation. In section 3, we give an overview of \pkg{contextual}’s object-oriented structure In section 4, we list the policies that are available by default, and simulate two MAB policies and a cMAB policy. In section 5, we demonstrate how easy it is to extend and customize \pkg{contextual} policies and bandits. In section 6, we replicate two papers, thereby demonstrating how to test policies on offline data sets. Finally, in section  7, we will go over some of the additional features in the package and conclude with some comments on the current state of the package and possible enhancements.
 
 \section{From formalization to implementation}
 
 
-In this section, we first present a more formal definition of the contextual Multi-Armed Bandit problem. We then show how this formalization can be translated to a clear and concise class structure. Which leads up to section 3, where we delve a little deeper into the implementation of the described classes.
+In this section, we first present a more formal definition of the contextual Multi-Armed Bandit problem. We then show how this formalization can be translated to a clear and concise class structure. Leading up to section 3, where we will delve a little deeper into the implementation of the described classes.
 
 \subsection{Formalization}
 
-On further formalization of the contextual Bandit problem, a (k-armed) \textbf{bandit} $B$ can be defined as a set of $k$ distributions $B=\{D_{1},\dots ,D_{k}\}$, where each distribution is associated with the I.I.D. rewards generated by one of the $k\in \mathbb {N} ^{+}$ arms. We now define an algorithm or \textbf{policy} $\piup$, that seeks to maximize its total \textbf{reward} (that is, to maximize its cumulative reward $\sum_{t=1}^T r_t$ or minimize its cumulative regret---see equations \ref{eq:1}, \ref{eq:2} and \ref{eq:3}). This \textbf{policy} observes information on the current state of the world represented as a $d$-dimensional contextual feature vector \(x_{t}=\left( x_{1,t},  \dots, x_{d,t}\right)\). Based on earlier payoffs, the \textbf{policy} then selects one of the \textbf{bandit} $B$'s arms by choosing an action a \(a_{t} \in \left\{ 1, \dots, k \right\}\), and receives reward \(r_{a_{t},t}\), the expectation of which depends both the context and the reward history of that particular arm. With this observation \( (x_{t,a_t},a_{t},r_{t,a_t}) \), the policy now updates its arm-selection strategy through some investigation of how these contexts, actions and rewards hang together. These steps are then repeated \textit{T} times, where \textit{T} is generally defined as a bandit's \textbf{horizon}.
+On further formalization of the contextual Bandit problem, a (k-armed) \textbf{bandit} $B$ can be defined as a set of $k$ distributions $B=\{D_{1},\dots ,D_{k}\}$, where each distribution is associated with the I.I.D. rewards generated by one of the $k\in \mathbb {N} ^{+}$ arms. We now define an algorithm or \textbf{policy} $\piup$, that seeks to maximize its total \textbf{reward} (that is, to maximize its cumulative reward $\sum_{t=1}^T r_t$ or minimize its cumulative regret---see equations \ref{eq:1}, \ref{eq:2} and \ref{eq:3}). This \textbf{policy} observes information on the current state of the world represented as a $d$-dimensional contextual feature vector \(x_{t}=\left( x_{1,t},  \dots, x_{d,t}\right)\). Based on earlier payoffs, the \textbf{policy} then selects one of \textbf{bandit} $B$'s arms by choosing an action \(a_{t} \in \left\{ 1, \dots, k \right\}\), and receives reward \(r_{a_{t},t}\), the expectation of which depends both the context and the reward history of that particular arm. With this observation \( (x_{t,a_t},a_{t},r_{t,a_t}) \), the policy now updates its arm-selection strategy. These steps are then repeated \textit{T} times, where \textit{T} is generally defined as a bandit's \textbf{horizon}.
 
 Schematically, for each round \emph{t}= \{1, \ldots, T\}:
 
@@ -165,13 +166,15 @@ Where the goal of the policy $\piup$ is to optimize its \textit{cumulative rewar
 Reward^{\pi}_{T} = \sum^{T}_{t=1}(r_{a^{\pi}_t,x_t})
 \end{equation}
 
-This \textit{cumulative reward} is directly related to \textit{cumulative regret}, an oft used metric of policy performance. Cumulative regret is defined as the sum of rewards that would have been received by choosing optimal actions $\mathrm{a}$ at every \emph{t} subtracted by the sum of rewards awarded to the actually chosen actions $a^{\pi}$ for every \emph{t} over \emph{t}= \{ 1, \ldots, T \}:
+Though \textit{cumulative reward} offers a first estimate of a policy's learning performance, as a performance measure, \textit{cumulative regret}---defined as the sum of rewards that would have been received by choosing optimal actions $\mathrm{a}$ at every \emph{t} subtracted by the sum of rewards awarded to the actually chosen actions $a^{\pi}$ for every \emph{t} over \emph{t}= \{ 1, \ldots, T \}---offers several advantages.
+
+Firstly, cumulative regret offers basic feature scaling.  That is, with cumulative regret, you can shift a bandit's rewards by some arbitrary constant, and still arrive at the same total cumulative regret over T.
+
+Secondly, since effective policies asymptotically approach that of a policy with the highest expected reward, their regret is expected to grow as a logarithm of T. In other words, as \textit{cumulative regret} grows only on selecting non-optimal arms, a good policy's cumulative regret ought to be growing less and less over T.  555555555555555todo333333333333
 
 \begin{equation} \label{eq:2}
 R^{\pi}_{T} = \max_{\mathrm{a} = 1, \dots, k} \sum^{T}_{t=1}(r_{\mathrm{a},x_t}) - \sum^{T}_{t=1}(r_{a^{\pi}_t,x_t})
 \end{equation}
-
-Though a policy's \textit{cumulative reward} already offers some useful estimate of its learning performance, it is generally more informative to use a policy's \textit{cumulative regret} as its performance measure. Firstly, cumulative regret offers normalization of a policy's performance. That is, with cumulative regret, it is possible to move a policy from one bandit to another who's rewards have been shifted by some arbitrary constant, and still arrive at the same total cumulative regret over T. Secondly, since good policies asymptotically approach that of a policy with the highest expected reward, their regret is expected to grow as a logarithm of T. In other words, as \textit{cumulative regret} grows only on selecting non-optimal arms, a good policy's cumulative regret ought to be growing less and less over T.
 
 See for example Figure ~\ref{fig:lucbpolicy} in section 4.3 for an illustrative example of how cumulative regret generally has nicer properties as a measure of a policy's performance when compared to cumulative reward. To be more specific, in this and other tables and figures, we mostly do not refer to the a policy's cumulative regret per se, but actually to their \textit{expected} cumulative regret This is indicative of the fact that simulated rewards and actions are usually stochastic:
 
@@ -209,7 +212,7 @@ simulator  <- Simulator$new(agents = agent, simulations = 100, horizon = 100)
 history    <- simulator$run()
 @
 
-In these lines, we start out by instantiating the \code{Policy} subclass \code{EpsilonGreedyPolicy} as \code{policy}, with its parameter \code{epsilon} set to \code{0.1}. Next, we instantiate the \code{Bandit} subclass \code{SyntheticBandit} as \code{bandit}, with three Bernoulli arms, each offering a reward of one with probability $p$, and otherwise an reward of zero. For the current simulation, our \code{bandit}'s probability of reward is set to respectively 0.9, 0.1 and 0.1 per arm. We then assign both our \code{bandit} and our \code{policy} to \code{Agent} instance \code{agent}. This \code{agent} is then added to a \code{Simulator} that is set to one hundred \code{simulations}, each with a \code{horizon} of one hundred--that is, the \code{Simulator} runs one hundred simulation, each with a different random seed, for one hundred time steps \code{t}.
+In these lines, we start out by instantiating the \code{Policy} subclass \code{EpsilonGreedyPolicy} as \code{policy}, with its parameter \code{epsilon} set to \code{0.1}. Next, we instantiate the \code{Bandit} subclass \code{SyntheticBandit} as \code{bandit}, with three Bernoulli arms, each offering a reward of one with probability $p$, and otherwise an reward of zero. For the current simulation, our \code{bandit}'s probability of reward is set to respectively 0.9, 0.1 and 0.1 per arm. We then assign both our \code{bandit} and our \code{policy} to \code{Agent} instance \code{agent}. This \code{agent} is then added to a \code{Simulator} that is set to one hundred \code{simulations}, each with a \code{horizon} of one hundred---that is, the \code{Simulator} runs one hundred simulation, each with a different random seed, for one hundred time steps \code{t}.
 
 \begin{figure}[H]
   \centering
@@ -218,12 +221,12 @@ In these lines, we start out by instantiating the \code{Policy} subclass \code{E
       \caption{Diagram of contextual's basic structure. The context feature vector returned by get\_context() (colored red in the figure) is only taken into account by cMAB policies, and is ignored by MAB policies.}
 \end{figure}
 
-On running the \code{Simulator}, it starts as many parallel worker processes as possible, each running another \code{agent} in parallel. Each of these \code{agent}s then loops through four main function calls at each time step \code{t}. Though we delve deeper into the setup of each of the main contextual classes in section 3, the current overview allows us to demonstrate how these four function calls relate to the four steps we defined in our cMAB formalization in section 2.1:
+On running the \code{Simulator} it starts several (by default, the number of CPU cores minus one) workers processes, splitting simulations as efficiently as possible over each parallell worker. For each simulation, an agent clone then loops through its four main function calls at each time step \code{t}. Though we delve deeper into the setup of each of the main contextual classes in section 3, the current overview allows us to demonstrate how these four function calls relate to the four steps we defined in our cMAB formalization in section 2.1:
 
 \begin{enumerate}
          \item[1)] \code{agent} calls \code{bandit$get_context(t)}, which returns named list \code{list(k = n_arms, d = n_features, X = context)} that contains the current \code{d} dimensional \code{context} feature vector \code{X} together with the number of arms \code{k}.
          \item[2)] \code{agent} calls \code{policy$get_action(t, X)}, whereupon \code{policy} decides which arm to play based on the current \code{context} vector \code{X} (in MAB policies, X is ignored) and \code{theta} (the named list holding the parameters summarizing past \code{context}s, \code{action}s and \code{reward}s\footnotemark[\value{footnote}]). \code{policy} then returns a named list \code{list(choice = arm_chosen_by_policy)} that holds the index of the arm to play.
-         \item[3)] \code{agent} calls \code{bandit$get_reward(t, context, action)}, which returns a named list \code{list(reward = reward_for_choice_made, optimal = optimal_reward_value)} that contains the \code{reward} for the \code{action} returned by \code{policy} in [2] and, optionally, the \code{optimal} reward at the current time \code{t} -- if and when known.
+         \item[3)] \code{agent} calls \code{bandit$get_reward(t, context, action)}, which returns a named list \code{list(reward = reward_for_choice_made, optimal_reward_value = optimal_reward_value)} that contains the \code{reward} for the \code{action} returned by \code{policy} in [2] and, optionally, the \code{optimal} reward at the current time \code{t} --- if and when known.
          \item[4)] \code{agent} calls \code{policy$set_reward(t, context, action, reward)} and uses the \code{action} taken, the \code{reward} received, and the current \code{context} to update the set of parameter values in \code{theta}
 \end{enumerate}
 
@@ -241,21 +244,19 @@ EpsilonGreedy   79.44             9.9
 
 \section{R6 class structure}
 
-Though section two's basic overview of contextual's  class structure suffices for running predefined \code{Policies} and \code{Bandits} it lacks the detail necessary to extend contextual's classes. Since it is the contextual package's explicit goal to offer researchers and developers an easily extensible framework to develop, test and compare their own \code{Policy} and \code{Bandit} implementations, the current section will give some more background information--both on the R6 class system and on each of the six previously introduced core contextual classes.
+Since it is the contextual's explicit goal to offer researchers and developers an easily extensible framework to develop, test and compare their own \code{Policy} and \code{Bandit} implementations, the current section offers additional background information on contextual' class structure---both on the R6 class system and on each of the six previously introduced core contextual classes.
 
 \subsection{R and the R6 Class System}
 
 Statistical computational methods, in R or otherwise, are regularly made available through single-use scripts or basic, isolated code packages. Usually, such code examples are meant to give a basic idea of a statistical method, technique or algorithm in the context of a scientific paper.  Such code examples offer their scientific audience a rough inroad towards the comparison and further implementation of their underlying methods. However, when a set of well-researched interrelated algorithms, such as MAB and cMAB policies, find growing academic, practical and commercial adoption, it becomes crucial to offer a more standardized and more accessible way to compare such methods and algorithms.
 
-It is against this background that we decided to develop the \pkg{contextual} R package--a package would offer an easily extendible and open bandit framework together with an extensible bandit library presenting some of the best known and popular bandit algorithms. To us, it made the most sense to create such a package in R, as R is currently the de facto language for the dissemination of new statistical methods, techniques, and algorithms--while it is at the same time finding ever-growing adoption in industry. The resulting lively exchange of R related code, data, and knowledge between scientists in both academia and business offers precisely the kind of cross-pollination that \pkg{contextual} hopes to facilitate.
+It is against this background that we decided to develop the \pkg{contextual} R package---a package that would offer an easily extendible and open bandit framework together with extensible bandit and policy libraries. To us, it made the most sense to create such a package in R, as R is currently the de facto language for the dissemination of new statistical methods, techniques, and algorithms---while it is at the same time finding ever-growing adoption in industry. The resulting lively exchange of R related code, data, and knowledge between scientists in both academia and business offers precisely the kind of cross-pollination that \pkg{contextual} hopes to facilitate.
 
-As R offers several different systems of object-orientation (R5, R6, S3, and S4) that meant we still needed to decide on a class system that would enable us to divide our package into clear, self-contained objects. In the end, on weighing the pros and cons of each class system, we decided to use the R6 system. First of all, because R6 uses reference semantics and is an encapsulated object-oriented system, where objects contain methods that can modify objects directly. These reference semantics make R6 classes instantly recognizable for developers with a background in Java or C++--in contrast to S3 and S4 classes, whose objects are not mutable, often making S3 and S4 classes more convoluted and verbose.
-
-Additionally, compared to the older R5 reference class system, R6 classes are lighter-weight and (as they do not make use of S4 classes) do not require the methods package, making \pkg{contextual} substantially less resource-hungry than they would otherwise have been--certainly not unimportant in a simulation package such as \pkg{contextual}.
+As contextual was meant to be as structured, light and easily extensible as possible, out of R's object oriented systems (R5, R6, S3, and S4), we finally settled on the R6 class system. Firstly, R6 uses reference semantics, which means that R6 classes are instantly recognizable for developers with a background in Java or C++---in contrast to S3 and S4 classes, whose objects are not mutable, often making S3 and S4 classes more convoluted and verbose. Additionally, when compared to the older R5 reference class system, R6 classes are lighter-weight and (as they do not make use of S4 classes) do not require the methods package, making \pkg{contextual} substantially less resource-hungry than they would otherwise have been---certainly not unimportant in a simulation package such as \pkg{contextual}.
 
 \subsection{Main classes}
 
-In this section, we go over each of contextual's six main classes in some more detail--with an emphasis on the Bandit and Policy classes, as these are the classes that, in general, be the ones that will be extended most often. To further clarify contextual's class structure, we also include two UML diagrams (UML or "Unified Modeling Language" is a modeling language that presents a standard way to visualize the overall class structure and general design of a software application or framework). The UML class diagram shown in Figure \ref{fig:contextual_class} on page \pageref{fig:contextual_class} visualizes the structure of our package by showcasing the most important of \pkg{contextual}'s classes, attributes, and relationships at rest. The UML sequence diagram in figure Figure \ref{fig:contextual_sequence} on page \pageref{fig:contextual_sequence}, on the other hand, shows how \pkg{contextual}'s classes behave over time. This diagram depicts a basic overview of the sequence of function calls between \pkg{contextual}'s main objects in action.
+In this section, we go over each of contextual's six main classes in some more detail---with an emphasis on the Bandit and Policy classes, as these are the classes that, in general, be the ones that will be extended most often. To further clarify contextual's class structure, we also include two UML diagrams (UML or "Unified Modeling Language" is a modeling language that presents a standard way to visualize the overall class structure and general design of a software application or framework). The UML class diagram shown in Figure \ref{fig:contextual_class} on page \pageref{fig:contextual_class} visualizes the structure of our package by showcasing the most important of \pkg{contextual}'s classes, attributes, and relationships at rest. The UML sequence diagram in figure Figure \ref{fig:contextual_sequence} on page \pageref{fig:contextual_sequence}, on the other hand, shows how \pkg{contextual}'s classes behave over time. This diagram depicts a basic overview of the sequence of function calls between \pkg{contextual}'s main objects in action.
 
 \subsubsection{Bandit}
 
@@ -326,7 +327,7 @@ We also made several \code{Bandit} subclasses available.  For each Bandit, there
          \item \code{ContextualBandit}: a basic contextual bandit that synthetically generates contextual rewards based on randomly set weights. It can simulate mixed user (cross-arm) and article (arm) feature vectors, following its parameters k, d and num\_users.
          \item \code{ContinuumBandit}: a basic example of a continuum bandit.
          \item \code{SyntheticBandit}: an example of a more complex and versatile synthetic bandit, that pregenerates its context and reward vectores.
-         \item \code{LiBandit}: a basic example of a bandit that makes use of offline data - here, an implementation of Li(2232)
+         \item \code{LiBandit}: a basic example of a bandit that makes use of offline data - here, an implementation of Li's [reference].
 \end{itemize}
 
 Each of these bandits can be used to test policies without further ado. However, they can also serve as superclasses for new custom \code{Bandit} subclasses. Or as templates for new \code{Bandit} implementation(s) that directly subclass the \code{Bandit} superclass.
@@ -436,10 +437,28 @@ Its main function is \code{do_step()}, generally called by the worker of a \code
 A Simulator instance is the entry point of any \pkg{contextual} simulation. It encapsulates one or more \code{Agents}, clones them if necessary, runs the \code{Agents} (in parallel, by default), and saves the log of all of the \code{Agents} interactions to a \code{History} object:
 
 <<eval=FALSE, size='small'>>=
-history <- Simulator$new(agents = agent, horizon = 100, simulations = 100)$run()
+history <- Simulator$new(agents = agent, horizon = 10, simulations = 10)$run()
 @
 
-To specify how to run a simulation and how data is to be saved to a \code{Simulator} instance's \code{History} log, a Simulator object can be configured through the following parameters:
+By default, for performance reasons, a \code{Simulator} does not save \code{context} matrices and the (potentially deeply nested) \code{theta} list to its \code{History log}. But with its \code{save_context} and \code{save_theta} arguments set to \code{TRUE}, a the above history data.table object would be structured as follows:
+
+<<eval=FALSE, size='small'>>=
+print(history)
+
+ $ t                   : int  1 2 3 4 5 6 7 8 9 10 ...  # time step
+ $ sim                 : int  1 1 1 1 1 1 1 1 1 1 ...   # simulation index number
+ $ choice              : num  3 1 1 1 1 1 1 1 1 1 ...   # arm chosen by policy
+ $ reward              : num  0 1 0 1 1 1 1 1 1 1 ...   # reward awarded by bandit
+ $ choice_is_optimal   : int  0 1 1 1 1 1 1 1 1 1 ...   # chosen arm optimal one?
+ $ optimal_reward_value: num  1 1 0 1 1 1 1 1 1 1 ...   # best reward at t
+ $ propensity          : num  0.9 0.9 0.033 0.9 0.9 ... # propensity of chosen arm
+ $ agent               : chr  'ThompsonSampling' ...    i# agent name
+ $ context             : List of 100 matrices           # list of context matrices
+ $ theta               : List of 100 Lists              # list of (nested) thetas
+
+@
+
+To specify how to run a simulation and which data is to be saved to a \code{Simulator} instance's \code{History} log, a Simulator object can be configured through the following parameters:
 
 \begin{itemize}
    \item{\code{agents}}{
@@ -492,7 +511,7 @@ To specify how to run a simulation and how data is to be saved to a \code{Simula
 
 \subsubsection{History}
 
-A Simulator aggregates the data acquired during a Simulation in a History object's private data.table log. It is possible to plot() a History object, summarize() it, or, among others, obtain either a data.frame() or a data.table() from any History instance:
+A \code{Simulator} aggregates the data acquired during a simulation in a \code{History} object's private \code{data.table} log. It also calculates per agent average cumulative reward, and, when the optimal outcome per \code{t} is known, per agent average cumulative regret. It is furthermore possible to \code{plot()} a \code{History object}, \code{summarize()} it, and, among others, obtain either a \code{data.frame()} or a \code{data.table()} from any \code{History} instance:
 
 <<eval=FALSE, size='small'>>=
 history             <- Simulator$new(agent)$run()
@@ -543,7 +562,7 @@ Some other History functions:
 
 \subsubsection{Plot}
 
-The Plot class takes an History object, and offers several default types of plot:
+The \code{Plot} class takes an \code{History} object, and offers several default types of plot:
 
 \begin{itemize}
          \item \code{average}: plots the average reward or regret over all simulations per Agent (that is, each Bandit and Policy combo) over time.
@@ -553,7 +572,8 @@ The Plot class takes an History object, and offers several default types of plot
 
 \end{itemize}
 
-Plot objects can be instantiated directly, or, more commonly, by calling plot(). In either case, make sure to specify (at least) a History subclass and one of the plot types specified above:
+\code{Plot} objects can be instantiated directly, or, more commonly, by calling the \code{plot()} function. In either case, make sure to specify (at least) a \code{History} instance and one of the plot types specified above:
+
 <<eval=FALSE, size='small'>>=
 # plot a history object through default generic plot() function
 plot(history, type = "arms")
@@ -563,7 +583,7 @@ p1 <- Plot$new()$cumulative(history)
 p2 <- Plot$new()$average(history)
 @
 
-It is also possible to retrieve a data.frame object from an History object, and plot the data in any other way, for instance with ggplot (both with 95% confidence interval):
+It is also possible to retrieve a \code{data.frame} object from an \code{History} object, and plot the data in any other way, for instance with ggplot (with 95% confidence interval):
 
 <<eval=TRUE, echo=FALSE, include = FALSE>>=
 library("contextual") # run contextual simulation & plot results (slightly faster)
@@ -591,15 +611,61 @@ print( ggplot(data = df, aes(x = t, y = data, ymin = V1, ymax = V2)) +
   geom_line(aes(color = agent)) + geom_ribbon(aes(fill = agent), alpha = 0.3) +
   labs(x = NULL, y = "Average reward")) # plot the ggplot object
 @
+
 \section{Implementing and extending Policy and Bandit subclasses}
 
-Though section 3 provides an introduction to all of contextual's main classes, in practice, most developers and researchers will mostly focus on subclassing policies and bandits of their own. Therefore, the current section first demonstrates how to implement some well-known bandit algorithms, and, secondly, how to create Policy and Bandit sub-subclasses.
+Though section 3 provides an introduction to all of contextual's main classes, in practice, researchers will mostly focus on subclassing \code{Policies} and \code{Bandits}. The current section therefore first demonstrates how to implement some well-known bandit algorithms, and, secondly, how to create \code{Policy} and \code{Bandit} sub-subclasses.
+
+\subsection{BasicBandit: a Minimal Bernoulli Bandit}
+
+Where not otherwise noted, all \code{Bandit} implementations in the current paper refer to (or will be configured as) multi-armed \code{Bandits} with Bernoulli rewards. For Bernoulli \code{Bandits}, the reward received is either a zero or a one: on each $t$ they offer either a reward of $1$ with probability $p$ or a reward of $0$ with probability $p - 1$. In other words, a Bernoulli Bandit has a finite set of arms a \(  \in \left\{ 1, \dots, k \right\} \) where the rewards for each arm $a$ is distributed Bernoulli with parameter ${\mu}a$, the expected reward of the arm.
+
+One example of a very simple non-contextual Bernoulli bandit is contextual's minimal \code{Bandit} implementation, \code{BasicBandit}:
+
+<<eval=FALSE, size='small'>>=
+BasicBandit <- R6::R6Class(
+  inherit = Bandit,
+  public = list(
+    initialize   = function(weights = NULL) {
+      self$set_weights(weights)                         # arm weight vector
+      private$X <- array(1, dim = c(self$d, self$k, 1)) # context matrix of ones
+    },
+    # ...
+    get_weights = function() {
+      private$W
+    },
+    set_weights = function(local_W) {
+      private$W <- matrix(local_W, nrow = 1L)           # arm weight vector
+      self$d    <- as.integer(dim(private$W)[1])        # context dimensions
+      self$k    <- as.integer(dim(private$W)[2])        # arms
+      private$W
+    },
+    get_context = function(t) {
+      contextlist <- list(k = self$k, d = self$d, X = private$X)
+      contextlist
+    },
+    get_reward = function(t, context, action) {
+      private$R  <- as.double(matrix(runif(self$k) < get_weights(), self$k, self$d))
+      rewardlist <- list(
+        reward                   = private$R[action$choice],
+        optimal_reward_value     = private$R[which.max(private$R)]
+      )
+      rewardlist
+    }
+    # ...
+  )
+)
+@
+
+\code{BasicBandit} expects a \code{weight} vector of probabilities, where every element in \code{weight} represents the probability of \code{BasicBandit} returning a reward of $1$ for one of its \code{k} arms. Also, observe that, at every \code{t}, \code{BasicBandit} sets private \code{context} matrix \code{X} to an unchanging, neutral \code{d} features times \code{k} arms unit matrix, which alludes to the fact that \code{BasicBandit} does not generate any covaried contextual cues related to its arms.
 
 \subsection{Epsilon First}
 
-In this non-contextual algorithm, also known as AB(C) testing, a pure exploration phase is followed by a pure exploitation phase. The Epsilon First policy is equivalent to the setup of a randomized controlled trial (RCT): a study design where people are allocated at random to receive one of several clinical interventions. One of these interventions is the control. This control can be standard practice, a placebo, or no intervention at all. On completion of the RCT, the best solution at that point is then suggested to be the superior "evidence-based" option for everyone, at all times.
+An important feature of contextual is that it eases the conversion from formal and pseudocode policy descriptions to clean R6 classes. We will give several examples of such conversions in the current paper, starting with the implementation of the Epsilon First algorithm. In this non-contextual algorithm, also known as AB(C) testing, a pure exploration phase is followed by a pure exploitation phase.
 
-To get an idea of how straightforward it can be to go from a high-level policy description in pseudocode, the format that is most generally used to formally describe and share bandit policies in the literature, to an R  contextual Policy subclass, first a pseudocode description of the Epsilon First algorithm:
+In that respect, the Epsilon First algorithm is actually equivalent to a randomized controlled trial (RCT). An RCT, generally refered to as the gold standard clinical research paradigm, is a study design where subjects are allocated at random to receive one of several clinical interventions. On completion of an RCT, the most succesful intervention up till that point in time is suggested to be the superior "evidence-based" option for everyone from then on.
+
+A more formal pseudocode description of this Epsilon First policy:
 
 \begin{algorithm}[H]
 \caption{Epsilon First}
@@ -624,7 +690,7 @@ To get an idea of how straightforward it can be to go from a high-level policy d
 \end{algorithmic}
 \end{algorithm}
 
-Next, its conversion from the above pseudocode to an EpsilonFirstPolicy class:
+And the above pseudocode converted to an \code{EpsilonFirstPolicy} class:
 
 <<eval=FALSE, size='small'>>=
 EpsilonFirstPolicy <- R6::R6Class(
@@ -661,7 +727,7 @@ EpsilonFirstPolicy <- R6::R6Class(
 )
 @
 
-Following the instantiation of the Agent Bandit/Policy pair it can now be assigned to, and then run on, a Simulator:
+To evaluate this policy, instantiate both an \code{EpsilonFirstPolicy} and a \code{SyntheticBandit} (a contextual and more versatile \code{BasicBandit} subclass). Then add the \code{Bandit}/\code{Policy} pair to an \code{Agent}. Next, add the \code{Agent} to a \code{Simulator}. Finally, run the \code{Simulator}, and \code{plot()} the its \code{History} log:
 
 <<label=efplot, size='small',  message = FALSE, fig.keep='none'>>=
 horizon            <- 100
@@ -689,8 +755,6 @@ plot(history, type = "arms", no_internal_par = TRUE)
 <<efplot>>
 @
 \end{center}
-
-Importantly, where not otherwise noted, the SyntheticBandit in the code above, and all other Bandits in the current paper refer to (or will be configured as) Bernoulli (or "Binary") bandits: that is, on each $t$ they offer either a reward of $1$ with probability $p$ or a reward of $0$ with probability $p-1$.
 
 \subsection{The Epsilon Greedy Policy}
 
@@ -755,7 +819,7 @@ EpsilonGreedyPolicy <- R6::R6Class(
 )
 @
 
-Assign the new class plus our Bernoulli type Bandit to an Agent, assign the Agent to a Simulator, and run it:
+Assign the new class, together with \code{SyntheticBandit}, to an \code{Agent}. Again, assign the \code{Agent} to a \code{Simulator}. Then run the \code{Simulator} and \code{plot()}:
 
 <<label=egplot, size='small',  message = FALSE, fig.keep='none'>>=
 horizon            <- 100
@@ -786,7 +850,7 @@ plot(history, type = "arms", no_internal_par = TRUE)
 
 \subsection{Contextual Bandit: LinUCB with Linear Disjoint Models}
 
-As a final example of how to subclass contextual's Bandit superclass, we move from non-contextual algorithms to a contextual one. As described in section 1, contextual bandits can make use of side information to help them choose the current best arm to play. For example, contextual information such as a website visitors' location may be related to which article's headline (or arm) on the frontpage of the website will be clicked on most.
+As a final example of how to subclass contextual's \code{Bandit} superclass, we move from non-contextual algorithms to a contextual one. As described in section 1, contextual bandits can make use of side information to help them choose the current best arm to play. For example, contextual information such as a website visitors' location may be related to which article's headline (or arm) on the frontpage of the website will be clicked on most.
 
 Here, we show how to implement and evaluate probably one of the most cited out of all contextual policies, the LinUCB algorithm with Linear Disjoint Models. The policy is more complicated than the previous two bandits, but when following its pseudocode description to the letter, it translates nicely to yet another Bandit subclass.
 
@@ -818,7 +882,7 @@ The LinUCBDisjoint algorithm works by running a linear regression with coefficie
 \end{algorithmic}
 \end{algorithm}
 
-Next, translate the above pseudocode into a well organized Bandit subclass again:
+Next, translating the above pseudocode into a well organized \code{Bandit} subclass:
 
 <<eval=FALSE, size='small'>>=
 #' @export
@@ -863,7 +927,7 @@ LinUCBDisjointPolicy <- R6::R6Class(
 
 @
 
-Let us now evaluate this Policy on a synthetic Bernoulli Bandit with three arms and three context features. As you can observe in the code below, each of the synthetic Bandit's arms is on average equally probable to return a reward. At the same time, the (randomized) presence of a context feature has a strong influence on the distribution of rewards over the arms: in the presence of a specific feature, one of the arms is much more likely to offer a reward. In this setting, the EpsilonGreedyPolicy does not do better than chance. But the LinUCBDisjointPolicy is able to learn the relationships between arms, rewards, and features without much difficulty:
+Now it is possible to evaluate the \code{LinUCBDisjointPolicy} using a Bernoulli \code{SyntheticBandit} with three arms and three context features. In the code below we define each of \code{SyntheticBandit}'s arms to be, on average, equally probable to return a reward. However, at the same time, the presence of a random context feature vector exercises a strong influence on the distribution of rewards over the arms per time step t: in the presence of a specific feature, one of the arms becomes much more likely to offer a reward. In this setting, the \code{EpsilonGreedyPolicy} does not do better than chance. But the \code{LinUCBDisjointPolicy} is able to learn the relationships between arms, rewards, and features without much difficulty:
 
 <<label=lucbplot, size='small',  message = FALSE, fig.keep='none'>>=
 
@@ -898,7 +962,8 @@ plot(history, type = "cumulative", no_internal_par = TRUE)
 
 \subsection{Subclassing Policies and Bandits}
 
-Of course, the extensibility of contextual does not limit itself to the subclassing of Policy classes. Through its R6 based object system, it is also easy to extend and override any other \pkg{contextual} super-  or subclass. Below, we demonstrate how to make use of that extensibility through the implementation of a PoissonRewardBandit extending \pkg{contextual}'s BasicBandit class, and of an EpsilonGreedyAnnealingPolicy version of the Epsilon Greedy policy that we introduced in section 4.2.
+Contextual's extensibility does, of course, not limit itself to the subclassing of \code{Policy} classes. Through its R6 based object system it is easy to extend and override any \pkg{contextual} super- or subclass. Below, we demonstrate how to apply that extensibility to sub-subclass one Bandit and one Policy subclass.
+First, we extend \code{ BasicBandit}'s code{PoissonRewardBandit}, replacing \code{ BasicBandit}'s Bernoulli based reward function with a Poisson based one. Next, we implement an \code{EpsilonGreedyAnnealingPolicy} version of the Epsilon Greedy policy introduced in section 4.2---where its \code{EpsilonGreedyAnnealingPolicy} subclass introduces a gradual reduction ("annealing") of the policy's $epsilon$ parameter over T, in effect moving the policy from more explorative to a more exploitative over time.
 
 <<label=poisson, size='small',  message = FALSE, fig.keep='none'>>=
 
@@ -1033,8 +1098,8 @@ library(data.table)
 library(RCurl)
 library(foreign)
 
-url <- "https://raw.githubusercontent.com/Nth-iteration-labs/
-        contextual_data/master/PersuasionAPI/persuasion.csv"
+url <- "https://raw.githubusercontent.com/Nth-iteration-labs/"
+url <- paste0(url,"contextual_data/master/PersuasionAPI/persuasion.csv")
 
 website_data   <- getURL(url)
 website_data   <- setDT(read.csv(textConnection(persuasion_data)))
@@ -1045,15 +1110,15 @@ agent          <- Agent$new(UCB1Policy$new(), bandit)
 history        <- Simulator$new(agent, horizon, simulations, reindex_t = TRUE)$run()
 
 par(mfrow = c(1, 2), mar = c(2,4,1,1))
-plot(history, type = "cumulative", regret = FALSE, rate = TRUE, ylim = c(.0105, .015))
-plot(history, type = "arms")
+plot(history, type = "cumulative", regret = FALSE,
+     rate = TRUE, ylim = c(0.0105, 0.015))
 @
 
 \begin{figure}[H]
   \centering
     \includegraphics[width=.99\textwidth]{fig/ucb_offline}
     \label{fig:ucb_offline}
-      \caption{An UCB1 based bandit evaluated on a Li Bandit. The Bandit itself samples from 350000 rows with clicks for rewards and the display of one of four “persuasive strategies” to users of an online store representing the offline Bandit's four arms.}
+      \caption{An UCB1 policy evaluated on a Li Bandit. The Bandit samples from 350000 rows with clicks for rewards and the display of one of four “persuasive strategies” to users of an online store representing the offline Bandit's four arms.}
 \end{figure}
 
 \subsubsection{Offline evaluation through DoublyRobustBandit}

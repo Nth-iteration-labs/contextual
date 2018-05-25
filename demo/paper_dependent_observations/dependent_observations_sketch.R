@@ -1,8 +1,8 @@
-##################### Imports ###################
+library(contextual)
+library(here)
+setwd(here("demo","paper_dependent_observations"))
 
-#library(contextual)
-setwd("~/GitHub/contextual/demo")
-source("dev.R")
+source("../dev.R")
 
 source("./dependent_observations/bandit_bernoulli.R")
 

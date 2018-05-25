@@ -1,9 +1,10 @@
-##################### Imports ##########################
-
-setwd("~/GitHub/contextual/demo/dependent_observations")
-
 library(data.table)
 library(contextual)
+library(here)
+setwd(here("demo","paper_dependent_observations"))
+
+source("../dev.R")
+
 source("./bandit_dependent_li.R")
 source("./policy_pooled_egreedy.R")
 

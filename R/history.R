@@ -78,30 +78,37 @@ History <- R6::R6Class(
       invisible(self)
     },
     cumulative = function(final = TRUE, regret = TRUE, rate = FALSE) {
+      #TODO: check delete empty and reindex done before here.
+      max_sim = private$.data[, max(sim)]
       if (regret) {
         private$.data$temp <- private$.data$optimal_reward_value - private$.data$reward
       } else {
         private$.data$temp <- private$.data$reward
       }
       if (rate) {
-        private$.data$cum_reward_rate <- private$.data[, cumsum(temp)/t, by = list(agent, sim)]$V1
-        cum_rewards <- private$.data[, list(cum_reward_rate_var = var(cum_reward_rate),
-                                            cum_reward_rate = mean(cum_reward_rate)), by = list(t, agent)]
+        private$.data$cum <- private$.data[, cumsum(temp)/t, by = list(agent, sim)]$V1
+
       } else {
-        private$.data$cum_reward <- private$.data[, cumsum(temp), by = list(agent, sim)]$V1
-        cum_rewards <- private$.data[, list(cum_reward_var = var(cum_reward),
-                                            cum_reward = mean(cum_reward)), by = list(t, agent)]
+        private$.data$cum <- private$.data[, cumsum(temp), by = list(agent, sim)]$V1
       }
+
+      cumul <- private$.data[, list(cum_var = var(cum, na.rm = TRUE),
+                                    cum_sd = sd(cum, na.rm = TRUE),
+                                    cum = mean(cum, na.rm = TRUE)), by = list(t, agent)]
+
+      cumul$cum_ci <- cumul$cum_sd/sqrt(max_sim)*qnorm(0.975)
+
+
       private$.data$temp <- NULL
       if (final) {
-        agent_levels <- levels(as.factor(cum_rewards$agent))
-        final_cum_rewards <- list()
+        agent_levels <- levels(as.factor(cumul$agent))
+        final_cumul <- list()
         for (agent_name in agent_levels) {
-          final_cum_rewards[[agent_name]] <- tail(cum_rewards[cum_rewards$agent == agent_name], n = 1)[[4]]
+          final_cumul[[agent_name]] <- tail(cumul[cumul$agent == agent_name], n = 1) #[[4]]
         }
-        final_cum_rewards
+        final_cumul
       } else {
-        cum_rewards
+        cumul
       }
 
     },
@@ -164,7 +171,7 @@ History <- R6::R6Class(
       invisible(self)
     },
     print_data = function() {
-      str(private$.data)
+      str(private$.data, max.level = 1)
     },
     finalize = function() {
       self$clear_data_table()
