@@ -9,6 +9,12 @@ Overview
 
 Contextual is an R package to facilitate the simulation and analysis of Contextual Multi-Armed Bandit (CMAB) policies and algorithms.
 
+Maintainers
+-----------
+
+Robin van Emden: author, maintainer
+Maurits Kaptein: supervisor
+
 Documentation
 -------------
 
