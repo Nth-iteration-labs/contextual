@@ -11,7 +11,7 @@ Plot <- R6::R6Class(
 
     ############################ plot types ############################
 
-    cumulative = function(history, no_internal_par = FALSE, xlim = NULL, legend = TRUE, regret = TRUE, use_colors = TRUE, ci = FALSE, step_size = 1, start_step = 1, rate = FALSE, color_step = 1, lty_step = 1, lwd = 1, ylim = NULL, legend_labels = NULL, legend_border = NULL, legend_title = NULL) {
+    cumulative = function(history, no_par = FALSE, xlim = NULL, legend = TRUE, regret = TRUE, use_colors = TRUE, ci = FALSE, step_size = 1, start_step = 1, rate = FALSE, color_step = 1, lty_step = 1, lwd = 1, ylim = NULL, legend_labels = NULL, legend_border = NULL, legend_title = NULL) {
       history <- check_history_data(history)
       if (regret) {
         if (rate) {
@@ -32,10 +32,10 @@ Plot <- R6::R6Class(
         }
         cs <- history[, list(var = var(cumsum), data = mean(cumsum)), by = list(t, agent)]
       }
-      do_plot(cs = cs, ylab_title = ylab_title, use_colors = use_colors, ci = ci, legend = legend, no_internal_par = no_internal_par, step_size = step_size, start_step = start_step, color_step = color_step, lty_step = lty_step, lwd = lwd, ylim = ylim, legend_labels = legend_labels, legend_border = legend_border, legend_title = legend_title)
+      do_plot(cs = cs, ylab_title = ylab_title, use_colors = use_colors, ci = ci, legend = legend, no_par = no_par, step_size = step_size, start_step = start_step, color_step = color_step, lty_step = lty_step, lwd = lwd, ylim = ylim, legend_labels = legend_labels, legend_border = legend_border, legend_title = legend_title)
       invisible(self)
     },
-    average = function(history, no_internal_par = FALSE, xlim = NULL, legend = TRUE, regret = FALSE, use_colors = TRUE, ci = FALSE, step_size = 1, start_step = 1, rate = FALSE, color_step = 1, lty_step = 1, lwd = 1, ylim = NULL, legend_labels = NULL, legend_border = NULL, legend_title = NULL) {
+    average = function(history, no_par = FALSE, xlim = NULL, legend = TRUE, regret = FALSE, use_colors = TRUE, ci = FALSE, step_size = 1, start_step = 1, rate = FALSE, color_step = 1, lty_step = 1, lwd = 1, ylim = NULL, legend_labels = NULL, legend_border = NULL, legend_title = NULL) {
       history <- check_history_data(history)
       if (regret) {
           ylab_title <- "Average expected regret"
@@ -44,21 +44,21 @@ Plot <- R6::R6Class(
           ylab_title <- "Average reward"
           cs <-  history[, list(var = var(reward) , data = mean(reward)), by = list(t, agent)]
       }
-      do_plot(cs = cs, ylab_title = ylab_title, use_colors = use_colors, ci = ci, legend = legend, no_internal_par = no_internal_par, step_size = step_size, start_step = start_step, color_step = color_step, lty_step = lty_step, lwd = lwd, ylim = ylim, legend_labels = legend_labels, legend_border = legend_border, legend_title = legend_title)
+      do_plot(cs = cs, ylab_title = ylab_title, use_colors = use_colors, ci = ci, legend = legend, no_par = no_par, step_size = step_size, start_step = start_step, color_step = color_step, lty_step = lty_step, lwd = lwd, ylim = ylim, legend_labels = legend_labels, legend_border = legend_border, legend_title = legend_title)
       invisible(self)
     },
-    optimal = function(history, no_internal_par = FALSE, xlim = NULL, legend = TRUE, use_colors = TRUE, ci = FALSE, step_size = 1, start_step = 1, color_step = 1, lty_step = 1, lwd = 1, ylim = NULL, legend_labels = NULL, legend_border = NULL, legend_title = NULL) {
+    optimal = function(history, no_par = FALSE, xlim = NULL, legend = TRUE, use_colors = TRUE, ci = FALSE, step_size = 1, start_step = 1, color_step = 1, lty_step = 1, lwd = 1, ylim = NULL, legend_labels = NULL, legend_border = NULL, legend_title = NULL) {
       history <- check_history_data(history)
       ylab_title <- "Optimal arm"
       cs <- history[, list(var = var(choice_is_optimal * 100), data = mean(choice_is_optimal) * 100), by = list(t, agent)]
-      do_plot( cs = cs, ylab_title = ylab_title, use_colors = use_colors, ci = ci, legend = legend, no_internal_par = no_internal_par, step_size = step_size, start_step = start_step, color_step = color_step, lty_step = lty_step, lwd = lwd, ylim = ylim, legend_labels = legend_labels, legend_border = legend_border, legend_title = legend_title)#ylim = c(0, 100)
+      do_plot( cs = cs, ylab_title = ylab_title, use_colors = use_colors, ci = ci, legend = legend, no_par = no_par, step_size = step_size, start_step = start_step, color_step = color_step, lty_step = lty_step, lwd = lwd, ylim = ylim, legend_labels = legend_labels, legend_border = legend_border, legend_title = legend_title)#ylim = c(0, 100)
       invisible(self)
     },
 
     ############################ main plot function  ############################
 
-    do_plot = function(cs, ylab_title, use_colors = FALSE, ci = FALSE, legend = TRUE, no_internal_par = FALSE, ylim = NULL, step_size = 1, start_step = 1, color_step = 1, lty_step = 1, lwd = 1, legend_labels = NULL, legend_border = NULL, legend_title = NULL) {
-      if (no_internal_par == FALSE) {
+    do_plot = function(cs, ylab_title, use_colors = FALSE, ci = FALSE, legend = TRUE, no_par = FALSE, ylim = NULL, step_size = 1, start_step = 1, color_step = 1, lty_step = 1, lwd = 1, legend_labels = NULL, legend_border = NULL, legend_title = NULL) {
+      if (no_par == FALSE) {
         dev.hold()
         old.par <- par(no.readonly = TRUE)
         par(mar = c(5, 5, 1, 1))
@@ -175,7 +175,7 @@ Plot <- R6::R6Class(
           bg = "white"
         )
       }
-      if (no_internal_par == FALSE) {
+      if (no_par == FALSE) {
         dev.flush()
         par(old.par)
       }
@@ -183,8 +183,8 @@ Plot <- R6::R6Class(
 
     ############################ arms plot ############################
 
-    arms = function(history, no_internal_par = FALSE, xlim = NULL, legend = TRUE, use_colors = TRUE, step_size = 1, start_step = 1, ylim = NULL, legend_labels = NULL, legend_border = NULL, legend_title = NULL) {
-      if (no_internal_par == FALSE) {
+    arms = function(history, no_par = FALSE, xlim = NULL, legend = TRUE, use_colors = TRUE, step_size = 1, start_step = 1, ylim = NULL, legend_labels = NULL, legend_border = NULL, legend_title = NULL) {
+      if (no_par == FALSE) {
         dev.hold()
         old.par <- par(no.readonly = TRUE)
         par(mar = c(5, 5, 1, 1))
@@ -248,7 +248,7 @@ Plot <- R6::R6Class(
           inset = c(0.08, 0.1)
         )
       }
-      if (no_internal_par == FALSE) {
+      if (no_par == FALSE) {
         dev.flush()
         par(old.par)
       }
@@ -323,10 +323,10 @@ Plot <- R6::R6Class(
 #'   \item{\code{rate}}{
 #'      (\code{logical, TRUE)} If rate is TRUE, the rate of the regret or reward is plotted.
 #'   }
-#'   \item{\code{no_internal_par}}{
-#'      \code{(logical, FALSE)} If no_internal_par is TRUE, Plot() does not set or adjust plotting parameters.
+#'   \item{\code{no_par}}{
+#'      \code{(logical, FALSE)} If no_par is TRUE, Plot() does not set or adjust plotting parameters.
 #'      This makes it possible to set your own plotting parameters, for instance, when position multiple
-#'      Plots in a no_internal_par.
+#'      Plots in a no_par.
 #'   }
 #'   \item{\code{legend}}{
 #'      \code{(logical, TRUE)} Print the legend.

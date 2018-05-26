@@ -112,7 +112,8 @@ SyntheticBandit <- R6::R6Class(
       list(
         k = self$k,
         d = self$d,
-        X = private$X[,, idx]
+        X = private$X[,, idx],
+        o = max_in(private$O[, idx])    ################### only for oracle
       )
     },
     reward_to_list = function(t, action) {

@@ -66,7 +66,7 @@ interactions to a History object." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">contextual</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.0.0.90518</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.0.0.90522</span>
       </span>
     </div>
 
@@ -155,7 +155,7 @@ simulator &lt;- Simulator$new(agents,
                            save_theta = FALSE,
                            do_parallel = TRUE,
                            worker_max = NULL,
-                           continouous_counter = FALSE,
+                           continuous_counter = FALSE,
                            set_seed = 0,
                            write_progress_file = TRUE,
                            include_packages = NULL,
@@ -170,14 +170,14 @@ simulator &lt;- Simulator$new(agents,
 by the instantiated <code>Simulator</code>.</p></dd>
 <dt><code>horizon</code></dt><dd><p><code>integer</code>. The T time steps to run the instantiated <code>Simulator</code>, where <em>t</em> = 1, &#8230;, T.</p></dd>
 <dt><code>simulations</code></dt><dd><p><code>integer</code>. How many times to repeat each agent's simulation over <em>t</em> = 1, &#8230;, T,
-with a new seed on each repeat (itself deterministically derived from set_seed).</p></dd>
-<dt><code>save_context</code></dt><dd><p><code>logical</code>. Save the context vectors <code>X</code> on running the <code>Simulator</code>?</p></dd>
-<dt><code>save_theta</code></dt><dd><p><code>logical</code>. Save the parameter list <code>theta</code> on running the <code>Simulator</code>?</p></dd>
+with a new seed on each repeat (itself deterministically derived from set\_seed).</p></dd>
+<dt><code>save_context</code></dt><dd><p><code>logical</code>. Save the context vectors <code>X</code> to the History log during a simulation?</p></dd>
+<dt><code>save_theta</code></dt><dd><p><code>logical</code>. Save the parameter list <code>theta</code> to the History log during a simulation?</p></dd>
 <dt><code>do_parallel</code></dt><dd><p><code>logical</code>. Run <code>Simulator</code> processes in parallel?</p></dd>
 <dt><code>worker_max</code></dt><dd><p><code>integer</code>. Specifies how many parallel workers are to be used, when <code>do_parallel</code>
 is <code>TRUE</code>. If unspecified, the amount of workers defaults to <code>max(workers_available)-1</code>.</p></dd>
-<dt><code>continouous_counter</code></dt><dd><p><code>logical</code>. Of use to, amongst others, offline Bandits.
-If <code>continouous_counter</code> is set to <code>TRUE</code>, the current <code>Simulator</code>
+<dt><code>continuous_counter</code></dt><dd><p><code>logical</code>. Of use to, amongst others, offline Bandits.
+If <code>continuous_counter</code> is set to <code>TRUE</code>, the current <code>Simulator</code>
 iterates over all rows in a data set for each repeated simulation.
 If <code>FALSE</code>, it splits the data into <code>simulations</code> parts,
 and a different subset of the data for each repeat of an agent's simulation.</p></dd>

@@ -12,8 +12,9 @@ UCB1Policy <- R6::R6Class(
       self$theta_to_arms <- list('n' = 0, 'mean' = 0)
     },
     get_action = function(t, context) {
-      action$choice <- which(self$theta$n == 0)[1]
-      if (!is.na(action$choice)) {
+      n_zero_arms <- which(self$theta$n == 0)
+      if (length(n_zero_arms) > 0) {
+        action$choice <- sample_one_of(n_zero_arms)
         return(action)
       }
       expected_rewards <- rep(0.0, context$k)

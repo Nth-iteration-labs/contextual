@@ -2,7 +2,7 @@ Version: 1.0
 
 RestoreWorkspace: No
 SaveWorkspace: No
-AlwaysSaveHistory: Yes
+AlwaysSaveHistory: No
 
 EnableCodeIndexing: Yes
 UseSpacesForTab: Yes
@@ -20,3 +20,5 @@ PackageUseDevtools: Yes
 PackageInstallArgs: --no-multiarch --with-keep.source
 PackageCheckArgs: --as-cran
 PackageRoxygenize: rd,collate,namespace,vignette
+
+QuitChildProcessesOnExit: Yes

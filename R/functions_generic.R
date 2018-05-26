@@ -24,9 +24,9 @@ plot.History <- function(x, ...) {
   else
     type <- "cumulative"
   if ("args" %in% names(args))
-    no_internal_par <- eval(args$no_internal_par)
+    no_par <- eval(args$no_par)
   else
-    no_internal_par <- FALSE
+    no_par <- FALSE
   if ("xlim" %in% names(args))
     xlim <- eval(args$xlim)
   else
@@ -87,10 +87,10 @@ plot.History <- function(x, ...) {
     rate <- eval(args$rate)
   else
     rate <- FALSE
-  if ("no_internal_par" %in% names(args))
-    no_internal_par <- eval(args$no_internal_par)
+  if ("no_par" %in% names(args))
+    no_par <- eval(args$no_par)
   else
-    no_internal_par <- FALSE
+    no_par <- FALSE
   if (type == "cumulative") {
     Plot$new()$cumulative(
       x,
@@ -109,7 +109,7 @@ plot.History <- function(x, ...) {
       legend_labels = legend_labels,
       legend_border = legend_border,
       legend_title = legend_title,
-      no_internal_par = no_internal_par
+      no_par = no_par
     )
   } else if (type == "average") {
     Plot$new()$average(
@@ -129,7 +129,7 @@ plot.History <- function(x, ...) {
       legend_labels = legend_labels,
       legend_border = legend_border,
       legend_title = legend_title,
-      no_internal_par = no_internal_par
+      no_par = no_par
     )
   } else if (type == "optimal") {
     Plot$new()$optimal(
@@ -147,7 +147,7 @@ plot.History <- function(x, ...) {
       legend_labels = legend_labels,
       legend_border = legend_border,
       legend_title = legend_title,
-      no_internal_par = no_internal_par
+      no_par = no_par
     )
   } else if (type == "arms") {
     Plot$new()$arms(
@@ -161,7 +161,7 @@ plot.History <- function(x, ...) {
       legend_labels = legend_labels,
       legend_border = legend_border,
       legend_title = legend_title,
-      no_internal_par = no_internal_par
+      no_par = no_par
     )
   }
 }
@@ -211,32 +211,20 @@ print.History <- function(x, ...) {
 #' @export
 #' @export
 summary.History <- function(object, ...) {
-  p <- do.call(
-    rbind,
-    Map(
-      data.frame,
-      cumulative_regret = object$cumulative(
-        final = TRUE,
-        rate = FALSE,
-        regret = FALSE
-      ),
-      cumulative_regret_rate = object$cumulative(
-        final = TRUE,
-        rate = TRUE,
-        regret = FALSE
-      ),
-      cumulative_reward = object$cumulative(
-        final = TRUE,
-        rate = FALSE,
-        regret = TRUE
-      ),
-      cumulative_reward_rate = object$cumulative(
-        final = TRUE,
-        rate = TRUE,
-        regret = TRUE
-      )
-    )
+  cumulative_regret = object$cumulative(
+    final = TRUE,
+    rate = FALSE,
+    regret = TRUE
   )
-  print(p)
+  cumulative_reward = object$cumulative(
+    final = TRUE,
+    rate = FALSE,
+    regret = FALSE
+  )
+  cat("## Cumulative Regret\n\n")
+  print(rbindlist(cumulative_regret, fill = TRUE))
+  cat("\n## Cumulative Reward\n\n")
+  print(rbindlist(cumulative_reward, fill = TRUE))
+  cat("\n")
 }
 

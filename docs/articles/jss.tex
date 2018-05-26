@@ -99,7 +99,7 @@
 %% an abstract and keywords
 \Abstract{
 
-Contextual bandit algorithms have been gaining in popularity due to their effectiveness and flexibility in the online evaluation of partial information sequential decision problems - from online advertising and recommender systems to clinical trial design and personalized medicine. At the same time, there are as of yet surprisingly few options that enable researchers and practitioners to simulate and compare the wealth of new and existing Bandit algorithms in a practical, standardized and extensible way. To help close this gap between analytical research and practical evaluation towards real-life applications the current paper introduces the object-oriented R package \pkg{contextual}: a user-friendly and, through its clear object-oriented structure, easily extensible framework that facilitates parallelized comparison of contextual and non-contextual Bandit policies through both simulation and offline analysis.
+Contextual bandit algorithms have been gaining in popularity due to their effectiveness and flexibility in the evaluation of sequential decision problems - from online advertising and recommender systems to clinical trial design and personalized medicine. At the same time, there are as of yet surprisingly few options that enable researchers and practitioners to simulate and compare the wealth of new and existing Bandit algorithms in a practical, standardized and extensible way. To help close this gap between analytical research and practical evaluation towards real-life applications the current paper introduces the object-oriented R package \pkg{contextual}: a user-friendly and, through its clear object-oriented structure, easily extensible framework that facilitates parallelized comparison of contextual and non-contextual Bandit policies through both simulation and offline analysis.
 }
 
 \Keywords{contextual multi-armed bandits, simulation, sequential experimentation, \proglang{R}}
@@ -213,7 +213,7 @@ Though \textit{cumulative reward} offers a first estimate of a policy's learning
 
 Firstly, cumulative regret offers basic feature scaling.  That is, with cumulative regret, you can shift a bandit's rewards by some arbitrary constant, and still arrive at the same total cumulative regret over T.
 
-Secondly, since effective policies asymptotically approach that of a policy with the highest expected reward, their regret is expected to grow as a logarithm of T. In other words, as \textit{cumulative regret} grows only on selecting non-optimal arms, a good policy's cumulative regret ought to be growing less and less over T.  555555555555555todo333333333333
+Secondly, since effective policies asymptotically approach that of a policy with the highest expected reward, their regret is expected to grow as a logarithm of T. In other words, as \textit{cumulative regret} grows only on selecting non-optimal arms, a good policy's cumulative regret ought to be growing less and less over T.
 
 \begin{equation} \label{eq:2}
 R^{\pi}_{T} = \max_{\mathrm{a} = 1, \dots, k} \sum^{T}_{t=1}(r_{\mathrm{a},x_t}) - \sum^{T}_{t=1}(r_{a^{\pi}_t,x_t})
@@ -284,8 +284,15 @@ On completion of the simulation, \code{Simulator} returns an \code{history} obje
 \begin{alltt}
 \hlkwd{summary}(history)
 
-                cumulative_regret cumulative_reward
-EpsilonGreedy   79.44             9.9
+\hlcom{## Cumulative Regret}
+
+        agent   cum  cum_var   cum_sd   cum_ci   t
+EpsilonGreedy   9.9 116.9596 10.81479 2.119659 100
+
+\hlcom{## Cumulative Reward}
+
+        agent   cum  cum_var   cum_sd   cum_ci   t
+EpsilonGreedy 79.44 124.7741 11.17023 2.189326 100
 \end{alltt}
 \end{kframe}
 \end{knitrout}
@@ -301,19 +308,17 @@ Since it is the contextual's explicit goal to offer researchers and developers a
 
 Statistical computational methods, in R or otherwise, are regularly made available through single-use scripts or basic, isolated code packages. Usually, such code examples are meant to give a basic idea of a statistical method, technique or algorithm in the context of a scientific paper.  Such code examples offer their scientific audience a rough inroad towards the comparison and further implementation of their underlying methods. However, when a set of well-researched interrelated algorithms, such as MAB and cMAB policies, find growing academic, practical and commercial adoption, it becomes crucial to offer a more standardized and more accessible way to compare such methods and algorithms.
 
-It is against this background that we decided to develop the \pkg{contextual} R package---a package that would offer an easily extendible and open bandit framework together with extensible bandit and policy libraries. To us, it made the most sense to create such a package in R, as R is currently the de facto language for the dissemination of new statistical methods, techniques, and algorithms---while it is at the same time finding ever-growing adoption in industry. The resulting lively exchange of R related code, data, and knowledge between scientists in both academia and business offers precisely the kind of cross-pollination that \pkg{contextual} hopes to facilitate.
+It is against this background that we decided to develop the \pkg{contextual} R package---a package that would offer an easily extendible and open bandit framework together with extensible bandit and policy libraries. To us, it made the most sense to create such a package in R, as R is currently the de facto language for the dissemination of new statistical methods, techniques, and algorithms---while it is at the same time finding ever-growing adoption in industry. The resulting lively exchange of R related code, data, and knowledge between scientists and practitioners offers precisely the kind of cross-pollination that \pkg{contextual} hopes to facilitate.
 
-As contextual was meant to be as structured, light and easily extensible as possible, out of R's object oriented systems (R5, R6, S3, and S4), we settled R6 class system. Firstly, R6 uses reference semantics, which means that R6 classes are instantly recognizable for developers with a background in Java or C++---in contrast to S3 and S4 classes, whose objects are not mutable, often making S3 and S4 classes more convoluted and verbose. Additionally, when compared to the older R5 reference class system, R6 classes are lighter-weight and (as they do not make use of S4 classes) do not require the methods package, making \pkg{contextual} substantially less resource-hungry than they would otherwise have been---certainly not unimportant in a simulation package such as \pkg{contextual}.
+Though widely used as a procedural language, R offers several Object Oriented (OO) systems, which can significantly help in structuring the development of more complex packages. Out of the OO systems available (R5, R6, S3, and S4), we settled on R6. Firstly, it implements a mature object-oriented design when compared to S3. Secondly, its classes can be accessed and modified by reference---which offers the added advantage that R6 classes are instantly recognizable for developers with a background in Java or C++. Finally, when compared to the older R5 reference class system, R6 classes are lighter-weight and (as they do not make use of S4 classes) do not require the methods package---makes \pkg{contextual} substantially less resource-hungry than it would otherwise have been.
 
 \subsection{Main classes}
 
-In this section, we go over each of contextual's six main classes in some more detail---with an emphasis on the Bandit and Policy classes, as these are the classes that, in general, be the ones that will be extended most often. To further clarify contextual's class structure, we also include two UML diagrams (UML or "Unified Modeling Language" is a modeling language that presents a standard way to visualize the overall class structure and general design of a software application or framework). The UML class diagram shown in Figure \ref{fig:contextual_class} on page \pageref{fig:contextual_class} visualizes the structure of our package by showcasing the most important of \pkg{contextual}'s classes, attributes, and relationships at rest. The UML sequence diagram in figure Figure \ref{fig:contextual_sequence} on page \pageref{fig:contextual_sequence}, on the other hand, shows how \pkg{contextual}'s classes behave over time. This diagram depicts a basic overview of the sequence of function calls between \pkg{contextual}'s main objects in action.
+In this section, we go over each of contextual's six main classes in some more detail---with an emphasis on the Bandit and Policy classes. To clarify contextual's class structure, we also include two UML diagrams (UML or "Unified Modeling Language" is a modeling language that presents a standard way to visualize the overall class structure and general design of a software application or framework). The UML class diagram shown in Figure \ref{fig:contextual_class} on page \pageref{fig:contextual_class} visualizes contextual's static object model, showing how its classes inherit from, and interface with each other. The UML sequence diagram in figure Figure \ref{fig:contextual_sequence} on page \pageref{fig:contextual_sequence}, on the other hand, shows how \pkg{contextual}'s classes interact dynamically over time.
 
 \subsubsection{Bandit}
 
-The abstract class \code{Bandit} is the superclass of any \code{Bandit} subclass that is to be implemented in \pkg{contextual}. As it is an abstract class, it declares methods but contains no implementation. That is, every \code{Bandit} class in the \pkg{contextual} package inherits from and has to implement the methods of by this class.
-
-In practice, this implies that any \code{Bandit} subclass needs to set \code{self\$k} to the number of arms, and \code{self\$d} to the number of context features during its initialisation. On meeting this requirement, the \code{Bandit} is then required to implement \code{get_context()} and \code{do_action()}:
+In contextual, all of its bandits have to subclass and extend the Bandit superclass. It is up to its subclasses to provide implementations for all of its abstract methods. In practice, this means \code{Bandit} subclasses, at te very least, need to set \code{self\$k} to the number of arms, and \code{self\$d} to the number of context features during its initialisation. On meeting this requirement, the \code{Bandit} is then required to implement \code{get_context()} and \code{do_action()}:
 
 \begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -346,7 +351,7 @@ Bandit <- R6::\hlkwd{R6Class}(
 \end{knitrout}
 
 
-Bandit's functions can be described as following:
+Bandit's functions can be described as follows:
 
 \begin{itemize}
   \item{\code{new()}}{ Generates and initializes a new \code{Bandit} object. }
@@ -373,9 +378,9 @@ Bandit's functions can be described as following:
   }
 \end{itemize}
 
-Where possible, it is advisable to pregenerate or precache \code{Bandit} contexts and rewards, as this is (as is generally the case in R) computationally much more efficient than repeated generation of these vectors. To facilitate this, during initialisation \pkg{contextual} calls \code{generate_bandit_data()} for every Bandit where \code{self$precaching} is \code{TRUE}.
+Where possible, it is advisable to pregenerate or precache \code{Bandit} contexts and rewards, as this is (as is generally the case in R) computationally much more efficient than the repeated generation of reward vectors and context matrices. This pregeneration can be implemented in \code{generate_bandit_data()}. It is called during a \code{Bandit}'s initialization---if and when the \code{Bandit}'s \code{self$precaching} variable is \code{TRUE}.
 
-We also made several \code{Bandit} subclasses available.  For each Bandit, there is at least one example script, to be found in the package’s demo directory:
+We also made several \code{Bandit} subclasses available. For each Bandit, there is at least one example script, to be found in the package’s demo directory:
 
 \begin{itemize}
          \item \code{BasicBandit}: this basic k-armed bandit synthetically generates rewards based on a weight vector. It returns and empty context vector X.
@@ -455,7 +460,7 @@ Bandit's functions can be described as following:
 
 \subsubsection{Agent}
 
-To ease the encapsulation of parallel \code{Bandit} and \code{Policy} simulations, \code{Agent} keeps track of the state, and is responsibe for the flow of information between and the running of one \code{Bandit} and \code{Policy} pair, for example:
+To ease the encapsulation of parallel \code{Bandit} and \code{Policy} simulations, \code{Agent} is responsibe for the flow of information between and the running of one \code{Bandit} and \code{Policy} pair, for example:
 
 \begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -467,7 +472,7 @@ To ease the encapsulation of parallel \code{Bandit} and \code{Policy} simulation
 \end{kframe}
 \end{knitrout}
 
-It does this by keeping track of \code{t} and \code{theta} through its private named list variable \code{state} and by making sure that, at each time step \code{t}, all four main \code{Bandit} and \code{Policy} cMAB methods are called in their correct order:
+It does this by keeping track of \code{t}  through its private named list variable \code{state} and by making sure that, at each time step \code{t}, all four main \code{Bandit} and \code{Policy} cMAB methods are called in correct order:
 
 \begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -650,7 +655,7 @@ The \code{Plot} class takes an \code{History} object, and offers several default
 
 \end{itemize}
 
-\code{Plot} objects can be instantiated directly, or, more commonly, by calling the \code{plot()} function. In either case, make sure to specify (at least) a \code{History} instance and one of the plot types specified above:
+\code{Plot} objects can be instantiated directly, or, more commonly, by calling the \code{plot()} function. In either case, make sure to specify a \code{History} instance and one of the plot types specified above:
 
 \begin{knitrout}\small
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
@@ -679,7 +684,7 @@ It is also possible to retrieve a \code{data.frame} object from an \code{History
 \hlstd{history}         \hlkwb{<-} \hlstd{Simulator}\hlopt{$}\hlkwd{new}\hlstd{(agents,} \hlnum{25}\hlstd{,} \hlnum{300}\hlstd{,} \hlkwc{do_parallel} \hlstd{=} \hlnum{FALSE}\hlstd{)}\hlopt{$}\hlkwd{run}\hlstd{()}
 
 \hlkwd{par}\hlstd{(}\hlkwc{mfrow} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{1}\hlstd{),} \hlkwc{mar} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,}\hlnum{4}\hlstd{,}\hlnum{1}\hlstd{,}\hlnum{1}\hlstd{),} \hlkwc{oma} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{0}\hlstd{,}\hlnum{0}\hlstd{,}\hlnum{0}\hlstd{))}
-\hlkwd{plot}\hlstd{(history,} \hlkwc{type} \hlstd{=} \hlstr{"average"}\hlstd{,} \hlkwc{regret} \hlstd{=} \hlnum{FALSE}\hlstd{,} \hlkwc{ci} \hlstd{=} \hlnum{TRUE}\hlstd{,} \hlkwc{no_internal_par} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\hlkwd{plot}\hlstd{(history,} \hlkwc{type} \hlstd{=} \hlstr{"average"}\hlstd{,} \hlkwc{regret} \hlstd{=} \hlnum{FALSE}\hlstd{,} \hlkwc{ci} \hlstd{=} \hlnum{TRUE}\hlstd{,} \hlkwc{no_par} \hlstd{=} \hlnum{TRUE}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \includegraphics[width=\maxwidth]{fig/ggplotcompare-1} 
@@ -754,7 +759,7 @@ One example of a very simple non-contextual Bernoulli bandit is contextual's min
 
 An important feature of contextual is that it eases the conversion from formal and pseudocode policy descriptions to clean R6 classes. We will give several examples of such conversions in the current paper, starting with the implementation of the Epsilon First algorithm. In this non-contextual algorithm, also known as AB(C) testing, a pure exploration phase is followed by a pure exploitation phase.
 
-In that respect, the Epsilon First algorithm is actually equivalent to a randomized controlled trial (RCT). An RCT, generally refered to as the gold standard clinical research paradigm, is a study design where subjects are allocated at random to receive one of several clinical interventions. On completion of an RCT, the most succesful intervention up till that point in time is suggested to be the superior "evidence-based" option for everyone from then on.
+In that respect, the Epsilon First algorithm is actually equivalent to a randomized controlled trial (RCT). An RCT, generally refered to as the gold standard clinical research paradigm, is a study design where subjects are allocated at random to receive one of several clinical interventions. On completion of an RCT, the most succesful intervention up till that point in time is suggested to be the superior "evidence-based" option from then on.
 
 A more formal pseudocode description of this Epsilon First policy:
 
@@ -842,26 +847,23 @@ To evaluate this policy, instantiate both an \code{EpsilonFirstPolicy} and a \co
                                     \hlkwc{do_parallel} \hlstd{=} \hlnum{FALSE}\hlstd{)}
 
 \hlstd{history}            \hlkwb{<-} \hlstd{simulator}\hlopt{$}\hlkwd{run}\hlstd{()}
-
-\hlkwd{par}\hlstd{(}\hlkwc{mfrow} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{2}\hlstd{),} \hlkwc{mar} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,}\hlnum{4}\hlstd{,}\hlnum{1}\hlstd{,}\hlnum{1}\hlstd{))}
-\hlkwd{plot}\hlstd{(history,} \hlkwc{type} \hlstd{=} \hlstr{"cumulative"}\hlstd{,} \hlkwc{no_internal_par} \hlstd{=} \hlnum{TRUE}\hlstd{)}
-\hlkwd{plot}\hlstd{(history,} \hlkwc{type} \hlstd{=} \hlstr{"arms"}\hlstd{,} \hlkwc{no_internal_par} \hlstd{=} \hlnum{TRUE}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
-\begin{center}
+
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}[H]
-\includegraphics[width=\maxwidth,]{fig/efpolicy-1} \caption[Epsilon First]{Epsilon First}\label{fig:efpolicy}
+\includegraphics[width=\maxwidth,]{fig/efpolicy-1} 
+\includegraphics[width=\maxwidth,]{fig/efpolicy-2} \caption[Epsilon First]{Epsilon First}\label{fig:efpolicy}
 \end{figure}
 
 
 \end{knitrout}
-\end{center}
+
 
 \subsection{The Epsilon Greedy Policy}
 
-Contrary to the previously introduced Epsilon First policy, Epsilon Greedy algorithms do not divide exploitation and exploration into two strictly separate phases. On the contrary: an Epsilon Greedy policy starts exploring and exploiting from step one, and never stops balancing the two strategies. That is, an Epsilon Greedy policy generally mostly plays the currently best-known arm. At those times, the policy acts "greedy," as it exploits the best available option up to that point in time. However, a fraction epsilon $\epsilon$ of the time, the policy picks some arm at random, exploring if another arm might not be better after all.
+Contrary to the previously introduced Epsilon First policy, an Epsilon Greedy algorithm does not divide exploitation and exploration into two strictly separate phases--it explores with a probability of $epsilon$ and exploits with a probability of $1-epsilon$ right from the start. That is, an Epsilon Greedy policy with an $\epsilon$ of $0.1$ explores an arm at random for 10\% of the time. The other $1-\epsilon$, or 90\% of the time, the policy "greedily" exploits the currently best-known arm.
 
 This can be formalized in pseudocode as follows:
 
@@ -948,15 +950,19 @@ Assign the new class, together with \code{SyntheticBandit}, to an \code{Agent}. 
 \hlstd{history}            \hlkwb{<-} \hlstd{simulator}\hlopt{$}\hlkwd{run}\hlstd{()}
 
 \hlkwd{par}\hlstd{(}\hlkwc{mfrow} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{2}\hlstd{),} \hlkwc{mar} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,}\hlnum{4}\hlstd{,}\hlnum{1}\hlstd{,}\hlnum{1}\hlstd{))}
-\hlkwd{plot}\hlstd{(history,} \hlkwc{type} \hlstd{=} \hlstr{"cumulative"}\hlstd{,} \hlkwc{no_internal_par} \hlstd{=} \hlnum{TRUE}\hlstd{)}
-\hlkwd{plot}\hlstd{(history,} \hlkwc{type} \hlstd{=} \hlstr{"arms"}\hlstd{,} \hlkwc{no_internal_par} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\hlkwd{plot}\hlstd{(history,} \hlkwc{type} \hlstd{=} \hlstr{"cumulative"}\hlstd{,} \hlkwc{no_par} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\hlkwd{plot}\hlstd{(history,} \hlkwc{type} \hlstd{=} \hlstr{"arms"}\hlstd{,} \hlkwc{no_par} \hlstd{=} \hlnum{TRUE}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
 \begin{center}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}[H]
-\includegraphics[width=\maxwidth,]{fig/egpolicy-1} \caption[Epsilon Greedy]{Epsilon Greedy}\label{fig:egpolicy}
+\includegraphics[width=\maxwidth,]{fig/egpolicy-1} \caption[Epsilon Greedy]{Epsilon Greedy}\label{fig:egpolicy1}
+\end{figure}
+
+\begin{figure}[H]
+\includegraphics[width=\maxwidth,]{fig/egpolicy-2} \caption[Epsilon Greedy]{Epsilon Greedy}\label{fig:egpolicy2}
 \end{figure}
 
 
@@ -1070,15 +1076,19 @@ Now it is possible to evaluate the \code{LinUCBDisjointPolicy} using a Bernoulli
 \hlstd{history}     \hlkwb{<-} \hlstd{simulation}\hlopt{$}\hlkwd{run}\hlstd{()}
 
 \hlkwd{par}\hlstd{(}\hlkwc{mfrow} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{2}\hlstd{),} \hlkwc{mar} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,}\hlnum{4}\hlstd{,}\hlnum{1}\hlstd{,}\hlnum{1}\hlstd{))}
-\hlkwd{plot}\hlstd{(history,} \hlkwc{type} \hlstd{=} \hlstr{"cumulative"}\hlstd{,} \hlkwc{regret} \hlstd{=} \hlnum{FALSE}\hlstd{,} \hlkwc{no_internal_par} \hlstd{=} \hlnum{TRUE}\hlstd{)}
-\hlkwd{plot}\hlstd{(history,} \hlkwc{type} \hlstd{=} \hlstr{"cumulative"}\hlstd{,} \hlkwc{no_internal_par} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\hlkwd{plot}\hlstd{(history,} \hlkwc{type} \hlstd{=} \hlstr{"cumulative"}\hlstd{,} \hlkwc{regret} \hlstd{=} \hlnum{FALSE}\hlstd{,} \hlkwc{no_par} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\hlkwd{plot}\hlstd{(history,} \hlkwc{type} \hlstd{=} \hlstr{"cumulative"}\hlstd{,} \hlkwc{no_par} \hlstd{=} \hlnum{TRUE}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
 \begin{center}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}[H]
-\includegraphics[width=\maxwidth,]{fig/lucbpolicy-1} \caption[The contextual LinUCB algorithm with linear disjoint models, following Li et al]{The contextual LinUCB algorithm with linear disjoint models, following Li et al. (2010), compared to a non-contextual basic EpsilonGreedy policy tested on data generated by a contextual synthetic Bandit for two performance measures: left cumulative reward, right expected cumulative regret. }\label{fig:lucbpolicy}
+\includegraphics[width=\maxwidth,]{fig/lucbpolicy-1} \caption[The contextual LinUCB algorithm with linear disjoint models, following Li et al]{The contextual LinUCB algorithm with linear disjoint models, following Li et al. (2010), compared to a non-contextual basic EpsilonGreedy policy tested on data generated by a contextual synthetic Bandit for two performance measures: left cumulative reward, right expected cumulative regret. }\label{fig:lucbpolicy1}
+\end{figure}
+
+\begin{figure}[H]
+\includegraphics[width=\maxwidth,]{fig/lucbpolicy-2} \caption[The contextual LinUCB algorithm with linear disjoint models, following Li et al]{The contextual LinUCB algorithm with linear disjoint models, following Li et al. (2010), compared to a non-contextual basic EpsilonGreedy policy tested on data generated by a contextual synthetic Bandit for two performance measures: left cumulative reward, right expected cumulative regret. }\label{fig:lucbpolicy2}
 \end{figure}
 
 
@@ -1137,15 +1147,19 @@ First, we extend \code{ BasicBandit}'s code{PoissonRewardBandit}, replacing \cod
 \hlstd{history}     \hlkwb{<-} \hlstd{simulation}\hlopt{$}\hlkwd{run}\hlstd{()}
 
 \hlkwd{par}\hlstd{(}\hlkwc{mfrow} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,} \hlnum{2}\hlstd{),} \hlkwc{mar} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,}\hlnum{4}\hlstd{,}\hlnum{1}\hlstd{,}\hlnum{1}\hlstd{))}
-\hlkwd{plot}\hlstd{(history,} \hlkwc{type} \hlstd{=} \hlstr{"cumulative"}\hlstd{,} \hlkwc{no_internal_par} \hlstd{=} \hlnum{TRUE}\hlstd{)}
-\hlkwd{plot}\hlstd{(history,} \hlkwc{type} \hlstd{=} \hlstr{"average"}\hlstd{,} \hlkwc{regret} \hlstd{=} \hlnum{FALSE}\hlstd{,} \hlkwc{no_internal_par} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\hlkwd{plot}\hlstd{(history,} \hlkwc{type} \hlstd{=} \hlstr{"cumulative"}\hlstd{,} \hlkwc{no_par} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\hlkwd{plot}\hlstd{(history,} \hlkwc{type} \hlstd{=} \hlstr{"average"}\hlstd{,} \hlkwc{regret} \hlstd{=} \hlnum{FALSE}\hlstd{,} \hlkwc{no_par} \hlstd{=} \hlnum{TRUE}\hlstd{)}
 \end{alltt}
 \end{kframe}
 \end{knitrout}
 \begin{center}
 \begin{knitrout}
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{figure}[H]
-\includegraphics[width=\maxwidth,]{fig/poissonplot-1} \caption[Extending BasicBandit and EpsilonGreedyPolicy]{Extending BasicBandit and EpsilonGreedyPolicy}\label{fig:poissonplot}
+\includegraphics[width=\maxwidth,]{fig/poissonplot-1} \caption[Extending BasicBandit and EpsilonGreedyPolicy]{Extending BasicBandit and EpsilonGreedyPolicy}\label{fig:poissonplot1}
+\end{figure}
+
+\begin{figure}[H]
+\includegraphics[width=\maxwidth,]{fig/poissonplot-2} \caption[Extending BasicBandit and EpsilonGreedyPolicy]{Extending BasicBandit and EpsilonGreedyPolicy}\label{fig:poissonplot2}
 \end{figure}
 
 
@@ -1311,7 +1325,7 @@ And lock in feedback too? And dueling? and..
 
 \section{Acknowledgments}
 
-Thanks go to my colleagues at the JADS...
+Thanks go to my colleagues at the Jheronimus Academy of Data Science and Tilburg University!
 
 %\bibliographystyle{apacite}
 \bibliography{jss}

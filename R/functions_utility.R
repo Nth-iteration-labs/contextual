@@ -161,3 +161,11 @@ set_external <- function(ext = TRUE,
     graphics.off()
   }
 }
+#' @export
+sample_one_of <- function(x) {
+  if (length(x) <= 1) {
+    return(x)
+  } else {
+    return(sample(x,1))
+  }
+}

@@ -1,22 +1,29 @@
 setwd("~/GitHub/contextual/demo")
 source("dev.R")
 
-horizon            <- 10L
-simulations        <- 40L
-weights            <- matrix(  c( 0.4, 0.1, 0.2,
-                                  0.2, 0.3, 0.1,
-                                  0.1, 0.2, 0.3), nrow = 3, ncol = 3, byrow = TRUE)
+weight_per_arm     <- c(0.9, 0.1, 0.1)
+horizon            <- 100L
+simulations        <- 1000L
 
-bandit             <- SyntheticBandit$new(weights = weights, precaching = TRUE)
+bandit             <- SyntheticBandit$new(weights = weight_per_arm, precaching = TRUE)
 
-agents             <- list( Agent$new(EpsilonGreedyPolicy$new(0.1, "EpsilonGreedy"), bandit),
-                            Agent$new(LinUCBDisjointPolicy$new(1.0, "LinUCB"), bandit) )
+agents             <- list( Agent$new(EpsilonGreedyPolicy$new(0.1, "EGreedy"), bandit),
+                            Agent$new(RandomPolicy$new("Random"), bandit),
+                            Agent$new(OraclePolicy$new("Oracle"), bandit),
+                            Agent$new(ThompsonSamplingPolicy$new(1.0, 1.0, "TS"), bandit),
+                            Agent$new(Exp3Policy$new(0.1, "Exp3"), bandit),
+                            Agent$new(UCB1Policy$new("UCB1"), bandit))
+
 
 simulation         <- Simulator$new(agents, horizon, simulations, do_parallel = FALSE)
 history            <- simulation$run()
 
-plot(history, type = "cumulative", regret = TRUE)
-plot(history, type = "cumulative", regret = FALSE)
+par(mfrow = c(2,2),mar = c(5,5,1,1))
+plot(history, type = "cumulative", regret = TRUE, no_par = TRUE)
+plot(history, type = "cumulative", regret = FALSE, no_par = TRUE, legend = FALSE)
+plot(history, type = "average", regret = FALSE, no_par = TRUE, legend = FALSE, ci = TRUE)
+plot(history, type = "arms", regret = FALSE, no_par = TRUE, legend = TRUE)
+par(mfrow = c(1,1))
 
 print(history)
 summary(history)

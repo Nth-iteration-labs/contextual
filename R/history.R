@@ -102,11 +102,11 @@ History <- R6::R6Class(
       private$.data$temp <- NULL
       if (final) {
         agent_levels <- levels(as.factor(cumul$agent))
-        final_cumul <- list()
+        final_cumul_values <- list()
         for (agent_name in agent_levels) {
-          final_cumul[[agent_name]] <- tail(cumul[cumul$agent == agent_name], n = 1) #[[4]]
+          final_cumul_values[[agent_name]] <- tail(cumul[cumul$agent == agent_name], n = 1)
         }
-        final_cumul
+        final_cumul_values
       } else {
         cumul
       }
@@ -171,7 +171,9 @@ History <- R6::R6Class(
       invisible(self)
     },
     print_data = function() {
+      cat("## Overview of data in History object\n\n")
       str(private$.data, max.level = 1)
+      cat("\n")
     },
     finalize = function() {
       self$clear_data_table()

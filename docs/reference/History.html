@@ -65,7 +65,7 @@ and can save or load simulation log data files." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">contextual</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.0.0.90518</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.0.0.90522</span>
       </span>
     </div>
 
@@ -170,7 +170,7 @@ History &lt;- History$new(n = 1, save_context = FALSE, save_theta = FALSE)
                    policy_name,
                    simulation_index,
                    context_value = NA,
-                   theta_value = NA)</code></dt><dd><p>Saves one row of simulation data.</p></dd>
+                   theta_value = NA)</code></dt><dd><p>Saves one row of simulation data. Is generally not called directly, but from a Simulator instance.</p></dd>
 <dt><code>save_data(filename = NA)</code></dt><dd><p>Writes the <code>History</code> log file in its default data.table format,
 with <code>filename</code> as the name of the file which the data is to be written to.</p></dd>
 <dt><code>load_data = function(filename, nth_rows = 0)</code></dt><dd><p>Reads a <code>History</code> log file in its default <code>data.table</code> format,
@@ -181,7 +181,7 @@ full data file. This can be of use with (a first) analysis of very large data fi
 <dt><code>get_data_table()</code></dt><dd><p>Returns the <code>History</code> log as a <code>data.table</code>.</p></dd>
 <dt><code>set_data_table(dt)</code></dt><dd><p>Sets the <code>History</code> log with the data in <code>data.table</code> <code>dt</code>.</p></dd>
 <dt><code>clear_data_table()</code></dt><dd><p>Clears the <code>History</code> log.</p></dd>
-<dt><code>delete_empty_rows()</code></dt><dd><p>Deletes all empty rows in the <code>History</code> log and reindexes the <code>t</code> column grouped
+<dt><code>delete_empty_rows()</code></dt><dd><p>Deletes all empty rows in the <code>History</code> log and re-indexes the <code>t</code> column grouped
 by agent and simulation.</p></dd>
 <dt><code>reindex_t(truncate = TRUE)</code></dt><dd><p>Removes empty rows from the <code>History</code> log, reindexes the <code>t</code> column, and,
 if <code>truncate</code> is <code>TRUE</code>, truncates the resulting data to the shortest simulation

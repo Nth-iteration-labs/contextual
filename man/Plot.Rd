@@ -55,10 +55,10 @@ When regret is set to FALSE, reward will be plotted on the y-axis.
 \item{\code{rate}}{
 (\code{logical, TRUE)} If rate is TRUE, the rate of the regret or reward is plotted.
 }
-\item{\code{no_internal_par}}{
-\code{(logical, FALSE)} If no_internal_par is TRUE, Plot() does not set or adjust plotting parameters.
+\item{\code{no_par}}{
+\code{(logical, FALSE)} If no_par is TRUE, Plot() does not set or adjust plotting parameters.
 This makes it possible to set your own plotting parameters, for instance, when position multiple
-Plots in a no_internal_par.
+Plots in a no_par.
 }
 \item{\code{legend}}{
 \code{(logical, TRUE)} Print the legend.
