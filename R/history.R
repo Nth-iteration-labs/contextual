@@ -214,7 +214,7 @@ History <- R6::R6Class(
 #'      \code{integer}. The number of rows, to be preallocated during initialization.
 #'   }
 #'   \item{\code{save_context}}{
-#'     \code{logical}. Save context vectors \code{X} when writing simulation data?
+#'     \code{logical}. Save context matrix \code{X} when writing simulation data?
 #'   }
 #'   \item{\code{save_theta}}{
 #'     \code{logical}. Save parameter lists \code{theta} when writing simulation data?

@@ -254,7 +254,7 @@ AzureSimulator <- R6::R6Class(
 #'     with a new seed on each repeat (itself deterministically derived from set\_seed).
 #'   }
 #'   \item{\code{save_context}}{
-#'     \code{logical}. Save the context vectors \code{X} to the History log during a simulation?
+#'     \code{logical}. Save the context matrices \code{X} to the History log during a simulation?
 #'   }
 #'   \item{\code{save_theta}}{
 #'     \code{logical}. Save the parameter list \code{theta} to the History log during a simulation?

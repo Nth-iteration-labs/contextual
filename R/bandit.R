@@ -15,7 +15,7 @@ Bandit <- R6::R6Class(
     },
     get_context = function(t) {
       stop("Bandit subclass needs to implement bandit$get_context()", call. = FALSE)
-      # Return a list with self$k, self$d and, where applicable, a context vector X.
+      # Return a list with self$k, self$d and, where applicable, a context matrix X.
       list(k = n_arms, d = n_features, X = context)
     },
     get_reward = function(t, context, action) {
