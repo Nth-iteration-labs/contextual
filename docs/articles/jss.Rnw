@@ -751,18 +751,19 @@ simulator          <- Simulator$new(agents = agent,
 
 history            <- simulator$run()
 
-@
-
-<<label=efpolicy, fig.width=11, fig.height=3.7, fig.show="hold", echo=FALSE, message=FALSE, out.extra='', fig.cap="Epsilon First">>=
-par(mfrow = c(1,2))
+par(mfrow = c(1, 2), mar = c(2,4,1,1))
 plot(history, type = "cumulative", no_par = TRUE)
 plot(history, type = "arms", no_par = TRUE)
 @
-
+\begin{center}
+<<label=efpolicy, fig.width=10, fig.height=3.7, fig.keep='high', echo=FALSE, message=FALSE, out.extra='', fig.cap="Epsilon Greedy">>=
+<<efplot>>
+@
+\end{center}
 
 \subsection{The Epsilon Greedy Policy}
 
-Contrary to the previously introduced Epsilon First policy, an Epsilon Greedy algorithm does not divide exploitation and exploration into two strictly separate phases--it explores with a probability of $epsilon$ and exploits with a probability of $1-epsilon$ right from the start. That is, an Epsilon Greedy policy with an $\epsilon$ of $0.1$ explores an arm at random for 10\% of the time. The other $1-\epsilon$, or 90\% of the time, the policy "greedily" exploits the currently best-known arm.
+Contrary to the previously introduced Epsilon First policy, an Epsilon Greedy algorithm does not divide exploitation and exploration into two strictly separate phases--it explores with a probability of $epsilon$ and exploits with a probability of $1-epsilon$, right from the start. That is, an Epsilon Greedy policy with an $\epsilon$ of $0.1$ explores an arm at random for 10\% of the time. The other $1-\epsilon$, or 90\% of the time, the policy "greedily" exploits the currently best-known arm.
 
 This can be formalized in pseudocode as follows:
 
