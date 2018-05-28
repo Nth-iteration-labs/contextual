@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6350 64-bit) (preloaded format=pdflatex 2018.5.17)  27 MAY 2018 22:36
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (MiKTeX 2.9.6350 64-bit) (preloaded format=pdflatex 2018.5.17)  28 MAY 2018 10:32
 entering extended mode
 **./jss.tex
 (jss.tex
@@ -1041,24 +1041,382 @@ LaTeX Info: Redefining \ref on input line 153.
 LaTeX Info: Redefining \pageref on input line 153.
 LaTeX Info: Redefining \nameref on input line 153.
 
-(jss.out) (jss.out)
+(jss.out) (jss.out
+! Argument of \@@BOOKMARK has an extra }.
+<inserted text> 
+                \par 
+l.6 ...ass System}{Section.2.R6 class structure.1}
+                                                  % 6
+I've run across a `}' that doesn't seem to match anything.
+For example, `\def\a#1{...}' and `\a}' would produce
+this error. If you simply proceed now, the `\par' that
+I've just inserted will cause me to report a runaway
+argument that might be the root of the problem. But if
+your `}' was spurious, just type `2' and it will go away.
+
+Runaway argument?
+{2}]{R}\ifx \reserved@a \@empty \let \check@icl \@empty \let \check@icr \ETC.
+! Paragraph ended before \@@BOOKMARK was complete.
+<to be read again> 
+                   \par 
+l.6 ...ass System}{Section.2.R6 class structure.1}
+                                                  % 6
+I suspect you've forgotten a `}', causing me to apply this
+control sequence to too much text. How can we recover?
+My plan is to forget the whole thing and hope for the best.
+
+! Missing \endcsname inserted.
+<to be read again> 
+                   \protect 
+l.6 ...ass System}{Section.2.R6 class structure.1}
+                                                  % 6
+The control sequence marked <to be read again> should
+not appear between \csname and \endcsname.
+
+! Missing number, treated as zero.
+<to be read again> 
+                   \unhbox 
+l.6 ...ass System}{Section.2.R6 class structure.1}
+                                                  % 6
+A number should have been here; I inserted `0'.
+(If you can't figure out why I needed to see a number,
+look up `weird error' in the index to The TeXbook.)
+
+! Missing { inserted.
+<to be read again> 
+                   \unhbox 
+l.6 ...ass System}{Section.2.R6 class structure.1}
+                                                  % 6
+A left brace was mandatory here, so I've put one in.
+You might want to delete and/or insert some corrections
+so that I will find a matching right brace soon.
+(If you're confused by all this, try typing `I}' now.)
+
+! Undefined control sequence.
+\Hy@temp ->\@let@token \reserved 
+                                 @b \@let@token R\@let@token and the R6 Clas...
+l.7 ...in classes}{Section.2.R6 class structure.1}
+                                                  % 7
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@temp ->\@let@token \reserved 
+                                 @b \@let@token R\@let@token and the R6 Clas...
+l.8 ...t.3}{Bandit}{Subsection.3.1.Main classes.2}
+                                                  % 8
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@temp ->\@let@token \reserved 
+                                 @b \@let@token R\@let@token and the R6 Clas...
+l.9 ...y.3}{Policy}{Subsection.3.1.Main classes.2}
+                                                  % 9
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@temp ->\@let@token \reserved 
+                                 @b \@let@token R\@let@token and the R6 Clas...
+l.10 ...t.3}{Agent}{Subsection.3.1.Main classes.2}
+                                                  % 10
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@temp ->\@let@token \reserved 
+                                 @b \@let@token R\@let@token and the R6 Clas...
+l.11 ...{Simulator}{Subsection.3.1.Main classes.2}
+                                                  % 11
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@temp ->\@let@token \reserved 
+                                 @b \@let@token R\@let@token and the R6 Clas...
+l.12 ...3}{History}{Subsection.3.1.Main classes.2}
+                                                  % 12
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@temp ->\@let@token \reserved 
+                                 @b \@let@token R\@let@token and the R6 Clas...
+l.13 ...ot.3}{Plot}{Subsection.3.1.Main classes.2}
+                                                  % 13
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@temp ->\@let@token \reserved 
+                                 @b \@let@token R\@let@token and the R6 Clas...
+l.14 ... extending Policy and Bandit subclasses}{}
+                                                  % 14
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@temp ->\@let@token \reserved 
+                                 @b \@let@token R\@let@token and the R6 Clas...
+l.15 ... extending Policy and Bandit subclasses.1}
+                                                  % 15
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@temp ->\@let@token \reserved 
+                                 @b \@let@token R\@let@token and the R6 Clas...
+l.16 ... extending Policy and Bandit subclasses.1}
+                                                  % 16
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@temp ->\@let@token \reserved 
+                                 @b \@let@token R\@let@token and the R6 Clas...
+l.17 ... extending Policy and Bandit subclasses.1}
+                                                  % 17
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@temp ->\@let@token \reserved 
+                                 @b \@let@token R\@let@token and the R6 Clas...
+l.18 ... extending Policy and Bandit subclasses.1}
+                                                  % 18
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@temp ->\@let@token \reserved 
+                                 @b \@let@token R\@let@token and the R6 Clas...
+l.19 ... extending Policy and Bandit subclasses.1}
+                                                  % 19
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@temp ->\@let@token \reserved 
+                                 @b \@let@token R\@let@token and the R6 Clas...
+l.20 ...ffline evaluation.1}{Offline evaluation}{}
+                                                  % 20
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@temp ->\@let@token \reserved 
+                                 @b \@let@token R\@let@token and the R6 Clas...
+l.21 ...ingBandit}{Section.4.Offline evaluation.1}
+                                                  % 21
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@temp ->\@let@token \reserved 
+                                 @b \@let@token R\@let@token and the R6 Clas...
+l.22 ...on of Policies through LiSamplingBandit.2}
+                                                  % 22
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@temp ->\@let@token \reserved 
+                                 @b \@let@token R\@let@token and the R6 Clas...
+l.23 ...dies.1}{Replication of existing studies}{}
+                                                  % 23
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@temp ->\@let@token \reserved 
+                                 @b \@let@token R\@let@token and the R6 Clas...
+l.24 ...on.6.Parallelization.1}{Parallelization}{}
+                                                  % 24
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@temp ->\@let@token \reserved 
+                                 @b \@let@token R\@let@token and the R6 Clas...
+l.25 ...l.3}{General}{Section.6.Parallelization.1}
+                                                  % 25
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@temp ->\@let@token \reserved 
+                                 @b \@let@token R\@let@token and the R6 Clas...
+l.26 ...Amazon EC2}{Subsubsection.7.0.0.General.3}
+                                                  % 26
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@temp ->\@let@token \reserved 
+                                 @b \@let@token R\@let@token and the R6 Clas...
+l.27 ...soft Azure}{Subsubsection.7.0.0.General.3}
+                                                  % 27
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@temp ->\@let@token \reserved 
+                                 @b \@let@token R\@let@token and the R6 Clas...
+l.28 ...{Tradeoffs}{Subsubsection.7.0.0.General.3}
+                                                  % 28
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@temp ->\@let@token \reserved 
+                                 @b \@let@token R\@let@token and the R6 Clas...
+l.29 ....7.Extra greedy UCB.1}{Extra greedy UCB}{}
+                                                  % 29
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@temp ->\@let@token \reserved 
+                                 @b \@let@token R\@let@token and the R6 Clas...
+l.30 ...][-]{Section.8.Conclusion.1}{Conclusion}{}
+                                                  % 30
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@temp ->\@let@token \reserved 
+                                 @b \@let@token R\@let@token and the R6 Clas...
+l.31 ...{Section.9.UML Diagrams.1}{UML Diagrams}{}
+                                                  % 31
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\Hy@temp ->\@let@token \reserved 
+                                 @b \@let@token R\@let@token and the R6 Clas...
+l.32 ...n.10.Acknowledgments.1}{Acknowledgments}{}
+                                                  % 32
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+)
+Runaway text?
+\unhbox \voidb@x \bgroup \def \def \spacefactor \@m {}let@token @b \spacefactor
+ \ETC.
+! File ended while scanning text of \unhbox.
+<inserted text> 
+                }
+l.153 \begin{document}
+                      
+I suspect you have forgotten a `}', causing me
+to read past where you wanted me to stop.
+I'll try to recover; but if the error is serious,
+you'd better type `E' or `X' now and fix your file.
+
 \@outlinefile=\write4
 \openout4 = `jss.out'.
 
- <jsslogo.jpg, id=131, 540.0175pt x 393.47pt>
+<jsslogo.jpg, id=27, 540.0175pt x 393.47pt>
 File: jsslogo.jpg Graphic file (type jpg)
-
-<use jsslogo.jpg>
+ <use jsslogo.jpg>
 Package pdftex.def Info: jsslogo.jpg used on input line 153.
 (pdftex.def)             Requested size: 89.80768pt x 65.43607pt.
 LaTeX Font Info:    Try loading font information for T1+pzc on input line 153.
- ("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\t1pzc.fd"
+
+("C:\Program Files\MiKTeX 2.9\tex\latex\psnfss\t1pzc.fd"
 File: t1pzc.fd 2001/06/04 font definitions for T1/pzc.
 )
 LaTeX Font Info:    Font shape `T1/pzc/m/n' in size <28> not available
 (Font)              Font shape `T1/pzc/mb/it' tried instead on input line 153.
 LaTeX Font Info:    Font shape `T1/txr/b/n' in size <17.28> not available
 (Font)              Font shape `T1/txr/bx/n' tried instead on input line 153.
+LaTeX Font Info:    Try loading font information for T1+txss on input line 153.
+
+
+(C:\Users\robin\AppData\Roaming\MiKTeX\2.9\tex\latex\txfonts\t1txss.fd
+File: t1txss.fd 2000/12/15 v3.1
+)
+LaTeX Font Info:    Font shape `T1/txss/bx/n' will be
+(Font)              scaled to size 16.41594pt on input line 153.
 LaTeX Font Info:    Try loading font information for OT1+txr on input line 153.
 
 
@@ -1089,14 +1447,10 @@ LaTeX Font Info:    Try loading font information for U+txsyc on input line 153.
 (C:\Users\robin\AppData\Roaming\MiKTeX\2.9\tex\latex\txfonts\utxsyc.fd
 File: utxsyc.fd 2000/12/15 v3.1
 )
+LaTeX Font Info:    Font shape `T1/txss/m/n' will be
+(Font)              scaled to size 9.49997pt on input line 153.
 LaTeX Font Info:    Font shape `T1/txr/b/n' in size <10> not available
 (Font)              Font shape `T1/txr/bx/n' tried instead on input line 153.
-LaTeX Font Info:    Try loading font information for T1+txss on input line 153.
-
-
-(C:\Users\robin\AppData\Roaming\MiKTeX\2.9\tex\latex\txfonts\t1txss.fd
-File: t1txss.fd 2000/12/15 v3.1
-)
 LaTeX Font Info:    Font shape `T1/txss/m/n' will be
 (Font)              scaled to size 10.40245pt on input line 153.
 LaTeX Font Info:    Try loading font information for TS1+txr on input line 171.
@@ -1134,7 +1488,7 @@ Overfull \hbox (5.47499pt too wide) has occurred while \output is active
 
 [4]
 Package color Info: Redefining color shadecolor on input line 257.
- <fig/cmab_chart.pdf, id=179, 617.30624pt x 159.59625pt>
+ <fig/cmab_chart.pdf, id=76, 617.30624pt x 159.59625pt>
 File: fig/cmab_chart.pdf Graphic file (type pdf)
 
 <use fig/cmab_chart.pdf>
@@ -1167,6 +1521,270 @@ Underfull \hbox (badness 10000) in paragraph at lines 282--283
 Package color Info: Redefining color shadecolor on input line 289.
 LaTeX Font Info:    Font shape `T1/txtt/m/it' in size <10> not available
 (Font)              Font shape `T1/txtt/m/sl' tried instead on input line 293.
+! Use of \\pdfbookmark doesn't match its definition.
+\text@command #1->\def \reserved@a {
+                                    #1}\ifx \reserved@a \@empty \let \check@...
+l.310 ...ion{\proglang{R} and the R6 Class System}
+                                                  
+If you say, e.g., `\def\a1{...}', then you must always
+put `1' after `\a', since control sequence names are
+made up of letters only. The macro here has not been
+followed by the required stuff, so I'm ignoring it.
+
+! You can't use `\/' in vertical mode.
+\fix@penalty ...m \lastpenalty =\z@ \@@italiccorr 
+                                                  \else \count@ \lastpenalty...
+l.310 ...ion{\proglang{R} and the R6 Class System}
+                                                  
+Sorry, but I'm not programmed to handle this case;
+I'll just pretend that you didn't ask for it.
+If you're in the wrong mode, you might be able to
+return to the right one by typing `I}' or `I$' or `I\par'.
+
+! Extra }, or forgotten \endgroup.
+<recently read> \egroup 
+                        
+l.310 ...ion{\proglang{R} and the R6 Class System}
+                                                  
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Extra }, or forgotten \endgroup.
+\@@writetorep ...e Parent\Hy@level \endcsname {#3}
+                                                  \advance \@tempcnta by -1 ...
+l.310 ...ion{\proglang{R} and the R6 Class System}
+                                                  
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Undefined control sequence.
+\reserved@a ->\@nil 
+                    
+l.310 ...ion{\proglang{R} and the R6 Class System}
+                                                  
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\reserved@a ->\@nil 
+                    
+l.310 ...ion{\proglang{R} and the R6 Class System}
+                                                  
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\reserved@a ->\@nil 
+                    
+l.310 ...ion{\proglang{R} and the R6 Class System}
+                                                  
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\reserved@a ->\@nil 
+                    
+l.310 ...ion{\proglang{R} and the R6 Class System}
+                                                  
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\reserved@a ->\@nil 
+                    
+l.310 ...ion{\proglang{R} and the R6 Class System}
+                                                  
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\reserved@a ->\@nil 
+                    
+l.310 ...ion{\proglang{R} and the R6 Class System}
+                                                  
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\reserved@a ->\@nil 
+                    
+l.310 ...ion{\proglang{R} and the R6 Class System}
+                                                  
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+\reserved@a ->\@nil 
+                    
+l.310 ...ion{\proglang{R} and the R6 Class System}
+                                                  
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\<def>-command' on input line 310.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\reserved@a' on input line 310.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\<let>-command' on input line 310.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\check@icl' on input line 310.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\<let>-command' on input line 310.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\let' on input line 310.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\<def>-command' on input line 310.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\@fortmp' on input line 310.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\<def>-command' on input line 310.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\reserved@a' on input line 310.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\@@italiccorr' on input line 310.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\<def>-command' on input line 310.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\check@icr' on input line 310.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\<def>-command' on input line 310.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\reserved@a' on input line 310.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\<def>-command' on input line 310.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\<def>-command' on input line 310.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\reserved@c' on input line 310.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\<let>-command' on input line 310.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\let' on input line 310.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\<def>-command' on input line 310.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\@fortmp' on input line 310.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\<def>-command' on input line 310.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\reserved@a' on input line 310.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\@@italiccorr' on input line 310.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\aftergroup' on input line 310.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\<let>-command' on input line 310.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\let' on input line 310.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\<def>-command' on input line 310.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\@fortmp' on input line 310.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\<def>-command' on input line 310.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\reserved@a' on input line 310.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
+(hyperref)                removing `\@@italiccorr' on input line 310.
+
+LaTeX Font Info:    Font shape `T1/txss/bx/n' will be
+(Font)              scaled to size 11.39996pt on input line 310.
 
 Overfull \hbox (5.47499pt too wide) has occurred while \output is active
 \T1/txr/m/n/10.95 6 []
@@ -1228,11 +1846,6 @@ h arm to play based on the cur-rent val-ues
  []
 
 
-Overfull \hbox (5.47499pt too wide) has occurred while \output is active
-[] \T1/txr/m/n/10.95 9
- []
-
-[9]
 Underfull \hbox (badness 4805) in paragraph at lines 456--462
 []\T1/txtt/m/n/10.95 set_reward(t, context, action, reward) \T1/txr/m/n/10.95 R
 e-turns the named list \T1/txtt/m/n/10.95 list(reward
@@ -1244,17 +1857,22 @@ Underfull \hbox (badness 10000) in paragraph at lines 456--462
 1/txr/m/n/10.95 con-tain-ing the
  []
 
+
+Overfull \hbox (5.47499pt too wide) has occurred while \output is active
+[] \T1/txr/m/n/10.95 9
+ []
+
+[9]
 Package color Info: Redefining color shadecolor on input line 469.
 Package color Info: Redefining color shadecolor on input line 481.
 Package color Info: Redefining color shadecolor on input line 515.
+Package color Info: Redefining color shadecolor on input line 525.
 
 Overfull \hbox (10.94998pt too wide) has occurred while \output is active
 \T1/txr/m/n/10.95 10 []
  []
 
 [10]
-Package color Info: Redefining color shadecolor on input line 525.
-
 Overfull \hbox (10.94998pt too wide) has occurred while \output is active
 [] \T1/txr/m/n/10.95 11
  []
@@ -1275,7 +1893,7 @@ Overfull \hbox (10.94998pt too wide) has occurred while \output is active
 [12]
 Package color Info: Redefining color shadecolor on input line 664.
 Package color Info: Redefining color shadecolor on input line 679.
- <fig/contextual_plotclass.pdf, id=238, 667.65433pt x 227.53004pt>
+ <fig/contextual_plotclass.pdf, id=143, 667.65433pt x 227.53004pt>
 File: fig/contextual_plotclass.pdf Graphic file (type pdf)
 
 <use fig/contextual_plotclass.pdf>
@@ -1288,7 +1906,7 @@ Overfull \hbox (10.94998pt too wide) has occurred while \output is active
  []
 
 [13 <./fig/contextual_plotclass.pdf>]
-<fig/contextual_ggplot.pdf, id=251, 689.57625pt x 247.92625pt>
+<fig/contextual_ggplot.pdf, id=156, 689.57625pt x 247.92625pt>
 File: fig/contextual_ggplot.pdf Graphic file (type pdf)
 
 <use fig/contextual_ggplot.pdf>
@@ -1318,7 +1936,7 @@ Overfull \hbox (10.94998pt too wide) has occurred while \output is active
 [16]
 Package color Info: Redefining color shadecolor on input line 845.
 Package color Info: Redefining color shadecolor on input line 871.
- <fig/efpolicy-1.pdf, id=289, 722.7pt x 266.9975pt>
+ <fig/efpolicy-1.pdf, id=197, 722.7pt x 266.9975pt>
 File: fig/efpolicy-1.pdf Graphic file (type pdf)
 
 <use fig/efpolicy-1.pdf>
@@ -1334,8 +1952,8 @@ Overfull \hbox (10.94998pt too wide) has occurred while \output is active
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.882 
-       <./fig/efpolicy-1.pdf>]
+l.883 T
+       his can be formalized in pseudocode as follows: <./fig/efpolicy-1.pdf>]
 Package color Info: Redefining color shadecolor on input line 911.
 
 Overfull \hbox (10.94998pt too wide) has occurred while \output is active
@@ -1345,7 +1963,7 @@ Overfull \hbox (10.94998pt too wide) has occurred while \output is active
 [18]
 Package color Info: Redefining color shadecolor on input line 949.
 Package color Info: Redefining color shadecolor on input line 975.
- <fig/egpolicy-1.pdf, id=322, 722.7pt x 266.9975pt>
+ <fig/egpolicy-1.pdf, id=231, 722.7pt x 266.9975pt>
 File: fig/egpolicy-1.pdf Graphic file (type pdf)
 
 <use fig/egpolicy-1.pdf>
@@ -1378,7 +1996,7 @@ Overfull \hbox (10.94998pt too wide) has occurred while \output is active
 
 [21]
 Package color Info: Redefining color shadecolor on input line 1097.
- <fig/lucbpolicy-1.pdf, id=362, 722.7pt x 266.9975pt>
+ <fig/lucbpolicy-1.pdf, id=272, 722.7pt x 266.9975pt>
 File: fig/lucbpolicy-1.pdf Graphic file (type pdf)
 
 <use fig/lucbpolicy-1.pdf>
@@ -1399,7 +2017,7 @@ l.1160 \end{kframe}
                     <./fig/lucbpolicy-1.pdf>]
 Package color Info: Redefining color shadecolor on input line 1164.
 
-<fig/poissonplot-1.pdf, id=376, 722.7pt x 266.9975pt>
+<fig/poissonplot-1.pdf, id=287, 722.7pt x 266.9975pt>
 File: fig/poissonplot-1.pdf Graphic file (type pdf)
 
 <use fig/poissonplot-1.pdf>
@@ -1428,7 +2046,7 @@ Overfull \hbox (10.94998pt too wide) has occurred while \output is active
 [] \T1/txr/m/n/10.95 25
  []
 
-[25] <fig/ucb_offline.pdf, id=414, 663.47874pt x 278.03876pt>
+[25] <fig/ucb_offline.pdf, id=327, 663.47874pt x 278.03876pt>
 File: fig/ucb_offline.pdf Graphic file (type pdf)
 
 <use fig/ucb_offline.pdf>
@@ -1450,7 +2068,7 @@ l.1282 \section{Replication of existing studies}
 Package hyperref Warning: Difference (2) between bookmark levels is greater 
 (hyperref)                than one, level fixed on input line 1288.
 
-<fig/contextual_class.pdf, id=429, 616.3025pt x 616.3025pt>
+<fig/contextual_class.pdf, id=342, 616.3025pt x 616.3025pt>
 File: fig/contextual_class.pdf Graphic file (type pdf)
 
 <use fig/contextual_class.pdf>
@@ -1461,7 +2079,7 @@ Overfull \hbox (10.94998pt too wide) has occurred while \output is active
 [] \T1/txr/m/n/10.95 27
  []
 
-[27] <fig/contextual_sequence.pdf, id=443, 469.755pt x 579.16376pt>
+[27] <fig/contextual_sequence.pdf, id=365, 469.755pt x 579.16376pt>
 File: fig/contextual_sequence.pdf Graphic file (type pdf)
 
 <use fig/contextual_sequence.pdf>
@@ -1517,41 +2135,61 @@ Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 1336.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 1336.
 
 Package rerunfilecheck Info: File `jss.out' has not changed.
-(rerunfilecheck)             Checksum: 64EEF853624CD9EA1A86221EFEB6E6D4;3609.
+(rerunfilecheck)             Checksum: EC5F4E1CDB8E7D662BFE4DB19343B736;3668.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 1336.
- ) 
+ )
+(\end occurred when \ifdim on line 310 was incomplete)
+(\end occurred when \ifvmode on line 310 was incomplete)
+(\end occurred when \iftrue on line 310 was incomplete)
+(\end occurred when \ifdim on line 310 was incomplete)
+(\end occurred when \iftrue on line 310 was incomplete)
+(\end occurred when \ifdim on line 310 was incomplete)
+(\end occurred when \ifx on line 310 was incomplete)
+(\end occurred when \ifx on line 310 was incomplete)
+(\end occurred when \ifmmode on line 310 was incomplete)
+(\end occurred when \ifx on line 310 was incomplete)
+(\end occurred when \ifnum on line 310 was incomplete)
+(\end occurred when \ifx on line 310 was incomplete)
+(\end occurred when \ifx on line 6 was incomplete)
+(\end occurred when \ifmmode on line 6 was incomplete)
+(\end occurred when \iffalse on line 153 was incomplete) 
 Here is how much of TeX's memory you used:
- 9689 strings out of 493323
- 135504 string characters out of 3139066
- 229178 words of memory out of 3000000
- 12809 multiletter control sequences out of 15000+200000
- 76276 words of font info for 113 fonts, out of 3000000 for 9000
+ 9702 strings out of 493323
+ 135680 string characters out of 3139066
+ 241350 words of memory out of 3000000
+ 12814 multiletter control sequences out of 15000+200000
+ 85359 words of font info for 122 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 35i,9n,34p,1153b,677s stack positions out of 5000i,500n,10000p,200000b,50000s
-{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/base/8r.enc}<C:/Users/robin/AppD
-ata/Roaming/MiKTeX/2.9/fonts/type1/public/txfonts/rtcxr.pfb><C:/Users/robin/App
-Data/Roaming/MiKTeX/2.9/fonts/type1/public/txfonts/rtxb.pfb><C:/Users/robin/App
-Data/Roaming/MiKTeX/2.9/fonts/type1/public/txfonts/rtxi.pfb><C:/Users/robin/App
-Data/Roaming/MiKTeX/2.9/fonts/type1/public/txfonts/rtxmi.pfb><C:/Users/robin/Ap
-pData/Roaming/MiKTeX/2.9/fonts/type1/public/txfonts/rtxr.pfb><C:/Users/robin/Ap
+ 35i,9n,34p,1153b,680s stack positions out of 5000i,500n,10000p,200000b,50000s
+pdfTeX warning (dest): 
+name{Subsection.3.0.\\protect\040\\unhbox\040\\voidb@x\040\\bgroup\040\\def\040
+\\par\040} has been referenced but does not exist, replaced by a fixed one
+
+{C:/Program Files/MiKTeX 2.9/fonts/enc/dvips/base/8r.enc}<C:/Users/robin/AppDat
+a/Roaming/MiKTeX/2.9/fonts/type1/public/txfonts/rtcxr.pfb><C:/Users/robin/AppDa
+ta/Roaming/MiKTeX/2.9/fonts/type1/public/txfonts/rtxb.pfb><C:/Users/robin/AppDa
+ta/Roaming/MiKTeX/2.9/fonts/type1/public/txfonts/rtxi.pfb><C:/Users/robin/AppDa
+ta/Roaming/MiKTeX/2.9/fonts/type1/public/txfonts/rtxmi.pfb><C:/Users/robin/AppD
+ata/Roaming/MiKTeX/2.9/fonts/type1/public/txfonts/rtxr.pfb><C:/Users/robin/AppD
+ata/Roaming/MiKTeX/2.9/fonts/type1/public/txfonts/t1xbtt.pfb><C:/Users/robin/Ap
 pData/Roaming/MiKTeX/2.9/fonts/type1/public/txfonts/t1xbtt.pfb><C:/Users/robin/
-AppData/Roaming/MiKTeX/2.9/fonts/type1/public/txfonts/t1xbtt.pfb><C:/Users/robi
-n/AppData/Roaming/MiKTeX/2.9/fonts/type1/public/txfonts/t1xtt.pfb><C:/Users/rob
-in/AppData/Roaming/MiKTeX/2.9/fonts/type1/public/txfonts/t1xtt.pfb><C:/Users/ro
-bin/AppData/Roaming/MiKTeX/2.9/fonts/type1/public/txfonts/tcxtt.pfb><C:/Users/r
-obin/AppData/Roaming/MiKTeX/2.9/fonts/type1/public/txfonts/txex.pfb><C:/Users/r
-obin/AppData/Roaming/MiKTeX/2.9/fonts/type1/public/txfonts/txmia.pfb><C:/Users/
-robin/AppData/Roaming/MiKTeX/2.9/fonts/type1/public/txfonts/txsy.pfb><C:/Users/
-robin/AppData/Roaming/MiKTeX/2.9/fonts/type1/public/txfonts/txsyb.pfb><C:/Progr
-am Files/MiKTeX 2.9/fonts/type1/urw/helvetic/uhvr8a.pfb><C:/Program Files/MiKTe
-X 2.9/fonts/type1/urw/times/utmb8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1
-/urw/times/utmb8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmr8a
-.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmr8a.pfb><C:/Program 
-Files/MiKTeX 2.9/fonts/type1/urw/times/utmri8a.pfb><C:/Program Files/MiKTeX 2.9
-/fonts/type1/urw/zapfchan/uzcmi8a.pfb>
-Output written on jss.pdf (30 pages, 846075 bytes).
+AppData/Roaming/MiKTeX/2.9/fonts/type1/public/txfonts/t1xtt.pfb><C:/Users/robin
+/AppData/Roaming/MiKTeX/2.9/fonts/type1/public/txfonts/t1xtt.pfb><C:/Users/robi
+n/AppData/Roaming/MiKTeX/2.9/fonts/type1/public/txfonts/tcxtt.pfb><C:/Users/rob
+in/AppData/Roaming/MiKTeX/2.9/fonts/type1/public/txfonts/txex.pfb><C:/Users/rob
+in/AppData/Roaming/MiKTeX/2.9/fonts/type1/public/txfonts/txmia.pfb><C:/Users/ro
+bin/AppData/Roaming/MiKTeX/2.9/fonts/type1/public/txfonts/txsy.pfb><C:/Users/ro
+bin/AppData/Roaming/MiKTeX/2.9/fonts/type1/public/txfonts/txsyb.pfb><C:/Program
+ Files/MiKTeX 2.9/fonts/type1/urw/helvetic/uhvb8a.pfb><C:/Program Files/MiKTeX 
+2.9/fonts/type1/urw/helvetic/uhvr8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type
+1/urw/times/utmb8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmb8
+a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw/times/utmr8a.pfb><C:/Program
+ Files/MiKTeX 2.9/fonts/type1/urw/times/utmr8a.pfb><C:/Program Files/MiKTeX 2.9
+/fonts/type1/urw/times/utmri8a.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/urw
+/zapfchan/uzcmi8a.pfb>
+Output written on jss.pdf (30 pages, 865004 bytes).
 PDF statistics:
- 577 PDF objects out of 1000 (max. 8388607)
- 159 named destinations out of 1000 (max. 500000)
- 312 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 504 PDF objects out of 1000 (max. 8388607)
+ 160 named destinations out of 1000 (max. 500000)
+ 104 words of extra memory for PDF output out of 10000 (max. 10000000)
 
