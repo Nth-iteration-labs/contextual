@@ -88,7 +88,7 @@
   Eric Postma\\Tilburg University \And
   Maurits Kaptein\\Tilburg University}
 
-\title{\pkg{contextual}: Simulating Contextual Multi-Armed Bandit Problems in \proglang{R}}
+\title{\pkg{contextual}: Simulating Contextual Multi-Armed Bandit Problems in R}
 
 %% for pretty printing and a nice hypersummary also set:
 \Plainauthor{Robin van Emden, Eric Postma, Maurits Kaptein} %% comma-separated
@@ -100,10 +100,10 @@
 %% an abstract and keywords
 \Abstract{
 
-Contextual bandit algorithms have been gaining in popularity due to their effectiveness and flexibility in the evaluation of sequential decision problems - from online advertising and recommender systems to clinical trial design and personalized medicine. At the same time, there are as of yet surprisingly few options that enable researchers and practitioners to simulate and compare the wealth of new and existing Bandit algorithms in a practical, standardized and extensible way. To help close this gap between analytical research and practical evaluation towards real-life applications the current paper introduces the object-oriented \proglang{R} package \pkg{contextual}: a user-friendly and, through its clear object-oriented structure, easily extensible framework that facilitates parallelized comparison of contextual and non-contextual Bandit policies through both simulation and offline analysis.
+Contextual bandit algorithms have been gaining in popularity due to their effectiveness and flexibility in the evaluation of sequential decision problems - from online advertising and recommender systems to clinical trial design and personalized medicine. At the same time, there are as of yet surprisingly few options that enable researchers and practitioners to simulate and compare the wealth of new and existing Bandit algorithms in a practical, standardized and extensible way. To help close this gap between analytical research and practical evaluation towards real-life applications the current paper introduces the object-oriented R package \pkg{contextual}: a user-friendly and, through its clear object-oriented structure, easily extensible framework that facilitates parallelized comparison of contextual and non-contextual Bandit policies through both simulation and offline analysis.
 }
 
-\Keywords{contextual multi-armed bandits, simulation, sequential experimentation, \proglang{R}}
+\Keywords{contextual multi-armed bandits, simulation, sequential experimentation, R}
 \Plainkeywords{contextual multi-armed bandits, simulation, sequential experimentation, R}
 
 %% at least one keyword must be supplied
@@ -183,7 +183,7 @@ A recent MAB generalization known as the \textit{contextual} Multi-Armed Bandit 
 
 Still, however named, all cMAB policies differentiate themselves, by definition, from their MAB cousins in that can make use of features that reflect the current state of the world---features that can then be mapped onto available arms or actions. This access to side information makes cMAB algorithms even more relevant to many real-life decision problems than its MAB progenitors. To follow up on our previous examples: do you show a particular add to returning customers, to new ones, or both? Do you prescribe a different treatment to male patients, female patients, or both? In the real world, it appears no choice exists without some contextual information that can be mined or mapped. So it may be no surprise that cMAB algorithms have found many applications: from recommender systems and advertising to health apps and personalized medicine---inspiring a multitude of new, often analytically derived bandit algorithms or policies, each with their strengths and weaknesses.
 
-Regrettably, though cMAB algorithms have gained both academic and commercial acclaim, comparisons on simulated, and, importantly, real-life, large-scale offline \textquotedblleft{}partial label\textquotedblright{} data sets have relatively lagged behind. To this end, the current paper introduces the \pkg{contextual} \proglang{R} package. \pkg{contextual} aims to facilitate the simulation, offline comparison, and evaluation of (Contextual) Multi-Armed bandit policies. There exist a few other frameworks that enable the analysis of offline datasets in some capacity, such as Microsoft's Vowpal Wabbit, and the MAB focussed python packages Striatum and SMPyBandits. But, as of yet, no extensible and widely applicable \proglang{R} package that can analyze and compare, respectively, K-armed, Continuum, Adversarial and Contextual Multi-Armed Bandit Algorithms on either simulated or offline data.
+Regrettably, though cMAB algorithms have gained both academic and commercial acclaim, comparisons on simulated, and, importantly, real-life, large-scale offline \textquotedblleft{}partial label\textquotedblright{} data sets have relatively lagged behind. To this end, the current paper introduces the \pkg{contextual} R package. \pkg{contextual} aims to facilitate the simulation, offline comparison, and evaluation of (Contextual) Multi-Armed bandit policies. There exist a few other frameworks that enable the analysis of offline datasets in some capacity, such as Microsoft's Vowpal Wabbit, and the MAB focussed python packages Striatum and SMPyBandits. But, as of yet, no extensible and widely applicable R package that can analyze and compare, respectively, K-armed, Continuum, Adversarial and Contextual Multi-Armed Bandit Algorithms on either simulated or offline data.
 
 In section 2, this paper continues with a more formal definition of MAB and CMAB problems and relate it to our implementation. In section 3, we give an overview of \pkg{contextual}’s object-oriented structure In section 4, we list the policies that are available by default, and simulate two MAB policies and a cMAB policy. In section 5, we demonstrate how easy it is to extend and customize \pkg{contextual} policies and bandits. In section 6, we replicate two papers, thereby demonstrating how to test policies on offline data sets. Finally, in section  7, we will go over some of the additional features in the package and conclude with some comments on the current state of the package and possible enhancements.
 
@@ -307,13 +307,13 @@ EpsilonGreedy 79.44 124.7741 11.17023 2.189326 100
 
 Since it is the \pkg{contextual}'s explicit goal to offer researchers and developers an easily extensible framework to develop, test and compare their own \code{Policy} and \code{Bandit} implementations, the current section offers additional background information on \pkg{contextual}' class structure---both on the R6 class system and on each of the six previously introduced core \pkg{contextual} classes.
 
-\subsection{\proglang{R} and the R6 Class System}
+\subsection{R and the R6 Class System}
 
-Statistical computational methods, in \proglang{R} or otherwise, are regularly made available through single-use scripts or basic, isolated code packages. Usually, such code examples are meant to give a basic idea of a statistical method, technique or algorithm in the context of a scientific paper.  Such code examples offer their scientific audience a rough inroad towards the comparison and further implementation of their underlying methods. However, when a set of well-researched interrelated algorithms, such as MAB and cMAB policies, find growing academic, practical and commercial adoption, it becomes crucial to offer a more standardized and more accessible way to compare such methods and algorithms.
+Statistical computational methods, in R or otherwise, are regularly made available through single-use scripts or basic, isolated code packages. Usually, such code examples are meant to give a basic idea of a statistical method, technique or algorithm in the context of a scientific paper.  Such code examples offer their scientific audience a rough inroad towards the comparison and further implementation of their underlying methods. However, when a set of well-researched interrelated algorithms, such as MAB and cMAB policies, find growing academic, practical and commercial adoption, it becomes crucial to offer a more standardized and more accessible way to compare such methods and algorithms.
 
-It is against this background that we decided to develop the \pkg{contextual} \proglang{R} package---a package that would offer an easily extendible and open bandit framework together with extensible bandit and policy libraries. To us, it made the most sense to create such a package in \proglang{R}, as \proglang{R} is currently the de facto language for the dissemination of new statistical methods, techniques, and algorithms---while it is at the same time finding ever-growing adoption in industry. The resulting lively exchange of \proglang{R} related code, data, and knowledge between scientists and practitioners offers precisely the kind of cross-pollination that \pkg{contextual} hopes to facilitate.
+It is against this background that we decided to develop the \pkg{contextual} R package---a package that would offer an easily extendible and open bandit framework together with extensible bandit and policy libraries. To us, it made the most sense to create such a package in R, as R is currently the de facto language for the dissemination of new statistical methods, techniques, and algorithms---while it is at the same time finding ever-growing adoption in industry. The resulting lively exchange of R related code, data, and knowledge between scientists and practitioners offers precisely the kind of cross-pollination that \pkg{contextual} hopes to facilitate.
 
-Though widely used as a procedural language, \proglang{R} offers several Object Oriented (OO) systems, which can significantly help in structuring the development of more complex packages. Out of the OO systems available (S3, S4, R5 and R6), we settled on R6, as it offered several advantages compared to the other options. Firstly, it implements a mature object-oriented design when compared to S3. Secondly, its classes can be accessed and modified by reference---which offers the added advantage that R6 classes are instantly recognizable for developers with a background in \proglang{Java} or \proglang{C++}. Finally, when compared to the older R5 reference class system, R6 classes are lighter-weight and (as they do not make use of S4 classes) do not require the methods package---which makes \pkg{contextual} substantially less resource-hungry than it would otherwise have been.
+Though widely used as a procedural language, R offers several Object Oriented (OO) systems, which can significantly help in structuring the development of more complex packages. Out of the OO systems available (S3, S4, R5 and R6), we settled on R6, as it offered several advantages compared to the other options. Firstly, it implements a mature object-oriented design when compared to S3. Secondly, its classes can be accessed and modified by reference---which offers the added advantage that R6 classes are instantly recognizable for developers with a background in \proglang{Java} or \proglang{C++}. Finally, when compared to the older R5 reference class system, R6 classes are lighter-weight and (as they do not make use of S4 classes) do not require the methods package---which makes \pkg{contextual} substantially less resource-hungry than it would otherwise have been.
 
 \subsection{Main classes}
 
@@ -381,7 +381,7 @@ Bandit's functions can be described as follows:
   }
 \end{itemize}
 
-Where possible, it is advisable to pregenerate or precache \code{Bandit} contexts and rewards, as this is (as is generally the case in \proglang{R}) computationally much more efficient than the repeated generation of reward vectors and context matrices. This pregeneration can be implemented in \code{generate_bandit_data()}. It is called during a \code{Bandit}'s initialization---if and when the \code{Bandit}'s \code{self$precaching} variable is \code{TRUE}.
+Where possible, it is advisable to pregenerate or precache \code{Bandit} contexts and rewards, as this is (as is generally the case in R) computationally much more efficient than the repeated generation of reward vectors and context matrices. This pregeneration can be implemented in \code{generate_bandit_data()}. It is called during a \code{Bandit}'s initialization---if and when the \code{Bandit}'s \code{self$precaching} variable is \code{TRUE}.
 
 We also made several \code{Bandit} subclasses available. For each Bandit, there is at least one example script, to be found in the package’s demo directory:
 
@@ -572,7 +572,7 @@ To specify how to run a simulation and which data is to be saved to a \code{Simu
       and a different subset of the data for each repeat of an agent's simulation.
    }
    \item{\code{set_seed}}{
-      Sets the seed of \proglang{R}'s random number generator for the current \code{Simulator}.
+      Sets the seed of R's random number generator for the current \code{Simulator}.
    }
    \item{\code{write_progress_file}}{
        If \code{TRUE}, \code{Simulator} writes \code{progress.log} and \code{doparallel.log}
@@ -581,7 +581,7 @@ To specify how to run a simulation and which data is to be saved to a \code{Simu
    }
    \item{\code{include_packages}}{
        List of packages that (one of) the policies depend on. If a \code{Policy} requires an
-       \proglang{R} package to be loaded, this option can be used to load that package on each of the workers.
+       R package to be loaded, this option can be used to load that package on each of the workers.
        Ignored if \code{do_parallel} is \code{FALSE}.
    }
    \item{\code{reindex_t}}{

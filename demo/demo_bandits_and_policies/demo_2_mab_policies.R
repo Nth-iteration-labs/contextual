@@ -1,5 +1,8 @@
-setwd("~/GitHub/contextual/demo")
-source("dev.R")
+library(contextual)
+library(here)
+setwd(here("demo","demo_bandits_and_policies"))
+source("../dev.R")
+
 
 weight_per_arm     <- c(0.9, 0.1, 0.1)
 horizon            <- 100L
@@ -13,7 +16,6 @@ agents             <- list( Agent$new(EpsilonGreedyPolicy$new(0.1, "EGreedy"), b
                             Agent$new(ThompsonSamplingPolicy$new(1.0, 1.0, "TS"), bandit),
                             Agent$new(Exp3Policy$new(0.1, "Exp3"), bandit),
                             Agent$new(UCB1Policy$new("UCB1"), bandit))
-
 
 simulation         <- Simulator$new(agents, horizon, simulations, do_parallel = FALSE)
 history            <- simulation$run()
