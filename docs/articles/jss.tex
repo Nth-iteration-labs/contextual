@@ -845,8 +845,8 @@ To evaluate this policy, instantiate both an \code{EpsilonFirstPolicy} and a \co
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{horizon}            \hlkwb{<-} \hlnum{100}
-\hlstd{simulations}        \hlkwb{<-} \hlnum{100}
-\hlstd{weights}            \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{0.9}\hlstd{,} \hlnum{0.1}\hlstd{,} \hlnum{0.1}\hlstd{)}
+\hlstd{simulations}        \hlkwb{<-} \hlnum{1000}
+\hlstd{weights}            \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{0.6}\hlstd{,} \hlnum{0.3}\hlstd{,} \hlnum{0.3}\hlstd{)}
 
 \hlstd{policy}             \hlkwb{<-} \hlstd{EpsilonFirstPolicy}\hlopt{$}\hlkwd{new}\hlstd{(}\hlkwc{first} \hlstd{=} \hlnum{50}\hlstd{,} \hlkwc{name} \hlstd{=} \hlstr{"EFirst"}\hlstd{)}
 \hlstd{bandit}             \hlkwb{<-} \hlstd{SyntheticBandit}\hlopt{$}\hlkwd{new}\hlstd{(}\hlkwc{weights} \hlstd{= weights)}
@@ -949,8 +949,8 @@ Assign the new class, together with \code{SyntheticBandit}, to an \code{Agent}. 
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
 \hlstd{horizon}            \hlkwb{<-} \hlnum{100}
-\hlstd{simulations}        \hlkwb{<-} \hlnum{100}
-\hlstd{weights}            \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{0.9}\hlstd{,} \hlnum{0.1}\hlstd{,} \hlnum{0.1}\hlstd{)}
+\hlstd{simulations}        \hlkwb{<-} \hlnum{1000}
+\hlstd{weights}            \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{0.6}\hlstd{,} \hlnum{0.3}\hlstd{,} \hlnum{0.3}\hlstd{)}
 
 \hlstd{policy}             \hlkwb{<-} \hlstd{EpsilonGreedyPolicy}\hlopt{$}\hlkwd{new}\hlstd{(}\hlkwc{epsilon} \hlstd{=} \hlnum{0.1}\hlstd{,} \hlkwc{name} \hlstd{=} \hlstr{"EG"}\hlstd{)}
 \hlstd{bandit}             \hlkwb{<-} \hlstd{SyntheticBandit}\hlopt{$}\hlkwd{new}\hlstd{(}\hlkwc{weights} \hlstd{= weights)}

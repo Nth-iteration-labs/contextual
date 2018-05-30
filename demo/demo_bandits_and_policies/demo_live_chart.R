@@ -1,8 +1,8 @@
-setwd("~/GitHub/contextual/demo")
-#library(contextual)
-source("dev.R")
+library(contextual)
+library(here)
+setwd(here("demo","demo_bandits_and_policies"))
+source("../dev.R")
 
-set.seed(21L)
 
 plot <- Plot$new()                                                              # Initialize live plot. TODO: change to within class.
 plot$set_external(T, 11L, 6L)                                                   # Set plot to external window when in Rstudio.

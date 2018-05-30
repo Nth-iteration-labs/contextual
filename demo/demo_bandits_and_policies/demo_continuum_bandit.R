@@ -1,5 +1,7 @@
-setwd("~/GitHub/contextual/demo")
-source("dev.R")
+library(contextual)
+library(here)
+setwd(here("demo","demo_bandits_and_policies"))
+source("../dev.R")
 
 horizon            <- 1500
 simulations        <- 100
