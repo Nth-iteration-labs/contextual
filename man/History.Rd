@@ -35,7 +35,7 @@ History <- History$new(n = 1, save_context = FALSE, save_theta = FALSE)
 \code{integer}. The number of rows, to be preallocated during initialization.
 }
 \item{\code{save_context}}{
-\code{logical}. Save context vectors \code{X} when writing simulation data?
+\code{logical}. Save context matrix \code{X} when writing simulation data?
 }
 \item{\code{save_theta}}{
 \code{logical}. Save parameter lists \code{theta} when writing simulation data?
@@ -56,7 +56,7 @@ Resets a \code{History} instance to its original initialisation values.
                    t,
                    action,
                    reward,
-                   policy_name,
+                   agent_name,
                    simulation_index,
                    context_value = NA,
                    theta_value = NA)}}{

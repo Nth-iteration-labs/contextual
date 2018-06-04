@@ -19,7 +19,7 @@ arm, never looking back (keep on exploiting that arm for ever).
 \section{Usage}{
 
 \preformatted{
-policy <- EpsilonFirstPolicy(first = 100, name = "EpsilonFirstPolicy")
+policy <- EpsilonFirstPolicy(first = 100)
 }
 }
 
@@ -42,7 +42,7 @@ is, amongst others, saved to the History log and displayed in summaries and plot
 
 
 \describe{
-\item{\code{new(first = 100, name = "EpsilonFirst")}}{ Generates a new \code{EpsilonFirstPolicy} object. Arguments are defined in the Argument section above.}
+\item{\code{new(first = 100)}}{ Generates a new \code{EpsilonFirstPolicy} object. Arguments are defined in the Argument section above.}
 }
 
 \describe{
@@ -74,7 +74,7 @@ horizon            <- 100L
 simulations        <- 100L
 weights            <- c(0.9, 0.1, 0.1)
 
-policy             <- EpsilonFirstPolicy$new(first = 50, name = "EpsilonFirst")
+policy             <- EpsilonFirstPolicy$new(first = 50)
 bandit             <- SyntheticBandit$new(weights = weights, precaching = FALSE)
 agent              <- Agent$new(policy, bandit)
 

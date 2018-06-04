@@ -12,6 +12,7 @@ ContextualBandit <- R6::R6Class(
     user_model    = NULL,
     num_users     = NULL,
     u             = NULL,
+    class_name    = "ContextualBandit",
     precaching = FALSE,
     initialize  = function(k, d, num_users = 1, user_model = NA) {
       self$num_users                     <- num_users
@@ -35,6 +36,7 @@ ContextualBandit <- R6::R6Class(
       } else {
         weights                          <- colSums(private$X)/self$d
       }
+
       private$R                          <- rep(0,self$k)
       private$R[which.max(weights)]      <- 1
       contextlist <- list(

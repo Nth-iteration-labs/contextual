@@ -18,7 +18,7 @@ It then proceeds to choose the arm with the highest upper confidence bound.
 \section{Usage}{
 
 \preformatted{
-policy <- LinUCBDisjointPolicy(alpha = 1.0, name = "LinUCB")
+policy <- LinUCBDisjointPolicy(alpha = 1.0)
 }
 }
 
@@ -53,7 +53,7 @@ a zero vector of length d
 
 
 \describe{
-\item{\code{new(alpha = 1, name = "LinUCB")}}{ Generates a new \code{LinUCBDisjointPolicy} object. Arguments are defined in the Argument section above.}
+\item{\code{new(alpha = 1)}}{ Generates a new \code{LinUCBDisjointPolicy} object. Arguments are defined in the Argument section above.}
 }
 
 \describe{

@@ -1,14 +1,14 @@
 #' @export
 ContinuumBandit <- R6::R6Class(
-  "ContinuumBandit",
   inherit = Bandit,
   portable = TRUE,
   class = FALSE,
   public = list(
     arm_function = NULL,
-    initialize   = function(FUN) {
+    class_name = "ContinuumBandit",
+    initialize   = function(arm_function) {
+      self$arm_function <- arm_function
       super$initialize()
-      self$arm_function <- FUN
       self$d            <- 1
       self$k            <- 1
     },

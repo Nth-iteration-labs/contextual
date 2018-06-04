@@ -1,13 +1,13 @@
 #' @export
 LinUCBDisjointPolicy <- R6::R6Class(
-  "LinUCBDisjointPolicy",
   portable = FALSE,
   class = FALSE,
   inherit = Policy,
   public = list(
     alpha = NULL,
-    initialize = function(alpha = 1.0, name = "LinUCBDisjoint") {
-      super$initialize(name)
+    class_name = "LinUCBDisjointPolicy",
+    initialize = function(alpha = 1.0) {
+      super$initialize()
       self$alpha <- alpha
     },
     set_parameters = function() {
@@ -66,7 +66,7 @@ LinUCBDisjointPolicy <- R6::R6Class(
 #'
 #' @section Usage:
 #' \preformatted{
-#' policy <- LinUCBDisjointPolicy(alpha = 1.0, name = "LinUCB")
+#' policy <- LinUCBDisjointPolicy(alpha = 1.0)
 #' }
 #'
 #' @section Arguments:
@@ -95,7 +95,7 @@ LinUCBDisjointPolicy <- R6::R6Class(
 #' @section Methods:
 #'
 #' \describe{
-#'   \item{\code{new(alpha = 1, name = "LinUCB")}}{ Generates a new \code{LinUCBDisjointPolicy} object. Arguments are defined in the Argument section above.}
+#'   \item{\code{new(alpha = 1)}}{ Generates a new \code{LinUCBDisjointPolicy} object. Arguments are defined in the Argument section above.}
 #' }
 #'
 #' \describe{

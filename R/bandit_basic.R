@@ -1,6 +1,5 @@
 #' @export
 BasicBandit <- R6::R6Class(
-  "BasicBandit",
   inherit = Bandit,
   portable = TRUE,
   class = FALSE,
@@ -10,6 +9,7 @@ BasicBandit <- R6::R6Class(
     W = NULL
   ),
   public = list(
+    class_name = "BasicBandit",
     initialize   = function(weights = NULL) {
       if (!is.null(weights)) self$set_weights(weights)
       private$X <- array(1, dim = c(self$d, self$k, 1))

@@ -1,6 +1,8 @@
-setwd("~/GitHub/contextual/demo/demo_parallel_azure")
-source("simulator_azure.R")
 library(contextual)
+library(here)
+setwd(here("demo","demo_parallel_azure"))
+source("simulator_azure.R")
+source("../dev.R")
 
 ## follow setup and install of doAzureParallel
 ## at https://github.com/Azure/doAzureParallel

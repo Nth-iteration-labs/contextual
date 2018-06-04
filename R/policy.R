@@ -1,18 +1,17 @@
 #' @export
 Policy <- R6::R6Class(
-  "Policy",
   portable = FALSE,
   class = FALSE,
   public = list(
-    name          = "",
     action        = NULL,
     theta         = NULL,
     theta_to_arms = NULL,
     k             = NULL,
     d             = NULL,
-    initialize = function(name = "Not implemented") {
+    cl            = NULL,
+    class_name    = "Policy",
+    initialize = function() {
       self$theta <- list()
-      self$name   <- name
       self$action <- list()
     },
     get_action = function(t, context) {

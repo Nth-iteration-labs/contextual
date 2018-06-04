@@ -12,7 +12,7 @@ a probability mass exponential in the estimated cumulative reward for that actio
 \section{Usage}{
 
 \preformatted{
-policy <- Exp3Policy(gamma = 0.1, name = "Exp3Policy")
+policy <- Exp3Policy(gamma = 0.1)
 }
 }
 
@@ -34,7 +34,7 @@ is, amongst others, saved to the History log and displayed in summaries and plot
 
 
 \describe{
-\item{\code{new(gamma = 0.1, name = "Exp3")}}{ Generates a new \code{Exp3Policy} object. Arguments are defined in the Argument section above.}
+\item{\code{new(gamma = 0.1)}}{ Generates a new \code{Exp3Policy} object. Arguments are defined in the Argument section above.}
 }
 
 \describe{
@@ -66,7 +66,7 @@ horizon            <- 100L
 simulations        <- 100L
 weights        <- c(0.9, 0.1, 0.1)
 
-policy             <- Exp3Policy$new(gamma = 0.1, name = "Exp3")
+policy             <- Exp3Policy$new(gamma = 0.1)
 bandit             <- SyntheticBandit$new(weights = weights, precaching = FALSE)
 agent              <- Agent$new(policy, bandit)
 

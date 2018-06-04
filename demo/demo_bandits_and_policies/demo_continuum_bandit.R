@@ -16,9 +16,9 @@ learn_rate  <- 0.3
 omega       <- 2*pi/int_time
 x0_start    <- 2.0
 
-policy             <- LifPolicy$new(int_time, amplitude, learn_rate, omega, x0_start, name = "LiF")
+policy             <- LifPolicy$new(int_time, amplitude, learn_rate, omega, x0_start)
 
-bandit             <- ContinuumBandit$new(FUN = continuous_arms)
+bandit             <- ContinuumBandit$new(continuous_arms)
 
 agent              <- Agent$new(policy,bandit)
 

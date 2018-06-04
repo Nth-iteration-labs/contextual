@@ -1,6 +1,5 @@
 #' @export
 SimpleBTSPolicy <- R6::R6Class(
-  "SimpleBTSPolicy",
   portable = FALSE,
   class = FALSE,
   inherit = Policy,
@@ -8,11 +7,11 @@ SimpleBTSPolicy <- R6::R6Class(
     J = NULL,
     a = NULL,
     b = NULL,
+    class_name = "SimpleBTSPolicy",
     initialize = function(J = 100,
                           a = 1,
-                          b = 1,
-                          name = "SimpleBTSPolicy") {
-      super$initialize(name)
+                          b = 1) {
+      super$initialize()
       self$J  <- J
       self$a  <- a
       self$b  <- b
@@ -58,6 +57,6 @@ SimpleBTSPolicy <- R6::R6Class(
 #'
 #' @section Usage:
 #' \preformatted{
-#' policy <- SimpleBTSPolicy(alpha = 1.0, name = "LinUCB")
+#' policy <- SimpleBTSPolicy(alpha = 1.0)
 #' }
 NULL

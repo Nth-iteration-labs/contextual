@@ -11,7 +11,7 @@ It then proceeds to choose the arm with the highest upper confidence bound.
 \section{Usage}{
 
 \preformatted{
-policy <- BTSLogitPolicy(alpha = 1.0, name = "LinUCB")
+policy <- BTSLogitPolicy(alpha = 1.0)
 }
 }
 

@@ -3,19 +3,30 @@ Agent <- R6::R6Class(
   "Agent",
   portable = FALSE,
   class = FALSE,
-  private = list(
-    t = NULL
-  ),
   public = list(
     policy = NULL,
     bandit = NULL,
     sim_index = NULL,
     agent_index = NULL,
-    initialize = function(policy, bandit) {
+    name = NULL,
+    policy_call = NULL,
+    bandit_call = NULL,
+    initialize = function(policy, bandit, name=NULL) {
+
+      self$policy_call = parse_call(policy)
+      self$bandit_call = parse_call(bandit)
+
       self$bandit                 <- bandit
       self$policy                 <- policy
       self$policy$k               <- self$bandit$k
       self$policy$d               <- self$bandit$d
+
+      if (is.null(name)) {
+        self$name  <- gsub("Policy", "", policy$class_name)
+      } else {
+        self$name  <- name
+      }
+
       self$reset()
     },
     reset = function() {
@@ -40,6 +51,19 @@ Agent <- R6::R6Class(
     },
     get_t = function(t) {
       private$t
+    }
+  ),
+  private = list(
+    t = NULL,
+    parse_call = function(r6_envir) {
+      args <- formalArgs(r6_envir$initialize)
+      if(!is.null(args)) args <- mget(args, envir = r6_envir)
+      class_name = r6_envir$class_name
+      parsed_call_string = paste0(class_name,"$new(",deparse(args,control=c(), width.cutoff = 500),")")
+      parsed_call_string <- gsub("))",")", parsed_call_string)
+      parsed_call_string <- gsub("list\\(","", parsed_call_string)
+      parsed_call_string <- gsub("\\(NULL)","()", parsed_call_string)
+      parsed_call_string
     }
   )
 )

@@ -6,7 +6,7 @@ UnpooledUCBPolicy <- R6::R6Class(
   public = list(
     n_subjects = NULL,
     initialize = function(n_subjects = 1, name = "PooledUCB") {
-      super$initialize(name)
+      super$initialize()
       self$n_subjects <- n_subjects
     },
     set_parameters = function() {
@@ -50,7 +50,7 @@ PooledUCBPolicy <- R6::R6Class(
   public = list(
     n_subjects = NULL,
     initialize = function(name = "PooledUCB") {
-      super$initialize(name)
+      super$initialize()
     },
     set_parameters = function() {
       self$theta_to_arms <- list('P' = 0, 'N' = 0)
@@ -92,7 +92,7 @@ PartiallyPooledUCBPolicy <- R6::R6Class(
   public = list(
     n_subjects = NULL,
     initialize = function(n_subjects = 1, name = "PartiallyPooledUCB") {
-      super$initialize(name)
+      super$initialize()
       self$n_subjects <- n_subjects
     },
     set_parameters = function() {

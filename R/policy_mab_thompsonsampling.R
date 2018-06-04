@@ -1,14 +1,14 @@
 #' @export
 ThompsonSamplingPolicy <- R6::R6Class(
-  "ThompsonSamplingPolicy",
   portable = FALSE,
   class = FALSE,
   inherit = Policy,
   public = list(
     alpha = 1,
     beta = 1,
-    initialize = function(alpha = 1, beta =  1, name = "Thompson Sampling") {
-      super$initialize(name)
+    class_name = "ThompsonSamplingPolicy",
+    initialize = function(alpha = 1, beta =  1) {
+      super$initialize()
       self$alpha  <- alpha
       self$beta   <- beta
     },
@@ -71,7 +71,7 @@ ThompsonSamplingPolicy <- R6::R6Class(
 #' @section Methods:
 #'
 #' \describe{
-#'   \item{\code{new(alpha = 1, beta = 1, name = "TSampling")}}{ Generates a new \code{ThompsonSamplingPolicy} object. Arguments are defined in the Argument section above.}
+#'   \item{\code{new(alpha = 1, beta = 1)}}{ Generates a new \code{ThompsonSamplingPolicy} object. Arguments are defined in the Argument section above.}
 #' }
 #'
 #' \describe{
@@ -113,7 +113,7 @@ ThompsonSamplingPolicy <- R6::R6Class(
 #' simulations        <- 100L
 #' weights        <- c(0.9, 0.1, 0.1)
 #'
-#' policy             <- ThompsonSamplingPolicy$new(alpha = 1, beta = 1, name = "TSampling")
+#' policy             <- ThompsonSamplingPolicy$new(alpha = 1, beta = 1)
 #' bandit             <- SyntheticBandit$new(weights = weights, precaching = FALSE)
 #' agent              <- Agent$new(policy, bandit)
 #'

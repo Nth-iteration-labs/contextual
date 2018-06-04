@@ -1,12 +1,12 @@
 #' @export
 OraclePolicy <- R6::R6Class(
-  "OraclePolicy",
   portable = FALSE,
   class = FALSE,
   inherit = Policy,
   public = list(
-    initialize = function(name = "Oracle") {
-      super$initialize(name)
+    class_name = "OraclePolicy",
+    initialize = function() {
+      super$initialize()
     },
     set_parameters = function() {
       self$theta_to_arms <- list('n' = 0, 'mean' = 0)
@@ -39,7 +39,7 @@ OraclePolicy <- R6::R6Class(
 #'
 #' @section Usage:
 #' \preformatted{
-#' policy <- OraclePolicy(name = "OraclePolicy")
+#' policy <- OraclePolicy()
 #' }
 #'
 #' @section Arguments:
@@ -54,7 +54,7 @@ OraclePolicy <- R6::R6Class(
 #' @section Methods:
 #'
 #' \describe{
-#'   \item{\code{new(name = "Oracle")}}{ Generates a new \code{OraclePolicy} object. Arguments are defined in the Argument section above.}
+#'   \item{\code{new()}}{ Generates a new \code{OraclePolicy} object. Arguments are defined in the Argument section above.}
 #' }
 #'
 #' \describe{

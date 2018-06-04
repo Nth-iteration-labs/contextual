@@ -1,11 +1,9 @@
 #' @export
 SyntheticBandit <- R6::R6Class(
-  "SyntheticBandit",
   inherit = BasicBandit,
   portable = TRUE,
   class = FALSE,
   public = list(
-
     d             = NULL,
     k             = NULL,
     reward_means  = NULL,
@@ -16,6 +14,7 @@ SyntheticBandit <- R6::R6Class(
     not_zero_features = NULL,
     random_one_feature = NULL,
     weights   = NULL,
+    class_name = "SyntheticBandit",
     initialize   = function(
       reward_family        = 'Bernoulli',
       reward_means         = 4.0,

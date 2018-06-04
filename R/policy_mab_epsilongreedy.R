@@ -1,13 +1,13 @@
 #' @export
 EpsilonGreedyPolicy          <- R6::R6Class(
-  "EpsilonGreedyPolicy",
   portable = FALSE,
   class = FALSE,
   inherit = Policy,
   public = list(
     epsilon = NULL,
-    initialize = function(epsilon = 0.1, name = "EpsilonGreedy") {
-      super$initialize(name)
+    class_name = "EpsilonGreedyPolicy",
+    initialize = function(epsilon = 0.1) {
+      super$initialize()
       self$epsilon           <- epsilon
     },
     set_parameters = function() {
@@ -45,7 +45,7 @@ EpsilonGreedyPolicy          <- R6::R6Class(
 #'
 #' @section Usage:
 #' \preformatted{
-#' policy <- EpsilonGreedyPolicy(epsilon = 0.1, name = "EpsilonGreedyPolicy")
+#' policy <- EpsilonGreedyPolicy(epsilon = 0.1)
 #' }
 #'
 #' @section Arguments:
@@ -67,7 +67,7 @@ EpsilonGreedyPolicy          <- R6::R6Class(
 #' @section Methods:
 #'
 #' \describe{
-#'   \item{\code{new(epsilon = 0.1, name = "EpsilonGreedy")}}{ Generates a new \code{EpsilonGreedyPolicy} object. Arguments are defined in the Argument section above.}
+#'   \item{\code{new(epsilon = 0.1)}}{ Generates a new \code{EpsilonGreedyPolicy} object. Arguments are defined in the Argument section above.}
 #' }
 #'
 #' \describe{
@@ -115,7 +115,7 @@ EpsilonGreedyPolicy          <- R6::R6Class(
 #' simulations        <- 100L
 #' weights            <- c(0.9, 0.1, 0.1)
 #'
-#' policy             <- EpsilonGreedyPolicy$new(epsilon = 0.1, name = "EpsilonGreedy")
+#' policy             <- EpsilonGreedyPolicy$new(epsilon = 0.1)
 #' bandit             <- SyntheticBandit$new(weights = weights, precaching = FALSE)
 #' agent              <- Agent$new(policy, bandit)
 #'

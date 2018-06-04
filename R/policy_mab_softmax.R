@@ -1,13 +1,13 @@
 #' @export
 SoftmaxPolicy <- R6::R6Class(
-  "SoftmaxPolicy",
   portable = FALSE,
   class = FALSE,
   inherit = Policy,
   public = list(
     tau = NULL,
-    initialize = function(tau = 0.1, name = "Softmax") {
-      super$initialize(name)
+    class_name = "SoftmaxPolicy",
+    initialize = function(tau = 0.1) {
+      super$initialize()
       self$tau <- tau
     },
     set_parameters = function() {
@@ -52,7 +52,7 @@ SoftmaxPolicy <- R6::R6Class(
 #'
 #' @section Usage:
 #' \preformatted{
-#' policy <- SoftmaxPolicy(epsilon = 0.1, name = "SoftmaxPolicy")
+#' policy <- SoftmaxPolicy(epsilon = 0.1)
 #' }
 #'
 #' @section Arguments:
@@ -74,7 +74,7 @@ SoftmaxPolicy <- R6::R6Class(
 #' @section Methods:
 #'
 #' \describe{
-#'   \item{\code{new(epsilon = 0.1, name = "EpsilonGreedy")}}{ Generates a new \code{SoftmaxPolicy} object. Arguments are defined in the Argument section above.}
+#'   \item{\code{new(epsilon = 0.1)}}{ Generates a new \code{SoftmaxPolicy} object. Arguments are defined in the Argument section above.}
 #' }
 #'
 #' \describe{
@@ -119,7 +119,7 @@ SoftmaxPolicy <- R6::R6Class(
 #' simulations        <- 100L
 #' weights        <- c(0.9, 0.1, 0.1)
 #'
-#' policy             <- SoftmaxPolicy$new(tau = 0.1, name = "Softmax")
+#' policy             <- SoftmaxPolicy$new(tau = 0.1)
 #' bandit             <- SyntheticBandit$new(weights = weights, precaching = FALSE)
 #' agent              <- Agent$new(policy, bandit)
 #'

@@ -42,8 +42,8 @@ bandit <- LiSamplingOfflineBandit$new(data_file = log_S, k = 3, d = 3)
 
 agents <-
   list(
-    Agent$new(EpsilonGreedyPolicy$new(0.1, "\U190-greedy"), bandit),
-    Agent$new(LinUCBDisjointPolicy$new(1.0, "LinUCB"), bandit)
+    Agent$new(EpsilonGreedyPolicy$new(0.1), bandit),
+    Agent$new(LinUCBDisjointPolicy$new(1.0), bandit)
   )
 
 simulation <-

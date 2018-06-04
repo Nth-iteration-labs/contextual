@@ -1,12 +1,12 @@
 #' @export
 RandomPolicy <- R6::R6Class(
-  "RandomPolicy",
   portable = FALSE,
   class = FALSE,
   inherit = Policy,
   public = list(
-    initialize = function(name = "Random") {
-      super$initialize(name)
+    class_name = "RandomPolicy",
+    initialize = function() {
+      super$initialize()
     },
     set_parameters = function() {
       self$theta_to_arms <- list('n' = 0, 'mean' = 0)
@@ -52,7 +52,7 @@ RandomPolicy <- R6::R6Class(
 #' @section Methods:
 #'
 #' \describe{
-#'   \item{\code{new(name = "Random")}}{ Generates a new \code{RandomPolicy} object. Arguments are defined in the Argument section above.}
+#'   \item{\code{new()}}{ Generates a new \code{RandomPolicy} object. Arguments are defined in the Argument section above.}
 #' }
 #'
 #' \describe{
@@ -92,7 +92,7 @@ RandomPolicy <- R6::R6Class(
 #' simulations        <- 100L
 #' weights            <- c(0.9, 0.1, 0.1)
 #'
-#' policy             <- RandomPolicy$new(name = "Random")
+#' policy             <- RandomPolicy$new()
 #' bandit             <- SyntheticBandit$new(weights = weights, precaching = FALSE)
 #' agent              <- Agent$new(policy, bandit)
 #'

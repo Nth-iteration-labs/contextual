@@ -1,20 +1,18 @@
 #' @export
 LifPolicy <- R6::R6Class(
-  "LifPolicy",
   portable = FALSE,
   class = FALSE,
   inherit = Policy,
   public = list(
     first = NULL,
-
     inttime = NULL   ,                  # Integration time
     amplitude = NULL,                   # Amplitude
     learnrate = NULL,                   # Learnrate
     omega = NULL,                       # Omega
     x0_start = NULL,                    # x0 start value
-
-    initialize = function(inttime,amplitude,learnrate,omega,x0_start, name = "LockInFeedback") {
-      super$initialize(name)
+    class_name = "LifPolicy",
+    initialize = function(inttime,amplitude,learnrate,omega,x0_start) {
+      super$initialize()
       self$inttime   <- inttime
       self$amplitude <- amplitude
       self$learnrate <- learnrate

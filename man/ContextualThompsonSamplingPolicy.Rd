@@ -13,7 +13,7 @@ This procedure is repeated for the next arm pull.
 \section{Usage}{
 
 \preformatted{
-policy <- ContextualThompsonSamplingPolicy(alpha = 1, beta = 1, name = "TSampling")
+policy <- ContextualThompsonSamplingPolicy(alpha = 1, beta = 1)
 }
 }
 
@@ -38,7 +38,7 @@ is, amongst others, saved to the History log and displayed in summaries and plot
 
 
 \describe{
-\item{\code{new(alpha = 1, beta = 1, name = "TSampling")}}{ Generates a new \code{ContextualThompsonSamplingPolicy} object. Arguments are defined in the Argument section above.}
+\item{\code{new(alpha = 1, beta = 1)}}{ Generates a new \code{ContextualThompsonSamplingPolicy} object. Arguments are defined in the Argument section above.}
 }
 
 \describe{

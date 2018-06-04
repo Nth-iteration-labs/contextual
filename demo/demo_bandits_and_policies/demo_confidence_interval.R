@@ -3,19 +3,26 @@ library(here)
 setwd(here("demo","demo_bandits_and_policies"))
 source("../dev.R")
 
-horizon            <- 2000L
-simulations        <- 100L
-context_weights    <- matrix(  c( 0.4, 0.15,
-                                  0.4, 0.6),  nrow = 2, ncol = 2, byrow = TRUE )
+horizon            <- 1000L
+simulations        <- 2000L
 
-policy             <- SimpleBTSPolicy$new()
-bandit             <- SyntheticBandit$new(context_weights = context_weights, precaching = TRUE, random_one_feature = TRUE)
+weights            <- matrix(  c( 0.4, 0.2,
+                                  0.4, 0.6),    nrow = 2, ncol = 2, byrow = TRUE )
 
-agent              <- Agent$new(policy, bandit)
+policy             <- ContextualThompsonSamplingPolicy$new()
+bandit             <- SyntheticBandit$new(weights = weights, precaching = TRUE, random_one_feature = TRUE)
+agent_contextual   <- Agent$new(policy, bandit, name="contextual")
 
-history            <- Simulator$new(agent, horizon, simulations, save_theta = TRUE, save_context = TRUE, do_parallel = FALSE)$run()
+weights            <- matrix(  c( 0.4, 0.4, 0.4, 0.4),  nrow = 2, ncol = 2, byrow = TRUE )
+
+policy2            <- ContextualThompsonSamplingPolicy$new()
+bandit2            <- SyntheticBandit$new(weights = weights, precaching = TRUE, random_one_feature = TRUE)
+agent_ncontextual  <- Agent$new(policy2, bandit2, name="non-contextual")
 
 
-plot(history, type = "average", ci = TRUE,  start_step = 80, step_size = 50)
+history            <- Simulator$new(list(agent_contextual,agent_ncontextual),
+                                    horizon, simulations, save_theta = TRUE, save_context = TRUE,
+                                    do_parallel = TRUE)$run()
 
+#plot(history, type = "average", ci = TRUE,  start_step = 80, step_size = 50)
 plot(history, type = "cumulative", ci = TRUE, rate = TRUE, start_step = 80, regret = FALSE)

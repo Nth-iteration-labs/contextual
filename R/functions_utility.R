@@ -1,5 +1,3 @@
-
-
 #' Increment
 #'
 #' \code{inc<-} increments \code{x} by value. Equivalent to \code{x <- x + value.}
@@ -161,6 +159,14 @@ set_external <- function(ext = TRUE,
     graphics.off()
   }
 }
+#' Sample one of
+#'
+#' Sample one of the values in a vector.
+#'
+#' @param x A vector of one or more elements from which to choose
+#'
+#' @return One value, drawn from x.
+#'
 #' @export
 sample_one_of <- function(x) {
   if (length(x) <= 1) {

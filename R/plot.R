@@ -32,19 +32,22 @@ Plot <- R6::R6Class(
         }
         cs <- history[, list(var = var(cumsum), data = mean(cumsum)), by = list(t, agent)]
       }
-      do_plot(cs = cs, ylab_title = ylab_title, use_colors = use_colors, ci = ci, legend = legend, no_par = no_par, step_size = step_size, start_step = start_step, color_step = color_step, lty_step = lty_step, lwd = lwd, ylim = ylim, legend_labels = legend_labels, legend_border = legend_border, legend_title = legend_title)
+      do_plot(cs = cs, ylab_title = ylab_title, use_colors = use_colors, ci = ci, legend = legend, no_par = no_par, step_size = step_size, start_step = start_step, color_step = color_step, lty_step = lty_step, lwd = lwd, ylim = ylim, legend_labels = legend_labels, legend_border = legend_border, legend_title = legend_title, history = history)
       invisible(self)
     },
     average = function(history, no_par = FALSE, xlim = NULL, legend = TRUE, regret = FALSE, use_colors = TRUE, ci = FALSE, step_size = 1, start_step = 1, rate = FALSE, color_step = 1, lty_step = 1, lwd = 1, ylim = NULL, legend_labels = NULL, legend_border = NULL, legend_title = NULL) {
       history <- check_history_data(history)
       if (regret) {
           ylab_title <- "Average expected regret"
+          history$cumsum = history$optimal_reward_value - history$reward ################ TODO
           cs <- history[, list(var = var(optimal_reward_value - reward) , data = mean(optimal_reward_value - reward)), by = list(t, agent)]
       } else {
           ylab_title <- "Average reward"
+          history$cumsum = history$reward ################ TODO
           cs <-  history[, list(var = var(reward) , data = mean(reward)), by = list(t, agent)]
       }
-      do_plot(cs = cs, ylab_title = ylab_title, use_colors = use_colors, ci = ci, legend = legend, no_par = no_par, step_size = step_size, start_step = start_step, color_step = color_step, lty_step = lty_step, lwd = lwd, ylim = ylim, legend_labels = legend_labels, legend_border = legend_border, legend_title = legend_title)
+
+      do_plot(cs = cs, ylab_title = ylab_title, use_colors = use_colors, ci = ci, legend = legend, no_par = no_par, step_size = step_size, start_step = start_step, color_step = color_step, lty_step = lty_step, lwd = lwd, ylim = ylim, legend_labels = legend_labels, legend_border = legend_border, legend_title = legend_title, history = history)
       invisible(self)
     },
     optimal = function(history, no_par = FALSE, xlim = NULL, legend = TRUE, use_colors = TRUE, ci = FALSE, step_size = 1, start_step = 1, color_step = 1, lty_step = 1, lwd = 1, ylim = NULL, legend_labels = NULL, legend_border = NULL, legend_title = NULL) {
@@ -57,7 +60,7 @@ Plot <- R6::R6Class(
 
     ############################ main plot function  ############################
 
-    do_plot = function(cs, ylab_title, use_colors = FALSE, ci = FALSE, legend = TRUE, no_par = FALSE, ylim = NULL, step_size = 1, start_step = 1, color_step = 1, lty_step = 1, lwd = 1, legend_labels = NULL, legend_border = NULL, legend_title = NULL) {
+    do_plot = function(cs, ylab_title, use_colors = FALSE, ci = FALSE, legend = TRUE, no_par = FALSE, ylim = NULL, step_size = 1, start_step = 1, color_step = 1, lty_step = 1, lwd = 1, legend_labels = NULL, legend_border = NULL, legend_title = NULL, history = NULL) {
       if (no_par == FALSE) {
         dev.hold()
         old.par <- par(no.readonly = TRUE)
@@ -67,6 +70,8 @@ Plot <- R6::R6Class(
       if (ci) {
         # 95% confidence
         ci_range <- cs$data + outer(sqrt(cs$var)/sqrt(self$max_sim), c(1.64, -1.64))
+        ci_range <- cs$data + outer(sqrt(cs$var), c(1, -1)) # sd
+        #ci_range <- cs$data + outer(cs$var, c(1, -1)) # var
         cs <- cbind(cs, ci_range)
         colnames(cs)[colnames(cs) == 'V2'] <- 'ci_lower'
         colnames(cs)[colnames(cs) == 'V1'] <- 'ci_upper'
@@ -95,6 +100,26 @@ Plot <- R6::R6Class(
 
       if (use_colors) {
         if (ci) {
+          if (FALSE) {
+          ################################# temp ##############
+          history[order(agent, sim, t)]
+          for (agent_name in agent_levels) {
+            step_seq <- seq(start_step, nrow(cs[cs$agent == agent_name]), step_size)
+            agent_sims <- unique(history[history$agent == agent_name]$sim)
+            for (as in agent_sims) {
+              lines(
+                history[history$agent == agent_name & history$sim == as][step_seq]$t,
+                history[history$agent == agent_name & history$sim == as][step_seq]$cumsum,
+                #supsmu(history[history$agent == agent_name & history$sim == as][step_seq]$t,
+                #history[history$agent == agent_name & history$sim == as][step_seq]$cumsum),
+                lwd = lwd,
+                col = rgb(0.8, 0.8, 0.8, 0.2)
+              )
+            }
+          }
+          ############################
+          }
+
           color <- 1
           for (agent_name in agent_levels) {
             step_seq <- seq(start_step, nrow(cs[cs$agent == agent_name]), step_size)

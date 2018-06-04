@@ -38,7 +38,7 @@ is, amongst others, saved to the History log and displayed in summaries and plot
 
 
 \describe{
-\item{\code{new(alpha = 1, beta = 1, name = "TSampling")}}{ Generates a new \code{ThompsonSamplingPolicy} object. Arguments are defined in the Argument section above.}
+\item{\code{new(alpha = 1, beta = 1)}}{ Generates a new \code{ThompsonSamplingPolicy} object. Arguments are defined in the Argument section above.}
 }
 
 \describe{
@@ -70,7 +70,7 @@ horizon            <- 100L
 simulations        <- 100L
 weights        <- c(0.9, 0.1, 0.1)
 
-policy             <- ThompsonSamplingPolicy$new(alpha = 1, beta = 1, name = "TSampling")
+policy             <- ThompsonSamplingPolicy$new(alpha = 1, beta = 1)
 bandit             <- SyntheticBandit$new(weights = weights, precaching = FALSE)
 agent              <- Agent$new(policy, bandit)
 

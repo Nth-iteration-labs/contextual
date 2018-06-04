@@ -128,9 +128,7 @@ library("contextual")
 There are many real-world situations in which we have to decide between a set of options but only learn about the best course of action by choosing one way or the other repeatedly, learning but one step at a time. In such situations, the basic premise stays the same for each renewed decision: do you stick to what you already know and receive an expected result ("exploit") or choose something you don't know all that much about and potentially learn something new ("explore")? As we all encounter such dilemma's on a daily basis, it is easy to come up with many examples - for instance:
 
 \begin{itemize}
-\item Do you feed your next coin to the one-armed bandit that paid out last time, or do you test your luck on another arm, on another machine?
 \item When going out to dinner, do you explore new restaurants, or do you exploit familiar ones?
-\item Do you stick to your current job, or explore and hunt around?
 \item Do I keep my current stocks, or change my portfolio and pick some new ones?
 \item As an online marketer, do you try a new ad, or keep the current one?
 \item As a doctor, do you treat your patients with tried and tested medication, or do you prescribe a new and promising experimental treatment?

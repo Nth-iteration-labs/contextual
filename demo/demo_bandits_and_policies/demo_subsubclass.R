@@ -7,7 +7,7 @@ source("../dev.R")
  simulations        <- 100L
  weights            <- c(0.9, 0.1, 0.1)
 
- policy             <- UCB1Policy$new(name = "UCB1")
+ policy             <- UCB1Policy$new()
  bandit             <- SyntheticBandit$new(weights = weights, precaching = FALSE)
  agent              <- Agent$new(policy, bandit)
 
@@ -20,10 +20,10 @@ source("../dev.R")
 ###################
 
 PoissonRewardBandit <- R6::R6Class(
-  "PoissonRewardBandit",
   # Class extends BasicBandit
   inherit = BasicBandit,
   public = list(
+    class_name = "PoissonRewardBandit",
     initialize = function(weights) {
       super$initialize(weights)
     },
@@ -39,11 +39,11 @@ PoissonRewardBandit <- R6::R6Class(
   )
 )
 EpsilonGreedyAnnealingPolicy <- R6::R6Class(
-  "EpsilonGreedyAnnealingPolicy",
   # Class extends EpsilonGreedyPolicy
   inherit = EpsilonGreedyPolicy,
   portable = FALSE,
   public = list(
+    class_name = "EpsilonGreedyAnnealingPolicy",
     # Override get_action, use annealing epsilon
     get_action = function(t, context) {
       self$epsilon <- 1 / log(t + 0.0000001)

@@ -12,7 +12,7 @@ reward.
 \section{Usage}{
 
 \preformatted{
-policy <- SoftmaxPolicy(epsilon = 0.1, name = "SoftmaxPolicy")
+policy <- SoftmaxPolicy(epsilon = 0.1)
 }
 }
 
@@ -38,7 +38,7 @@ is, amongst others, saved to the History log and displayed in summaries and plot
 
 
 \describe{
-\item{\code{new(epsilon = 0.1, name = "EpsilonGreedy")}}{ Generates a new \code{SoftmaxPolicy} object. Arguments are defined in the Argument section above.}
+\item{\code{new(epsilon = 0.1)}}{ Generates a new \code{SoftmaxPolicy} object. Arguments are defined in the Argument section above.}
 }
 
 \describe{
@@ -70,7 +70,7 @@ horizon            <- 100L
 simulations        <- 100L
 weights        <- c(0.9, 0.1, 0.1)
 
-policy             <- SoftmaxPolicy$new(tau = 0.1, name = "Softmax")
+policy             <- SoftmaxPolicy$new(tau = 0.1)
 bandit             <- SyntheticBandit$new(weights = weights, precaching = FALSE)
 agent              <- Agent$new(policy, bandit)
 

@@ -7,7 +7,7 @@ UnpooledThompsonPolicy <- R6::R6Class(
   public = list(
     n_subjects = NULL,
     initialize = function(n_subjects = 1, name = "UnpooledThompson") {
-      super$initialize(name)
+      super$initialize()
       self$n_subjects <- n_subjects
     },
     set_parameters = function() {
@@ -48,7 +48,7 @@ PooledThompsonPolicy <- R6::R6Class(
   public = list(
     n_subjects = NULL,
     initialize = function(name = "PooledThompson") {
-      super$initialize(name)
+      super$initialize()
     },
     set_parameters = function() {
       self$theta_to_arms <- list('N' = 0, 'P' = 0)
@@ -95,7 +95,7 @@ PartiallyPooledThompsonPolicy <- R6::R6Class(
                           warm_up = 10,
                           iter = 20,
                           name = "PartiallyPooledThompsonPolicy") {
-      super$initialize(name)
+      super$initialize()
       self$n_subjects = n_subjects
       self$stan_model = stan_model
       self$warm_up = warm_up

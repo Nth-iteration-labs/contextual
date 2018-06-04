@@ -1,3 +1,5 @@
+
+
 #' Plot Method for Contextual History
 #'
 #' plot.history, a method for the plot generic. It is designed for a quick look at History data.
@@ -208,23 +210,32 @@ print.History <- function(x, ...) {
 #' Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBandit}},
 #' \code{\link{LiSamplingOfflineBandit}}, \code{\link{SyntheticBandit}}
 #'
-#' @export
+#' @importFrom data.table data.table setcolorder rbindlist
 #' @export
 summary.History <- function(object, ...) {
-  cumulative_regret = object$cumulative(
-    final = TRUE,
-    rate = FALSE,
-    regret = TRUE
-  )
-  cumulative_reward = object$cumulative(
-    final = TRUE,
-    rate = FALSE,
-    regret = FALSE
-  )
-  cat("## Cumulative Regret\n\n")
-  print(rbindlist(cumulative_regret, fill = TRUE))
-  cat("\n## Cumulative Reward\n\n")
-  print(rbindlist(cumulative_reward, fill = TRUE))
+
+  args <- eval(substitute(alist(...)))
+  if ("limit_agents" %in% names(args))
+    limit_agents <- eval(args$limit_agents)
+  else
+    limit_agents <- NULL
+
+  cum <- object$get_cumulative_final(limit_agents=limit_agents, as_list = FALSE)
+  cum$sims <- object$number_of_simulations()
+
+  cat("\nAgents:\n\n")
+  agents <- object$get_agent_list()
+  cat(paste(' ', agents, collapse = ', '))
+
+  cat("\n\nCumulative Regret:\n\n")
+  print(cum[,c("agent","t", "sims", "cum_regret", "cum_regret_var",
+               "cum_regret_sd", "cum_regret_ci")], fill = TRUE, row.names = FALSE)
+
+  cat("\n\nCumulative Reward:\n\n")
+  print(cum[,c("agent","t", "sims", "cum_reward", "cum_reward_var",
+               "cum_reward_sd", "cum_reward_ci")], fill = TRUE, row.names = FALSE)
+
+
   cat("\n")
 }
 

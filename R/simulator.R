@@ -5,10 +5,8 @@
 #'
 #' @export
 Simulator <- R6::R6Class(
-  "Simulator",
   portable = FALSE,
   class = FALSE,
-  private = list(rewards = NULL),
   public = list(
     agents = NULL,
     number_of_agents = NULL,
@@ -63,17 +61,20 @@ Simulator <- R6::R6Class(
       if (self$write_progress_file) cat(paste0(""), file = "doparallel.log", append = FALSE)
 
       # (re)create history's data.table
-      self$history <- History$new(self$horizon * self$number_of_agents * self$simulations)
+      self$history <- History$new(self$horizon * self$number_of_agents * self$simulations)  ###
+
+      self$history$add_meta_data("sim_start_time",format(Sys.time(), "%a %b %d %X %Y"))
+
       self$sims_per_agent_list <-  matrix(list(), self$simulations, self$number_of_agents)
       # unique policy names through appending sequence numbers to duplicates
-      policy_name_list <- list()
-      for (agent_index in 1L:self$number_of_agents) {
+      agent_name_list <- list()
 
-        current_policy_name <- self$agents[[agent_index]]$policy$name
-        policy_name_list <- c(policy_name_list,current_policy_name)
-        current_policy_name_occurrences <- length(policy_name_list[policy_name_list == current_policy_name])
-        if (current_policy_name_occurrences > 1) {
-          self$agents[[agent_index]]$policy$name <- paste0(current_policy_name,'.',current_policy_name_occurrences)
+      for (agent_index in 1L:self$number_of_agents) {
+        current_agent_name <- self$agents[[agent_index]]$name
+        agent_name_list <- c(agent_name_list,current_agent_name)
+        current_agent_name_occurrences <- length(agent_name_list[agent_name_list == current_agent_name])
+        if (current_agent_name_occurrences > 1) {
+          self$agents[[agent_index]]$name <- paste0(current_agent_name,'.',current_agent_name_occurrences)
         }
       }
       # clone, precache and precalculate bandits and policies where relevant
@@ -137,6 +138,7 @@ Simulator <- R6::R6Class(
       # include packages that are used in parallel processes
       par_packages <- c(c("data.table","itertools"),include_packages)
       # running the main simulation loop
+      private$start_time = Sys.time()
       foreach_results <- foreach::foreach(
         sims_agents = sa_iterator,
         i = iterators::icount(),
@@ -160,7 +162,7 @@ Simulator <- R6::R6Class(
                 file = "progress.log", append = TRUE)
           }
           simulation_index <- sim_agent$sim_index
-          policy_name <- sim_agent$policy$name
+          agent_name <- sim_agent$name
           local_curent_seed <- simulation_index + set_seed*42
           set.seed(local_curent_seed)
           sim_agent$bandit$pre_calculate()
@@ -176,7 +178,7 @@ Simulator <- R6::R6Class(
                 t,
                 step$action,
                 step$reward,
-                policy_name,
+                agent_name,
                 simulation_index,
                 if (save_context) step$context$X else NA,
                 if (save_theta)   step$theta     else NA
@@ -189,7 +191,12 @@ Simulator <- R6::R6Class(
         dth[sim != 0]
       }
       self$history$set_data_table(foreach_results)
+      private$end_time = Sys.time()
       if (reindex_t) self$history$reindex_t()
+      agent_meta_to_history()
+      self$history$calculate_stats()
+      self$history$add_meta_data("sim_end_time",format(Sys.time(), "%a %b %d %X %Y"))
+      self$history$add_meta_data("sim_total_duration",private$end_time - private$start_time)
       self$history
     },
     finalize = function() {
@@ -202,6 +209,22 @@ Simulator <- R6::R6Class(
         # spawned but (potentially) not terminated by the foreach loop.
         closeAllConnections()
       }
+    }
+  ),
+  private = list(
+    start_time = NULL,
+    end_time = NULL,
+    agent_meta_to_history = function() {
+      agent_policy_call_list <- list()
+      agent_bandit_call_list <- list()
+      for (agent_index in 1L:self$number_of_agents) {
+        current_agent_name <- self$agents[[agent_index]]$name
+        agent_policy_call_list[[current_agent_name]] <- self$agents[[agent_index]]$policy_call
+        agent_bandit_call_list[[current_agent_name]] <- self$agents[[agent_index]]$bandit_call
+      }
+      self$history$initialize_meta_agent()
+      self$history$add_agent_data("policy_call",agent_policy_call_list)
+      self$history$add_agent_data("bandit_call",agent_bandit_call_list)
     }
   )
 )

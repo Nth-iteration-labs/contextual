@@ -1,6 +1,5 @@
 #' @export
 ContextualThompsonSamplingPolicy <- R6::R6Class(
-  "ContextualThompsonSamplingPolicy",
   portable = FALSE,
   class = FALSE,
   inherit = Policy,
@@ -9,8 +8,9 @@ ContextualThompsonSamplingPolicy <- R6::R6Class(
     delta = NULL,
     R = NULL,
     epsilon = 0.5,
-    initialize = function(delta=0.81, R=0.01, epsilon=0.91, name = "Contextual Thompson Sampling") {
-      super$initialize(name)
+    class_name = "ContextualThompsonSamplingPolicy",
+    initialize = function(delta=0.81, R=0.01, epsilon=0.91) {
+      super$initialize()
       self$delta   <- delta
       self$R       <- R
       self$epsilon <- epsilon
@@ -64,7 +64,7 @@ ContextualThompsonSamplingPolicy <- R6::R6Class(
 #'
 #' @section Usage:
 #' \preformatted{
-#' policy <- ContextualThompsonSamplingPolicy(alpha = 1, beta = 1, name = "TSampling")
+#' policy <- ContextualThompsonSamplingPolicy(alpha = 1, beta = 1)
 #' }
 #'
 #' @section Arguments:
@@ -85,7 +85,7 @@ ContextualThompsonSamplingPolicy <- R6::R6Class(
 #' @section Methods:
 #'
 #' \describe{
-#'   \item{\code{new(alpha = 1, beta = 1, name = "TSampling")}}{ Generates a new \code{ContextualThompsonSamplingPolicy} object. Arguments are defined in the Argument section above.}
+#'   \item{\code{new(alpha = 1, beta = 1)}}{ Generates a new \code{ContextualThompsonSamplingPolicy} object. Arguments are defined in the Argument section above.}
 #' }
 #'
 #' \describe{

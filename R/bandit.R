@@ -1,12 +1,12 @@
 #' @export
 Bandit <- R6::R6Class(
-  "Bandit",
   portable = TRUE,
   class    = FALSE,
   public   = list(
     k             = NULL,  # Number of arms (integer)
     d             = NULL,  # Dimension of context feature vector (integer)
     precaching    = FALSE, # Pregenerate context & reward matrices? (boolean)
+    class_name = "Bandit",
     initialize  = function() {
       # Initialize Bandit.
     },

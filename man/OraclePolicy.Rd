@@ -12,7 +12,7 @@ a baseline to compare other policies to.
 \section{Usage}{
 
 \preformatted{
-policy <- OraclePolicy(name = "OraclePolicy")
+policy <- OraclePolicy()
 }
 }
 
@@ -31,7 +31,7 @@ is, amongst others, saved to the History log and displayed in summaries and plot
 
 
 \describe{
-\item{\code{new(name = "Oracle")}}{ Generates a new \code{OraclePolicy} object. Arguments are defined in the Argument section above.}
+\item{\code{new()}}{ Generates a new \code{OraclePolicy} object. Arguments are defined in the Argument section above.}
 }
 
 \describe{

@@ -2,17 +2,17 @@
 
 #' @export
 LinUCBHybridPolicy <- R6::R6Class(
-  "LinUCBHybridPolicy",
   portable = FALSE,
   class = FALSE,
   inherit = Policy,
   public = list(
     alpha = NULL,
     u = NULL,
-    initialize = function(alpha = 1.0, user_features = 0, name = "LinUCBHybrid") {
-      super$initialize(name)
+    class_name = "LinUCBHybridPolicy",
+    initialize = function(alpha = 1.0, u = 0) {
+      super$initialize()
       self$alpha <- alpha
-      self$u <- user_features
+      self$u <- u
     },
     set_parameters = function() {
       self$theta <- list('A0' = diag(1,self$u,self$u), 'b0' = rep(0,self$u))
@@ -114,7 +114,7 @@ LinUCBHybridPolicy <- R6::R6Class(
 #'
 #' @section Usage:
 #' \preformatted{
-#' policy <- LinUCBHybridPolicy(alpha = 1.0, name = "LinUCB")
+#' policy <- LinUCBHybridPolicy(alpha = 1.0)
 #' }
 #'
 #' @section Arguments:
@@ -143,7 +143,7 @@ LinUCBHybridPolicy <- R6::R6Class(
 #' @section Methods:
 #'
 #' \describe{
-#'   \item{\code{new(alpha = 1, name = "LinUCB")}}{ Generates a new \code{LinUCBHybridPolicy} object. Arguments are defined in the Argument section above.}
+#'   \item{\code{new(alpha = 1)}}{ Generates a new \code{LinUCBHybridPolicy} object. Arguments are defined in the Argument section above.}
 #' }
 #'
 #' \describe{

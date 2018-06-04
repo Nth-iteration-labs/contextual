@@ -1,13 +1,13 @@
 #' @export
 BTSLogitPolicy <- R6::R6Class(
-  "BTSLogitPolicy",
   portable = FALSE,
   class = FALSE,
   inherit = Policy,
   public = list(
     alpha = NULL,
-    initialize = function(alpha = 1.0, name = "BTSLogit") {
-      super$initialize(name)
+    class_name = "BTSLogitPolicy",
+    initialize = function(alpha = 1.0) {
+      super$initialize()
       self$alpha <- alpha
     },
     set_parameters = function() {
@@ -60,6 +60,6 @@ BTSLogitPolicy <- R6::R6Class(
 #'
 #' @section Usage:
 #' \preformatted{
-#' policy <- BTSLogitPolicy(alpha = 1.0, name = "LinUCB")
+#' policy <- BTSLogitPolicy(alpha = 1.0)
 #' }
 NULL

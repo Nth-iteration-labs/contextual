@@ -1,6 +1,5 @@
 #' @export
 DoublyRobustOfflineBandit <- R6::R6Class(
-  "DoublyRobustOfflineBandit",
   inherit = BasicBandit,
   portable = TRUE,
   class = FALSE,
@@ -8,6 +7,7 @@ DoublyRobustOfflineBandit <- R6::R6Class(
     S = NULL
   ),
   public = list(
+    class_name = "DoublyRobustOfflineBandit",
     initialize   = function(data_file, k, d) {
       self$k <- k
       self$d <- d

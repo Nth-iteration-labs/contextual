@@ -1,13 +1,13 @@
 #' @export
 EpsilonFirstPolicy              <- R6::R6Class(
-  "EpsilonFirstPolicy",
   portable = FALSE,
   class = FALSE,
   inherit = Policy,
   public = list(
     first = NULL,
-    initialize = function(first = 100, name = "EpsilonFirst") {
-      super$initialize(name)
+    class_name = "EpsilonFirstPolicy",
+    initialize = function(first = 100) {
+      super$initialize()
       self$first                <- first
     },
     set_parameters = function() {
@@ -52,7 +52,7 @@ EpsilonFirstPolicy              <- R6::R6Class(
 #'
 #' @section Usage:
 #' \preformatted{
-#' policy <- EpsilonFirstPolicy(first = 100, name = "EpsilonFirstPolicy")
+#' policy <- EpsilonFirstPolicy(first = 100)
 #' }
 #'
 #' @section Arguments:
@@ -71,7 +71,7 @@ EpsilonFirstPolicy              <- R6::R6Class(
 #' @section Methods:
 #'
 #' \describe{
-#'   \item{\code{new(first = 100, name = "EpsilonFirst")}}{ Generates a new \code{EpsilonFirstPolicy} object. Arguments are defined in the Argument section above.}
+#'   \item{\code{new(first = 100)}}{ Generates a new \code{EpsilonFirstPolicy} object. Arguments are defined in the Argument section above.}
 #' }
 #'
 #' \describe{
@@ -116,7 +116,7 @@ EpsilonFirstPolicy              <- R6::R6Class(
 #' simulations        <- 100L
 #' weights            <- c(0.9, 0.1, 0.1)
 #'
-#' policy             <- EpsilonFirstPolicy$new(first = 50, name = "EpsilonFirst")
+#' policy             <- EpsilonFirstPolicy$new(first = 50)
 #' bandit             <- SyntheticBandit$new(weights = weights, precaching = FALSE)
 #' agent              <- Agent$new(policy, bandit)
 #'

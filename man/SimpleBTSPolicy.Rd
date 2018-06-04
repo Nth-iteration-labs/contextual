@@ -9,7 +9,7 @@ Each time step t, \code{SimpleBTSPolicy} runs ...
 \section{Usage}{
 
 \preformatted{
-policy <- SimpleBTSPolicy(alpha = 1.0, name = "LinUCB")
+policy <- SimpleBTSPolicy(alpha = 1.0)
 }
 }
 

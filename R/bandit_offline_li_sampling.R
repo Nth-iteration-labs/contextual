@@ -1,6 +1,5 @@
 #' @export
 LiSamplingOfflineBandit <- R6::R6Class(
-  "LiSamplingOfflineBandit",
   inherit = BasicBandit,
   portable = TRUE,
   class = FALSE,
@@ -8,6 +7,7 @@ LiSamplingOfflineBandit <- R6::R6Class(
     S = NULL
   ),
   public = list(
+    class_name = "LiSamplingOfflineBandit",
     initialize   = function(data_stream, k, d) {
       self$k <- k
       self$d <- d

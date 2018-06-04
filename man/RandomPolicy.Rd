@@ -30,7 +30,7 @@ is, amongst others, saved to the History log and displayed in summaries and plot
 
 
 \describe{
-\item{\code{new(name = "Random")}}{ Generates a new \code{RandomPolicy} object. Arguments are defined in the Argument section above.}
+\item{\code{new()}}{ Generates a new \code{RandomPolicy} object. Arguments are defined in the Argument section above.}
 }
 
 \describe{
@@ -62,7 +62,7 @@ horizon            <- 100L
 simulations        <- 100L
 weights            <- c(0.9, 0.1, 0.1)
 
-policy             <- RandomPolicy$new(name = "Random")
+policy             <- RandomPolicy$new()
 bandit             <- SyntheticBandit$new(weights = weights, precaching = FALSE)
 agent              <- Agent$new(policy, bandit)
 

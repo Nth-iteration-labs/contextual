@@ -7,7 +7,7 @@ UnpooledEgreedyPolicy <- R6::R6Class(
     epsilon = NULL,
     n_subjects = NULL,
     initialize = function(epsilon = 0.1, n_subjects = 1, name = "PooledEGreedy") {
-      super$initialize(name)
+      super$initialize()
       self$epsilon <- epsilon
       self$n_subjects <- n_subjects
     },
@@ -42,7 +42,7 @@ PooledEgreedyPolicy <- R6::R6Class(
     epsilon = NULL,
     n_subjects = NULL,
     initialize = function(epsilon = 0.1, name = "PooledEGreedy") {
-      super$initialize(name)
+      super$initialize()
       self$epsilon <- epsilon
     },
     set_parameters = function() {
@@ -75,7 +75,7 @@ PartiallyPooledEgreedyPolicy <- R6::R6Class(
     epsilon = NULL,
     n_subjects = NULL,
     initialize = function(epsilon = 0.1, n_subjects = 1, name = "PartiallyPooledEgreedy") {
-      super$initialize(name)
+      super$initialize()
       self$epsilon <- epsilon
       self$n_subjects <- n_subjects
     },

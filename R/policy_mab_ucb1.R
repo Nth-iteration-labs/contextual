@@ -1,12 +1,12 @@
 #' @export
 UCB1Policy <- R6::R6Class(
-  "UCB1Policy",
   portable = FALSE,
   class = FALSE,
   inherit = Policy,
   public = list(
-    initialize = function(name = "UCB1") {
-      super$initialize(name)
+    class_name = "UCB1Policy",
+    initialize = function() {
+      super$initialize()
     },
     set_parameters = function() {
       self$theta_to_arms <- list('n' = 0, 'mean' = 0)
@@ -47,7 +47,7 @@ UCB1Policy <- R6::R6Class(
 #'
 #' @section Usage:
 #' \preformatted{
-#' policy <- UCB1Policy(epsilon = 0.1, name = "UCB1Policy")
+#' policy <- UCB1Policy(epsilon = 0.1)
 #' }
 #'
 #' @section Arguments:
@@ -69,7 +69,7 @@ UCB1Policy <- R6::R6Class(
 #' @section Methods:
 #'
 #' \describe{
-#'   \item{\code{new(epsilon = 0.1, name = "EpsilonGreedy")}}{ Generates a new \code{UCB1Policy} object. Arguments are defined in the Argument section above.}
+#'   \item{\code{new(epsilon = 0.1)}}{ Generates a new \code{UCB1Policy} object. Arguments are defined in the Argument section above.}
 #' }
 #'
 #' \describe{
@@ -113,7 +113,7 @@ UCB1Policy <- R6::R6Class(
 #' simulations        <- 100L
 #' weights            <- c(0.9, 0.1, 0.1)
 #'
-#' policy             <- UCB1Policy$new(name = "UCB1")
+#' policy             <- UCB1Policy$new()
 #' bandit             <- SyntheticBandit$new(weights = weights, precaching = FALSE)
 #' agent              <- Agent$new(policy, bandit)
 #'
