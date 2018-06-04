@@ -1,4 +1,4 @@
-library(contextual)
+#library(contextual)
 library(here)
 setwd(here("demo","demo_bandits_and_policies"))
 source("../dev.R")
@@ -20,6 +20,7 @@ source("../dev.R")
 ###################
 
 PoissonRewardBandit <- R6::R6Class(
+  "PoissonRewardBandit",
   # Class extends BasicBandit
   inherit = BasicBandit,
   public = list(
@@ -53,7 +54,7 @@ EpsilonGreedyAnnealingPolicy <- R6::R6Class(
 )
 weights <- c(7,1,2)
 bandit <- PoissonRewardBandit$new(weights)
-agents <- list( Agent$new(EpsilonGreedyPolicy$new(0.1, "EG Annealing"), bandit),
+agents <- list( Agent$new(EpsilonGreedyPolicy$new(0.1), bandit),
                 Agent$new(EpsilonGreedyAnnealingPolicy$new(0.1, "EG"), bandit) )
 simulation <- Simulator$new(agents, horizon = 200L, simulations = 100L, do_parallel = FALSE)
 

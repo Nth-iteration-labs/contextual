@@ -306,14 +306,7 @@ History <- R6::R6Class(
       if (missing(value)) {
         get_cumulative_final()
       } else {
-        warning("## history$cumulative_final is read only", call. = FALSE)
-      }
-    },
-    call = function(value) {
-      if (missing(value)) {
-        get_meta_agent()
-      } else {
-        warning("## history$call is read only", call. = FALSE)
+        warning("## history$cumulative is read only", call. = FALSE)
       }
     },
     meta = function(value) {

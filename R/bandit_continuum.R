@@ -6,8 +6,8 @@ ContinuumBandit <- R6::R6Class(
   public = list(
     arm_function = NULL,
     class_name = "ContinuumBandit",
-    initialize   = function(arm_function) {
-      self$arm_function <- arm_function
+    initialize   = function(FUN) {
+      self$arm_function <- FUN
       super$initialize()
       self$d            <- 1
       self$k            <- 1

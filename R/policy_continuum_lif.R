@@ -5,7 +5,7 @@ LifPolicy <- R6::R6Class(
   inherit = Policy,
   public = list(
     first = NULL,
-    inttime = NULL   ,                  # Integration time
+    inttime = NULL,                     # Integration time
     amplitude = NULL,                   # Amplitude
     learnrate = NULL,                   # Learnrate
     omega = NULL,                       # Omega

@@ -215,16 +215,16 @@ Simulator <- R6::R6Class(
     start_time = NULL,
     end_time = NULL,
     agent_meta_to_history = function() {
-      agent_policy_call_list <- list()
-      agent_bandit_call_list <- list()
-      for (agent_index in 1L:self$number_of_agents) {
-        current_agent_name <- self$agents[[agent_index]]$name
-        agent_policy_call_list[[current_agent_name]] <- self$agents[[agent_index]]$policy_call
-        agent_bandit_call_list[[current_agent_name]] <- self$agents[[agent_index]]$bandit_call
-      }
       self$history$initialize_meta_agent()
-      self$history$add_agent_data("policy_call",agent_policy_call_list)
-      self$history$add_agent_data("bandit_call",agent_bandit_call_list)
+      #agent_policy_call_list <- list()
+      #agent_bandit_call_list <- list()
+      #for (agent_index in 1L:self$number_of_agents) {
+      #  current_agent_name <- self$agents[[agent_index]]$name
+      #  agent_policy_call_list[[current_agent_name]] <- self$agents[[agent_index]]$policy_call
+      #  agent_bandit_call_list[[current_agent_name]] <- self$agents[[agent_index]]$bandit_call
+      #}
+      #self$history$add_agent_data("policy_call",agent_policy_call_list)
+      #self$history$add_agent_data("bandit_call",agent_bandit_call_list)
     }
   )
 )

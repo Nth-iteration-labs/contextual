@@ -18,7 +18,7 @@ x0_start    <- 2.0
 
 policy             <- LifPolicy$new(int_time, amplitude, learn_rate, omega, x0_start)
 
-bandit             <- ContinuumBandit$new(continuous_arms)
+bandit             <- ContinuumBandit$new(FUN = continuous_arms)
 
 agent              <- Agent$new(policy,bandit)
 
