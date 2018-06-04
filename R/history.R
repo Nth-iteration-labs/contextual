@@ -107,25 +107,64 @@ History <- R6::R6Class(
     number_of_simulations = function() {
       length(levels(as.factor(private$.data$sim)))
     },
-    get_cumulative_data = function(limit_agents = NULL) {
-        if (is.null(limit_agents)) {
-          private$.cum_stats
-        } else {
-          private$.cum_stats[agent %in% limit_agents]
-        }
-    },
-    get_cumulative_final = function(limit_agents = NULL, as_list = TRUE) {
+    get_data_table = function(limit_agents = NULL, limit_cols = NULL) {
       if (is.null(limit_agents)) {
-        if(as_list) {
-          data_table_to_named_nested_list(private$.cum_stats_final, transpose = FALSE)
+        if (is.null(limit_cols)) {
+          private$.data
         } else {
-          private$.cum_stats_final
+          private$.data[, mget(limit_cols)]
         }
       } else {
-        if(as_list) {
-          data_table_to_named_nested_list(private$.cum_stats_final[agent %in% limit_agents], transpose = FALSE)
+        if (is.null(limit_cols)) {
+          private$.data[agent %in% limit_agents]
         } else {
-          private$.cum_stats_final(private$.cum_stats_final[agent %in% limit_agents])
+          private$.data[agent %in% limit_agents][, mget(limit_cols)]
+        }
+      }
+    },
+    get_cumulative_data = function(limit_agents = NULL, limit_cols = NULL) {
+      if (is.null(limit_agents)) {
+        if (is.null(limit_cols)) {
+          private$.cum_stats
+        } else {
+          private$.cum_stats[, mget(limit_cols)]
+        }
+      } else {
+        if (is.null(limit_cols)) {
+          private$.cum_stats[agent %in% limit_agents]
+        } else {
+          private$.cum_stats[agent %in% limit_agents][, mget(limit_cols)]
+        }
+      }
+    },
+    get_cumulative_final = function(limit_agents = NULL, as_list = TRUE, limit_cols = NULL) {
+      if (is.null(limit_cols)) {
+        if (is.null(limit_agents)) {
+          if(as_list) {
+            data_table_to_named_nested_list(private$.cum_stats_final, transpose = FALSE)
+          } else {
+            private$.cum_stats_final
+          }
+        } else {
+          if(as_list) {
+            data_table_to_named_nested_list(private$.cum_stats_final[agent %in% limit_agents], transpose = FALSE)
+          } else {
+            private$.cum_stats_final(private$.cum_stats_final[agent %in% limit_agents])
+          }
+        }
+      } else {
+        if (is.null(limit_agents)) {
+          if(as_list) {
+            data_table_to_named_nested_list(private$.cum_stats_final[, mget(limit_cols)], transpose = FALSE)
+          } else {
+            private$.cum_stats_final[, mget(limit_cols)]
+          }
+        } else {
+          if(as_list) {
+            data_table_to_named_nested_list(private$.cum_stats_final[, mget(limit_cols)][agent %in% limit_agents], transpose = FALSE)
+          } else {
+            private$.cum_stats_final(private$.cum_stats_final[, mget(limit_cols)][agent %in% limit_agents])
+          }
         }
       }
     },
@@ -161,9 +200,6 @@ History <- R6::R6Class(
     set_data_frame = function(df) {
       private$.data <- as.data.table(df)
       invisible(self)
-    },
-    get_data_table = function() {
-      private$.data
     },
     set_data_table = function(dt) {
       private$.data <- dt
@@ -242,26 +278,36 @@ History <- R6::R6Class(
       calculate_regret_reward()
 
       private$.cum_stats <- data.table::data.table()
-      private$.cum_stats <- private$.data[, list(cum_regret_var  = var(cum_regret, na.rm = TRUE),
-                                                 cum_regret_sd   = sd(cum_regret, na.rm = TRUE),
-                                                 cum_regret = mean(cum_regret, na.rm = TRUE),
+      private$.cum_stats <- private$.data[, list(regret_var           = var(regret, na.rm = TRUE),
+                                                 regret_sd            = sd(regret, na.rm = TRUE),
+                                                 regret               = mean(regret, na.rm = TRUE),
+
+                                                 reward_var           = var(reward, na.rm = TRUE),
+                                                 reward_sd            = sd(reward, na.rm = TRUE),
+                                                 reward               = mean(reward, na.rm = TRUE),
+
+                                                 cum_regret_var       = var(cum_regret, na.rm = TRUE),
+                                                 cum_regret_sd        = sd(cum_regret, na.rm = TRUE),
+                                                 cum_regret           = mean(cum_regret, na.rm = TRUE),
 
                                                  cum_regret_rate_var  = var(cum_regret_rate, na.rm = TRUE),
                                                  cum_regret_rate_sd   = sd(cum_regret_rate, na.rm = TRUE),
-                                                 cum_regret_rate = mean(cum_regret_rate, na.rm = TRUE),
+                                                 cum_regret_rate      = mean(cum_regret_rate, na.rm = TRUE),
 
-                                                 cum_reward_var  = var(cum_reward, na.rm = TRUE),
-                                                 cum_reward_sd   = sd(cum_reward, na.rm = TRUE),
-                                                 cum_reward = mean(cum_reward, na.rm = TRUE),
+                                                 cum_reward_var       = var(cum_reward, na.rm = TRUE),
+                                                 cum_reward_sd        = sd(cum_reward, na.rm = TRUE),
+                                                 cum_reward           = mean(cum_reward, na.rm = TRUE),
 
                                                  cum_reward_rate_var  = var(cum_reward_rate, na.rm = TRUE),
                                                  cum_reward_rate_sd   = sd(cum_reward_rate, na.rm = TRUE),
-                                                 cum_reward_rate = mean(cum_reward_rate, na.rm = TRUE)), by = list(t, agent)]
+                                                 cum_reward_rate      = mean(cum_reward_rate, na.rm = TRUE)), by = list(t, agent)]
 
       private$.cum_stats$cum_regret_ci      <- private$.cum_stats$cum_regret_sd/sqrt(number_of_simulations())*qnorm(0.975)
       private$.cum_stats$cum_reward_ci      <- private$.cum_stats$cum_reward_sd/sqrt(number_of_simulations())*qnorm(0.975)
       private$.cum_stats$cum_regret_rate_ci <- private$.cum_stats$cum_regret_rate_sd/sqrt(number_of_simulations())*qnorm(0.975)
       private$.cum_stats$cum_reward_rate_ci <- private$.cum_stats$cum_reward_rate_sd/sqrt(number_of_simulations())*qnorm(0.975)
+      private$.cum_stats$regret_ci          <- private$.cum_stats$regret_sd/sqrt(number_of_simulations())*qnorm(0.975)
+      private$.cum_stats$reward_ci          <- private$.cum_stats$reward_sd/sqrt(number_of_simulations())*qnorm(0.975)
 
       # move agent column to front
       setcolorder(private$.cum_stats, c("agent", setdiff(names(private$.cum_stats), "agent")))

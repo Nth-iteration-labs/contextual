@@ -53,6 +53,7 @@ Agent <- R6::R6Class(
   private = list(
     t = NULL,
     parse_call = function(r6_envir) {
+        # TODO: this does not (always) work - check why
         args <- formalArgs(r6_envir$initialize)
         if(!is.null(args)) args <- mget(args, envir = r6_envir)
         class_name = r6_envir$class_name
