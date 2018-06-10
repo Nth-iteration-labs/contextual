@@ -24,7 +24,7 @@ par(mfrow = c(2,2),mar = c(5,5,1,1))
 plot(history, type = "cumulative", regret = TRUE, no_par = TRUE, ci = TRUE)
 plot(history, type = "cumulative", regret = FALSE, no_par = TRUE, legend = FALSE)
 plot(history, type = "average", regret = FALSE, no_par = TRUE, legend = FALSE, ci = TRUE)
-plot(history, type = "arms", regret = FALSE, no_par = TRUE, legend = TRUE)
+plot(history, type = "arms", regret = FALSE, no_par = TRUE, legend = TRUE, limit_agents = c("TS"))
 par(mfrow = c(1,1))
 
 #print(history)

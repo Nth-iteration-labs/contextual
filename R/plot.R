@@ -5,13 +5,19 @@ Plot <- R6::R6Class(
   class = FALSE,
   public = list(
     max_sim = NULL,
+    history = NULL,
     initialize = function() {
       self$max_sim <- 0
     },
 
     ############################ plot types ############################
 
-    cumulative = function(history, no_par = FALSE, xlim = NULL, legend = TRUE, regret = TRUE, use_colors = TRUE, ci = FALSE, step_size = 1, start_step = 1, rate = FALSE, color_step = 1, lty_step = 1, lwd = 1, ylim = NULL, legend_labels = NULL, legend_border = NULL, legend_title = NULL) {
+    cumulative = function(history, no_par = FALSE, xlim = NULL, legend = TRUE, regret = TRUE,
+                          use_colors = TRUE, ci = FALSE, step_size = 1, start_step = 1, rate = FALSE,
+                          color_step = 1, lty_step = 1, lwd = 1, ylim = NULL, legend_labels = NULL,
+                          legend_border = NULL, legend_title = NULL, limit_agents = NULL) {
+
+      self$history <- history
 
       if (regret) {
         if (rate) {
@@ -35,18 +41,24 @@ Plot <- R6::R6Class(
         }
       }
 
-      data <- history$get_cumulative_data(limit_cols = c("agent","t",
-                                                         line_data_name,ci_data_name))
+      data <- history$get_cumulative_data(limit_cols = c("agent","t", line_data_name,ci_data_name),
+                                          limit_agents = limit_agents)
 
       do_plot(data = data, line_data_name = line_data_name, ci_data_name = ci_data_name,
               ylab_title = ylab_title, use_colors = use_colors, ci = ci, legend = legend,
               no_par = no_par, step_size = step_size, start_step = start_step, color_step = color_step,
               lty_step = lty_step, lwd = lwd, ylim = ylim, legend_labels = legend_labels,
-              legend_border = legend_border, legend_title = legend_title)
+              legend_border = legend_border, legend_title = legend_title, limit_agents = limit_agents)
 
       invisible(self)
     },
-    average = function(history, no_par = FALSE, xlim = NULL, legend = TRUE, regret = TRUE, use_colors = TRUE, ci = FALSE, step_size = 1, start_step = 1, rate = FALSE, color_step = 1, lty_step = 1, lwd = 1, ylim = NULL, legend_labels = NULL, legend_border = NULL, legend_title = NULL) {
+
+    average = function(history, no_par = FALSE, xlim = NULL, legend = TRUE, regret = TRUE,
+                       use_colors = TRUE, ci = FALSE, step_size = 1, start_step = 1,
+                       rate = FALSE, color_step = 1, lty_step = 1, lwd = 1, ylim = NULL,
+                       legend_labels = NULL, legend_border = NULL, legend_title = NULL, limit_agents = NULL) {
+
+      self$history <- history
 
       if (regret) {
           ylab_title <- "Average regret"
@@ -58,36 +70,26 @@ Plot <- R6::R6Class(
           ci_data_name <- "regret_ci"
       }
 
-      data <- history$get_cumulative_data(limit_cols = c("agent","t",
-                                                         line_data_name,ci_data_name))
+      data <- history$get_cumulative_data(limit_cols = c("agent","t", line_data_name,ci_data_name),
+                                          limit_agents = limit_agents)
 
       do_plot(data = data, line_data_name = line_data_name, ci_data_name = ci_data_name,
               ylab_title = ylab_title, use_colors = use_colors, ci = ci, legend = legend,
               no_par = no_par, step_size = step_size, start_step = start_step, color_step = color_step,
               lty_step = lty_step, lwd = lwd, ylim = ylim, legend_labels = legend_labels,
-              legend_border = legend_border, legend_title = legend_title)
-
-      invisible(self)
-    },
+              legend_border = legend_border, legend_title = legend_title, limit_agents = limit_agents)
 
 
-    optimal = function(history, no_par = FALSE, xlim = NULL, legend = TRUE, use_colors = TRUE, ci = FALSE, step_size = 1, start_step = 1, color_step = 1, lty_step = 1, lwd = 1, ylim = NULL, legend_labels = NULL, legend_border = NULL, legend_title = NULL) {
-      history <- check_history_data(history)
-      ylab_title <- "Optimal arm"
-      data <- history[, list(var = var(choice_is_optimal * 100), data = mean(choice_is_optimal) * 100), by = list(t, agent)]
-      do_plot( data = cs, ylab_title = ylab_title, use_colors = use_colors, ci = ci, legend = legend, no_par = no_par, step_size = step_size, start_step = start_step, color_step = color_step, lty_step = lty_step, lwd = lwd, ylim = ylim, legend_labels = legend_labels, legend_border = legend_border, legend_title = legend_title)#ylim = c(0, 100)
       invisible(self)
     },
 
     ############################ main plot function  ############################
 
-    # lines = xxxxSD, sd = xxxSD, multi-lines = FALSE, agents = NULL
-
     do_plot = function(data = data, line_data_name = line_data_name, ci_data_name = ci_data_name,
                        ylab_title, use_colors = FALSE, ci = FALSE, legend = TRUE, no_par = FALSE,
                        ylim = NULL, step_size = 1, start_step = 1, color_step = 1, lty_step = 1,
                        lwd = 1, legend_labels = NULL, legend_border = NULL,
-                       legend_title = NULL) {
+                       legend_title = NULL, limit_agents = NULL) {
 
       if (no_par == FALSE) {
         dev.hold()
@@ -126,27 +128,30 @@ Plot <- R6::R6Class(
 
       if (use_colors) {
         if (ci) {
-          if (FALSE) {
-          ################################# temp ################################### multiline
-          #### smooth #####
 
-          history[order(agent, sim, t)]
-          for (agent_name in agent_levels) {
-            step_seq <- seq(start_step, nrow(data[data$agent == agent_name]), step_size)
-            agent_sims <- unique(history[history$agent == agent_name]$sim)
-            for (as in agent_sims) {
-              lines(
-                history[history$agent == agent_name & history$sim == as][step_seq]$t,
-                history[history$agent == agent_name & history$sim == as][step_seq][[line_data_name]],
-                #supsmu(history[history$agent == agent_name & history$sim == as][step_seq]$t, ####
-                #history[history$agent == agent_name & history$sim == as][step_seq]$cumsum),
-                lwd = lwd,
-                col = rgb(0.8, 0.8, 0.8, 0.2)
-              )
+          ################################# temp ###################
+          if (FALSE) {
+            dt = history$get_data_table(limit_agents = limit_agents)
+            dt[order(agent, sim, t)]
+            for (agent_name in agent_levels) {
+              step_seq <- seq(start_step, nrow(data[data$agent == agent_name]), step_size)
+              agent_sims <- unique(dt[dt$agent == agent_name]$sim)
+              for (as in agent_sims) {
+
+                lines(
+                  dt[dt$agent == agent_name & dt$sim == as][step_seq]$t,
+                  dt[dt$agent == agent_name & dt$sim == as][step_seq][[line_data_name]],
+
+                  #supsmu(dt[dt$agent == agent_name & dt$sim == as][step_seq]$t,
+                  #       dt[dt$agent == agent_name & dt$sim == as][step_seq][[line_data_name]]),
+
+                  lwd = lwd,
+                  col = rgb(0.8, 0.8, 0.8, 0.2)
+                )
+              }
             }
           }
-          ############################
-          }
+          ########################################################
 
           color <- 1
           for (agent_name in agent_levels) {
@@ -236,21 +241,27 @@ Plot <- R6::R6Class(
 
     ############################ arms plot ############################
 
-    arms = function(history, no_par = FALSE, xlim = NULL, legend = TRUE, use_colors = TRUE, step_size = 1, start_step = 1, ylim = NULL, legend_labels = NULL, legend_border = NULL, legend_title = NULL) {
+    arms = function(history, no_par = FALSE, xlim = NULL, legend = TRUE, use_colors = TRUE,
+                    step_size = 1, start_step = 1, ylim = NULL, legend_labels = NULL,
+                    legend_border = NULL, legend_title = NULL, limit_agents = NULL) {
+
+      self$history <- history
+
       if (no_par == FALSE) {
         dev.hold()
         old.par <- par(no.readonly = TRUE)
         par(mar = c(5, 5, 1, 1))
       }
-      history <- history$get_data_table(limit_cols = c("agent","t","choice","sim"))
+
+      dt <- history$get_data_table(limit_cols = c("agent","t","choice","sim"), limit_agents = limit_agents)
       ylab_title <- "Arm choice %"
-      agent_levels <- levels(as.factor(history$agent))
+      agent_levels <- levels(as.factor(dt$agent))
       if (length(agent_levels) > 1)
         warning("## Arm percentage plot always plots the results of just one agent.", call. = FALSE)
-      history <- history[agent == agent_levels[1]]
-      data <- history[, list(arm_count = .(rowCount = .N)), by = list(t,choice)]
-      max_sim  <- history[, max(sim)]
-      max_t    <- history[, max(t)]
+      dt <- dt[agent == agent_levels[1]]
+      data <- dt[, list(arm_count = .(rowCount = .N)), by = list(t,choice)]
+      max_sim  <- dt[, max(sim)]
+      max_t    <- dt[, max(t)]
       arm_levels <- levels(as.factor(data$choice))
       max_arm <- length(arm_levels)
       data$arm_count <- as.double((unlist(data$arm_count)/max_sim) * 100L)
@@ -340,9 +351,6 @@ Plot <- R6::R6Class(
 #'      Writes a plot of average regret or reward (depending on parameter regret=TRUE/FALSE)
 #'      over time.
 #'   }
-#'   \item{\code{optimal(history,...)}}{
-#'      Writes a plot of the percentage the optimal arm was chosen over time.
-#'   }
 #'   \item{\code{arms(history),...}}{
 #'      Writes a plot of the ratio with which each arm of a simulation was chosen over time.
 #'      If multiple agents are run, only plots the arm plot of the first agent.
@@ -403,6 +411,9 @@ Plot <- R6::R6Class(
 #'   }
 #'   \item{\code{lwd}}{
 #'      \code{(integer, 1)} Linecharts will be of lwd width.
+#'   }
+#'   \item{\code{limit_agents}}{
+#'      \code{(list , NULL)} Limit the plotted agents to the agents in list.
 #'   }
 #'  }
 #'

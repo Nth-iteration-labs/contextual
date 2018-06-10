@@ -77,6 +77,10 @@ plot.History <- function(x, ...) {
     legend_labels <- eval(args$legend_labels)
   else
     legend_labels <- NULL
+  if ("limit_agents" %in% names(args))
+    limit_agents <- eval(args$limit_agents)
+  else
+    limit_agents <- NULL
   if ("legend_border" %in% names(args))
     legend_border <- eval(args$legend_border)
   else
@@ -111,7 +115,8 @@ plot.History <- function(x, ...) {
       legend_labels = legend_labels,
       legend_border = legend_border,
       legend_title = legend_title,
-      no_par = no_par
+      no_par = no_par,
+      limit_agents = limit_agents
     )
   } else if (type == "average") {
     Plot$new()$average(
@@ -131,7 +136,8 @@ plot.History <- function(x, ...) {
       legend_labels = legend_labels,
       legend_border = legend_border,
       legend_title = legend_title,
-      no_par = no_par
+      no_par = no_par,
+      limit_agents = limit_agents
     )
   } else if (type == "optimal") {
     Plot$new()$optimal(
@@ -149,7 +155,8 @@ plot.History <- function(x, ...) {
       legend_labels = legend_labels,
       legend_border = legend_border,
       legend_title = legend_title,
-      no_par = no_par
+      no_par = no_par,
+      limit_agents = limit_agents
     )
   } else if (type == "arms") {
     Plot$new()$arms(
@@ -163,7 +170,8 @@ plot.History <- function(x, ...) {
       legend_labels = legend_labels,
       legend_border = legend_border,
       legend_title = legend_title,
-      no_par = no_par
+      no_par = no_par,
+      limit_agents = limit_agents
     )
   }
 }
