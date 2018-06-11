@@ -13,7 +13,7 @@ arm, never looking back (keep on exploiting that arm for ever).
 \section{Algorithm}{
 
 
-\figure{algo_epsilonfirst.jpg}{epsilon first algorithm}
+\figure{algoepsilonfirst.jpg}{epsilon first algorithm}
 }
 
 \section{Usage}{

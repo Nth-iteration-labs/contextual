@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Agent — Agent • contextual</title>
+<title>Sample one of — sample_one_of • contextual</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -36,13 +36,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Agent — Agent" />
+<meta property="og:title" content="Sample one of — sample_one_of" />
 
-<meta property="og:description" content="The R6 class Agent is responsible for the state, flow of information
-between and the running of one Bandit and Policy pair.
-As such, multiple Agents can be run in parallel with each separate Agent keeping
-track of t and the parameters in named list theta for its assigned Policy
-and Bandit pair." />
+<meta property="og:description" content="Sample one of the values in a vector." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -134,70 +130,40 @@ and Bandit pair." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Agent</h1>
-    <small class="dont-index">Source: <a href='https://github.com/Nth-iteration-labs/contextual/blob/master/R/agent.R'><code>R/agent.R</code></a></small>
-    <div class="hidden name"><code>Agent.Rd</code></div>
+    <h1>Sample one of</h1>
+    <small class="dont-index">Source: <a href='https://github.com/Nth-iteration-labs/contextual/blob/master/R/functions_utility.R'><code>R/functions_utility.R</code></a></small>
+    <div class="hidden name"><code>sample_one_of.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>The R6 class <code>Agent</code> is responsible for the state, flow of information
-between and the running of one <code>Bandit</code> and <code>Policy</code> pair.
-As such, multiple <code>Agent</code>s can be run in parallel with each separate Agent keeping
-track of <code>t</code> and the parameters in named list <code>theta</code> for its assigned <code>Policy</code>
-and <code>Bandit</code> pair.</p>
+    <p>Sample one of the values in a vector.</p>
     
     </div>
 
-        
-    <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
-
-    
-    <pre>
-agent &lt;- Agent$new(policy, bandit)
-</pre>
+    <pre class="usage"><span class='fu'>sample_one_of</span>(<span class='no'>x</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>A vector of one or more elements from which to choose</p></td>
+    </tr>
+    </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    
-    <dl class='dl-horizontal'>
-<dt><code>policy</code></dt><dd><p>A <code>Policy</code> object, expected to take into account the current <code>d</code> dimensional <code>context</code>
-feature vector <code>X</code>, together with a limited set of parameters denoted <code>theta</code> (summarizing
-all past actions), to choose one of the k arms of its corresponding bandit's arms at each time step <code>t</code>.</p></dd>
-<dt><code>bandit</code></dt><dd><p>A <code>Bandit</code> object, responsible for both the generation of <code>d</code> dimensional <code>context</code>
-vectors <code>X</code> and the <code>k</code> I.I.D. distributions each generating a <code>reward</code> for each of
-its <code>k</code> arms at each time step <code>t</code>.</p></dd>
-</dl>
-    
-    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
-
-    
-    <dl class='dl-horizontal'>
-    <dt><code>set_t(t)</code></dt><dd><p>Setter function, sets the state of the state variable holding the current time step <code>t</code>.</p></dd>
-    <dt><code>do_step()</code></dt><dd><p>Completes one time step <code>t</code> by consecutively calling
-<code>bandit$get_context()</code>, <code>policy$get_action()</code>, <code>bandit$get_reward()</code> and <code>policy$set_reward()</code>.</p></dd>
-    </dl>
-    
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p>Core contextual classes: <code><a href='Bandit.html'>Bandit</a></code>, <code><a href='Policy.html'>Policy</a></code>, <code><a href='Simulator.html'>Simulator</a></code>,
-<code>Agent</code>, <code><a href='History.html'>History</a></code>, <code><a href='Plot.html'>Plot</a></code></p>
-<p>Bandit subclass examples: <code><a href='BasicBandit.html'>BasicBandit</a></code>, <code><a href='ContextualBandit.html'>ContextualBandit</a></code>,  <code><a href='LiSamplingOfflineBandit.html'>LiSamplingOfflineBandit</a></code></p>
-<p>Policy subclass examples: <code><a href='EpsilonGreedyPolicy.html'>EpsilonGreedyPolicy</a></code>, <code><a href='ContextualThompsonSamplingPolicy.html'>ContextualThompsonSamplingPolicy</a></code></p></div>
+    <p>One value, drawn from x.</p>
     
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      
-      <li><a href="#usage">Usage</a></li>
-
       <li><a href="#arguments">Arguments</a></li>
-
-      <li><a href="#methods">Methods</a></li>
-
-      <li><a href="#see-also">See also</a></li>
+      
+      <li><a href="#value">Value</a></li>
           </ul>
 
   </div>

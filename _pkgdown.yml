@@ -26,6 +26,7 @@ reference:
       - inv
       - sum_of
       - max_in
+      - sample_one_of
       - is_rstudio
       - set_external
   - title: "Generic functions"

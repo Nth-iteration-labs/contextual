@@ -45,7 +45,7 @@ EpsilonFirstPolicy              <- R6::R6Class(
 #'
 #' @section Algorithm:
 #'
-#' ![](algo_epsilonfirst.jpg "epsilon first algorithm")
+#' ![](algoepsilonfirst.jpg "epsilon first algorithm")
 #'
 #' @name EpsilonFirstPolicy
 #' @family contextual subclasses

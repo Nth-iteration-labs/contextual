@@ -5,8 +5,8 @@ source("../dev.R")
 
 
 weight_per_arm     <- c(0.9, 0.1, 0.1)
-horizon            <- 10L
-simulations        <- 10L
+horizon            <- 100L
+simulations        <- 100L
 
 bandit             <- SyntheticBandit$new(weights = weight_per_arm)
 

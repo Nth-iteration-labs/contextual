@@ -34,9 +34,6 @@ over time.
 Writes a plot of average regret or reward (depending on parameter regret=TRUE/FALSE)
 over time.
 }
-\item{\code{optimal(history,...)}}{
-Writes a plot of the percentage the optimal arm was chosen over time.
-}
 \item{\code{arms(history),...}}{
 Writes a plot of the ratio with which each arm of a simulation was chosen over time.
 If multiple agents are run, only plots the arm plot of the first agent.
@@ -54,6 +51,9 @@ When regret is set to FALSE, reward will be plotted on the y-axis.
 }
 \item{\code{rate}}{
 (\code{logical, TRUE)} If rate is TRUE, the rate of the regret or reward is plotted.
+}
+\item{\code{limit_agents}}{
+\code{(list , NULL)} Limit the plotted agents to the agents in list.
 }
 \item{\code{no_par}}{
 \code{(logical, FALSE)} If no_par is TRUE, Plot() does not set or adjust plotting parameters.

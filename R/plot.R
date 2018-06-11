@@ -10,6 +10,11 @@ Plot <- R6::R6Class(
       self$max_sim <- 0
     },
 
+    ## adapt.. if you just take history object, no need to reference by value
+    ## in this class, just access the data within the object!
+
+    ## adapt.. limit the points to screen width, max 3000 or something like that
+
     ############################ plot types ############################
 
     cumulative = function(history, no_par = FALSE, xlim = NULL, legend = TRUE, regret = TRUE,
@@ -62,12 +67,12 @@ Plot <- R6::R6Class(
 
       if (regret) {
           ylab_title <- "Average regret"
-          line_data_name <- "reward"
+          line_data_name <- "regret"
           ci_data_name <- "regret_ci"
       } else {
           ylab_title <- "Average reward"
-          line_data_name <- "regret"
-          ci_data_name <- "regret_ci"
+          line_data_name <- "reward"
+          ci_data_name <- "reward_ci"
       }
 
       data <- history$get_cumulative_data(limit_cols = c("agent","t", line_data_name,ci_data_name),
@@ -367,6 +372,9 @@ Plot <- R6::R6Class(
 #'   \item{\code{rate}}{
 #'      (\code{logical, TRUE)} If rate is TRUE, the rate of the regret or reward is plotted.
 #'   }
+#'   \item{\code{limit_agents}}{
+#'      \code{(list , NULL)} Limit the plotted agents to the agents in list.
+#'   }
 #'   \item{\code{no_par}}{
 #'      \code{(logical, FALSE)} If no_par is TRUE, Plot() does not set or adjust plotting parameters.
 #'      This makes it possible to set your own plotting parameters, for instance, when position multiple
@@ -411,9 +419,6 @@ Plot <- R6::R6Class(
 #'   }
 #'   \item{\code{lwd}}{
 #'      \code{(integer, 1)} Linecharts will be of lwd width.
-#'   }
-#'   \item{\code{limit_agents}}{
-#'      \code{(list , NULL)} Limit the plotted agents to the agents in list.
 #'   }
 #'  }
 #'
