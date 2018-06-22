@@ -8,10 +8,10 @@ EpsilonGreedyPolicy          <- R6::R6Class(
     class_name = "EpsilonGreedyPolicy",
     initialize = function(epsilon = 0.1) {
       super$initialize()
-      self$epsilon           <- epsilon
+      self$epsilon                <- epsilon
     },
     set_parameters = function() {
-      self$theta_to_arms     <- list('n' = 0, 'mean' = 0)
+      self$theta_to_arms          <- list('n' = 0, 'mean' = 0)
     },
     get_action = function(t, context) {
       if (runif(1) > self$epsilon) {
@@ -24,8 +24,8 @@ EpsilonGreedyPolicy          <- R6::R6Class(
       self$action
     },
     set_reward = function(t, context, action, reward) {
-      arm                    <- action$choice
-      reward                 <- reward$reward
+      arm                         <- action$choice
+      reward                      <- reward$reward
       inc(self$theta$n[[arm]])    <- 1
       inc(self$theta$mean[[arm]]) <- (reward - self$theta$mean[[arm]]) / self$theta$n[[arm]]
       self$theta

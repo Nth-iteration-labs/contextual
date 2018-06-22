@@ -9,17 +9,17 @@ RandomPolicy <- R6::R6Class(
       super$initialize()
     },
     set_parameters = function() {
-      self$theta_to_arms <- list('n' = 0, 'mean' = 0)
+      self$theta_to_arms          <- list('n' = 0, 'mean' = 0)
     },
     get_action = function(t, context) {
-      action$choice <- sample.int(context$k, 1, replace = TRUE)
-      action$propensity <- 1/context$k
+      action$choice               <- sample.int(context$k, 1, replace = TRUE)
+      action$propensity           <- 1/context$k
       action
     },
     set_reward = function(t, context, action, reward) {
-      arm    <- action$choice
-      reward <- reward$reward
-      inc(self$theta$n[[arm]]) <- 1
+      arm                         <- action$choice
+      reward                      <- reward$reward
+      inc(self$theta$n[[arm]])    <- 1
       inc(self$theta$mean[[arm]]) <- (reward - self$theta$mean[[arm]]) / self$theta$n[[arm]]
       self$theta
     }

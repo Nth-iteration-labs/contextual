@@ -194,7 +194,7 @@ Simulator <- R6::R6Class(
       private$end_time = Sys.time()
       if (reindex_t) self$history$reindex_t()
       agent_meta_to_history()
-      self$history$calculate_stats()
+      self$history$update_statistics()
       self$history$add_meta_data("sim_end_time",format(Sys.time(), "%a %b %d %X %Y"))
       self$history$add_meta_data("sim_total_duration",private$end_time - private$start_time)
       self$history

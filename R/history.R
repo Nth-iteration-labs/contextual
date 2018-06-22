@@ -5,6 +5,7 @@ History <- R6::R6Class(
   portable = FALSE,
   cloneable = FALSE,
   class = TRUE,
+
   public = list(
     n            = NULL,
     save_theta   = NULL,
@@ -80,19 +81,9 @@ History <- R6::R6Class(
     add_meta_data = function(row_name, agent_data) {
       private$.meta <- rbind(private$.meta, list(id = row_name, data = toString(agent_data)))
     },
-    data_table_to_named_nested_list = function(dt, transpose = FALSE) {
-      df_m <- as.data.frame(dt)
-      rownames(df_m) <- df_m[, 1]
-      df_m[, 1] <- NULL
-      if (transpose == FALSE) {
-        apply((df_m), 1, as.list)
-      } else {
-        apply(t(df_m), 1, as.list)
-      }
-    },
     get_meta_agent = function(as_list=TRUE) {
       if (as_list) {
-        data_table_to_named_nested_list(private$.meta_agent, transpose = TRUE)
+        private$data_table_to_named_nested_list(private$.meta_agent, transpose = TRUE)
       } else {
         private$.meta_agent
       }
@@ -147,13 +138,13 @@ History <- R6::R6Class(
       if (is.null(limit_cols)) {
         if (is.null(limit_agents)) {
           if (as_list) {
-            data_table_to_named_nested_list(private$.cum_stats_final, transpose = FALSE)
+            private$data_table_to_named_nested_list(private$.cum_stats_final, transpose = FALSE)
           } else {
             private$.cum_stats_final
           }
         } else {
           if (as_list) {
-            data_table_to_named_nested_list(private$.cum_stats_final[agent %in% limit_agents], transpose = FALSE)
+            private$data_table_to_named_nested_list(private$.cum_stats_final[agent %in% limit_agents], transpose = FALSE)
           } else {
             private$.cum_stats_final(private$.cum_stats_final[agent %in% limit_agents])
           }
@@ -161,13 +152,13 @@ History <- R6::R6Class(
       } else {
         if (is.null(limit_agents)) {
           if (as_list) {
-            data_table_to_named_nested_list(private$.cum_stats_final[, mget(limit_cols)], transpose = FALSE)
+            private$data_table_to_named_nested_list(private$.cum_stats_final[, mget(limit_cols)], transpose = FALSE)
           } else {
             private$.cum_stats_final[, mget(limit_cols)]
           }
         } else {
           if (as_list) {
-            data_table_to_named_nested_list(private$.cum_stats_final[, mget(limit_cols)]
+            private$data_table_to_named_nested_list(private$.cum_stats_final[, mget(limit_cols)]
                                             [agent %in% limit_agents], transpose = FALSE)
           } else {
             private$.cum_stats_final(private$.cum_stats_final[, mget(limit_cols)][agent %in% limit_agents])
@@ -197,6 +188,7 @@ History <- R6::R6Class(
         if (nth_rows > 0) private$.data <- private$.data[t %% nth_rows == 0]
       }
       if ("opimal" %in% colnames(private$.data)) setnames(private$.data, old = "opimal", new = "optimal_reward_value")
+      private$calculate_cum_stats()
       invisible(self)
     },
     leave_nth = function(nth_rows = 0) {
@@ -208,10 +200,12 @@ History <- R6::R6Class(
     },
     set_data_frame = function(df) {
       private$.data <- as.data.table(df)
+      private$calculate_cum_stats()
       invisible(self)
     },
     set_data_table = function(dt) {
       private$.data <- dt
+      private$calculate_cum_stats()
       invisible(self)
     },
     clear_data_table = function() {
@@ -237,7 +231,7 @@ History <- R6::R6Class(
       str(private$.data, max.level = 1)
       cat("\n")
     },
-    calculate_stats = function() {
+    update_statistics = function() {
       calculate_cum_stats()
     },
     initialize_meta_agent = function() {
@@ -250,6 +244,7 @@ History <- R6::R6Class(
       self$clear_data_table()
     }
   ),
+
   private = list(
 
     .data            = NULL,
@@ -354,6 +349,16 @@ History <- R6::R6Class(
       if (!"regret" %in% colnames(private$.data)) self$calculate_regret()
       private$.data$cum_regret <- private$.data[, cumsum(regret), by = list(agent, sim)]$V1
       if (rate) private$.data$cum_regret_rate <- private$.data$cum_regret / private$.data$t
+    },
+    data_table_to_named_nested_list = function(dt, transpose = FALSE) {
+      df_m <- as.data.frame(dt)
+      rownames(df_m) <- df_m[, 1]
+      df_m[, 1] <- NULL
+      if (transpose == FALSE) {
+        apply((df_m), 1, as.list)
+      } else {
+        apply(t(df_m), 1, as.list)
+      }
     }
   ),
   active = list(
