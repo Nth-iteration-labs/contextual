@@ -11,7 +11,7 @@ Policy <- R6::R6Class(
     cl            = NULL,
     class_name    = "Policy",
     initialize = function() {
-      self$theta <- list()
+      self$theta  <- list()
       self$action <- list()
     },
     get_action = function(t, context) {

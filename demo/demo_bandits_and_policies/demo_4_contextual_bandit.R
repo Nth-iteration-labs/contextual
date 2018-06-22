@@ -20,10 +20,7 @@ agents             <- list(Agent$new(LinUCBHybridPolicy$new(0.7, 6), bandit),
 simulation         <- Simulator$new(agents, 300, 100)
 history            <- simulation$run()
 
-plot(history, type = "cumulative", ci = TRUE, rate = TRUE)
-
-
-
+plot(history, type = "cumulative", ci = "ci", rate = TRUE, traces = TRUE, smooth = TRUE)
 
 ##############  Generate general context
 
@@ -35,4 +32,3 @@ simulation         <- Simulator$new(agents, horizon, simulations, do_parallel = 
 history            <- simulation$run()
 
 plot(history, type = "cumulative", rate = TRUE)
-

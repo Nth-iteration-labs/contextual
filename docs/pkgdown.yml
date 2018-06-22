@@ -1,6 +1,6 @@
 pandoc: 1.19.2.1
 pkgdown: 1.1.0.9000
-pkgdown_sha: bcf6299e76d4a398aadfc476b3ac22d253a91d35
+pkgdown_sha: f317e4942d4cbadb377caed2ae0484b08d0f8d03
 articles:
   contextual: contextual.html
   glossary: glossary.html

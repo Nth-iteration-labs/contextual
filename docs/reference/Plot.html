@@ -184,9 +184,10 @@ Plots in a no_par.</p></dd>
 <dt><code>xlim</code></dt><dd><p><code>(c(integer,integer), NULL)</code> Set y-axis limits.</p></dd>
 <dt><code>use_colors</code></dt><dd><p><code>(logical, TRUE)</code> If use_colors is set to FALSE, plots will be in grayscale.
 Otherwise, plots will make use of a color palette.</p></dd>
-<dt><code>ci</code></dt><dd><p><code>(logical, NULL)</code> If ci is TRUE, Plot() will display 95<!-- % confidence intervals. --></p></dd>
+<dt><code>ci</code></dt><dd><p><code>(logical, FALSE)</code> When ci is TRUE, Plot() will display 95<!-- % confidence intervals. --></p></dd>
+<dt><code>traces</code></dt><dd><p><code>(logical , FALSE)</code> When traces is TRUE, Plot() will plot the traces of each independent simulation.</p></dd>
+<dt><code>smooth</code></dt><dd><p><code>(logical , FALSE)</code> When smooth is TRUE, Plot() will smooth all plots.</p></dd>
 <dt><code>step_size</code></dt><dd><p><code>(integer, NULL)</code> Plot only for every every t<!-- %%step_size==0 --></p></dd>
-<dt><code>start_step</code></dt><dd><p><code>(integer, NULL)</code> Start plotting at t=start_step</p></dd>
 <dt><code>color_step</code></dt><dd><p><code>(integer, 1)</code> Linecharts will cycle through agents/color_step colors.</p></dd>
 <dt><code>color_step</code></dt><dd><p><code>(integer, 1)</code> Linecharts will cycle through agents/lty_step line types</p></dd>
 <dt><code>lwd</code></dt><dd><p><code>(integer, 1)</code> Linecharts will be of lwd width.</p></dd>

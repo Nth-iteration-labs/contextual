@@ -1,5 +1,3 @@
-
-
 #' Plot Method for Contextual History
 #'
 #' plot.history, a method for the plot generic. It is designed for a quick look at History data.
@@ -48,7 +46,15 @@ plot.History <- function(x, ...) {
   if ("ci" %in% names(args))
     ci <- eval(args$ci)
   else
-    ci <- FALSE
+    ci <- NULL
+  if ("traces" %in% names(args))
+    traces <- eval(args$traces)
+  else
+    traces <- FALSE
+  if ("smooth" %in% names(args))
+    smooth <- eval(args$smooth)
+  else
+    smooth <- FALSE
   if ("step_size" %in% names(args))
     step_size <- eval(args$step_size)
   else
@@ -65,10 +71,6 @@ plot.History <- function(x, ...) {
     lwd <- eval(args$lwd)
   else
     lwd <- 1
-  if ("start_step" %in% names(args))
-    start_step <- eval(args$start_step)
-  else
-    start_step <- 1
   if ("ylim" %in% names(args))
     ylim <- eval(args$ylim)
   else
@@ -105,8 +107,9 @@ plot.History <- function(x, ...) {
       regret = regret,
       use_colors = use_colors,
       ci = ci,
+      traces = traces,
+      smooth = smooth,
       step_size = step_size,
-      start_step = start_step,
       color_step = color_step,
       lty_step = lty_step,
       lwd = lwd,
@@ -126,31 +129,13 @@ plot.History <- function(x, ...) {
       regret = regret,
       use_colors = use_colors,
       ci = ci,
+      traces = traces,
+      smooth = smooth,
       step_size = step_size,
-      start_step = start_step,
       color_step = color_step,
       lty_step = lty_step,
       lwd = lwd,
       rate = rate,
-      ylim = ylim,
-      legend_labels = legend_labels,
-      legend_border = legend_border,
-      legend_title = legend_title,
-      no_par = no_par,
-      limit_agents = limit_agents
-    )
-  } else if (type == "optimal") {
-    Plot$new()$optimal(
-      x,
-      xlim = xlim,
-      legend = legend,
-      use_colors = use_colors,
-      ci = ci,
-      step_size = step_size,
-      start_step = start_step,
-      color_step = color_step,
-      lwd = lwd,
-      lty_step = lty_step,
       ylim = ylim,
       legend_labels = legend_labels,
       legend_border = legend_border,
@@ -165,7 +150,6 @@ plot.History <- function(x, ...) {
       legend = legend,
       use_colors = use_colors,
       step_size = step_size,
-      start_step = start_step,
       ylim = ylim,
       legend_labels = legend_labels,
       legend_border = legend_border,

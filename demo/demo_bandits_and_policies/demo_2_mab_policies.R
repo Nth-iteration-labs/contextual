@@ -5,26 +5,28 @@ source("../dev.R")
 
 
 weight_per_arm     <- c(0.9, 0.1, 0.1)
-horizon            <- 100L
-simulations        <- 1000L
+horizon            <- 100
+simulations        <- 100
 
 bandit             <- SyntheticBandit$new(weights = weight_per_arm, precaching = TRUE)
 
-agents             <- list( Agent$new(EpsilonGreedyPolicy$new(0.1), bandit),
-                            Agent$new(RandomPolicy$new(), bandit),
-                            Agent$new(OraclePolicy$new(), bandit),
-                            Agent$new(ThompsonSamplingPolicy$new(1.0, 1.0), bandit),
-                            Agent$new(Exp3Policy$new(0.1), bandit),
-                            Agent$new(UCB1Policy$new(), bandit))
+agents             <- list(Agent$new(EpsilonGreedyPolicy$new(0.1), bandit),
+                           Agent$new(RandomPolicy$new(), bandit),
+                           Agent$new(OraclePolicy$new(), bandit),
+                           Agent$new(ThompsonSamplingPolicy$new(1.0, 1.0), bandit),
+                           Agent$new(Exp3Policy$new(0.1), bandit),
+                           Agent$new(UCB1Policy$new(), bandit))
 
-simulation         <- Simulator$new(agents, horizon, simulations, do_parallel = FALSE)
+simulation         <- Simulator$new(agents, horizon, simulations, do_parallel = TRUE)
 history            <- simulation$run()
 
 par(mfrow = c(2,2),mar = c(5,5,1,1))
-plot(history, type = "cumulative", regret = TRUE, no_par = TRUE)
-plot(history, type = "cumulative", regret = FALSE, no_par = TRUE, legend = FALSE)
-plot(history, type = "average", regret = FALSE, no_par = TRUE, legend = FALSE, ci = TRUE)
-plot(history, type = "arms", regret = FALSE, no_par = TRUE, legend = TRUE)
+
+plot(history, type = "cumulative", regret = TRUE, no_par = TRUE, step_size=4, use_colors = TRUE)
+plot(history, type = "cumulative", regret = FALSE, no_par = TRUE, legend = FALSE, step_size=4, use_colors = TRUE)
+plot(history, type = "average", regret = FALSE, no_par = TRUE, legend = FALSE, step_size=4, use_colors = TRUE, smooth = FALSE)
+plot(history, type = "arms", regret = FALSE, no_par = TRUE, legend = TRUE, step_size=4, use_colors = TRUE)
+
 par(mfrow = c(1,1))
 
 print(history)

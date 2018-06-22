@@ -83,13 +83,16 @@ Plots in a no_par.
 Otherwise, plots will make use of a color palette.
 }
 \item{\code{ci}}{
-\code{(logical, NULL)} If ci is TRUE, Plot() will display 95% confidence intervals.
+\code{(logical, FALSE)} When ci is TRUE, Plot() will display 95% confidence intervals.
+}
+\item{\code{traces}}{
+\code{(logical , FALSE)} When traces is TRUE, Plot() will plot the traces of each independent simulation.
+}
+\item{\code{smooth}}{
+\code{(logical , FALSE)} When smooth is TRUE, Plot() will smooth all plots.
 }
 \item{\code{step_size}}{
 \code{(integer, NULL)} Plot only for every every t%%step_size==0
-}
-\item{\code{start_step}}{
-\code{(integer, NULL)} Start plotting at t=start_step
 }
 \item{\code{color_step}}{
 \code{(integer, 1)} Linecharts will cycle through agents/color_step colors.
