@@ -22,10 +22,11 @@ history            <- simulation$run()
 
 par(mfrow = c(2,2),mar = c(5,5,1,1))
 
-plot(history, type = "cumulative", regret = TRUE, no_par = TRUE, step_size=4, use_colors = TRUE)
-plot(history, type = "cumulative", regret = FALSE, no_par = TRUE, legend = FALSE, step_size=4, use_colors = TRUE)
-plot(history, type = "average", regret = FALSE, no_par = TRUE, legend = FALSE, step_size=4, use_colors = TRUE, smooth = FALSE)
-plot(history, type = "arms", regret = FALSE, no_par = TRUE, legend = TRUE, step_size=4, use_colors = TRUE)
+plot(history, type = "cumulative", regret = TRUE, no_par = TRUE, step_size = 4, use_colors = TRUE)
+plot(history, type = "cumulative", regret = FALSE, no_par = TRUE, legend = FALSE, step_size = 4, use_colors = TRUE)
+plot(history, type = "average", ci = "ci", regret = FALSE, no_par = TRUE, legend = FALSE,
+                                step_size = 10, use_colors = TRUE, smooth = TRUE)
+plot(history, type = "arms", regret = FALSE, no_par = TRUE, legend = TRUE, step_size = 4, use_colors = TRUE)
 
 par(mfrow = c(1,1))
 

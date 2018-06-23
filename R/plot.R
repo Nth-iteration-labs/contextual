@@ -178,7 +178,7 @@ Plot <- R6::R6Class(
       max_t             <- dt[, max(t)]
       arm_levels        <- levels(as.factor(data$choice))
       max_arm           <- length(arm_levels)
-      data$arm_count    <- as.double((unlist(data$arm_count) / max_sim) * 100L)
+      data$arm_count    <- as.double((unlist(data$arm_count, FALSE, FALSE) / max_sim) * 100L)
       eg                <- expand.grid(t = dt[sim == 1]$t, choice = seq(1.0, max_arm, 1))
       data              <- merge(data, eg, all = TRUE)
       data[is.na(data)] <- 0.0

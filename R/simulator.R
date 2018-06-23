@@ -33,9 +33,10 @@ Simulator <- R6::R6Class(
                           worker_max = NULL,
                           continuous_counter = FALSE,
                           set_seed = 0,
-                          write_progress_file = TRUE,
+                          write_progress_file = FALSE,
                           include_packages = NULL,
                           reindex_t = FALSE) {
+      gc()
       self$reindex_t <- reindex_t
       self$horizon <- horizon
       self$simulations <- simulations
@@ -61,7 +62,7 @@ Simulator <- R6::R6Class(
       if (self$write_progress_file) cat(paste0(""), file = "doparallel.log", append = FALSE)
 
       # (re)create history's data.table
-      self$history <- History$new(self$horizon * self$number_of_agents * self$simulations)  ###
+      self$history <- History$new(self$horizon * self$number_of_agents * self$simulations)
 
       self$history$add_meta_data("sim_start_time",format(Sys.time(), "%a %b %d %X %Y"))
 
@@ -77,6 +78,7 @@ Simulator <- R6::R6Class(
           self$agents[[agent_index]]$name <- paste0(current_agent_name,'.',current_agent_name_occurrences)
         }
       }
+
       # clone, precache and precalculate bandits and policies where relevant
       message("Cloning, precaching and precalculating bandits and policies")
       for (sim_index in 1L:self$simulations) {
@@ -84,7 +86,7 @@ Simulator <- R6::R6Class(
           self$sims_per_agent_list[sim_index, agent_index]  <- list(self$agents[[agent_index]]$clone(deep = FALSE))
           self$sims_per_agent_list[[sim_index, agent_index]]$reset()
           self$sims_per_agent_list[[sim_index, agent_index]]$bandit <- self$sims_per_agent_list[[sim_index, agent_index]]$bandit$clone(deep = TRUE)
-          self$sims_per_agent_list[[sim_index, agent_index]]$policy <- self$sims_per_agent_list[[sim_index, agent_index]]$policy$clone(deep = FALSE)  ## save theta here if deep, then contextual class gone though
+          self$sims_per_agent_list[[sim_index, agent_index]]$policy <- self$sims_per_agent_list[[sim_index, agent_index]]$policy$clone(deep = FALSE)
           self$sims_per_agent_list[[sim_index, agent_index]]$sim_index <- sim_index
           self$sims_per_agent_list[[sim_index, agent_index]]$agent_index <- agent_index
         }
@@ -170,25 +172,25 @@ Simulator <- R6::R6Class(
             sim_agent$bandit$generate_bandit_data(n = horizon)
           }
           if (continuous_counter) sim_agent$set_t(as.integer((simulation_index - 1L) * horizon))
+          step <- list()
           for (t in 1L:horizon) {
             step <- sim_agent$do_step()
-            if (!is.null(step$reward)) {
+            if (!is.null(step[[3]])) {                         #reward
               local_history$save(
                 index,
                 t,
-                step$action,
-                step$reward,
+                step[[2]],                                     #action
+                step[[3]],                                     #reward
                 agent_name,
                 simulation_index,
-                if (save_context) step$context$X else NA,
-                if (save_theta)   step$theta     else NA
+                if (save_context) step[[1]][["X"]] else NA,    #context
+                if (save_theta) step[[4]] else NA              #theta
               )
               index <- index + 1L
             }
           }
         }
-        dth <- local_history$get_data_table()
-        dth[sim != 0]
+        local_history$get_data_table()
       }
       self$history$set_data_table(foreach_results)
       private$end_time = Sys.time()

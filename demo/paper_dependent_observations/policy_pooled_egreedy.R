@@ -16,7 +16,7 @@ UnpooledEgreedyPolicy <- R6::R6Class(
     },
     get_action = function(t, context) {
       if (runif(1) > epsilon) {
-        action$choice <- which.max(unlist(self$theta$mu[[context$user_context]]))
+        action$choice <- which.max(unlist(self$theta$mu[[context$user_context]], FALSE, FALSE))
       } else {
         action$choice <- sample.int(context$k, 1, replace = TRUE)
       }

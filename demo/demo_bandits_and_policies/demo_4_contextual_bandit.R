@@ -4,7 +4,7 @@ setwd(here("demo","demo_bandits_and_policies"))
 source("../dev.R")
 
 horizon            <- 1000L
-simulations        <- 10L
+simulations        <- 100L
 bandit             <- ContextualBandit$new(k = 5, d = 6)
 
 

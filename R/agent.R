@@ -9,8 +9,7 @@ Agent <- R6::R6Class(
     sim_index = NULL,
     agent_index = NULL,
     name = NULL,
-    policy_call = NULL,
-    bandit_call = NULL,
+    agent_t = NULL,
     initialize = function(policy, bandit, name=NULL) {
 
       self$bandit                 <- bandit
@@ -29,39 +28,25 @@ Agent <- R6::R6Class(
     reset = function() {
       self$policy$set_parameters()
       self$policy$initialize_theta()
-      private$t <- 0
+      agent_t <<- 0
     },
     do_step = function() {
-      private$t <- private$t + 1
-      context   <- bandit$get_context(private$t)
-      action    <- policy$get_action (private$t, context)
-      reward    <- bandit$get_reward (private$t, context, action)
-      if (!is.null(reward)) {
-        theta   <- policy$set_reward (private$t, context, action, reward)
-      } else {
+      agent_t  <<- agent_t + 1
+      context   <- bandit$get_context(agent_t)
+      action    <- policy$get_action (agent_t, context)
+      reward    <- bandit$get_reward (agent_t, context, action)
+      if (is.null(reward)) {
         theta   <- NULL
+      } else {
+        theta   <- policy$set_reward (agent_t, context, action, reward)
       }
       list(context = context, action = action, reward = reward, theta = theta)
     },
     set_t = function(t) {
-      private$t <- t
+      agent_t <<- t
     },
     get_t = function(t) {
-      private$t
-    }
-  ),
-  private = list(
-    t = NULL,
-    parse_call = function(r6_envir) {
-        # TODO: this does not (always) work - check why
-        args <- formalArgs(r6_envir$initialize)
-        if(!is.null(args)) args <- mget(args, envir = r6_envir)
-        class_name = r6_envir$class_name
-        parsed_call_string = paste0(class_name,"$new(",deparse(args,control=c(), width.cutoff = 500),")")
-        parsed_call_string <- gsub("))",")", parsed_call_string)
-        parsed_call_string <- gsub("list\\(","", parsed_call_string)
-        parsed_call_string <- gsub("\\(NULL)","()", parsed_call_string)
-        parsed_call_string
+      agent_t
     }
   )
 )

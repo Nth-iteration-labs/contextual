@@ -50,7 +50,7 @@
 #'
 #' @export
 max_in <- function(x, equal_is_random = TRUE) {
-  x <- unlist(x)
+  x <- unlist(x, FALSE, FALSE)
   y <- seq_along(x)[x == max(x)]
   if (length(y) > 1L)  {
     if (equal_is_random) {
@@ -75,7 +75,7 @@ max_in <- function(x, equal_is_random = TRUE) {
 #'
 #' @export
 sum_of <- function(x) {
-  sum(unlist(x))
+  sum(unlist(x, FALSE, FALSE))
 }
 #' Inverse from Choleski (or QR) Decomposition.
 #'
