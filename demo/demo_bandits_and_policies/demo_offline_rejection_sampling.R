@@ -38,7 +38,7 @@ b <- before$get_data_table()
 log_S <- History$new()
 log_S$load_data("test.RData")
 
-bandit <- LiSamplingOfflineBandit$new(data_file = log_S, k = 3, d = 3)
+bandit <- LiSamplingOfflineBandit$new(data_stream = log_S, k = 3, d = 3)
 
 agents <-
   list(

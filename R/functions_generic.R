@@ -51,6 +51,14 @@ plot.History <- function(x, ...) {
     traces <- eval(args$traces)
   else
     traces <- FALSE
+  if ("traces_alpha" %in% names(args))
+    traces_alpha <- eval(args$traces_alpha)
+  else
+    traces_alpha <- 0.3
+  if ("traces_max" %in% names(args))
+    traces_max <- eval(args$traces_max)
+  else
+    traces_max <- 100
   if ("smooth" %in% names(args))
     smooth <- eval(args$smooth)
   else
@@ -108,6 +116,8 @@ plot.History <- function(x, ...) {
       use_colors = use_colors,
       ci = ci,
       traces = traces,
+      traces_max = traces_max,
+      traces_alpha = traces_alpha,
       smooth = smooth,
       step_size = step_size,
       color_step = color_step,
@@ -130,6 +140,8 @@ plot.History <- function(x, ...) {
       use_colors = use_colors,
       ci = ci,
       traces = traces,
+      traces_max = traces_max,
+      traces_alpha = traces_alpha,
       smooth = smooth,
       step_size = step_size,
       color_step = color_step,

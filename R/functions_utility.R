@@ -90,6 +90,29 @@ sum_of <- function(x) {
 inv <- function(M) {
   chol2inv(chol(M))
 }
+
+#' Inverse from Choleski (or QR) Decomposition.
+#'
+#' Invert a symmetric, positive definite square matrix from its Choleski decomposition.
+#'
+#' @param M_inv matrix
+#' @param x column vector
+#'
+#' @return (M + x*x')^-1 computed using Sherman-Morrison formula
+#'
+#' @export
+
+sherman_morrison <- function(M_inv, x) {
+
+#    B0 <- B0 + (s - B0 %*% d) %*% t(s) %*% B0 / c(t(s) %*% B0 %*% d)
+#    x = x.reshape((-1, 1))
+#
+#    M_inv -= M_inv.dot(x.dot(x.T.dot(M_inv))) / (1 + x.T.dot(M_inv.dot(x)))
+#
+#    return M_inv
+
+}
+
 #' Check if in RStudio
 #'
 #' Detects whether R is open in RStudio.

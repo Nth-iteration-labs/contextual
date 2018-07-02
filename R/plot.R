@@ -13,6 +13,8 @@ Plot <- R6::R6Class(
                           rate          = FALSE,
                           step_size     = 1,
                           traces        = FALSE,
+                          traces_max    = 100,
+                          traces_alpha  = 0.3,
                           smooth        = FALSE,
                           no_par        = FALSE,
                           xlim          = NULL,
@@ -69,6 +71,8 @@ Plot <- R6::R6Class(
         legend_title   = legend_title,
         limit_agents   = limit_agents,
         traces         = traces,
+        traces_max     = traces_max,
+        traces_alpha   = traces_alpha,
         smooth         = smooth
       )
 
@@ -82,6 +86,8 @@ Plot <- R6::R6Class(
                        rate          = FALSE,
                        step_size     = 1,
                        traces        = FALSE,
+                       traces_max    = 100,
+                       traces_alpha  = 0.3,
                        smooth        = FALSE,
                        no_par        = FALSE,
                        xlim          = NULL,
@@ -126,6 +132,8 @@ Plot <- R6::R6Class(
         legend_title   = legend_title,
         limit_agents   = limit_agents,
         traces         = traces,
+        traces_max     = traces_max,
+        traces_alpha   = traces_alpha,
         smooth         = smooth
       )
 
@@ -262,6 +270,8 @@ Plot <- R6::R6Class(
                        legend_title   = NULL,
                        limit_agents   = NULL,
                        traces         = NULL,
+                       traces_max     = 100,
+                       traces_alpha   = 0.3,
                        smooth         = FALSE) {
 
       if (!is.null(ci) && ci %in% c("sd", "var", "ci")) {
@@ -344,7 +354,7 @@ Plot <- R6::R6Class(
         data.table::setorder(dt, agent, sim, t)
         for (agent_name in agent_levels) {
           agent_sims <- unique(dt[dt$agent == agent_name]$sim)
-          for (as in head(agent_sims, 100)) {
+          for (as in head(agent_sims, traces_max)) {
             Sys.sleep(0)
             if (smooth == TRUE) {
               lines(supsmu(
@@ -352,14 +362,14 @@ Plot <- R6::R6Class(
                 dt[dt$agent == agent_name & dt$sim == as][[line_data_name]]
               ),
               lwd = lwd,
-              col = rgb(0.8, 0.8, 0.8, 0.3)
+              col = rgb(0.8, 0.8, 0.8, traces_alpha)
               )
             } else {
               lines(dt[dt$agent == agent_name & dt$sim == as]$t,
                 dt[dt$agent == agent_name &
                   dt$sim == as][[line_data_name]],
                 lwd = lwd,
-                col = rgb(0.8, 0.8, 0.8, 0.3)
+                col = rgb(0.8, 0.8, 0.8, traces_alpha)
               )
             }
           }
@@ -536,6 +546,13 @@ Plot <- R6::R6Class(
 #'   }
 #'   \item{\code{traces}}{
 #'      \code{(logical , FALSE)} When traces is TRUE, Plot() will plot the traces of each independent simulation.
+#'   }
+#'   \item{\code{traces_max}}{
+#'      \code{(integer , 100)} The maximum number of trace lines.
+#'   }
+#'   \item{\code{traces_alpha}}{
+#'      \code{(numeric , 0.3)} Sets the opacity of all trace lines. By default traces_alpha is set to 0.3,
+#'      that is, at an opacity of 30%.
 #'   }
 #'   \item{\code{smooth}}{
 #'      \code{(logical , FALSE)} When smooth is TRUE, Plot() will smooth all plots.

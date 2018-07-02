@@ -12,7 +12,9 @@ if (!require(devtools)) {
   devtools::install_github("r-lib/testthat")
 }
 # Install package dependencies if needed...
-devtools::install_deps()
+###  devtools::install_deps() ##################
+
+
 # And load package dependencies, since do not load the package itself.
 devtools::load_all()
 # Set path to GhostScript command in Windows necessary for local as-cran check.

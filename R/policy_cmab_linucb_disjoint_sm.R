@@ -1,17 +1,22 @@
+library(Matrix)
+
+
 #' @export
-LinUCBDisjointPolicy <- R6::R6Class(
+LinUCBDisjointSmPolicy <- R6::R6Class(
   portable = FALSE,
   class = FALSE,
   inherit = Policy,
   public = list(
     alpha = NULL,
-    class_name = "LinUCBDisjointPolicy",
+    class_name = "LinUCBDisjointSmPolicy",
     initialize = function(alpha = 1.0) {
       super$initialize()
       self$alpha <- alpha
     },
     set_parameters = function() {
-      self$theta_to_arms <- list( 'A' = diag(1,self$d,self$d), 'b' = rep(0,self$d))
+      self$theta_to_arms <- list( 'A' = diag(1,self$d,self$d), 'b' = rep(0,self$d),
+                                  'A_inv' = solve(diag(1,self$d,self$d)))
+
     },
     get_action = function(t, context) {
 
@@ -21,11 +26,12 @@ LinUCBDisjointPolicy <- R6::R6Class(
 
         X          <-  context$X[,arm]
         A          <-  self$theta$A[[arm]]
+        A_inv      <-  self$theta$A_inv[[arm]]
         b          <-  self$theta$b[[arm]]
 
-        A_inv      <-  inv(A)
-
         theta_hat  <-  A_inv %*% b
+
+        self$theta$A_inv[[arm]] <-  A_inv
 
         mean       <-  X %*% theta_hat
         sd         <-  sqrt(tcrossprod(X %*% A_inv, X))
@@ -36,11 +42,16 @@ LinUCBDisjointPolicy <- R6::R6Class(
       action
     },
     set_reward = function(t, context, action, reward) {
-      arm <- action$choice
+      arm    <- action$choice
       reward <- reward$reward
-      Xa <- context$X[,arm]
+      Xa     <- context$X[,arm]
+      A_inv  <-  self$theta$A_inv[[arm]]
 
-      inc(self$theta$A[[arm]]) <- outer(Xa, Xa)
+      # Sherman-Morrison inverse
+      outer_Xa <- outer(Xa, Xa)
+      self$theta$A_inv[[arm]]  <- A_inv - c((A_inv %*% (outer_Xa %*% A_inv))) / c(1.0+ (crossprod(Xa,A_inv) %*% Xa))
+
+      inc(self$theta$A[[arm]]) <- outer_Xa
       inc(self$theta$b[[arm]]) <- reward * Xa
 
       self$theta
@@ -57,16 +68,16 @@ LinUCBDisjointPolicy <- R6::R6Class(
 #'
 #' Lihong Li et all
 #'
-#' Each time step t, \code{LinUCBDisjointPolicy} runs a linear regression per arm that produces coefficients for each context feature \code{d}.
+#' Each time step t, \code{LinUCBDisjointSmPolicy} runs a linear regression per arm that produces coefficients for each context feature \code{d}.
 #' It then observes the new context, and generates a predicted payoff or reward together with a confidence interval for each available arm.
 #' It then proceeds to choose the arm with the highest upper confidence bound.
 #'
-#' @name LinUCBDisjointPolicy
+#' @name LinUCBDisjointSmPolicy
 #' @family contextual subclasses
 #'
 #' @section Usage:
 #' \preformatted{
-#' policy <- LinUCBDisjointPolicy(alpha = 1.0)
+#' policy <- LinUCBDisjointSmPolicy(alpha = 1.0)
 #' }
 #'
 #' @section Arguments:
@@ -95,7 +106,7 @@ LinUCBDisjointPolicy <- R6::R6Class(
 #' @section Methods:
 #'
 #' \describe{
-#'   \item{\code{new(alpha = 1)}}{ Generates a new \code{LinUCBDisjointPolicy} object. Arguments are defined in the Argument section above.}
+#'   \item{\code{new(alpha = 1)}}{ Generates a new \code{LinUCBDisjointSmPolicy} object. Arguments are defined in the Argument section above.}
 #' }
 #'
 #' \describe{

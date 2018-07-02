@@ -14,7 +14,10 @@ LiSamplingOfflineBandit <- R6::R6Class(
       private$S <- data_stream$get_data_table()
     },
     get_context = function(index) {
+
       private$X <- array(matrix(private$S$context[[index]], self$d, self$k), dim = c(self$d, self$k, 1))
+      # TODO: here, it transforms the vector to a matrix, with each arm exactly the same
+
       contextlist <- list(
         k = self$k,
         d = self$d,
@@ -28,7 +31,7 @@ LiSamplingOfflineBandit <- R6::R6Class(
       if (private$S$choice[[index]] == action$choice) {
         list(
           reward = reward_at_index,
-          optimal_reward_value = optimal_at_index
+          if (!is.null(optimal_at_index)) optimal_reward_value = optimal_at_index
         )
       } else {
         NULL

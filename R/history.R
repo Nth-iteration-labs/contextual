@@ -179,7 +179,7 @@ History <- R6::R6Class(
       saveRDS(private$.data, file = filename, compress = TRUE)
       invisible(self)
     },
-    load_data = function(filename, nth_rows = 0) {
+    load_data = function(filename, nth_rows = 0, auto_stats = TRUE) {
       if (nrow(private$.data) > 1 && private$.data$agent[[1]] != "") {
         temp_data <- readRDS(filename)
         if (nth_rows > 0) temp_data <- temp_data[t %% nth_rows == 0]
@@ -191,7 +191,7 @@ History <- R6::R6Class(
       }
       if ("opimal" %in% colnames(private$.data))
         setnames(private$.data, old = "opimal", new = "optimal_reward_value")
-      private$calculate_cum_stats()
+      if (auto_stats == TRUE) private$calculate_cum_stats()
       invisible(self)
     },
     leave_nth = function(nth_rows = 0) {
@@ -201,14 +201,14 @@ History <- R6::R6Class(
     get_data_frame = function() {
       as.data.frame(private$.data)
     },
-    set_data_frame = function(df) {
+    set_data_frame = function(df, auto_stats = TRUE) {
       private$.data <- as.data.table(df)
-      private$calculate_cum_stats()
+      if (auto_stats == TRUE) private$calculate_cum_stats()
       invisible(self)
     },
-    set_data_table = function(dt) {
+    set_data_table = function(dt, auto_stats = TRUE) {
       private$.data <- dt
-      private$calculate_cum_stats()
+      if (auto_stats == TRUE) private$calculate_cum_stats()
       invisible(self)
     },
     clear_data_table = function() {
