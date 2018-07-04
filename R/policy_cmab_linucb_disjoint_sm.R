@@ -31,8 +31,6 @@ LinUCBDisjointSmPolicy <- R6::R6Class(
 
         theta_hat  <-  A_inv %*% b
 
-        self$theta$A_inv[[arm]] <-  A_inv
-
         mean       <-  X %*% theta_hat
         sd         <-  sqrt(tcrossprod(X %*% A_inv, X))
 
@@ -51,8 +49,8 @@ LinUCBDisjointSmPolicy <- R6::R6Class(
       outer_Xa <- outer(Xa, Xa)
       self$theta$A_inv[[arm]]  <- A_inv - c((A_inv %*% (outer_Xa %*% A_inv))) / c(1.0+ (crossprod(Xa,A_inv) %*% Xa))
 
-      inc(self$theta$A[[arm]]) <- outer_Xa
-      inc(self$theta$b[[arm]]) <- reward * Xa
+      self$theta$A[[arm]]      <- self$theta$A[[arm]] + outer_Xa
+      self$theta$b[[arm]]      <- self$theta$b[[arm]] + reward * Xa
 
       self$theta
     }

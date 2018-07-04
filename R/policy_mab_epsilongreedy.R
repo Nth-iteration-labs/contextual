@@ -26,8 +26,8 @@ EpsilonGreedyPolicy          <- R6::R6Class(
     set_reward = function(t, context, action, reward) {
       arm                         <- action$choice
       reward                      <- reward$reward
-      inc(self$theta$n[[arm]])    <- 1
-      inc(self$theta$mean[[arm]]) <- (reward - self$theta$mean[[arm]]) / self$theta$n[[arm]]
+      self$theta$n[[arm]]         <- self$theta$n[[arm]] + 1
+      self$theta$mean[[arm]]      <- self$theta$mean[[arm]] + (reward - self$theta$mean[[arm]]) / self$theta$n[[arm]]
       self$theta
     }
   )

@@ -62,6 +62,21 @@ max_in <- function(x, equal_is_random = TRUE) {
     return(y)
   }
 }
+#' Get maximum value
+#'
+#' Returns the index of the maximum value in vector \code{vec}.
+#'
+#' If there is a tie,
+#' the index of one of the tied maxima is returned at random.
+#'
+#' @param vec vector of values
+#'
+#' @export
+which_max_tied <- function(vec) {
+  maxima <- which(vec == max(vec))
+  if(length(maxima) > 1){ maxima <- sample(maxima, 1) }
+  maxima
+}
 #' Sum of list
 #'
 #' Returns the sum of the values of the elements of a list \code{x}.

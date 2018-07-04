@@ -61,7 +61,6 @@ SyntheticBandit <- R6::R6Class(
     generate_bandit_data = function(n = 1L,
                                     silent = TRUE ) {
       if (!silent) message("Precaching bandit" )
-      private$X <- array(0, dim = c(self$d, self$k, n))
       private$O <- matrix(0, self$k, n)
       private$R <- matrix(0, self$k, n)
       private$generate_context(n)
@@ -75,25 +74,17 @@ SyntheticBandit <- R6::R6Class(
     R = NULL,
     X = NULL,
     O = NULL,
+    context_list = list(),
+    reward_list = list(),
     generate_context = function(n = 1L) {
-      context_mask <- matrix(0, n , self$d)
-      if (self$not_zero_features | self$random_one_feature) {
-        context_mask[cbind(1L:n, sample(self$d, n, replace = TRUE))] <- 1
-      }
-      if (!self$random_one_feature) {
-        context_mask <- matrix((context_mask | matrix(sample(c(0, 1), replace = TRUE, size = n * self$d),  n, self$d)), n, self$d)
-      }
-      mode(context_mask) <- 'integer'
-      private$X <- array(0, dim = c(self$d, self$k, n))
-      for (i in 1:n) {
-        private$X[,,i] <- matrix( context_mask[i,], self$d, self$k)
-      }
+      private$X <- array(sample(c(0, 1), replace = TRUE, size = self$d * self$k * n), dim = c(self$d, self$k, n))
+
       private$X
     },
     generate_weights = function(n) {
       weight_array  <- array(t(matrix( private$W, self$k , self$d, byrow = TRUE )), dim = c(self$d, self$k, n))
       Wg <- private$X*weight_array
-      private$O <- colSums(Wg) / colSums(private$X)
+      private$O <- colSums(Wg) #/ colSums(private$X)
       private$O[is.nan(private$O)] <- 0
     },
     generate_rewards = function(n) {
@@ -108,18 +99,19 @@ SyntheticBandit <- R6::R6Class(
     },
     context_to_list = function(t) {
       if (self$precaching) idx <- t else idx <- 1
+      k = self$k
       list(
         k = self$k,
         d = self$d,
         X = private$X[,, idx],
-        o = max_in(private$O[, idx])    ################### only for oracle
+        o = which_max_tied(private$O[, idx])
       )
     },
     reward_to_list = function(t, action) {
       if (self$precaching) idx <- t else idx <- 1
       list(
         reward = private$R[action$choice, idx],
-        optimal_reward_value = as.double(private$R[max_in(private$O[, idx]), idx])
+        optimal_reward_value = as.double(private$R[which_max_tied(private$O[, idx]), idx])
       )
     }
   )

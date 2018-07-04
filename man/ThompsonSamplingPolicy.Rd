@@ -91,9 +91,9 @@ Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link
 \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 }
 \seealso{
-Other contextual subclasses: \code{\link{BTSLogitPolicy}},
-  \code{\link{BasicBandit}},
+Other contextual subclasses: \code{\link{BasicBandit}},
   \code{\link{ContextualBandit}},
+  \code{\link{ContextualDisjointThompsonSamplingPolicy}},
   \code{\link{ContextualThompsonSamplingPolicy}},
   \code{\link{ContinuumBandit}},
   \code{\link{DoublyRobustOfflineBandit}},
@@ -103,6 +103,7 @@ Other contextual subclasses: \code{\link{BTSLogitPolicy}},
   \code{\link{LiSamplingOfflineBandit}},
   \code{\link{LifPolicy}},
   \code{\link{LinUCBDisjointPolicy}},
+  \code{\link{LinUCBDisjointSmPolicy}},
   \code{\link{LinUCBHybridPolicy}},
   \code{\link{OraclePolicy}}, \code{\link{RandomPolicy}},
   \code{\link{SoftmaxPolicy}},

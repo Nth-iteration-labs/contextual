@@ -2,6 +2,9 @@
 # with some minor changes that enable it
 # to replace doParallel with doAzureParallel.
 
+# devtools::install_github("Azure/rAzureBatch")
+# devtools::install_github("Azure/doAzureParallel")
+
 library(doAzureParallel)
 library(contextual)
 

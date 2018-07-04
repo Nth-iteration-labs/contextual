@@ -34,8 +34,8 @@ immediately.
 Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 
-Other contextual subclasses: \code{\link{BTSLogitPolicy}},
-  \code{\link{ContextualBandit}},
+Other contextual subclasses: \code{\link{ContextualBandit}},
+  \code{\link{ContextualDisjointThompsonSamplingPolicy}},
   \code{\link{ContextualThompsonSamplingPolicy}},
   \code{\link{ContinuumBandit}},
   \code{\link{DoublyRobustOfflineBandit}},
@@ -45,6 +45,7 @@ Other contextual subclasses: \code{\link{BTSLogitPolicy}},
   \code{\link{LiSamplingOfflineBandit}},
   \code{\link{LifPolicy}},
   \code{\link{LinUCBDisjointPolicy}},
+  \code{\link{LinUCBDisjointSmPolicy}},
   \code{\link{LinUCBHybridPolicy}},
   \code{\link{OraclePolicy}}, \code{\link{RandomPolicy}},
   \code{\link{SoftmaxPolicy}},

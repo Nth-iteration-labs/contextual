@@ -1,5 +1,5 @@
 #' @export
-ContextualThompsonSamplingPolicy <- R6::R6Class(
+ContextualDisjointThompsonSamplingPolicy <- R6::R6Class(
   portable = FALSE,
   class = FALSE,
   inherit = Policy,
@@ -7,40 +7,48 @@ ContextualThompsonSamplingPolicy <- R6::R6Class(
     v = NULL,
     delta = NULL,
     R = NULL,
-    epsilon = 0.5,
-    class_name = "ContextualThompsonSamplingPolicy",
-    initialize = function(delta=0.81, R=0.01, epsilon=0.91) {
+    epsilon = NULL,
+    class_name = "ContextualDisjointThompsonSamplingPolicy",
+    initialize = function(delta=0.7, R=0.01, epsilon=0.8) {
       super$initialize()
       self$delta   <- delta
       self$R       <- R
       self$epsilon <- epsilon
     },
     set_parameters = function() {
-      self$v     <- self$R * sqrt(24 / self$epsilon * self$d * log(1 / self$delta))
-      self$theta  <- list( 'B'  = diag(1, self$d, self$d), 'f'  = rep(0, self$d), 'mu_hat' = rep(0, self$d))
+      self$v              <- self$R * sqrt(24 / self$epsilon * self$d * log(1 / self$delta))
+      self$theta_to_arms  <- list( 'B'  = diag(1, self$d, self$d), 'f'  = rep(0, self$d),
+                                   'mu_hat' = rep(0, self$d))
     },
     get_action = function(t, context) {
-      X <- context$X
-      mu_tilde <- self$mvrnorm(1, self$theta$mu_hat, self$v^2 * solve(self$theta$B))
-      expected_rewards <- t(X) %*% t(mu_tilde)
+
+      expected_rewards <- rep(0.0, context$k)
+      for (arm in 1:self$k) {
+        X                     <- context$X[,arm]
+        mu_tilde              <- self$mvrnorm(self$theta$mu_hat[[arm]], self$v^2 * solve(self$theta$B[[arm]]))
+        expected_rewards[arm] <- t(X) %*% t(mu_tilde)
+      }
       action$choice <- max_in(expected_rewards)
+
       action
     },
     set_reward = function(t, context, action, reward) {
       reward <- reward$reward
       arm    <- action$choice
-      X      <- context$X[,arm]
+      Xa     <- context$X[,arm]
 
+      inc(self$theta$B[[arm]])    <- Xa %*% t(Xa)
+      inc(self$theta$f[[arm]])    <- Xa * reward
+      self$theta$mu_hat[[arm]]    <- solve(self$theta$B[[arm]] ) %*% self$theta$f[[arm]]
 
-      inc(self$theta$B)    <- X %*% t(X)
-      inc(self$theta$f)    <- X * reward
-      self$theta$mu_hat    <- solve(self$theta$B ) %*% self$theta$f
       self$theta
     },
-    mvrnorm = function(n, mu, sigma)
+    mvrnorm = function(mu, sigma)
     {
+      n     <- 1
       ncols <- ncol(sigma)
-      mu <- rep(mu, each = n)
+      mu    <- rep(mu, each = n)
+
       mu + matrix(rnorm(n * ncols), ncol = ncols) %*% chol(sigma)
     }
   )
@@ -53,18 +61,18 @@ ContextualThompsonSamplingPolicy <- R6::R6Class(
 
 #' Policy: Contextual Thompson Sampling with Linear Payoffs
 #'
-#' \code{ContextualThompsonSamplingPolicy} works by maintaining a prior on the the mu_hat rewards of its arms.
+#' \code{ContextualDisjointThompsonSamplingPolicy} works by maintaining a prior on the the mu_hat rewards of its arms.
 #' In this, it follows a beta–binomial model with parameters alpha and beta, sampling values
 #' for each arm from its prior and picking the arm with the highest value.
 #' When an arm is pulled and a Bernoulli reward is observed, it modifies the prior based on the reward.
 #' This procedure is repeated for the next arm pull.
 #'
-#' @name ContextualThompsonSamplingPolicy
+#' @name ContextualDisjointThompsonSamplingPolicy
 #' @family contextual subclasses
 #'
 #' @section Usage:
 #' \preformatted{
-#' policy <- ContextualThompsonSamplingPolicy(alpha = 1, beta = 1)
+#' policy <- ContextualDisjointThompsonSamplingPolicy(alpha = 1, beta = 1)
 #' }
 #'
 #' @section Arguments:
@@ -85,7 +93,7 @@ ContextualThompsonSamplingPolicy <- R6::R6Class(
 #' @section Methods:
 #'
 #' \describe{
-#'   \item{\code{new(alpha = 1, beta = 1)}}{ Generates a new \code{ContextualThompsonSamplingPolicy} object. Arguments are defined in the Argument section above.}
+#'   \item{\code{new(alpha = 1, beta = 1)}}{ Generates a new \code{ContextualDisjointThompsonSamplingPolicy} object. Arguments are defined in the Argument section above.}
 #' }
 #'
 #' \describe{

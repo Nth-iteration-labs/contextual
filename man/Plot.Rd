@@ -88,6 +88,13 @@ Otherwise, plots will make use of a color palette.
 \item{\code{traces}}{
 \code{(logical , FALSE)} When traces is TRUE, Plot() will plot the traces of each independent simulation.
 }
+\item{\code{traces_max}}{
+\code{(integer , 100)} The maximum number of trace lines.
+}
+\item{\code{traces_alpha}}{
+\code{(numeric , 0.3)} Sets the opacity of all trace lines. By default traces_alpha is set to 0.3,
+that is, at an opacity of 30%.
+}
 \item{\code{smooth}}{
 \code{(logical , FALSE)} When smooth is TRUE, Plot() will smooth all plots.
 }
