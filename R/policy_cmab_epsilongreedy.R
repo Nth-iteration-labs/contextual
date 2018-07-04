@@ -19,12 +19,9 @@ ContextualEpsilonGreedyPolicy <- R6::R6Class(
     get_action = function(t, context) {
 
       first <- rep(0.0, context$k)
-
-
-
       for (arm in 1:self$k) {
         Xa               <- t(context$X[,arm])
-        first[arm]       <- Xa %*% self$theta$A %*% t(Xa)
+        first[arm]       <- Xa %*% self$theta$A_inv %*% t(Xa)
       }
 
       first    <- sqrt(first) *  self$alpha
@@ -44,12 +41,10 @@ ContextualEpsilonGreedyPolicy <- R6::R6Class(
       arm <- action$choice
       reward <- reward$reward
       Xa <- context$X[,arm]
-
       inc(self$theta$A) <- outer(Xa, Xa)
       inc(self$theta$b) <- reward * Xa
       self$theta$A_inv  <- inv(self$theta$A)
-      self$theta$t      <- self$theta$A %*% self$theta$b
-
+      self$theta$t      <- self$theta$A_inv  %*% self$theta$b
       self$theta
     }
   )

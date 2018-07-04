@@ -3,8 +3,8 @@ library(here)
 setwd(here("demo","demo_bandits_and_policies"))
 source("../dev.R")
 
-horizon            <- 3000L
-simulations        <- 3L
+horizon            <- 500L
+simulations        <- 100L
 context_weights    <- matrix(  c( 0.8, 0.1, 0.1,
                                   0.1, 0.2, 0.1,
                                   0.1, 0.2, 0.1,
@@ -15,8 +15,7 @@ bandit             <- SyntheticBandit$new(weights = context_weights, precaching 
 agents             <- list( Agent$new(OraclePolicy$new(), bandit),
                             Agent$new(EpsilonGreedyPolicy$new(0.1), bandit),
                             Agent$new(ContextualDisjointThompsonSamplingPolicy$new(), bandit),
-                            Agent$new(LinUCBDisjointSmPolicy$new(0.6), bandit),
-                            Agent$new(RandomPolicy$new(), bandit))
+                            Agent$new(LinUCBDisjointSmPolicy$new(0.6), bandit))
 
 simulation         <- Simulator$new(agents, horizon, simulations)
 history            <- simulation$run()
