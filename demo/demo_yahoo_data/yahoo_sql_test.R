@@ -1,13 +1,10 @@
 library(DBI)
 library(RSQLite)
+library(ggplot2)
 
-# set directory and db
 db_dir_file <- "D:/YahooDb/yahoo.sqlite"
-
-# connect to db
 con <- dbConnect(RSQLite::SQLite(), db_dir_file)
 
-# get current db name
 print(dbListTables(con))
 
 # get column names
@@ -16,18 +13,30 @@ sapply(data, class)
 names <- names(data)
 print(names)
 
-# retrieve count
+# retrieve number of steps
 nr <- dbGetQuery(con, "SELECT COUNT(*) FROM yahoo" )
-print(count)
+print(nr)
+
+# get column names
+data <- dbGetQuery(con, "SELECT * FROM yahoo WHERE t > 1002 and t < 10010")
+sapply(data, class)
+names <- names(data)
+print(names)
+
+dt <- as.data.frame(data)
+
 
 # disconnect from and then shutdown DB
 dbDisconnect(con, shutdown = TRUE)
 
-# a looping option... prefer query on indexed t for now
-#
+
+# unused looping option --------------------------------------------------------------------------------------
+
 # query <- dbSendQuery(con, 'SELECT * FROM yahoo')
 # while (!dbHasCompleted(query)) {
 #   one_row <- dbFetch(query, n = 1)
 #   print(one_row)
 # }
 # dbClearResult(query)
+
+# ------------------------------------------------------------------------------------------------------------

@@ -6,7 +6,7 @@ source("../dev.R")
 
 weight_per_arm     <- c(0.9, 0.1, 0.1)
 horizon            <- 100
-simulations        <- 100
+simulations        <- 20
 
 bandit             <- SyntheticBandit$new(weights = weight_per_arm, precaching = TRUE)
 
@@ -15,9 +15,11 @@ agents             <- list(Agent$new(EpsilonGreedyPolicy$new(0.1), bandit),
                            Agent$new(OraclePolicy$new(), bandit),
                            Agent$new(ThompsonSamplingPolicy$new(1.0, 1.0), bandit),
                            Agent$new(Exp3Policy$new(0.1), bandit),
+                           Agent$new(GittinsBrezziLaiPolicy$new(), bandit),
+
                            Agent$new(UCB1Policy$new(), bandit))
 
-simulation         <- Simulator$new(agents, horizon, simulations, do_parallel = TRUE)
+simulation         <- Simulator$new(agents, horizon, simulations, do_parallel = FALSE)
 history            <- simulation$run()
 
 par(mfrow = c(2,2),mar = c(5,5,1,1))
