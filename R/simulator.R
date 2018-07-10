@@ -129,6 +129,9 @@ Simulator <- R6::R6Class(
       horizon <- self$horizon
       sims_per_agent_list <- self$sims_per_agent_list
       number_of_agents <- self$number_of_agents
+
+      print(number_of_agents)
+
       save_context <- self$save_context
       save_theta <- self$save_theta
       reindex_t <- self$reindex_t
@@ -153,6 +156,9 @@ Simulator <- R6::R6Class(
         index <- 1L
         sim_agent_counter <- 0
         sim_agent_total <- length(sims_agents)
+
+        print(number_of_agents)
+
         local_history <- History$new( horizon * number_of_agents * sim_agent_total, save_context, save_theta)
         for (sim_agent in sims_agents) {
           sim_agent_counter <- sim_agent_counter + 1

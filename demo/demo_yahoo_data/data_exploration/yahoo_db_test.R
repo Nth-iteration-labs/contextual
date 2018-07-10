@@ -1,0 +1,30 @@
+library(DBI)
+library(MonetDBLite)
+
+db_dir <- "C:/YahooDb/yahoo.monetdblite"
+con    <- dbConnect(MonetDBLite::MonetDBLite(), db_dir)
+
+print(paste0("MonetDBLite: connection to '",dbListTables(con),"' database succesful!"))
+
+# Test loop  -------------------------------------------------------------------------------------------------
+
+for (i in 1:300) {
+  result <- dbGetQuery(con, paste0("SELECT * FROM yahoo WHERE t = ", (i), " LIMIT 1") )
+  print(result$a1_id)
+  print(i)
+}
+
+# Test names  ------------------------------------------------------------------------------------------------
+
+data <- dbGetQuery(con, "SELECT * FROM yahoo WHERE t = '33433' LIMIT 1" )
+sapply(data, class)
+names <- names(data)
+print(names)
+
+# Max t
+
+max_t <- dbGetQuery(con, "SELECT max(t) FROM yahoo" )
+
+
+# disconnect from and then shutdown DB
+dbDisconnect(con, shutdown = TRUE)

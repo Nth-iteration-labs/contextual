@@ -2,99 +2,15 @@
 % Please edit documentation in R/policy_mab_gittins_bl.R
 \name{GittinsBrezziLaiPolicy}
 \alias{GittinsBrezziLaiPolicy}
-\title{Policy: Epsilon Greedy}
+\title{Policy: Gittins Approximation algorithm for choosing arms in a MAB problem.}
 \description{
-\code{GittinsBrezziLaiPolicy} chooses an arm at
-random (explores) with probability \code{epsilon}, otherwise it
-greedily chooses (exploits) the arm with the highest estimated
-reward.
-}
-\section{Usage}{
-
-\preformatted{
-policy <- GittinsBrezziLaiPolicy(epsilon = 0.1)
-}
-}
-
-\section{Arguments}{
-
-
-\describe{
-\item{\code{epsilon}}{
-double, value in the closed interval \code{(0,1]} indicating the probablilty with which
-arms are selected at random (explored).
-Otherwise, \code{GittinsBrezziLaiPolicy} chooses the best arm (exploits)
-with a probability of \code{1 - epsilon}
-
-}
-\item{\code{name}}{
-character string specifying this policy. \code{name}
-is, amongst others, saved to the History log and displayed in summaries and plots.
-}
-}
-}
-
-\section{Methods}{
-
-
-\describe{
-\item{\code{new(epsilon = 0.1)}}{ Generates a new \code{GittinsBrezziLaiPolicy} object. Arguments are defined in the Argument section above.}
-}
-
-\describe{
-\item{\code{set_parameters()}}{each policy needs to assign the parameters it wants to keep track of
-to list \code{self$theta_to_arms} that has to be defined in \code{set_parameters()}'s body.
-The parameters defined here can later be accessed by arm index in the following way:
-\code{theta[[index_of_arm]]$parameter_name}
-}
-}
-
-\describe{
-\item{\code{get_action(context)}}{
-here, a policy decides which arm to choose, based on the current values
-of its parameters and, potentially, the current context.
-}
-}
-
-\describe{
-\item{\code{set_reward(reward, context)}}{
-in \code{set_reward(reward, context)}, a policy updates its parameter values
-based on the reward received, and, potentially, the current context.
-}
-}
-}
-
-\examples{
-
-horizon            <- 100L
-simulations        <- 100L
-weights            <- c(0.9, 0.1, 0.1)
-
-policy             <- GittinsBrezziLaiPolicy$new(epsilon = 0.1)
-bandit             <- SyntheticBandit$new(weights = weights, precaching = FALSE)
-agent              <- Agent$new(policy, bandit)
-
-history            <- Simulator$new(agent, horizon, simulations, do_parallel = FALSE)$run()
-
-plot(history, type = "cumulative")
-
-plot(history, type = "arms")
-
-
-}
-\references{
-Gittins, J., Glazebrook, K., & Weber, R. (2011). Multi-armed bandit allocation indices. John Wiley & Sons. (Original work published 1989)
-
-Sutton, R. S. (1996). Generalization in reinforcement learning: Successful examples using sparse coarse coding. In Advances in neural information processing systems (pp. 1038-1044).
-
-Strehl, A., & Littman, M. (2004). Exploration via modelbased interval estimation. In International Conference on Machine Learning, number Icml.
-
-Yue, Y., Broder, J., Kleinberg, R., & Joachims, T. (2012). The k-armed dueling bandits problem. Journal of Computer and System Sciences, 78(5), 1538-1556.
+\code{GittinsBrezziLaiPolicy} Algorithm based on Brezzi and Lai (2002) "Optimal learning
+and experimentation in bandit problems."
+The algorithm provides an approximation of the Gittins index, by specifying
+a closed-form expression, which is a function of the discount factor, and
+the number of successes and failures associated with each arm.
 }
 \seealso{
-Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
-\code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
-
 Other contextual subclasses: \code{\link{BasicBandit}},
   \code{\link{ContextualBandit}},
   \code{\link{ContextualDisjointThompsonSamplingPolicy}},

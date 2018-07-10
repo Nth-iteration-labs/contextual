@@ -27,39 +27,32 @@ if (grepl('w|W', .Platform$OS.type)) {
 #setwd("~/GitHub")
 #gp("contextual")
 
-# TODO LIST --------------------------------------------------------------------
+# TODO LIST --------------------------------------------------------------------------------------------------
 
 # remove some files from gitignore, clean out files from dirs ... and add gitignore.
 
-# nth-rows, thinning out, plot, history....
-
 ##### writing: work out regret..
 
-# comparison doc of all bandit algo's: strengths, weakneseses (computational eff, context / non, variance, etc)
+# comparison doc of all bandit: strengths, weakneseses (computational eff, context / non, variance, etc)
 
 # TODO: is optimal arm the absolute optimal arm, or the oracle optimal arm?
 # TODO: check when NA saved to history (ie in the case of oracle/optimal not known etc)
 # TODO: propensity
-# TODO: confidence interval --> check and test if all well
 
 # prio 2
 # TODO: visualisation(s) from thesis
 # TODO: MODEL type input
 # TODO: make sure enough checks on inputs..
-# TODO: seperate context and theta results tables?
 # TODO: time calculation, benchmarking per policy, how?
 
 # prio 3
 
 # TODO: blog about all this, do JS versions
 # TODO: fix external plot device on linux -> for live plot
-# TODO: UCB1, exp3, exp4, epoch.. ?? Which other policies, particularly cMAB
-# TODO: Implement more interesting policies, Maurits and others
 # TODO: Ability to add/remove arms
 # TODO: Adversarial
-# gittins ... policy
 
-# PERFORMANCE DATA  ------------------------------------------------------------
+# PERFORMANCE DATA  ------------------------------------------------------------------------------------------
 
 # on 58  cores:    k3*d3 * 5 policies * 300  * 10000 --> 132 seconds
 # on 120 cores:    k3*d3 * 5 policies * 300  * 10000 --> 390 seconds
@@ -90,7 +83,7 @@ if (grepl('w|W', .Platform$OS.type)) {
 # }
 
 # history --> no_par
-# if (history[agent == "TSampling",.N] > 0) {                               ## this needs to be more generic!!!
+# if (history[agent == "TSampling",.N] > 0) {       ## this needs to be more generic!!!
 #   self$ts(history, no_par = TRUE, legend = TRUE)
 # } else {
 #   self$average(history, no_par = TRUE, legend = FALSE, regret = TRUE)
@@ -110,5 +103,5 @@ if (grepl('w|W', .Platform$OS.type)) {
 #gp
 
 # think about rmax if not boolean!!! Rmax.reward!!!?
-#To make sure that all arms receive at least one pull, arms
-#' that have not yet been chosen are given an estimate of Rmax.
+# To make sure that all arms receive at least one pull, arms
+# ' that have not yet been chosen are given an estimate of Rmax.
