@@ -9,32 +9,52 @@ YahooBandit <- R6::R6Class(
     click = NULL,
     buffer = NULL,
     cache = NULL,
-    initialize   = function(con, k, d, cache = 500) {
+    arm_lookup = NULL,
+    initialize   = function(con, k, d, arm_lookup, cache = 500  ) {
       self$k <- k
       self$d <- d
       self$con <- con
       self$cache <- cache
-      self$buffer <- as.matrix(DBI::dbGetQuery(con, paste0("SELECT * FROM yahoo WHERE t BETWEEN 1 AND ",cache -1)))
+      self$arm_lookup <- arm_lookup
+      self$buffer <-
+        as.matrix(DBI::dbGetQuery(
+          self$con,
+          paste0(
+            "SELECT * FROM yahoo WHERE t >= 1 AND t <= ",
+            cache - 1,
+            " LIMIT ",
+            self$cache - 1
+          )
+        ))
     },
     get_context = function(index) {
 
       if (index%%(self$cache) == 0) {
-        self$buffer <- as.matrix(
-          DBI::dbGetQuery(con, paste0("SELECT * FROM yahoo WHERE t BETWEEN ",index," AND ",index+self$cache-1)))
+        self$buffer <- as.matrix(DBI::dbGetQuery(
+          self$con,
+          paste0(
+            "SELECT * FROM yahoo WHERE t >= ",
+            index,
+            " AND t <= ",
+            index + self$cache - 1,
+            " LIMIT ",
+            self$cache
+          )
+        ))
         print(index)
       }
       row <- self$buffer[as.integer(self$buffer[,185]) == index,]
 
-      self$arm_choice          <- which(arm_article %in% row[2])
+      self$arm_choice          <- which(self$arm_lookup %in% row[2])
       self$click               <- row[3]
 
-      # get article ids, count them, convert to arms
+      # get article ids
 
       a_index                  <- seq(10, 184, by = 7)
       article_ids              <- row[a_index]
       article_ids              <- article_ids[!is.na(article_ids)]
       nr_articles              <- length(article_ids)
-      arm_nrs                  <- which(arm_article %in% article_ids)
+      arm_nrs                  <- which(self$arm_lookup %in% article_ids)
 
       # get article context
 

@@ -57,8 +57,11 @@ Simulator <- R6::R6Class(
       set.seed(self$set_seed)
 
       # create empty progress.log file
+
       if (self$write_progress_file) cat(paste0(""), file = "progress.log", append = FALSE)
+
       # clear doparallel.log
+
       if (self$write_progress_file) cat(paste0(""), file = "doparallel.log", append = FALSE)
 
       # (re)create history's data.table
@@ -153,9 +156,6 @@ Simulator <- R6::R6Class(
         index <- 1L
         sim_agent_counter <- 0
         sim_agent_total <- length(sims_agents)
-
-        print(number_of_agents)
-
         local_history <- History$new( horizon * number_of_agents * sim_agent_total, save_context, save_theta)
         for (sim_agent in sims_agents) {
           sim_agent_counter <- sim_agent_counter + 1
@@ -221,15 +221,6 @@ Simulator <- R6::R6Class(
     end_time = NULL,
     agent_meta_to_history = function() {
       self$history$initialize_meta_agent()
-      #agent_policy_call_list <- list()
-      #agent_bandit_call_list <- list()
-      #for (agent_index in 1L:self$number_of_agents) {
-      #  current_agent_name <- self$agents[[agent_index]]$name
-      #  agent_policy_call_list[[current_agent_name]] <- self$agents[[agent_index]]$policy_call
-      #  agent_bandit_call_list[[current_agent_name]] <- self$agents[[agent_index]]$bandit_call
-      #}
-      #self$history$add_agent_data("policy_call",agent_policy_call_list)
-      #self$history$add_agent_data("bandit_call",agent_bandit_call_list)
     }
   )
 )

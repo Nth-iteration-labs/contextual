@@ -83,6 +83,8 @@ if (abort==1) { message("You aborted the import.") } else {
 
   # connect to db --------------------------------------------------------------------------------------------
 
+  options(monetdb.sequential=T)
+
   con <- dbConnect(MonetDBLite::MonetDBLite(), db_dir)
 
   # loop over each file in steps (batches) of a million records ----------------------------------------------
@@ -135,6 +137,8 @@ if (abort==1) { message("You aborted the import.") } else {
   }
 
   dbSendQuery(con, "CREATE ORDERED INDEX index_t ON yahoo (t)" )
+
+  Sys.sleep(2)
 
   # disconnect from and then shutdown  -----------------------------------------------------------------------
 

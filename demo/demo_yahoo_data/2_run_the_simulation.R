@@ -14,10 +14,11 @@ source("yahoo_policy_epsilon_greedy.R")
 
 # Connect to DB ----------------------------------------------------------------------------------------------
 
+# monetdb.sequential=T is the difference between monetdblite life and death
+
+options(monetdb.sequential=T)
+
 db_dir <- "C:/YahooDb/yahoo.monetdblite"
-
-# First time connection can take some time.
-
 con    <- dbConnect(MonetDBLite::MonetDBLite(), db_dir)
 
 print(paste0("MonetDBLite: connection to '",dbListTables(con),"' database succesful!"))
@@ -27,30 +28,23 @@ print(paste0("MonetDBLite: connection to '",dbListTables(con),"' database succes
 simulations <- 1
 horizon     <- 1000
 
-counted_rows <- as.integer(dbGetQuery(con, "SELECT COUNT(*) FROM yahoo" ))
-max_t        <- as.integer(dbGetQuery(con, "SELECT max(t) FROM yahoo" ))
+counted_rows <- as.integer(DBI::dbGetQuery(con, "SELECT COUNT(*) FROM yahoo" ))
+max_t        <- as.integer(DBI::dbGetQuery(con, "SELECT max(t) FROM yahoo" ))
 
 print(counted_rows == max_t)
 
 # Get arm/article lookup
 
-if(!file.exists("./cache/arm_article.Rds")){
-  arm_article <- as.data.table(dbGetQuery(con, "SELECT DISTINCT article_id FROM yahoo"))
-  arm_article <- as.matrix(arm_article)
-  class(arm_article) <- "integer"
-  saveRDS(arm_article, file = "./cache/arm_article.Rds")
-} else {
-  if(!exists("arm_article")) arm_article <- readRDS(file = "./cache/arm_article.Rds")
-}
+arm_article <- as.matrix(DBI::dbGetQuery(con, "SELECT DISTINCT article_id FROM yahoo"))
+class(arm_article) <- "integer"
 
 # Initiate YahooBandit ---------------------------------------------------------------------------------------
 
-bandit      <- YahooBandit$new(con, k = 217L, d = 36L)
+bandit      <- YahooBandit$new(con, k = 217L, d = 36L, arm_lookup = arm_article)
 
 agents <-
   list(
-    Agent$new(YahooEpsilonGreedyPolicy$new(0.01), bandit, name = "EGreedy"),
-    Agent$new(YahooEpsilonGreedyPolicy$new(0.1), bandit, name = "EGreedy2")
+    Agent$new(YahooEpsilonGreedyPolicy$new(0.01), bandit, name = "EGreedy")
   )
 
 # Define the simulation --------------------------------------------------------------------------------------
@@ -63,6 +57,7 @@ simulation <-
     do_parallel = FALSE,
     continuous_counter = TRUE,
     reindex_t = TRUE,
+    write_progress_file = TRUE,
     include_packages = c("DBI","MonetDBLite")
   )
 
