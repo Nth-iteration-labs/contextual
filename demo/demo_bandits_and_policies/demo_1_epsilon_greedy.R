@@ -11,17 +11,16 @@ agent              <- Agent$new(policy,bandit)
 
 history            <-  Simulator$new(
                           agents = agent,
-                          horizon = 1,
-                          simulations = 2,
-                          write_progress_file = TRUE,
+                          horizon = 100,
+                          simulations = 100,
                           do_parallel = TRUE
                         )$run()
 
 print(history$meta$sim_total_duration)
 
-#plot(history, type = "average", regret = TRUE, ci = "ci", smooth = FALSE, step_size = 1)
-#plot(history, type = "cumulative", regret = TRUE, ci = "ci",  traces_max = 100, traces_alpha = 0.1, traces = TRUE, smooth = FALSE, step_size = 1)
+plot(history, type = "average", regret = TRUE, ci = "ci", smooth = FALSE, step_size = 1)
+plot(history, type = "cumulative", regret = TRUE, ci = "ci",  traces_max = 100, traces_alpha = 0.1, traces = TRUE, smooth = FALSE, step_size = 1)
 
-#summary(history)
-#h <- history$get_data_table()
-#cum_reward <- history$cumulative
+summary(history)
+h <- history$get_data_table()
+cum_reward <- history$cumulative

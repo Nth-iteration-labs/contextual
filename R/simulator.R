@@ -129,9 +129,6 @@ Simulator <- R6::R6Class(
       horizon <- self$horizon
       sims_per_agent_list <- self$sims_per_agent_list
       number_of_agents <- self$number_of_agents
-
-      print(number_of_agents)
-
       save_context <- self$save_context
       save_theta <- self$save_theta
       reindex_t <- self$reindex_t

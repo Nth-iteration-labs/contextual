@@ -60,7 +60,7 @@ simulation <-
     agents,
     simulations = simulations,
     horizon = horizon,
-    do_parallel = TRUE,
+    do_parallel = FALSE,
     continuous_counter = TRUE,
     reindex_t = TRUE,
     include_packages = c("DBI","MonetDBLite")
