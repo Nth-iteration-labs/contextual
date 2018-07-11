@@ -15,13 +15,10 @@ LiSamplingOfflineBandit <- R6::R6Class(
     },
     get_context = function(index) {
 
-      private$X <- array(matrix(private$S$context[[index]], self$d, self$k), dim = c(self$d, self$k, 1))
-      # TODO: here, it transforms the vector to a matrix, with each arm exactly the same
-
       contextlist <- list(
         k = self$k,
         d = self$d,
-        X = private$X[,,1]
+        X = matrix(private$S$context[[index]], self$d, self$k)
       )
       contextlist
     },

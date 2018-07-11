@@ -28,10 +28,10 @@ Agent <- R6::R6Class(
     reset = function() {
       self$policy$set_parameters()
       self$policy$initialize_theta()
-      agent_t <<- 0
+      agent_t <<- 0L
     },
     do_step = function() {
-      agent_t  <<- agent_t + 1
+      agent_t  <<- agent_t + 1L
       context   <- bandit$get_context(agent_t)
       action    <- policy$get_action (agent_t, context)
       reward    <- bandit$get_reward (agent_t, context, action)

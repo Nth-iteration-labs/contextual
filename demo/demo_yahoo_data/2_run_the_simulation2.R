@@ -1,37 +1,28 @@
-library(contextual)
 source("../dev.R")
-
+#library(contextual)
 library(data.table)
 library(DBI)
-library(MonetDBLite)
+library(MonetDB.R)
 library(here)
-
 
 setwd(here("demo", "demo_yahoo_data"))
 
 source("yahoo_bandit.R")
 source("yahoo_policy_epsilon_greedy.R")
+source("yahoo_policy_linucb_disjoint.R")
 
 # Connect to DB ----------------------------------------------------------------------------------------------
 
-# monetdb.sequential=T is the difference between monetdblite life and death
+options(monetdb.sequential=F)
 
-options(monetdb.sequential=T)
+con <- DBI::dbConnect(MonetDB.R(), host="localhost", dbname="yahoo", user="monetdb", password="monetdb")
 
-db_dir <- "C:/YahooDb/yahoo.monetdblite"
-con    <- dbConnect(MonetDBLite::MonetDBLite(), db_dir)
-
-print(paste0("MonetDBLite: connection to '",dbListTables(con),"' database succesful!"))
+message(paste0("MonetDBLite: connection to '",dbListTables(con),"' database succesful!"))
 
 # Config -----------------------------------------------------------------------------------------------------
 
 simulations <- 1
-horizon     <- 10000
-
-counted_rows <- as.integer(DBI::dbGetQuery(con, "SELECT COUNT(*) FROM yahoo" ))
-max_t        <- as.integer(DBI::dbGetQuery(con, "SELECT max(t) FROM yahoo" ))
-
-print(counted_rows == max_t)
+horizon     <- 10000000
 
 # Get arm/article lookup
 
@@ -40,11 +31,12 @@ class(arms_articles) <- "integer"
 
 # Initiate YahooBandit ---------------------------------------------------------------------------------------
 
-bandit      <- YahooBandit$new(con, k = 217L, d = 36L, arm_lookup = arms_articles)
+bandit      <- YahooBandit$new(k = 217L, d = 12L, arm_lookup = arms_articles, cache = 1000)  # TODO: make sure clear why if d 36 error
 
 agents <-
   list(
-    Agent$new(YahooEpsilonGreedyPolicy$new(0.01), bandit, name = "EGreedy")
+    Agent$new(YahooLinUCBDisjointPolicy$new(0.1), bandit, name = "LinUCB"),
+    Agent$new(YahooEpsilonGreedyPolicy$new(0.1), bandit, name = "EGreedy")
   )
 
 # Define the simulation --------------------------------------------------------------------------------------
@@ -54,11 +46,11 @@ simulation <-
     agents,
     simulations = simulations,
     horizon = horizon,
-    do_parallel = FALSE,
+    do_parallel = TRUE,
     continuous_counter = TRUE,
-    reindex_t = TRUE,
-    write_progress_file = TRUE,
-    include_packages = c("DBI","MonetDBLite")
+    reindex_t = TRUE,                    # TODO: if you reindex here, no chance later data back?
+    write_progress_file = FALSE,
+    include_packages = c("MonetDB.R")
   )
 
 # Run the simulation
@@ -73,5 +65,5 @@ plot(sim, regret = FALSE, rate = FALSE, type = "cumulative")
 
 df <- sim$get_data_frame()
 
-dbDisconnect(con, shutdown = TRUE)
+dbDisconnect(con)
 

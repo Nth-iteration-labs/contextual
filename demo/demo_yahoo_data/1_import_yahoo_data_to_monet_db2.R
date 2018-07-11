@@ -1,6 +1,10 @@
 library(readr)
 library(DBI)
-library(MonetDBLite)
+library(MonetDB.R)
+library(usethis)
+
+#usethis::edit_r_environ()
+#usethis::edit_r_environ("project")
 
 # Import of the R6A - Yahoo! Front Page Today Module User Click Log Dataset.
 
@@ -12,7 +16,7 @@ library(MonetDBLite)
 
 # The import takes about 3 hours on a laptop with Intel 4500U I7 CPU, 16GB memory and SSD HD.
 
-# Notice: import generates warnings, and readr status bar restarts at zero. This can be ignored safely.
+# Notice: generates warnings, and readr status bar restarts at zero. This can be ignored safely.
 
 # Double check -----------------------------------------------------------------------------------------------
 
@@ -22,8 +26,7 @@ if (abort==1) { message("You aborted the import.") } else {
 
   # Configuration --------------------------------------------------------------------------------------------
 
-  data_import_directory  <- "D:/Cloudy/DropBox/Dropbox/yahoo/R6A/_unpacked/"
-  db_dir                 <- "C:/YahooDb/yahoo.monetdblite"
+  data_import_directory  <- "/uploads/ydata_gz/"
 
   row_max                <- 5600000 # > nr of rows in any imported file
   by_step                <- 800000  # read data and write sql in in batches
@@ -85,9 +88,8 @@ if (abort==1) { message("You aborted the import.") } else {
 
   # connect to db --------------------------------------------------------------------------------------------
 
-  options(monetdb.sequential=T)
-
-  con <- dbConnect(MonetDBLite::MonetDBLite(), db_dir)
+  options(monetdb.sequential=F)
+  con <- dbConnect(MonetDB.R(), host="localhost", dbname="yahoo", user="monetdb", password="monetdb")
 
   # loop over each file in steps (batches) of a million records ----------------------------------------------
 
@@ -123,7 +125,7 @@ if (abort==1) { message("You aborted the import.") } else {
                       " to ",format(i+by_step,scientific = F),"\n"))
 
       # save batch (and if already data, append) to DB table "yahoo"
-      dbWriteTable(con, "yahoo", dat, append = TRUE, overwrite=FALSE)
+      dbWriteTable(con, "yahoo", dat, append = TRUE, overwrite=FALSE, csvdump=TRUE)
 
       message (paste0("\n## Completed rows ",format((i+1),scientific = F),
                       " to ",format(i+by_step,scientific = F),"\n"))

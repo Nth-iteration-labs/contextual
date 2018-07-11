@@ -35,3 +35,5 @@ par(mfrow = c(1,1))
 
 print(history)
 summary(history)
+
+print(history$meta$sim_total_duration)

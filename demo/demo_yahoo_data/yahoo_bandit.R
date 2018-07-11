@@ -1,3 +1,4 @@
+library(MonetDB.R)
 YahooBandit <- R6::R6Class(
   inherit = BasicBandit,
   portable = TRUE,
@@ -10,32 +11,33 @@ YahooBandit <- R6::R6Class(
     buffer = NULL,
     cache = NULL,
     arm_lookup = NULL,
-    initialize   = function(con, k, d, arm_lookup, cache = 500  ) {
+    initialize   = function(k, d, arm_lookup, cache = 500 ) {
       self$k <- k
       self$d <- d
-      self$con <- con
       self$cache <- cache
       self$arm_lookup <- arm_lookup
+    },
+    pre_calculate = function() {
+      self$con <- DBI::dbConnect(MonetDB.R(), host="localhost", dbname="yahoo", user="monetdb", password="monetdb")
       self$buffer <-
         as.matrix(DBI::dbGetQuery(
           self$con,
           paste0(
-            "SELECT * FROM yahoo WHERE t >= 1 AND t <= ",
-            cache - 1,
+            "SELECT * FROM yahoo WHERE t BETWEEN 1 AND ",
+            self$cache - 1,
             " LIMIT ",
             self$cache - 1
           )
         ))
     },
     get_context = function(index) {
-
       if (index%%(self$cache) == 0) {
         self$buffer <- as.matrix(DBI::dbGetQuery(
           self$con,
           paste0(
-            "SELECT * FROM yahoo WHERE t >= ",
+            "SELECT * FROM yahoo WHERE t BETWEEN ",
             index,
-            " AND t <= ",
+            " AND ",
             index + self$cache - 1,
             " LIMIT ",
             self$cache
@@ -66,7 +68,9 @@ YahooBandit <- R6::R6Class(
 
       user_context             <- matrix(as.numeric(row[4:9]), nrow =6, ncol = nr_articles)
 
-      X                        <- rbind(article_context,user_context)
+      X                        <- rbind2(article_context,user_context)
+
+      class(X)                 <- "numeric"
 
       contextlist <- list(
         k = self$k,
@@ -85,6 +89,9 @@ YahooBandit <- R6::R6Class(
       } else {
         NULL
       }
+    },
+    close = function() {
+      DBI::dbDisconnect(self$con)
     }
   )
 )

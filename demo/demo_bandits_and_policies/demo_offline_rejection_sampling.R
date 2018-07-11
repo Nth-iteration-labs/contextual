@@ -8,8 +8,8 @@ source("../dev.R")
 context_weights    <- matrix(  c( 0.9, 0.1, 0.1,
                                   0.1, 0.9, 0.1,
                                   0.1, 0.1, 0.9), nrow = 3, ncol = 3, byrow = TRUE)
-horizon     <- 10L
-simulations <- 10L
+horizon     <- 1000L
+simulations <- 100L
 bandit      <- SyntheticBandit$new(weights = context_weights)
 
 # This can only be random policy, otherwise rejection sampling will
@@ -52,10 +52,11 @@ simulation <-
     horizon = horizon,
     simulations = simulations,
     continuous_counter = TRUE,
-    do_parallel = FALSE
+    do_parallel = TRUE
   )
 
 after <- simulation$run()
-plot(after, type = "cumulative")
+dt <- after$get_data_table()                                  # TODO: Why no optimal (so no regret) at all here anymore?
+plot(after, regret = FALSE, type = "cumulative", rate = TRUE) # TODO: type = "cumulative"? true/false too?
 a <- after$get_data_table()
 if (file.exists("test.RData")) file.remove("test.RData")

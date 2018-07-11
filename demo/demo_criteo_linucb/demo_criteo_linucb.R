@@ -1,9 +1,8 @@
-library(contextual)
+source("../dev.R")
+#library(contextual)
 library(here)
 library(data.table)
 setwd(here("demo", "demo_criteo_linucb"))
-source("../dev.R")
-
 
 ################ Phase I - Importing and parsing Criteo data #############
 
@@ -13,7 +12,7 @@ critea_dt   <- fread("dataset.txt", sep = " ")
 
 # retrieve number of rows  (which equals the horizon)
 
-critea_horizon      <- nrow(critea_dt)
+critea_horizon      <- 1000#nrow(critea_dt)
 
 # move all context columns to context vectors
 
@@ -44,18 +43,16 @@ horizon     <- critea_horizon
 
 # initiate Li bandit, with 10 arms, and 100 dimensions
 
-bandit      <-
-  LiSamplingOfflineBandit$new(data_stream = history, k = 10, d = 100)
+bandit      <- LiSamplingOfflineBandit$new(data_stream = history, k = 10, d = 100)
 
 # define two LinUCBDisjointSmPolicy agents
 
 agents <-
   list(
-    Agent$new(LinUCBDisjointSmPolicy$new(0.001),
-              bandit, name = "LinUCB a=0.001"),
-
-    Agent$new(LinUCBDisjointSmPolicy$new(1.0),
-              bandit, name = "LinUCB a=1.0")
+    Agent$new(LinUCBDisjointSmPolicy$new(0.001), bandit, name = "LinUCB alpha = 0.001"),
+    Agent$new(LinUCBDisjointSmPolicy$new(0.01), bandit, name = "LinUCB alpha = 0.01"),
+    Agent$new(LinUCBDisjointSmPolicy$new(0.1), bandit, name = "LinUCB alpha = 0.1"),
+    Agent$new(LinUCBDisjointSmPolicy$new(1.0), bandit, name = "LinUCB alpha = 1.0")
   )
 
 # define the simulation
@@ -65,14 +62,15 @@ simulation <-
     agents,
     simulations = simulations,
     horizon = critea_horizon,
-    do_parallel = TRUE,
+    do_parallel = FALSE,
+    worker_max = 2,
     continuous_counter = TRUE,
-    reindex_t = TRUE
+    reindex_t = TRUE,
+    write_progress_file = FALSE
   )
 
 # run the simulation
 criteo_sim  <- simulation$run()
-
 
 ################ Phase III - Take a look at the results ##################
 

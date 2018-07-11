@@ -2,6 +2,7 @@
 #' @importFrom doParallel registerDoParallel stopImplicitCluster
 #' @importFrom itertools isplitRows
 #' @importFrom data.table rbindlist
+#' @importFrom iterators icount
 #'
 #' @export
 Simulator <- R6::R6Class(
@@ -17,7 +18,7 @@ Simulator <- R6::R6Class(
     save_context = NULL,
     save_theta = NULL,
     do_parallel = NULL,
-    sims_per_agent_list = NULL,
+    sims_and_agents_list = NULL,
     continuous_counter = NULL,
     set_seed = NULL,
     write_progress_file = NULL,
@@ -57,19 +58,16 @@ Simulator <- R6::R6Class(
       set.seed(self$set_seed)
 
       # create empty progress.log file
-
       if (self$write_progress_file) cat(paste0(""), file = "progress.log", append = FALSE)
 
       # clear doparallel.log
-
       if (self$write_progress_file) cat(paste0(""), file = "doparallel.log", append = FALSE)
 
       # (re)create history's data.table
       self$history <- History$new(self$horizon * self$number_of_agents * self$simulations)
 
       self$history$add_meta_data("sim_start_time",format(Sys.time(), "%a %b %d %X %Y"))
-
-      self$sims_per_agent_list <-  matrix(list(), self$simulations, self$number_of_agents)
+      self$sims_and_agents_list <-  vector("list", self$simulations*self$number_of_agents)
       # unique policy names through appending sequence numbers to duplicates
       agent_name_list <- list()
 
@@ -84,14 +82,16 @@ Simulator <- R6::R6Class(
 
       # clone, precache and precalculate bandits and policies where relevant
       message("Cloning, precaching and precalculating bandits and policies")
+      index <- 1
       for (sim_index in 1L:self$simulations) {
         for (agent_index in 1L:self$number_of_agents) {
-          self$sims_per_agent_list[sim_index, agent_index]  <- list(self$agents[[agent_index]]$clone(deep = FALSE))
-          self$sims_per_agent_list[[sim_index, agent_index]]$reset()
-          self$sims_per_agent_list[[sim_index, agent_index]]$bandit <- self$sims_per_agent_list[[sim_index, agent_index]]$bandit$clone(deep = TRUE)
-          self$sims_per_agent_list[[sim_index, agent_index]]$policy <- self$sims_per_agent_list[[sim_index, agent_index]]$policy$clone(deep = FALSE)
-          self$sims_per_agent_list[[sim_index, agent_index]]$sim_index <- sim_index
-          self$sims_per_agent_list[[sim_index, agent_index]]$agent_index <- agent_index
+          self$sims_and_agents_list[index]  <- list(self$agents[[agent_index]]$clone(deep = FALSE))
+          self$sims_and_agents_list[[index]]$reset()
+          self$sims_and_agents_list[[index]]$bandit <- self$sims_and_agents_list[[index]]$bandit$clone(deep = TRUE)
+          self$sims_and_agents_list[[index]]$policy <- self$sims_and_agents_list[[index]]$policy$clone(deep = FALSE)
+          self$sims_and_agents_list[[index]]$sim_index <- sim_index
+          self$sims_and_agents_list[[index]]$agent_index <- agent_index
+          index <- index + 1
         }
       }
     },
@@ -112,9 +112,11 @@ Simulator <- R6::R6Class(
         } else {
           # Linux or MacOS
           # Problem with fork, seems to pup up irregularly:
-          # cl <- parallel::makeCluster(workers, useXDR = FALSE, type = "FORK", methods=FALSE, port=11999, outfile = "doparallel.log")
+          # self$cl <- parallel::makeCluster(workers, useXDR = FALSE, type = "FORK", methods=FALSE, port=11999, outfile = "doparallel.log")
+
           # https://stackoverflow.com/questions/9486952/remove-zombie-processes-using-parallel-package
           # so to make sure we are ok, we use PSOCK everywhere for now:
+
           self$cl <- parallel::makeCluster(workers, useXDR = FALSE, type = "PSOCK", methods = FALSE, port = 11999, outfile = "doparallel.log")
           if (grepl('darwin', version$os)) {
             # macOS - potential future osx/linux specific implementation settings go here
@@ -130,7 +132,7 @@ Simulator <- R6::R6Class(
       }
       # copy relevant variables to local environment
       horizon <- self$horizon
-      sims_per_agent_list <- self$sims_per_agent_list
+      sims_and_agents_list <- self$sims_and_agents_list
       number_of_agents <- self$number_of_agents
       save_context <- self$save_context
       save_theta <- self$save_theta
@@ -139,9 +141,14 @@ Simulator <- R6::R6Class(
       continuous_counter <- self$continuous_counter
       set_seed <- self$set_seed
       # calculate chunk size
-      sa_iterator <- itertools::isplitRows(sims_per_agent_list, chunks = workers)
+      if (length(sims_and_agents_list) <= workers) {
+        nr_of_chunks <- length(sims_and_agents_list)
+      } else {
+        nr_of_chunks <- workers
+      }
+      sa_iterator <- itertools::isplitVector(sims_and_agents_list, chunks = nr_of_chunks)
       # include packages that are used in parallel processes
-      par_packages <- c(c("data.table","itertools"),include_packages)
+      par_packages <- c(c("data.table","iterators","itertools"),include_packages)
       # running the main simulation loop
       private$start_time = Sys.time()
       foreach_results <- foreach::foreach(
@@ -150,7 +157,7 @@ Simulator <- R6::R6Class(
         .inorder = TRUE,
         .combine = function(x,y)data.table::rbindlist(list(x,y)),
         .export = c("History"),
-        .noexport = c("sims_per_agent_list","history"),
+        .noexport = c("sims_and_agents_list","history"),
         .packages = par_packages
       ) %fun% {
         index <- 1L
@@ -163,7 +170,8 @@ Simulator <- R6::R6Class(
             cat(paste0(format(Sys.time(), format = "%H:%M:%OS6"),
                        ", Worker: ", i,
                        ", Sim: ", sim_agent_counter,
-                       " of ", sim_agent_total,"\n"),
+                       " of ", sim_agent_total,
+                       ", running Agent: ", sim_agent$name,"\n"),
                 file = "progress.log", append = TRUE)
           }
           simulation_index <- sim_agent$sim_index
@@ -193,6 +201,7 @@ Simulator <- R6::R6Class(
             }
           }
         }
+        sim_agent$bandit$close
         local_history$get_data_table()
       }
       self$history$set_data_table(foreach_results)

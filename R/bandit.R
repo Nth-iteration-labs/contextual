@@ -10,7 +10,7 @@ Bandit <- R6::R6Class(
     initialize  = function() {
       # Initialize Bandit.
     },
-    pre_calculate = function() {
+    pre_calculate = function() {    # TODO: rename to, for example, initiate?
       # Called after setting seed, but before iterating over T. Do random generation here.
     },
     get_context = function(t) {
@@ -27,6 +27,9 @@ Bandit <- R6::R6Class(
       # Called when precaching is TRUE. Pregenerate contexts and rewards here.
       stop("Bandit subclass needs to implement bandit$generate_cache()
            when bandit$precaching is TRUE.", call. = FALSE)
+    },
+    close = function() { # TODO: should be named differently too, as may become private?
+      # called on object destruction
     }
   )
 )

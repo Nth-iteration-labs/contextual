@@ -1,6 +1,3 @@
-library(Matrix)
-
-
 #' @export
 LinUCBDisjointSmPolicy <- R6::R6Class(
   portable = FALSE,
