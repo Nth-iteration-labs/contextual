@@ -286,9 +286,7 @@ History <- R6::R6Class(
 
     calculate_cum_stats = function() {
       calculate_regret_reward()
-
       private$.cum_stats <- data.table::data.table()
-
       private$.cum_stats <- private$.data[, list(
         regret_var          = var(regret, na.rm = TRUE),
         regret_sd           = sd(regret, na.rm = TRUE),
@@ -323,7 +321,6 @@ History <- R6::R6Class(
       private$.cum_stats$cum_reward_rate_ci <- private$.cum_stats$cum_reward_rate_sd / sqrt_sim * qn
       private$.cum_stats$regret_ci          <- private$.cum_stats$regret_sd / sqrt_sim * qn
       private$.cum_stats$reward_ci          <- private$.cum_stats$reward_sd / sqrt_sim * qn
-
       # move agent column to front
       setcolorder(private$.cum_stats, c("agent", setdiff(names(private$.cum_stats), "agent")))
 
@@ -337,6 +334,8 @@ History <- R6::R6Class(
       }
     },
     calculate_regret_reward = function() {
+      # TODO: refactor this .. its messy, all these functions, pointing to eachother
+
       calculate_regret()
       calculate_cumulative_reward()
       calculate_cumulative_regret()

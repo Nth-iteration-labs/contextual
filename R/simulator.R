@@ -106,6 +106,8 @@ Simulator <- R6::R6Class(
         if (!is.null(worker_max)) {
           if (workers > worker_max) workers <- worker_max
         }
+        # clean up any leftover processes
+        doParallel::stopImplicitCluster()
         if (grepl('w|W', .Platform$OS.type)) {
           # Windows
           self$cl <- parallel::makeCluster(workers, useXDR = FALSE, type = "PSOCK", methods = FALSE, port = 11999, outfile = "doparallel.log")
@@ -117,7 +119,7 @@ Simulator <- R6::R6Class(
           # https://stackoverflow.com/questions/9486952/remove-zombie-processes-using-parallel-package
           # so to make sure we are ok, we use PSOCK everywhere for now:
 
-          self$cl <- parallel::makeCluster(workers, useXDR = FALSE, type = "PSOCK", methods = FALSE, port = 11999, outfile = "doparallel.log")
+          self$cl <- parallel::makeCluster(workers, useXDR = FALSE, type = "PSOCK", methods = FALSE, setup_timeout = 30, outfile = "doparallel.log")
           if (grepl('darwin', version$os)) {
             # macOS - potential future osx/linux specific implementation settings go here
           } else {
@@ -155,7 +157,6 @@ Simulator <- R6::R6Class(
         sims_agents = sa_iterator,
         i = iterators::icount(),
         .inorder = TRUE,
-        .combine = function(x,y)data.table::rbindlist(list(x,y)),
         .export = c("History"),
         .noexport = c("sims_and_agents_list","history"),
         .packages = par_packages
@@ -201,28 +202,32 @@ Simulator <- R6::R6Class(
             }
           }
         }
+
+
         sim_agent$bandit$close
         local_history$get_data_table()
       }
-      self$history$set_data_table(foreach_results)
+      foreach_results <- rbindlist(foreach_results)
+      self$history$set_data_table(foreach_results, auto_stats = FALSE)
       private$end_time = Sys.time()
       if (reindex_t) self$history$reindex_t()
       agent_meta_to_history()
       self$history$update_statistics()
       self$history$add_meta_data("sim_end_time",format(Sys.time(), "%a %b %d %X %Y"))
       self$history$add_meta_data("sim_total_duration",private$end_time - private$start_time)
+      self$close()
       self$history
     },
-    finalize = function() {
+    close = function() {
       if (self$do_parallel) {
         try({
           parallel::stopCluster(self$cl)
         })
         doParallel::stopImplicitCluster()
-        # Making sure that we are closing all processes that were
-        # spawned but (potentially) not terminated by the foreach loop.
-        closeAllConnections()
       }
+    },
+    finalize = function() {
+      #closeAllConnections()
     }
   ),
   private = list(

@@ -14,10 +14,10 @@ YahooEpsilonGreedyPolicy          <- R6::R6Class(
     },
     get_action = function(t, context) {
       if (runif(1) > self$epsilon) {
-        max_index                 <- max_in(self$theta$mean[context$arms])
-        self$action$choice        <- context$arms[max_index]
+        max_index                 <- context$arms[max_in(self$theta$mean[context$arms])]
+        self$action$choice        <- max_index
       } else {
-        self$action$choice        <- sample.int(context$arms, 1, replace = TRUE)
+        self$action$choice        <- sample(context$arms, 1)
       }
       self$action
     },

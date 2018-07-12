@@ -2,11 +2,13 @@ library(DBI)
 library(MonetDBLite)
 library(here)
 library(data.table)
+library(MonetDB.R)
 
 setwd(here("demo", "demo_yahoo_data"))
 
-db_dir <- "C:/YahooDb/yahoo.monetdblite"
-con    <- dbConnect(MonetDBLite::MonetDBLite(), db_dir)
+#db_dir <- "C:/YahooDb/yahoo.monetdblite"
+#con    <- dbConnect(MonetDBLite::MonetDBLite(), db_dir)
+con <- DBI::dbConnect(MonetDB.R(), host="localhost", dbname="yahoo", user="monetdb", password="monetdb")
 
 print(paste0("MonetDBLite: connection to '",dbListTables(con),"' database succesful!"))
 
@@ -17,17 +19,6 @@ if(!file.exists("./cache/rows.Rds")){
   saveRDS(rows, file = "./cache/rows.Rds")
 } else {
   if(!exists("rows")) rows <- readRDS(file = "./cache/rows.Rds")
-}
-
-# Arm to articles lookup -------------------------------------------------------------------------------------
-
-if(!file.exists("./cache/arm_article.Rds")){
-  arm_article <- as.data.table(dbGetQuery(con, "SELECT DISTINCT article_id FROM yahoo"))
-  arm_article[, arm := .I]
-  setindex(arm_article,arm)
-  saveRDS(arm_article, file = "./cache/arm_article.Rds")
-} else {
-  if(!exists("arm_article")) arm_article <- readRDS(file = "./cache/arm_article.Rds")
 }
 
 # Clusters of articles ---------------------------------------------------------------------------------------
@@ -41,6 +32,17 @@ if(!file.exists("./cache/clusters_articles_df.Rds")){
   saveRDS(clusters_articles, file = "./cache/clusters_articles_df.Rds")
 } else {
   if(!exists("clusters_articles_df")) clusters_articles <- readRDS(file = "./cache/clusters_articles_df.Rds")
+}
+
+# All article vector -----------------------------------------------------------------------------------------
+
+if(!file.exists("./cache/articles_vector.Rds")){
+  articles_vector <- unique(as.vector(as.matrix(dbGetQuery(con, paste0("SELECT DISTINCT ",
+                                                            paste0("a",1:24,"_id,",collapse=""),
+                                                            " a25_id FROM yahoo")))))
+  saveRDS(articles_vector, file = "./cache/articles_vector.Rds")
+} else {
+  if(!exists("articles_vector")) articles_vector <- readRDS(file = "./cache/articles_vector.Rds.Rds")
 }
 
 # Articles vs Features matrix --------------------------------------------------------------------------------
@@ -68,5 +70,5 @@ if(!file.exists("./cache/articles_features_matrix.Rds")){
 # disconnect from and then shutdown DB -----------------------------------------------------------------------
 
 
-dbDisconnect(con, shutdown = TRUE)
+dbDisconnect(con)
 
