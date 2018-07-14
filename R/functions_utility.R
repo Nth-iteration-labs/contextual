@@ -14,6 +14,15 @@
 "inc<-" <- function(x, value) {
   x + value
 }
+#' Sherman-Morrisson inverse
+#'
+#' @param inv to be updated inverse matrix
+#' @param x column vector to update inv with
+#'
+#' @export
+sherman_morrisson = function(inv, x) {
+  inv - c((inv %*% (outer(x, x) %*% inv))) / c(1.0 + (crossprod(x,inv) %*% x))
+}
 #' Decrement
 #'
 #' \code{dec<-} decrements \code{x} by value. Equivalent to \code{x <- x - value.}

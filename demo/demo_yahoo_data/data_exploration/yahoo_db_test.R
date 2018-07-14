@@ -20,13 +20,6 @@ for (i in 1:300) {
 
 ok <- dbGetQuery(con, "SELECT * FROM yahoo WHERE t = '724785' LIMIT 1" )
 
-wrong_1 <- dbGetQuery(con, "SELECT * FROM yahoo WHERE t = '724786' LIMIT 1" )
-
-wrong_2 <- dbGetQuery(con, "SELECT * FROM yahoo WHERE t = '724787' LIMIT 1" )
-
-
-
-
 # Max t
 
 max_t <- dbGetQuery(con, "SELECT max(t) FROM yahoo" )

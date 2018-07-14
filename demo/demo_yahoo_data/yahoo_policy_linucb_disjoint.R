@@ -5,15 +5,13 @@ YahooLinUCBDisjointPolicy <- R6::R6Class(
   public = list(
     alpha = NULL,
     class_name = "YahooLinUCBDisjointPolicy",
-    initialize = function(alpha = 1.0) {
+    initialize = function(alpha = 0.2) {
       super$initialize()
       self$alpha <- alpha
     },
     set_parameters = function() {
-
       self$theta_to_arms <- list( 'A' = diag(1,self$d,self$d), 'b' = rep(0,self$d),
                                   'A_inv' = solve(diag(1,self$d,self$d)))
-
     },
     get_action = function(t, context) {
 
@@ -24,13 +22,11 @@ YahooLinUCBDisjointPolicy <- R6::R6Class(
       # Carefull here: there are arm numbers in the order in context matrix: 20,19,17,1,4,..
       # and the index of the arms within the current context: 1,2,3,4,..
 
-      # first part of vector is disjoint user data, the same for each arm
-
-      X          <-  context$X[7:12,1]
-
       for (arm in seq_along(local_arms)) {
 
+        # if first part of vector is disjoint user data, it's the same for each arm
 
+        X          <-  context$X[7:12,arm]
 
         A          <-  self$theta$A[[local_arms[arm]]]
         A_inv      <-  self$theta$A_inv[[local_arms[arm]]]
@@ -48,8 +44,6 @@ YahooLinUCBDisjointPolicy <- R6::R6Class(
 
       action$choice  <- context$arms[max_in(expected_rewards)]
 
-
-
       action
     },
     set_reward = function(t, context, action, reward) {
@@ -60,7 +54,7 @@ YahooLinUCBDisjointPolicy <- R6::R6Class(
 
       # TODO: make all Xa and arm X into X_a everywhere
 
-      Xa                       <- context$X[7:12,1]  # same for each arm here, disjoint
+      Xa                       <- context$X[7:12,arm_index]  # same for each arm here if disjoint user
 
       A_inv                    <- self$theta$A_inv[[arm]]
 

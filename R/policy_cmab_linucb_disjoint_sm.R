@@ -39,15 +39,12 @@ LinUCBDisjointSmPolicy <- R6::R6Class(
     set_reward = function(t, context, action, reward) {
       arm    <- action$choice
       reward <- reward$reward
-      Xa     <- context$X[,arm]
-      A_inv  <-  self$theta$A_inv[[arm]]
+      X_a     <- context$X[,arm]
 
-      # Sherman-Morrison inverse
-      outer_Xa <- outer(Xa, Xa)
-      self$theta$A_inv[[arm]]  <- A_inv - c((A_inv %*% (outer_Xa %*% A_inv))) / c(1.0+ (crossprod(Xa,A_inv) %*% Xa))
+      self$theta$A_inv[[arm]] <- sherman_morrisson(self$theta$A_inv[[arm]],X_a)
 
-      self$theta$A[[arm]]      <- self$theta$A[[arm]] + outer_Xa
-      self$theta$b[[arm]]      <- self$theta$b[[arm]] + reward * Xa
+      self$theta$A[[arm]]      <- self$theta$A[[arm]] + outer(X_a, X_a)
+      self$theta$b[[arm]]      <- self$theta$b[[arm]] + reward * X_a
 
       self$theta
     }

@@ -3,7 +3,9 @@ library(MonetDBLite)
 library(ggplot2)
 
 db_dir <- "C:/YahooDb/yahoo.monetdblite"
-con    <- dbConnect(MonetDBLite::MonetDBLite(), db_dir)
+#con    <- dbConnect(MonetDBLite::MonetDBLite(), db_dir)
+con <- DBI::dbConnect(MonetDB.R(), host="localhost", dbname="yahoo", user="monetdb", password="monetdb")
+
 
 print(paste0("MonetDBLite: connection to '",dbListTables(con),"' database succesful!"))
 

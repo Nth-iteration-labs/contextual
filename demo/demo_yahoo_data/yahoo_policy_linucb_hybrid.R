@@ -1,62 +1,69 @@
 #' @export
-LinUCBHybridPolicy <- R6::R6Class(
+YahooLinUCBHybridPolicy <- R6::R6Class(
   portable = FALSE,
   class = FALSE,
   inherit = Policy,
   public = list(
     alpha = NULL,
     u = NULL,
-    du = NULL,
-    class_name = "LinUCBHybridPolicy",
-    initialize = function(alpha = 1.0, u = 0) {
+    dd = NULL,
+    # TODO: rename grouping to disjoint and conjoint, or shared and unshared, default NULL, but can be 1:6, 1:10 etc
+    class_name = "YahooLinUCBHybridPolicy",
+    initialize = function(alpha = 1.0) {
       super$initialize()
       self$alpha <- alpha
-      self$u <- u
     },
     set_parameters = function() {
-      du = self$d*self$u
-      self$theta <- list('A0' = diag(1,du,du), 'A0_inv' = diag(1,du,du), 'b0' = rep(0,du))
-      self$theta_to_arms <- list( 'A' = diag(1,self$u,self$u), 'B' = matrix(0,self$u,du), 'b' = rep(0,self$u))
+      dd = self$d*self$d
+      d  = self$d
+      self$theta <- list('A0' = diag(1,dd,dd), 'A0_inv' = diag(1,dd,dd), 'b0' = rep(0,dd))
+      self$theta_to_arms <- list( 'A' = diag(1,d,d), 'A_inv' = diag(1,d,d),
+                                  'B' = matrix(0,d,dd), 'b' = rep(0,d))
     },
     get_action = function(t, context) {
-      expected_rewards <- rep(0.0, self$k)
 
-      self$theta$A0_inv <- inv(self$theta$A0)
+      expected_rewards <- rep(0.0, length(context$arms))
 
-      beta_hat <- self$theta$A0_inv %*% self$theta$b0
+      local_arms       <- context$arms
 
-      for (arm in 1:self$k) {
+      A0_inv     <-  self$theta$A0_inv
+      b0         <-  self$theta$b0
+
+      beta_hat   <- A0_inv %*% b0
+
+
+
+
+      for (arm in seq_along(local_arms)) {
+
+
 
         ################## unpack thetas ##############################################
 
-        A0         <-  self$theta$A0
-        A          <-  self$theta$A[[arm]]
-        B          <-  self$theta$B[[arm]]
-        b          <-  self$theta$b[[arm]]
-        z          <-  matrix(as.vector(outer(context$U,context$X[,arm])))
-        x          <-  context$U
-        A0_inv     <-  self$theta$A0_inv
-        A_inv      <-  inv(A)
+        A          <-  self$theta$A[[local_arms[arm]]]
+        A_inv      <-  self$theta$A_inv[[local_arms[arm]]]
+        B          <-  self$theta$B[[local_arms[arm]]]
+        b          <-  self$theta$b[[local_arms[arm]]]
+        z          <-  matrix(as.vector(outer(context$X[7:12,arm],context$X[1:6,arm])))
+        x          <-  matrix(context$X[7:12,arm])
 
         ################## compute expected reward per arm #############################
 
         theta_hat  <-  A_inv %*% (b - B %*% beta_hat)
 
-        sd <- sqrt(  (t(z) %*% A0_inv %*% z) -
-                       2*(t(z) %*% A0_inv %*% t(B) %*% A_inv %*% x) +
-                       (t(x) %*% A_inv %*% x) +
-                       (t(x) %*% A_inv %*% B %*% A0_inv %*% t(B) %*% A_inv %*% x))
+        sd <- sqrt(  (crossprod(z, A0_inv) %*% z) -
+                       2*((crossprod(z,A0_inv) %*% crossprod(B,A_inv)) %*% x) +
+                       (crossprod(x ,A_inv) %*% x) +
+                       (((crossprod(x, A_inv) %*% (B %*% A0_inv)) %*% crossprod(B, A_inv)) %*% x))
 
-        mean <- (t(z) %*% beta_hat)  +  (t(x) %*% theta_hat)
+        mean <- crossprod(z, beta_hat)  +  crossprod(x, theta_hat)
 
         expected_rewards[arm] <- mean + alpha * sd
       }
 
-
-
       ################## choose arm with highest expected reward #######################
 
-      action$choice  <- max_in(expected_rewards)
+      action$choice  <- context$arms[max_in(expected_rewards)]
       action
     },
     set_reward = function(t, context, action, reward) {
@@ -64,37 +71,47 @@ LinUCBHybridPolicy <- R6::R6Class(
       #################### unpack thetas ###############################################
 
       arm            <- action$choice
+      arm_index      <- which(context$arms == arm)
       reward         <- reward$reward
-      z              <- matrix(as.vector(outer(context$U,context$X[,arm])))
-      x            <- matrix(context$U)
+
+      z              <- matrix(as.vector(outer(context$X[7:12,arm],context$X[1:6,arm])))
+      x              <- matrix(context$X[7:12,arm_index])
+
 
       A0             <- self$theta$A0
+      A0_inv         <- self$theta$A0_inv
       b0             <- self$theta$b0
       A              <- self$theta$A[[arm]]
+      A_inv          <- self$theta$A_inv[[arm]]
       B              <- self$theta$B[[arm]]
       b              <- self$theta$b[[arm]]
 
       #################### update thetas with returned reward & arm choice #############
 
-      A_inv          <- inv(A)
       A0             <- A0 + (t(B) %*% A_inv %*% B)
       b0             <- b0 + (t(B) %*% A_inv %*% b)
 
-      A <- A + x %*% t(x)
-      B <- B + x %*% t(z)
-      b <- b + reward * x
+      A              <- A + x %*% t(x)
+      B              <- B + x %*% t(z)
+      b              <- b + reward * x
 
-      A_inv          <- inv(A)
+      A_inv          <- sherman_morrisson(A_inv,as.vector(x))
+
       A0             <- A0 + (z %*% t(z)) - (t(B) %*% A_inv %*% B)
       b0             <- b0 + (reward * z) - (t(B) %*% A_inv %*% b)
 
+      A0_inv         <- inv(A0)
+
       #################### pack thetas ################################################
 
-      self$theta$A0       <- A0
-      self$theta$b0       <- b0
-      self$theta$A[[arm]] <- A
-      self$theta$B[[arm]] <- B
-      self$theta$b[[arm]] <- b
+      self$theta$A0_inv       <- A0_inv
+
+      self$theta$A0           <- A0
+      self$theta$b0           <- b0
+      self$theta$A[[arm]]     <- A
+      self$theta$A_inv[[arm]] <- A_inv
+      self$theta$B[[arm]]     <- B
+      self$theta$b[[arm]]     <- b
 
       self$theta
     }
@@ -109,16 +126,16 @@ LinUCBHybridPolicy <- R6::R6Class(
 #'
 #' Lihong Li et all
 #'
-#' Each time step t, \code{LinUCBHybridPolicy} runs a linear regression per arm that produces coefficients for each context feature \code{d}.
+#' Each time step t, \code{YahooLinUCBHybridPolicy} runs a linear regression per arm that produces coefficients for each context feature \code{d}.
 #' It then observes the new context, and generates a predicted payoff or reward together with a confidence interval for each available arm.
 #' It then proceeds to choose the arm with the highest upper confidence bound.
 #'
-#' @name LinUCBHybridPolicy
+#' @name YahooLinUCBHybridPolicy
 #' @family contextual subclasses
 #'
 #' @section Usage:
 #' \preformatted{
-#' policy <- LinUCBHybridPolicy(alpha = 1.0)
+#' policy <- YahooLinUCBHybridPolicy(alpha = 1.0)
 #' }
 #'
 #' @section Arguments:
@@ -147,7 +164,7 @@ LinUCBHybridPolicy <- R6::R6Class(
 #' @section Methods:
 #'
 #' \describe{
-#'   \item{\code{new(alpha = 1)}}{ Generates a new \code{LinUCBHybridPolicy} object. Arguments are defined in the Argument section above.}
+#'   \item{\code{new(alpha = 1)}}{ Generates a new \code{YahooLinUCBHybridPolicy} object. Arguments are defined in the Argument section above.}
 #' }
 #'
 #' \describe{
