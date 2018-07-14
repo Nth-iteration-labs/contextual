@@ -5,18 +5,15 @@ LinUCBHybridPolicy <- R6::R6Class(
   inherit = Policy,
   public = list(
     alpha = NULL,
-    u = NULL,
-    du = NULL,
     class_name = "LinUCBHybridPolicy",
-    initialize = function(alpha = 1.0, u = 0) {
+    initialize = function(alpha = 1.0) {
       super$initialize()
       self$alpha <- alpha
-      self$u <- u
     },
     set_parameters = function() {
-      du = self$d*self$u
-      self$theta <- list('A0' = diag(1,du,du), 'A0_inv' = diag(1,du,du), 'b0' = rep(0,du))
-      self$theta_to_arms <- list( 'A' = diag(1,self$u,self$u), 'B' = matrix(0,self$u,du), 'b' = rep(0,self$u))
+      dd = self$d*self$d  # TODO: both user and context have the same amount of features in basic sim .. not always IRL.
+      self$theta <- list('A0' = diag(1,dd,dd), 'A0_inv' = diag(1,dd,dd), 'b0' = rep(0,dd))
+      self$theta_to_arms <- list( 'A' = diag(1,self$d,self$d), 'B' = matrix(0,self$d,dd), 'b' = rep(0,self$d))
     },
     get_action = function(t, context) {
       expected_rewards <- rep(0.0, self$k)
@@ -49,7 +46,8 @@ LinUCBHybridPolicy <- R6::R6Class(
 
         mean <- (t(z) %*% beta_hat)  +  (t(x) %*% theta_hat)
 
-        expected_rewards[arm] <- mean + alpha * sd
+
+        expected_rewards[arm] <- mean + self$alpha * sd
       }
 
 
@@ -66,7 +64,7 @@ LinUCBHybridPolicy <- R6::R6Class(
       arm            <- action$choice
       reward         <- reward$reward
       z              <- matrix(as.vector(outer(context$U,context$X[,arm])))
-      x            <- matrix(context$U)
+      x              <- matrix(context$U)
 
       A0             <- self$theta$A0
       b0             <- self$theta$b0
@@ -77,6 +75,7 @@ LinUCBHybridPolicy <- R6::R6Class(
       #################### update thetas with returned reward & arm choice #############
 
       A_inv          <- inv(A)
+
       A0             <- A0 + (t(B) %*% A_inv %*% B)
       b0             <- b0 + (t(B) %*% A_inv %*% b)
 
@@ -85,6 +84,7 @@ LinUCBHybridPolicy <- R6::R6Class(
       b <- b + reward * x
 
       A_inv          <- inv(A)
+
       A0             <- A0 + (z %*% t(z)) - (t(B) %*% A_inv %*% B)
       b0             <- b0 + (reward * z) - (t(B) %*% A_inv %*% b)
 

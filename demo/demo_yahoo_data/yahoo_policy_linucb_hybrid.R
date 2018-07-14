@@ -31,12 +31,7 @@ YahooLinUCBHybridPolicy <- R6::R6Class(
 
       beta_hat   <- A0_inv %*% b0
 
-
-
-
       for (arm in seq_along(local_arms)) {
-
-
 
         ################## unpack thetas ##############################################
 
@@ -44,21 +39,25 @@ YahooLinUCBHybridPolicy <- R6::R6Class(
         A_inv      <-  self$theta$A_inv[[local_arms[arm]]]
         B          <-  self$theta$B[[local_arms[arm]]]
         b          <-  self$theta$b[[local_arms[arm]]]
-        z          <-  matrix(as.vector(outer(context$X[7:12,arm],context$X[1:6,arm])))
+        z          <-  matrix(as.vector(outer(context$X[1:6,arm],context$X[7:12,arm])))
         x          <-  matrix(context$X[7:12,arm])
 
         ################## compute expected reward per arm #############################
 
         theta_hat  <-  A_inv %*% (b - B %*% beta_hat)
 
-        sd <- sqrt(  (crossprod(z, A0_inv) %*% z) -
-                       2*((crossprod(z,A0_inv) %*% crossprod(B,A_inv)) %*% x) +
-                       (crossprod(x ,A_inv) %*% x) +
-                       (((crossprod(x, A_inv) %*% (B %*% A0_inv)) %*% crossprod(B, A_inv)) %*% x))
+        tBAinvx <- crossprod(B, (A_inv %*% x))
+        txAinv  <- crossprod(x, A_inv)
+        tzA0inv  <-crossprod(z, A0_inv)
+
+        sd <- sqrt(
+                    (tzA0inv %*% z) - 2*(tzA0inv %*% tBAinvx) +
+                     txAinv %*% x + (txAinv %*% B) %*% (A0_inv %*% tBAinvx)
+                   )
 
         mean <- crossprod(z, beta_hat)  +  crossprod(x, theta_hat)
 
-        expected_rewards[arm] <- mean + alpha * sd
+        expected_rewards[arm] <- mean + self$alpha * sd
       }
 
       ################## choose arm with highest expected reward #######################
@@ -74,7 +73,7 @@ YahooLinUCBHybridPolicy <- R6::R6Class(
       arm_index      <- which(context$arms == arm)
       reward         <- reward$reward
 
-      z              <- matrix(as.vector(outer(context$X[7:12,arm],context$X[1:6,arm])))
+      z              <- matrix(as.vector(outer(context$X[1:6,arm_index],context$X[7:12,arm_index])))
       x              <- matrix(context$X[7:12,arm_index])
 
 
@@ -88,8 +87,8 @@ YahooLinUCBHybridPolicy <- R6::R6Class(
 
       #################### update thetas with returned reward & arm choice #############
 
-      A0             <- A0 + (t(B) %*% A_inv %*% B)
-      b0             <- b0 + (t(B) %*% A_inv %*% b)
+      A0             <- A0 + (crossprod(B, A_inv) %*% B)
+      b0             <- b0 + (crossprod(B, A_inv) %*% b)
 
       A              <- A + x %*% t(x)
       B              <- B + x %*% t(z)
@@ -97,8 +96,8 @@ YahooLinUCBHybridPolicy <- R6::R6Class(
 
       A_inv          <- sherman_morrisson(A_inv,as.vector(x))
 
-      A0             <- A0 + (z %*% t(z)) - (t(B) %*% A_inv %*% B)
-      b0             <- b0 + (reward * z) - (t(B) %*% A_inv %*% b)
+      A0             <- A0 + tcrossprod(z,z) - (crossprod(B, A_inv) %*% B)
+      b0             <- b0 + (reward * z) - (crossprod(B, A_inv) %*% b)
 
       A0_inv         <- inv(A0)
 

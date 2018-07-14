@@ -10,12 +10,17 @@ Agent <- R6::R6Class(
     agent_index = NULL,
     name = NULL,
     agent_t = NULL,
-    initialize = function(policy, bandit, name=NULL) {
+    write_log = NULL,
+    log_interval = NULL,
+    initialize = function(policy, bandit, name=NULL, write_log=TRUE, log_interval=1000) {
 
       self$bandit                 <- bandit
       self$policy                 <- policy
       self$policy$k               <- self$bandit$k
       self$policy$d               <- self$bandit$d
+
+      self$write_log                   <- write_log
+      self$log_interval          <- log_interval
 
       if (is.null(name)) {
         self$name  <- gsub("Policy", "", policy$class_name)
@@ -39,6 +44,12 @@ Agent <- R6::R6Class(
         theta   <- NULL
       } else {
         theta   <- policy$set_reward (agent_t, context, action, reward)
+      }
+      if(self$write_log == TRUE) {
+        if (agent_t %% self$log_interval == 0) {
+          message(paste0("[",Sys.time(),"] ",sprintf("%9s", agent_t)," > ",self$name," running ",bandit$class_name,
+                         " and ",policy$class_name))
+        }
       }
       list(context = context, action = action, reward = reward, theta = theta)
     },

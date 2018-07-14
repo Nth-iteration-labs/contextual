@@ -5,19 +5,16 @@ LinUCBHybridSmPolicy <- R6::R6Class(
   inherit = Policy,
   public = list(
     alpha = NULL,
-    u = NULL,
-    du = NULL,
     class_name = "LinUCBHybridSmPolicy",
-    initialize = function(alpha = 1.0, u = 0) {
+    initialize = function(alpha = 1.0) {
       super$initialize()
       self$alpha <- alpha
-      self$u <- u
     },
     set_parameters = function() {
-      du = self$d*self$u
-      self$theta <- list('A0' = diag(1,du,du), 'A0_inv' = diag(1,du,du), 'b0' = rep(0,du))
-      self$theta_to_arms <- list( 'A' = diag(1,self$u,self$u), 'A_inv' = diag(1,self$u,self$u),
-                                  'B' = matrix(0,self$u,du), 'b' = rep(0,self$u))
+      dd = self$d*self$d  # TODO: both user and context have the same amount of features in basic sim .. not always IRL.
+      self$theta <- list('A0' = diag(1,dd,dd), 'A0_inv' = diag(1,dd,dd), 'b0' = rep(0,dd))
+      self$theta_to_arms <- list( 'A' = diag(1,self$d,self$d), 'A_inv' = diag(1,self$d,self$d),
+                                  'B' = matrix(0,self$d,dd), 'b' = rep(0,self$d))
     },
     get_action = function(t, context) {
       expected_rewards <- rep(0.0, self$k)
@@ -35,22 +32,25 @@ LinUCBHybridSmPolicy <- R6::R6Class(
         A_inv      <-  self$theta$A_inv[[arm]]
         B          <-  self$theta$B[[arm]]
         b          <-  self$theta$b[[arm]]
-        z          <-  matrix(outer(context$U,context$X[,arm]), ncol=1)
         x          <-  context$U
-
+        z          <-  matrix(as.vector(outer(x,context$X[,arm])))
 
         ################## compute expected reward per arm #############################
 
         theta_hat  <-  A_inv %*% (b - B %*% beta_hat)
 
-        sd <- sqrt(  (crossprod(z, A0_inv) %*% z) -
-                       2*((crossprod(z,A0_inv) %*% crossprod(B,A_inv)) %*% x) +
-                       (crossprod(x ,A_inv) %*% x) +
-                       (((crossprod(x, A_inv) %*% (B %*% A0_inv)) %*% crossprod(B, A_inv)) %*% x))
+        tBAinvx <- crossprod(B, (A_inv %*% x))
+        txAinv  <- crossprod(x, A_inv)
+        tzA0inv  <-crossprod(z, A0_inv)
+
+        sd <- sqrt(
+          (tzA0inv %*% z) - 2*(tzA0inv %*% tBAinvx) +
+            txAinv %*% x + (txAinv %*% B) %*% (A0_inv %*% tBAinvx)
+        )
 
         mean <- crossprod(z, beta_hat)  +  crossprod(x, theta_hat)
 
-        expected_rewards[arm] <- mean + alpha * sd
+        expected_rewards[arm] <- mean + self$alpha * sd
       }
 
 
@@ -67,7 +67,7 @@ LinUCBHybridSmPolicy <- R6::R6Class(
       arm            <- action$choice
       reward         <- reward$reward
       z              <- matrix(as.vector(outer(context$U,context$X[,arm])))
-      x              <- matrix(context$U)
+      x              <- context$U
 
       A0             <- self$theta$A0
       A0_inv         <- self$theta$A0_inv
@@ -79,8 +79,10 @@ LinUCBHybridSmPolicy <- R6::R6Class(
 
       #################### update thetas with returned reward & arm choice #############
 
-      A0             <- A0 + (t(B) %*% A_inv %*% B)
-      b0             <- b0 + (t(B) %*% A_inv %*% b)
+      BAinv          <- crossprod(B, A_inv)
+
+      A0             <- A0 + (BAinv %*% B)
+      b0             <- b0 + (BAinv %*% b)
 
       A              <- A + x %*% t(x)
       B              <- B + x %*% t(z)
@@ -88,8 +90,10 @@ LinUCBHybridSmPolicy <- R6::R6Class(
 
       A_inv          <- sherman_morrisson(A_inv,as.vector(x))
 
-      A0             <- A0 + (z %*% t(z)) - (t(B) %*% A_inv %*% B)
-      b0             <- b0 + (reward * z) - (t(B) %*% A_inv %*% b)
+      tBAinv         <- crossprod(B, A_inv)
+
+      A0             <- A0 + tcrossprod(z,z) - (tBAinv %*% B)
+      b0             <- b0 + (reward * z) - (tBAinv %*% b)
 
       A0_inv         <- inv(A0)
 

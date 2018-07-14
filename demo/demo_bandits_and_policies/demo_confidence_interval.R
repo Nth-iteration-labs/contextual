@@ -24,5 +24,5 @@ history            <- Simulator$new(list(agent_contextual,agent_ncontextual),
                                     horizon, simulations, save_theta = TRUE, save_context = TRUE,
                                     do_parallel = TRUE)$run()
 
-#plot(history, type = "average", ci = TRUE,  start_step = 80, step_size = 50)
-plot(history, type = "cumulative", ci = TRUE, rate = TRUE, start_step = 80, regret = FALSE)
+#plot(history, type = "average", ci = TRUE,  write_log = 50)
+plot(history, type = "cumulative", ci = TRUE, rate = TRUE, regret = FALSE)

@@ -27,7 +27,6 @@ YahooBandit <- R6::R6Class(
     },
     get_context = function(index) {
       if (index%%(self$cache) == 0) {
-        message(paste0("Agent at t = ",index))
         self$buffer <- as.matrix(DBI::dbGetQuery(
           self$con,
           paste0(

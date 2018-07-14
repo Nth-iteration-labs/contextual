@@ -9,6 +9,8 @@ library(MonetDB.R)
 library(here)
 library(doParallel)
 
+library(RevoUtilsMath)
+
 setwd(here("demo", "demo_yahoo_data"))
 
 source("yahoo_bandit.R", encoding="utf-8")
@@ -21,6 +23,9 @@ source("yahoo_policy_random.R", encoding="utf-8")
 
 doParallel::stopImplicitCluster()
 
+
+try(RevoUtilsMath::setMklthreads(1), silent=TRUE)  # TODO: see if in software.. or not ..
+
 # Connect to DB ----------------------------------------------------------------------------------------------
 
 con <- DBI::dbConnect(MonetDB.R(), host="localhost", dbname="yahoo", user="monetdb", password="monetdb")
@@ -29,11 +34,14 @@ message(paste0("MonetDBLite: connection to '",dbListTables(con),"' database succ
 
 # Config -----------------------------------------------------------------------------------------------------
 
-# 50000 shoukd be enough to get an impression of CTR
-
 simulations <- 1
-horizon     <- 30000000
+horizon     <- 5000000
 
+# Eq 4 from Li2010 - may be conservatively large in some applications
+# therefor, we choose the values based on the Li2010 plot, HybridLinUCB 0.4, DisjointLinUCB 0.2
+
+# delta = 0.05 #Eq 4 from Li2010
+# alpha = 1 + sqrt(log(2/delta)/2)
 
 # Get arm/article lookup
 
@@ -41,22 +49,19 @@ arm_lookup <- as.matrix(DBI::dbGetQuery(con, "SELECT DISTINCT article_id FROM ya
 class(arm_lookup) <- "integer"
 arm_lookup <- as.vector(arm_lookup)
 
-#which(arm_lookup == 109596)
-#match(c(109785,109476),arm_lookup)
-
 # Initiate YahooBandit ---------------------------------------------------------------------------------------
 
-# TODO: again, make conjoint and disjount 1:6 1:6 here..
+# TODO: again, make conjoint and disjount 1:6 and 7:12 here in a smart way
 
-bandit      <- YahooBandit$new(k = 217L, d = 6L, arm_lookup = arm_lookup, cache = 2000)  # TODO: make sure clear why if d 36 error
+bandit      <- YahooBandit$new(k = 217L, d = 6L, arm_lookup = arm_lookup, cache = 1000)
 
 agents <-
   list(
-    Agent$new(YahooLinUCBDisjointPolicy$new(0.2), bandit, name = "LinUCB Hyb"),
-    Agent$new(YahooLinUCBHybridPolicy$new(0.2), bandit, name = "LinUCB Disj"),
-    Agent$new(YahooEpsilonGreedyPolicy$new(0.2), bandit, name = "EGreedy"),
-    Agent$new(YahooRandomPolicy$new(), bandit, name = "Random")
-  )
+        Agent$new(YahooLinUCBDisjointPolicy$new(0.2), bandit, name = "LinUCB Dis"),
+        Agent$new(YahooLinUCBHybridPolicy$new(0.4), bandit, name = "LinUCB Hyb"),
+        Agent$new(YahooEpsilonGreedyPolicy$new(0.2), bandit, name = "EGreedy"),
+        Agent$new(YahooRandomPolicy$new(), bandit, name = "Random")
+      )
 
 # Define the simulation --------------------------------------------------------------------------------------
 

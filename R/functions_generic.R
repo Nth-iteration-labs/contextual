@@ -63,10 +63,10 @@ plot.History <- function(x, ...) {
     smooth <- eval(args$smooth)
   else
     smooth <- FALSE
-  if ("step_size" %in% names(args))
-    step_size <- eval(args$step_size)
+  if ("interval" %in% names(args))
+    interval <- eval(args$interval)
   else
-    step_size <- 1
+    interval <- 1
   if ("color_step" %in% names(args))
     color_step <- eval(args$color_step)
   else
@@ -119,7 +119,7 @@ plot.History <- function(x, ...) {
       traces_max = traces_max,
       traces_alpha = traces_alpha,
       smooth = smooth,
-      step_size = step_size,
+      interval = interval,
       color_step = color_step,
       lty_step = lty_step,
       lwd = lwd,
@@ -143,7 +143,7 @@ plot.History <- function(x, ...) {
       traces_max = traces_max,
       traces_alpha = traces_alpha,
       smooth = smooth,
-      step_size = step_size,
+      interval = interval,
       color_step = color_step,
       lty_step = lty_step,
       lwd = lwd,
@@ -161,7 +161,7 @@ plot.History <- function(x, ...) {
       xlim = xlim,
       legend = legend,
       use_colors = use_colors,
-      step_size = step_size,
+      interval = interval,
       ylim = ylim,
       legend_labels = legend_labels,
       legend_border = legend_border,

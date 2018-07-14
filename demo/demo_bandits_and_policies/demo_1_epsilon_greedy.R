@@ -18,8 +18,8 @@ history            <-  Simulator$new(
 
 print(history$meta$sim_total_duration)
 
-plot(history, type = "average", regret = TRUE, ci = "ci", smooth = FALSE, step_size = 1)
-plot(history, type = "cumulative", regret = TRUE, ci = "ci",  traces_max = 100, traces_alpha = 0.1, traces = TRUE, smooth = FALSE, step_size = 1)
+plot(history, type = "average", regret = TRUE, ci = "ci", smooth = FALSE, interval = 1)
+plot(history, type = "cumulative", regret = TRUE, ci = "ci",  traces_max = 100, traces_alpha = 0.1, traces = TRUE, smooth = FALSE, interval = 1)
 
 summary(history)
 h <- history$get_data_table()

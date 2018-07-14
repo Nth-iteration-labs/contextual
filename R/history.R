@@ -106,33 +106,33 @@ History <- R6::R6Class(
     number_of_simulations = function() {
       length(levels(as.factor(private$.data$sim)))
     },
-    get_data_table = function(limit_agents = NULL, limit_cols = NULL, step_size = 1, no_zero_sim = FALSE) {
+    get_data_table = function(limit_agents = NULL, limit_cols = NULL, interval = 1, no_zero_sim = FALSE) {
       if (is.null(limit_agents)) {
         if (is.null(limit_cols)) {
-          private$.data[t %% step_size == 0 | t == 1][sim != 0]
+          private$.data[t %% interval == 0 | t == 1][sim != 0]
         } else {
-          private$.data[t %% step_size == 0 | t == 1, mget(limit_cols)][sim != 0]
+          private$.data[t %% interval == 0 | t == 1, mget(limit_cols)][sim != 0]
         }
       } else {
         if (is.null(limit_cols)) {
-          private$.data[agent %in% limit_agents][t %% step_size == 0 | t == 1][sim != 0]
+          private$.data[agent %in% limit_agents][t %% interval == 0 | t == 1][sim != 0]
         } else {
-          private$.data[agent %in% limit_agents][t %% step_size == 0 | t == 1, mget(limit_cols)][sim != 0]
+          private$.data[agent %in% limit_agents][t %% interval == 0 | t == 1, mget(limit_cols)][sim != 0]
         }
       }
     },
-    get_cumulative_data = function(limit_agents = NULL, limit_cols = NULL, step_size = 1) {
+    get_cumulative_data = function(limit_agents = NULL, limit_cols = NULL, interval = 1) {
       if (is.null(limit_agents)) {
         if (is.null(limit_cols)) {
-          private$.cum_stats[t %% step_size == 0 | t == 1]
+          private$.cum_stats[t %% interval == 0 | t == 1]
         } else {
-          private$.cum_stats[t %% step_size == 0 | t == 1, mget(limit_cols)]
+          private$.cum_stats[t %% interval == 0 | t == 1, mget(limit_cols)]
         }
       } else {
         if (is.null(limit_cols)) {
-          private$.cum_stats[agent %in% limit_agents][t %% step_size == 0 | t == 1]
+          private$.cum_stats[agent %in% limit_agents][t %% interval == 0 | t == 1]
         } else {
-          private$.cum_stats[agent %in% limit_agents][t %% step_size == 0 | t == 1, mget(limit_cols)]
+          private$.cum_stats[agent %in% limit_agents][t %% interval == 0 | t == 1, mget(limit_cols)]
         }
       }
     },

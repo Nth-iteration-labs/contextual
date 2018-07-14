@@ -19,7 +19,6 @@ ContextualBandit <- R6::R6Class(
       self$user_model                    <- user_model
       self$k                             <- k
       self$d                             <- d
-      self$u                             <- d
     },
     pre_calculate = function() {
       if (is.na(self$user_model & self$num_users > 0)) {

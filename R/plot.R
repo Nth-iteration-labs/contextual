@@ -11,7 +11,7 @@ Plot <- R6::R6Class(
                           regret        = TRUE,
                           ci            = NULL,
                           rate          = FALSE,
-                          step_size     = 1,
+                          interval     = 1,
                           traces        = FALSE,
                           traces_max    = 100,
                           traces_alpha  = 0.3,
@@ -61,7 +61,7 @@ Plot <- R6::R6Class(
         legend         = legend,
         ci             = ci,
         no_par         = no_par,
-        step_size      = step_size,
+        interval      = interval,
         color_step     = color_step,
         lty_step       = lty_step,
         lwd            = lwd,
@@ -84,7 +84,7 @@ Plot <- R6::R6Class(
                        regret        = TRUE,
                        ci            = NULL,
                        rate          = FALSE,
-                       step_size     = 1,
+                       interval     = 1,
                        traces        = FALSE,
                        traces_max    = 100,
                        traces_alpha  = 0.3,
@@ -122,7 +122,7 @@ Plot <- R6::R6Class(
         legend         = legend,
         ci             = ci,
         no_par         = no_par,
-        step_size      = step_size,
+        interval      = interval,
         color_step     = color_step,
         lty_step       = lty_step,
         lwd            = lwd,
@@ -146,7 +146,7 @@ Plot <- R6::R6Class(
                     xlim          = NULL,
                     legend        = TRUE,
                     use_colors    = TRUE,
-                    step_size     = 1,
+                    interval     = 1,
                     ylim          = NULL,
                     legend_labels = NULL,
                     legend_border = NULL,
@@ -164,7 +164,7 @@ Plot <- R6::R6Class(
       dt <- self$history$get_data_table(
         limit_cols   = c("agent", "t", "choice", "sim"),
         limit_agents = limit_agents,
-        step_size    = step_size
+        interval    = interval
       )
 
       ylab_title        <- "Arm choice %"
@@ -261,7 +261,7 @@ Plot <- R6::R6Class(
                        legend         = TRUE,
                        no_par         = FALSE,
                        ylim           = NULL,
-                       step_size      = 1,
+                       interval      = 1,
                        color_step     = 1,
                        lty_step       = 1,
                        lwd            = 1,
@@ -281,7 +281,7 @@ Plot <- R6::R6Class(
           self$history$get_cumulative_data(
             limit_cols   = c("agent", "t", line_data_name, ci_data_name),
             limit_agents = limit_agents,
-            step_size    = step_size
+            interval    = interval
           )
 
       } else {
@@ -290,7 +290,7 @@ Plot <- R6::R6Class(
           self$history$get_cumulative_data(
             limit_cols   = c("agent", "t", line_data_name),
             limit_agents = limit_agents,
-            step_size    = step_size
+            interval    = interval
           )
       }
 
@@ -350,7 +350,7 @@ Plot <- R6::R6Class(
       )
 
       if (traces) {
-        dt <- self$history$get_data_table(limit_agents = limit_agents, step_size = step_size)
+        dt <- self$history$get_data_table(limit_agents = limit_agents, interval = interval)
         data.table::setorder(dt, agent, sim, t)
         for (agent_name in agent_levels) {
           agent_sims <- unique(dt[dt$agent == agent_name]$sim)
@@ -557,8 +557,8 @@ Plot <- R6::R6Class(
 #'   \item{\code{smooth}}{
 #'      \code{(logical , FALSE)} When smooth is TRUE, Plot() will smooth all plots.
 #'   }
-#'   \item{\code{step_size}}{
-#'      \code{(integer, NULL)} Plot only for every every t%%step_size==0
+#'   \item{\code{interval}}{
+#'      \code{(integer, NULL)} Plot only for every every t%%interval==0
 #'   }
 #'   \item{\code{color_step}}{
 #'      \code{(integer, 1)} Linecharts will cycle through agents/color_step colors.
