@@ -35,7 +35,7 @@ message(paste0("MonetDBLite: connection to '",dbListTables(con),"' database succ
 # Config -----------------------------------------------------------------------------------------------------
 
 simulations <- 1
-horizon     <- 5000000
+horizon     <- 1000
 
 # Eq 4 from Li2010 - may be conservatively large in some applications
 # therefor, we choose the values based on the Li2010 plot, HybridLinUCB 0.4, DisjointLinUCB 0.2
@@ -57,9 +57,9 @@ bandit      <- YahooBandit$new(k = 217L, d = 6L, arm_lookup = arm_lookup, cache 
 
 agents <-
   list(
-        Agent$new(YahooLinUCBDisjointPolicy$new(0.2), bandit, name = "LinUCB Dis"),
-        Agent$new(YahooLinUCBHybridPolicy$new(0.4), bandit, name = "LinUCB Hyb"),
-        Agent$new(YahooEpsilonGreedyPolicy$new(0.2), bandit, name = "EGreedy"),
+        Agent$new(YahooLinUCBDisjointPolicy$new(0.2,0.8), bandit, name = "LinUCB Dis"),
+        Agent$new(YahooLinUCBHybridPolicy$new(0.4,0.8), bandit, name = "LinUCB Hyb"),
+        Agent$new(YahooEpsilonGreedyPolicy$new(0.3,0.8), bandit, name = "EGreedy"),
         Agent$new(YahooRandomPolicy$new(), bandit, name = "Random")
       )
 
@@ -72,7 +72,7 @@ simulation <-
     horizon = horizon,
     do_parallel = TRUE,
     continuous_counter = TRUE,
-    reindex_t = TRUE,            # TODO: if you reindex here, no chance later data back?
+    reindex_t = TRUE,
     write_progress_file = TRUE,
     include_packages = c("MonetDB.R")
   )
@@ -85,15 +85,19 @@ sim  <- simulation$run()
 
 print(sim$meta$sim_total_duration)  # TODO: I want average CTR, for example, and final CTR, and cleanup what you can see/do via $
 
-# TODO: duration is now unclear in minutes, hours...
 
 #print(length(sim$data$choice))
 
 #summary(sim)
 
-plot(sim, regret = FALSE, rate = TRUE, type = "cumulative")
+#sim <-History$new()
+#sim$load_data("test")
 
-#df <- sim$get_data_frame()
+plot(sim, regret = FALSE, rate = T, type = "cumulative")
+
+# TODO: print ctr (or relative cum) .. as on of the default outcomes in summary.. and replace print by summary
+
+#df <- sim$save_data("test")
 
 dbDisconnect(con)
 

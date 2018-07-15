@@ -4,10 +4,12 @@ YahooLinUCBDisjointPolicy <- R6::R6Class(
   inherit = Policy,
   public = list(
     alpha = NULL,
+    sparse = NULL,
     class_name = "YahooLinUCBDisjointPolicy",
-    initialize = function(alpha = 0.2) {
+    initialize = function(alpha = 0.2, sparse = 0.0) {
       super$initialize()
-      self$alpha <- alpha
+      self$sparse <- sparse
+      self$alpha  <- alpha
     },
     set_parameters = function() {
       self$theta_to_arms <- list( 'A' = diag(1,self$d,self$d), 'b' = rep(0,self$d),
@@ -48,22 +50,22 @@ YahooLinUCBDisjointPolicy <- R6::R6Class(
     },
     set_reward = function(t, context, action, reward) {
 
+      if (runif(1) < self$sparse) return(self$theta)
+
       arm                      <- action$choice
       arm_index                <- which(context$arms == arm)
       reward                   <- reward$reward
 
       # TODO: make all Xa and arm X into X_a everywhere
 
-      Xa                       <- context$X[7:12,arm_index]  # same for each arm here if disjoint user
+      X_a                       <- context$X[7:12,arm_index]  # same for each arm here if disjoint user
 
       A_inv                    <- self$theta$A_inv[[arm]]
 
-      # Sherman-Morrison
-      outer_Xa                 <- outer(Xa, Xa)
-      self$theta$A_inv[[arm]]  <- A_inv - c((A_inv %*% (outer_Xa %*% A_inv))) / c(1.0+ (crossprod(Xa,A_inv) %*% Xa))
+      self$theta$A_inv[[arm]]  <- sherman_morrisson(self$theta$A_inv[[arm]],X_a)
 
-      self$theta$A[[arm]]      <- self$theta$A[[arm]] + outer_Xa
-      self$theta$b[[arm]]      <- self$theta$b[[arm]] + reward * Xa
+      self$theta$A[[arm]]      <- self$theta$A[[arm]] + outer(X_a, X_a)
+      self$theta$b[[arm]]      <- self$theta$b[[arm]] + reward * X_a
 
       self$theta
     }

@@ -65,6 +65,7 @@ Plot <- R6::R6Class(
         color_step     = color_step,
         lty_step       = lty_step,
         lwd            = lwd,
+        xlim           = xlim,
         ylim           = ylim,
         legend_labels  = legend_labels,
         legend_border  = legend_border,
@@ -84,7 +85,7 @@ Plot <- R6::R6Class(
                        regret        = TRUE,
                        ci            = NULL,
                        rate          = FALSE,
-                       interval     = 1,
+                       interval      = 1,
                        traces        = FALSE,
                        traces_max    = 100,
                        traces_alpha  = 0.3,
@@ -126,6 +127,7 @@ Plot <- R6::R6Class(
         color_step     = color_step,
         lty_step       = lty_step,
         lwd            = lwd,
+        xlim           = xlim,
         ylim           = ylim,
         legend_labels  = legend_labels,
         legend_border  = legend_border,
@@ -143,10 +145,10 @@ Plot <- R6::R6Class(
     arms = function(history,
 
                     no_par        = FALSE,
-                    xlim          = NULL,
                     legend        = TRUE,
                     use_colors    = TRUE,
-                    interval     = 1,
+                    interval      = 1,
+                    xlim          = NULL,
                     ylim          = NULL,
                     legend_labels = NULL,
                     legend_border = NULL,
@@ -197,8 +199,20 @@ Plot <- R6::R6Class(
 
       data.table::setorder(data, choice, t)
       plot.new()
+
+      if (!is.null(xlim)) {
+        min_xlim <- xlim[1]
+        max_xlim <- xlim[2]
+      } else {
+        min_xlim <- 1
+        max_xlim <- data[, max(t)]
+      }
+      if (!is.null(ylim)) {
+        min_ylim <- ylim[1]
+        max_ylim <- ylim[2]
+      }
       plot.window(
-        xlim = c(1, data[, max(t)]),
+        xlim = c(min_xlim, max_xlim),
         ylim = c(min_ylim, max_ylim)
       )
 
@@ -260,8 +274,9 @@ Plot <- R6::R6Class(
                        use_colors     = FALSE,
                        legend         = TRUE,
                        no_par         = FALSE,
+                       xlim           = NULL,
                        ylim           = NULL,
-                       interval      = 1,
+                       interval       = 1,
                        color_step     = 1,
                        lty_step       = 1,
                        lwd            = 1,
@@ -340,12 +355,19 @@ Plot <- R6::R6Class(
         min_ylim <- data[, min(data[[line_data_name]])]
         max_ylim <- data[, max(data[[line_data_name]])]
       }
+      if (!is.null(xlim)) {
+        min_xlim <- xlim[1]
+        max_xlim <- xlim[2]
+      } else {
+        min_xlim <- 1
+        max_xlim <- data[, max(t)]
+      }
       if (!is.null(ylim)) {
         min_ylim <- ylim[1]
         max_ylim <- ylim[2]
       }
       plot.window(
-        xlim = c(1, data[, max(t)]),
+        xlim = c(min_xlim, max_xlim),
         ylim = c(min_ylim, max_ylim)
       )
 
@@ -534,7 +556,7 @@ Plot <- R6::R6Class(
 #'   \item{\code{xlim}}{
 #'      \code{(c(integer,integer), NULL)} Set x-axis limits.
 #'   }
-#'   \item{\code{xlim}}{
+#'   \item{\code{ylim}}{
 #'      \code{(c(integer,integer), NULL)} Set y-axis limits.
 #'   }
 #'   \item{\code{use_colors}}{

@@ -199,3 +199,31 @@ sample_one_of <- function(x) {
     return(sample(x,1))
   }
 }
+#' @export
+formatted_difftime <- function(x) UseMethod("formatted_difftime")
+#' @export
+formatted_difftime.difftime <- function(x) {
+  units(x) <- "secs"
+  x <- unclass(x)
+  NextMethod()
+}
+#' @export
+formatted_difftime.default <- function(x) {
+  y <- abs(x)
+  if (y %/% 86400 > 0) {
+    sprintf("%s%d days, %d:%02d:%02d%s",
+            ifelse(x < 0, "-", ""), # sign
+            y %/% 86400,  # days
+            y %% 86400 %/% 3600,  # hours
+            y %% 3600 %/% 60,  # minutes
+            y %% 60 %/% 1,
+            strtrim(substring(as.character(as.numeric(y) %% 1), 2), 4))
+  } else {
+    sprintf("%s%d:%02d:%02d%s",
+            ifelse(x < 0, "-", ""), # sign
+            y %% 86400 %/% 3600,  # hours
+            y %% 3600 %/% 60,  # minutes
+            y %% 60 %/% 1,
+            strtrim(substring(as.character(as.numeric(y) %% 1), 2), 4))
+  }
+}

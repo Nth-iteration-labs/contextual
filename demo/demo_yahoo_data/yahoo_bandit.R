@@ -10,7 +10,7 @@ YahooBandit <- R6::R6Class(
     buffer = NULL,
     cache = NULL,
     arm_lookup = NULL,
-    initialize   = function(k, d, arm_lookup, cache = 500 ) {
+    initialize   = function(k, d, arm_lookup, cache = 500) {
       self$k <- k
       self$d <- d
       self$cache <- cache
@@ -69,6 +69,7 @@ YahooBandit <- R6::R6Class(
       contextlist
     },
     get_reward = function(index, context, action) {
+
       if (self$chosen_arm == action$choice) {
         list(
           reward = as.integer(self$click_reward)

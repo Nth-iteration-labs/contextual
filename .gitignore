@@ -19,3 +19,4 @@ credentials.json
 **/doparallel.log
 **/progress.log
 docs/reference/RandomPolicy-1.png
+demo/demo_yahoo_data/test

@@ -75,7 +75,7 @@ Plots in a no_par.
 \item{\code{xlim}}{
 \code{(c(integer,integer), NULL)} Set x-axis limits.
 }
-\item{\code{xlim}}{
+\item{\code{ylim}}{
 \code{(c(integer,integer), NULL)} Set y-axis limits.
 }
 \item{\code{use_colors}}{
@@ -98,8 +98,8 @@ that is, at an opacity of 30%.
 \item{\code{smooth}}{
 \code{(logical , FALSE)} When smooth is TRUE, Plot() will smooth all plots.
 }
-\item{\code{step_size}}{
-\code{(integer, NULL)} Plot only for every every t%%step_size==0
+\item{\code{interval}}{
+\code{(integer, NULL)} Plot only for every every t%%interval==0
 }
 \item{\code{color_step}}{
 \code{(integer, 1)} Linecharts will cycle through agents/color_step colors.
