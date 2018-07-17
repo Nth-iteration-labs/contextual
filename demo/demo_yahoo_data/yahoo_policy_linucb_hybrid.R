@@ -18,7 +18,8 @@ YahooLinUCBHybridPolicy <- R6::R6Class(
     set_parameters = function() {
       dd = self$d*self$d
       d  = self$d
-      self$theta <- list('A0' = diag(1,dd,dd), 'A0_inv' = diag(1,dd,dd), 'b0' = rep(0,dd))
+      self$theta <- list('A0' = diag(1,dd,dd), 'A0_inv' = diag(1,dd,dd), 'b0' = rep(0,dd),
+                         'z' = matrix(0,d,d), 'x' = rep(0,d))
       self$theta_to_arms <- list( 'A' = diag(1,d,d), 'A_inv' = diag(1,d,d),
                                   'B' = matrix(0,d,dd), 'b' = rep(0,d))
     },
@@ -33,6 +34,8 @@ YahooLinUCBHybridPolicy <- R6::R6Class(
 
       beta_hat   <- A0_inv %*% b0
 
+      x          <-  matrix(context$X[7:12,1])
+
       for (arm in seq_along(local_arms)) {
 
         ################## unpack thetas ##############################################
@@ -43,21 +46,24 @@ YahooLinUCBHybridPolicy <- R6::R6Class(
         A_inv      <-  self$theta$A_inv[[local_arms[arm]]]
         B          <-  self$theta$B[[local_arms[arm]]]
         b          <-  self$theta$b[[local_arms[arm]]]
-        z          <-  matrix(as.vector(outer(context$X[1:6,arm],context$X[7:12,arm])))
-        x          <-  matrix(context$X[7:12,arm])
+        z          <-  matrix(tcrossprod(context[['X']][1:6,arm], x))
 
         ################## compute expected reward per arm #############################
 
         theta_hat  <-  A_inv %*% (b - B %*% beta_hat)
 
-        tBAinvx <- crossprod(B, (A_inv %*% x))
-        txAinv  <- crossprod(x, A_inv)
+        tBAinvx  <- crossprod(B, (A_inv %*% x))
+        txAinv   <- crossprod(x, A_inv)
         tzA0inv  <-crossprod(z, A0_inv)
 
-        sd <- sqrt((tzA0inv %*% z) - 2*(tzA0inv %*% tBAinvx) +
-                     txAinv %*% x + (txAinv %*% B) %*% (A0_inv %*% tBAinvx))
+        sd_one   <- tzA0inv %*% z
+        sd_two   <- 2*(tzA0inv %*% tBAinvx)
+        sd_three <- txAinv %*% x
+        sd_four  <- txAinv %*% (B %*% (A0_inv %*% tBAinvx))
 
-        mean <- crossprod(z, beta_hat)  +  crossprod(x, theta_hat)
+        sd       <- sqrt(sd_one - sd_two  + sd_three + sd_four)
+
+        mean     <- crossprod(z, beta_hat) + crossprod(x, theta_hat)
 
         expected_rewards[arm] <- mean + self$alpha * sd
       }
@@ -75,7 +81,7 @@ YahooLinUCBHybridPolicy <- R6::R6Class(
       arm_index      <- which(context$arms == arm)
       reward         <- reward$reward
 
-      z              <- matrix(as.vector(outer(context$X[1:6,arm_index],context$X[7:12,arm_index])))
+      z              <- matrix(tcrossprod(context$X[1:6,arm_index],context$X[7:12,arm_index]))
       x              <- matrix(context$X[7:12,arm_index])
 
 
