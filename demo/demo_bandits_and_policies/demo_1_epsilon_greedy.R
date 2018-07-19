@@ -1,7 +1,10 @@
-library(contextual)
+source("../dev.R")
+#library(contextual)
+
 library(here)
 setwd(here("demo","demo_bandits_and_policies"))
-source("../dev.R")
+
+
 
 policy             <- EpsilonGreedyPolicy$new(epsilon = 0.1)
 policy             <- UCB1Policy$new()

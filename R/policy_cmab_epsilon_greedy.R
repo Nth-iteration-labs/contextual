@@ -49,4 +49,15 @@ ContextualEpsilonGreedyPolicy <- R6::R6Class(
     }
   )
 )
-
+#' Policy: Contextual Epsilon Greedy
+#'
+#' @name ContextualEpsilonGreedyPolicy
+#' @family contextual subclasses
+#'
+#' @section Usage:
+#' \preformatted{
+#' policy <- EpsilonGreedyPolicy(epsilon = 0.1)
+#' }
+#'
+#'
+NULL

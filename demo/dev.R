@@ -1,22 +1,33 @@
 # Clean and reset the local development environment ----------------------------
 
-# Detach and unload package: we want to run the local code base when developing.
-if ("package:contextual" %in% search()) detach("package:contextual", unload = T)
 # Clear environment of all objects before running, to make sure no interactions.
-rm(list = ls())
+rm(list = ls(all = TRUE))
+
 # Garbage collection to free up memory, cleaning up after rm.
 gc()
-# Check if devtools installed, if not, install
-if (!require(devtools)) {
+
+# Detach and unload packages: we want to run the local code base when developing.
+
+if ("package:contextual" %in% search()) detach("package:contextual", unload = TRUE)
+detachAllPackages <- function() {
+  basic.packages <- c("package:stats","package:graphics","package:grDevices","package:utils","package:datasets","package:methods","package:base")
+  package.list <- search()[ifelse(unlist(gregexpr("package:",search()))==1,TRUE,FALSE)]
+  package.list <- setdiff(package.list,basic.packages)
+  if (length(package.list)>0)  for (package in package.list) detach(package, character.only=TRUE)
+}
+detachAllPackages()
+
+# Check if testthat and devtools  installed, if not, install
+if (!require(devtools)| !require(testthat)) {
   install.packages("devtools")
   devtools::install_github("r-lib/testthat")
 }
 # Install package dependencies if needed...
 devtools::install_deps()
 
-
 # And load package dependencies, since do not load the package itself.
 devtools::load_all()
+
 # Set path to GhostScript command in Windows necessary for local as-cran check.
 if (grepl('w|W', .Platform$OS.type)) {
   # Windows

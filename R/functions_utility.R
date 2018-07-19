@@ -199,15 +199,19 @@ sample_one_of <- function(x) {
     return(sample(x,1))
   }
 }
+#' Format difftime objects
+#'
+#' @param x difftime object
+#'
+#' @return string "days, h:mm:ss.ms"
+#'
 #' @export
 formatted_difftime <- function(x) UseMethod("formatted_difftime")
-#' @export
 formatted_difftime.difftime <- function(x) {
   units(x) <- "secs"
   x <- unclass(x)
   NextMethod()
 }
-#' @export
 formatted_difftime.default <- function(x) {
   y <- abs(x)
   if (y %/% 86400 > 0) {

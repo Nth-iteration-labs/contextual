@@ -32,7 +32,7 @@ message(paste0("MonetDBLite: connection to '",dbListTables(con),"' database succ
 # Config -----------------------------------------------------------------------------------------------------
 
 simulations <- 1
-horizon     <- 100000
+horizon     <- 10000000
 
 # Eq 4 from Li2010 - may be conservatively large in some applications
 # therefor, we choose the values based on the Li2010 plot, HybridLinUCB 0.4, DisjointLinUCB 0.2
@@ -53,11 +53,11 @@ bandit      <- YahooBandit$new(k = 217L, d = 6L, arm_lookup = arm_lookup, cache 
 
 agents <-
   list(
-        Agent$new(YahooLinUCBDisjointPolicy$new(0.2,0), bandit, name = "LinUCB Dis"),
-        Agent$new(YahooLinUCBHybridPolicy$new(0.4,0),   bandit, name = "LinUCB Hyb"),
-        Agent$new(YahooEpsilonGreedyPolicy$new(0.3,0),  bandit, name = "EGreedy"),
-        Agent$new(YahooUCB1AlphaPolicy$new(0.4,0),      bandit, name = "UCB1"),
-        Agent$new(YahooUCB1AlphaPolicy$new(0.01,0,T),   bandit, name = "UCB1Auer"),
+        Agent$new(YahooLinUCBDisjointPolicy$new(0.2,0.99), bandit, name = "LinUCB Dis"),
+        Agent$new(YahooLinUCBHybridPolicy$new(0.4,0.99),   bandit, name = "LinUCB Hyb"),
+        Agent$new(YahooEpsilonGreedyPolicy$new(0.3,0.99),  bandit, name = "EGreedy"),
+        Agent$new(YahooUCB1AlphaPolicy$new(0.4,0.99),      bandit, name = "UCB1"),
+        Agent$new(YahooUCB1AlphaPolicy$new(0.01,0.99,T),   bandit, name = "UCB1Auer"),
         Agent$new(YahooRandomPolicy$new(),              bandit, name = "Random")
       )
 
