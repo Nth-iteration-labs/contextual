@@ -181,13 +181,16 @@ Plots in a no_par.</p></dd>
 <dt><code>legend_labels</code></dt><dd><p><code>(list , NULL)</code> Set legend labels to custom values as specificed in this list.</p></dd>
 <dt><code>legend_border</code></dt><dd><p><code>(logical , NULL)</code> Set a legend title.</p></dd>
 <dt><code>xlim</code></dt><dd><p><code>(c(integer,integer), NULL)</code> Set x-axis limits.</p></dd>
-<dt><code>xlim</code></dt><dd><p><code>(c(integer,integer), NULL)</code> Set y-axis limits.</p></dd>
+<dt><code>ylim</code></dt><dd><p><code>(c(integer,integer), NULL)</code> Set y-axis limits.</p></dd>
 <dt><code>use_colors</code></dt><dd><p><code>(logical, TRUE)</code> If use_colors is set to FALSE, plots will be in grayscale.
 Otherwise, plots will make use of a color palette.</p></dd>
 <dt><code>ci</code></dt><dd><p><code>(logical, FALSE)</code> When ci is TRUE, Plot() will display 95<!-- % confidence intervals. --></p></dd>
 <dt><code>traces</code></dt><dd><p><code>(logical , FALSE)</code> When traces is TRUE, Plot() will plot the traces of each independent simulation.</p></dd>
+<dt><code>traces_max</code></dt><dd><p><code>(integer , 100)</code> The maximum number of trace lines.</p></dd>
+<dt><code>traces_alpha</code></dt><dd><p><code>(numeric , 0.3)</code> Sets the opacity of all trace lines. By default traces_alpha is set to 0.3,
+that is, at an opacity of 30<!-- %. --></p></dd>
 <dt><code>smooth</code></dt><dd><p><code>(logical , FALSE)</code> When smooth is TRUE, Plot() will smooth all plots.</p></dd>
-<dt><code>step_size</code></dt><dd><p><code>(integer, NULL)</code> Plot only for every every t<!-- %%step_size==0 --></p></dd>
+<dt><code>interval</code></dt><dd><p><code>(integer, NULL)</code> Plot only for every every t<!-- %%interval==0 --></p></dd>
 <dt><code>color_step</code></dt><dd><p><code>(integer, 1)</code> Linecharts will cycle through agents/color_step colors.</p></dd>
 <dt><code>color_step</code></dt><dd><p><code>(integer, 1)</code> Linecharts will cycle through agents/lty_step line types</p></dd>
 <dt><code>lwd</code></dt><dd><p><code>(integer, 1)</code> Linecharts will be of lwd width.</p></dd>

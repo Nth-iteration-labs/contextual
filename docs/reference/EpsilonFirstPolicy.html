@@ -135,7 +135,7 @@ arm, never looking back (keep on exploiting that arm for ever)." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Policy: Epsilon First</h1>
-    <small class="dont-index">Source: <a href='https://github.com/Nth-iteration-labs/contextual/blob/master/R/policy_mab_epsilonfirst.R'><code>R/policy_mab_epsilonfirst.R</code></a></small>
+    <small class="dont-index">Source: <a href='https://github.com/Nth-iteration-labs/contextual/blob/master/R/policy_mab_epsilon_first.R'><code>R/policy_mab_epsilon_first.R</code></a></small>
     <div class="hidden name"><code>EpsilonFirstPolicy.Rd</code></div>
     </div>
 
@@ -203,18 +203,22 @@ based on the reward received, and, potentially, the current context.</p></dd>
 
     <div class='dont-index'><p>Core contextual classes: <code><a href='Bandit.html'>Bandit</a></code>, <code><a href='Policy.html'>Policy</a></code>, <code><a href='Simulator.html'>Simulator</a></code>,
 <code><a href='Agent.html'>Agent</a></code>, <code><a href='History.html'>History</a></code>, <code><a href='Plot.html'>Plot</a></code></p>
-<p>Other contextual subclasses: <code><a href='BTSLogitPolicy.html'>BTSLogitPolicy</a></code>,
-  <code><a href='BasicBandit.html'>BasicBandit</a></code>,
+<p>Other contextual subclasses: <code><a href='BasicBandit.html'>BasicBandit</a></code>,
   <code><a href='ContextualBandit.html'>ContextualBandit</a></code>,
+  <code><a href='ContextualDisjointThompsonSamplingPolicy.html'>ContextualDisjointThompsonSamplingPolicy</a></code>,
+  <code><a href='ContextualEpsilonGreedyPolicy.html'>ContextualEpsilonGreedyPolicy</a></code>,
   <code><a href='ContextualThompsonSamplingPolicy.html'>ContextualThompsonSamplingPolicy</a></code>,
   <code><a href='ContinuumBandit.html'>ContinuumBandit</a></code>,
   <code><a href='DoublyRobustOfflineBandit.html'>DoublyRobustOfflineBandit</a></code>,
   <code><a href='EpsilonGreedyPolicy.html'>EpsilonGreedyPolicy</a></code>,
   <code><a href='Exp3Policy.html'>Exp3Policy</a></code>,
+  <code><a href='GittinsBrezziLaiPolicy.html'>GittinsBrezziLaiPolicy</a></code>,
   <code><a href='LiSamplingOfflineBandit.html'>LiSamplingOfflineBandit</a></code>,
   <code><a href='LifPolicy.html'>LifPolicy</a></code>,
   <code><a href='LinUCBDisjointPolicy.html'>LinUCBDisjointPolicy</a></code>,
+  <code><a href='LinUCBDisjointSmPolicy.html'>LinUCBDisjointSmPolicy</a></code>,
   <code><a href='LinUCBHybridPolicy.html'>LinUCBHybridPolicy</a></code>,
+  <code><a href='LinUCBHybridSmPolicy.html'>LinUCBHybridSmPolicy</a></code>,
   <code><a href='OraclePolicy.html'>OraclePolicy</a></code>, <code><a href='RandomPolicy.html'>RandomPolicy</a></code>,
   <code><a href='SoftmaxPolicy.html'>SoftmaxPolicy</a></code>,
   <code><a href='SyntheticBandit.html'>SyntheticBandit</a></code>,
@@ -232,7 +236,7 @@ based on the reward received, and, potentially, the current context.</p></dd>
 <span class='no'>bandit</span>             <span class='kw'>&lt;-</span> <span class='no'>SyntheticBandit</span>$<span class='fu'>new</span>(<span class='kw'>weights</span> <span class='kw'>=</span> <span class='no'>weights</span>, <span class='kw'>precaching</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 <span class='no'>agent</span>              <span class='kw'>&lt;-</span> <span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>policy</span>, <span class='no'>bandit</span>)
 
-<span class='no'>history</span>            <span class='kw'>&lt;-</span> <span class='no'>Simulator</span>$<span class='fu'>new</span>(<span class='no'>agent</span>, <span class='no'>horizon</span>, <span class='no'>simulations</span>, <span class='kw'>do_parallel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)$<span class='fu'><a href='Simulator.html'>run</a></span>()</div><div class='output co'>#&gt; <span class='message'>Cloning, precaching and precalculating bandits and policies</span></div><div class='output co'>#&gt; <span class='message'>Loading required package: iterators</span></div><div class='input'>
+<span class='no'>history</span>            <span class='kw'>&lt;-</span> <span class='no'>Simulator</span>$<span class='fu'>new</span>(<span class='no'>agent</span>, <span class='no'>horizon</span>, <span class='no'>simulations</span>, <span class='kw'>do_parallel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)$<span class='fu'><a href='Simulator.html'>run</a></span>()</div><div class='output co'>#&gt; <span class='message'>Cloning, precaching and precalculating bandits and policies</span></div><div class='input'>
 <span class='fu'>plot</span>(<span class='no'>history</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"cumulative"</span>)</div><div class='img'><img src='EpsilonFirstPolicy-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot</span>(<span class='no'>history</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"arms"</span>)</div><div class='img'><img src='EpsilonFirstPolicy-2.png' alt='' width='700' height='433' /></div><div class='input'>
 
 </div></pre>

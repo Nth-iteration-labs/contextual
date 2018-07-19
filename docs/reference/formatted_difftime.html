@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Bandit: BasicBandit — BasicBandit • contextual</title>
+<title>Format difftime objects — formatted_difftime • contextual</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -36,9 +36,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Bandit: BasicBandit — BasicBandit" />
+<meta property="og:title" content="Format difftime objects — formatted_difftime" />
 
-<meta property="og:description" content="BasicBandit intro" />
+<meta property="og:description" content="Format difftime objects" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -130,79 +130,40 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Bandit: BasicBandit</h1>
-    <small class="dont-index">Source: <a href='https://github.com/Nth-iteration-labs/contextual/blob/master/R/bandit_basic.R'><code>R/bandit_basic.R</code></a></small>
-    <div class="hidden name"><code>BasicBandit.Rd</code></div>
+    <h1>Format difftime objects</h1>
+    <small class="dont-index">Source: <a href='https://github.com/Nth-iteration-labs/contextual/blob/master/R/functions_utility.R'><code>R/functions_utility.R</code></a></small>
+    <div class="hidden name"><code>formatted_difftime.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>BasicBandit intro</p>
+    <p>Format difftime objects</p>
     
     </div>
 
-        
-    <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
-
-    
-    <pre>b &lt;- BasicBandit$new()
-    b$reset()
-    print(b)
-</pre>
+    <pre class="usage"><span class='fu'>formatted_difftime</span>(<span class='no'>x</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>difftime object</p></td>
+    </tr>
+    </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    
-    <dl class='dl-horizontal'>
-<dt>b</dt><dd><p>A <code>BasicBandit</code> object.</p></dd>
-</dl>
-    
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    
-    <p><code>$new()</code> starts a new BasicBandit, it uses <code><a href='http://www.rdocumentation.org/packages/base/topics/connections'>pipe</a></code>.
-R does <em>not</em> wait for the process to finish, but returns
-immediately.</p>
-    
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p>Core contextual classes: <code><a href='Bandit.html'>Bandit</a></code>, <code><a href='Policy.html'>Policy</a></code>, <code><a href='Simulator.html'>Simulator</a></code>,
-<code><a href='Agent.html'>Agent</a></code>, <code><a href='History.html'>History</a></code>, <code><a href='Plot.html'>Plot</a></code></p>
-<p>Other contextual subclasses: <code><a href='ContextualBandit.html'>ContextualBandit</a></code>,
-  <code><a href='ContextualDisjointThompsonSamplingPolicy.html'>ContextualDisjointThompsonSamplingPolicy</a></code>,
-  <code><a href='ContextualEpsilonGreedyPolicy.html'>ContextualEpsilonGreedyPolicy</a></code>,
-  <code><a href='ContextualThompsonSamplingPolicy.html'>ContextualThompsonSamplingPolicy</a></code>,
-  <code><a href='ContinuumBandit.html'>ContinuumBandit</a></code>,
-  <code><a href='DoublyRobustOfflineBandit.html'>DoublyRobustOfflineBandit</a></code>,
-  <code><a href='EpsilonFirstPolicy.html'>EpsilonFirstPolicy</a></code>,
-  <code><a href='EpsilonGreedyPolicy.html'>EpsilonGreedyPolicy</a></code>,
-  <code><a href='Exp3Policy.html'>Exp3Policy</a></code>,
-  <code><a href='GittinsBrezziLaiPolicy.html'>GittinsBrezziLaiPolicy</a></code>,
-  <code><a href='LiSamplingOfflineBandit.html'>LiSamplingOfflineBandit</a></code>,
-  <code><a href='LifPolicy.html'>LifPolicy</a></code>,
-  <code><a href='LinUCBDisjointPolicy.html'>LinUCBDisjointPolicy</a></code>,
-  <code><a href='LinUCBDisjointSmPolicy.html'>LinUCBDisjointSmPolicy</a></code>,
-  <code><a href='LinUCBHybridPolicy.html'>LinUCBHybridPolicy</a></code>,
-  <code><a href='LinUCBHybridSmPolicy.html'>LinUCBHybridSmPolicy</a></code>,
-  <code><a href='OraclePolicy.html'>OraclePolicy</a></code>, <code><a href='RandomPolicy.html'>RandomPolicy</a></code>,
-  <code><a href='SoftmaxPolicy.html'>SoftmaxPolicy</a></code>,
-  <code><a href='SyntheticBandit.html'>SyntheticBandit</a></code>,
-  <code><a href='ThompsonSamplingPolicy.html'>ThompsonSamplingPolicy</a></code>,
-  <code><a href='UCB1Policy.html'>UCB1Policy</a></code></p></div>
+    <p>string "days, h:mm:ss.ms"</p>
     
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      
-      <li><a href="#usage">Usage</a></li>
-
       <li><a href="#arguments">Arguments</a></li>
-
-      <li><a href="#details">Details</a></li>
-
-      <li><a href="#see-also">See also</a></li>
+      
+      <li><a href="#value">Value</a></li>
           </ul>
 
   </div>
