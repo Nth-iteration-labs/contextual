@@ -7,7 +7,7 @@ library(MonetDBLite)
 library(here)
 
 
-setwd(here("demo", "demo_yahoo_data"))
+setwd(here("demo", "replication_li_2010"))
 
 source("yahoo_bandit.R")
 source("yahoo_policy_epsilon_greedy.R")
@@ -19,6 +19,7 @@ source("yahoo_policy_epsilon_greedy.R")
 options(monetdb.sequential=T)
 
 db_dir <- "C:/YahooDb/yahoo.monetdblite"
+
 con    <- dbConnect(MonetDBLite::MonetDBLite(), db_dir)
 
 print(paste0("MonetDBLite: connection to '",dbListTables(con),"' database succesful!"))

@@ -8,29 +8,45 @@ YahooBandit <- R6::R6Class(
     chosen_arm = NULL,
     click_reward = NULL,
     buffer = NULL,
-    cache = NULL,
+    buffer_size = NULL,
     arm_lookup = NULL,
-    initialize   = function(k, d, arm_lookup, cache = 500) {
-      self$k <- k
-      self$d <- d
-      self$cache <- cache
-      self$arm_lookup <- arm_lookup
+    host = NULL,
+    dbname = NULL,
+    user = NULL,
+    password = NULL,
+    initialize   = function(k, d, d_shared, d_per_arm, arm_lookup,
+                            host, dbname, user, password,
+                            buffer_size = 1000) {
+
+      self$k           <- k
+      self$d           <- d
+      self$d_shared    <- d_shared
+      self$d_per_arm   <- d_per_arm
+      self$buffer_size <- buffer_size
+      self$arm_lookup  <- arm_lookup
+      self$host        <- host
+      self$dbname      <- dbname
+      self$user        <- user
+      self$password    <- password
     },
     pre_calculate = function() {
-      self$con <- DBI::dbConnect(MonetDB.R(), host="localhost", dbname="yahoo", user="monetdb", password="monetdb")
+      self$con <- DBI::dbConnect(MonetDB.R(), host=self$host, dbname=self$dbname,
+                                 user=self$user, password=self$password)
       self$buffer <-
         as.matrix(DBI::dbGetQuery(
           self$con,
-          paste0("SELECT * FROM yahoo WHERE t BETWEEN 1 AND ",self$cache - 1," LIMIT ",self$cache - 1,";"
+          paste0("SELECT * FROM yahoo WHERE t BETWEEN 1 AND ",
+                 self$buffer_size - 1," LIMIT ",self$buffer_size - 1,";"
           )
         ))
     },
     get_context = function(index) {
-      if (index%%(self$cache) == 0) {
+      if (index%%(self$buffer_size) == 0) {
         self$buffer <- as.matrix(DBI::dbGetQuery(
           self$con,
           paste0(
-            "SELECT * FROM yahoo WHERE t BETWEEN ",index," AND ",index + self$cache - 1," LIMIT ",self$cache,";"
+            "SELECT * FROM yahoo WHERE t BETWEEN ",
+            index," AND ",index + self$buffer_size - 1," LIMIT ",self$buffer_size,";"
           )
         ))
       }
@@ -62,6 +78,8 @@ YahooBandit <- R6::R6Class(
       contextlist <- list(
         k = self$k,
         d = self$d,
+        d_per_arm = self$d_per_arm,
+        d_shared = self$d_shared,
         arms = article_ids,
         X = X
       )

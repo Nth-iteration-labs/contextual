@@ -2,12 +2,12 @@ library(DBI)
 library(MonetDBLite)
 library(ggplot2)
 
-db_dir <- "C:/YahooDb/yahoo.monetdblite"
-#con    <- dbConnect(MonetDBLite::MonetDBLite(), db_dir)
-con <- DBI::dbConnect(MonetDB.R(), host="localhost", dbname="yahoo", user="monetdb", password="monetdb")
+con <- DBI::dbConnect(MonetDB.R(), host="monetdb_ip", dbname="yahoo", user="monetdb", password="monetdb")
+print(paste0("MonetDB: connection to '",dbListTables(con),"' database succesful!"))
 
-
-print(paste0("MonetDBLite: connection to '",dbListTables(con),"' database succesful!"))
+times <- dbGetQuery(con, "SELECT timestamped, COUNT(timestamped) FROM yahoo GROUP BY timestamped")
+names(times) <- c('timestamped', 'count')
+times$timestamped <- as.POSIXct(times$timestamped, origin = "1970-01-01")
 
 # Traffic ----------------------------------------------------------------------------------------------------
 

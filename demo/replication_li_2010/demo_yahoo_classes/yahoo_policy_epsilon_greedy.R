@@ -4,11 +4,9 @@ YahooEpsilonGreedyPolicy          <- R6::R6Class(
   inherit = Policy,
   public = list(
     epsilon = NULL,
-    sparse = NULL,
     class_name = "YahooEpsilonGreedyPolicy",
-    initialize = function(epsilon = 0.1, sparse = 0.0) {
+    initialize = function(epsilon = 0.1) {
       super$initialize()
-      self$sparse                 <- sparse
       self$epsilon                <- epsilon
     },
     set_parameters = function() {
@@ -25,10 +23,9 @@ YahooEpsilonGreedyPolicy          <- R6::R6Class(
     },
     set_reward = function(t, context, action, reward) {
 
-      if (runif(1) < self$sparse) return(self$theta)
-
       arm                         <- action$choice
       reward                      <- reward$reward
+
       self$theta$n[[arm]]         <- self$theta$n[[arm]] + 1
       self$theta$mean[[arm]]      <- self$theta$mean[[arm]] + (reward - self$theta$mean[[arm]]) / self$theta$n[[arm]]
 

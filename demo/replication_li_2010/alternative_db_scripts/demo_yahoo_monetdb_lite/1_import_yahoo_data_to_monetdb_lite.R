@@ -1,6 +1,6 @@
 library(readr)
 library(DBI)
-library(MonetDB.R)
+library(MonetDBLite)
 
 # Import of the R6A - Yahoo! Front Page Today Module User Click Log Dataset.
 
@@ -12,10 +12,7 @@ library(MonetDB.R)
 
 # The import takes about 3 hours on a laptop with Intel 4500U I7 CPU, 16GB memory and SSD HD.
 
-# Notice: generates warnings, and readr status bar restarts at zero. This can be ignored safely.
-or
-# Attention: it is possible that the temp csv exported to the /tmp directory is not accessible.
-# In that case, chmod 777 the particular /tmp subdirectory and restart the simulation
+# Notice: import generates warnings, and readr status bar restarts at zero. This can be ignored safely.
 
 # Double check -----------------------------------------------------------------------------------------------
 
@@ -25,7 +22,8 @@ if (abort==1) { message("You aborted the import.") } else {
 
   # Configuration --------------------------------------------------------------------------------------------
 
-  data_import_directory  <- "/uploads/ydata_gz/"
+  data_import_directory  <- "/set/import/path/here"
+  db_dir                 <- "/set/monetdblite/path/here"
 
   row_max                <- 5600000 # > nr of rows in any imported file
   by_step                <- 800000  # read data and write sql in in batches
@@ -87,8 +85,9 @@ if (abort==1) { message("You aborted the import.") } else {
 
   # connect to db --------------------------------------------------------------------------------------------
 
-  options(monetdb.sequential=F)
-  con <- dbConnect(MonetDB.R(), host="localhost", dbname="yahoo", user="monetdb", password="monetdb")
+  options(monetdb.sequential=T)
+
+  con <- dbConnect(MonetDBLite::MonetDBLite(), db_dir)
 
   # loop over each file in steps (batches) of a million records ----------------------------------------------
 
@@ -124,7 +123,7 @@ if (abort==1) { message("You aborted the import.") } else {
                       " to ",format(i+by_step,scientific = F),"\n"))
 
       # save batch (and if already data, append) to DB table "yahoo"
-      dbWriteTable(con, "yahoo", dat, append = TRUE, overwrite=FALSE, csvdump=TRUE)
+      dbWriteTable(con, "yahoo", dat, append = TRUE, overwrite=FALSE)
 
       message (paste0("\n## Completed rows ",format((i+1),scientific = F),
                       " to ",format(i+by_step,scientific = F),"\n"))

@@ -44,6 +44,8 @@ if (grepl('w|W', .Platform$OS.type)) {
 
 ##### writing: work out regret..
 
+TODO
+
 # comparison doc of all bandit: strengths, weakneseses (computational eff, context / non, variance, etc)
 
 # TODO: is optimal arm the absolute optimal arm, or the oracle optimal arm?

@@ -5,6 +5,8 @@ Bandit <- R6::R6Class(
   public   = list(
     k             = NULL,  # Number of arms (integer)
     d             = NULL,  # Dimension of context feature vector (integer)
+    d_per_arm     = NULL,  # Vector of arm indices of disjoint context features (vector)
+    d_shared      = NULL,  # Vector of arm indices of context features shared between arms (vector)
     precaching    = FALSE, # Pregenerate context & reward matrices? (boolean)
     class_name = "Bandit",
     initialize  = function() {
@@ -16,7 +18,7 @@ Bandit <- R6::R6Class(
     get_context = function(t) {
       stop("Bandit subclass needs to implement bandit$get_context()", call. = FALSE)
       # Return a list with self$k, self$d and, where applicable, a context matrix X.
-      list(k = n_arms, d = n_features, X = context)
+      list(k = n_arms, d = n_features, d_per_arm = d_per_arm, d_shared = d_shared, X = context)
     },
     get_reward = function(t, context, action) {
       stop("Bandit subclass needs to implement bandit$get_reward()", call. = FALSE)

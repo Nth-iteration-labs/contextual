@@ -1,12 +1,8 @@
 library(readr)
 library(DBI)
 library(MonetDB.R)
-library(usethis)
 
-#usethis::edit_r_environ()
-#usethis::edit_r_environ("project")
-
-# Import of the R6A - Yahoo! Front Page Today Module User Click Log Dataset.
+# Import of R6A - Yahoo! Front Page Today Module User Click Log Dataset.
 
 # The data_import_directory has to contain unpacked data files, themselves again unpacked from a tarball.
 # Data file available by request at https://webscope.sandbox.yahoo.com/catalog.php?datatype=r&did=49.
