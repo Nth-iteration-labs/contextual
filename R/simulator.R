@@ -3,6 +3,7 @@
 #' @importFrom itertools isplitRows
 #' @importFrom data.table rbindlist
 #' @importFrom iterators icount
+#' @import lobstr
 #'
 #' @export
 Simulator <- R6::R6Class(
@@ -150,7 +151,7 @@ Simulator <- R6::R6Class(
       }
       sa_iterator <- itertools::isplitVector(sims_and_agents_list, chunks = nr_of_chunks)
       # include packages that are used in parallel processes
-      par_packages <- c(c("data.table","iterators","itertools"),include_packages)
+      par_packages <- c(c("data.table","iterators","itertools","lobstr"),include_packages)
       # running the main simulation loop
       private$start_time = Sys.time()
       foreach_results <- foreach::foreach(
@@ -158,13 +159,13 @@ Simulator <- R6::R6Class(
         i = iterators::icount(),
         .inorder = TRUE,
         .export = c("History"),
-        .noexport = c("sims_and_agents_list","history"),
+        .noexport = c("sims_and_agents_list","history","sa_iterator"),
         .packages = par_packages
       ) %fun% {
         index <- 1L
         sim_agent_counter <- 0
         sim_agent_total <- length(sims_agents)
-        local_history <- History$new( horizon * number_of_agents * sim_agent_total, save_context, save_theta)
+        local_history <- History$new( horizon * sim_agent_total, save_context, save_theta)
         for (sim_agent in sims_agents) {
           sim_agent_counter <- sim_agent_counter + 1
           if (write_progress_file) {
@@ -202,8 +203,6 @@ Simulator <- R6::R6Class(
             }
           }
         }
-
-
         sim_agent$bandit$close
         local_history$get_data_table()
       }

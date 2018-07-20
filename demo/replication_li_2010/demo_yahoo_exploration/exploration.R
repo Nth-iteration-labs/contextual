@@ -13,7 +13,7 @@ print(paste0("MonetDB: connection to '",dbListTables(con),"' database succesful!
 # Rows -------------------------------------------------------------------------------------------------------
 
 if(!file.exists("../demo_yahoo_cache/rows.Rds")){
-  rows <- as.integer(dbGetQuery(con, "SELECT COUNT(*) FROM yahoo" ))
+  rows <- as.integer(dbGetQuery(con, "SELECT COUNT(a1_id) FROM yahoo" ))
   saveRDS(rows, file = "../demo_yahoo_cache/rows.Rds")
 } else {
   if(!exists("rows")) rows <- readRDS(file = "../demo_yahoo_cache/rows.Rds")
