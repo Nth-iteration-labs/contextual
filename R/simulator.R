@@ -3,7 +3,6 @@
 #' @importFrom itertools isplitRows
 #' @importFrom data.table rbindlist
 #' @importFrom iterators icount
-#' @import lobstr
 #'
 #' @export
 Simulator <- R6::R6Class(
@@ -58,10 +57,10 @@ Simulator <- R6::R6Class(
     reset = function() {
       set.seed(self$set_seed)
 
-      # create empty progress.log file
+      # create or clear progress.log file
       if (self$write_progress_file) cat(paste0(""), file = "progress.log", append = FALSE)
 
-      # clear doparallel.log
+      # create or clear doparallel.log file
       if (self$write_progress_file) cat(paste0(""), file = "doparallel.log", append = FALSE)
 
       # (re)create history's data.table
@@ -88,8 +87,10 @@ Simulator <- R6::R6Class(
         for (agent_index in 1L:self$number_of_agents) {
           self$sims_and_agents_list[index]  <- list(self$agents[[agent_index]]$clone(deep = FALSE))
           self$sims_and_agents_list[[index]]$reset()
-          self$sims_and_agents_list[[index]]$bandit <- self$sims_and_agents_list[[index]]$bandit$clone(deep = TRUE)
-          self$sims_and_agents_list[[index]]$policy <- self$sims_and_agents_list[[index]]$policy$clone(deep = FALSE)
+          self$sims_and_agents_list[[index]]$bandit <-
+            self$sims_and_agents_list[[index]]$bandit$clone(deep = TRUE)
+          self$sims_and_agents_list[[index]]$policy <-
+            self$sims_and_agents_list[[index]]$policy$clone(deep = FALSE)
           self$sims_and_agents_list[[index]]$sim_index <- sim_index
           self$sims_and_agents_list[[index]]$agent_index <- agent_index
           index <- index + 1
@@ -111,20 +112,25 @@ Simulator <- R6::R6Class(
         doParallel::stopImplicitCluster()
         if (grepl('w|W', .Platform$OS.type)) {
           # Windows
-          self$cl <- parallel::makeCluster(workers, useXDR = FALSE, type = "PSOCK", methods = FALSE, port = 11999, outfile = "doparallel.log")
+          self$cl <- parallel::makeCluster(workers, useXDR = FALSE, type = "PSOCK",
+                                           methods = FALSE, port = 11999, outfile = "doparallel.log")
         } else {
+
           # Linux or MacOS
-          # Problem with fork, seems to pup up irregularly:
-          # self$cl <- parallel::makeCluster(workers, useXDR = FALSE, type = "FORK", methods=FALSE, port=11999, outfile = "doparallel.log")
 
+          # self$cl <- parallel::makeCluster(workers, useXDR = FALSE, type = "FORK", methods=FALSE,
+          #                                   port=11999, outfile = "doparallel.log")
+
+          # There are problems with FORK that seem to pup up irregularly.
           # https://stackoverflow.com/questions/9486952/remove-zombie-processes-using-parallel-package
-          # so to make sure we are ok, we use PSOCK everywhere for now:
+          # so to make sure we are ok, we use PSOCK everywhere for now.
 
-          self$cl <- parallel::makeCluster(workers, useXDR = FALSE, type = "PSOCK", methods = FALSE, setup_timeout = 30, outfile = "doparallel.log")
+          self$cl <- parallel::makeCluster(workers, useXDR = FALSE, type = "PSOCK",
+                                           methods = FALSE, setup_timeout = 30, outfile = "doparallel.log")
           if (grepl('darwin', version$os)) {
-            # macOS - potential future osx/linux specific implementation settings go here
+            # macOS - potential future osx/linux specific settings go here.
           } else {
-            # Linux - potential future osx/linux specific implementation settings go here
+            # Linux - potential future osx/linux specific settings go here.
           }
         }
         message(paste0("Cores available: ",nr_cores))
@@ -151,7 +157,7 @@ Simulator <- R6::R6Class(
       }
       sa_iterator <- itertools::isplitVector(sims_and_agents_list, chunks = nr_of_chunks)
       # include packages that are used in parallel processes
-      par_packages <- c(c("data.table","iterators","itertools","lobstr"),include_packages)
+      par_packages <- c(c("data.table","iterators","itertools"),include_packages)
       # running the main simulation loop
       private$start_time = Sys.time()
       foreach_results <- foreach::foreach(

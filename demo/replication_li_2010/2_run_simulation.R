@@ -5,15 +5,14 @@ library(DBI)
 library(MonetDB.R)
 library(doParallel)
 library(RPushbullet)
-library(lobstr)
 
 # Config -----------------------------------------------------------------------------------------------------
 
 simulations             <- 1
-horizon                 <- 10000 # 30M x 7 too big fo 128GB mem,
-                                    # mem doubles at one point in time.., then falls back in line again.
+horizon                 <- 10000
 buffer_size             <- 1000
 sparsity                <- 0.0
+worker_max              <- 7
 
 save_file_name          <- "Yahoo_T30M_Sparse0.RData"
 
@@ -74,6 +73,7 @@ simulation <- Simulator$new(
     simulations = simulations,
     horizon = horizon,
     do_parallel = TRUE,
+    worker_max = worker_max,
     continuous_counter = TRUE,
     reindex_t = TRUE,
     write_progress_file = TRUE,
