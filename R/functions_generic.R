@@ -87,6 +87,10 @@ plot.History <- function(x, ...) {
     legend_labels <- eval(args$legend_labels)
   else
     legend_labels <- NULL
+  if ("legend_position" %in% names(args))
+    legend_position <- args$legend_position
+  else
+    legend_position <- "topleft"
   if ("limit_agents" %in% names(args))
     limit_agents <- eval(args$limit_agents)
   else
@@ -127,6 +131,7 @@ plot.History <- function(x, ...) {
       ylim = ylim,
       legend_labels = legend_labels,
       legend_border = legend_border,
+      legend_position = legend_position,
       legend_title = legend_title,
       no_par = no_par,
       limit_agents = limit_agents
@@ -151,6 +156,7 @@ plot.History <- function(x, ...) {
       ylim = ylim,
       legend_labels = legend_labels,
       legend_border = legend_border,
+      legend_position = legend_position,
       legend_title = legend_title,
       no_par = no_par,
       limit_agents = limit_agents
@@ -165,6 +171,7 @@ plot.History <- function(x, ...) {
       ylim = ylim,
       legend_labels = legend_labels,
       legend_border = legend_border,
+      legend_position = legend_position,
       legend_title = legend_title,
       no_par = no_par,
       limit_agents = limit_agents

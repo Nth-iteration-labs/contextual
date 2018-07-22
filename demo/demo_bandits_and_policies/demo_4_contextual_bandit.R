@@ -6,7 +6,7 @@ source("../dev.R")
 library(here)
 setwd(here("demo","demo_bandits_and_policies"))
 
-horizon            <- 30000L  # TODO: print all options..
+horizon            <- 3000L  # TODO: print all options..
 simulations        <- 1L
 
 # todo: default print from bandit...
@@ -26,7 +26,7 @@ simulation         <- Simulator$new(agents, horizon, simulations, do_parallel = 
 history            <- simulation$run()
 
 
-plot(history, type = "cumulative", regret = FALSE, #ci = "ci",
+plot(history, type = "cumulative", regret = FALSE, legend_position = "bottomright",  #ci = "ci",
               rate = TRUE) #traces = TRUE, smooth = TRUE)
 
 print(history$meta$sim_total_duration)

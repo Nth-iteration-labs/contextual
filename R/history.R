@@ -179,23 +179,23 @@ History <- R6::R6Class(
       saveRDS(private$.data, file = filename, compress = TRUE)
       invisible(self)
     },
-    load_data = function(filename, nth_rows = 0, auto_stats = TRUE) {
-      if (nrow(private$.data) > 1 && private$.data$agent[[1]] != "") {
+    load_data = function(filename, interval = 0, auto_stats = TRUE, bind_to_existing = FALSE) {
+      if (bind_to_existing == TRUE && nrow(private$.data) > 1 && private$.data$agent[[1]] != "") {
         temp_data <- readRDS(filename)
-        if (nth_rows > 0) temp_data <- temp_data[t %% nth_rows == 0]
+        if (interval > 0) temp_data <- temp_data[t %% interval == 0]
         private$.data <- rbind(private$.data, temp_data)
         temp_data <- NULL
       } else {
         private$.data <- readRDS(filename)
-        if (nth_rows > 0) private$.data <- private$.data[t %% nth_rows == 0]
+        if (interval > 0) private$.data <- private$.data[t %% interval == 0]
       }
       if ("opimal" %in% colnames(private$.data))
         setnames(private$.data, old = "opimal", new = "optimal_reward_value")
       if (auto_stats == TRUE) private$calculate_cum_stats()
       invisible(self)
     },
-    leave_nth = function(nth_rows = 0) {
-      private$.data <- private$.data[t %% nth_rows == 0]
+    leave_nth = function(interval = 0) {
+      private$.data <- private$.data[t %% interval == 0]
       self$reindex_t()
     },
     get_data_frame = function() {
@@ -439,10 +439,10 @@ History <- R6::R6Class(
 #'      Writes the \code{History} log file in its default data.table format,
 #'      with \code{filename} as the name of the file which the data is to be written to.
 #'   }
-#'   \item{\code{load_data = function(filename, nth_rows = 0)}}{
+#'   \item{\code{load_data = function(filename, interval = 0)}}{
 #'      Reads a \code{History} log file in its default \code{data.table} format,
 #'      with \code{filename} as the name of the file which the data are to be read from.
-#'      If \code{nth_rows} is larger than 0, every \code{nth_rows} of data is read instead of the
+#'      If \code{interval} is larger than 0, every \code{interval} of data is read instead of the
 #'      full data file. This can be of use with (a first) analysis of very large data files.
 #'   }
 #'   \item{\code{get_data_frame()}}{

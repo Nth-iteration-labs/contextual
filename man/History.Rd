@@ -66,10 +66,10 @@ Saves one row of simulation data. Is generally not called directly, but from a {
 Writes the \code{History} log file in its default data.table format,
 with \code{filename} as the name of the file which the data is to be written to.
 }
-\item{\code{load_data = function(filename, nth_rows = 0)}}{
+\item{\code{load_data = function(filename, interval = 0)}}{
 Reads a \code{History} log file in its default \code{data.table} format,
 with \code{filename} as the name of the file which the data are to be read from.
-If \code{nth_rows} is larger than 0, every \code{nth_rows} of data is read instead of the
+If \code{interval} is larger than 0, every \code{interval} of data is read instead of the
 full data file. This can be of use with (a first) analysis of very large data files.
 }
 \item{\code{get_data_frame()}}{

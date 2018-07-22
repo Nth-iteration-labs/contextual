@@ -8,26 +8,27 @@ Plot <- R6::R6Class(
     history = NULL,
     cumulative = function(history,
 
-                          regret        = TRUE,
-                          ci            = NULL,
-                          rate          = FALSE,
-                          interval     = 1,
-                          traces        = FALSE,
-                          traces_max    = 100,
-                          traces_alpha  = 0.3,
-                          smooth        = FALSE,
-                          no_par        = FALSE,
-                          xlim          = NULL,
-                          ylim          = NULL,
-                          legend        = TRUE,
-                          use_colors    = TRUE,
-                          color_step    = 1,
-                          lty_step      = 1,
-                          lwd           = 1,
-                          legend_labels = NULL,
-                          legend_border = NULL,
-                          legend_title  = NULL,
-                          limit_agents  = NULL) {
+                          regret             = TRUE,
+                          ci                 = NULL,
+                          rate               = FALSE,
+                          interval           = 1,
+                          traces             = FALSE,
+                          traces_max         = 100,
+                          traces_alpha       = 0.3,
+                          smooth             = FALSE,
+                          no_par             = FALSE,
+                          xlim               = NULL,
+                          ylim               = NULL,
+                          legend             = TRUE,
+                          use_colors         = TRUE,
+                          color_step         = 1,
+                          lty_step           = 1,
+                          lwd                = 1,
+                          legend_labels      = NULL,
+                          legend_border      = NULL,
+                          legend_position    = "topleft",
+                          legend_title       = NULL,
+                          limit_agents       = NULL) {
 
       self$history       <- history
 
@@ -54,27 +55,28 @@ Plot <- R6::R6Class(
       }
 
       private$do_plot(
-        line_data_name = line_data_name,
-        ci_data_name   = ci_data_name,
-        ylab_title     = ylab_title,
-        use_colors     = use_colors,
-        legend         = legend,
-        ci             = ci,
-        no_par         = no_par,
-        interval      = interval,
-        color_step     = color_step,
-        lty_step       = lty_step,
-        lwd            = lwd,
-        xlim           = xlim,
-        ylim           = ylim,
-        legend_labels  = legend_labels,
-        legend_border  = legend_border,
-        legend_title   = legend_title,
-        limit_agents   = limit_agents,
-        traces         = traces,
-        traces_max     = traces_max,
-        traces_alpha   = traces_alpha,
-        smooth         = smooth
+        line_data_name      = line_data_name,
+        ci_data_name        = ci_data_name,
+        ylab_title          = ylab_title,
+        use_colors          = use_colors,
+        legend              = legend,
+        ci                  = ci,
+        no_par              = no_par,
+        interval            = interval,
+        color_step          = color_step,
+        lty_step            = lty_step,
+        lwd                 = lwd,
+        xlim                = xlim,
+        ylim                = ylim,
+        legend_labels       = legend_labels,
+        legend_border       = legend_border,
+        legend_position     = legend_position,
+        legend_title        = legend_title,
+        limit_agents        = limit_agents,
+        traces              = traces,
+        traces_max          = traces_max,
+        traces_alpha        = traces_alpha,
+        smooth              = smooth
       )
 
       invisible(self)
@@ -82,26 +84,27 @@ Plot <- R6::R6Class(
 
     average = function(history,
 
-                       regret        = TRUE,
-                       ci            = NULL,
-                       rate          = FALSE,
-                       interval      = 1,
-                       traces        = FALSE,
-                       traces_max    = 100,
-                       traces_alpha  = 0.3,
-                       smooth        = FALSE,
-                       no_par        = FALSE,
-                       xlim          = NULL,
-                       ylim          = NULL,
-                       legend        = TRUE,
-                       use_colors    = TRUE,
-                       color_step    = 1,
-                       lty_step      = 1,
-                       lwd           = 1,
-                       legend_labels = NULL,
-                       legend_border = NULL,
-                       legend_title  = NULL,
-                       limit_agents  = NULL) {
+                       regret             = TRUE,
+                       ci                 = NULL,
+                       rate               = FALSE,
+                       interval           = 1,
+                       traces             = FALSE,
+                       traces_max         = 100,
+                       traces_alpha       = 0.3,
+                       smooth             = FALSE,
+                       no_par             = FALSE,
+                       xlim               = NULL,
+                       ylim               = NULL,
+                       legend             = TRUE,
+                       use_colors         = TRUE,
+                       color_step         = 1,
+                       lty_step           = 1,
+                       lwd                = 1,
+                       legend_labels      = NULL,
+                       legend_border      = NULL,
+                       legend_position    = "topleft",
+                       legend_title       = NULL,
+                       limit_agents       = NULL) {
 
       self$history <- history
 
@@ -116,27 +119,28 @@ Plot <- R6::R6Class(
       }
 
       private$do_plot(
-        line_data_name = line_data_name,
-        ci_data_name   = ci_data_name,
-        ylab_title     = ylab_title,
-        use_colors     = use_colors,
-        legend         = legend,
-        ci             = ci,
-        no_par         = no_par,
-        interval      = interval,
-        color_step     = color_step,
-        lty_step       = lty_step,
-        lwd            = lwd,
-        xlim           = xlim,
-        ylim           = ylim,
-        legend_labels  = legend_labels,
-        legend_border  = legend_border,
-        legend_title   = legend_title,
-        limit_agents   = limit_agents,
-        traces         = traces,
-        traces_max     = traces_max,
-        traces_alpha   = traces_alpha,
-        smooth         = smooth
+        line_data_name      = line_data_name,
+        ci_data_name        = ci_data_name,
+        ylab_title          = ylab_title,
+        use_colors          = use_colors,
+        legend              = legend,
+        ci                  = ci,
+        no_par              = no_par,
+        interval            = interval,
+        color_step          = color_step,
+        lty_step            = lty_step,
+        lwd                 = lwd,
+        xlim                = xlim,
+        ylim                = ylim,
+        legend_labels       = legend_labels,
+        legend_border       = legend_border,
+        legend_position     = legend_position,
+        legend_title        = legend_title,
+        limit_agents        = limit_agents,
+        traces              = traces,
+        traces_max          = traces_max,
+        traces_alpha        = traces_alpha,
+        smooth              = smooth
       )
 
       invisible(self)
@@ -144,16 +148,17 @@ Plot <- R6::R6Class(
 
     arms = function(history,
 
-                    no_par        = FALSE,
-                    legend        = TRUE,
-                    use_colors    = TRUE,
-                    interval      = 1,
-                    xlim          = NULL,
-                    ylim          = NULL,
-                    legend_labels = NULL,
-                    legend_border = NULL,
-                    legend_title  = NULL,
-                    limit_agents  = NULL) {
+                    no_par             = FALSE,
+                    legend             = TRUE,
+                    use_colors         = TRUE,
+                    interval           = 1,
+                    xlim               = NULL,
+                    ylim               = NULL,
+                    legend_labels      = NULL,
+                    legend_border      = NULL,
+                    legend_position    = "topleft",
+                    legend_title       = NULL,
+                    limit_agents       = NULL) {
 
       self$history <- history
 
@@ -166,7 +171,7 @@ Plot <- R6::R6Class(
       dt <- self$history$get_data_table(
         limit_cols   = c("agent", "t", "choice", "sim"),
         limit_agents = limit_agents,
-        interval    = interval
+        interval     = interval
       )
 
       ylab_title        <- "Arm choice %"
@@ -267,27 +272,28 @@ Plot <- R6::R6Class(
     }
   ),
   private = list(
-    do_plot = function(line_data_name = line_data_name,
-                       ci_data_name   = ci_data_name,
-                       ci             = NULL,
-                       ylab_title     = NULL,
-                       use_colors     = FALSE,
-                       legend         = TRUE,
-                       no_par         = FALSE,
-                       xlim           = NULL,
-                       ylim           = NULL,
-                       interval       = 1,
-                       color_step     = 1,
-                       lty_step       = 1,
-                       lwd            = 1,
-                       legend_labels  = NULL,
-                       legend_border  = NULL,
-                       legend_title   = NULL,
-                       limit_agents   = NULL,
-                       traces         = NULL,
-                       traces_max     = 100,
-                       traces_alpha   = 0.3,
-                       smooth         = FALSE) {
+    do_plot = function(line_data_name      = line_data_name,
+                       ci_data_name        = ci_data_name,
+                       ci                  = NULL,
+                       ylab_title          = NULL,
+                       use_colors          = FALSE,
+                       legend              = TRUE,
+                       no_par              = FALSE,
+                       xlim                = NULL,
+                       ylim                = NULL,
+                       interval            = 1,
+                       color_step          = 1,
+                       lty_step            = 1,
+                       lwd                 = 1,
+                       legend_labels       = NULL,
+                       legend_border       = NULL,
+                       legend_position     = "topleft",
+                       legend_title        = NULL,
+                       limit_agents        = NULL,
+                       traces              = NULL,
+                       traces_max          = 100,
+                       traces_alpha        = 0.3,
+                       smooth              = FALSE) {
 
       if (!is.null(ci) && ci %in% c("sd", "var", "ci")) {
 
@@ -296,7 +302,7 @@ Plot <- R6::R6Class(
           self$history$get_cumulative_data(
             limit_cols   = c("agent", "t", line_data_name, ci_data_name),
             limit_agents = limit_agents,
-            interval    = interval
+            interval     = interval
           )
 
       } else {
@@ -305,7 +311,7 @@ Plot <- R6::R6Class(
           self$history$get_cumulative_data(
             limit_cols   = c("agent", "t", line_data_name),
             limit_agents = limit_agents,
-            interval    = interval
+            interval     = interval
           )
       }
 
@@ -450,11 +456,6 @@ Plot <- R6::R6Class(
       title(xlab = "Time step")
       title(ylab = ylab_title)
       box()
-      if (ylab_title == "Cumulative regret - rate") {
-        legend_position <- "topright"
-      } else {
-        legend_position <- "topleft"
-      }
       if (legend) {
         if (!is.null(legend_labels)) {
           agent_levels <- legend_labels
