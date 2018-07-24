@@ -29,7 +29,7 @@ YahooBandit <- R6::R6Class(
       self$user        <- user
       self$password    <- password
     },
-    pre_calculate = function() {
+    post_initialization = function() {
       self$con <- DBI::dbConnect(MonetDB.R(), host=self$host, dbname=self$dbname,
                                  user=self$user, password=self$password)
       self$buffer <-

@@ -10,7 +10,6 @@ History <- R6::R6Class(
     n            = NULL,
     save_theta   = NULL,
     save_context = NULL,
-
     initialize = function(n = 1, save_context = FALSE, save_theta = FALSE) {
       self$n            <- n
       self$save_context <- save_context
@@ -21,8 +20,6 @@ History <- R6::R6Class(
       gc()
       self$clear_data_table()
       private$initialize_data()
-      private$initialize_stats_data()
-      private$initialize_meta_data()
       invisible(self)
     },
     get_agent_list = function() {
@@ -33,6 +30,9 @@ History <- R6::R6Class(
     },
     number_of_simulations = function() {
       length(levels(as.factor(private$.data$sim)))
+    },
+    update_statistics = function() {
+      calculate_cum_stats()
     },
     save = function(index,
                     t,
@@ -54,7 +54,6 @@ History <- R6::R6Class(
       } else {
         optimal_reward_value <- reward[["optimal_reward_value"]]
       }
-
       data.table::set(
         data,
         index,
@@ -216,6 +215,12 @@ History <- R6::R6Class(
       # private$.data[ , max(t), by = c("agent","sim")][,min(V1), by = c("agent")][,V1]
       invisible(self)
     },
+    initialize_meta_agent = function() {
+      mdims <- matrix(ncol = self$number_of_agents() + 1, nrow = 0)
+      storage.mode(mdims) <- "character"
+      private$.meta_agent <- data.table::data.table(mdims, stringsAsFactors = FALSE)
+      colnames(private$.meta_agent) <- c("id", self$get_agent_list())
+    },
     reindex_t = function(truncate = TRUE) {
       private$.data <- private$.data[, t := seq_len(.N), by = c("agent", "sim")]
       if (truncate) {
@@ -223,15 +228,6 @@ History <- R6::R6Class(
         private$.data <- private$.data[t <= min_t_anywhere]
       }
       invisible(self)
-    },
-    update_statistics = function() {
-      calculate_cum_stats()
-    },
-    initialize_meta_agent = function() {
-      mdims <- matrix(ncol = self$number_of_agents() + 1, nrow = 0)
-      storage.mode(mdims) <- "character"
-      private$.meta_agent <- data.table::data.table(mdims, stringsAsFactors = FALSE)
-      colnames(private$.meta_agent) <- c("id", self$get_agent_list())
     },
     finalize = function() {
       self$clear_data_table()
@@ -257,23 +253,29 @@ History <- R6::R6Class(
       )
       if (self$save_context) private$.data$context <- rep(list(), self$n)
       if (self$save_theta) private$.data$theta <- rep(list(), self$n)
-    },
 
-    initialize_meta_data = function() {
+      # meta data
       private$.meta <- data.table::data.table()
       mdims <- matrix(ncol = 2, nrow = 0)
       storage.mode(mdims) <- "character"
       private$.meta <- data.table::data.table(mdims, stringsAsFactors = FALSE)
       colnames(private$.meta) <- c("id", "data")
-    },
 
-    initialize_stats_data = function() {
+      # cumulative data
       private$.cum_stats <- data.table::data.table()
       private$.cum_stats_final <- data.table::data.table(stringsAsFactors = FALSE)
     },
 
     calculate_cum_stats = function() {
-      calculate_regret_reward()
+
+      private$.data[, regret:= optimal_reward_value - reward]
+
+      private$.data[, cum_reward:= cumsum(reward), by = list(agent, sim)]
+      private$.data[, cum_reward_rate := cum_reward / t]
+
+      private$.data[, cum_regret := cumsum(regret), by = list(agent, sim)]
+      private$.data[, cum_regret_rate :=- cum_regret / t]
+
       private$.cum_stats <- data.table::data.table()
 
       data.table::setkeyv(private$.data,c("t","agent"))
@@ -323,25 +325,6 @@ History <- R6::R6Class(
       idx = private$.cum_stats[, .(idx = .I[.N]), by=agent]$idx
       private$.cum_stats_final <- private$.cum_stats[idx]
 
-    },
-    calculate_regret_reward = function() {
-      # TODO: refactor this .. its messy, all these functions, pointing to eachother
-
-      calculate_regret()
-      calculate_cumulative_reward()
-      calculate_cumulative_regret()
-    },
-    calculate_regret = function() {
-      private$.data[,regret:= optimal_reward_value - reward]
-    },
-    calculate_cumulative_reward = function() {
-      private$.data[, cum_reward:= cumsum(reward), by = list(agent, sim)]
-      private$.data[, cum_reward_rate := cum_reward / t]
-    },
-    calculate_cumulative_regret = function() {
-      if (!"regret" %in% colnames(private$.data)) self$calculate_regret()
-      private$.data[, cum_regret := cumsum(regret), by = list(agent, sim)]
-      private$.data[, cum_regret_rate :=- cum_regret / t]
     },
     data_table_to_named_nested_list = function(dt, transpose = FALSE) {
       df_m <- as.data.frame(dt)

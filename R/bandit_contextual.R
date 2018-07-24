@@ -20,7 +20,7 @@ ContextualBandit <- R6::R6Class(
       self$k                             <- k
       self$d                             <- d
     },
-    pre_calculate = function() {
+    post_initialization = function() {
       if (is.na(self$user_model & self$num_users > 0)) {
         self$user_model  <- matrix(sample(c(0, 1), replace = TRUE, size = self$num_users * self$d), self$num_users, self$d )
       }

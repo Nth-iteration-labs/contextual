@@ -23,12 +23,11 @@ BernoulliBandit <- R6::R6Class(
       self$arm_one_shape                  <- arm_one_shape    # non-negative parameters of the Beta distribution arm one
       self$arm_two_shape                  <- arm_two_shape    # non-negative parameters of the Beta distribution arm two
     },
-    pre_calculate = function() {
+    post_initialization = function() {
       poisson_probs                       <- rpois(self$n_subjects , self$lambda)
       self$probs_users                    <- poisson_probs / sum(poisson_probs)
       self$probs_arm_one                  <- rbeta(self$n_subjects, self$arm_one_shape[1], self$arm_one_shape[2])
       self$probs_arm_two                  <- rbeta(self$n_subjects, self$arm_two_shape[1], self$arm_two_shape[2])
-
     },
     get_context = function(t) {
       if (self$subject_poisson_sampling) {

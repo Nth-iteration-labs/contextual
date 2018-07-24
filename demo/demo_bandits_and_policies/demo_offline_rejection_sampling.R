@@ -57,6 +57,6 @@ simulation <-
 
 after <- simulation$run()
 dt <- after$get_data_table()                                  # TODO: Why no optimal (so no regret) at all here anymore?
-plot(after, regret = FALSE, type = "cumulative", rate = TRUE) # TODO: type = "cumulative"? true/false too?
+plot(after, regret = FALSE, type = "cumulative", rate = TRUE)
 a <- after$get_data_table()
 if (file.exists("test.RData")) file.remove("test.RData")

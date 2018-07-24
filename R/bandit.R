@@ -12,7 +12,7 @@ Bandit <- R6::R6Class(
     initialize  = function() {
       # Initialize Bandit.
     },
-    pre_calculate = function() {    # TODO: rename to, for example, initiate?
+    post_initialization = function() {
       # Called after setting seed, but before iterating over T. Do random generation here.
     },
     get_context = function(t) {
@@ -30,7 +30,7 @@ Bandit <- R6::R6Class(
       stop("Bandit subclass needs to implement bandit$generate_cache()
            when bandit$precaching is TRUE.", call. = FALSE)
     },
-    close = function() { # TODO: should be named differently too, as may become private?
+    close = function() {
       # called on object destruction
     }
   )
@@ -45,7 +45,7 @@ Bandit <- R6::R6Class(
 #' \code{Bandit} subclasses may (pre)generate these values synthetically, based on offline data, etc.
 #'
 #' @name Bandit
-#' @aliases pre_calculate get_context generate_bandit_data
+#' @aliases post_initialization get_context generate_bandit_data
 #'
 #' @importFrom R6 R6Class
 #'
@@ -60,7 +60,7 @@ Bandit <- R6::R6Class(
 #'
 #'   \item{\code{new()}}{ Generates and initializes a new \code{Bandit} object. }
 #'
-#'   \item{\code{pre_calculate()}}{
+#'   \item{\code{post_initialization()}}{
 #'      Called right after \code{Simulator} sets its seed,
 #'      but before it starts iterating over all time steps \code{t} in T. If you need to initialize random values in a \code{Policy},
 #'      this is the place to do so.

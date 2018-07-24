@@ -6,10 +6,8 @@ source("../dev.R")
 library(here)
 setwd(here("demo","demo_bandits_and_policies"))
 
-horizon            <- 3000L  # TODO: print all options..
+horizon            <- 3000L
 simulations        <- 1L
-
-# todo: default print from bandit...
 
 ##############  Generate general context plus users
 

@@ -39,31 +39,6 @@ if (grepl('w|W', .Platform$OS.type)) {
 #setwd("~/GitHub")
 #gp("contextual")
 
-# TODO LIST --------------------------------------------------------------------------------------------------
-
-# remove some files from gitignore, clean out files from dirs ... and add gitignore.
-
-##### writing: work out regret..
-
-# comparison doc of all bandit: strengths, weakneseses (computational eff, context / non, variance, etc)
-
-# TODO: is optimal arm the absolute optimal arm, or the oracle optimal arm?
-# TODO: check when NA saved to history (ie in the case of oracle/optimal not known etc)
-# TODO: propensity
-
-# prio 2
-# TODO: visualisation(s) from thesis
-# TODO: MODEL type input
-# TODO: make sure enough checks on inputs..
-# TODO: time calculation, benchmarking per policy, how?
-
-# prio 3
-
-# TODO: blog about all this, do JS versions
-# TODO: fix external plot device on linux -> for live plot
-# TODO: Ability to add/remove arms
-# TODO: Adversarial
-
 # PERFORMANCE DATA  ------------------------------------------------------------------------------------------
 
 # on 58  cores:    k3*d3 * 5 policies * 300  * 10000 --> 132 seconds

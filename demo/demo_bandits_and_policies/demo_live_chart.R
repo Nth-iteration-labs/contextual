@@ -4,10 +4,10 @@ setwd(here("demo","demo_bandits_and_policies"))
 source("../dev.R")
 
 
-plot <- Plot$new()                                                              # Initialize live plot. TODO: change to within class.
-plot$set_external(T, 11L, 6L)                                                   # Set plot to external window when in Rstudio.
+plot <- Plot$new()
+plot$set_external(T, 11L, 6L)
 
-agents <- list()                                                                # A list to keep track of our agents
+agents <- list()
 
 bandit  = SyntheticBandit$new(
   reward_family =         "Bernoulli"
