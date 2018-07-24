@@ -28,7 +28,7 @@ LiSamplingOfflineBandit <- R6::R6Class(
       if (private$S$choice[[index]] == action$choice) {
         list(
           reward = reward_at_index,
-          if (!is.null(optimal_at_index)) optimal_reward_value = optimal_at_index
+          if (!is.null(optimal_at_index)) optimal_reward_value <- optimal_at_index
         )
       } else {
         NULL

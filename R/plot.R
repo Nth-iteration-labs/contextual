@@ -316,7 +316,7 @@ Plot <- R6::R6Class(
       }
 
       if (interval==1 && strtoi(self$history$meta$simulations) > 2000) {
-        interval = ceiling(strtoi(self$history$meta$simulations)/2000)
+        interval <- ceiling(strtoi(self$history$meta$simulations)/2000)
       }
 
       data.table::setorder(data, agent, t)

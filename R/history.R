@@ -322,7 +322,7 @@ History <- R6::R6Class(
 
       # final cumulative stats
       private$.cum_stats_final <- data.table::data.table(stringsAsFactors = FALSE)
-      idx = private$.cum_stats[, .(idx = .I[.N]), by=agent]$idx
+      idx <- private$.cum_stats[, .(idx = .I[.N]), by=agent]$idx
       private$.cum_stats_final <- private$.cum_stats[idx]
 
     },

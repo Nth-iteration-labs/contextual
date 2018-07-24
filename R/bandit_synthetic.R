@@ -99,7 +99,7 @@ SyntheticBandit <- R6::R6Class(
     },
     context_to_list = function(t) {
       if (self$precaching) idx <- t else idx <- 1
-      k = self$k
+      k <- self$k
       list(
         k = self$k,
         d = self$d,

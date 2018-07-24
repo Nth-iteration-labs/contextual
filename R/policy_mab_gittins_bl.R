@@ -46,9 +46,9 @@ GittinsBrezziLaiPolicy          <- R6::R6Class(
     gittins_approximation = function(arm) {
       p_hat <- self$theta$mean[[arm]]
       v_arm <- p_hat*(1 - p_hat)
-      v_mean = p_hat*(1 - p_hat)/(self$theta$n[[arm]] + 1)
-      c = - log(self$discount)
-      self$theta$gittins_index[[arm]]= p_hat + sqrt(v_mean) * self$phi(v_mean/(c * v_arm))
+      v_mean <- p_hat*(1 - p_hat)/(self$theta$n[[arm]] + 1)
+      c <- - log(self$discount)
+      self$theta$gittins_index[[arm]] <- p_hat + sqrt(v_mean) * self$phi(v_mean/(c * v_arm))
     },
     phi = function(s) {
       if (s > 15) {

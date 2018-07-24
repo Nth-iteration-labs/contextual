@@ -163,7 +163,7 @@ Simulator <- R6::R6Class(
       # include packages that are used in parallel processes
       par_packages <- c(c("data.table","iterators","itertools"),include_packages)
       # running the main simulation loop
-      private$start_time = Sys.time()
+      private$start_time <- Sys.time()
       foreach_results <- foreach::foreach(
         sims_agents = sa_iterator,
         i = iterators::icount(),
@@ -218,7 +218,7 @@ Simulator <- R6::R6Class(
       }
       foreach_results <- rbindlist(foreach_results)
       self$history$set_data_table(foreach_results, auto_stats = FALSE)
-      private$end_time = Sys.time()
+      private$end_time <- Sys.time()
       if (reindex_t) self$history$reindex_t()
       agent_meta_to_history()
       self$history$update_statistics()

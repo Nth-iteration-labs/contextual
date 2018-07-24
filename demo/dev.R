@@ -36,8 +36,8 @@ if (grepl('w|W', .Platform$OS.type)) {
 }
 
 #goodpractice
-#setwd("~/GitHub")
-#gp("contextual")
+setwd("~/GitHub")
+goodpractice::gp("contextual")
 
 # PERFORMANCE DATA  ------------------------------------------------------------------------------------------
 

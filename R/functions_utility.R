@@ -20,7 +20,7 @@
 #' @param x column vector to update inv with
 #'
 #' @export
-sherman_morrisson = function(inv, x) {
+sherman_morrisson <- function(inv, x) {
   inv - c((inv %*% (outer(x, x) %*% inv))) / c(1.0 + (crossprod(x,inv) %*% x))
 }
 #' Decrement
