@@ -10,7 +10,6 @@
 \alias{get_data_table}
 \alias{set_data_frame}
 \alias{get_data_frame}
-\alias{leave_nth}
 \alias{load_data}
 \alias{cumulative}
 \alias{save}

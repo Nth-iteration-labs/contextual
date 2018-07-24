@@ -2,7 +2,7 @@
 % Please edit documentation in R/bandit.R
 \name{Bandit}
 \alias{Bandit}
-\alias{pre_calculate}
+\alias{post_initialization}
 \alias{get_context}
 \alias{generate_bandit_data}
 \title{Bandit}
@@ -27,7 +27,7 @@ each generating a \code{reward} for each of its \code{k} arms at each time step 
 
 \item{\code{new()}}{ Generates and initializes a new \code{Bandit} object. }
 
-\item{\code{pre_calculate()}}{
+\item{\code{post_initialization()}}{
 Called right after \code{Simulator} sets its seed,
 but before it starts iterating over all time steps \code{t} in T. If you need to initialize random values in a \code{Policy},
 this is the place to do so.

@@ -177,9 +177,9 @@ History &lt;- History$new(n = 1, save_context = FALSE, save_theta = FALSE)
                    theta_value = NA)</code></dt><dd><p>Saves one row of simulation data. Is generally not called directly, but from a Simulator instance.</p></dd>
 <dt><code>save_data(filename = NA)</code></dt><dd><p>Writes the <code>History</code> log file in its default data.table format,
 with <code>filename</code> as the name of the file which the data is to be written to.</p></dd>
-<dt><code>load_data = function(filename, nth_rows = 0)</code></dt><dd><p>Reads a <code>History</code> log file in its default <code>data.table</code> format,
+<dt><code>load_data = function(filename, interval = 0)</code></dt><dd><p>Reads a <code>History</code> log file in its default <code>data.table</code> format,
 with <code>filename</code> as the name of the file which the data are to be read from.
-If <code>nth_rows</code> is larger than 0, every <code>nth_rows</code> of data is read instead of the
+If <code>interval</code> is larger than 0, every <code>interval</code> of data is read instead of the
 full data file. This can be of use with (a first) analysis of very large data files.</p></dd>
 <dt><code>get_data_frame()</code></dt><dd><p>Returns the <code>History</code> log as a <code>data.frame</code>.</p></dd>
 <dt><code>get_data_table()</code></dt><dd><p>Returns the <code>History</code> log as a <code>data.table</code>.</p></dd>
@@ -191,11 +191,6 @@ by agent and simulation.</p></dd>
 if <code>truncate</code> is <code>TRUE</code>, truncates the resulting data to the shortest simulation
 grouped by agent and simulation.</p></dd>
 <dt><code>print_data()</code></dt><dd><p>Prints a summary of the <code>History</code> log.</p></dd>
-<dt><code>cumulative(final = TRUE, regret = TRUE, rate = FALSE)</code></dt><dd><p>Returns cumulative reward (when <code>regret</code> is <code>FALSE</code>) or regret. When <code>final</code> is <code>TRUE</code>,
-it only returns the final value. When <code>final</code> is FALSE, it returns a <code>data.table</code> containing all
-cumulative reward or regret values from 1 to T.
-When <code>rate</code> is <code>TRUE</code>, cumulative reward or regret are divided by column <code>t</code> before any values
-are returned.</p></dd>
 </dl>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>

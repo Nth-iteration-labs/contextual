@@ -162,7 +162,7 @@ each generating a <code>reward</code> for each of its <code>k</code> arms at eac
     
     <dl class='dl-horizontal'>
     <dt><code>new()</code></dt><dd><p>Generates and initializes a new <code>Bandit</code> object.</p></dd>
-    <dt><code>pre_calculate()</code></dt><dd><p>Called right after <code>Simulator</code> sets its seed,
+    <dt><code>post_initialization()</code></dt><dd><p>Called right after <code>Simulator</code> sets its seed,
 but before it starts iterating over all time steps <code>t</code> in T. If you need to initialize random values in a <code>Policy</code>,
 this is the place to do so.</p></dd>
     <dt><code>get_context(t)</code></dt><dd><p>Returns a named list <code>list(k = n_arms, d = n_features, X = context)</code>
