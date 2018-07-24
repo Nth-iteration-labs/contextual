@@ -74,7 +74,7 @@ Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link
 Other contextual subclasses: \code{\link{BasicBandit}},
   \code{\link{ContextualBandit}},
   \code{\link{ContextualDisjointThompsonSamplingPolicy}},
-  \code{\link{ContextualEpsilonGreedyPolicy}},
+  \code{\link{ContextualEpsilonGreedyDisjointPolicy}},
   \code{\link{ContinuumBandit}},
   \code{\link{DoublyRobustOfflineBandit}},
   \code{\link{EpsilonFirstPolicy}},
