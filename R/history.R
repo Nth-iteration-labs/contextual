@@ -163,7 +163,7 @@ History <- R6::R6Class(
       invisible(self)
     },
     load_data = function(filename, interval = 0, auto_stats = TRUE, bind_to_existing = FALSE) {
-      if (bind_to_existing == TRUE && nrow(private$.data) > 1 && private$.data$agent[[1]] != "") {
+      if (isTRUE(bind_to_existing) && nrow(private$.data) > 1 && private$.data$agent[[1]] != "") {
         temp_data <- readRDS(filename)
         if (interval > 0) temp_data <- temp_data[t %% interval == 0]
         private$.data <- rbind(private$.data, temp_data)
@@ -174,7 +174,7 @@ History <- R6::R6Class(
       }
       if ("opimal" %in% colnames(private$.data))
         setnames(private$.data, old = "opimal", new = "optimal_reward_value")
-      if (auto_stats == TRUE) private$calculate_cum_stats()
+      if (isTRUE(auto_stats)) private$calculate_cum_stats()
       invisible(self)
     },
     get_data_frame = function() {
@@ -182,7 +182,7 @@ History <- R6::R6Class(
     },
     set_data_frame = function(df, auto_stats = TRUE) {
       private$.data <- as.data.table(df)
-      if (auto_stats == TRUE) private$calculate_cum_stats()
+      if (isTRUE(auto_stats)) private$calculate_cum_stats()
       invisible(self)
     },
     get_data_table = function(limit_agents = NULL, limit_cols = NULL, interval = 1, no_zero_sim = FALSE) {
@@ -202,7 +202,7 @@ History <- R6::R6Class(
     },
     set_data_table = function(dt, auto_stats = TRUE) {
       private$.data <- dt
-      if (auto_stats == TRUE) private$calculate_cum_stats()
+      if (isTRUE(auto_stats)) private$calculate_cum_stats()
       invisible(self)
     },
     clear_data_table = function() {

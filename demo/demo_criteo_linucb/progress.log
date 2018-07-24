@@ -1,0 +1,4 @@
+23:09:27.891433, Worker: 1, Sim: 1 of 4, running Agent: LinUCB alpha = 0.001
+23:09:33.221621, Worker: 1, Sim: 2 of 4, running Agent: LinUCB alpha = 0.01
+23:09:38.569788, Worker: 1, Sim: 3 of 4, running Agent: LinUCB alpha = 0.1
+23:09:44.012003, Worker: 1, Sim: 4 of 4, running Agent: LinUCB alpha = 1.0

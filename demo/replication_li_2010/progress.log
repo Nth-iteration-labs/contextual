@@ -1,0 +1,7 @@
+19:29:23.598596, Worker: 1, Sim: 1 of 3, running Agent: LinUCB Dis
+19:29:23.614226, Worker: 2, Sim: 1 of 2, running Agent: EGreedySeg
+19:29:23.629853, Worker: 3, Sim: 1 of 2, running Agent: UCB1Seg
+19:29:46.098690, Worker: 2, Sim: 2 of 2, running Agent: UCB1
+19:29:46.527785, Worker: 3, Sim: 2 of 2, running Agent: Random
+19:29:48.989573, Worker: 1, Sim: 2 of 3, running Agent: LinUCB Hyb
+19:30:21.223961, Worker: 1, Sim: 3 of 3, running Agent: EGreedy

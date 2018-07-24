@@ -143,6 +143,9 @@ Simulator <- R6::R6Class(
         `%fun%` <- foreach::`%dopar%`
         message("Postworkercreation")
       }
+      # Set MKL threads to 1, if Microsoft R
+      try(library(RevoUtilsMath), silent=TRUE)
+      try(RevoUtilsMath::setMKLthreads(1), silent=TRUE)
       # copy relevant variables to local environment
       horizon <- self$horizon
       sims_and_agents_list <- self$sims_and_agents_list
@@ -164,6 +167,7 @@ Simulator <- R6::R6Class(
       par_packages <- c(c("data.table","iterators","itertools"),include_packages)
       # running the main simulation loop
       private$start_time <- Sys.time()
+
       foreach_results <- foreach::foreach(
         sims_agents = sa_iterator,
         i = iterators::icount(),

@@ -52,7 +52,7 @@ Agent <- R6::R6Class(
           theta   <- policy$theta
         }
       }
-      if(self$write_log == TRUE) {
+      if(isTRUE(self$write_log)) {
         if (agent_t %% self$log_interval == 0) {
           message(paste0("[",Sys.time(),"] ",sprintf("%9s", agent_t)," > ",self$name," running ",bandit$class_name,
                          " and ",policy$class_name))

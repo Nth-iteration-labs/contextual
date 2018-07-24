@@ -53,8 +53,10 @@ for (dp in do_poisson) {
 # Some plot specific adaptations:
 regret_df_plot <- regret_df
 
+?
+
 regret_df_plot[c(1, 2, 3, 8, 9)] <- lapply(regret_df_plot[c(1, 2, 3, 8, 9)], as.numeric)
-regret_df_plot$poisson = ifelse(regret_df_plot$poisson == TRUE, "Poisson", "Uniform")
+regret_df_plot$poisson = ifelse(isTRUE(regret_df_plot$poisson), "Poisson", "Uniform")
 regret_df_plot$betas = ifelse(regret_df_plot$betas == "1.5", "Beta(1.5,1.5)", "Beta(5,5)")
 regret_df_plot[c(1:7)] <- lapply(regret_df_plot[c(1:7)], as.factor)
 regret_df_plot$subpolicies <- factor(regret_df_plot$subpolicies, levels = list("Partial","Unpooled", "Pooled"))

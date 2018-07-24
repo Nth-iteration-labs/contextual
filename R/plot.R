@@ -221,7 +221,7 @@ Plot <- R6::R6Class(
         ylim = c(min_ylim, max_ylim)
       )
 
-      if (use_colors == TRUE) {
+      if (isTRUE(use_colors)) {
         cl <- private$gg_color_hue(length(arm_levels))
       } else {
         cl <- gray.colors(length(arm_levels))
@@ -324,7 +324,7 @@ Plot <- R6::R6Class(
       agent_levels <- levels(as.factor(data$agent))
       n_agents <- length(agent_levels)
 
-      if (smooth == TRUE) {
+      if (isTRUE(smooth)) {
         for (agent_name in agent_levels) {
           data[data$agent == agent_name, c("t", line_data_name) :=
             supsmu(data[data$agent == agent_name]$t, data[data$agent == agent_name][[line_data_name]])]
@@ -388,7 +388,7 @@ Plot <- R6::R6Class(
           agent_sims <- unique(dt[dt$agent == agent_name]$sim)
           for (as in head(agent_sims, traces_max)) {
             Sys.sleep(0)
-            if (smooth == TRUE) {
+            if (isTRUE(smooth)) {
               lines(supsmu(
                 dt[dt$agent == agent_name & dt$sim == as]$t,
                 dt[dt$agent == agent_name & dt$sim == as][[line_data_name]]

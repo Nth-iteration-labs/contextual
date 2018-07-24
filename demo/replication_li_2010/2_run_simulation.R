@@ -27,9 +27,6 @@ setwd(here("demo", "replication_li_2010"))
 
 doParallel::stopImplicitCluster()
 
-try(library(RevoUtilsMath), silent=TRUE)
-try(RevoUtilsMath::setMKLthreads(3), silent=TRUE)
-
 source("./demo_yahoo_classes/yahoo_bandit.R", encoding="utf-8")
 source("./demo_yahoo_classes/yahoo_policy_epsilon_greedy.R", encoding="utf-8")
 source("./demo_yahoo_classes/yahoo_policy_epsilon_greedy_seg.R", encoding="utf-8")
