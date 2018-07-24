@@ -200,7 +200,7 @@ plot.History <- function(x, ...) {
 #'
 #' @export
 print.History <- function(x, ...) {
-  x$print_data()
+  summary.History(x)
 }
 
 #' Summary Method for Contextual History
@@ -231,7 +231,7 @@ summary.History <- function(object, ...) {
   else
     limit_agents <- NULL
 
-  cum <- object$get_cumulative_final(limit_agents=limit_agents, as_list = FALSE)
+  cum <- object$get_cumulative_last_value(limit_agents=limit_agents, as_list = FALSE)
   cum$sims <- object$number_of_simulations()
 
   cat("\nAgents:\n\n")
@@ -245,6 +245,13 @@ summary.History <- function(object, ...) {
   cat("\n\nCumulative Reward:\n\n")
   print(cum[,c("agent","t", "sims", "cum_reward", "cum_reward_var",
                "cum_reward_sd", "cum_reward_ci")], fill = TRUE, row.names = FALSE)
+
+  cat("\n\nRelative Cumulative Reward / Click Through Rate):\n\n")
+  ctr <- cum[,c("agent","t", "sims", "cum_reward_rate", "cum_reward_rate_var",
+               "cum_reward_rate_sd", "cum_reward_rate_ci")]
+  names(ctr) <- c("agent","t", "sims", "ctr_reward", "ctr_reward_var",
+               "ctr_reward_sd", "ctr_reward_ci")
+  print(ctr, fill = TRUE, row.names = FALSE)
 
 
   cat("\n")

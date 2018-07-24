@@ -96,13 +96,6 @@ grouped by agent and simulation.
 \item{\code{print_data()}}{
 Prints a summary of the \code{History} log.
 }
-\item{\code{cumulative(final = TRUE, regret = TRUE, rate = FALSE)}}{
-Returns cumulative reward (when \code{regret} is \code{FALSE}) or regret. When \code{final} is \code{TRUE},
-it only returns the final value. When \code{final} is FALSE, it returns a \code{data.table} containing all
-cumulative reward or regret values from 1 to T.
-When \code{rate} is \code{TRUE}, cumulative reward or regret are divided by column \code{t} before any values
-are returned.
-}
 }
 }
 

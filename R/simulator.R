@@ -66,7 +66,11 @@ Simulator <- R6::R6Class(
       # (re)create history's data.table
       self$history <- History$new(self$horizon * self$number_of_agents * self$simulations)
 
-      self$history$add_meta_data("sim_start_time",format(Sys.time(), "%a %b %d %X %Y"))
+      self$history$set_meta_data("horizon",self$horizon)
+      self$history$set_meta_data("agents",self$number_of_agents)
+      self$history$set_meta_data("simulations",self$simulations)
+
+      self$history$set_meta_data("sim_start_time",format(Sys.time(), "%a %b %d %X %Y"))
       self$sims_and_agents_list <-  vector("list", self$simulations*self$number_of_agents)
       # unique policy names through appending sequence numbers to duplicates
       agent_name_list <- list()
@@ -218,8 +222,8 @@ Simulator <- R6::R6Class(
       if (reindex_t) self$history$reindex_t()
       agent_meta_to_history()
       self$history$update_statistics()
-      self$history$add_meta_data("sim_end_time",format(Sys.time(), "%a %b %d %X %Y"))
-      self$history$add_meta_data("sim_total_duration",
+      self$history$set_meta_data("sim_end_time",format(Sys.time(), "%a %b %d %X %Y"))
+      self$history$set_meta_data("sim_total_duration",
                                  formatted_difftime(private$end_time - private$start_time))
       self$close()
       self$history

@@ -26,6 +26,8 @@ simulation         <- Simulator$new(agents, horizon, simulations, do_parallel = 
 history            <- simulation$run()
 
 
+
+
 plot(history, type = "cumulative", regret = FALSE, legend_position = "bottomright",  #ci = "ci",
               rate = TRUE) #traces = TRUE, smooth = TRUE)
 
