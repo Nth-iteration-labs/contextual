@@ -3,6 +3,12 @@ inst/doc
 tests/testthat/Rplots.pdf
 yahoodb-journal
 
+Thumbs.db
+
+.DS_Store
+
+*tmp*
+
 credentials.json
 **/credentials.json
 
@@ -57,3 +63,8 @@ rsconnect/
 ### R.Bookdown Stack ###
 # R package: bookdown caching files
 *_files/
+
+inst/doc
+*.orig
+.env
+*.tex
