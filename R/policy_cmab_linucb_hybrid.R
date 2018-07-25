@@ -11,7 +11,7 @@ LinUCBHybridPolicy <- R6::R6Class(
       self$alpha <- alpha
     },
     set_parameters = function() {
-      dd <- self$d*self$d  # TODO: both user and context have the same amount of features in basic sim .. not always IRL.
+      dd <- self$d*self$d
       self$theta <- list('A0' = diag(1,dd,dd), 'A0_inv' = diag(1,dd,dd), 'b0' = rep(0,dd))
       self$theta_to_arms <- list( 'A' = diag(1,self$d,self$d), 'B' = matrix(0,self$d,dd), 'b' = rep(0,self$d))
     },

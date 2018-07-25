@@ -14,11 +14,12 @@ simulations        <- 1L
 bandit             <- ContextualBandit$new(k = 5, d = 6, num_users = 10)
 
 agents             <- list(
-                           Agent$new(LinUCBHybridSmPolicy$new(0.7), bandit),
+                           Agent$new(LinUCBHybridOptimizedPolicy$new(0.7), bandit),
                            Agent$new(EpsilonGreedyPolicy$new(0.1), bandit),
-                           Agent$new(ContextualEpsilonGreedyDisjointPolicy$new(100), bandit),
+                           Agent$new(ContextualEpochGreedyDisjointPolicy$new(100), bandit),
+                           Agent$new(ContextualEpochGreedyHybridPolicy$new(100), bandit),
                            Agent$new(ContextualThompsonSamplingPolicy$new(), bandit),
-                           Agent$new(LinUCBDisjointSmPolicy$new(0.7), bandit)
+                           Agent$new(LinUCBDisjointOptimizedPolicy$new(0.7), bandit)
                           )
 
 simulation         <- Simulator$new(agents, horizon, simulations, do_parallel = TRUE)

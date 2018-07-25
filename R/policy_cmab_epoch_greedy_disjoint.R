@@ -14,16 +14,14 @@ ContextualEpochGreedyDisjointPolicy <- R6::R6Class(
     },
     set_parameters = function() {
       self$theta_to_arms <- list( 'A' = diag(1,self$d,self$d), 'b' = rep(0,self$d),
-                                  'n' = 0 )
+                                  'n' = 0 )  # TODO: (why) n needed?
     },
     get_action = function(t, context) {
-
       if (t <= self$p) {
         arm <- 1 + (t %% context$k)
         self$action$choice = arm
         return(self$action)
       }
-
       self$e <- rbinom(1,1,self$p/t)
       if(self$e==1) {
           arm <- sample.int(context$k, 1, replace = TRUE)

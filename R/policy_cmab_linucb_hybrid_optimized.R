@@ -1,17 +1,17 @@
 #' @export
-LinUCBHybridSmPolicy <- R6::R6Class(
+LinUCBHybridOptimizedPolicy <- R6::R6Class(
   portable = FALSE,
   class = FALSE,
   inherit = Policy,
   public = list(
     alpha = NULL,
-    class_name = "LinUCBHybridSmPolicy",
+    class_name = "LinUCBHybridOptimizedPolicy",
     initialize = function(alpha = 1.0) {
       super$initialize()
       self$alpha <- alpha
     },
     set_parameters = function() {
-      dd <- self$d*self$d  # TODO: both user and context have the same amount of features in basic sim .. not always IRL.
+      dd <- self$d*self$d
       self$theta <- list('A0' = diag(1,dd,dd), 'A0_inv' = diag(1,dd,dd), 'b0' = rep(0,dd))
       self$theta_to_arms <- list( 'A' = diag(1,self$d,self$d), 'A_inv' = diag(1,self$d,self$d),
                                   'B' = matrix(0,self$d,dd), 'b' = rep(0,self$d))
@@ -121,16 +121,16 @@ LinUCBHybridSmPolicy <- R6::R6Class(
 #'
 #' Lihong Li et all
 #'
-#' Each time step t, \code{LinUCBHybridSmPolicy} runs a linear regression per arm that produces coefficients for each context feature \code{d}.
+#' Each time step t, \code{LinUCBHybridOptimizedPolicy} runs a linear regression per arm that produces coefficients for each context feature \code{d}.
 #' It then observes the new context, and generates a predicted payoff or reward together with a confidence interval for each available arm.
 #' It then proceeds to choose the arm with the highest upper confidence bound.
 #'
-#' @name LinUCBHybridSmPolicy
+#' @name LinUCBHybridOptimizedPolicy
 #' @family contextual subclasses
 #'
 #' @section Usage:
 #' \preformatted{
-#' policy <- LinUCBHybridSmPolicy(alpha = 1.0)
+#' policy <- LinUCBHybridOptimizedPolicy(alpha = 1.0)
 #' }
 #'
 #' @section Arguments:
@@ -159,7 +159,7 @@ LinUCBHybridSmPolicy <- R6::R6Class(
 #' @section Methods:
 #'
 #' \describe{
-#'   \item{\code{new(alpha = 1)}}{ Generates a new \code{LinUCBHybridSmPolicy} object. Arguments are defined in the Argument section above.}
+#'   \item{\code{new(alpha = 1)}}{ Generates a new \code{LinUCBHybridOptimizedPolicy} object. Arguments are defined in the Argument section above.}
 #' }
 #'
 #' \describe{

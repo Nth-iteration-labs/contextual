@@ -15,7 +15,7 @@ bandit             <- SyntheticBandit$new(weights = context_weights, precaching 
 agents             <- list( Agent$new(OraclePolicy$new(), bandit),
                             Agent$new(EpsilonGreedyPolicy$new(0.1), bandit),
                             Agent$new(ContextualDisjointThompsonSamplingPolicy$new(), bandit),
-                            Agent$new(LinUCBDisjointSmPolicy$new(0.6), bandit))
+                            Agent$new(LinUCBDisjointOptimizedPolicy$new(0.6), bandit))
 
 simulation         <- Simulator$new(agents, horizon, simulations)
 history            <- simulation$run()

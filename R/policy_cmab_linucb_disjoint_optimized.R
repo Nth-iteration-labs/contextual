@@ -1,11 +1,11 @@
 #' @export
-LinUCBDisjointSmPolicy <- R6::R6Class(
+LinUCBDisjointOptimizedPolicy <- R6::R6Class(
   portable = FALSE,
   class = FALSE,
   inherit = Policy,
   public = list(
     alpha = NULL,
-    class_name = "LinUCBDisjointSmPolicy",
+    class_name = "LinUCBDisjointOptimizedPolicy",
     initialize = function(alpha = 1.0) {
       super$initialize()
       self$alpha <- alpha
@@ -60,16 +60,16 @@ LinUCBDisjointSmPolicy <- R6::R6Class(
 #'
 #' Lihong Li et all
 #'
-#' Each time step t, \code{LinUCBDisjointSmPolicy} runs a linear regression per arm that produces coefficients for each context feature \code{d}.
+#' Each time step t, \code{LinUCBDisjointOptimizedPolicy} runs a linear regression per arm that produces coefficients for each context feature \code{d}.
 #' It then observes the new context, and generates a predicted payoff or reward together with a confidence interval for each available arm.
 #' It then proceeds to choose the arm with the highest upper confidence bound.
 #'
-#' @name LinUCBDisjointSmPolicy
+#' @name LinUCBDisjointOptimizedPolicy
 #' @family contextual subclasses
 #'
 #' @section Usage:
 #' \preformatted{
-#' policy <- LinUCBDisjointSmPolicy(alpha = 1.0)
+#' policy <- LinUCBDisjointOptimizedPolicy(alpha = 1.0)
 #' }
 #'
 #' @section Arguments:
@@ -98,7 +98,7 @@ LinUCBDisjointSmPolicy <- R6::R6Class(
 #' @section Methods:
 #'
 #' \describe{
-#'   \item{\code{new(alpha = 1)}}{ Generates a new \code{LinUCBDisjointSmPolicy} object. Arguments are defined in the Argument section above.}
+#'   \item{\code{new(alpha = 1)}}{ Generates a new \code{LinUCBDisjointOptimizedPolicy} object. Arguments are defined in the Argument section above.}
 #' }
 #'
 #' \describe{
