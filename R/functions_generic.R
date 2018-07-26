@@ -178,8 +178,6 @@ plot.History <- function(x, ...) {
     )
   }
 }
-
-
 #' Print Method for Contextual History
 #'
 #' print.history, a method for the print generic. It is designed for a quick look at History data.
@@ -202,7 +200,6 @@ plot.History <- function(x, ...) {
 print.History <- function(x, ...) {
   summary.History(x)
 }
-
 #' Summary Method for Contextual History
 #'
 #' summary.history, a method for the summary generic. It is designed for a quick summary of History data.
@@ -231,8 +228,8 @@ summary.History <- function(object, ...) {
   else
     limit_agents <- NULL
 
-  cum <- object$get_cumulative_last_value(limit_agents=limit_agents, as_list = FALSE)
-  cum$sims <- object$number_of_simulations()
+  cum <- object$get_cumulative_final(limit_agents=limit_agents, as_list = FALSE)
+  cum$sims <- object$get_simulation_count()
 
   cat("\nAgents:\n\n")
   agents <- object$get_agent_list()

@@ -51,7 +51,6 @@ LinUCBDisjointOptimizedPolicy <- R6::R6Class(
   )
 )
 
-
 #' Policy: LinUCB with disjoint linear models
 #'
 #' Algorithm 1 LinUCB with disjoint linear models

@@ -12,7 +12,7 @@ history  <- History$new()
 
 # Take a look at the results ---------------------------------------------------------------------------------
 
-history$load_data(load_file_name)
+history$load_data_table(load_file_name)
 
 plot(history, regret = FALSE, rate = TRUE, interval = 10000,
      type = "cumulative", legend_position = "bottomright")

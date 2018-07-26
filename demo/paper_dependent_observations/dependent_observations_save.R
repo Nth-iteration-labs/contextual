@@ -60,7 +60,7 @@ for (sn in subjects)   {
 
       agent       <- Agent$new(PartiallyPooledThompsonPolicy$new(n_subjects = sn, stan_model = model, warm_up = 10, iter = 20, name = paste0("PartialThompson",sim_str)), bandit)
       history     <- Simulator$new(agents = agent, horizon = horizon, simulations = simulations, include_packages = "rstan", worker_max = worker_max)$run()
-      history$save_data(paste0(data_dir,"PartialThompson",sim_str,".RData"))
+      history$save_data_table(paste0(data_dir,"PartialThompson",sim_str,".RData"))
       history$clear_data_table()
       rm(history,agent)
       gc()
@@ -68,7 +68,7 @@ for (sn in subjects)   {
 
       agent       <- Agent$new(PooledThompsonPolicy$new(name = paste0("PooledThompson",sim_str)), bandit)
       history     <- Simulator$new(agents = agent, horizon = horizon, simulations = simulations, worker_max = worker_max)$run()
-      history$save_data(paste0(data_dir,"PooledThompson",sim_str,".RData"))
+      history$save_data_table(paste0(data_dir,"PooledThompson",sim_str,".RData"))
       history$clear_data_table()
       rm(history,agent)
       gc()
@@ -76,7 +76,7 @@ for (sn in subjects)   {
 
       agent       <- Agent$new(UnpooledThompsonPolicy$new(n_subjects = sn, name = paste0("UnpooledThompson",sim_str)), bandit)
       history     <- Simulator$new(agents = agent, horizon = horizon, simulations = simulations, worker_max = worker_max)$run()
-      history$save_data(paste0(data_dir,"UnpooledThompson",sim_str,".RData"))
+      history$save_data_table(paste0(data_dir,"UnpooledThompson",sim_str,".RData"))
       history$clear_data_table()
       rm(history,agent)
       gc()
@@ -86,7 +86,7 @@ for (sn in subjects)   {
 
       agent       <- Agent$new(PartiallyPooledEgreedyPolicy$new(epsilon = 0.1, n_subjects = sn, name = paste0("PartialEG",sim_str)), bandit)
       history     <- Simulator$new(agents = agent, horizon = horizon, simulations = simulations, worker_max = worker_max)$run()
-      history$save_data(paste0(data_dir,"PartialEG",sim_str,".RData"))
+      history$save_data_table(paste0(data_dir,"PartialEG",sim_str,".RData"))
       history$clear_data_table()
       rm(history,agent)
       gc()
@@ -95,7 +95,7 @@ for (sn in subjects)   {
 
       agent       <- Agent$new(UnpooledEgreedyPolicy$new(epsilon = 0.1, n_subjects = sn, name = paste0("UnpooledEG",sim_str)), bandit)
       history     <- Simulator$new(agents = agent, horizon = horizon, simulations = simulations, worker_max = worker_max)$run()
-      history$save_data(paste0(data_dir,"UnpooledEG",sim_str,".RData"))
+      history$save_data_table(paste0(data_dir,"UnpooledEG",sim_str,".RData"))
       history$clear_data_table()
       rm(history,agent)
       gc()
@@ -104,7 +104,7 @@ for (sn in subjects)   {
 
       agent       <- Agent$new(PooledEgreedyPolicy$new(epsilon = 0.1, name = paste0("PooledEG",sim_str)), bandit)
       history     <- Simulator$new(agents = agent, horizon = horizon, simulations = simulations, worker_max = worker_max)$run()
-      history$save_data(paste0(data_dir,"PooledEG",sim_str,".RData"))
+      history$save_data_table(paste0(data_dir,"PooledEG",sim_str,".RData"))
       history$clear_data_table()
       rm(history,agent)
       gc()
@@ -114,7 +114,7 @@ for (sn in subjects)   {
 
       agent       <- Agent$new(PartiallyPooledUCBPolicy$new(n_subjects = sn, name = paste0("PartialUCB",sim_str)), bandit)
       history     <- Simulator$new(agents = agent, horizon = horizon, simulations = simulations, worker_max = worker_max)$run()
-      history$save_data(paste0(data_dir,"PartialUCB",sim_str,".RData"))
+      history$save_data_table(paste0(data_dir,"PartialUCB",sim_str,".RData"))
       history$clear_data_table()
       rm(history,agent)
       gc()
@@ -123,7 +123,7 @@ for (sn in subjects)   {
 
       agent       <- Agent$new(PooledUCBPolicy$new(name = paste0("PooledUCB",sim_str)), bandit)
       history     <- Simulator$new(agents = agent, horizon = horizon, simulations = simulations, worker_max = worker_max)$run()
-      history$save_data(paste0(data_dir,"PooledUCB",sim_str,".RData"))
+      history$save_data_table(paste0(data_dir,"PooledUCB",sim_str,".RData"))
       history$clear_data_table()
       rm(history,agent)
       gc()
@@ -132,7 +132,7 @@ for (sn in subjects)   {
 
       agent       <- Agent$new(UnpooledUCBPolicy$new(n_subjects = sn, name = paste0("UnpooledUCB",sim_str)), bandit)
       history     <- Simulator$new(agents = agent, horizon = horizon, simulations = simulations, worker_max = worker_max)$run()
-      history$save_data(paste0(data_dir,"UnpooledUCB",sim_str,".RData"))
+      history$save_data_table(paste0(data_dir,"UnpooledUCB",sim_str,".RData"))
       history$clear_data_table()
       rm(history,agent)
       gc()

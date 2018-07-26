@@ -10,7 +10,7 @@ Simulator <- R6::R6Class(
   class = FALSE,
   public = list(
     agents = NULL,
-    number_of_agents = NULL,
+    agent_count = NULL,
     horizon = NULL,
     simulations = NULL,
     worker_max = NULL,
@@ -19,12 +19,12 @@ Simulator <- R6::R6Class(
     save_theta = NULL,
     do_parallel = NULL,
     sims_and_agents_list = NULL,
-    continuous_counter = NULL,
+    t_over_sims = NULL,
     set_seed = NULL,
     write_progress_file = NULL,
     include_packages = NULL,
     cl = NULL,
-    reindex_t = NULL,
+    reindex = NULL,
     initialize = function(agents,
                           horizon = 100L,
                           simulations = 100L,
@@ -32,26 +32,28 @@ Simulator <- R6::R6Class(
                           save_theta = FALSE,
                           do_parallel = TRUE,
                           worker_max = NULL,
-                          continuous_counter = FALSE,
                           set_seed = 0,
                           write_progress_file = FALSE,
                           include_packages = NULL,
-                          reindex_t = FALSE) {
-      gc()
-      self$reindex_t <- reindex_t
+                          t_over_sims = FALSE,
+                          reindex = FALSE) {
+
+      if (!is.list(agents)) agents <- list(agents)
+
+      self$reindex <- reindex
       self$horizon <- horizon
       self$simulations <- simulations
       self$save_theta <- save_theta
       self$save_context <- save_context
-      if (!is.list(agents)) agents <- list(agents)
       self$agents <- agents
-      self$number_of_agents <- length(agents)
+      self$agent_count <- length(agents)
       self$worker_max <- worker_max
       self$do_parallel <- do_parallel
-      self$continuous_counter <- continuous_counter
+      self$t_over_sims <- t_over_sims
       self$set_seed <- set_seed
       self$write_progress_file <- write_progress_file
       self$include_packages <- include_packages
+
       self$reset()
     },
     reset = function() {
@@ -60,22 +62,22 @@ Simulator <- R6::R6Class(
       # create or clear progress.log file
       if (self$write_progress_file) cat(paste0(""), file = "progress.log", append = FALSE)
 
-      # create or clear doparallel.log file
-      if (self$write_progress_file) cat(paste0(""), file = "doparallel.log", append = FALSE)
+      # create or clear parallel.log file
+      if (self$write_progress_file) cat(paste0(""), file = "parallel.log", append = FALSE)
 
       # (re)create history's data.table
-      self$history <- History$new(self$horizon * self$number_of_agents * self$simulations)
+      self$history <- History$new(self$horizon * self$agent_count * self$simulations)
 
       self$history$set_meta_data("horizon",self$horizon)
-      self$history$set_meta_data("agents",self$number_of_agents)
+      self$history$set_meta_data("agents",self$agent_count)
       self$history$set_meta_data("simulations",self$simulations)
 
       self$history$set_meta_data("sim_start_time",format(Sys.time(), "%a %b %d %X %Y"))
-      self$sims_and_agents_list <-  vector("list", self$simulations*self$number_of_agents)
+      self$sims_and_agents_list <-  vector("list", self$simulations*self$agent_count)
       # unique policy names through appending sequence numbers to duplicates
       agent_name_list <- list()
 
-      for (agent_index in 1L:self$number_of_agents) {
+      for (agent_index in 1L:self$agent_count) {
         current_agent_name <- self$agents[[agent_index]]$name
         agent_name_list <- c(agent_name_list,current_agent_name)
         current_agent_name_occurrences <- length(agent_name_list[agent_name_list == current_agent_name])
@@ -88,7 +90,7 @@ Simulator <- R6::R6Class(
       message("Cloning, precaching and precalculating bandits and policies")
       index <- 1
       for (sim_index in 1L:self$simulations) {
-        for (agent_index in 1L:self$number_of_agents) {
+        for (agent_index in 1L:self$agent_count) {
           self$sims_and_agents_list[index]  <- list(self$agents[[agent_index]]$clone(deep = FALSE))
           self$sims_and_agents_list[[index]]$reset()
           self$sims_and_agents_list[[index]]$bandit <-
@@ -115,22 +117,20 @@ Simulator <- R6::R6Class(
         # clean up any leftover processes
         doParallel::stopImplicitCluster()
         if (grepl('w|W', .Platform$OS.type)) {
+
           # Windows
+
           self$cl <- parallel::makeCluster(workers, useXDR = FALSE, type = "PSOCK",
-                                           methods = FALSE, port = 11999, outfile = "doparallel.log")
+                                           methods = FALSE, setup_timeout = 30, outfile = "parallel.log")
         } else {
-
           # Linux or MacOS
-
           # self$cl <- parallel::makeCluster(workers, useXDR = FALSE, type = "FORK", methods=FALSE,
-          #                                   port=11999, outfile = "doparallel.log")
+          #                                   port=11999, outfile = "parallel.log")
 
-          # There are problems with FORK that seem to pup up irregularly.
-          # https://stackoverflow.com/questions/9486952/remove-zombie-processes-using-parallel-package
-          # so to make sure we are ok, we use PSOCK everywhere for now.
-
+          # There are issues with FORK that pop up irregularly and have proven hard to pin down.
+          # So to make sure sims work, we use PSOCK for all operating systems - for now.
           self$cl <- parallel::makeCluster(workers, useXDR = FALSE, type = "PSOCK",
-                                           methods = FALSE, setup_timeout = 30, outfile = "doparallel.log")
+                                           methods = FALSE, setup_timeout = 30, outfile = "parallel.log")
           if (grepl('darwin', version$os)) {
             # macOS - potential future osx/linux specific settings go here.
           } else {
@@ -143,18 +143,17 @@ Simulator <- R6::R6Class(
         `%fun%` <- foreach::`%dopar%`
         message("Postworkercreation")
       }
-      # Set MKL threads to 1, if Microsoft R
-      try(library(RevoUtilsMath), silent=TRUE)
-      try(RevoUtilsMath::setMKLthreads(1), silent=TRUE)
+      # If Microsoft R, set MKL threads to 1, i
+      try({library(RevoUtilsMath);RevoUtilsMath::setMKLthreads(1);}, silent = TRUE)
       # copy relevant variables to local environment
       horizon <- self$horizon
       sims_and_agents_list <- self$sims_and_agents_list
-      number_of_agents <- self$number_of_agents
+      agent_count <- self$agent_count
       save_context <- self$save_context
       save_theta <- self$save_theta
-      reindex_t <- self$reindex_t
+      reindex <- self$reindex
       write_progress_file <- self$write_progress_file
-      continuous_counter <- self$continuous_counter
+      t_over_sims <- self$t_over_sims
       set_seed <- self$set_seed
       # calculate chunk size
       if (length(sims_and_agents_list) <= workers) {
@@ -162,12 +161,12 @@ Simulator <- R6::R6Class(
       } else {
         nr_of_chunks <- workers
       }
+      # split sim vector into chuncks
       sa_iterator <- itertools::isplitVector(sims_and_agents_list, chunks = nr_of_chunks)
       # include packages that are used in parallel processes
       par_packages <- c(c("data.table","iterators","itertools"),include_packages)
       # running the main simulation loop
       private$start_time <- Sys.time()
-
       foreach_results <- foreach::foreach(
         sims_agents = sa_iterator,
         i = iterators::icount(),
@@ -183,11 +182,11 @@ Simulator <- R6::R6Class(
         for (sim_agent in sims_agents) {
           sim_agent_counter <- sim_agent_counter + 1
           if (write_progress_file) {
-            cat(paste0(format(Sys.time(), format = "%H:%M:%OS6"),
-                       ", Worker: ", i,
-                       ", Sim: ", sim_agent_counter,
-                       " of ", sim_agent_total,
-                       ", running Agent: ", sim_agent$name,"\n"),
+            cat(paste0("[",format(Sys.time(), format = "%H:%M:%OS6"),"] ",
+                       "        0 > init - ",sprintf("%-20s", sim_agent$name),
+                       " worker ", i,
+                       " at sim ", sim_agent_counter,
+                       " of ", sim_agent_total,"\n"),
                 file = "progress.log", append = TRUE)
           }
           simulation_index <- sim_agent$sim_index
@@ -198,12 +197,12 @@ Simulator <- R6::R6Class(
           if (sim_agent$bandit$precaching ) {
             sim_agent$bandit$generate_bandit_data(n = horizon)
           }
-          if (continuous_counter) sim_agent$set_t(as.integer((simulation_index - 1L) * horizon))
+          if (t_over_sims) sim_agent$set_t(as.integer((simulation_index - 1L) * horizon))
           step <- list()
           for (t in 1L:horizon) {
             step <- sim_agent$do_step()
             if (!is.null(step[[3]])) {                         #reward
-              local_history$save(
+              local_history$insert(
                 index,
                 t,
                 step[[2]],                                     #action
@@ -223,8 +222,7 @@ Simulator <- R6::R6Class(
       foreach_results <- rbindlist(foreach_results)
       self$history$set_data_table(foreach_results, auto_stats = FALSE)
       private$end_time <- Sys.time()
-      if (reindex_t) self$history$reindex_t()
-      agent_meta_to_history()
+      if (reindex) self$history$reindex()
       self$history$update_statistics()
       self$history$set_meta_data("sim_end_time",format(Sys.time(), "%a %b %d %X %Y"))
       self$history$set_meta_data("sim_total_duration",
@@ -246,10 +244,7 @@ Simulator <- R6::R6Class(
   ),
   private = list(
     start_time = NULL,
-    end_time = NULL,
-    agent_meta_to_history = function() {
-      self$history$initialize_meta_agent()
-    }
+    end_time = NULL
   )
 )
 
@@ -273,11 +268,11 @@ Simulator <- R6::R6Class(
 #'                            save_theta = FALSE,
 #'                            do_parallel = TRUE,
 #'                            worker_max = NULL,
-#'                            continuous_counter = FALSE,
+#'                            t_over_sims = FALSE,
 #'                            set_seed = 0,
 #'                            write_progress_file = TRUE,
 #'                            include_packages = NULL,
-#'                            reindex_t = FALSE)
+#'                            reindex = FALSE)
 #' }
 #'
 #' @section Arguments:
@@ -308,9 +303,9 @@ Simulator <- R6::R6Class(
 #'      is \code{TRUE}. If unspecified, the amount of workers defaults to \code{max(workers_available)-1}.
 #'
 #'   }
-#'   \item{\code{continuous_counter}}{
+#'   \item{\code{t_over_sims}}{
 #'      \code{logical}. Of use to, amongst others, offline Bandits.
-#'      If \code{continuous_counter} is set to \code{TRUE}, the current \code{Simulator}
+#'      If \code{t_over_sims} is set to \code{TRUE}, the current \code{Simulator}
 #'      iterates over all rows in a data set for each repeated simulation.
 #'      If \code{FALSE}, it splits the data into \code{simulations} parts,
 #'      and a different subset of the data for each repeat of an agent's simulation.
@@ -319,7 +314,7 @@ Simulator <- R6::R6Class(
 #'      \code{integer}. Sets the seed of R‘s random number generator for the current \code{Simulator}.
 #'   }
 #'   \item{\code{write_progress_file}}{
-#'       \code{logical}. If \code{TRUE}, \code{Simulator} writes \code{progress.log} and \code{doparallel.log}
+#'       \code{logical}. If \code{TRUE}, \code{Simulator} writes \code{progress.log} and \code{parallel.log}
 #'       files to the current working directory, allowing you to keep track of \code{workers}, iterations,
 #'       and potential errors when running a \code{Simulator} in parallel.
 #'   }
@@ -328,7 +323,7 @@ Simulator <- R6::R6Class(
 #'       R package to be loaded, this option can be used to load that package on each of the workers.
 #'       Ignored if \code{do_parallel} is \code{FALSE}.
 #'   }
-#'   \item{\code{reindex_t}}{
+#'   \item{\code{reindex}}{
 #'      \code{logical}. If \code{TRUE}, removes empty rows from the \code{History} log,
 #'      reindexes the \code{t} column, and truncates the resulting data to the shortest simulation
 #'      grouped by agent and simulation.

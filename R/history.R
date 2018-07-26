@@ -17,31 +17,22 @@ History <- R6::R6Class(
       self$reset()
     },
     reset = function() {
-      gc()
+      gc(reset = FALSE, full = TRUE)
       self$clear_data_table()
-      private$initialize_data()
+      private$initialize_data_tables()
       invisible(self)
-    },
-    get_agent_list = function() {
-      levels(as.factor(private$.data$agent))
-    },
-    number_of_agents = function() {
-      length(self$get_agent_list())
-    },
-    number_of_simulations = function() {
-      length(levels(as.factor(private$.data$sim)))
     },
     update_statistics = function() {
       calculate_cum_stats()
     },
-    save = function(index,
-                    t,
-                    action,
-                    reward,
-                    agent_name,
-                    simulation_index,
-                    context_value     = NA,
-                    theta_value       = NA) {
+    insert = function(index,
+                      t,
+                      action,
+                      reward,
+                      agent_name,
+                      simulation_index,
+                      context_value     = NA,
+                      theta_value       = NA) {
 
       if (is.null(action[["propensity"]])) {
         propensity <- NA
@@ -84,8 +75,14 @@ History <- R6::R6Class(
       }
       invisible(self)
     },
-    set_agent_data = function(row_name, agent_data_list) {
-      private$.meta_agent <- rbind(private$.meta_agent, c(id = row_name, agent_data_list))
+    get_agent_list = function() {
+      levels(as.factor(private$.data$agent))
+    },
+    get_agent_count = function() {
+      length(self$get_agent_list())
+    },
+    get_simulation_count = function() {
+      length(levels(as.factor(private$.data$sim)))
     },
     get_agent_data = function(as_list=TRUE) {
       if (as_list) {
@@ -94,8 +91,8 @@ History <- R6::R6Class(
         private$.meta_agent
       }
     },
-    set_meta_data = function(row_name, meta_data) {
-      private$.meta <- rbind(private$.meta, list(id = row_name, data = toString(meta_data)))
+    set_agent_data = function(row_name, agent_data_list) {
+      private$.meta_agent <- rbind(private$.meta_agent, c(id = row_name, agent_data_list))
     },
     get_meta_data = function(as_list=TRUE) {
       if (as_list) {
@@ -103,6 +100,9 @@ History <- R6::R6Class(
       } else {
         private$.meta
       }
+    },
+    set_meta_data = function(row_name, meta_data) {
+      private$.meta <- rbind(private$.meta, list(id = row_name, data = toString(meta_data)))
     },
     get_cumulative_data = function(limit_agents = NULL, limit_cols = NULL, interval = 1) {
       if (is.null(limit_agents)) {
@@ -119,7 +119,7 @@ History <- R6::R6Class(
         }
       }
     },
-    get_cumulative_last_value = function(limit_agents = NULL, as_list = TRUE, limit_cols = NULL) {
+    get_cumulative_final = function(limit_agents = NULL, as_list = TRUE, limit_cols = NULL) {
       if (is.null(limit_cols)) {
         if (is.null(limit_agents)) {
           if (as_list) {
@@ -151,7 +151,7 @@ History <- R6::R6Class(
         }
       }
     },
-    save_data = function(filename = NA) {
+    save_data_table = function(filename = NA) {
       if (is.na(filename)) {
         filename <- paste("contextual_data_",
           format(Sys.time(), "%y%m%d_%H%M%S"),
@@ -162,7 +162,7 @@ History <- R6::R6Class(
       saveRDS(private$.data, file = filename, compress = TRUE)
       invisible(self)
     },
-    load_data = function(filename, interval = 0, auto_stats = TRUE, bind_to_existing = FALSE) {
+    load_data_table = function(filename, interval = 0, auto_stats = TRUE, bind_to_existing = FALSE) {
       if (isTRUE(bind_to_existing) && nrow(private$.data) > 1 && private$.data$agent[[1]] != "") {
         temp_data <- readRDS(filename)
         if (interval > 0) temp_data <- temp_data[t %% interval == 0]
@@ -215,13 +215,7 @@ History <- R6::R6Class(
       # private$.data[ , max(t), by = c("agent","sim")][,min(V1), by = c("agent")][,V1]
       invisible(self)
     },
-    initialize_meta_agent = function() {
-      mdims <- matrix(ncol = self$number_of_agents() + 1, nrow = 0)
-      storage.mode(mdims) <- "character"
-      private$.meta_agent <- data.table::data.table(mdims, stringsAsFactors = FALSE)
-      colnames(private$.meta_agent) <- c("id", self$get_agent_list())
-    },
-    reindex_t = function(truncate = TRUE) {
+    reindex = function(truncate = TRUE) {
       private$.data <- private$.data[, t := seq_len(.N), by = c("agent", "sim")]
       if (truncate) {
         min_t_anywhere <- min(private$.data[, .(count = uniqueN(t)), by = c("agent", "sim")]$count)
@@ -240,7 +234,7 @@ History <- R6::R6Class(
     .cum_stats       = NULL,
     .cum_stats_final = NULL,
 
-    initialize_data = function() {
+    initialize_data_tables = function() {
       private$.data <- data.table::data.table(
         t = rep(0L, self$n),
         sim = rep(0L, self$n),
@@ -276,8 +270,6 @@ History <- R6::R6Class(
       private$.data[, cum_regret := cumsum(regret), by = list(agent, sim)]
       private$.data[, cum_regret_rate :=- cum_regret / t]
 
-      private$.cum_stats <- data.table::data.table()
-
       data.table::setkeyv(private$.data,c("t","agent"))
 
       private$.cum_stats <- private$.data[, list(
@@ -308,7 +300,7 @@ History <- R6::R6Class(
       private$.cum_stats[, cum_regret_rate := cum_regret / t]
 
       qn       <- qnorm(0.975)
-      sqrt_sim <- sqrt(self$number_of_simulations())
+      sqrt_sim <- sqrt(self$get_simulation_count())
 
       private$.cum_stats[, cum_regret_ci      := cum_regret_sd / sqrt_sim * qn]
       private$.cum_stats[, cum_reward_ci      := cum_reward_sd / sqrt_sim * qn]
@@ -321,7 +313,6 @@ History <- R6::R6Class(
       setcolorder(private$.cum_stats, c("agent", setdiff(names(private$.cum_stats), "agent")))
 
       # final cumulative stats
-      private$.cum_stats_final <- data.table::data.table(stringsAsFactors = FALSE)
       idx <- private$.cum_stats[, .(idx = .I[.N]), by=agent]$idx
       private$.cum_stats_final <- private$.cum_stats[idx]
 
@@ -347,7 +338,7 @@ History <- R6::R6Class(
     },
     cumulative = function(value) {
       if (missing(value)) {
-        self$get_cumulative_last_value()
+        self$get_cumulative_final()
       } else {
         warning("## history$cumulative is read only", call. = FALSE)
       }
@@ -369,7 +360,7 @@ History <- R6::R6Class(
 #' and can save or load simulation log data files.
 #'
 #' @name History
-#' @aliases print_data reindex_t delete_empty_rows clear_data_table set_data_table get_data_table set_data_frame get_data_frame load_data cumulative save
+#' @aliases print_data reindex delete_empty_rows clear_data_table set_data_table get_data_table set_data_frame get_data_frame load_data_table cumulative save
 #'
 #' @section Usage:
 #' \preformatted{
@@ -399,21 +390,21 @@ History <- R6::R6Class(
 #'   \item{\code{reset()}}{
 #'      Resets a \code{History} instance to its original initialisation values.
 #'   }
-#'   \item{\code{save(index,
-#'                    t,
-#'                    action,
-#'                    reward,
-#'                    agent_name,
-#'                    simulation_index,
-#'                    context_value = NA,
-#'                    theta_value = NA)}}{
+#'   \item{\code{insert(index,
+#'                      t,
+#'                      action,
+#'                      reward,
+#'                      agent_name,
+#'                      simulation_index,
+#'                      context_value = NA,
+#'                      theta_value = NA)}}{
 #'      Saves one row of simulation data. Is generally not called directly, but from a {Simulator} instance.
 #'   }
-#'   \item{\code{save_data(filename = NA)}}{
+#'   \item{\code{save_data_table(filename = NA)}}{
 #'      Writes the \code{History} log file in its default data.table format,
 #'      with \code{filename} as the name of the file which the data is to be written to.
 #'   }
-#'   \item{\code{load_data = function(filename, interval = 0)}}{
+#'   \item{\code{load_data_table = function(filename, interval = 0)}}{
 #'      Reads a \code{History} log file in its default \code{data.table} format,
 #'      with \code{filename} as the name of the file which the data are to be read from.
 #'      If \code{interval} is larger than 0, every \code{interval} of data is read instead of the
@@ -435,7 +426,7 @@ History <- R6::R6Class(
 #'      Deletes all empty rows in the \code{History} log and re-indexes the \code{t} column grouped
 #'      by agent and simulation.
 #'   }
-#'   \item{\code{reindex_t(truncate = TRUE)}}{
+#'   \item{\code{reindex(truncate = TRUE)}}{
 #'      Removes empty rows from the \code{History} log, reindexes the \code{t} column, and,
 #'      if \code{truncate} is \code{TRUE}, truncates the resulting data to the shortest simulation
 #'      grouped by agent and simulation.

@@ -44,11 +44,11 @@ agents      <- list( Agent$new(UnpooledEgreedyPolicy$new(epsilon = 0.1, n_subjec
 history     <- Simulator$new(agents = agents,
                              horizon = horizon,
                              simulations = simulations,
-                             #continuous_counter = TRUE,
-                             reindex_t = TRUE,
+                             t_over_sims = TRUE,
+                             reindex = TRUE,
                              do_parallel = TRUE)$run()
 
-history$save_data(paste0(data_dir,"LiEG_1000.RData"))
+history$save_data_table(paste0(data_dir,"LiEG_1000.RData"))
 
 ##################### Plot #############################
 
@@ -60,7 +60,7 @@ data_dir       <- "data/"
 
 history = History$new()
 history$clear_data_table()
-history$load_data(paste0(data_dir,"LiEG_all_1000.RData"))
+history$load_data_table(paste0(data_dir,"LiEG_all_1000.RData"))
 
 h <- history$get_data_table()
 

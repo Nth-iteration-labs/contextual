@@ -17,7 +17,7 @@ policy <- EpsilonGreedyPolicy(epsilon = 0.1)
 Other contextual subclasses: \code{\link{BasicBandit}},
   \code{\link{ContextualBandit}},
   \code{\link{ContextualDisjointThompsonSamplingPolicy}},
-  \code{\link{ContextualEpochGreedyHybridPolicy}},
+  \code{\link{ContextualEpsilonGreedyDisjointPolicy}},
   \code{\link{ContextualThompsonSamplingPolicy}},
   \code{\link{ContinuumBandit}},
   \code{\link{DoublyRobustOfflineBandit}},

@@ -55,13 +55,14 @@ bandit <- YahooBandit$new(k = 217L, d = 12L, d_shared = c(7:12), d_per_arm = c(1
                           password = monetdb_password, buffer_size = buffer_size)
 
 agents <-
-      list (Agent$new(YahooLinUCBDisjointPolicy$new(0.2),   bandit, name = "LinUCB Dis", sparse = sparsity),
-            Agent$new(YahooLinUCBHybridPolicy$new(0.4),     bandit, name = "LinUCB Hyb", sparse = sparsity),
-            Agent$new(YahooEpsilonGreedyPolicy$new(0.3),    bandit, name = "EGreedy",    sparse = sparsity),
-            Agent$new(YahooEpsilonGreedySegPolicy$new(0.3), bandit, name = "EGreedySeg", sparse = sparsity),
-            Agent$new(YahooUCB1AlphaPolicy$new(0.4),        bandit, name = "UCB1",       sparse = sparsity),
-            Agent$new(YahooUCB1AlphaSegPolicy$new(0.4),     bandit, name = "UCB1Seg",    sparse = sparsity),
-            Agent$new(YahooRandomPolicy$new(),              bandit, name = "Random"))
+
+  list (Agent$new(YahooLinUCBDisjointPolicy$new(0.2),     bandit, name = "LinUCB Dis",  sparse = sparsity),
+        Agent$new(YahooLinUCBHybridPolicy$new(0.4),       bandit, name = "LinUCB Hyb",  sparse = sparsity),
+        Agent$new(YahooEpsilonGreedyPolicy$new(0.3),      bandit, name = "EGreedy",     sparse = sparsity),
+        Agent$new(YahooEpsilonGreedySegPolicy$new(0.3),   bandit, name = "EGreedySeg",  sparse = sparsity),
+        Agent$new(YahooUCB1AlphaPolicy$new(0.4),          bandit, name = "UCB1",        sparse = sparsity),
+        Agent$new(YahooUCB1AlphaSegPolicy$new(0.4),       bandit, name = "UCB1Seg",     sparse = sparsity),
+        Agent$new(YahooRandomPolicy$new(),                bandit, name = "Random"))
 
 # Define the simulation --------------------------------------------------------------------------------------
 
@@ -71,8 +72,7 @@ simulation <- Simulator$new(
     horizon = horizon,
     do_parallel = TRUE,
     worker_max = worker_max,
-    continuous_counter = TRUE,
-    reindex_t = TRUE,
+    reindex = TRUE,
     write_progress_file = TRUE,
     include_packages = c("MonetDB.R"))
 
@@ -80,7 +80,7 @@ history  <- simulation$run()
 
 # Take a look at the results ---------------------------------------------------------------------------------
 
-history$save_data(save_file_name)
+history$save_data_table(save_file_name)
 
 print(history$meta$sim_total_duration)
 

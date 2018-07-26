@@ -10,6 +10,7 @@ Agent <- R6::R6Class(
     agent_index = NULL,
     name = NULL,
     agent_t = NULL,
+    policy_t = NULL,
     write_log = NULL,
     log_interval = NULL,
     sparse = NULL,
@@ -37,25 +38,28 @@ Agent <- R6::R6Class(
       self$policy$set_parameters()
       self$policy$initialize_theta()
       agent_t <<- 0L
+      policy_t <<- 1L
     },
     do_step = function() {
       agent_t  <<- agent_t + 1L
       context   <- bandit$get_context(agent_t)
-      action    <- policy$get_action (agent_t, context)
+      action    <- policy$get_action (policy_t, context)
       reward    <- bandit$get_reward (agent_t, context, action)
       if (is.null(reward)) {
         theta   <- NULL
       } else {
         if (self$sparse == 0.0 || runif(1) > self$sparse) {
-          theta   <- policy$set_reward (agent_t, context, action, reward)
+          theta   <- policy$set_reward (policy_t, context, action, reward)
         } else {
           theta   <- policy$theta
         }
+        policy_t  <<- policy_t + 1L
       }
       if(isTRUE(self$write_log)) {
         if (agent_t %% self$log_interval == 0) {
-          message(paste0("[",Sys.time(),"] ",sprintf("%9s", agent_t)," > ",self$name," running ",bandit$class_name,
-                         " and ",policy$class_name))
+          cat(paste0("[",format(Sys.time(), format = "%H:%M:%OS6"),"] ",sprintf("%9s", agent_t)," > step - ",
+                     sprintf("%-20s", self$name)," running ",bandit$class_name,
+                     " and ",policy$class_name,"\n"),file = "progress.log", append = TRUE)
         }
       }
       list(context = context, action = action, reward = reward, theta = theta)

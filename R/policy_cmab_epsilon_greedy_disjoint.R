@@ -1,20 +1,19 @@
 #' @export
-ContextualEpochGreedyDisjointPolicy <- R6::R6Class(
+ContextualEpsilonGreedyDisjointPolicy <- R6::R6Class(
   portable = FALSE,
   class = FALSE,
   inherit = Policy,
   public = list(
     p = NULL,
     e = NULL,
-    class_name = "ContextualEpochGreedyDisjointPolicy",
-    initialize = function(p = 10) {
+    class_name = "ContextualEpsilonGreedyDisjointPolicy",
+    initialize = function(epsilon = 0.) {
       super$initialize()
       self$p <- p
       self$e <- 0
     },
     set_parameters = function() {
-      self$theta_to_arms <- list( 'A' = diag(1,self$d,self$d), 'b' = rep(0,self$d),
-                                  'n' = 0 )
+      self$theta_to_arms <- list( 'A' = diag(1,self$d,self$d), 'b' = rep(0,self$d) )
     },
     get_action = function(t, context) {
       if (t <= self$p) {
@@ -57,7 +56,7 @@ ContextualEpochGreedyDisjointPolicy <- R6::R6Class(
 )
 #' Policy: A Time and Space Efficient Algorithm for Contextual Linear Bandits
 #'
-#' @name ContextualEpochGreedyDisjointPolicy
+#' @name ContextualEpsilonGreedyDisjointPolicy
 #' @family contextual subclasses
 #'
 #' @section Usage:

@@ -36,7 +36,7 @@ YahooLinUCBHybridPolicy <- R6::R6Class(
         B                <-  self$theta$B[[local_arms[arm]]]
         b                <-  self$theta$b[[local_arms[arm]]]
 
-        x                <- matrix(context$X[context$d_shared,1])
+        x                <-  matrix(context$X[context$d_shared,1])
         z                <-  matrix(tcrossprod(context[['X']][self$d_per_arm,arm], x))
 
         ################## compute expected reward per arm #############################

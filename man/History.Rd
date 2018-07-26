@@ -3,14 +3,14 @@
 \name{History}
 \alias{History}
 \alias{print_data}
-\alias{reindex_t}
+\alias{reindex}
 \alias{delete_empty_rows}
 \alias{clear_data_table}
 \alias{set_data_table}
 \alias{get_data_table}
 \alias{set_data_frame}
 \alias{get_data_frame}
-\alias{load_data}
+\alias{load_data_table}
 \alias{cumulative}
 \alias{save}
 \title{History}
@@ -51,21 +51,21 @@ History <- History$new(n = 1, save_context = FALSE, save_theta = FALSE)
 \item{\code{reset()}}{
 Resets a \code{History} instance to its original initialisation values.
 }
-\item{\code{save(index,
-                   t,
-                   action,
-                   reward,
-                   agent_name,
-                   simulation_index,
-                   context_value = NA,
-                   theta_value = NA)}}{
+\item{\code{insert(index,
+                     t,
+                     action,
+                     reward,
+                     agent_name,
+                     simulation_index,
+                     context_value = NA,
+                     theta_value = NA)}}{
 Saves one row of simulation data. Is generally not called directly, but from a {Simulator} instance.
 }
-\item{\code{save_data(filename = NA)}}{
+\item{\code{save_data_table(filename = NA)}}{
 Writes the \code{History} log file in its default data.table format,
 with \code{filename} as the name of the file which the data is to be written to.
 }
-\item{\code{load_data = function(filename, interval = 0)}}{
+\item{\code{load_data_table = function(filename, interval = 0)}}{
 Reads a \code{History} log file in its default \code{data.table} format,
 with \code{filename} as the name of the file which the data are to be read from.
 If \code{interval} is larger than 0, every \code{interval} of data is read instead of the
@@ -87,7 +87,7 @@ Clears the \code{History} log.
 Deletes all empty rows in the \code{History} log and re-indexes the \code{t} column grouped
 by agent and simulation.
 }
-\item{\code{reindex_t(truncate = TRUE)}}{
+\item{\code{reindex(truncate = TRUE)}}{
 Removes empty rows from the \code{History} log, reindexes the \code{t} column, and,
 if \code{truncate} is \code{TRUE}, truncates the resulting data to the shortest simulation
 grouped by agent and simulation.

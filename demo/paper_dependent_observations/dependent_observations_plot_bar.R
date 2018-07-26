@@ -39,7 +39,7 @@ for (dp in do_poisson) {
           history$clear_data_table()
           sim_str <- paste0(subpol,pol,"_b",beta[1],"_s",sn,"_p",as.numeric(dp),"_r",simulations,".RData")
           message(paste0("Plotting: ",sim_str))
-          history$load_data(paste0(data_dir,sim_str))
+          history$load_data_table(paste0(data_dir,sim_str))
           cum_regret <- history$cumulative(final = TRUE, rate = FALSE, regret = TRUE)
           regret_df[(nrow(regret_df) + 1), ] <- c(horizon, simulations, sn, beta[1], dp, pol, subpol, cum_regret[[1]]$cum, cum_regret[[1]]$cum_ci)
         }

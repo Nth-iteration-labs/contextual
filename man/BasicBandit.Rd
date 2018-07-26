@@ -37,7 +37,7 @@ Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link
 Other contextual subclasses: \code{\link{ContextualBandit}},
   \code{\link{ContextualDisjointThompsonSamplingPolicy}},
   \code{\link{ContextualEpochGreedyDisjointPolicy}},
-  \code{\link{ContextualEpochGreedyHybridPolicy}},
+  \code{\link{ContextualEpsilonGreedyDisjointPolicy}},
   \code{\link{ContextualThompsonSamplingPolicy}},
   \code{\link{ContinuumBandit}},
   \code{\link{DoublyRobustOfflineBandit}},

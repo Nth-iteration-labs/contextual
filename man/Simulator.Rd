@@ -20,11 +20,11 @@ simulator <- Simulator$new(agents,
                            save_theta = FALSE,
                            do_parallel = TRUE,
                            worker_max = NULL,
-                           continuous_counter = FALSE,
+                           t_over_sims = FALSE,
                            set_seed = 0,
                            write_progress_file = TRUE,
                            include_packages = NULL,
-                           reindex_t = FALSE)
+                           reindex = FALSE)
 }
 }
 
@@ -57,9 +57,9 @@ with a new seed on each repeat (itself deterministically derived from set\_seed)
 is \code{TRUE}. If unspecified, the amount of workers defaults to \code{max(workers_available)-1}.
 
 }
-\item{\code{continuous_counter}}{
+\item{\code{t_over_sims}}{
 \code{logical}. Of use to, amongst others, offline Bandits.
-If \code{continuous_counter} is set to \code{TRUE}, the current \code{Simulator}
+If \code{t_over_sims} is set to \code{TRUE}, the current \code{Simulator}
 iterates over all rows in a data set for each repeated simulation.
 If \code{FALSE}, it splits the data into \code{simulations} parts,
 and a different subset of the data for each repeat of an agent's simulation.
@@ -68,7 +68,7 @@ and a different subset of the data for each repeat of an agent's simulation.
 \code{integer}. Sets the seed of R‘s random number generator for the current \code{Simulator}.
 }
 \item{\code{write_progress_file}}{
-\code{logical}. If \code{TRUE}, \code{Simulator} writes \code{progress.log} and \code{doparallel.log}
+\code{logical}. If \code{TRUE}, \code{Simulator} writes \code{progress.log} and \code{parallel.log}
 files to the current working directory, allowing you to keep track of \code{workers}, iterations,
 and potential errors when running a \code{Simulator} in parallel.
 }
@@ -77,7 +77,7 @@ and potential errors when running a \code{Simulator} in parallel.
 R package to be loaded, this option can be used to load that package on each of the workers.
 Ignored if \code{do_parallel} is \code{FALSE}.
 }
-\item{\code{reindex_t}}{
+\item{\code{reindex}}{
 \code{logical}. If \code{TRUE}, removes empty rows from the \code{History} log,
 reindexes the \code{t} column, and truncates the resulting data to the shortest simulation
 grouped by agent and simulation.

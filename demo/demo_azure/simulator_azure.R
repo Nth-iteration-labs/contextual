@@ -16,7 +16,7 @@ AzureSimulator <- R6::R6Class(
   private = list(rewards = NULL),
   public = list(
     agents = NULL,
-    number_of_agents = NULL,
+    agents_length = NULL,
     horizon = NULL,
     simulations = NULL,
     worker_max = NULL,
@@ -25,7 +25,7 @@ AzureSimulator <- R6::R6Class(
     save_theta = NULL,
     do_parallel = NULL,
     sims_per_agent_list = NULL,
-    continuous_counter = NULL,
+    t_over_sims = NULL,
     set_seed = NULL,
     write_progress_file = NULL,
     include_packages = NULL,
@@ -40,7 +40,7 @@ AzureSimulator <- R6::R6Class(
                           save_theta = FALSE,
                           do_parallel = TRUE,
                           worker_max = NULL,
-                          continuous_counter = FALSE,
+                          t_over_sims = FALSE,
                           set_seed = 0,
                           write_progress_file = TRUE,
                           include_packages = NULL,
@@ -53,10 +53,10 @@ AzureSimulator <- R6::R6Class(
       self$save_context <- save_context
       if (!is.list(agents)) agents <- list(agents)
       self$agents <- agents
-      self$number_of_agents <- length(agents)
+      self$agents_length <- length(agents)
       self$worker_max <- worker_max
       self$do_parallel <- do_parallel
-      self$continuous_counter <- continuous_counter
+      self$t_over_sims <- t_over_sims
       self$set_seed <- set_seed
       self$write_progress_file <- write_progress_file
       self$include_packages <- include_packages
@@ -71,11 +71,11 @@ AzureSimulator <- R6::R6Class(
       if (self$write_progress_file) cat(paste0(""), file = "doparallel.log", append = FALSE)
 
       # (re)create history's data.table
-      self$history <- History$new(self$horizon * self$number_of_agents * self$simulations)
-      self$sims_per_agent_list <-  matrix(list(), self$simulations, self$number_of_agents)
+      self$history <- History$new(self$horizon * self$agents_length * self$simulations)
+      self$sims_per_agent_list <-  matrix(list(), self$simulations, self$agents_length)
       # unique policy names through appending sequence numbers to duplicates
       policy_name_list <- list()
-      for (agent_index in 1L:self$number_of_agents) {
+      for (agent_index in 1L:self$agents_length) {
 
         current_policy_name <- self$agents[[agent_index]]$policy$name
         policy_name_list <- c(policy_name_list,current_policy_name)
@@ -87,7 +87,7 @@ AzureSimulator <- R6::R6Class(
       # clone, precache and precalculate bandits and policies where relevant
       message("Cloning, precaching and precalculating bandits and policies")
       for (sim_index in 1L:self$simulations) {
-        for (agent_index in 1L:self$number_of_agents) {
+        for (agent_index in 1L:self$agents_length) {
           self$sims_per_agent_list[sim_index, agent_index]  <- list(self$agents[[agent_index]]$clone(deep = FALSE))
           self$sims_per_agent_list[[sim_index, agent_index]]$reset()
           self$sims_per_agent_list[[sim_index, agent_index]]$bandit <- self$sims_per_agent_list[[sim_index, agent_index]]$bandit$clone(deep = TRUE)
@@ -136,12 +136,12 @@ AzureSimulator <- R6::R6Class(
       # copy relevant variables to local environment
       horizon <- self$horizon
       sims_per_agent_list <- self$sims_per_agent_list
-      number_of_agents <- self$number_of_agents
+      agents_length <- self$agents_length
       save_context <- self$save_context
       save_theta <- self$save_theta
       reindex_t <- self$reindex_t
       write_progress_file <- self$write_progress_file
-      continuous_counter <- self$continuous_counter
+      t_over_sims <- self$t_over_sims
       set_seed <- self$set_seed
       chunks <- self$chunks
       # calculate chunk size
@@ -161,7 +161,7 @@ AzureSimulator <- R6::R6Class(
         index <- 1L
         sim_agent_counter <- 0
         sim_agent_total <- length(sims_agents)
-        local_history <- History$new( horizon * number_of_agents * sim_agent_total, save_context, save_theta)
+        local_history <- History$new( horizon * agents_length * sim_agent_total, save_context, save_theta)
         for (sim_agent in sims_agents) {
           sim_agent_counter <- sim_agent_counter + 1
           if (write_progress_file) {
@@ -179,11 +179,11 @@ AzureSimulator <- R6::R6Class(
           if (sim_agent$bandit$precaching ) {
             sim_agent$bandit$generate_bandit_data(n = horizon)
           }
-          if (continuous_counter) sim_agent$set_t(as.integer((simulation_index - 1L) * horizon))
+          if (t_over_sims) sim_agent$set_t(as.integer((simulation_index - 1L) * horizon))
           for (t in 1L:horizon) {
             step <- sim_agent$do_step()
             if (!is.null(step$reward)) {
-              local_history$save(
+              local_history$insert(
                 index,
                 t,
                 step$action,
@@ -235,7 +235,7 @@ AzureSimulator <- R6::R6Class(
 #'                            save_theta = FALSE,
 #'                            do_parallel = TRUE,
 #'                            worker_max = NULL,
-#'                            continuous_counter = FALSE,
+#'                            t_over_sims = FALSE,
 #'                            set_seed = 0,
 #'                            write_progress_file = TRUE,
 #'                            include_packages = NULL,
@@ -270,9 +270,9 @@ AzureSimulator <- R6::R6Class(
 #'      is \code{TRUE}. If unspecified, the amount of workers defaults to \code{max(workers_available)-1}.
 #'
 #'   }
-#'   \item{\code{continuous_counter}}{
+#'   \item{\code{t_over_sims}}{
 #'      \code{logical}. Of use to, amongst others, offline Bandits.
-#'      If \code{continuous_counter} is set to \code{TRUE}, the current \code{Simulator}
+#'      If \code{t_over_sims} is set to \code{TRUE}, the current \code{Simulator}
 #'      iterates over all rows in a data set for each repeated simulation.
 #'      If \code{FALSE}, it splits the data into \code{simulations} parts,
 #'      and a different subset of the data for each repeat of an agent's simulation.

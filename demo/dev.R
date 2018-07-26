@@ -4,7 +4,7 @@
 rm(list = ls(all = TRUE))
 
 # Garbage collection to free up memory, cleaning up after rm.
-gc()
+gc(reset = FALSE, full = TRUE)
 
 # Detach and unload packages: we want to run the local code base when developing.
 
@@ -19,10 +19,10 @@ detachAllPackages <- function() {
 detachAllPackages()
 
 # Check if testthat and devtools  installed, if not, install
-if (!require(devtools)| !require(testthat)) {
-  install.packages("devtools")
-  devtools::install_github("r-lib/testthat")
-}
+#if (!require(devtools)| !require(testthat)) {
+#  install.packages("devtools")
+#  devtools::install_github("r-lib/testthat")
+#}
 # Install package dependencies if needed...
 devtools::install_deps()
 
