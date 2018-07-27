@@ -11,11 +11,15 @@ setwd(here("demo", "demo_criteo_linucb"))
 
 # import criteo data
 
-criteo_dt   <- fread("./dataset.txt", sep = " ")
+url        <- "https://raw.githubusercontent.com/Nth-iteration-labs/contextual_data/master/data_criteo_basic/"
+
+file       <- "dataset.txt"
+
+criteo_dt  <- fread(paste0(url,file))
 
 # retrieve number of rows  (which equals the horizon)
 
-criteo_horizon      <- nrow(criteo_dt)
+horizon    <- nrow(criteo_dt)
 
 # move all context columns to context vectors
 
@@ -42,7 +46,7 @@ rm(criteo_dt)
 ################ Phase II - Running Li Bandit ############################
 
 simulations <- 1
-horizon     <- criteo_horizon
+horizon     <- horizon
 
 # initiate Li bandit, with 10 arms, and 100 dimensions
 
@@ -64,7 +68,7 @@ simulation <-
   Simulator$new(
     agents,
     simulations = simulations,
-    horizon = criteo_horizon,
+    horizon = horizon,
     do_parallel = TRUE,
     worker_max = 2,
     reindex = TRUE,
@@ -86,4 +90,3 @@ plot(criteo_sim,
      regret = FALSE,
      rate = TRUE,
      type = "cumulative")
-
