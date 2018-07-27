@@ -1,3 +1,6 @@
+library(here)
+library(data.table)
+setwd(here("demo", "demo_criteo_linucb"))
 source("../dev.R")
 #library(contextual)
 library(here)
@@ -8,7 +11,7 @@ setwd(here("demo", "demo_criteo_linucb"))
 
 # import criteo data
 
-criteo_dt   <- fread("dataset.txt", sep = " ")
+criteo_dt   <- fread("./dataset.txt", sep = " ")
 
 # retrieve number of rows  (which equals the horizon)
 
@@ -65,7 +68,7 @@ simulation <-
     do_parallel = TRUE,
     worker_max = 2,
     reindex = TRUE,
-    write_progress_file = TRUE
+    progress_file = TRUE
   )
 
 # run the simulation

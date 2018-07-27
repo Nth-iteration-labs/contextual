@@ -10,7 +10,7 @@ YahooLinUCBDisjointPolicy <- R6::R6Class(
       self$alpha  <- alpha
     },
     set_parameters = function() {
-      nds <- length(self$d_shared)
+      nds <- length(self$d_disjoint)
       self$theta_to_arms <- list( 'A' = diag(1,nds,nds), 'b' = rep(0,nds),
                                   'A_inv' = solve(diag(1,nds,nds)))
     },
@@ -20,7 +20,7 @@ YahooLinUCBDisjointPolicy <- R6::R6Class(
       local_arms       <- context$arms
       for (arm in seq_along(local_arms)) {
 
-        x            <-  context$X[context$d_shared,arm]
+        x            <-  context$X[context$d_disjoint,arm]
         A            <-  self$theta$A[[local_arms[arm]]]
         A_inv        <-  self$theta$A_inv[[local_arms[arm]]]
         b            <-  self$theta$b[[local_arms[arm]]]
@@ -38,7 +38,7 @@ YahooLinUCBDisjointPolicy <- R6::R6Class(
       arm                       <- action$choice
       arm_index                 <- which(context$arms == arm)
       reward                    <- reward$reward
-      x                         <- context$X[context$d_shared,arm_index]
+      x                         <- context$X[context$d_disjoint,arm_index]
       A_inv                     <- self$theta$A_inv[[arm]]
       self$theta$A_inv[[arm]]   <- sherman_morrisson(self$theta$A_inv[[arm]],x)
       self$theta$A[[arm]]       <- self$theta$A[[arm]] + outer(x, x)

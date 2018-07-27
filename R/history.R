@@ -268,7 +268,7 @@ History <- R6::R6Class(
       private$.data[, cum_reward_rate := cum_reward / t]
 
       private$.data[, cum_regret := cumsum(regret), by = list(agent, sim)]
-      private$.data[, cum_regret_rate :=- cum_regret / t]
+      private$.data[, cum_regret_rate := cum_regret / t]
 
       data.table::setkeyv(private$.data,c("t","agent"))
 

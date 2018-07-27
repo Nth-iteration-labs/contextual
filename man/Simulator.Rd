@@ -22,7 +22,7 @@ simulator <- Simulator$new(agents,
                            worker_max = NULL,
                            t_over_sims = FALSE,
                            set_seed = 0,
-                           write_progress_file = TRUE,
+                           progress_file = FALSE,
                            include_packages = NULL,
                            reindex = FALSE)
 }
@@ -67,7 +67,7 @@ and a different subset of the data for each repeat of an agent's simulation.
 \item{\code{set_seed}}{
 \code{integer}. Sets the seed of R‘s random number generator for the current \code{Simulator}.
 }
-\item{\code{write_progress_file}}{
+\item{\code{progress_file}}{
 \code{logical}. If \code{TRUE}, \code{Simulator} writes \code{progress.log} and \code{parallel.log}
 files to the current working directory, allowing you to keep track of \code{workers}, iterations,
 and potential errors when running a \code{Simulator} in parallel.

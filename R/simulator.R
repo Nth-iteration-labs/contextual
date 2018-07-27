@@ -21,7 +21,8 @@ Simulator <- R6::R6Class(
     sims_and_agents_list = NULL,
     t_over_sims = NULL,
     set_seed = NULL,
-    write_progress_file = NULL,
+    progress_file = NULL,
+    log_interval = NULL,
     include_packages = NULL,
     cl = NULL,
     reindex = NULL,
@@ -33,7 +34,8 @@ Simulator <- R6::R6Class(
                           do_parallel = TRUE,
                           worker_max = NULL,
                           set_seed = 0,
-                          write_progress_file = FALSE,
+                          progress_file = FALSE,
+                          log_interval = 1000,
                           include_packages = NULL,
                           t_over_sims = FALSE,
                           reindex = FALSE) {
@@ -41,6 +43,8 @@ Simulator <- R6::R6Class(
       if (!is.list(agents)) agents <- list(agents)
 
       self$reindex <- reindex
+      self$progress_file <- progress_file
+      self$log_interval <- log_interval
       self$horizon <- horizon
       self$simulations <- simulations
       self$save_theta <- save_theta
@@ -51,7 +55,6 @@ Simulator <- R6::R6Class(
       self$do_parallel <- do_parallel
       self$t_over_sims <- t_over_sims
       self$set_seed <- set_seed
-      self$write_progress_file <- write_progress_file
       self$include_packages <- include_packages
 
       self$reset()
@@ -60,10 +63,10 @@ Simulator <- R6::R6Class(
       set.seed(self$set_seed)
 
       # create or clear progress.log file
-      if (self$write_progress_file) cat(paste0(""), file = "progress.log", append = FALSE)
+      if (self$progress_file) cat(paste0(""), file = "progress.log", append = FALSE)
 
       # create or clear parallel.log file
-      if (self$write_progress_file) cat(paste0(""), file = "parallel.log", append = FALSE)
+      if (self$progress_file) cat(paste0(""), file = "parallel.log", append = FALSE)
 
       # (re)create history's data.table
       self$history <- History$new(self$horizon * self$agent_count * self$simulations)
@@ -152,7 +155,8 @@ Simulator <- R6::R6Class(
       save_context <- self$save_context
       save_theta <- self$save_theta
       reindex <- self$reindex
-      write_progress_file <- self$write_progress_file
+      progress_file <- self$progress_file
+      log_interval <- self$log_interval
       t_over_sims <- self$t_over_sims
       set_seed <- self$set_seed
       # calculate chunk size
@@ -181,7 +185,9 @@ Simulator <- R6::R6Class(
         local_history <- History$new( horizon * sim_agent_total, save_context, save_theta)
         for (sim_agent in sims_agents) {
           sim_agent_counter <- sim_agent_counter + 1
-          if (write_progress_file) {
+          if (isTRUE(progress_file)) {
+            sim_agent$progress_file <- TRUE
+            sim_agent$log_interval <- log_interval
             cat(paste0("[",format(Sys.time(), format = "%H:%M:%OS6"),"] ",
                        "        0 > init - ",sprintf("%-20s", sim_agent$name),
                        " worker ", i,
@@ -199,6 +205,7 @@ Simulator <- R6::R6Class(
           }
           if (t_over_sims) sim_agent$set_t(as.integer((simulation_index - 1L) * horizon))
           step <- list()
+
           for (t in 1L:horizon) {
             step <- sim_agent$do_step()
             if (!is.null(step[[3]])) {                         #reward
@@ -270,7 +277,7 @@ Simulator <- R6::R6Class(
 #'                            worker_max = NULL,
 #'                            t_over_sims = FALSE,
 #'                            set_seed = 0,
-#'                            write_progress_file = TRUE,
+#'                            progress_file = FALSE,
 #'                            include_packages = NULL,
 #'                            reindex = FALSE)
 #' }
@@ -313,7 +320,7 @@ Simulator <- R6::R6Class(
 #'   \item{\code{set_seed}}{
 #'      \code{integer}. Sets the seed of R‘s random number generator for the current \code{Simulator}.
 #'   }
-#'   \item{\code{write_progress_file}}{
+#'   \item{\code{progress_file}}{
 #'       \code{logical}. If \code{TRUE}, \code{Simulator} writes \code{progress.log} and \code{parallel.log}
 #'       files to the current working directory, allowing you to keep track of \code{workers}, iterations,
 #'       and potential errors when running a \code{Simulator} in parallel.

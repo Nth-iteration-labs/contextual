@@ -83,7 +83,6 @@ Plot <- R6::R6Class(
     },
 
     average = function(history,
-
                        regret             = TRUE,
                        ci                 = NULL,
                        rate               = FALSE,
@@ -105,7 +104,6 @@ Plot <- R6::R6Class(
                        legend_position    = "topleft",
                        legend_title       = NULL,
                        limit_agents       = NULL) {
-
       self$history <- history
 
       if (regret) {

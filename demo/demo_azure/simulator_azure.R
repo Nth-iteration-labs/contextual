@@ -27,7 +27,7 @@ AzureSimulator <- R6::R6Class(
     sims_per_agent_list = NULL,
     t_over_sims = NULL,
     set_seed = NULL,
-    write_progress_file = NULL,
+    progress_file = NULL,
     include_packages = NULL,
     cl = NULL,
     reindex_t = NULL,
@@ -42,7 +42,7 @@ AzureSimulator <- R6::R6Class(
                           worker_max = NULL,
                           t_over_sims = FALSE,
                           set_seed = 0,
-                          write_progress_file = TRUE,
+                          progress_file = TRUE,
                           include_packages = NULL,
                           reindex_t = FALSE) {
       self$reindex_t <- reindex_t
@@ -58,7 +58,7 @@ AzureSimulator <- R6::R6Class(
       self$do_parallel <- do_parallel
       self$t_over_sims <- t_over_sims
       self$set_seed <- set_seed
-      self$write_progress_file <- write_progress_file
+      self$progress_file <- progress_file
       self$include_packages <- include_packages
       self$reset()
     },
@@ -66,9 +66,9 @@ AzureSimulator <- R6::R6Class(
       set.seed(self$set_seed)
 
       # create empty progress.log file
-      if (self$write_progress_file) cat(paste0(""), file = "progress.log", append = FALSE)
+      if (self$progress_file) cat(paste0(""), file = "progress.log", append = FALSE)
       # clear doparallel.log
-      if (self$write_progress_file) cat(paste0(""), file = "doparallel.log", append = FALSE)
+      if (self$progress_file) cat(paste0(""), file = "doparallel.log", append = FALSE)
 
       # (re)create history's data.table
       self$history <- History$new(self$horizon * self$agents_length * self$simulations)
@@ -140,7 +140,7 @@ AzureSimulator <- R6::R6Class(
       save_context <- self$save_context
       save_theta <- self$save_theta
       reindex_t <- self$reindex_t
-      write_progress_file <- self$write_progress_file
+      progress_file <- self$progress_file
       t_over_sims <- self$t_over_sims
       set_seed <- self$set_seed
       chunks <- self$chunks
@@ -164,7 +164,7 @@ AzureSimulator <- R6::R6Class(
         local_history <- History$new( horizon * agents_length * sim_agent_total, save_context, save_theta)
         for (sim_agent in sims_agents) {
           sim_agent_counter <- sim_agent_counter + 1
-          if (write_progress_file) {
+          if (progress_file) {
             cat(paste0(format(Sys.time(), format = "%H:%M:%OS6"),
                        ", Worker: ", i,
                        ", Sim: ", sim_agent_counter,
@@ -237,7 +237,7 @@ AzureSimulator <- R6::R6Class(
 #'                            worker_max = NULL,
 #'                            t_over_sims = FALSE,
 #'                            set_seed = 0,
-#'                            write_progress_file = TRUE,
+#'                            progress_file = TRUE,
 #'                            include_packages = NULL,
 #'                            reindex_t = FALSE)
 #' }
@@ -280,7 +280,7 @@ AzureSimulator <- R6::R6Class(
 #'   \item{\code{set_seed}}{
 #'      \code{integer}. Sets the seed of R‘s random number generator for the current \code{Simulator}.
 #'   }
-#'   \item{\code{write_progress_file}}{
+#'   \item{\code{progress_file}}{
 #'       \code{logical}. If \code{TRUE}, \code{Simulator} writes \code{progress.log} and \code{doparallel.log}
 #'       files to the current working directory, allowing you to keep track of \code{workers}, iterations,
 #'       and potential errors when running a \code{Simulator} in parallel.

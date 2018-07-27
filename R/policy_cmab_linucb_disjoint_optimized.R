@@ -11,17 +11,22 @@ LinUCBDisjointOptimizedPolicy <- R6::R6Class(
       self$alpha <- alpha
     },
     set_parameters = function() {
-      self$theta_to_arms <- list( 'A' = diag(1,self$d,self$d), 'b' = rep(0,self$d),
-                                  'A_inv' = solve(diag(1,self$d,self$d)))
-
+      dd <- length(self$d_disjoint)
+      self$theta_to_arms <- list( 'A' = diag(1,dd,dd), 'b' = rep(0,dd),
+                                  'A_inv' = solve(diag(1,dd,dd)))
     },
     get_action = function(t, context) {
+
+      print(context$d_disjoint)
 
       expected_rewards <- rep(0.0, context$k)
 
       for (arm in 1:self$k) {
 
-        X          <-  context$X[,arm]
+        X          <-  context$X[context$d_disjoint,arm]
+
+
+
         A          <-  self$theta$A[[arm]]
         A_inv      <-  self$theta$A_inv[[arm]]
         b          <-  self$theta$b[[arm]]
@@ -39,12 +44,12 @@ LinUCBDisjointOptimizedPolicy <- R6::R6Class(
     set_reward = function(t, context, action, reward) {
       arm    <- action$choice
       reward <- reward$reward
-      X_a     <- context$X[,arm]
+      Xa    <-  context$X[context$d_disjoint,arm]
 
-      self$theta$A_inv[[arm]] <- sherman_morrisson(self$theta$A_inv[[arm]],X_a)
+      self$theta$A_inv[[arm]] <- sherman_morrisson(self$theta$A_inv[[arm]],Xa)
 
-      self$theta$A[[arm]]      <- self$theta$A[[arm]] + outer(X_a, X_a)
-      self$theta$b[[arm]]      <- self$theta$b[[arm]] + reward * X_a
+      self$theta$A[[arm]]      <- self$theta$A[[arm]] + outer(Xa, Xa)
+      self$theta$b[[arm]]      <- self$theta$b[[arm]] + reward * Xa
 
       self$theta
     }

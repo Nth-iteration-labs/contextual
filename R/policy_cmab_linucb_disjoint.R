@@ -11,7 +11,10 @@ LinUCBDisjointPolicy <- R6::R6Class(
       self$alpha <- alpha
     },
     set_parameters = function() {
-      self$theta_to_arms <- list( 'A' = diag(1,self$d,self$d), 'b' = rep(0,self$d))
+      if(is.null(self$d_disjoint)) self$d_disjoint <- c(1:self$d)
+      dd <- length(self$d_disjoint)
+      self$theta_to_arms <- list( 'A' = diag(1,dd,dd), 'b' = rep(0,dd),
+                                  'A_inv' = solve(diag(1,dd,dd)))
     },
     get_action = function(t, context) {
 
@@ -19,7 +22,7 @@ LinUCBDisjointPolicy <- R6::R6Class(
 
       for (arm in 1:self$k) {
 
-        X          <-  context$X[,arm]
+        X          <-  context$X[context$d_disjoint,arm]
         A          <-  self$theta$A[[arm]]
         b          <-  self$theta$b[[arm]]
 
@@ -38,7 +41,8 @@ LinUCBDisjointPolicy <- R6::R6Class(
     set_reward = function(t, context, action, reward) {
       arm <- action$choice
       reward <- reward$reward
-      Xa <- context$X[,arm]
+
+      Xa <- context$X[context$d_disjoint, arm]
 
       inc(self$theta$A[[arm]]) <- outer(Xa, Xa)
       inc(self$theta$b[[arm]]) <- reward * Xa
@@ -47,7 +51,6 @@ LinUCBDisjointPolicy <- R6::R6Class(
     }
   )
 )
-
 
 #' Policy: LinUCB with disjoint linear models
 #'

@@ -14,14 +14,14 @@ YahooBandit <- R6::R6Class(
     dbname = NULL,
     user = NULL,
     password = NULL,
-    initialize   = function(k, d, d_shared, d_per_arm, arm_lookup,
+    initialize   = function(k, d_disjoint, d_shared, arm_lookup,
                             host, dbname, user, password,
                             buffer_size = 1000) {
 
       self$k           <- k
-      self$d           <- d
+      self$d           <- length(d_shared) + length(d_disjoint)
       self$d_shared    <- d_shared
-      self$d_per_arm   <- d_per_arm
+      self$d_disjoint  <- d_disjoint
       self$buffer_size <- buffer_size
       self$arm_lookup  <- arm_lookup
       self$host        <- host
@@ -72,13 +72,13 @@ YahooBandit <- R6::R6Class(
       article_context          <- matrix(article_context,nrow=6)
       user_context             <- matrix(as.numeric(row[4:9]), nrow =6, ncol = nr_articles)
 
-      X                        <- rbind2(article_context,user_context)
+      X                        <- rbind2(user_context,article_context)
       class(X)                 <- "numeric"
 
       contextlist <- list(
         k = self$k,
         d = self$d,
-        d_per_arm = self$d_per_arm,
+        d_disjoint = self$d_disjoint,
         d_shared = self$d_shared,
         arms = article_ids,
         X = X

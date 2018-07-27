@@ -11,10 +11,13 @@ LinUCBHybridOptimizedPolicy <- R6::R6Class(
       self$alpha <- alpha
     },
     set_parameters = function() {
-      dd <- self$d*self$d
-      self$theta <- list('A0' = diag(1,dd,dd), 'A0_inv' = diag(1,dd,dd), 'b0' = rep(0,dd))
-      self$theta_to_arms <- list( 'A' = diag(1,self$d,self$d), 'A_inv' = diag(1,self$d,self$d),
-                                  'B' = matrix(0,self$d,dd), 'b' = rep(0,self$d))
+      dd                 <- length(self$d_disjoint)
+      dds                <- dd * length(self$d_shared)
+
+      self$theta         <- list( 'A0' = diag(1,dds,dds), 'A0_inv' = diag(1,dds,dds),
+                                  'b0' = rep(0,dds),'z' = matrix(0,dd,dd), 'x' = rep(0,dd))
+      self$theta_to_arms <- list( 'A' = diag(1,dd,dd), 'A_inv' = diag(1,dd,dd),
+                                  'B' = matrix(0,dd,dds), 'b' = rep(0,dd))
     },
     get_action = function(t, context) {
       expected_rewards <- rep(0.0, self$k)
@@ -32,8 +35,9 @@ LinUCBHybridOptimizedPolicy <- R6::R6Class(
         A_inv      <-  self$theta$A_inv[[arm]]
         B          <-  self$theta$B[[arm]]
         b          <-  self$theta$b[[arm]]
-        x          <-  context$U
-        z          <-  matrix(as.vector(outer(x,context$X[,arm])))
+        x          <-  context$X[context$d_disjoint,arm]
+        z          <-  matrix(as.vector(outer(x,context$X[context$d_shared,arm])))
+
 
         ################## compute expected reward per arm #############################
 
@@ -66,8 +70,8 @@ LinUCBHybridOptimizedPolicy <- R6::R6Class(
 
       arm            <- action$choice
       reward         <- reward$reward
-      z              <- matrix(as.vector(outer(context$U,context$X[,arm])))
-      x              <- context$U
+      x              <- context$X[context$d_disjoint,arm]
+      z              <- matrix(as.vector(outer(x,context$X[context$d_shared,arm])))
 
       A0             <- self$theta$A0
       A0_inv         <- self$theta$A0_inv

@@ -11,8 +11,8 @@ YahooLinUCBHybridPolicy <- R6::R6Class(
       self$alpha  <- alpha
     },
     set_parameters = function() {
-      dsda               <- length(self$d_per_arm)*length(self$d_shared)
-      ds                 <- length(self$d_shared)
+      dsda               <- length(self$d_shared)*length(self$d_disjoint)
+      ds                 <- length(self$d_disjoint)
 
       self$theta         <- list( 'A0' = diag(1,dsda,dsda), 'A0_inv' = diag(1,dsda,dsda),
                                   'b0' = rep(0,dsda),'z' = matrix(0,ds,ds), 'x' = rep(0,ds))
@@ -31,13 +31,13 @@ YahooLinUCBHybridPolicy <- R6::R6Class(
 
         ################## unpack thetas ##############################################
 
-        A                <-  self$theta$A[[local_arms[arm]]]
-        A_inv            <-  self$theta$A_inv[[local_arms[arm]]]
-        B                <-  self$theta$B[[local_arms[arm]]]
-        b                <-  self$theta$b[[local_arms[arm]]]
+        A                <- self$theta$A[[local_arms[arm]]]
+        A_inv            <- self$theta$A_inv[[local_arms[arm]]]
+        B                <- self$theta$B[[local_arms[arm]]]
+        b                <- self$theta$b[[local_arms[arm]]]
 
-        x                <-  matrix(context$X[context$d_shared,1])
-        z                <-  matrix(tcrossprod(context[['X']][self$d_per_arm,arm], x))
+        x                <- matrix(context$X[context$d_disjoint,1])
+        z                <- matrix(tcrossprod(x,context$X[context$d_shared,arm]))
 
         ################## compute expected reward per arm #############################
 
@@ -72,11 +72,9 @@ YahooLinUCBHybridPolicy <- R6::R6Class(
       arm_index    <- which(context$arms == arm)
       reward       <- reward$reward
 
-      z            <- matrix(tcrossprod(context$X[self$d_per_arm,arm_index],
-                                        context$X[context$d_shared,arm_index]))
 
-      x            <- matrix(context$X[context$d_shared,arm_index])
-
+      x            <- matrix(context$X[context$d_disjoint,1])
+      z            <- matrix(tcrossprod(x,context$X[context$d_shared,arm_index]))
 
       A0           <- self$theta$A0
       A0_inv       <- self$theta$A0_inv

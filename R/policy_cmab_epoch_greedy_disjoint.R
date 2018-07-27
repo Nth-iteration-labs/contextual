@@ -13,11 +13,12 @@ ContextualEpochGreedyDisjointPolicy <- R6::R6Class(
       self$e <- 0
     },
     set_parameters = function() {
-      self$theta_to_arms <- list( 'A' = diag(1,self$d,self$d), 'b' = rep(0,self$d),
-                                  'n' = 0 )
+      if(is.null(self$d_disjoint)) self$d_disjoint <- c(1:self$d)
+      dd <- length(self$d_disjoint)
+      self$theta_to_arms <- list( 'A' = diag(1,dd,dd), 'b' = rep(0,dd), 'n' = 0)
     },
     get_action = function(t, context) {
-      if (t <= self$p) {
+      if (t <= self$p || t <= self$k) {
         arm <- 1 + (t %% context$k)
         self$action$choice = arm
         return(self$action)
@@ -26,28 +27,29 @@ ContextualEpochGreedyDisjointPolicy <- R6::R6Class(
       if(self$e==1) {
           arm <- sample.int(context$k, 1, replace = TRUE)
           self$action$choice = arm
+
           return(self$action)
       } else {
         expected_rewards <- rep(0.0, context$k)
         for (arm in 1:self$k) {
-          X                     <- context$X[,arm]
+          X                     <- context$X[context$d_disjoint,arm]
           A                     <- self$theta$A[[arm]]
           b                     <- self$theta$b[[arm]]
           A_inv                 <- inv(A)
           theta_hat             <- A_inv %*% b
           mean                  <- X %*% theta_hat
-          expected_rewards[arm] <- mean / self$theta$n[[arm]]
+          expected_rewards[arm] <- mean / sqrt(self$theta$n[[arm]])
         }
         self$action$choice  <- max_in(expected_rewards)
         return(self$action)
       }
     },
     set_reward = function(t, context, action, reward) {
-      if (t <= self$p || self$e==1) {
-        arm <- action$choice
-        reward <- reward$reward
-        Xa <- context$X[,arm]
-        self$theta$n[[arm]] <- self$theta$n[[arm]] + 1
+      if (t <= self$p || t <= self$k || self$e==1) {
+        arm                      <- action$choice
+        reward                   <- reward$reward
+        Xa                       <- context$X[context$d_disjoint, arm]
+        self$theta$n[[arm]]      <- self$theta$n[[arm]] + 1
         inc(self$theta$A[[arm]]) <- outer(Xa, Xa)
         inc(self$theta$b[[arm]]) <- reward * Xa
       }

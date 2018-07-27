@@ -15,7 +15,8 @@ history            <-  Simulator$new(
                           agents = agent,
                           horizon = 100,
                           simulations = 100,
-                          do_parallel = TRUE
+                          do_parallel = FALSE,
+                          progress_file = FALSE
                         )$run()
 
 print(history$meta$sim_total_duration)

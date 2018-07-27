@@ -5,50 +5,49 @@ ContextualBandit <- R6::R6Class(
   portable = TRUE,
   class = FALSE,
   private = list(
-    R = NULL,
-    X = NULL
+    R = NULL
   ),
   public = list(
-    user_model    = NULL,
-    num_users     = NULL,
-    u             = NULL,
+    shared_context = NULL,
+    n_disjoint = NULL,
+    n_shared = NULL,
     class_name    = "ContextualBandit",
     precaching = FALSE,
-    initialize  = function(k, d, num_users = 1, user_model = NA) {
-      self$num_users                     <- num_users
-      self$user_model                    <- user_model
-      self$k                             <- k
-      self$d                             <- d
+    initialize  = function(k, n_disjoint = 5, n_shared = 6) {
+
+      self$k                                <- k
+      self$d                                <- n_disjoint  + n_shared
+      self$n_disjoint                       <- n_disjoint
+      self$n_shared                         <- n_shared
+      self$d_disjoint                       <- c(1:n_disjoint)
+      self$d_shared                         <- c((n_disjoint+1):(self$d))
     },
     post_initialization = function() {
-      if (is.na(self$user_model & self$num_users > 0)) {
-        self$user_model  <- matrix(sample(c(0, 1), replace = TRUE, size = self$num_users * self$d), self$num_users, self$d )
-      }
+      self$shared_context                   <- matrix(runif(self$n_shared *self$k), self$n_shared, self$k)
     },
     get_context = function(t) {
-      private$X                          <- matrix(runif(self$d*self$k),self$d,self$k)
-      user_features                      <- NA
-      if (self$num_users > 0) {
-        user                             <- sample(self$num_users,1,replace = TRUE)
-        user_features                    <- self$user_model[user,]
-        weights                          <- user_features %*% private$X
-      } else {
-        weights                          <- colSums(private$X)/self$d
-      }
 
-      private$R                          <- rep(0,self$k)
-      private$R[which.max(weights)]      <- 1
-      contextlist <- list(
+      user_features                         <- runif(self$n_disjoint )
+      disjoint_context                      <- matrix(user_features, self$n_disjoint , self$k )
+
+      X                                     <- rbind2(disjoint_context,self$shared_context)
+
+      rewards                               <- jitter(colMeans(X),amount=0)
+      private$R                             <- rep(0,self$k)
+      private$R[which.max(rewards)]         <- 1
+
+      contextlist                           <- list(
         k = self$k,
         d = self$d,
-        X = private$X,
-        U = user_features
+        d_disjoint = self$d_disjoint,
+        d_shared = self$d_shared,
+        X = X
       )
       contextlist
     },
     get_reward = function(t, context, action) {
       rewardlist <- list(
-        reward     = private$R[action$choice],
+        reward                   = private$R[action$choice],
         optimal_reward_value     = private$R[which.max(private$R)]
       )
       rewardlist

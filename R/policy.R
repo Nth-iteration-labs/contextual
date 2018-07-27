@@ -8,7 +8,7 @@ Policy <- R6::R6Class(
     theta_to_arms = NULL,
     k             = NULL,
     d             = NULL,
-    d_per_arm     = NULL,
+    d_disjoint     = NULL,
     d_shared      = NULL,
     class_name    = "Policy",
     initialize = function() {
