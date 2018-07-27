@@ -17,6 +17,8 @@ credentials.json
 
 *.Rda
 *.Rds
+*.log
+*.LOG
 
 docs/reference/RandomPolicy-1.png
 
