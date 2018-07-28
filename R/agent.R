@@ -16,6 +16,8 @@ Agent <- R6::R6Class(
     sparse = NULL,
     initialize = function(policy, bandit, name=NULL, sparse = 0.0) {
 
+
+
       self$bandit                 <- bandit
       self$policy                 <- policy
       self$sparse                 <- sparse
@@ -33,6 +35,10 @@ Agent <- R6::R6Class(
       self$reset()
     },
     reset = function() {
+      if(is.null(self$bandit$d_disjoint)) {
+        self$bandit$d_disjoint <- c(1:self$bandit$d)
+        self$policy$d_disjoint <- c(1:self$bandit$d)
+      }
       self$policy$set_parameters()
       self$policy$initialize_theta()
       self$progress_file <- FALSE

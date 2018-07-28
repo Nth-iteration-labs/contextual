@@ -34,7 +34,7 @@ immediately.
 Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 
-Other contextual subclasses: \code{\link{ContextualBandit}},
+Other contextual subclasses: \code{\link{BasicContextualBandit}},
   \code{\link{ContextualDisjointThompsonSamplingPolicy}},
   \code{\link{ContextualEpochGreedyDisjointPolicy}},
   \code{\link{ContextualThompsonSamplingPolicy}},

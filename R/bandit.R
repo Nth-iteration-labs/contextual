@@ -5,7 +5,7 @@ Bandit <- R6::R6Class(
   public   = list(
     k             = NULL,  # Number of arms (integer)
     d             = NULL,  # Dimension of context feature vector (integer)
-    d_disjoint     = NULL,  # Vector of arm indices of disjoint context features (vector)
+    d_disjoint     = NULL, # Vector of arm indices of disjoint context features (vector)
     d_shared      = NULL,  # Vector of arm indices of context features shared between arms (vector)
     precaching    = FALSE, # Pregenerate context & reward matrices? (boolean)
     class_name = "Bandit",

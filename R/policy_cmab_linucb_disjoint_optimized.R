@@ -17,16 +17,11 @@ LinUCBDisjointOptimizedPolicy <- R6::R6Class(
     },
     get_action = function(t, context) {
 
-      print(context$d_disjoint)
-
       expected_rewards <- rep(0.0, context$k)
 
       for (arm in 1:self$k) {
 
         X          <-  context$X[context$d_disjoint,arm]
-
-
-
         A          <-  self$theta$A[[arm]]
         A_inv      <-  self$theta$A_inv[[arm]]
         b          <-  self$theta$b[[arm]]

@@ -1,69 +1,78 @@
 #' @export
-ContextualBandit <- R6::R6Class(
-  "ContextualBandit",
+BasicContextualBandit <- R6::R6Class(
+  "BasicContextualBandit",
   inherit = Bandit,
   portable = TRUE,
   class = FALSE,
-  private = list(
-    R = NULL
-  ),
   public = list(
-    shared_context = NULL,
-    n_disjoint = NULL,
-    n_shared = NULL,
-    class_name    = "ContextualBandit",
+    weights = NULL,
+    rewards = NULL,
+    context_common = NULL,
+    context_unique = NULL,
+    c = NULL,
+    u = NULL,
+    s = NULL,
+    class_name    = "BasicContextualBandit",
     precaching = FALSE,
-    initialize  = function(k, n_disjoint = 5, n_shared = 6) {
-
-      self$k                                <- k
-      self$d                                <- n_disjoint  + n_shared
-      self$n_disjoint                       <- n_disjoint
-      self$n_shared                         <- n_shared
-      self$d_disjoint                       <- c(1:n_disjoint)
-      self$d_shared                         <- c((n_disjoint+1):(self$d))
+    # sigma: Standard deviation of the additive noise. Set to zero for no noise.
+    initialize  = function(k, common, unique, sigma = 0.1) {
+      self$k                                  <- k
+      self$d                                  <- common + unique
+      self$c                                  <- common
+      self$u                                  <- unique
+      self$s                                  <- sigma
     },
     post_initialization = function() {
-      self$shared_context                   <- matrix(runif(self$n_shared *self$k), self$n_shared, self$k)
+      # Latent parameters that determine expected reward for each arm.
+      self$weights                            <- matrix(rnorm(self$d*self$k,mean=0,sd=1),self$d,self$k)
+      self$weights                            <- self$weights / norm(self$weights)
+      context_common                          <- sample(0:1, self$c*self$k, replace=T,prob=c(0.5,0.5))
+      self$context_common                     <- matrix(context_common, self$c, self$k)
     },
     get_context = function(t) {
 
-      user_features                         <- runif(self$n_disjoint )
-      disjoint_context                      <- matrix(user_features, self$n_disjoint , self$k )
+      context_unique                          <- sample(0:1, self$u, replace=T,prob=c(0.5,0.5))
+      self$context_unique                     <- matrix(context_unique, self$u, self$k)
 
-      X                                     <- rbind2(disjoint_context,self$shared_context)
+      context_total                           <- rbind2(self$context_unique, self$context_common)
 
-      rewards                               <- jitter(colMeans(X),amount=0)
-      private$R                             <- rep(0,self$k)
-      private$R[which.max(rewards)]         <- 1
+      self$weights                            <- self$weights +
+                                                 matrix(rnorm(self$d*self$k,sd=self$s),self$d,self$k)
 
-      contextlist                           <- list(
+      dot_rewards                             <- colMeans(t(context_total) %*% self$weights)
+
+      self$rewards                            <- rep(0,self$k)
+      self$rewards[which.max(dot_rewards)]    <- 1
+
+      context_commonlist                      <- list(
         k = self$k,
         d = self$d,
         d_disjoint = self$d_disjoint,
-        d_shared = self$d_shared,
-        X = X
+        X = context_total
       )
-      contextlist
+      context_commonlist
     },
-    get_reward = function(t, context, action) {
+    get_reward = function(t, context_common, action) {
       rewardlist <- list(
-        reward                   = private$R[action$choice],
-        optimal_reward_value     = private$R[which.max(private$R)]
+        reward                   = self$rewards[action$choice],
+        optimal_reward_value     = self$rewards[which.max(self$rewards)]
       )
       rewardlist
     }
   )
 )
 
-#' Bandit: ContextualBandit
+#' Bandit: BasicContextualBandit
 #'
-#' ContextualBandit intro
+#' BasicContextualBandit intro
 #'
-#' @name ContextualBandit
-#' @family contextual subclasses
+#' Following Allen Day DataGenerator
+#'
+#' @name BasicContextualBandit
+#' @family context_commonual subclasses
 #'
 #' @section Usage:
-#' \preformatted{b <- ContextualBandit$new()
+#' \preformatted{b <- BasicContextualBandit$new()
 #'
 #' b$reset()
 #'
@@ -72,17 +81,17 @@ ContextualBandit <- R6::R6Class(
 #'
 #' @section Arguments:
 #' \describe{
-#'   \item{b}{A \code{ContextualBandit} object.}
+#'   \item{b}{A \code{BasicContextualBandit} object.}
 #' }
 #'
 #' @section Details:
-#' \code{$new()} starts a new ContextualBandit, it uses \code{\link[base]{pipe}}.
+#' \code{$new()} starts a new BasicContextualBandit, it uses \code{\link[base]{pipe}}.
 #' R does \emph{not} wait for the process to finish, but returns
 #' immediately.
 #'
 #' @seealso
 #'
-#' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
+#' Core context_commonual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
 NULL

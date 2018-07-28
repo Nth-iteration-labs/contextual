@@ -15,7 +15,7 @@ policy <- EpsilonGreedyPolicy(epsilon = 0.1)
 
 \seealso{
 Other contextual subclasses: \code{\link{BasicBandit}},
-  \code{\link{ContextualBandit}},
+  \code{\link{BasicContextualBandit}},
   \code{\link{ContextualDisjointThompsonSamplingPolicy}},
   \code{\link{ContextualThompsonSamplingPolicy}},
   \code{\link{ContinuumBandit}},

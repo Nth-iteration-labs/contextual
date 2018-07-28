@@ -11,7 +11,6 @@ LinUCBDisjointPolicy <- R6::R6Class(
       self$alpha <- alpha
     },
     set_parameters = function() {
-      if(is.null(self$d_disjoint)) self$d_disjoint <- c(1:self$d)
       dd <- length(self$d_disjoint)
       self$theta_to_arms <- list( 'A' = diag(1,dd,dd), 'b' = rep(0,dd),
                                   'A_inv' = solve(diag(1,dd,dd)))

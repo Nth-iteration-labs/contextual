@@ -6,13 +6,12 @@ source("../dev.R")
 library(here)
 setwd(here("demo","demo_bandits_and_policies"))
 
-horizon            <- 5000L
-simulations        <- 5L
+horizon            <- 2000L
+simulations        <- 30L
 
-bandit             <- ContextualBandit$new(k = 50L, n_disjoint = 5, n_shared = 6)
+bandit             <- BasicContextualBandit$new(k = 5L, common = 5L, unique = 5L)
 
 agents             <- list(
-                           Agent$new(LinUCBHybridOptimizedPolicy$new(0.1), bandit),
                            Agent$new(LinUCBDisjointOptimizedPolicy$new(0.1), bandit),
                            Agent$new(EpsilonGreedyPolicy$new(0.1), bandit),
                            Agent$new(ContextualEpochGreedyDisjointPolicy$new(100), bandit),
@@ -20,7 +19,7 @@ agents             <- list(
                            Agent$new(ContextualDisjointThompsonSamplingPolicy$new(), bandit)
                           )
 
-simulation         <- Simulator$new(agents, horizon, simulations, do_parallel = TRUE)
+simulation         <- Simulator$new(agents, horizon, simulations, do_parallel = FALSE)
 history            <- simulation$run()
 
 

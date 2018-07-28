@@ -1,4 +1,4 @@
-#' @export
+ #' @export
 BasicBandit <- R6::R6Class(
   inherit = Bandit,
   portable = TRUE,

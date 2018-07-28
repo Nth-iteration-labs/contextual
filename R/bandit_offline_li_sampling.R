@@ -11,10 +11,9 @@ LiSamplingOfflineBandit <- R6::R6Class(
     initialize   = function(data_stream, k, d, d_disjoint = NULL, d_shared = NULL) {
       self$k <- k
       self$d <- d
-      if(is.null(d_disjoint)) d_disjoint <- c(1:d)
       self$d_disjoint <- d_disjoint
       self$d_shared <- d_shared
-      private$S <- data_stream$get_data_table()
+      private$S <- data_stream$get_data_table()  # TODO: make this more general
     },
     get_context = function(index) {
 

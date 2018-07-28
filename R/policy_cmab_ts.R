@@ -8,8 +8,23 @@ ContextualThompsonSamplingPolicy <- R6::R6Class(
     delta = NULL,
     R = NULL,
     epsilon = NULL,
+
+
+    #delta: float, 0 < delta < 1
+    #With probability 1 - delta, LinThompSamp satisfies the theoretical
+    #regret bound.
+
+    #R: float, R >= 0
+    #Assume that the residual  :math:`ri(t) - bi(t)^T \hat{\mu}`
+    #is R-sub-gaussian. In this case, R^2 represents the variance for
+    #residuals of the linear model :math:`bi(t)^T`.
+
+    #epsilon: float, 0 < epsilon < 1
+    #A  parameter  used  by  the  Thompson Sampling algorithm.
+    #If the total trials T is known, we can choose epsilon = 1/ln(T).
+
     class_name = "ContextualThompsonSamplingPolicy",
-    initialize = function(delta=0.7, R=0.10, epsilon=0.8) {
+    initialize = function(delta=0.7, R=0.01, epsilon=0.8) {
       super$initialize()
       self$delta   <- delta
       self$R       <- R
@@ -22,22 +37,18 @@ ContextualThompsonSamplingPolicy <- R6::R6Class(
     get_action = function(t, context) {
 
       X <- context$X
-
-
       mu_tilde <- self$mvrnorm(1, self$theta$mu_hat, self$v^2 * solve(self$theta$B))
-
-      expected_rewards <- t(X) %*% t(mu_tilde)
+      expected_rewards <- mu_tilde %*% X
       action$choice <- max_in(expected_rewards)
-
       action
     },
     set_reward = function(t, context, action, reward) {
       reward <- reward$reward
       arm    <- action$choice
-      X      <- context$X[,arm]
-      inc(self$theta$B)    <- X %*% t(X)
-      inc(self$theta$f)    <- X * reward
-      self$theta$mu_hat    <- solve(self$theta$B ) %*% self$theta$f
+      Xa      <- context$X[,arm]
+      inc(self$theta$B)    <- Xa %*% t(Xa)
+      inc(self$theta$f)    <- reward * Xa
+      self$theta$mu_hat    <- inv(self$theta$B ) %*% self$theta$f
       self$theta
     },
     mvrnorm = function(n, mu, sigma)
