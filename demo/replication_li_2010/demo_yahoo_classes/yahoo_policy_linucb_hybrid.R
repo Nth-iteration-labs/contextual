@@ -11,13 +11,13 @@ YahooLinUCBHybridPolicy <- R6::R6Class(
       self$alpha  <- alpha
     },
     set_parameters = function() {
-      dsda               <- length(self$d_shared)*length(self$d_disjoint)
-      ds                 <- length(self$d_disjoint)
+      dd                 <- length(self$d_disjoint)
+      dds                <- dd * length(self$d_shared)
 
-      self$theta         <- list( 'A0' = diag(1,dsda,dsda), 'A0_inv' = diag(1,dsda,dsda),
-                                  'b0' = rep(0,dsda),'z' = matrix(0,ds,ds), 'x' = rep(0,ds))
-      self$theta_to_arms <- list( 'A' = diag(1,ds,ds), 'A_inv' = diag(1,ds,ds),
-                                  'B' = matrix(0,ds,dsda), 'b' = rep(0,ds))
+      self$theta         <- list( 'A0' = diag(1,dds,dds), 'A0_inv' = diag(1,dds,dds),
+                                  'b0' = rep(0,dds),'z' = matrix(0,dd,dd), 'x' = rep(0,dd))
+      self$theta_to_arms <- list( 'A' = diag(1,dd,dd), 'A_inv' = diag(1,dd,dd),
+                                  'B' = matrix(0,dd,dds), 'b' = rep(0,dd))
     },
     get_action = function(t, context) {
 
@@ -36,8 +36,8 @@ YahooLinUCBHybridPolicy <- R6::R6Class(
         B                <- self$theta$B[[local_arms[arm]]]
         b                <- self$theta$b[[local_arms[arm]]]
 
-        x                <- matrix(context$X[context$d_disjoint,1])
-        z                <- matrix(tcrossprod(x,context$X[context$d_shared,arm]))
+        x               <-  context$X[context$d_disjoint,arm]
+        z               <-  matrix(as.vector(outer(x,context$X[context$d_shared,arm])))
 
         ################## compute expected reward per arm #############################
 
@@ -52,11 +52,11 @@ YahooLinUCBHybridPolicy <- R6::R6Class(
         sd_three         <- txAinv %*% x
         sd_four          <- txAinv %*% (B %*% (A0_inv %*% tBAinvx))
 
-        sd               <- sqrt(sd_one - sd_two  + sd_three + sd_four)
+        var              <- sd_one - sd_two  + sd_three + sd_four
 
         mean             <- crossprod(z, beta_hat) + crossprod(x, theta_hat)
 
-        expected_rewards[arm] <- mean + self$alpha * sd
+        expected_rewards[arm] <- mean + self$alpha * sqrt(var)
       }
 
       ################## choose arm with highest expected reward #######################
@@ -73,8 +73,8 @@ YahooLinUCBHybridPolicy <- R6::R6Class(
       reward       <- reward$reward
 
 
-      x            <- matrix(context$X[context$d_disjoint,1])
-      z            <- matrix(tcrossprod(x,context$X[context$d_shared,arm_index]))
+      x            <- context$X[context$d_disjoint,arm_index]
+      z            <- matrix(as.vector(outer(x,context$X[context$d_shared,arm_index])))
 
       A0           <- self$theta$A0
       A0_inv       <- self$theta$A0_inv

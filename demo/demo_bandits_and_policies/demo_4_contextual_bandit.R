@@ -6,22 +6,22 @@ source("../dev.R")
 library(here)
 setwd(here("demo","demo_bandits_and_policies"))
 
-horizon            <- 2000L
-simulations        <- 30L
+horizon            <- 500L
+simulations        <- 50L
 
-bandit             <- BasicContextualBandit$new(k = 5L, common = 5L, unique = 5L)
+bandit             <- BasicContextualBandit$new(k = 3L, d = 6)
 
 agents             <- list(
-                           Agent$new(LinUCBDisjointOptimizedPolicy$new(0.1), bandit),
+                           Agent$new(LinUCBDisjointPolicy$new(0.1), bandit),
                            Agent$new(EpsilonGreedyPolicy$new(0.1), bandit),
-                           Agent$new(ContextualEpochGreedyDisjointPolicy$new(100), bandit),
-                           Agent$new(ContextualThompsonSamplingPolicy$new(), bandit),
-                           Agent$new(ContextualDisjointThompsonSamplingPolicy$new(), bandit)
+                           Agent$new(ContextualEpochGreedyDisjointPolicy$new(20), bandit),
+                           Agent$new(ContextualThompsonSamplingPolicy$new(v=0.1), bandit),
+                           Agent$new(ContextualDisjointThompsonSamplingPolicy$new(v=0.1), bandit),
+                           Agent$new(RandomPolicy$new(), bandit)
                           )
 
 simulation         <- Simulator$new(agents, horizon, simulations, do_parallel = FALSE)
 history            <- simulation$run()
 
-
-plot(history, type = "cumulative", regret = FALSE, legend_position = "bottomright",  #ci = "ci",
+plot(history, type = "cumulative", regret = FALSE, legend_position = "topleft",  #ci = "ci",
               rate = TRUE) #traces = TRUE, smooth = TRUE) # todo: false

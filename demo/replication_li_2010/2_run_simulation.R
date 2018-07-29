@@ -9,12 +9,12 @@ library(RPushbullet)
 # Config -----------------------------------------------------------------------------------------------------
 
 simulations             <- 1
-horizon                 <- 2000000
+horizon                 <- 10000000
 buffer_size             <- 1000
-sparsity                <- 0.0
+sparsity                <- 0.99
 worker_max              <- 6
 
-save_file_name          <- "Yahoo_T30M_Sparse0.RData"
+save_file_name          <- paste0("Yahoo_T_",horizon,"_sparse_",sparsity,".RData")
 
 monetdb_host            <- "monetdb_ip"
 monetdb_dbname          <- "yahoo"
@@ -56,12 +56,12 @@ bandit <- YahooBandit$new(k = 217L, d_disjoint = c(1:6), d_shared = c(7:12),
 
 agents <-
   list (Agent$new(YahooLinUCBDisjointPolicy$new(0.2),       bandit, name = "LinUCB Dis",  sparse = sparsity),
-        Agent$new(YahooLinUCBHybridPolicy$new(0.4),         bandit, name = "LinUCB Hyb",  sparse = sparsity),
+        Agent$new(YahooLinUCBHybridPolicy$new(0.2),         bandit, name = "LinUCB Hyb",  sparse = sparsity),
         Agent$new(YahooEpsilonGreedyPolicy$new(0.3),        bandit, name = "EGreedy",     sparse = sparsity),
         #Agent$new(YahooEpsilonGreedySegPolicy$new(0.3),     bandit, name = "EGreedySeg",  sparse = sparsity),
         Agent$new(YahooUCB1AlphaPolicy$new(0.4),            bandit, name = "UCB1",        sparse = sparsity),
-        #Agent$new(YahooUCB1AlphaSegPolicy$new(0.4),         bandit, name = "UCB1Seg",     sparse = sparsity),
-        Agent$new(YahooRandomPolicy$new(),                  bandit, name = "Random"))
+        Agent$new(YahooUCB1AlphaSegPolicy$new(0.4),         bandit, name = "UCB1Seg",     sparse = sparsity))
+        #Agent$new(YahooRandomPolicy$new(),                  bandit, name = "Random"))
 
 # Define the simulation --------------------------------------------------------------------------------------
 
@@ -72,7 +72,7 @@ simulation <- Simulator$new(
     do_parallel = TRUE,
     worker_max = worker_max,
     reindex = TRUE,
-    write_progress_file = TRUE,
+    progress_file = TRUE,
     include_packages = c("MonetDB.R"))
 
 history  <- simulation$run()
@@ -91,3 +91,4 @@ dbDisconnect(con)
 
 #pbPost("note", title = paste0("Contextual simulation complete in ",history$meta$sim_total_duration),
 #       body  = paste0("Saved to ",save_file_name))
+

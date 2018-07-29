@@ -9,14 +9,17 @@ ContextualDisjointThompsonSamplingPolicy <- R6::R6Class(
     R = NULL,
     epsilon = NULL,
     class_name = "ContextualDisjointThompsonSamplingPolicy",
-    initialize = function(delta=0.7, R=0.01, epsilon=0.8) {
+    initialize = function(delta=0.7, R=0.5, epsilon=0.8, v=NULL) {
       super$initialize()
       self$delta   <- delta
       self$R       <- R
       self$epsilon <- epsilon
+      self$v       <- v
     },
     set_parameters = function() {
-      self$v              <- self$R * sqrt(24 / self$epsilon * self$d * log(1 / self$delta))
+      if(is.null(self$v)) {
+        self$v     <- self$R * sqrt(24 / self$epsilon * self$d * log(1 / self$delta))
+      }
       self$theta_to_arms  <- list( 'B'  = diag(1, self$d, self$d), 'f'  = rep(0, self$d),
                                    'mu_hat' = rep(0, self$d))
     },

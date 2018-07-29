@@ -10,9 +10,9 @@ YahooLinUCBDisjointPolicy <- R6::R6Class(
       self$alpha  <- alpha
     },
     set_parameters = function() {
-      nds <- length(self$d_disjoint)
-      self$theta_to_arms <- list( 'A' = diag(1,nds,nds), 'b' = rep(0,nds),
-                                  'A_inv' = solve(diag(1,nds,nds)))
+      dd <- length(self$d_disjoint)
+      self$theta_to_arms <- list( 'A' = diag(1,dd,dd), 'b' = rep(0,dd),
+                                  'A_inv' = solve(diag(1,dd,dd)))
     },
     get_action = function(t, context) {
 

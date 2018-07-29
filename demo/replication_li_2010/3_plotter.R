@@ -3,8 +3,7 @@ library(lobstr)
 
 # Config -----------------------------------------------------------------------------------------------------
 
-load_file_name          <- "D:/Yahoo_T30M_Sparse0.RData"
-load_file_name          <- "D:/Yahoo_T30M_Sparse0.99.RData"
+load_file_name          <- "Yahoo_T_2e+06_sparse_0.99.RData"
 
 # Setup ------------------------------------------------------------------------------------------------------
 
@@ -14,5 +13,4 @@ history  <- History$new()
 
 history$load_data_table(load_file_name)
 
-plot(history, regret = FALSE, rate = TRUE, interval = 10000,
-     type = "cumulative", legend_position = "bottomright")
+plot(history, regret = FALSE, rate = TRUE, type = "cumulative", legend_position = "bottomright", interval = 1000)
