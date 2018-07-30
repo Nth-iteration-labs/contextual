@@ -12,7 +12,7 @@ install:
 
 environment:
   R_VERSION: stable
-  PKGTYPE: source
+  PKGTYPE: binary
 
 cache:
   - C:\RLibrary
