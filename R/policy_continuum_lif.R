@@ -19,7 +19,7 @@ LifPolicy <- R6::R6Class(
       self$omega     <- omega
       self$x0_start  <- x0_start
     },
-    set_parameters = function() {
+    set_parameters = function(k, d, u, s) {
       self$theta_to_arms <- list('x0' = x0_start, 'Y' = rep(NA, inttime))
     },
     get_action = function(t, context) {

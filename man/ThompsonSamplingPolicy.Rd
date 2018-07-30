@@ -92,7 +92,6 @@ Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link
 }
 \seealso{
 Other contextual subclasses: \code{\link{BasicBandit}},
-  \code{\link{BasicContextualBandit}},
   \code{\link{ContextualDisjointThompsonSamplingPolicy}},
   \code{\link{ContextualEpochGreedyDisjointPolicy}},
   \code{\link{ContextualThompsonSamplingPolicy}},

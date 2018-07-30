@@ -3,14 +3,14 @@ Bandit <- R6::R6Class(
   portable = TRUE,
   class    = FALSE,
   public   = list(
-    k             = NULL,  # Number of arms (integer)
-    d             = NULL,  # Dimension of context feature vector (integer)
-    d_disjoint     = NULL, # Vector of arm indices of disjoint context features (vector)
-    d_shared      = NULL,  # Vector of arm indices of context features shared between arms (vector)
-    precaching    = FALSE, # Pregenerate context & reward matrices? (boolean)
-    class_name = "Bandit",
+    k           = NULL,  # Number of arms (integer)
+    d           = NULL,  # Dimension of context feature vector (integer)
+    unique      = NULL,  # Vector of arm indices of unique context features (vector)
+    shared      = NULL,  # Vector of arm indices of context features shared between arms (vector)
+    precaching  = FALSE, # Pregenerate context & reward matrices? (boolean)
+    class_name  = "Bandit",
     initialize  = function() {
-      # Initialize Bandit.
+      # Initialize Bandit. Set self$d and self$k here.
     },
     post_initialization = function() {
       # Called after setting seed, but before iterating over T. Do random generation here.
@@ -18,7 +18,7 @@ Bandit <- R6::R6Class(
     get_context = function(t) {
       stop("Bandit subclass needs to implement bandit$get_context()", call. = FALSE)
       # Return a list with self$k, self$d and, where applicable, a context matrix X.
-      list(k = n_arms, d = n_features, d_disjoint = d_disjoint, d_shared = d_shared, X = context)
+      list(X = context, k = arms, d = features, unique = unique_features, shared = shared_features)
     },
     get_reward = function(t, context, action) {
       stop("Bandit subclass needs to implement bandit$get_reward()", call. = FALSE)
@@ -91,7 +91,7 @@ Bandit <- R6::R6Class(
 #' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
-#' Bandit subclass examples: \code{\link{BasicBandit}}, \code{\link{ContextualBandit}},  \code{\link{LiSamplingOfflineBandit}}
+#' Bandit subclass examples: \code{\link{BasicBandit}}, \code{\link{BasicContextualBandit}},  \code{\link{LiSamplingOfflineBandit}}
 #'
 #' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 #'

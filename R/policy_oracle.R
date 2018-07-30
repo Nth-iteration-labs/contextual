@@ -8,7 +8,7 @@ OraclePolicy <- R6::R6Class(
     initialize = function() {
       super$initialize()
     },
-    set_parameters = function() {
+    set_parameters = function(k, d, u, s) {
       self$theta_to_arms          <- list('n' = 0, 'mean' = 0)
     },
     get_action = function(t, context) {

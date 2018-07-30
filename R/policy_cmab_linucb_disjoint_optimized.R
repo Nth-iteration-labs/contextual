@@ -10,18 +10,18 @@ LinUCBDisjointOptimizedPolicy <- R6::R6Class(
       super$initialize()
       self$alpha <- alpha
     },
-    set_parameters = function() {
-      dd <- length(self$d_disjoint)
-      self$theta_to_arms <- list( 'A' = diag(1,dd,dd), 'b' = rep(0,dd),
-                                  'A_inv' = solve(diag(1,dd,dd)))
+    set_parameters = function(k, d, u, s) {
+      ul <- length(u)
+      self$theta_to_arms <- list( 'A' = diag(1, ul, ul), 'b' = rep(0, ul),
+                                  'A_inv' = solve(diag(1, ul, ul)))
     },
     get_action = function(t, context) {
 
       expected_rewards <- rep(0.0, context$k)
 
-      for (arm in 1:self$k) {
+      for (arm in 1:context$k) {
 
-        X          <-  context$X[context$d_disjoint,arm]
+        X          <-  context$X[context$unique,arm]
         A          <-  self$theta$A[[arm]]
         A_inv      <-  self$theta$A_inv[[arm]]
         b          <-  self$theta$b[[arm]]
@@ -39,7 +39,7 @@ LinUCBDisjointOptimizedPolicy <- R6::R6Class(
     set_reward = function(t, context, action, reward) {
       arm    <- action$choice
       reward <- reward$reward
-      Xa    <-  context$X[context$d_disjoint,arm]
+      Xa    <-  context$X[context$unique,arm]
 
       self$theta$A_inv[[arm]] <- sherman_morrisson(self$theta$A_inv[[arm]],Xa)
 
@@ -51,9 +51,9 @@ LinUCBDisjointOptimizedPolicy <- R6::R6Class(
   )
 )
 
-#' Policy: LinUCB with disjoint linear models
+#' Policy: LinUCB with unique linear models
 #'
-#' Algorithm 1 LinUCB with disjoint linear models
+#' Algorithm 1 LinUCB with unique linear models
 #' A Contextual-Bandit Approach to
 #' Personalized News Article Recommendation
 #'

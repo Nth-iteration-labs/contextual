@@ -231,3 +231,27 @@ formatted_difftime.default <- function(x) {
             strtrim(substring(as.character(as.numeric(y) %% 1), 2), 4))
   }
 }
+#' Welford's variance
+#'
+#' Welford described a method for 'robust' one-pass computation of the
+#' standard deviation. By 'robust', we mean robust to round-off caused
+#' by a large shift in the mean.
+#'
+#' @param z vector
+#'
+#' @return variance
+#'
+#' @export
+var_welford <- function(z){
+  n = length(z)
+  M = list()
+  S = list()
+  M[[1]] = z[[1]]
+  S[[1]] = 0
+
+  for(k in 2:n){
+    M[[k]] = M[[k-1]] + ( z[[k]] - M[[k-1]] ) / k
+    S[[k]] = S[[k-1]] + ( z[[k]] - M[[k-1]] ) * ( z[[k]] - M[[k]] )
+  }
+  return(S[[n]] / (n - 1))
+}

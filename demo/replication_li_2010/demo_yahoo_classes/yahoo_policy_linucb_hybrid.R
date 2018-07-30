@@ -10,14 +10,14 @@ YahooLinUCBHybridPolicy <- R6::R6Class(
       super$initialize()
       self$alpha  <- alpha
     },
-    set_parameters = function() {
-      dd                 <- length(self$d_disjoint)
-      dds                <- dd * length(self$d_shared)
+    set_parameters = function(k, d, u, s) {
+      ul                 <- length(self$unique)
+      sl                 <- length(self$unique) * length(self$shared)
 
-      self$theta         <- list( 'A0' = diag(1,dds,dds), 'A0_inv' = diag(1,dds,dds),
-                                  'b0' = rep(0,dds),'z' = matrix(0,dd,dd), 'x' = rep(0,dd))
-      self$theta_to_arms <- list( 'A' = diag(1,dd,dd), 'A_inv' = diag(1,dd,dd),
-                                  'B' = matrix(0,dd,dds), 'b' = rep(0,dd))
+      self$theta         <- list( 'A0' = diag(1,sl,sl), 'A0_inv' = diag(1,sl,sl),
+                                  'b0' = rep(0,sl),'z' = matrix(0,ul,ul), 'x' = rep(0,ul))
+      self$theta_to_arms <- list( 'A' = diag(1,ul,ul), 'A_inv' = diag(1,ul,ul),
+                                  'B' = matrix(0,ul,sl), 'b' = rep(0,ul))
     },
     get_action = function(t, context) {
 
@@ -36,12 +36,12 @@ YahooLinUCBHybridPolicy <- R6::R6Class(
         B                <- self$theta$B[[local_arms[arm]]]
         b                <- self$theta$b[[local_arms[arm]]]
 
-        x               <-  context$X[context$d_disjoint,arm]
-        z               <-  matrix(as.vector(outer(x,context$X[context$d_shared,arm])))
+        x                <- context$X[context$unique,arm]
+        z                <- matrix(as.vector(outer(x,context$X[context$shared,arm])))
 
         ################## compute expected reward per arm #############################
 
-        theta_hat        <-  A_inv %*% (b - B %*% beta_hat)
+        theta_hat        <- A_inv %*% (b - B %*% beta_hat)
 
         tBAinvx          <- crossprod(B, (A_inv %*% x))
         txAinv           <- crossprod(x, A_inv)
@@ -73,8 +73,8 @@ YahooLinUCBHybridPolicy <- R6::R6Class(
       reward       <- reward$reward
 
 
-      x            <- context$X[context$d_disjoint,arm_index]
-      z            <- matrix(as.vector(outer(x,context$X[context$d_shared,arm_index])))
+      x            <- context$X[context$unique,arm_index]
+      z            <- matrix(as.vector(outer(x,context$X[context$shared,arm_index])))
 
       A0           <- self$theta$A0
       A0_inv       <- self$theta$A0_inv

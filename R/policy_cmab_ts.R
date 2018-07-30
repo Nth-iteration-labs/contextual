@@ -33,14 +33,13 @@ ContextualThompsonSamplingPolicy <- R6::R6Class(
       self$v       <- v
 
     },
-    set_parameters = function() {
+    set_parameters = function(k, d, u, s) {
       if(is.null(self$v)) {
-          self$v     <- self$R * sqrt(24 / self$epsilon * self$d * log(1 / self$delta))
+          self$v     <- self$R * sqrt(24 / self$epsilon * d * log(1 /self$delta))
       }
-      self$theta  <- list( 'B'  = diag(1, self$d, self$d), 'f'  = rep(0, self$d), 'mu_hat' = rep(0, self$d))
+      self$theta  <- list( 'B'  = diag(1, d, d), 'f'  = rep(0, d), 'mu_hat' = rep(0, d))
     },
     get_action = function(t, context) {
-
       X <- context$X
       mu_tilde <- self$mvrnorm(1, self$theta$mu_hat, self$v^2 * solve(self$theta$B))
       expected_rewards <- mu_tilde %*% X
@@ -64,10 +63,6 @@ ContextualThompsonSamplingPolicy <- R6::R6Class(
     }
   )
 )
-
-
-
-
 # B: the estimated covariance matrix of normal distribution B^(-1)
 # mu_hat: vector of the estimated mu_hat vector of normal distribution (posterior)
 # f: cumulative selected contextual vector with reward (dimension of contextual vector*1)

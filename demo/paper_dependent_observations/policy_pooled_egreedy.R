@@ -11,8 +11,8 @@ UnpooledEgreedyPolicy <- R6::R6Class(
       self$epsilon <- epsilon
       self$n_subjects <- n_subjects
     },
-    set_parameters = function() {
-      self$theta <- list(n = rep(list(as.list(rep(0, self$k))),self$n_subjects), mu = rep(list(as.list(rep(0, self$k))), self$n_subjects))
+    set_parameters = function(k, d, u, s) {
+      self$theta <- list(n = rep(list(as.list(rep(0, context$k))),self$n_subjects), mu = rep(list(as.list(rep(0, context$k))), self$n_subjects))
     },
     get_action = function(t, context) {
       if (runif(1) > epsilon) {
@@ -45,7 +45,7 @@ PooledEgreedyPolicy <- R6::R6Class(
       super$initialize()
       self$epsilon <- epsilon
     },
-    set_parameters = function() {
+    set_parameters = function(k, d, u, s) {
       self$theta_to_arms <- list('N' = 0, 'MU' = 0)
     },
     get_action = function(t, context) {
@@ -79,9 +79,9 @@ PartiallyPooledEgreedyPolicy <- R6::R6Class(
       self$epsilon <- epsilon
       self$n_subjects <- n_subjects
     },
-    set_parameters = function() {
+    set_parameters = function(k, d, u, s) {
       # here, n 1/1  because of beta...
-      self$theta         <- list(n = rep(list(as.list(rep(1, self$k))),self$n_subjects), mu = rep(list(as.list(rep(0, self$k))),self$n_subjects))
+      self$theta         <- list(n = rep(list(as.list(rep(1, context$k))),self$n_subjects), mu = rep(list(as.list(rep(0, context$k))),self$n_subjects))
       self$theta_to_arms <- list('N' = 0, 'MU' = 0)
     },
     get_action = function(t, context) {

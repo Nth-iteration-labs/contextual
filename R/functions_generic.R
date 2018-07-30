@@ -43,6 +43,10 @@ plot.History <- function(x, ...) {
     use_colors <- eval(args$use_colors)
   else
     use_colors <- TRUE
+  if ("plot_only_ci" %in% names(args))
+    plot_only_ci <- eval(args$plot_only_ci)
+  else
+    plot_only_ci <- FALSE
   if ("ci" %in% names(args))
     ci <- eval(args$ci)
   else
@@ -119,6 +123,7 @@ plot.History <- function(x, ...) {
       regret = regret,
       use_colors = use_colors,
       ci = ci,
+      plot_only_ci = plot_only_ci,
       traces = traces,
       traces_max = traces_max,
       traces_alpha = traces_alpha,
@@ -144,6 +149,7 @@ plot.History <- function(x, ...) {
       regret = regret,
       use_colors = use_colors,
       ci = ci,
+      plot_only_ci = plot_only_ci,
       traces = traces,
       traces_max = traces_max,
       traces_alpha = traces_alpha,

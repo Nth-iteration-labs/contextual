@@ -12,13 +12,12 @@ ContextualEpochGreedyDisjointPolicy <- R6::R6Class(
       self$p <- p
       self$e <- 0
     },
-    set_parameters = function() {
-      if(is.null(self$d_disjoint)) self$d_disjoint <- c(1:self$d)
-      dd <- length(self$d_disjoint)
-      self$theta_to_arms <- list( 'A' = diag(1,dd,dd), 'b' = rep(0,dd), 'n' = 0)
+    set_parameters = function(k, d, u, s) {
+      ul <- length(u)
+      self$theta_to_arms <- list( 'A' = diag(1,ul,ul), 'b' = rep(0,ul), 'n' = 0)
     },
     get_action = function(t, context) {
-      if (t <= self$p || t <= self$k) {
+      if (t <= self$p || t <= context$k) {
         arm <- 1 + (t %% context$k)
         self$action$choice = arm
         return(self$action)
@@ -31,8 +30,8 @@ ContextualEpochGreedyDisjointPolicy <- R6::R6Class(
           return(self$action)
       } else {
         expected_rewards <- rep(0.0, context$k)
-        for (arm in 1:self$k) {
-          X                     <- context$X[context$d_disjoint,arm]
+        for (arm in 1:context$k) {
+          X                     <- context$X[context$unique,arm]
           A                     <- self$theta$A[[arm]]
           b                     <- self$theta$b[[arm]]
           A_inv                 <- inv(A)
@@ -45,10 +44,10 @@ ContextualEpochGreedyDisjointPolicy <- R6::R6Class(
       }
     },
     set_reward = function(t, context, action, reward) {
-      if (t <= self$p || t <= self$k || self$e==1) {
+      if (t <= self$p || t <= context$k || self$e==1) {
         arm                      <- action$choice
         reward                   <- reward$reward
-        Xa                       <- context$X[context$d_disjoint, arm]
+        Xa                       <- context$X[context$unique, arm]
         self$theta$n[[arm]]      <- self$theta$n[[arm]] + 1
         inc(self$theta$A[[arm]]) <- outer(Xa, Xa)
         inc(self$theta$b[[arm]]) <- reward * Xa

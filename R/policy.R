@@ -6,10 +6,6 @@ Policy <- R6::R6Class(
     action        = NULL,
     theta         = NULL,
     theta_to_arms = NULL,
-    k             = NULL,
-    d             = NULL,
-    d_disjoint     = NULL,
-    d_shared      = NULL,
     class_name    = "Policy",
     initialize = function() {
       self$theta  <- list()
@@ -23,16 +19,16 @@ Policy <- R6::R6Class(
       # Updates parameters in theta based on reward awarded by bandit.
       stop("Policy$set_reward() has not been implemented.", call. = FALSE)
     },
-    set_parameters = function() {
+    set_parameters = function(k, d, u, s) {
       # Policy parameter (not theta!) initialisation happens here.
       stop("Policy$set_parameters() has not been implemented.", call. = FALSE)
     },
-    initialize_theta = function() {
+    initialize_theta = function(k) {
       # Called during contextual's initialisation.
       # Copies theta_to_arms k times, makes the copies available through theta.
       if (!is.null(self$theta_to_arms)) {
         for (param_index in seq_along(self$theta_to_arms)) {
-          self$theta[[ names(self$theta_to_arms)[param_index] ]] <- rep(list(self$theta_to_arms[[param_index]]),self$k)
+          self$theta[[ names(self$theta_to_arms)[param_index] ]] <- rep(list(self$theta_to_arms[[param_index]]),k)
         }
       }
     }
@@ -107,7 +103,7 @@ Policy <- R6::R6Class(
 #' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
-#' Bandit subclass examples: \code{\link{BasicBandit}}, \code{\link{ContextualBandit}},  \code{\link{LiSamplingOfflineBandit}}
+#' Bandit subclass examples: \code{\link{BasicBandit}}, \code{\link{BasicContextualBandit}},  \code{\link{LiSamplingOfflineBandit}}
 #'
 #' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 #'

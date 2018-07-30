@@ -2,9 +2,9 @@
 % Please edit documentation in R/policy_cmab_linucb_disjoint_optimized.R
 \name{LinUCBDisjointOptimizedPolicy}
 \alias{LinUCBDisjointOptimizedPolicy}
-\title{Policy: LinUCB with disjoint linear models}
+\title{Policy: LinUCB with unique linear models}
 \description{
-Algorithm 1 LinUCB with disjoint linear models
+Algorithm 1 LinUCB with unique linear models
 A Contextual-Bandit Approach to
 Personalized News Article Recommendation
 }
@@ -87,7 +87,6 @@ Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link
 \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 
 Other contextual subclasses: \code{\link{BasicBandit}},
-  \code{\link{BasicContextualBandit}},
   \code{\link{ContextualDisjointThompsonSamplingPolicy}},
   \code{\link{ContextualEpochGreedyDisjointPolicy}},
   \code{\link{ContextualThompsonSamplingPolicy}},

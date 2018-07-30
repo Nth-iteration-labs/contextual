@@ -12,7 +12,6 @@ the number of successes and failures associated with each arm.
 }
 \seealso{
 Other contextual subclasses: \code{\link{BasicBandit}},
-  \code{\link{BasicContextualBandit}},
   \code{\link{ContextualDisjointThompsonSamplingPolicy}},
   \code{\link{ContextualEpochGreedyDisjointPolicy}},
   \code{\link{ContextualThompsonSamplingPolicy}},

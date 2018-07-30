@@ -14,14 +14,14 @@ YahooBandit <- R6::R6Class(
     dbname = NULL,
     user = NULL,
     password = NULL,
-    initialize   = function(k, d_disjoint, d_shared, arm_lookup,
+    initialize   = function(k, unique, shared, arm_lookup,
                             host, dbname, user, password,
                             buffer_size = 1000) {
 
       self$k           <- k
-      self$d           <- length(d_shared) + length(d_disjoint)
-      self$d_shared    <- d_shared
-      self$d_disjoint  <- d_disjoint
+      self$d           <- length(shared) + length(unique)
+      self$shared    <- shared
+      self$unique  <- unique
       self$buffer_size <- buffer_size
       self$arm_lookup  <- arm_lookup
       self$host        <- host
@@ -78,8 +78,8 @@ YahooBandit <- R6::R6Class(
       contextlist <- list(
         k = self$k,
         d = self$d,
-        d_disjoint = self$d_disjoint,
-        d_shared = self$d_shared,
+        unique = self$unique,
+        shared = self$shared,
         arms = article_ids,
         X = X
       )

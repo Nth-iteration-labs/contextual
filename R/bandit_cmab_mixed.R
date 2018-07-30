@@ -7,53 +7,48 @@ MixedContextualBandit <- R6::R6Class(
   public = list(
     weights = NULL,
     rewards = NULL,
-    context_common = NULL,
-    context_unique = NULL,
-    c = NULL,
+    s = NULL,
     u = NULL,
+    context_shared = NULL,
+    context_unique = NULL,
     jitter = NULL,
     class_name    = "MixedContextualBandit",
     precaching = FALSE,
-    initialize  = function(k, common, unique, classes) {
+    initialize  = function(k, shared, unique) {
       self$k                                  <- k
-      self$c                                  <- common
+      self$s                                  <- shared
       self$u                                  <- unique
-      self$d                                  <- common + unique
-      self$cl                                 <- classes
+      self$d                                  <- shared + unique
     },
     post_initialization = function() {
       self$weights                            <- matrix(runif(self$d, -1, 1),self$d,self$k)
       self$weights                            <- self$weights / norm(self$weights, type = "F")
 
-      self$context_unique                     <- matrix(rnorm(self$u), self$u, self$k)
 
-      self$context_common                     <- matrix(rnorm(self$c*self$k), self$c, self$k)
+      self$context_shared                     <- matrix(rnorm(self$s*self$k), self$s, self$k)
     },
     get_context = function(t) {
 
+      self$context_unique                     <- matrix(rnorm(self$u), self$u, self$k)
 
-
-      context_total                           <- rbind2(self$context_unique, self$context_common)
+      context_total                           <- rbind2(self$context_unique, self$context_shared)
 
       dot_rewards                             <- colMeans(context_total * self$weights)
 
       self$rewards                            <- rep(0,self$k)
       self$rewards[which.max(dot_rewards)]    <- 1
 
-      context_commonlist                      <- list(
+      context_list                            <- list(
         k = self$k,
         d = self$d,
-        d_disjoint = self$d_disjoint,
         X = context_total
       )
-      context_commonlist
     },
     get_reward = function(t, context_common, action) {
       rewardlist <- list(
         reward                   = self$rewards[action$choice],
         optimal_reward_value     = self$rewards[which.max(self$rewards)]
       )
-      rewardlist
     }
   )
 )

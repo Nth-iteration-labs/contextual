@@ -16,18 +16,19 @@ ContextualDisjointThompsonSamplingPolicy <- R6::R6Class(
       self$epsilon <- epsilon
       self$v       <- v
     },
-    set_parameters = function() {
+    set_parameters = function(k, d, u, s) {
+      ul <- length(u)
+      self$theta_to_arms <- list( 'B' = diag(1,ul,ul), 'f' = rep(0,ul),
+                                  'mu_hat' = rep(0,ul))
       if(is.null(self$v)) {
-        self$v     <- self$R * sqrt(24 / self$epsilon * self$d * log(1 / self$delta))
+        self$v     <- self$R * sqrt(24 / self$epsilon * ul * log(1 / self$delta))
       }
-      self$theta_to_arms  <- list( 'B'  = diag(1, self$d, self$d), 'f'  = rep(0, self$d),
-                                   'mu_hat' = rep(0, self$d))
+
     },
     get_action = function(t, context) {
-
       expected_rewards <- rep(0.0, context$k)
-      for (arm in 1:self$k) {
-        X                     <- context$X[,arm]
+      for (arm in 1:context$k) {
+        X                     <- context$X[context$unique,arm]
         mu_tilde              <- self$mvrnorm(self$theta$mu_hat[[arm]], self$v^2 * solve(self$theta$B[[arm]]))
         expected_rewards[arm] <- t(X) %*% t(mu_tilde)
       }

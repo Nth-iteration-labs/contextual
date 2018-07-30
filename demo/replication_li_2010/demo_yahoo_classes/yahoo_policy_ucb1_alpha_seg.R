@@ -11,12 +11,12 @@ YahooUCB1AlphaSegPolicy <- R6::R6Class(
       super$initialize()
       self$alpha                  <- alpha
     },
-    set_parameters = function() {
+    set_parameters = function(k, d, u, s) {
       self$theta_to_arms          <- list('n' = rep(0,5), 'mean' = rep(0,5))
     },
     get_action = function(t, context) {
       # find the feature on which a user scores highest - that is this user's cluster
-      self$cluster                <- which.max(head(context$X[context$d_disjoint,1],-1))
+      self$cluster                <- which.max(head(context$X[context$unique,1],-1))
       local_arms                  <- context$arms
       for (arm in seq_along(local_arms)) {
         if(self$theta$n[[local_arms[arm]]][self$cluster] == 0) {

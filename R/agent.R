@@ -15,32 +15,20 @@ Agent <- R6::R6Class(
     log_interval = NULL,
     sparse = NULL,
     initialize = function(policy, bandit, name=NULL, sparse = 0.0) {
-
-
-
       self$bandit                 <- bandit
       self$policy                 <- policy
       self$sparse                 <- sparse
-      self$policy$k               <- self$bandit$k
-      self$policy$d               <- self$bandit$d
-      self$policy$d_disjoint      <- self$bandit$d_disjoint
-      self$policy$d_shared        <- self$bandit$d_shared
-
       if (is.null(name)) {
         self$name  <- gsub("Policy", "", policy$class_name)
       } else {
         self$name  <- name
       }
-
       self$reset()
     },
     reset = function() {
-      if(is.null(self$bandit$d_disjoint)) {
-        self$bandit$d_disjoint <- c(1:self$bandit$d)
-        self$policy$d_disjoint <- c(1:self$bandit$d)
-      }
-      self$policy$set_parameters()
-      self$policy$initialize_theta()
+      if(!is.null(self$bandit$d) && is.null(self$bandit$unique)) self$bandit$unique <- c(1:self$bandit$d)
+      self$policy$set_parameters(self$bandit$k, self$bandit$d, self$bandit$unique, self$bandit$shared)
+      self$policy$initialize_theta(self$bandit$k)
       self$progress_file <- FALSE
       self$log_interval <- 1000L
       agent_t <<- 0L
@@ -49,6 +37,7 @@ Agent <- R6::R6Class(
     do_step = function() {
       agent_t  <<- agent_t + 1L
       context   <- bandit$get_context(agent_t)
+      if(!is.null(context$d) && is.null(context$unique)) context$unique <- c(1:context$d)
       action    <- policy$get_action (policy_t, context)
       reward    <- bandit$get_reward (agent_t, context, action)
       if (is.null(reward)) {
@@ -61,14 +50,12 @@ Agent <- R6::R6Class(
         }
         policy_t  <<- policy_t + 1L
       }
-
       if(isTRUE(self$progress_file)) {
         if (agent_t %% self$log_interval == 0) {
           cat(paste0("[",format(Sys.time(), format = "%H:%M:%OS6"),"] ",sprintf("%9s", agent_t)," > step - ",
                      sprintf("%-20s", self$name)," running ",bandit$class_name,
                      " and ",policy$class_name,"\n"),file = "progress.log", append = TRUE)
         }
-
       }
       list(context = context, action = action, reward = reward, theta = theta)
     },
@@ -132,7 +119,7 @@ Agent <- R6::R6Class(
 #' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
-#' Bandit subclass examples: \code{\link{BasicBandit}}, \code{\link{ContextualBandit}},  \code{\link{LiSamplingOfflineBandit}}
+#' Bandit subclass examples: \code{\link{BasicBandit}}, \code{\link{BasicContextualBandit}},  \code{\link{LiSamplingOfflineBandit}}
 #'
 #' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 #'

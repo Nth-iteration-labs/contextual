@@ -12,7 +12,7 @@ ThompsonSamplingPolicy <- R6::R6Class(
       self$alpha  <- alpha
       self$beta   <- beta
     },
-    set_parameters = function() {
+    set_parameters = function(k, d, u, s) {
       self$theta_to_arms <- list('n' = 0, 'p' = 0.0, 'succes' = 0, 'mean' = 0.0)
     },
     get_action = function(t, context) {

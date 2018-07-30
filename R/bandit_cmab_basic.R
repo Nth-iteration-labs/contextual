@@ -26,9 +26,9 @@ BasicContextualBandit <- R6::R6Class(
     betas   = NULL,
     sigma   = NULL,
     binary  = NULL,
-    class_name    = "BasicContextualBandit",
+    class_name = "BasicContextualBandit",
     precaching = FALSE,
-    initialize  = function(k, d, sigma = 0.1, binary_rewards = TRUE) {
+    initialize  = function(k, d, sigma = 0.1, binary_rewards = FALSE) {
       self$k                                    <- k
       self$d                                    <- d
       self$sigma                                <- sigma
@@ -51,11 +51,9 @@ BasicContextualBandit <- R6::R6Class(
       } else {
         self$rewards                            <- reward_vector
       }
-
       context_list <- list(
         k = self$k,
         d = self$d,
-        d_disjoint = self$d_disjoint,
         X = context
       )
       context_list

@@ -10,14 +10,14 @@ UnpooledThompsonPolicy <- R6::R6Class(
       super$initialize()
       self$n_subjects <- n_subjects
     },
-    set_parameters = function() {
+    set_parameters = function(k, d, u, s) {
       self$theta <- list(p = rep(list(list(0,0)),self$n_subjects),
                          n = rep(list(list(0,0)),self$n_subjects))
     },
     get_action = function(t, context) {
       user             <- context$user_context
-      expected_rewards <- rep(0.0, self$k)
-      for (arm in 1:self$k) {
+      expected_rewards <- rep(0.0, context$k)
+      for (arm in 1:context$k) {
         a <- theta$p[[user]][[arm]] * theta$n[[user]][[arm]]
         b <- theta$n[[user]][[arm]] - a
         if (a == 0 || b == 0) {
@@ -50,12 +50,12 @@ PooledThompsonPolicy <- R6::R6Class(
     initialize = function(name = "PooledThompson") {
       super$initialize()
     },
-    set_parameters = function() {
+    set_parameters = function(k, d, u, s) {
       self$theta_to_arms <- list('N' = 0, 'P' = 0)
     },
     get_action = function(t, context) {
-      expected_rewards <- rep(0.0, self$k)
-      for (arm in 1:self$k) {
+      expected_rewards <- rep(0.0, context$k)
+      for (arm in 1:context$k) {
         a <- self$theta$P[[arm]] * self$theta$N[[arm]]
         b <- self$theta$N[[arm]] - a
         if (a == 0 || b == 0) {
@@ -101,7 +101,7 @@ PartiallyPooledThompsonPolicy <- R6::R6Class(
       self$warm_up = warm_up
       self$iter = iter
     },
-    set_parameters = function() {
+    set_parameters = function(k, d, u, s) {
       self$theta <- list(n = list(rep(0,self$n_subjects),rep(0,self$n_subjects)),  # TODO: make this into k-arms 0, not 0,0
                          l = list(rep(0,self$n_subjects),rep(0,self$n_subjects)))  # TODO: make this into k-arms 0, not 0,0
       self$theta_to_arms <- list('N' = 0)

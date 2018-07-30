@@ -10,14 +10,14 @@ YahooEpsilonGreedySegPolicy          <- R6::R6Class(
       super$initialize()
       self$epsilon                <- epsilon
     },
-    set_parameters = function() {
+    set_parameters = function(k, d, u, s) {
       self$theta_to_arms          <- list('n' = rep(0,5), 'mean' = rep(0,5))
     },
     get_action = function(t, context) {
       local_arms                  <- context$arms
       if (runif(1) > self$epsilon) {
         # find the feature on which a user scores highest - that is this user's cluster
-        self$cluster              <- which.max(head(context$X[context$d_disjoint,1],-1))
+        self$cluster              <- which.max(head(context$X[context$unique,1],-1))
         expected_rewards          <- rep(0.0, length(local_arms))
         for (arm in seq_along(local_arms)) {
           expected_rewards[arm]   <- self$theta$mean[[local_arms[arm]]][self$cluster]

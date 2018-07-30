@@ -11,19 +11,19 @@ GittinsBrezziLaiPolicy          <- R6::R6Class(
     class_name = "GittinsBrezziLaiPolicy",
     initialize = function(discount=0.95, prior=NULL) {
       super$initialize()
-      self$discount                  <- discount
-      self$prior                     <- prior
+      self$discount                     <- discount
+      self$prior                        <- prior
     },
-    set_parameters = function() {
+    set_parameters = function(k, d, u, s) {
       if(is.null(self$prior)) {
-        for (arm in 1:self$k) {
+        for (arm in 1:k) {
           self$theta$n[[arm]]             <-  2
           self$theta$mean[[arm]]          <-  0.5
           self$theta$gittins_index[[arm]] <-  0
           self$gittins_approximation(arm)
         }
       } else {
-        for (arm in 1:self$k) {
+        for (arm in 1:k) {
           self$theta$n[[arm]]             <- sum(self$prior[arm,])
           self$theta$mean[[arm]]          <- self$prior[arm,1]/self$theta$n[[arm]]
           self$theta$gittins_index[[arm]] <- 0

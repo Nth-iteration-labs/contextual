@@ -6,10 +6,12 @@ Plot <- R6::R6Class(
   cloneable = FALSE,
   public = list(
     history = NULL,
+
     cumulative = function(history,
 
                           regret             = TRUE,
                           ci                 = NULL,
+                          plot_only_ci       = FALSE,
                           rate               = FALSE,
                           interval           = 1,
                           traces             = FALSE,
@@ -61,6 +63,7 @@ Plot <- R6::R6Class(
         use_colors          = use_colors,
         legend              = legend,
         ci                  = ci,
+        plot_only_ci        = plot_only_ci,
         no_par              = no_par,
         interval            = interval,
         color_step          = color_step,
@@ -85,6 +88,7 @@ Plot <- R6::R6Class(
     average = function(history,
                        regret             = TRUE,
                        ci                 = NULL,
+                       plot_only_ci       = FALSE,
                        rate               = FALSE,
                        interval           = 1,
                        traces             = FALSE,
@@ -123,6 +127,7 @@ Plot <- R6::R6Class(
         use_colors          = use_colors,
         legend              = legend,
         ci                  = ci,
+        plot_only_ci        = plot_only_ci,
         no_par              = no_par,
         interval            = interval,
         color_step          = color_step,
@@ -273,6 +278,7 @@ Plot <- R6::R6Class(
     do_plot = function(line_data_name      = line_data_name,
                        ci_data_name        = ci_data_name,
                        ci                  = NULL,
+                       plot_only_ci        = FALSE,
                        ylab_title          = NULL,
                        use_colors          = FALSE,
                        legend              = TRUE,
@@ -339,11 +345,16 @@ Plot <- R6::R6Class(
         par(mar = c(5, 5, 1, 1))
       }
 
-      if (!is.null(ci)) {
+      if (!is.null(ci) && !isTRUE(plot_only_ci)) {
         ci_range <- data[[line_data_name]] + outer(data[[ci_data_name]], c(1, -1))
         data     <- cbind(data, ci_range)
         colnames(data)[colnames(data) == "V2"] <- "ci_lower"
         colnames(data)[colnames(data) == "V1"] <- "ci_upper"
+      }
+
+      if (isTRUE(plot_only_ci)) {
+        if(is.null(ci)) stop("Need to set ci to 'var','sd' or 'ci' when plot_only_ci is TRUE", call. = FALSE)
+        line_data_name = ci_data_name
       }
 
       plot.new()
@@ -356,7 +367,7 @@ Plot <- R6::R6Class(
       if (use_colors == FALSE) {
         lt <- seq(1, n_agents)
       }
-      if (!is.null(ci)) {
+      if (!is.null(ci) && !isTRUE(plot_only_ci)) {
         min_ylim <- data[, min(ci_lower)]
         max_ylim <- data[, max(ci_upper)]
       } else {
@@ -379,7 +390,7 @@ Plot <- R6::R6Class(
         ylim = c(min_ylim, max_ylim)
       )
 
-      if (traces) {
+      if (isTRUE(traces) && !isTRUE(plot_only_ci)) {
         dt <- self$history$get_data_table(limit_agents = limit_agents, interval = interval)
         data.table::setorder(dt, agent, sim, t)
         for (agent_name in agent_levels) {
@@ -406,8 +417,8 @@ Plot <- R6::R6Class(
         }
       }
 
-      if (use_colors) {
-        if (!is.null(ci)) {
+      if (isTRUE(use_colors)) {
+        if (!is.null(ci) && !isTRUE(plot_only_ci)) {
           color <- 1
           for (agent_name in agent_levels) {
             polygon(
@@ -434,7 +445,7 @@ Plot <- R6::R6Class(
       } else {
         line_counter <- 1
         for (agent_name in agent_levels) {
-          if (!is.null(ci)) {
+          if (!is.null(ci) && !isTRUE(plot_only_ci)) {
             polygon(
               c(data[data$agent == agent_name]$t, rev(data[data$agent == agent_name]$t)),
               c(data[data$agent == agent_name]$ci_lower, rev(data[data$agent == agent_name]$ci_upper)),
@@ -456,6 +467,7 @@ Plot <- R6::R6Class(
       axis(1)
       axis(2)
       title(xlab = "Time step")
+      if(isTRUE(plot_only_ci)) ylab_title <- paste0(ylab_title,": ",ci)
       title(ylab = ylab_title)
       box()
       if (legend) {
@@ -603,7 +615,7 @@ Plot <- R6::R6Class(
 #' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
-#' Bandit subclass examples: \code{\link{BasicBandit}}, \code{\link{ContextualBandit}},  \code{\link{LiSamplingOfflineBandit}}
+#' Bandit subclass examples: \code{\link{BasicBandit}}, \code{\link{BasicContextualBandit}},  \code{\link{LiSamplingOfflineBandit}}
 #'
 #' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 #'
