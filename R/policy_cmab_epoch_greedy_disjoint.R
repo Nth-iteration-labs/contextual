@@ -12,8 +12,8 @@ ContextualEpochGreedyDisjointPolicy <- R6::R6Class(
       self$p <- p
       self$e <- 0
     },
-    set_parameters = function(k, d, u, s) {
-      ul <- length(u)
+    set_parameters = function(context_params) {
+      ul <- length(context_params$unique)
       self$theta_to_arms <- list( 'A' = diag(1,ul,ul), 'b' = rep(0,ul), 'n' = 0)
     },
     get_action = function(t, context) {

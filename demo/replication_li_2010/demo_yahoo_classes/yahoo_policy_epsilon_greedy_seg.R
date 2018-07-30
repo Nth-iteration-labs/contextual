@@ -10,7 +10,7 @@ YahooEpsilonGreedySegPolicy          <- R6::R6Class(
       super$initialize()
       self$epsilon                <- epsilon
     },
-    set_parameters = function(k, d, u, s) {
+    set_parameters = function(context_params) {
       self$theta_to_arms          <- list('n' = rep(0,5), 'mean' = rep(0,5))
     },
     get_action = function(t, context) {

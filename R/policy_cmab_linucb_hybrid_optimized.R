@@ -10,9 +10,9 @@ LinUCBHybridOptimizedPolicy <- R6::R6Class(
       super$initialize()
       self$alpha <- alpha
     },
-    set_parameters = function(k, d, u, s) {
-      ul                 <- length(u)
-      sl                 <- length(u) * length(s)
+    set_parameters = function(context_params) {
+      ul                 <- length(context_params$unique)
+      sl                 <- length(context_params$unique) * length(context_params$shared)
       self$theta         <- list( 'A0' = diag(1,sl,sl), 'A0_inv' = diag(1,sl,sl),
                                   'b0' = rep(0,sl),'z' = matrix(0,ul,ul), 'x' = rep(0,ul))
       self$theta_to_arms <- list( 'A' = diag(1,ul,ul), 'A_inv' = diag(1,ul,ul),
@@ -21,8 +21,8 @@ LinUCBHybridOptimizedPolicy <- R6::R6Class(
     get_action = function(t, context) {
       expected_rewards <- rep(0.0, context$k)
 
-      A0_inv     <-  self$theta$A0_inv
-      b0         <-  self$theta$b0
+      A0_inv     <- self$theta$A0_inv
+      b0         <- self$theta$b0
 
       beta_hat   <- A0_inv %*% b0
 
@@ -30,17 +30,17 @@ LinUCBHybridOptimizedPolicy <- R6::R6Class(
 
         ################## unpack thetas ##############################################
 
-        A          <-  self$theta$A[[arm]]
-        A_inv      <-  self$theta$A_inv[[arm]]
-        B          <-  self$theta$B[[arm]]
-        b          <-  self$theta$b[[arm]]
-        x          <-  context$X[context$unique,arm]
-        z          <-  matrix(as.vector(outer(x,context$X[context$shared,arm])))
+        A          <- self$theta$A[[arm]]
+        A_inv      <- self$theta$A_inv[[arm]]
+        B          <- self$theta$B[[arm]]
+        b          <- self$theta$b[[arm]]
+        x          <- context$X[context$unique,arm]
+        z          <- matrix(as.vector(outer(x,context$X[context$shared,arm])))
 
 
         ################## compute expected reward per arm #############################
 
-        theta_hat  <-  A_inv %*% (b - B %*% beta_hat)
+        theta_hat  <- A_inv %*% (b - B %*% beta_hat)
 
         tBAinvx <- crossprod(B, (A_inv %*% x))
         txAinv  <- crossprod(x, A_inv)

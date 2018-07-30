@@ -76,7 +76,7 @@ Simulator <- R6::R6Class(
       self$history$set_meta_data("simulations",self$simulations)
 
       self$history$set_meta_data("sim_start_time",format(Sys.time(), "%a %b %d %X %Y"))
-      self$sims_and_agents_list <-  vector("list", self$simulations*self$agent_count)
+      self$sims_and_agents_list <- vector("list", self$simulations*self$agent_count)
       # unique policy names through appending sequence numbers to duplicates
       agent_name_list <- list()
 

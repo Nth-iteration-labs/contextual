@@ -27,8 +27,13 @@ Agent <- R6::R6Class(
     },
     reset = function() {
       if(!is.null(self$bandit$d) && is.null(self$bandit$unique)) self$bandit$unique <- c(1:self$bandit$d)
-      self$policy$set_parameters(self$bandit$k, self$bandit$d, self$bandit$unique, self$bandit$shared)
-      self$policy$initialize_theta(self$bandit$k)
+      context_initial_params        <- list ()
+      context_initial_params$d      <- self$bandit$d
+      context_initial_params$k      <- self$bandit$k
+      context_initial_params$unique <- self$bandit$unique
+      context_initial_params$shared <- self$bandit$shared
+      self$policy$set_parameters(context_initial_params)
+      self$policy$initialize_theta(context_initial_params$k)
       self$progress_file <- FALSE
       self$log_interval <- 1000L
       agent_t <<- 0L

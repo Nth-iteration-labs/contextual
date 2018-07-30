@@ -16,7 +16,7 @@ SimpleBTSPolicy <- R6::R6Class(
       self$a  <- a
       self$b  <- b
     },
-    set_parameters = function(k, d, u, s) {
+    set_parameters = function(context_params) {
       self$theta_to_arms <- list('alpha' = rep(self$b,self$J),  'beta' = rep(self$b,self$J))
     },
     get_action = function(t, context) {

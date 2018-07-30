@@ -9,8 +9,8 @@ YahooLinUCBDisjointPolicy <- R6::R6Class(
       super$initialize()
       self$alpha  <- alpha
     },
-    set_parameters = function(k, d, u, s) {
-      ul <- length(u)
+    set_parameters = function(context_params) {
+      ul <- length(context_params$unique)
       self$theta_to_arms <- list( 'A' = diag(1,ul,ul), 'b' = rep(0,ul),
                                   'A_inv' = solve(diag(1,ul,ul)))
     },
@@ -20,13 +20,13 @@ YahooLinUCBDisjointPolicy <- R6::R6Class(
       local_arms       <- context$arms
       for (arm in seq_along(local_arms)) {
 
-        x            <-  context$X[context$unique,arm]
-        A            <-  self$theta$A[[local_arms[arm]]]
-        A_inv        <-  self$theta$A_inv[[local_arms[arm]]]
-        b            <-  self$theta$b[[local_arms[arm]]]
-        theta_hat    <-  A_inv %*% b
-        mean         <-  x %*% theta_hat
-        sd           <-  sqrt(tcrossprod(x %*% A_inv, x))
+        x            <- context$X[context$unique,arm]
+        A            <- self$theta$A[[local_arms[arm]]]
+        A_inv        <- self$theta$A_inv[[local_arms[arm]]]
+        b            <- self$theta$b[[local_arms[arm]]]
+        theta_hat    <- A_inv %*% b
+        mean         <- x %*% theta_hat
+        sd           <- sqrt(tcrossprod(x %*% A_inv, x))
         expected_rewards[arm] <- mean + self$alpha * sd
       }
       action$choice  <- context$arms[max_in(expected_rewards)]

@@ -11,7 +11,7 @@ policy             <- EpsilonGreedyPolicy$new(epsilon = 0.1)
 bandit             <- SyntheticBandit$new(weights = c(0.6, 0.1, 0.1))
 agent              <- Agent$new(policy,bandit)
 
-history            <-  Simulator$new(
+history            <- Simulator$new(
                           agents = agent,
                           horizon = 100,
                           simulations = 100,

@@ -16,8 +16,8 @@ ContextualDisjointThompsonSamplingPolicy <- R6::R6Class(
       self$epsilon <- epsilon
       self$v       <- v
     },
-    set_parameters = function(k, d, u, s) {
-      ul <- length(u)
+    set_parameters = function(context_params) {
+      ul <- length(context_params$unique)
       self$theta_to_arms <- list( 'B' = diag(1,ul,ul), 'f' = rep(0,ul),
                                   'mu_hat' = rep(0,ul))
       if(is.null(self$v)) {

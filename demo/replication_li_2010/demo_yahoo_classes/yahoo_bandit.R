@@ -20,8 +20,8 @@ YahooBandit <- R6::R6Class(
 
       self$k           <- k
       self$d           <- length(shared) + length(unique)
-      self$shared    <- shared
-      self$unique  <- unique
+      self$shared      <- shared
+      self$unique      <- unique
       self$buffer_size <- buffer_size
       self$arm_lookup  <- arm_lookup
       self$host        <- host

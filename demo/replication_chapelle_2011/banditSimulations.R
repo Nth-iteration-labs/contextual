@@ -29,7 +29,7 @@ source("banditAlgorithms.R")
 
 # to speed up simulations, we run it in parallel  if multiple cores available
 seed <- 1234
-noCores <-  ifelse(detectCores() == 1, 1, detectCores() - 1)
+noCores <- ifelse(detectCores() == 1, 1, detectCores() - 1)
 registerDoParallel(noCores)
 registerDoRNG(seed)
 
@@ -92,9 +92,9 @@ simulate <- function(
             algoResults <- foreach(sim = 1:noSim, .combine = rbind) %dorng% {
 
                 # single simulation of an algorithm
-                startTime <-  Sys.time()
+                startTime <- Sys.time()
                 algoRes <- algo(env, algoPars)
-                endTime <-  Sys.time()
+                endTime <- Sys.time()
                 runTime <- endTime - startTime
                 cat("Simulation: ", sim, " | Execution time: ",
                     as.numeric(runTime, "mins"), "min\n")

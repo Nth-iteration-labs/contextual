@@ -19,7 +19,7 @@ Policy <- R6::R6Class(
       # Updates parameters in theta based on reward awarded by bandit.
       stop("Policy$set_reward() has not been implemented.", call. = FALSE)
     },
-    set_parameters = function(k, d, u, s) {
+    set_parameters = function(context_params) {
       # Policy parameter (not theta!) initialisation happens here.
       stop("Policy$set_parameters() has not been implemented.", call. = FALSE)
     },

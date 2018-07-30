@@ -10,7 +10,7 @@ Exp3Policy <- R6::R6Class(
       super$initialize()
       self$gamma <- gamma
     },
-    set_parameters = function(k, d, u, s) {
+    set_parameters = function(context_params) {
       self$theta_to_arms <- list('weight' = 1)
     },
     get_action = function(t, context) {

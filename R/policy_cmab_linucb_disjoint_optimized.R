@@ -10,8 +10,8 @@ LinUCBDisjointOptimizedPolicy <- R6::R6Class(
       super$initialize()
       self$alpha <- alpha
     },
-    set_parameters = function(k, d, u, s) {
-      ul <- length(u)
+    set_parameters = function(context_params) {
+      ul <- length(context_params$unique)
       self$theta_to_arms <- list( 'A' = diag(1, ul, ul), 'b' = rep(0, ul),
                                   'A_inv' = solve(diag(1, ul, ul)))
     },
@@ -21,15 +21,15 @@ LinUCBDisjointOptimizedPolicy <- R6::R6Class(
 
       for (arm in 1:context$k) {
 
-        X          <-  context$X[context$unique,arm]
-        A          <-  self$theta$A[[arm]]
-        A_inv      <-  self$theta$A_inv[[arm]]
-        b          <-  self$theta$b[[arm]]
+        X          <- context$X[context$unique,arm]
+        A          <- self$theta$A[[arm]]
+        A_inv      <- self$theta$A_inv[[arm]]
+        b          <- self$theta$b[[arm]]
 
-        theta_hat  <-  A_inv %*% b
+        theta_hat  <- A_inv %*% b
 
-        mean       <-  X %*% theta_hat
-        sd         <-  sqrt(tcrossprod(X %*% A_inv, X))
+        mean       <- X %*% theta_hat
+        sd         <- sqrt(tcrossprod(X %*% A_inv, X))
 
         expected_rewards[arm] <- mean + self$alpha * sd
       }
@@ -39,7 +39,7 @@ LinUCBDisjointOptimizedPolicy <- R6::R6Class(
     set_reward = function(t, context, action, reward) {
       arm    <- action$choice
       reward <- reward$reward
-      Xa    <-  context$X[context$unique,arm]
+      Xa    <- context$X[context$unique,arm]
 
       self$theta$A_inv[[arm]] <- sherman_morrisson(self$theta$A_inv[[arm]],Xa)
 

@@ -72,7 +72,7 @@ AzureSimulator <- R6::R6Class(
 
       # (re)create history's data.table
       self$history <- History$new(self$horizon * self$agents_length * self$simulations)
-      self$sims_per_agent_list <-  matrix(list(), self$simulations, self$agents_length)
+      self$sims_per_agent_list <- matrix(list(), self$simulations, self$agents_length)
       # unique policy names through appending sequence numbers to duplicates
       policy_name_list <- list()
       for (agent_index in 1L:self$agents_length) {

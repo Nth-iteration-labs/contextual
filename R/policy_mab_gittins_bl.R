@@ -14,12 +14,15 @@ GittinsBrezziLaiPolicy          <- R6::R6Class(
       self$discount                     <- discount
       self$prior                        <- prior
     },
-    set_parameters = function(k, d, u, s) {
+    set_parameters = function(context_params) {
+
+      k <- context_params$k
+
       if(is.null(self$prior)) {
         for (arm in 1:k) {
-          self$theta$n[[arm]]             <-  2
-          self$theta$mean[[arm]]          <-  0.5
-          self$theta$gittins_index[[arm]] <-  0
+          self$theta$n[[arm]]             <- 2
+          self$theta$mean[[arm]]          <- 0.5
+          self$theta$gittins_index[[arm]] <- 0
           self$gittins_approximation(arm)
         }
       } else {

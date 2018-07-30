@@ -10,9 +10,9 @@ LinUCBHybridPolicy <- R6::R6Class(
       super$initialize()
       self$alpha <- alpha
     },
-    set_parameters = function(k, d, u, s) {
-      ul                 <- length(u)
-      sl                 <- length(u) * length(s)
+    set_parameters = function(context_params) {
+      ul                 <- length(context_params$unique)
+      sl                 <- length(context_params$unique) * length(context_params$shared)
       self$theta         <- list( 'A0' = diag(1,sl,sl), 'A0_inv' = diag(1,sl,sl),
                                   'b0' = rep(0,sl),'z' = matrix(0,ul,ul), 'x' = rep(0,ul))
       self$theta_to_arms <- list( 'A' = diag(1,ul,ul), 'A_inv' = diag(1,ul,ul),
@@ -29,18 +29,18 @@ LinUCBHybridPolicy <- R6::R6Class(
 
         ################## unpack thetas ##############################################
 
-        A0         <-  self$theta$A0
-        A          <-  self$theta$A[[arm]]
-        B          <-  self$theta$B[[arm]]
-        b          <-  self$theta$b[[arm]]
-        x          <-  context$X[context$unique,arm]
-        z          <-  matrix(as.vector(outer(x,context$X[context$shared,arm])))
-        A0_inv     <-  self$theta$A0_inv
-        A_inv      <-  inv(A)
+        A0         <- self$theta$A0
+        A          <- self$theta$A[[arm]]
+        B          <- self$theta$B[[arm]]
+        b          <- self$theta$b[[arm]]
+        x          <- context$X[context$unique,arm]
+        z          <- matrix(as.vector(outer(x,context$X[context$shared,arm])))
+        A0_inv     <- self$theta$A0_inv
+        A_inv      <- inv(A)
 
         ################## compute expected reward per arm #############################
 
-        theta_hat  <-  A_inv %*% (b - B %*% beta_hat)
+        theta_hat  <- A_inv %*% (b - B %*% beta_hat)
 
         sd <- sqrt(  (t(z) %*% A0_inv %*% z) -
                        2*(t(z) %*% A0_inv %*% t(B) %*% A_inv %*% x) +

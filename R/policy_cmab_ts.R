@@ -33,7 +33,8 @@ ContextualThompsonSamplingPolicy <- R6::R6Class(
       self$v       <- v
 
     },
-    set_parameters = function(k, d, u, s) {
+    set_parameters = function(context_params) {
+      d <- context_params$d
       if(is.null(self$v)) {
           self$v     <- self$R * sqrt(24 / self$epsilon * d * log(1 /self$delta))
       }

@@ -10,9 +10,9 @@ YahooLinUCBHybridPolicy <- R6::R6Class(
       super$initialize()
       self$alpha  <- alpha
     },
-    set_parameters = function(k, d, u, s) {
-      ul                 <- length(self$unique)
-      sl                 <- length(self$unique) * length(self$shared)
+    set_parameters = function(context_params) {
+      ul                 <- length(context_params$unique)
+      sl                 <- length(context_params$unique) * length(context_params$shared)
 
       self$theta         <- list( 'A0' = diag(1,sl,sl), 'A0_inv' = diag(1,sl,sl),
                                   'b0' = rep(0,sl),'z' = matrix(0,ul,ul), 'x' = rep(0,ul))
