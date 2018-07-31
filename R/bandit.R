@@ -10,7 +10,7 @@ Bandit <- R6::R6Class(
     precaching  = FALSE, # Pregenerate context & reward matrices? (boolean)
     class_name  = "Bandit",
     initialize  = function() {
-      # Initialize Bandit. Set self$d and self$k here.
+      # Initialize Bandit. Generally, set self$d and self$k here.
     },
     post_initialization = function() {
       # Called after setting seed, but before iterating over T. Do random generation here.
@@ -18,7 +18,7 @@ Bandit <- R6::R6Class(
     get_context = function(t) {
       stop("Bandit subclass needs to implement bandit$get_context()", call. = FALSE)
       # Return a list with self$k, self$d and, where applicable, a context matrix X.
-      list(X = context, k = arms, d = features, unique = unique_features, shared = shared_features)
+      list(X = context, k = arms, d = features)
     },
     get_reward = function(t, context, action) {
       stop("Bandit subclass needs to implement bandit$get_reward()", call. = FALSE)

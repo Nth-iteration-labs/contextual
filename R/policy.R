@@ -3,13 +3,13 @@ Policy <- R6::R6Class(
   portable = FALSE,
   class = FALSE,
   public = list(
-    action        = NULL,
-    theta         = NULL,
-    theta_to_arms = NULL,
-    class_name    = "Policy",
+    action        = NULL,      # action results (list)
+    theta         = NULL,      # policy parameters theta (list)
+    theta_to_arms = NULL,      # theta to arms "helper" (list)
+    class_name    = "Policy",  # policy name - required (character)
     initialize = function() {
-      self$theta  <- list()
-      self$action <- list()
+      self$theta  <- list()    # initializes theta list
+      self$action <- list()    # initializes action list
     },
     get_action = function(t, context) {
       # Selects an arm based on self$theta and context, returns it in action$choice.

@@ -9,19 +9,14 @@ LiSamplingOfflineBandit <- R6::R6Class(
   public = list(
     class_name = "LiSamplingOfflineBandit",
     initialize   = function(data_stream, k, d, unique = NULL, shared = NULL) {
-      self$k <- k
-      self$d <- d
-      self$unique <- unique
-      self$shared <- shared
-      private$S <- data_stream$get_data_table()  # TODO: make this more general
+      self$k <- k               # Number of arms (integer)
+      self$d <- d               # Dimension of context feature vector (integer)
+      private$S <- data_stream  # Data stream, here as a data.table
     },
     get_context = function(index) {
-
       contextlist <- list(
         k = self$k,
         d = self$d,
-        unique = self$unique,
-        shared = self$shared,
         X = matrix(private$S$context[[index]], self$d, self$k)
       )
       contextlist

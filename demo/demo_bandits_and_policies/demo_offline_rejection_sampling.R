@@ -35,8 +35,9 @@ b <- before$get_data_table()
 
 ######################## use the log to test a policy ##########################
 
-log_S <- History$new()
-log_S$load_data_table("test.RData")
+history <- History$new()
+history$load_data_table("test.RData")
+log_S <- history$get_data_table()
 
 bandit <- LiSamplingOfflineBandit$new(data_stream = log_S, k = 3, d = 3)
 
