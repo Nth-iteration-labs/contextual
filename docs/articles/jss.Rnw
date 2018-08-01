@@ -16,7 +16,6 @@
 \usepackage{txfonts}
 \usepackage{mathdots}
 \usepackage{float}
-\usepackage{eufrak}
 \usepackage{algorithm}
 \usepackage{algorithmic}
 %\usepackage[classicReIm]{kpfonts}
@@ -94,6 +93,7 @@ Over the past decade, contextual bandit algorithms have been gaining in populari
 %% end of declarations %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
+%%\SweaveOpts{concordance=TRUE}
 \sloppy
 
 %% A vignette for the \cite{contextual} paper. #########################################
@@ -109,7 +109,6 @@ if(!require(contextual)) stop("You need to install package contextual.")
 knitr::opts_chunk$set(fig.path="fig/")
 knitr::opts_chunk$set(fig.pos = 'H')
 opts_chunk$set(external = FALSE)
-
 @
 <<setup, include=FALSE>>=
 opts_chunk$set(eval = FALSE)
@@ -124,24 +123,17 @@ There are many real-world situations in which we have to decide between a set of
 
 \begin{itemize}
 \item When going out to dinner, do you explore new restaurants, or do you exploit familiar ones?
-\item As an online marketer, do you try a new ad, or keep the current one?
+\item As an website editor, do you keep the same article at the top of your news site, or alternate between articles?
 \item As a doctor, do you treat your patients with tried and tested medication, or do you prescribe a new and promising experimental treatment?
 \end{itemize}
 
-Or maybe you received some gambling money, and now have to decide which out of $k$ slot machines or "one-armed bandits"\footnote{The term “one-armed bandit” actually refers to a type of slot machine found in casino's, where the “arm” is a lever that the gambler pulls on feeding it a quarter.} to play\footnote{Or one big slot machine or "bandit" with $k$ arms, which is how this problem would be formalized in the Multi-Armed Bandit literature.}. Each "bandit" is similar but differs subtly in its average payout over time. So you need to come up with a strategy or "policy" for which bandit's arm to play. One option would be to try every arm once and then go with the arm that offered you the biggest winnings. However, those winnings might have been just a lucky fluke. On the other hand, every time you explore another arm, you may potentially lose out compared to the arm that had been doing well up till then---a classic balancing act known as the "explore-exploit dilemma". To get a better grip on this set of decision problems, and to learn if and when specific strategies might be more successful than others, such explore/exploit dilemmas have been studied extensively since the 1930s\footnote{As Dr. Peter Whittle famously stated "[the problem] was formulated during the [second world] war, and efforts to solve it so sapped the energies and minds of Allied analysts that the suggestion was made that the problem be dropped over Germany, as the ultimate instrument of intellectual sabotage." \citep{Whittle1979}} under the umbrella of the "Multi-Armed Bandit" (MAB) problem \citep{Auer2002,Lai1985,Bubeck2012}. #todo: auer and lai elsewhere
+Let's delve a little deeper into one last example: you received some gambling money, and now have to decide which out of $k$ slot machines or "one-armed bandits"\footnote{The term "one-armed bandit" actually refers to a type of slot machine found in casino's, where the "arm" is a lever that the gambler pulls on feeding it a quarter.} to play\footnote{Or one big slot machine or "bandit" with $k$ arms, which is how this problem would be formalized in the Multi-Armed Bandit literature.}. In this scenario, each "bandit" is similar but differs subtly in its average payout over time. So you need to come up with a strategy or "policy" for which bandit's arm to play. One option would be to try every arm once and then go with the arm that offered you the biggest winnings. However, those winnings might have been just a lucky fluke. On the other hand, every time you explore another arm, you may potentially lose out compared to the arm that had been doing well up till then---a classic balancing act known as the "explore-exploit dilemma". To get a better grip on this set of decision problems, and to learn if and when specific strategies might be more successful than others, such explore/exploit dilemmas have been studied extensively since the 1930s\footnote{As Dr. Peter Whittle famously stated "[the problem] was formulated during the [second world] war, and efforts to solve it so sapped the energies and minds of Allied analysts that the suggestion was made that the problem be dropped over Germany, as the ultimate instrument of intellectual sabotage." \citep{Whittle1979}} under the umbrella of the "Multi-Armed Bandit" (MAB) problem \citep{Auer2002,Lai1985,Bubeck2012}. %%todo: auer and lai elsewhere
 
 A recent MAB generalization known as the \textit{contextual} Multi-Armed Bandit (cMAB) builds on the previous by adding one crucial element: contextual information \citep{Langford2008}. These contextual multi-armed bandits are known by many different names in about as many different fields of research \citep{Tewari2017}---for example as "bandit problems with side observations" \citep{Wang2005a}, "bandit problems with side information" \citep{Lu2010}, "associative reinforcement learning" \citep{Kaelbling1996}, "reinforcement learning with immediate reward" \citep{Abe2003}, "associative bandit problems" \citep{Strehl2006}, or "bandit problems with covariates" \citep{Sarkar1991}. However, the term "contextual Multi-Armed Bandit," as conceived by \cite{Langford2008}, is the most generally used---so that is the term we will use in the current paper.
 
-Still, however named, all cMAB policies differentiate themselves, by definition, from their MAB cousins in that they are able to make use of features that reflect the current state of the world---features that can then be mapped onto available arms or actions\footnote{That is, before making a choice, the learner receives information on the state of the world or "context" in the form of a d-dimensional feature vector. After making a choice the learner is then able to combine this contextual information with the reward received to make a more informed decision in the next round.}. This access to side information makes cMAB algorithms yet more relevant to many real-life decision problems than their MAB progenitors \citep{Langford2008}. To follow up on our previous examples: do you show a particular add to returning customers, to new ones, or both? Do you prescribe a different treatment to male patients, female patients, or both? In the real world, it appears no choice exists without some contextual information to be mined or mapped. So it may be no surprise that there is interest in the application of cMAB algorithms in many different areas: from recommendation engines \citep{Lai1985} to advertising \citep{Tang2013} and (personalized) medicine \cite{Tewari2017}---inspiring a multitude of new, often analytically derived bandit algorithms or policies, each with their strengths and weaknesses.
+Still, however named, all cMAB policies differentiate themselves, by definition, from their MAB cousins in that they are able to make use of features that reflect the current state of the world---features that can then be mapped onto available arms or actions\footnote{That is, before making a choice, the learner receives information on the state of the world or "context" in the form of a d-dimensional feature vector. After making a choice the learner is then able to combine this contextual information with the reward received to make a more informed decision in the next round.}. This access to side information makes cMAB algorithms yet more relevant to many real-life decision problems than their MAB progenitors \citep{Langford2008}. To follow up on our previous examples: do you choose the same  type of restaurants in summer and winter? Do you prescribe different treatments to male patients, female patients, or both? Do you place the same news story at the top featured position for both old and young visitors of your website? Probably not---in the real world, it appears no choice exists without some contextual information to be mined or mapped. So it may be no surprise that there is interest in the application of cMAB algorithms in many different areas: from recommendation engines \citep{Lai1985} to advertising \citep{Tang2013} and (personalized) medicine \cite{Tewari2017}---inspiring a multitude of new, often analytically derived bandit algorithms or policies, each with their strengths and weaknesses.
 
 Regrettably, though cMAB algorithms have gained both academic and commercial acclaim, comparisons on simulated, and, importantly, real-life, large-scale offline \textquotedblleft{}partial label\textquotedblright{} data sets have relatively lagged behind. To this end, the current paper introduces the \pkg{contextual} R package. \pkg{contextual} aims to facilitate the simulation, offline comparison, and evaluation of (Contextual) Multi-Armed bandit policies. There do exist a few other frameworks that enable the analysis and comparison of either on- or offline datasets in some capacity, such as Microsoft's Vowpal Wabbit \citep{Langford2007}, the online evaluation platform StreamingBandit \citep{Kaptein2016}, and the MAB focussed python packages Striatum \citep{2018} and SMPyBandits \citep{SMPyBandits}. But, as of yet, no extensible and widely applicable R \citep{RCore} package that can analyze and compare, respectively, K-armed, Continuum and Contextual Multi-Armed Bandit Algorithms on both simulated and offline data.
-
-
-The current paper presents our package for several audiences:
-
-1: general audience introduction ---> background information on bandit (into, formal), simulate
-2: R extension                   --->
-
 
 In section 2, this paper continues with a more formal definition of MAB and CMAB problems and relate it to our implementation. In section 3, we give an overview of \pkg{contextual}’s object-oriented structure In section 4, we list the policies that are available by default, and simulate two MAB policies and a cMAB policy. In section 5, we demonstrate how easy it is to extend and customize \pkg{contextual} policies and bandits. In section 6, we replicate two papers, thereby demonstrating how to test policies on offline data sets. Finally, in section  7, we will go over some of the additional features in the package and conclude with some comments on the current state of the package and possible enhancements.
 
@@ -224,8 +216,9 @@ In these lines, we start out by instantiating the \code{Policy} subclass \code{E
 \begin{figure}[H]
   \centering
     \includegraphics[width=.99\textwidth]{fig/cmab_chart}
-    \label{fig:cmab_chart}
+
       \caption{Diagram of \pkg{contextual}'s basic structure. The context feature vector returned by get\_context() (colored red in the figure) is only taken into account by cMAB policies, and is ignored by MAB policies.}
+      \label{fig:cmab_chart}
 \end{figure}
 
 On running the \code{Simulator} it starts several (by default, the number of CPU cores minus one) worker processes, splitting simulations as efficiently as possible over each parallell worker. For each simulation, for every time step \code{t}, an \code{agent} clone then loops through each of the four function calls that constitute its main interior loop. Though we will delve deeper into the setup of each of \pkg{contextual}'s main classes in section 3, the current overview enables us to demonstrate how these four function calls relate to the four steps we defined in our cMAB formalization in section 2.1:
@@ -1134,8 +1127,9 @@ plot(history, type = "cumulative", regret = FALSE,
 \begin{figure}[H]
   \centering
     \includegraphics[width=.99\textwidth]{fig/ucb_offline}
-    \label{fig:ucb_offline}
+
       \caption{An UCB1 policy evaluated on a Li Bandit. The Bandit samples from 350000 rows with clicks for rewards and the display of one of four “persuasive strategies” to users of an online store representing the offline Bandit's four arms.}
+      \label{fig:ucb_offline}
 \end{figure}
 
 \subsubsection{Offline evaluation through DoublyRobustBandit}
@@ -1149,19 +1143,19 @@ Here replication with yahoo dataset
 
 \section{Parallelization}
 
-\subsubsection{General}
+\subsection{General}
 
 Parallel is great!
 
-\subsubsection{Amazon EC2}
+\subsection{Amazon EC2}
 
 Amazon EC2 rocks.
 
-\subsubsection{Microsoft Azure}
+\subsection{Microsoft Azure}
 
 Azure is cool too.
 
-\subsubsection{Tradeoffs}
+\subsection{Tradeoffs}
 
 Time is of the essence...
 
@@ -1179,15 +1173,17 @@ And lock in feedback too? And dueling? and..
 \begin{figure}[H]
   \centering
     \includegraphics[width=.99\textwidth]{fig/contextual_class}
-    \label{fig:contextual_class}
+
       \caption{\pkg{contextual} UML Class Diagram}
+          \label{fig:contextual_class}
 \end{figure}
 
 \begin{figure}[H]
   \centering
     \includegraphics[width=.99\textwidth]{fig/contextual_sequence}
-    \label{fig:contextual_sequence}
+
       \caption{\pkg{contextual} UML Sequence Diagram}
+      \label{fig:contextual_sequence}
 \end{figure}
 
 \section{Acknowledgments}
