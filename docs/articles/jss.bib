@@ -162,25 +162,23 @@
 }
 
 @Article{Kaptein2016,
-  author        = {Kaptein, M. C. and Kruijswijk, J. M. A.},
-  title         = {Streamingbandit: {A} platform for developing adaptive persuasive systems},
-  journal       = {JSS},
-  year          = {2016},
-  __markedentry = {[robin:]},
-  file          = {Snapshot:http\://repository.ubn.ru.nl/bitstream/handle/2066/161901/161901.pdf:;Fulltext:http\://repository.ubn.ru.nl/bitstream/handle/2066/161901/161901.pdf:application/pdf},
-  publisher     = {Salzburg: Center for Human-Computer Interaction, Department of Computer Science, University of Salzburg},
-  shorttitle    = {Streamingbandit},
+  author     = {Kaptein, M. C. and Kruijswijk, J. M. A.},
+  title      = {Streamingbandit: {A} platform for developing adaptive persuasive systems},
+  journal    = {JSS},
+  year       = {2016},
+  file       = {Snapshot:http\://repository.ubn.ru.nl/bitstream/handle/2066/161901/161901.pdf:;Fulltext:http\://repository.ubn.ru.nl/bitstream/handle/2066/161901/161901.pdf:application/pdf},
+  publisher  = {Salzburg: Center for Human-Computer Interaction, Department of Computer Science, University of Salzburg},
+  shorttitle = {Streamingbandit},
 }
 
-@Misc{2018,
-  title         = {striatum: {Contextual} bandit in python},
-  year          = {2018},
-  note          = {original-date: 2016-05-11T06:26:38Z},
-  __markedentry = {[robin:6]},
-  copyright     = {BSD-2-Clause},
-  shorttitle    = {striatum},
-  url           = {https://github.com/ntucllab/striatum},
-  urldate       = {2018-07-31TZ},
+@Electronic{striatum,
+  author     = {NTUCSIE-CLLab},
+  year       = {2018},
+  title      = {striatum: {Contextual} bandit in python},
+  url        = {https://github.com/ntucllab/striatum},
+  copyright  = {BSD-2-Clause},
+  shorttitle = {striatum},
+  urldate    = {2018-07-31TZ},
 }
 
 @Misc{SMPyBandits,
@@ -200,6 +198,58 @@
   organization = {R Foundation for Statistical Computing},
   address      = {Vienna, Austria},
   url          = {https://www.R-project.org},
+}
+
+@InProceedings{Li2011,
+  author    = {Li, Lihong and Chu, Wei and Langford, John and Wang, Xuanhui},
+  title     = {Unbiased {Offline} {Evaluation} of {Contextual}-bandit-based {News} {Article} {Recommendation} {Algorithms}},
+  booktitle = {Proceedings of the {Fourth} {ACM} {International} {Conference} on {Web} {Search} and {Data} {Mining}},
+  year      = {2011},
+  series    = {{WSDM} '11},
+  pages     = {297--306},
+  address   = {New York, NY, USA},
+  publisher = {ACM},
+  abstract  = {Contextual bandit algorithms have become popular for online recommendation systems such as Digg, Yahoo! Buzz, and news recommendation in general. Offline evaluation of the effectiveness of new algorithms in these applications is critical for protecting online user experiences but very challenging due to their partial-label nature. Common practice is to create a simulator which simulates the online environment for the problem at hand and then run an algorithm against this simulator. However, creating simulator itself is often difficult and modeling bias is usually unavoidably introduced. In this paper, we introduce a replay methodology for contextual bandit algorithm evaluation. Different from simulator-based approaches, our method is completely data-driven and very easy to adapt to different applications. More importantly, our method can provide provably unbiased evaluations. Our empirical results on a large-scale news article recommendation dataset collected from Yahoo! Front Page conform well with our theoretical results. Furthermore, comparisons between our offline replay and online bucket evaluation of several contextual bandit algorithms show accuracy and effectiveness of our offline evaluation method.},
+  doi       = {10.1145/1935826.1935878},
+  file      = {ACM Full Text PDF:http\://dl.acm.org/ft_gateway.cfm?id=1935878&type=pdf:application/pdf},
+  isbn      = {9781450304931},
+  keywords  = {benchmark dataset, contextual bandit, multi-armed bandit, offline evaluation, recommendation},
+  url       = {http://doi.acm.org/10.1145/1935826.1935878},
+  urldate   = {2018-08-01TZ},
+}
+
+@InProceedings{Mousavi2016,
+  author       = {Mousavi, Seyed Sajad and Schukat, Michael and Howley, Enda},
+  title        = {Deep reinforcement learning: an overview},
+  booktitle    = {Proceedings of SAI Intelligent Systems Conference},
+  year         = {2016},
+  pages        = {426--440},
+  organization = {Springer},
+}
+
+@InProceedings{Seldin2011,
+  author    = {Seldin, Yevgeny and Auer, Peter and Shawe-Taylor, John S and Ortner, Ronald and Laviolette, Fran{\c{c}}ois},
+  title     = {PAC-Bayesian analysis of contextual bandits},
+  booktitle = {Advances in neural information processing systems},
+  year      = {2011},
+  pages     = {1683--1691},
+}
+
+@Article{Li2017,
+  author        = {Li, Yuxi},
+  title         = {Deep reinforcement learning: An overview},
+  journal       = {arXiv preprint arXiv:1701.07274},
+  year          = {2017},
+  __markedentry = {[robin:]},
+}
+
+@InProceedings{Agarwal2014,
+  author        = {Agarwal, Alekh and Hsu, Daniel and Kale, Satyen and Langford, John and Li, Lihong and Schapire, Robert},
+  title         = {Taming the monster: A fast and simple algorithm for contextual bandits},
+  booktitle     = {International Conference on Machine Learning},
+  year          = {2014},
+  pages         = {1638--1646},
+  __markedentry = {[robin:6]},
 }
 
 @Comment{jabref-meta: databaseType:bibtex;}

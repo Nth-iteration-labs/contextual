@@ -68,6 +68,8 @@
 \usepackage{float}
 \usepackage{algorithm}
 \usepackage{algorithmic}
+\usepackage{booktabs}
+\usepackage{multirow}
 %\usepackage[classicReIm]{kpfonts}
 %\usepackage[pdftex]{graphicx}
 
@@ -170,16 +172,32 @@ Let's delve a little deeper into one last example: you received some gambling mo
 
 A recent MAB generalization known as the \textit{contextual} Multi-Armed Bandit (cMAB) builds on the previous by adding one crucial element: contextual information \citep{Langford2008}. Contextual multi-armed bandits are known by many different names in about as many different fields of research \citep{Tewari2017}---for example as "bandit problems with side observations" \citep{Wang2005a}, "bandit problems with side information" \citep{Lu2010}, "associative reinforcement learning" \citep{Kaelbling1996}, "reinforcement learning with immediate reward" \citep{Abe2003}, "associative bandit problems" \citep{Strehl2006}, or "bandit problems with covariates" \citep{Sarkar1991}. However, the term "contextual Multi-Armed Bandit," as conceived by \cite{Langford2008}, is the most generally used---so that is the term we will use in the current paper.
 
-Still, however named, all cMAB policies differentiate themselves, by definition, from their MAB cousins in that they are able to make use of features that reflect the current state of the world---features that can then be mapped onto available arms or actions\footnote{That is, before making a choice, the learner receives information on the state of the world or "context" in the form of a d-dimensional feature vector. After making a choice the learner is then able to combine this contextual information with the reward received to make a more informed decision in the next round.}. This access to side information makes cMAB algorithms yet more relevant to many real-life decision problems than their MAB progenitors \citep{Langford2008}. To follow up on our previous examples: do you choose the same  type of restaurants in summer and winter? Do you prescribe different treatments to male patients, female patients, or both? Do you place the same news story at the top featured position for both old and young visitors of your website? Probably not---in the real world, it appears no choice exists without some contextual information to be mined or mapped. So it may be no surprise that there is interest in the application of cMAB algorithms in many different areas: from recommendation engines \citep{Lai1985} to advertising \citep{Tang2013} and (personalized) medicine \cite{Tewari2017}---inspiring a multitude of new, often analytically derived bandit algorithms or policies, each with their strengths and weaknesses.
+Still, however named, all cMAB policies differentiate themselves, by definition, from their MAB cousins in that they are able to make use of features that reflect the current state of the world---features that can then be mapped onto available arms or actions\footnote{That is, before making a choice, the learner receives information on the state of the world or "context" in the form of a d-dimensional feature vector. After making a choice the learner is then able to combine this contextual information with the reward received to make a more informed decision in the next round.}. This access to side information makes cMAB algorithms yet more relevant to many real-life decision problems than their MAB progenitors \citep{Langford2008}. To follow up on our previous examples: do you choose the same  type of restaurants in summer and winter? Do you prescribe the same treatments to male and female patients? Do you place the same news story at the top featured position of your website for both young and old visitors? Probably not---in the real world, it appears no choice exists without at least some contextual information to be mined or mapped. So it may be no surprise that cMAB algorithms have found applications in many different areas: from recommendation engines \citep{Lai1985} to advertising \citep{Tang2013} and (personalized) medicine \citep{Tewari2017}---inspiring a multitude of new, often analytically derived bandit algorithms or policies, each with their strengths and weaknesses.
 
-Regrettably, though cMAB algorithms have gained both academic and commercial acclaim, comparisons on simulated, and, importantly, real-life, large-scale offline \textquotedblleft{}partial label\textquotedblright{} data sets have relatively lagged behind. To this end, the current paper introduces the \pkg{contextual} R package. \pkg{contextual} aims to facilitate the simulation, offline comparison, and evaluation of (Contextual) Multi-Armed bandit policies. There do exist a few other frameworks that enable the analysis and comparison of either on- or offline datasets in some capacity, such as Microsoft's Vowpal Wabbit \citep{Langford2007}, the online evaluation platform StreamingBandit \citep{Kaptein2016}, and the MAB focussed python packages Striatum \citep{2018} and SMPyBandits \citep{SMPyBandits}. But, as of yet, no extensible and widely applicable R \citep{RCore} package that can analyze and compare, respectively, K-armed, Continuum and Contextual Multi-Armed Bandit Algorithms on both simulated and offline data.
-
-In section 2, this paper continues with a more formal definition of MAB and CMAB problems and relate it to our implementation. In section 3, we give an overview of \pkg{contextual}’s object-oriented structure In section 4, we list the policies that are available by default, and simulate two MAB policies and a cMAB policy. In section 5, we demonstrate how easy it is to extend and customize \pkg{contextual} policies and bandits. In section 6, we replicate two papers, thereby demonstrating how to test policies on offline data sets. Finally, in section  7, we will go over some of the additional features in the package and conclude with some comments on the current state of the package and possible enhancements.
-
-\section{From formalization to implementation}
+Regrettably, though cMAB algorithms have gained both academic and commercial acclaim, comparisons on simulated, and, importantly, real-life, large-scale offline \textquotedblleft{}partial label\textquotedblright{} data sets \citep{Li2011} have relatively lagged behind. To this end, the current paper introduces the \pkg{contextual} R package. \pkg{contextual} aims to facilitate the simulation, offline comparison, and evaluation of (Contextual) Multi-Armed bandit policies. There exist a few other frameworks that enable the analysis and comparison of either on- or offline datasets in some capacity, such as Microsoft's Vowpal Wabbit \citep{Langford2007}, the online evaluation platform StreamingBandit \citep{Kaptein2016}, and the MAB focussed python packages Striatum \citep{striatum} and SMPyBandits \citep{SMPyBandits}. But, as of yet, no extensible and widely applicable R \citep{RCore} package that can analyze and compare, respectively, K-armed, Continuum and Contextual Multi-Armed Bandit Algorithms on both simulated and offline data.
 
 
-In the current section, we first present a more formal definition of the contextual Multi-Armed Bandit problem. We then show how this formalization can be translated to a clear and concise class structure.
+In the following paper, we further introduce the \pkg{contextual} package. Section 2 presents a formal definition of the contextual Multi-Armed Bandit problem and shows how this formalization can be translated into a clear and concise object-oriented implementation. Section 3 gives an overview of contextual's predefined contextual and non-contextual bandit and policy classes and shows how to apply these to solve some basic (c)MAB problems. Section 4 delves a little deeper into the implementation of contextual's core classes---in preparation for Section 5, which shows how to extend these classes to be able to create custom bandits and policies. Section 6 focusses on the analysis of offline \textquotedblleft{}partial label\textquotedblright{} data sets. Section 7 brings all of the previous sections together in the example of a partial replication of a seminal contextual bandit paper. We conclude with some comments on the current state of the package and potential future enhancements.
+
+This organization enables the reader to peruse the paper according to their background and needs. If you have a passing knowledge of R and would like to jump right in and run a simulation, the introduction and section 3 should get you up and running. If you are also looking for a more formal introduction into cMAB problems or would like a helicopter view of the structure of the package, add section 2. Include section 6 and possibly 7 if you want to run one of \pkg{contextual}'s policies on an offline data set. Finally, if you know your away around R and would like to extend \pkg{contextual} to run your own custom bandits and policies, it is probably best to read the whole paper---with a focus on section 4 and 5.
+
+
+\section{Differentiation, formalization and implementation}
+
+In the current section, we first set out to differentiate bandit learning from other areas of machine learning. Next, we present a more formal definition of the contextual Multi-Armed Bandit problem. And finally, we show how this formalization can be translated into a clear and concise class structure.
+
+\subsection{Differentiation}
+
+Before continuing with a formalization of contextual Multi-Armed Bandit problems, it may be useful to locate MAB in the greater area of machine learning. Generally, machine learning is divided into three main areas: supervised learning, unsupervised learning and reinforcement learning \citep{Li2017}. Each can be differentiated in how data is presented to the learning algorithm:
+
+\begin{itemize}
+\item Unsupervised learing (such as clustering) makes no use of labels or rewards but searches for structure in its input data.
+\item Supervised learning (such as classification and regression) maps inputs to an outputs by training on pre-labeled example data.
+\item Reinforcement learning is by trial and error - that is, in contrast to supervised learning, it only receives partial feedback: one reward for every sequential choice.
+\end{itemize}
+
+Within this division, bandit problems are to be found within reinforcement learning.  focusses on algorithms hatlearn by trial and error, but where context and state do not feed back on previous actions \cite{Agarwal2014}.
+
 
 \subsection{Formalization}
 
@@ -222,7 +240,7 @@ See for example Figure ~\ref{fig:lucbpolicy} in section 4.3 for an illustrative 
 
 As expectation $\mathbb{E}\left[ \mathord{\cdot}\right]$ is generally taken with respect to random draws of both rewards assigned by a bandit and arms as selected by a policy.
 
-\subsection{Basic Implementation}
+\subsection{Implementation}
 
 We set out to develop an implementation that stays close to the previous formalization while offering maximum flexibility and extensibility. As a bonus, this kept the class structure of the package elegant and straightforward, with six classes forming the backbone of the package (see also Figure ~\ref{fig:cmab_chart}):
 
@@ -304,7 +322,37 @@ Relative Cumulative Reward / Click Through Rate:
 \end{kframe}
 \end{knitrout}
 
+
+
+\section{Basic use}
+
+Though \pkg{contextual} really comes into its own when you start building your own bandit and policy classes, you can also use one of the packages build-in policies, and run them on one of \pkg{contextual}'s synthetic or offline bandits (see Table \ref{table:overview_policies} for an overview of available policies).
+
+\begin{table}[H]
+\begin{tabular}{@{}llllll@{}}
+\toprule
+     & e-Greedy                                                   & Upper Confidence Bound                                   & Thomspon Sampling                                                       & Other                                                     & Special                                                                        \\ \midrule
+MAB  & \begin{tabular}[c]{@{}l@{}}e-Greedy\\ e-First\end{tabular} & \begin{tabular}[c]{@{}l@{}}UCB1\\ UCB-tuned\end{tabular} & \begin{tabular}[c]{@{}l@{}}Thompson Sampling\\ BootstrapTS\end{tabular} & \begin{tabular}[c]{@{}l@{}}Softmax\\ Gittins\end{tabular} & \multirow{2}{*}{\begin{tabular}[c]{@{}l@{}}Random\\ Oracle\\ LiF\end{tabular}} \\ \cmidrule(r){1-5}
+cMAB & Epoch-Greedy                                               & \begin{tabular}[c]{@{}l@{}}LinUCB\\ COFIBA\end{tabular}  & LinTS                                                                   &                                                           &                                                                                \\ \bottomrule
+\end{tabular}
+\caption{An overview of \pkg{contextual}'s predefined policy classes.}
+\label{table:overview_policies}
+\end{table}
+
+You may, for instance, want to find out which bandit policy is the most useful for selecting the best out of two new online adds for your new web store.
+
+One option would be to show both adds at random (explore) for a set period of time and thereafter go with the add that has the best Click-Through Rate (exploit). This policy is known as an epsilon-first policy or, more commonly, as an A/B test (or RCT, for that matter). Another option might be to randomly show one of the adds 10 percent of the time (explore), and show the best add 90 percent of the time (exploit). This type of policy is known as an "epsilon-greedy" policy.
+
+So the epsilon-greedy policy can keep on exploring over time. On the other hand, the epsilon-first policy starts out with a full-time exploration. So which is better? And under what conditions?
+
+Let's see how to answer this question with \pkg{contextual}.
+
+
+
+
+
 \section{R6 class structure}
+
 
 Since it is the \pkg{contextual}'s explicit goal to offer researchers and developers an easily extensible framework to develop, test and compare their own \code{Policy} and \code{Bandit} implementations, the current section offers additional background information on \pkg{contextual}' class structure---both on the R6 class system and on each of the six previously introduced core \pkg{contextual} classes.
 
