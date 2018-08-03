@@ -70,6 +70,7 @@
 \usepackage{algorithmic}
 \usepackage{booktabs}
 \usepackage{multirow}
+\usepackage{tablefootnote}
 %\usepackage[classicReIm]{kpfonts}
 %\usepackage[pdftex]{graphicx}
 
@@ -326,33 +327,100 @@ Relative Cumulative Reward / Click Through Rate:
 
 \section{Basic use}
 
-Though \pkg{contextual} really comes into its own when you start building your own bandit and policy classes, you can also use one of the packages build-in policies, and run them on one of \pkg{contextual}'s synthetic or offline bandits (see Table \ref{table:overview_policies} for an overview of available policies).
+Though \pkg{contextual} really comes into its own when you start building your own bandit and policy classes, you can also use one of the package's build-in policies, and run them on one of \pkg{contextual}'s synthetic or offline bandits (see Table \ref{table:overview_policies} for an overview of available policies).
 
 \begin{table}[H]
 \begin{tabular}{@{}llllll@{}}
 \toprule
-     & e-Greedy                                                   & Upper Confidence Bound                                   & Thomspon Sampling                                                       & Other                                                     & Special                                                                        \\ \midrule
-MAB  & \begin{tabular}[c]{@{}l@{}}e-Greedy\\ e-First\end{tabular} & \begin{tabular}[c]{@{}l@{}}UCB1\\ UCB-tuned\end{tabular} & \begin{tabular}[c]{@{}l@{}}Thompson Sampling\\ BootstrapTS\end{tabular} & \begin{tabular}[c]{@{}l@{}}Softmax\\ Gittins\end{tabular} & \multirow{2}{*}{\begin{tabular}[c]{@{}l@{}}Random\\ Oracle\\ LiF\end{tabular}} \\ \cmidrule(r){1-5}
-cMAB & Epoch-Greedy                                               & \begin{tabular}[c]{@{}l@{}}LinUCB\\ COFIBA\end{tabular}  & LinTS                                                                   &                                                           &                                                                                \\ \bottomrule
+     & \textbf{$\epsilon$-Greedy}                                                  & \textbf{UCB}                                   & \textbf{Thomspon Sampling}                                                       & \textbf{Other}                                                     & \textbf{Special}                                                                        \\ \midrule
+MAB  & \begin{tabular}[c]{@{}l@{}}$\epsilon$-Greedy (\citeyear{Sutton1998e})\\ $\epsilon$-First (\citeyear{Sutton1998e})\end{tabular} & \begin{tabular}[c]{@{}l@{}}UCB1 (\citeyear{Auer2003})\\ UCB-tuned (\citeyear{Auer2003})\end{tabular} & \begin{tabular}[c]{@{}l@{}}Thompson Sampling (\citeyear{Agrawal2011})\\ BootstrapTS (\citeyear{Eckles2014})\end{tabular} & \begin{tabular}[c]{@{}l@{}}Softmax\\ Gittins\end{tabular} & \multirow{2}{*}{\begin{tabular}[c]{@{}l@{}}Random\\ Oracle\\ LiF\end{tabular}} \\ \cmidrule(r){1-5}
+cMAB & Epoch-Greedy                                        & \begin{tabular}[c]{@{}l@{}}LinUCB (\citeyear{Li2010})\\ COFIBA (\citeyear{Li2010})\end{tabular}  & \begin{tabular}[c]{@{}l@{}}LinTS (\citeyear{Agrawal2012a})\\ LogitBTS (\citeyear{Eckles2014})\end{tabular}                                                                   &                                                           &                                                                                \\ \bottomrule
 \end{tabular}
 \caption{An overview of \pkg{contextual}'s predefined policy classes.}
 \label{table:overview_policies}
 \end{table}
 
-You may, for instance, want to find out which bandit policy is the most useful for selecting the best out of two new online adds for your new web store.
+You may, for instance, want to compare bandit policies for selecting the most effective of two adds for your new web store. One option would, for example, be to show both adds at random (explore) for a set period of time and thereafter go with the add that has the best Click-Through Rate (exploit). This policy is known as an Epsilon First policy or, more commonly, as an A/B test. Another option might be to randomly show either one of the adds 20 percent of the time (explore), and show the best add 80 percent of the time (exploit). This type of policy is known as an "Epsilon Greedy" policy. In other words, an Epsilon First policy starts out with a full-time exploration, then switches to full-time exploitation---while an Epsilon Greedy policy keeps on exploring. What policy does best in this simple case?
 
-One option would be to show both adds at random (explore) for a set period of time and thereafter go with the add that has the best Click-Through Rate (exploit). This policy is known as an epsilon-first policy or, more commonly, as an A/B test (or RCT, for that matter). Another option might be to randomly show one of the adds 10 percent of the time (explore), and show the best add 90 percent of the time (exploit). This type of policy is known as an "epsilon-greedy" policy.
+Let's see how to answer this question with \pkg{contextual}:
 
-So the epsilon-greedy policy can keep on exploring over time. On the other hand, the epsilon-first policy starts out with a full-time exploration. So which is better? And under what conditions?
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# Load and attach the contextual package.}
+\hlkwd{library}\hlstd{(contextual)}
+\hlcom{# Define for how long the simulation will run.}
+\hlstd{horizon}             \hlkwb{<-} \hlnum{300}
+\hlcom{# Define how many times to repeat the simulation.}
+\hlstd{simulations}         \hlkwb{<-} \hlnum{400}
+\hlcom{# Define the probability that each add will be clicked.}
+\hlstd{click_probabilities} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{0.8}\hlstd{,} \hlnum{0.2}\hlstd{)}
+\hlcom{# Initialize a SyntheticBandit, which takes probabilites per arm for an argument.}
+\hlstd{bandit}              \hlkwb{<-} \hlstd{SyntheticBandit}\hlopt{$}\hlkwd{new}\hlstd{(}\hlkwc{weights} \hlstd{= click_probabilities)}
+\hlcom{# Initialize an EpsilonGreedyPolicy with a 20% exploiration rate.}
+\hlstd{eg_policy}           \hlkwb{<-} \hlstd{EpsilonGreedyPolicy}\hlopt{$}\hlkwd{new}\hlstd{(}\hlkwc{epsilon} \hlstd{=} \hlnum{0.2}\hlstd{)}
+\hlcom{# Initialize an EpsilonFirstPolicy with a 50 step exploration period.}
+\hlstd{ef_policy}           \hlkwb{<-} \hlstd{EpsilonFirstPolicy}\hlopt{$}\hlkwd{new}\hlstd{(}\hlkwc{first} \hlstd{=} \hlnum{50}\hlstd{)}
+\hlcom{# Initialize two Agents, binding each policy to a bandit.}
+\hlstd{ef_agent}            \hlkwb{<-} \hlstd{Agent}\hlopt{$}\hlkwd{new}\hlstd{(ef_policy, bandit)}
+\hlstd{eg_agent}            \hlkwb{<-} \hlstd{Agent}\hlopt{$}\hlkwd{new}\hlstd{(eg_policy, bandit)}
+\hlcom{# Assign both agents to a list.}
+\hlstd{agents}              \hlkwb{<-} \hlkwd{list}\hlstd{(ef_agent, eg_agent)}
+\hlcom{# Initialize a Simulator with the agent list, horizon, and number of simulations.}
+\hlstd{simulator}           \hlkwb{<-} \hlstd{Simulator}\hlopt{$}\hlkwd{new}\hlstd{(agents, horizon, simulations)}
+\hlcom{# Now run the simulator.}
+\hlstd{history}             \hlkwb{<-} \hlstd{simulator}\hlopt{$}\hlkwd{run}\hlstd{()}
+\hlcom{# And plot the cumulative reward rate (equals Click Through Rate)}
+\hlkwd{plot}\hlstd{(history,} \hlkwc{type} \hlstd{=} \hlstr{"cumulative"}\hlstd{,} \hlkwc{regret} \hlstd{=} \hlnum{FALSE}\hlstd{,} \hlkwc{rate} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\begin{figure}[H]
+\centering
+\includegraphics[width=.99\textwidth]{fig/ctr_non_context}
+\label{fig:ctr_non_context}
+\end{figure}
+In this very simple scenario, Epsilon First is the clear winner. The Epsilon Greedy policy starts out strong, but the Epsilon First policy is able to select the best arm within its fifty steps of exploration. Thereafter, it keeps exploiting this arm all the time, while the Epsilon Greedy policy spends twenty percent of the time on exploring.
 
-Let's see how to answer this question with \pkg{contextual}.
+But maybe you also know that half of the visitors to your website is younger than forty, and half older. And that one of your adds is more effective for younger visitors, while the other add works better for older visitors. We can simulate this scenario by continuing where the previous script left off:
+\begin{knitrout}\small
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+                                \hlcom{#   add1  add2}
+\hlstd{click_probabilities} \hlkwb{<-} \hlkwd{matrix}\hlstd{(}  \hlkwd{c}\hlstd{(}  \hlnum{0.8}\hlstd{,}  \hlnum{0.2}\hlstd{,}     \hlcom{# context: older (p=.5)}
+                                    \hlnum{0.2}\hlstd{,}  \hlnum{0.8}  \hlstd{),}  \hlcom{# context: young (p=.5)}
+                       \hlkwc{nrow} \hlstd{=} \hlnum{2}\hlstd{,} \hlkwc{ncol} \hlstd{=} \hlnum{2}\hlstd{,} \hlkwc{byrow} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\hlcom{# Initialize a SyntheticBandit with the *contextual* click probabilities}
+\hlstd{context_bandit}      \hlkwb{<-} \hlstd{SyntheticBandit}\hlopt{$}\hlkwd{new}\hlstd{(}\hlkwc{weights} \hlstd{= click_probabilities)}
+\hlcom{#}
+\hlcom{# Initialize a contextual LinUCBDisjointPolicy with an alpha of 0.6}
+\hlstd{lu_policy}           \hlkwb{<-} \hlstd{LinUCBDisjointPolicy}\hlopt{$}\hlkwd{new}\hlstd{(}\hlnum{0.6}\hlstd{)}
+\hlcom{# Initialize three Agents, binding each policy to a bandit.}
+\hlstd{ef_agent}            \hlkwb{<-} \hlstd{Agent}\hlopt{$}\hlkwd{new}\hlstd{(ef_policy, context_bandit)}
+\hlstd{eg_agent}            \hlkwb{<-} \hlstd{Agent}\hlopt{$}\hlkwd{new}\hlstd{(eg_policy, context_bandit)}
+\hlstd{lu_agent}            \hlkwb{<-} \hlstd{Agent}\hlopt{$}\hlkwd{new}\hlstd{(lu_policy, context_bandit)}
+\hlcom{# Assign all agents to a list.}
+\hlstd{agents}              \hlkwb{<-} \hlkwd{list}\hlstd{(ef_agent, eg_agent, lu_agent)}
+\hlcom{# Initialize a Simulator with the agent list, horizon, and number of simulations.}
+\hlstd{simulator}           \hlkwb{<-} \hlstd{Simulator}\hlopt{$}\hlkwd{new}\hlstd{(agents, horizon, simulations)}
+\hlcom{# Now run the simulator.}
+\hlstd{history}             \hlkwb{<-} \hlstd{simulator}\hlopt{$}\hlkwd{run}\hlstd{()}
+\hlcom{# And plot the cumulative reward rate again.}
+\hlkwd{plot}\hlstd{(history,} \hlkwc{type} \hlstd{=} \hlstr{"cumulative"}\hlstd{,} \hlkwc{regret} \hlstd{=} \hlnum{FALSE}\hlstd{,} \hlkwc{rate} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+\begin{figure}[H]
+\centering
+\includegraphics[width=.99\textwidth]{fig/ctr_context}
+\label{fig:ctr_context}
+\end{figure}
+Now neither non-contextual policy (Epsilon Greedy and Epsilon First) does better than chance. Which makes sense, as overall, every arm is equally likely to produce a click. On the other hand, a contextual policy such as LinUCB does really well here, as it is able to differentiate between rewards per contextual feature.
 
-
-
-
+Of course, the simulations we ran in the current section are not very realistic. One way to generate more realistic Bandit data would be to write a Bandit subclass with a generative model that fits your particular use case. The next few sections should help you do that. Another option would be to make use of offline data. Again, the next few sections, and particularly section xx, should be able to get you on your way there.
+%%todo: section%%
 
 \section{R6 class structure}
-
 
 Since it is the \pkg{contextual}'s explicit goal to offer researchers and developers an easily extensible framework to develop, test and compare their own \code{Policy} and \code{Bandit} implementations, the current section offers additional background information on \pkg{contextual}' class structure---both on the R6 class system and on each of the six previously introduced core \pkg{contextual} classes.
 

@@ -255,3 +255,17 @@ var_welford <- function(z){
   }
   return(S[[n]] / (n - 1))
 }
+
+
+
+#' @export
+sgd <- function(y, X, beta, lambda=.1){
+  p <- inv_logit(X%*%beta)
+  beta <- beta + lambda*(y-p)%*%X
+  return(beta)
+}
+
+#' @export
+inv_logit <- function(x){
+  exp(x)/(1+exp(x))
+}
