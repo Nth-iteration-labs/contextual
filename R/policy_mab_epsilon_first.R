@@ -26,9 +26,9 @@ EpsilonFirstPolicy              <- R6::R6Class(
     set_reward = function(t, context, action, reward) {
       arm                       <- action$choice
       reward                    <- reward$reward
-      inc(self$theta$n[[arm]])       <- 1
-      if (sum_of(self$theta$n) < first - 1) {
-        inc(self$theta$mean[[arm]] ) <- (reward - self$theta$mean[[arm]]) / self$theta$n[[arm]]
+      inc(self$theta$n[[arm]])  <- 1
+      if (sum_of(self$theta$n) < self$first - 1) {
+        inc(self$theta$mean[[arm]]) <- (reward - self$theta$mean[[arm]]) / self$theta$n[[arm]]
       }
       self$theta
     }

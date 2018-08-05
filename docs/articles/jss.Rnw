@@ -21,6 +21,7 @@
 \usepackage{booktabs}
 \usepackage{multirow}
 \usepackage{tablefootnote}
+\usepackage{longtable}
 %\usepackage[classicReIm]{kpfonts}
 %\usepackage[pdftex]{graphicx}
 
@@ -114,7 +115,7 @@ knitr::opts_chunk$set(fig.pos = 'H')
 opts_chunk$set(external = FALSE)
 @
 <<setup, include=FALSE>>=
-opts_chunk$set(eval = FALSE)
+# opts_chunk$set(eval = FALSE)
 @
 <<eval=TRUE, echo=FALSE, include = FALSE>>=
 library("contextual")
@@ -252,7 +253,7 @@ On running the \code{Simulator} it starts several (by default, the number of CPU
 On completion of all of its simulation runs, \code{Simulator} returns an \code{history} object that contains a complete log of all interactions, which can, among others, be printed, plotted, or summarized:
 
 <<eval=FALSE, size='small'>>=
-summary(history)
+> summary(history)
 
 Agents:
 
@@ -284,16 +285,15 @@ Though \pkg{contextual} really comes into its own when you start building your o
 
 \begin{table}[H]
 \begin{tabular}{@{}llllll@{}}
-\toprule
-     & \textbf{$\epsilon$-Greedy}                                                  & \textbf{UCB}                                   & \textbf{Thomspon Sampling}                                                       & \textbf{Other}                                                     & \textbf{Special}                                                                        \\ \midrule
-MAB  & \begin{tabular}[c]{@{}l@{}}$\epsilon$-Greedy (\citeyear{Sutton1998e})\\ $\epsilon$-First (\citeyear{Sutton1998e})\end{tabular} & \begin{tabular}[c]{@{}l@{}}UCB1 (\citeyear{Auer2003})\\ UCB-tuned (\citeyear{Auer2003})\end{tabular} & \begin{tabular}[c]{@{}l@{}}Thompson Sampling (\citeyear{Agrawal2011})\\ BootstrapTS (\citeyear{Eckles2014})\end{tabular} & \begin{tabular}[c]{@{}l@{}}Softmax\\ Gittins\end{tabular} & \multirow{2}{*}{\begin{tabular}[c]{@{}l@{}}Random\\ Oracle\\ LiF\end{tabular}} \\ \cmidrule(r){1-5}
-cMAB & Epoch-Greedy                                        & \begin{tabular}[c]{@{}l@{}}LinUCB (\citeyear{Li2010})\\ COFIBA (\citeyear{Li2010})\end{tabular}  & \begin{tabular}[c]{@{}l@{}}LinTS (\citeyear{Agrawal2012a})\\ LogitBTS (\citeyear{Eckles2014})\end{tabular}                                                                   &                                                           &                                                                                \\ \bottomrule
+\toprule & \textbf{$\epsilon$-Greedy} & \textbf{UCB} & \textbf{Thomspon Sampling} & \textbf{Other} & \textbf{Special} \\ \midrule
+MAB & \begin{tabular}[c]{@{}l@{}}$\epsilon$-Greedy\\ $\epsilon$-First \end{tabular} & \begin{tabular}[c]{@{}l@{}}UCB1 \\ UCB-tuned \end{tabular} & \begin{tabular}[c]{@{}l@{}}Thompson Sampling \\ BootstrapTS \end{tabular} & \begin{tabular}[c]{@{}l@{}}Softmax\\ Gittins\end{tabular} & \multirow{2}{*}{\begin{tabular}[c]{@{}l@{}}Random\\ Oracle\\ LiF\end{tabular}} \\ \cmidrule(r){1-5}
+cMAB & Epoch-Greedy & \begin{tabular}[c]{@{}l@{}}LinUCB \\ COFIBA \end{tabular} & \begin{tabular}[c]{@{}l@{}}LinTS \\ LogitBTS \end{tabular} & & \\ \bottomrule
 \end{tabular}
 \caption{An overview of \pkg{contextual}'s predefined policy classes.}
 \label{table:overview_policies}
 \end{table}
 
-You may, for instance, want to compare bandit policies for selecting the most effective of two adds for your new web store. One option would, for example, be to show both adds at random (explore) for a set period of time and thereafter go with the add that has the best Click-Through Rate (exploit). This policy is known as an Epsilon First policy or, more commonly, as an A/B test. Another option might be to randomly show either one of the adds 20 percent of the time (explore), and show the best add 80 percent of the time (exploit). This type of policy is known as an "Epsilon Greedy" policy. In other words, an Epsilon First policy starts out with a full-time exploration, then switches to full-time exploitation---while an Epsilon Greedy policy keeps on exploring. What policy does best in this simple case?
+You may, for instance, want to compare bandit policies for selecting the most effective of two ads for your new web store. One option would, for example, be to show both ads at random (explore) for a set period of time and thereafter go with the ad that has the best Click-Through Rate (exploit). This policy is known as an Epsilon First policy or, more commonly, as an A/B test. Another option might be to randomly show either one of the ads 20 percent of the time (explore), and show the best ad 80 percent of the time (exploit). This type of policy is known as an "Epsilon Greedy" policy. In other words, an Epsilon First policy starts out with a full-time exploration, then switches to full-time exploitation---while an Epsilon Greedy policy keeps on exploring. What policy does best in this simple case?
 
 Let's see how to answer this question with \pkg{contextual}:
 
@@ -304,7 +304,7 @@ library(contextual)
 horizon             <- 300
 # Define how many times to repeat the simulation.
 simulations         <- 400
-# Define the probability that each add will be clicked.
+# Define the probability that each ad will be clicked.
 click_probabilities <- c(0.8, 0.2)
 # Initialize a SyntheticBandit, which takes probabilites per arm for an argument.
 bandit              <- SyntheticBandit$new(weights = click_probabilities)
@@ -324,22 +324,19 @@ history             <- simulator$run()
 # And plot the cumulative reward rate (equals Click Through Rate)
 plot(history, type = "cumulative", regret = FALSE, rate = TRUE)
  @
-\begin{figure}[H]
-\centering
-\includegraphics[width=.99\textwidth]{fig/ctr_non_context}
-\label{fig:ctr_non_context}
-\end{figure}
 In this very simple scenario, Epsilon First is the clear winner. The Epsilon Greedy policy starts out strong, but the Epsilon First policy is able to select the best arm within its fifty steps of exploration. Thereafter, it keeps exploiting this arm all the time, while the Epsilon Greedy policy spends twenty percent of the time on exploring.
 
-But maybe you also know that half of the visitors to your website is younger than forty, and half older. And that one of your adds is more effective for younger visitors, while the other add works better for older visitors. We can simulate this scenario by continuing where the previous script left off:
+But maybe you also know that half of the visitors to your website is younger than forty, and half older. And that one of your ads is more effective for younger visitors, while the other ad works better for older visitors. We can simulate this scenario by continuing where the previous script left off:
 <<eval=FALSE, size='small'>>=
-                                #   add1  add2
-click_probabilities <- matrix(  c(  0.8,  0.2,     # context: older (p=.5)
-                                    0.2,  0.8  ),  # context: young (p=.5)
+#                                    +-----+---------->  two different ads
+#                                    |     |
+click_probabilities <- matrix(  c(  0.8,  0.2,    # -->  context: older (p=.5)
+                                    0.2,  0.8  ), # -->  context: young (p=.5)
+
                        nrow = 2, ncol = 2, byrow = TRUE)
+
 # Initialize a SyntheticBandit with the *contextual* click probabilities
 context_bandit      <- SyntheticBandit$new(weights = click_probabilities)
-#
 # Initialize a contextual LinUCBDisjointPolicy with an alpha of 0.6
 lu_policy           <- LinUCBDisjointPolicy$new(0.6)
 # Initialize three Agents, binding each policy to a bandit.
@@ -348,6 +345,8 @@ eg_agent            <- Agent$new(eg_policy, context_bandit)
 lu_agent            <- Agent$new(lu_policy, context_bandit)
 # Assign all agents to a list.
 agents              <- list(ef_agent, eg_agent, lu_agent)
+# Horizon can be much shorter here
+horizon             <- 40
 # Initialize a Simulator with the agent list, horizon, and number of simulations.
 simulator           <- Simulator$new(agents, horizon, simulations)
 # Now run the simulator.
@@ -357,13 +356,12 @@ plot(history, type = "cumulative", regret = FALSE, rate = TRUE)
  @
 \begin{figure}[H]
 \centering
-\includegraphics[width=.99\textwidth]{fig/ctr_context}
-\label{fig:ctr_context}
+\includegraphics[width=.99\textwidth]{fig/ctr_examples}
+\label{fig:ctr_examples}
 \end{figure}
-Now neither non-contextual policy (Epsilon Greedy and Epsilon First) does better than chance. Which makes sense, as overall, every arm is equally likely to produce a click. On the other hand, a contextual policy such as LinUCB does really well here, as it is able to differentiate between rewards per contextual feature.
+In this second simulation, neither non-contextual policy (Epsilon Greedy and Epsilon First) does better than chance. That makes sense, as on average, both arms are equally likely to produce a click. On the other hand, contextual policies such as LinUCB do really well here, as these are able to map rewards to contextual features.
 
-Of course, the simulations we ran in the current section are not very realistic. One way to generate more realistic Bandit data would be to write a Bandit subclass with a generative model that fits your particular use case. The next few sections should help you do that. Another option would be to make use of offline data. Again, the next few sections, and particularly section xx, should be able to get you on your way there.
-%%todo: section%%
+Of course, the simulations in the current section are not very realistic. One way to generate more realistic Bandit data would be to write a Bandit subclass with a more complex generative model that fits your particular use case. Another option would be to test policies against an offline data set. Either way, the next sections should be able to get you on your way there.
 
 \section{R6 class structure}
 
@@ -1240,38 +1238,57 @@ plot(history, type = "cumulative", regret = FALSE,
       \label{fig:ucb_offline}
 \end{figure}
 
-\subsubsection{Offline evaluation through DoublyRobustBandit}
+\section{Replication of LinUCB}
 
-*** insert algorithm ***
-*** insert code ***
+In the current section we aim to demonstrate how \pkg{contextual} facilitates the comparison of bandit policies on big offline data sets by replicating the main results of \cite{Li2010}'s seminal "A Contextual-Bandit Approach to Personalized News Article Recommendation". The paper describes how the authors ran an offline Li bandit such as the one outlined in the previous section to evaluate the effectiveness of several contextual and non-contextual policies by training and comparing them on click through data drawn from the Today news module on the Yahoo! homepage over the course of several days in May 2009. With a data set of 45,811,883 separate, random and unbiased events (made available at the Yahoo! lab's website\footnote{At https://webscope.sandbox.yahoo.com/catalog.php?datatype=r\&did=49}) it is a perfect candidate for showcasing \pkg{contextual}'s ability to evaluate multiple policies in parallel.
 
-\section{Replication of existing studies}
+For the details on the data structure and the general setup of the experiment, I refer the reader to \cite{Chu2009} and to the original \cite{Li2010} paper. In brief, each row in the Yahoo! data set describes an interaction event (click or no click) of users shown a randomly chosen article. Each of these events contains information on (I) a random article chosen to be positioned at the story position on top of the Today module on Yahoo!'s website (II) six features per article for each of the articles shown below the article at the main story position (III) six user features, where each event contains another, distinct user (IV) information on whether the user clicked on the article at the story position, or not.
 
-Here replication with yahoo dataset
+More formally, for each event $t$ an article represents one of $k$ arms (that is, one of the 271 articles observed within the course of the 10 days covered by the data set) with $\mathbb{R}^6$ features $X_{t,a}$ per arm, and another $\mathbb{R}^6$ features $X_{t,u}$ per unique visitor. Together, the the flattened outer product of the user and article feature vector creates an $\mathbb{R}^36$ feature vector $X_t$ for each user and article pair with the outcome value or reward $r_t$) click (1) or no click (0).
 
-\section{Parallelization}
+As the Yahoo data was too large to fit into memory, we imported most\footnote{The first two CSV files of the Yahoo! data set contained irregularities, so we left those out of the import. That means that our simulations had 37,450,196 events available to them, instead of all 45,811,883. Still more than enough to replicate the original paper.} of the data set's CSV files into a MonetDB \cite{Idreos2012} instance---a very fast, open source column-oriented database management system with great R support\footnote{MonetDB can be downloaded at https://www.monetdb.org/}. The import script, example import scripts for several other databases (MySQL, SQLite, Postgresql), this replication's Bandit and Policy subclasses, and more can be found in the package's \code{demo/replication_li_2010 directory}.
 
-\subsection{General}
+With the Yahoo! data imported into the MonetDB server, the next steps were the creation of a Bandit subclass that would be able to query it, and the creation of Policy subclasses according to their description in the \cite{Li2010} paper. Since most of these Policies are already available in \pkg{contextual}, it would stand to reason that we would only have had to implement these. But as only a subset of all 271 articles or arms were shown for each seperate event, we had to make some minor changes to each of these Policy classes to make them run smoothly on the constantly shifting pool of available arms. We solved this by simply adding an "arms" vector containing the indexes of all currently active arms to the context list created by the Bandit. That is, in our YahooBandit we first create a \code{self$arm_lookup} table containing all arms, and then return the following in YahooBandit's \code{get_context()}:
 
-Parallel is great!
+<<eval=FALSE, size='small'>>=
+    get_context = function(index) {
+      ...
+      # Retrieve the index of all arms this row/event.
+      arm_indices_this_event   <- seq(10, 184, by = 7)
+      article_ids              <- row[arm_indices_this_event]
+      article_ids              <- article_ids[!is.na(article_ids)]
+      article_ids              <- match(article_ids,self$arm_lookup)
+      ...
+      contextlist <- list(
+        k = self$k,
+        d = self$d,
+        unique = self$unique, # <-- Indexes of all disjoint arms (user features)
+        shared = self$shared, # <-- Indexes of all shared arms (article features)
+        arms = article_ids,   # <-- Indexes of arms this event.
+        X = X
+      )
+    }
+@
 
-\subsection{Amazon EC2}
+And adapted each Policy accordingly, for example, in YahooEpsilonGreedyPolicy's \code{get_action()}:
 
-Amazon EC2 rocks.
+<<eval=FALSE, size='small'>>=
+    get_action = function(t, context) {
+      if (runif(1) > self$epsilon) {
+        # get the max of context$arms *currently in play*
+        max_index            <- context$arms[max_in(theta$mean[context$arms])]
+        self$action$choice   <- max_index
+      } else {
+        # sample from the arms *currently in play*
+        self$action$choice   <- sample(context$arms, 1)
+      }
+      self$action
+    }
+@
 
-\subsection{Microsoft Azure}
 
-Azure is cool too.
 
-\subsection{Tradeoffs}
-
-Time is of the essence...
-
-\section{Extra greedy UCB}
-
-Now with extra greedy!
-
-And lock in feedback too? And dueling? and..
+%% within 24 hours
 
 \section{Conclusion}
 \label{sec:conc4}
