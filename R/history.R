@@ -1,4 +1,4 @@
-#' @importFrom data.table data.table set setorder setkeyv copy
+#' @importFrom data.table data.table set setorder setkeyv copy uniqueN setcolorder
 #' @export
 History <- R6::R6Class(
   "History",
@@ -119,34 +119,41 @@ History <- R6::R6Class(
         }
       }
     },
-    get_cumulative_final = function(limit_agents = NULL, as_list = TRUE, limit_cols = NULL) {
+    get_cumulative_result = function(limit_agents = NULL, as_list = TRUE, limit_cols = NULL, t = NULL) {
+      if (is.null(t)) {
+        idx <- private$.cum_stats[, .(idx = .I[.N]),   by=agent]$idx
+      } else {
+        t_int <- as.integer(t)
+        idx <- private$.cum_stats[, .(idx = .I[t==t_int]), by=agent]$idx
+      }
+      cum_results <- private$.cum_stats[idx]
       if (is.null(limit_cols)) {
         if (is.null(limit_agents)) {
           if (as_list) {
-            private$data_table_to_named_nested_list(private$.cum_stats_final, transpose = FALSE)
+            private$data_table_to_named_nested_list(cum_results, transpose = FALSE)
           } else {
-            private$.cum_stats_final
+            cum_results
           }
         } else {
           if (as_list) {
-            private$data_table_to_named_nested_list(private$.cum_stats_final[agent %in% limit_agents], transpose = FALSE)
+            private$data_table_to_named_nested_list(cum_results[agent %in% limit_agents], transpose = FALSE)
           } else {
-            private$.cum_stats_final(private$.cum_stats_final[agent %in% limit_agents])
+            cum_results(cum_results[agent %in% limit_agents])
           }
         }
       } else {
         if (is.null(limit_agents)) {
           if (as_list) {
-            private$data_table_to_named_nested_list(private$.cum_stats_final[, mget(limit_cols)], transpose = FALSE)
+            private$data_table_to_named_nested_list(cum_results[, mget(limit_cols)], transpose = FALSE)
           } else {
-            private$.cum_stats_final[, mget(limit_cols)]
+            cum_results[, mget(limit_cols)]
           }
         } else {
           if (as_list) {
-            private$data_table_to_named_nested_list(private$.cum_stats_final[, mget(limit_cols)]
+            private$data_table_to_named_nested_list(cum_results[, mget(limit_cols)]
                                             [agent %in% limit_agents], transpose = FALSE)
           } else {
-            private$.cum_stats_final(private$.cum_stats_final[, mget(limit_cols)][agent %in% limit_agents])
+            cum_results(cum_results[, mget(limit_cols)][agent %in% limit_agents])
           }
         }
       }
@@ -218,7 +225,7 @@ History <- R6::R6Class(
     reindex = function(truncate = TRUE) {
       private$.data <- private$.data[, t := seq_len(.N), by = c("agent", "sim")]
       if (truncate) {
-        min_t_anywhere <- min(private$.data[, .(count = uniqueN(t)), by = c("agent", "sim")]$count)
+        min_t_anywhere <- min(private$.data[, .(count = data.table::uniqueN(t)), by = c("agent", "sim")]$count)
         private$.data <- private$.data[t <= min_t_anywhere]
       }
       invisible(self)
@@ -232,7 +239,6 @@ History <- R6::R6Class(
     .meta            = NULL,
     .meta_agent      = NULL,
     .cum_stats       = NULL,
-    .cum_stats_final = NULL,
 
     initialize_data_tables = function() {
       private$.data <- data.table::data.table(
@@ -257,10 +263,16 @@ History <- R6::R6Class(
 
       # cumulative data
       private$.cum_stats <- data.table::data.table()
-      private$.cum_stats_final <- data.table::data.table(stringsAsFactors = FALSE)
     },
 
     calculate_cum_stats = function() {
+
+
+      self$set_meta_data("min_t",min(private$.data[, .(count = data.table::uniqueN(t)), by = c("agent", "sim")]$count))
+      self$set_meta_data("max_t",max(private$.data[, .(count = data.table::uniqueN(t)), by = c("agent", "sim")]$count))
+
+      self$set_meta_data("agents",min(private$.data[, .(count = data.table::uniqueN(agent))]$count))
+      self$set_meta_data("simulations",min(private$.data[, .(count = data.table::uniqueN(sim))]$count))
 
       private$.data[, regret:= optimal_reward_value - reward]
 
@@ -310,11 +322,7 @@ History <- R6::R6Class(
       private$.cum_stats[, reward_ci          := reward_sd / sqrt_sim * qn]
 
       # move agent column to front
-      setcolorder(private$.cum_stats, c("agent", setdiff(names(private$.cum_stats), "agent")))
-
-      # final cumulative stats
-      idx <- private$.cum_stats[, .(idx = .I[.N]), by=agent]$idx
-      private$.cum_stats_final <- private$.cum_stats[idx]
+      data.table::setcolorder(private$.cum_stats, c("agent", setdiff(names(private$.cum_stats), "agent")))
 
     },
     data_table_to_named_nested_list = function(dt, transpose = FALSE) {
@@ -338,7 +346,7 @@ History <- R6::R6Class(
     },
     cumulative = function(value) {
       if (missing(value)) {
-        self$get_cumulative_final()
+        self$get_cumulative_result()
       } else {
         warning("## history$cumulative is read only", call. = FALSE)
       }

@@ -32,7 +32,7 @@ summary(history)
 
 t <- history$get_data_table()
 h <- history$get_cumulative_data()
-c <- history$get_cumulative_final()
+c <- history$get_cumulative_result()
 a <- history$get_meta_agent()
 m <- history$get_meta_data()
 

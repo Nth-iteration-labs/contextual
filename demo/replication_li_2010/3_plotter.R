@@ -1,9 +1,8 @@
 library(contextual)
-library(lobstr)
 
 # Config -----------------------------------------------------------------------------------------------------
 
-load_file_name          <- "Yahoo_T_2e+06_sparse_0.99.RData"
+load_file_name          <- "D:/results/Yahoo_T_37450000_sparse_0.00.RData"
 
 # Setup ------------------------------------------------------------------------------------------------------
 
@@ -13,4 +12,10 @@ history  <- History$new()
 
 history$load_data_table(load_file_name)
 
-plot(history, regret = FALSE, rate = TRUE, type = "cumulative", legend_position = "bottomright", interval = 1000)
+message("Data imported")
+
+plot(history, regret = FALSE, rate = TRUE, type = "cumulative", legend_position = "bottomright", smooth = TRUE)
+
+message("Plot completed")
+
+history$get_cumulative_result(as_list = FALSE)$cum_reward_rate

@@ -299,6 +299,11 @@ Plot <- R6::R6Class(
                        traces_alpha        = 0.3,
                        smooth              = FALSE) {
 
+      if (interval==1 && as.integer(self$history$meta$max_t) > 1850) {
+        interval <- ceiling(as.integer(self$history$meta$max_t)/1850)
+      }
+
+
       if (!is.null(ci) && ci %in% c("sd", "var", "ci")) {
 
         ci_data_name <- gsub("none", ci, ci_data_name)
@@ -317,10 +322,6 @@ Plot <- R6::R6Class(
             limit_agents = limit_agents,
             interval     = interval
           )
-      }
-
-      if (interval==1 && strtoi(self$history$meta$simulations) > 2000) {
-        interval <- ceiling(strtoi(self$history$meta$simulations)/2000)
       }
 
       data.table::setorder(data, agent, t)

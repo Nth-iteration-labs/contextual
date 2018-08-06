@@ -234,7 +234,7 @@ summary.History <- function(object, ...) {
   else
     limit_agents <- NULL
 
-  cum <- object$get_cumulative_final(limit_agents=limit_agents, as_list = FALSE)
+  cum <- object$get_cumulative_result(limit_agents=limit_agents, as_list = FALSE)
   cum$sims <- object$get_simulation_count()
 
   cat("\nAgents:\n\n")
