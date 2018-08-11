@@ -299,8 +299,8 @@ Plot <- R6::R6Class(
                        traces_alpha        = 0.3,
                        smooth              = FALSE) {
 
-      if (interval==1 && as.integer(self$history$meta$max_t) > 1850) {
-        interval <- ceiling(as.integer(self$history$meta$max_t)/1850)
+      if (interval==1 && as.integer(self$history$meta$sim$max_t) > 1850) {
+        interval <- ceiling(as.integer(self$history$meta$sim$max_t)/1850)
       }
 
 

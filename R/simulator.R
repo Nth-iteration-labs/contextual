@@ -62,6 +62,8 @@ Simulator <- R6::R6Class(
     reset = function() {
       set.seed(self$set_seed)
 
+
+
       # create or clear progress.log file
       if (self$progress_file) cat(paste0(""), file = "progress.log", append = FALSE)
 
@@ -105,6 +107,7 @@ Simulator <- R6::R6Class(
           index <- index + 1
         }
       }
+
     },
     run = function() {
       # run foreach either parallel or not, create workers

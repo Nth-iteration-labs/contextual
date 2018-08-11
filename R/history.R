@@ -61,6 +61,7 @@ History <- R6::R6Class(
         )
       )
 
+
       if (save_context || save_theta) {
         if (!save_theta) {
           data.table::set(data, index, 9L, list(list(context_value)))
@@ -84,25 +85,21 @@ History <- R6::R6Class(
     get_simulation_count = function() {
       length(levels(as.factor(private$.data$sim)))
     },
-    get_agent_data = function(as_list=TRUE) {
-      if (as_list) {
-        private$data_table_to_named_nested_list(private$.meta_agent, transpose = TRUE)
-      } else {
-        private$.meta_agent
-      }
-    },
-    set_agent_data = function(row_name, agent_data_list) {
-      private$.meta_agent <- rbind(private$.meta_agent, c(id = row_name, agent_data_list))
-    },
-    get_meta_data = function(as_list=TRUE) {
-      if (as_list) {
-        split(private$.meta$data, private$.meta$id)
-      } else {
+    get_meta_data = function() {
         private$.meta
-      }
     },
-    set_meta_data = function(row_name, meta_data) {
-      private$.meta <- rbind(private$.meta, list(id = row_name, data = toString(meta_data)))
+    set_meta_data = function(key, value, group = "sim", agent_name = NULL) {
+      upsert <- list()
+      upsert[[key]] <- value
+      if(!is.null(agent_name)) {
+        agent <- list()
+        private$.meta[[group]][[key]][[agent_name]] <- NULL
+        agent[[agent_name]]    <- append(agent[[agent_name]], upsert)
+        private$.meta[[group]] <- append(private$.meta[[group]],agent)
+      } else {
+        private$.meta[[group]][[key]] <- NULL
+        private$.meta[[group]] <- append(private$.meta[[group]],upsert)
+      }
     },
     get_cumulative_data = function(limit_agents = NULL, limit_cols = NULL, interval = 1) {
       if (is.null(limit_agents)) {
@@ -166,6 +163,7 @@ History <- R6::R6Class(
           sep = ""
         )
       }
+      attr(private$.data, "meta") <- private$.meta
       saveRDS(private$.data, file = filename, compress = TRUE)
       invisible(self)
     },
@@ -179,6 +177,7 @@ History <- R6::R6Class(
         private$.data <- readRDS(filename)
         if (interval > 0) private$.data <- private$.data[t %% interval == 0]
       }
+      private$.meta <- attributes(private$.data)$meta
       if ("opimal" %in% colnames(private$.data))
         setnames(private$.data, old = "opimal", new = "optimal_reward_value")
       if (isTRUE(auto_stats)) private$calculate_cum_stats()
@@ -237,7 +236,6 @@ History <- R6::R6Class(
   private = list(
     .data            = NULL,
     .meta            = NULL,
-    .meta_agent      = NULL,
     .cum_stats       = NULL,
 
     initialize_data_tables = function() {
@@ -255,11 +253,7 @@ History <- R6::R6Class(
       if (self$save_theta) private$.data$theta <- rep(list(), self$n)
 
       # meta data
-      private$.meta <- data.table::data.table()
-      mdims <- matrix(ncol = 2, nrow = 0)
-      storage.mode(mdims) <- "character"
-      private$.meta <- data.table::data.table(mdims, stringsAsFactors = FALSE)
-      colnames(private$.meta) <- c("id", "data")
+      private$.meta <- list()
 
       # cumulative data
       private$.cum_stats <- data.table::data.table()

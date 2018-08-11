@@ -1,47 +1,40 @@
 library(here)
 library(data.table)
-setwd(here("demo", "demo_criteo_linucb"))
+setwd(here("demo", "demo_offline_linucb"))
 source("../dev.R")
 #library(contextual)
 library(here)
 library(data.table)
-setwd(here("demo", "demo_criteo_linucb"))
+setwd(here("demo", "demo_offline_linucb"))
 
-################ Phase I - Importing and parsing Criteo data #############
+################ Phase I - Importing and parsing linucb data #############
 
-# import criteo data
+# import linucb data
 
 url        <- "https://raw.githubusercontent.com/Nth-iteration-labs/contextual_data/master/data_criteo_basic/"
 
 file       <- "dataset.txt"
 
-criteo_dt  <- fread(paste0(url,file))
+linucb_dt  <- fread(paste0(url,file))
 
 # retrieve number of rows  (which equals the horizon)
 
-horizon    <- nrow(criteo_dt)
+horizon    <- nrow(linucb_dt)
 
 # move all context columns to context vectors
 
-criteo_dt[, context := as.list(as.data.frame(t(criteo_dt[, 3:102])))]
-criteo_dt[, (3:102) := NULL]
+linucb_dt[, context := as.list(as.data.frame(t(linucb_dt[, 3:102])))]
+linucb_dt[, (3:102) := NULL]
 
 # add t, sim and agent columns
 
-criteo_dt[, t := .I]
-criteo_dt[, sim := 1]
-criteo_dt[, agent := "Criteo"]
+linucb_dt[, t := .I]
+linucb_dt[, sim := 1]
+linucb_dt[, agent := "linucb"]
 
 # name choice and reward columns
 
-setnames(criteo_dt, c("V1", "V2"), c("choice", "reward"))
-
-# create history object from data.table
-
-history <- History$new()
-history$set_data_table(criteo_dt, auto_stats = FALSE)
-rm(criteo_dt)
-
+setnames(linucb_dt, c("V1", "V2"), c("choice", "reward"))
 
 ################ Phase II - Running Li Bandit ############################
 
@@ -50,7 +43,9 @@ horizon     <- horizon
 
 # initiate Li bandit, with 10 arms, and 100 dimensions
 
-bandit      <- LiSamplingOfflineBandit$new(data_stream = history, k = 10, d = 100)
+log_S       <- linucb_dt
+
+bandit      <- LiSamplingOfflineBandit$new(data_stream = log_S, k = 10, d = 100)
 
 # define two LinUCBDisjointSmPolicy agents
 
@@ -66,27 +61,26 @@ agents <-
 
 simulation <-
   Simulator$new(
-    agents,
+    agents = agents,
     simulations = simulations,
     horizon = horizon,
     do_parallel = TRUE,
     worker_max = 2,
-    reindex = TRUE,
-    progress_file = TRUE
+    reindex = TRUE
   )
 
 # run the simulation
-criteo_sim  <- simulation$run()
+linucb_sim  <- simulation$run()
 
 ################ Phase III - Take a look at the results ##################
 
 # total duration sim
 
-print(criteo_sim$meta$sim_total_duration)
+print(linucb_sim$meta$sim_total_duration)
 
 # plot the results
 
-plot(criteo_sim,
+plot(linucb_sim,
      regret = FALSE,
      rate = TRUE,
      type = "cumulative")

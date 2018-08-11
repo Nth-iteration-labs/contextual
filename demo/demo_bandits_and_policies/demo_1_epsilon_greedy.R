@@ -19,8 +19,6 @@ history            <- Simulator$new(
                           progress_file = FALSE
                         )$run()
 
-print(history$meta$sim_total_duration)
-print(history$meta$sim_end_time)
 
 plot(history, type = "average", regret = TRUE, ci = "ci", smooth = FALSE, interval = 1)
 plot(history, type = "cumulative", regret = TRUE, ci = "ci",  traces_max = 100, traces_alpha = 0.1,
