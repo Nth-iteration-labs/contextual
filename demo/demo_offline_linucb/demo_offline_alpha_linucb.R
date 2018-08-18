@@ -53,9 +53,9 @@ agents <-
   list(
 
     Agent$new(LinUCBDisjointOptimizedPolicy$new(0.01), bandit, name = "LinUCB alpha = 0.01"),
-    Agent$new(LinUCBDisjointOptimizedPolicy$new(0.05), bandit, name = "LinUCB alpha = 0.05")
-    #Agent$new(LinUCBDisjointOptimizedPolicy$new(0.1), bandit, name = "LinUCB alpha = 0.1"),
-    #Agent$new(LinUCBDisjointOptimizedPolicy$new(1.0), bandit, name = "LinUCB alpha = 1.0")
+    Agent$new(LinUCBDisjointOptimizedPolicy$new(0.05), bandit, name = "LinUCB alpha = 0.05"),
+    Agent$new(LinUCBDisjointOptimizedPolicy$new(0.1), bandit, name = "LinUCB alpha = 0.1"),
+    Agent$new(LinUCBDisjointOptimizedPolicy$new(1.0), bandit, name = "LinUCB alpha = 1.0")
   )
 
 # define the simulation

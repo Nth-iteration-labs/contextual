@@ -118,7 +118,7 @@ knitr::opts_chunk$set(fig.pos = 'H')
 opts_chunk$set(external = FALSE)
 @
 <<setup, include=FALSE>>=
-#opts_chunk$set(eval = FALSE)
+opts_chunk$set(eval = FALSE)
 @
 <<eval=TRUE, echo=FALSE, include = FALSE>>=
 library("contextual")
@@ -140,7 +140,7 @@ A recent MAB generalization known as the \textit{contextual} Multi-Armed Bandit 
 
 Still, however named, all cMAB policies differentiate themselves, by definition, from their MAB cousins in that they are able to make use of features that reflect the current state of the world---features that can then be mapped onto available arms or actions\footnote{That is, before making a choice, the learner receives information on the state of the world or "context" in the form of a d-dimensional feature vector. After making a choice the learner is then able to combine this contextual information with the reward received to make a more informed decision in the next round.}. This access to side information makes cMAB algorithms yet more relevant to many real-life decision problems than their MAB progenitors \citep{Langford2008}. To follow up on our previous examples: do you choose the same  type of restaurants in summer and winter? Do you prescribe the same treatments to male and female patients? Do you place the same news story at the top featured position of your website for both young and old visitors? Probably not---in the real world, it appears no choice exists without at least some contextual information to be mined or mapped. So it may be no surprise that cMAB algorithms have found applications in many different areas: from recommendation engines \citep{Lai1985} to advertising \citep{Tang2013} and (personalized) medicine \citep{Tewari2017}---inspiring a multitude of new, often analytically derived bandit algorithms or policies, each with their strengths and weaknesses.
 
-Regrettably, though cMAB algorithms have gained both academic and commercial acclaim, comparisons on simulated, and, importantly, real-life, large-scale offline \textquotedblleft{}partial label\textquotedblright{} data sets \citep{Li2011} have relatively lagged behind. To this end, the current paper introduces the \pkg{contextual} \proglang{R} package. \pkg{contextual} aims to facilitate the simulation, offline comparison, and evaluation of (Contextual) Multi-Armed bandit policies. There exist a few other frameworks that enable the analysis and comparison of either on- or offline datasets in some capacity, such as Microsoft's \pkg{Vowpal Wabbit} \citep{Langford2007}, the online evaluation platform StreamingBandit \citep{Kaptein2016}, and the MAB focussed \proglang{Python} packages \pkg{Striatum} \citep{striatum} and \pkg{SMPyBandits} \citep{SMPyBandits}. But, as of yet, no extensible and widely applicable R \citep{RCore} package that can analyze and compare, respectively, K-armed, Continuum and Contextual Multi-Armed Bandit Algorithms on both simulated and offline data.
+Regrettably, though cMAB algorithms have gained both academic and commercial acclaim, comparisons on simulated, and, importantly, real-life, large-scale offline \textquotedblleft{}partial label\textquotedblright{} data sets \citep{Li2011} have relatively lagged behind. To this end, the current paper introduces the \pkg{contextual} \proglang{R} package. \pkg{contextual} aims to facilitate the simulation, offline comparison, and evaluation of (Contextual) Multi-Armed bandit policies. There exist some other frameworks that enable the analysis and comparison of either on- or offline datasets in some capacity, such as Microsoft's \pkg{Vowpal Wabbit} \citep{Langford2007}, the online evaluation platform StreamingBandit \citep{Kaptein2016}, and the MAB focussed \proglang{Python} packages \pkg{Striatum} \citep{striatum} and \pkg{SMPyBandits} \citep{SMPyBandits}. But, as of yet, no extensible and widely applicable R \citep{RCore} package that can analyze and compare, respectively, K-armed, Continuum and Contextual Multi-Armed Bandit Algorithms on both simulated and offline data.
 
 In the following paper, we further introduce the \pkg{contextual} package. Section 2 presents a formal definition of the contextual Multi-Armed Bandit problem and shows how this formalization can be translated into a clear and concise object-oriented implementation. Section 3 gives an overview of contextual's predefined contextual and non-contextual bandit and policy classes and shows how to apply these to solve some basic (c)MAB problems. Section 4 delves a little deeper into the implementation of contextual's core classes---in preparation for Section 5, which shows how to extend these classes to be able to create custom bandits and policies. Section 6 focusses on the analysis of offline \textquotedblleft{}partial label\textquotedblright{} data sets. Section 7 brings all of the previous sections together in the example of a partial replication of a seminal contextual bandit paper. We conclude with some comments on the current state of the package and potential future enhancements.
 
@@ -267,11 +267,11 @@ Relative Cumulative Reward / Click Through Rate:
 
 
 
-\section{Basic use}
+\section{Basic Usage}
 
 The current section offers an overview of \pkg{contextual}'s pre-implemented bandits and policies and explains how to run a basic simulation.
 
-\subsection{Implemented policies and bandits}
+\subsection{Implemented Policies and Bandits}
 
 Though \pkg{contextual} comes into its own when you start building your own bandit and policy classes, it is also possible to run simulations that make use of its built-in bandits and policies. See Table \ref{table:overview_policies} for an overview of all implemented policies. See Table \ref{table:overview_bandits} for an overview of all currently implemented bandits.
 
@@ -298,13 +298,13 @@ BasicBandit & \begin{tabular}[c]{@{}l@{}}BasicContextualBandit\\ MixedContextual
 \label{table:overview_bandits}
 \end{table}
 
-\subsection{Running a simulation}
+\subsection{Running a Simulation}
 
-To demonstrate how to run a basic bandit simulation with contextual's pre-implemented bandits and policies, imagine a web store that seeks to evaluate two policies with the goal of selecting the policy that is best at evaluating which of two adds has the highest click-through rate.
+To demonstrate how to run a basic simulation with \pkg{contextual}'s pre-implemented bandits and policies, imagine a web store that seeks to evaluate two policies with the goal of selecting the policy that is best at evaluating which of two adds has the highest click-through rate.
 
-The first policy explores both adds at random for a preset period (here, for instance for fifty steps) and from thereon only exploits the ad with the best click-through rate---a policy known as an Epsilon First policy or an A/B test.
+The first policy explores both adds at random for a preset period and from thereon only exploits the ad with the best click-through rate---a policy known as an Epsilon First policy or an A/B test.
 
-The other policy explores one of the ads at random for 20 percent of the time and exploits the ad with the best current click-through rate 80 percent of the time---a type of policy known as "Epsilon Greedy" \citep{Sutton1998e}.
+The other policy explores one of the ads at random twenty percent of the time and exploits the ad with the best current click-through rate eighty percent of the time---a type of policy known as "Epsilon Greedy" \citep{Sutton1998e}.
 
 What policy is most effective in this basic scenario?
 
@@ -337,11 +337,11 @@ history             <- simulator$run()
 # And plot the cumulative reward rate (equals click-through rate)
 plot(history, type = "cumulative", regret = FALSE, rate = TRUE)
  @
-As can be seen in the left plot in Figure \ref{fig:ctr_examples}, in this scenario, with two clearly differentiable stable arms, Epsilon First is the clear winner. Which makes sense: in contrast to the Epsilon Greedy policy, the Epsilon First policy does not incur any more exploration penalties from choosing the lesser arm from the moment it has picked the best arm.
+As can be seen in the left plot in Figure \ref{fig:ctr_examples}, the Epsilon First policy is the clear winner in this scenario. Which makes sense: in contrast to the Epsilon Greedy policy, the Epsilon First policy does not incurs exploration penalties from choosing the lesser arm once it has picked the best arm.
 
-We could, however, change this scenario just a little for a very different outcome. Let us, for instance, suggest that half the visitors to the web store are younger than forty, the other half older than forty. And that one of the ads is more effective for the younger visitors, while the other ad works better for the older ones.
+We could, however, change this scenario just a little bit for a very different outcome. Let us, for instance, suggest that half the visitors to the web store are younger than forty and the other half older than forty---and that the store proprieter suspects one of the ads to be more effective for the younger visitors, and the other for older visitors.
 
-We can simulate this scenario by making some minor changes to the previous script. Specifically, we adapt the Bandit by defining two contexts, with different reward probabilities per arm---and add a contextual policy (LinUCB, \cite{Li2010}):
+We can simulate this scenario by making some minor changes to the previous script. Specifically, adapting the Bandit to generate contextual data with different reward probabilities per arm and adding a contextual policy (LinUCB, \cite{Li2010}):
 
 <<eval=FALSE, size='small'>>=
 #                                    +-----+---------->  two different ads
@@ -377,23 +377,23 @@ plot(history, type = "cumulative", regret = FALSE, rate = TRUE)
 \caption{To the left, the cumulative reward rate (or click-through rate) of a non-contextual bandit scenario comparing Epsilon First and Epsilon Greedy policies---to the right the cumulative reward rate of a contextual bandit scenario comparing LinUCB, Epsilon First and Epsilon Greedy policies.}
 \end{figure}
 
-As can be seen in the right plot in Figure \ref{fig:ctr_examples}, this time around, neither non-contextual policy (Epsilon Greedy nor Epsilon First) does better than chance, as on average, both arms are equally likely to produce a click. On the other hand, the contextual "LinUCB" policy does well, as it can map rewards to contextual features.
+As can be seen in the right plot in Figure \ref{fig:ctr_examples}, this time around, neither non-contextual policy (Epsilon Greedy nor Epsilon First) does better than chance, as on average, both arms are equally likely to produce a click. On the other hand, the "LinUCB" policy does very well, as contextual policies are able to map rewards to contextual features.
 
 Of course, neither simulation in the current section is very realistic. One way to generate more realistic Bandit data would be to write a Bandit subclass with a more complex generative model. How to create such a bandit subclass is delineated in section 5. Another option would, for example, be to evaluate policies on an offline data set---more on that in section 6.
 
 \section{R6 class structure}
 
-Since it is the \pkg{contextual}'s explicit goal to offer researchers and developers an easily extensible framework to develop, evaluate and compare their own \code{Policy} and \code{Bandit} implementations, the current section offers additional background information on \pkg{contextual}' class structure---both on the R6 class system and on each of the six previously introduced core \pkg{contextual} classes.
+Since it is the \pkg{contextual}'s explicit goal to offer researchers and developers an easily extensible framework to develop, evaluate and compare their own \code{Policy} and \code{Bandit} implementations, the current section offers additional background information on \pkg{contextual}' class structure---both on the R6 class system \cite{R6} and on each of the six previously introduced core \pkg{contextual} classes.
 
 \subsection{R and the R6 Class System}
 
-Statistical computational methods, in \proglang{R} or otherwise, are regularly made available through single-use scripts or basic, isolated code packages. Usually, such code examples are meant to give a basic idea of a statistical method, technique or algorithm in the context of a scientific paper.  Such code examples offer their scientific audience a first inroad towards the comparison and further implementation of their underlying methods. However, when a set of well-researched interrelated algorithms, such as MAB and cMAB policies, find growing academic, practical and commercial adoption, it becomes crucial to offer a more standardized and more accessible way to compare such methods and algorithms.
+Statistical computational methods, in \proglang{R} or otherwise, are regularly made available through single-use scripts or basic, isolated code packages \citep{Gandrud2016}. Usually, such code examples are meant to give a basic idea of a statistical method, technique or algorithm in the context of a scientific paper \citep{Stodden2013}. Such code examples offer their scientific audience a first inroad towards the comparison and further implementation of their underlying methods \citep{Buckheit1995}. However, when a set of well-researched interrelated algorithms, such as MAB and cMAB policies, find growing academic, practical and commercial adoption, it becomes crucial to offer a more standardized and more accessible way to compare such methods and algorithms \citep{Mesirov2010}.
 
-It is against this background that we decided to develop the \pkg{contextual} \proglang{R} package---a package that would offer an open bandit framework with easily extensible bandit and policy libraries. To us, it made the most sense to create such a package in \proglang{R}, as \proglang{R} is currently the de facto language for the dissemination of new statistical methods, techniques, and algorithms---while it is at the same time finding ever-growing adoption in industry. The resulting lively exchange of \proglang{R} related code, data, and knowledge between scientists and practitioners offers precisely the kind of cross-pollination that \pkg{contextual} hopes to facilitate.
+It is against this background that we decided to develop the \pkg{contextual} \proglang{R} package---a package that would offer an open bandit framework with easily extensible bandit and policy libraries. To us, it made the most sense to create such a package in \proglang{R} \citep{RCore}, as \proglang{R} is currently the de facto language for the dissemination of new statistical methods, techniques, and algorithms \citep{Tippmann2015}---while it is at the same time finding ever-growing adoption in industry \citep{2012}. The resulting lively exchange of \proglang{R} related code, data, and knowledge between scientists and practitioners offers precisely the kind of cross-pollination that \pkg{contextual} hopes to facilitate.
 
-Though widely used as a procedural language, \proglang{R} offers several Object Oriented (OO) systems, which can significantly help in structuring the development of more complex packages. Out of the OO systems available (S3, S4, R5 and R6), we settled on R6, as it offered several advantages compared to the other options. Firstly, it implements a mature object-oriented design when compared to S3. Secondly, its classes can be accessed and modified by reference---which offers the added advantage that R6 classes are instantly recognizable for developers with a background in \proglang{Java} or \proglang{C++}. Finally, when compared to the older R5 reference class system, R6 classes are lighter-weight and (as they do not make use of S4 classes) do not require the methods package---which makes \pkg{contextual} substantially less resource-hungry than it would otherwise have been.
+Though widely used as a procedural language, \proglang{R} offers several Object Oriented (OO) systems, which can significantly help in structuring the development of more complex packages. Out of the OO systems available (S3, S4, R5 and R6---for more information, see \cite{wickham2014advanced}), we settled on R6, as it offered several advantages compared to the other options. Firstly, it implements a mature object-oriented design when compared to S3. Secondly, its classes can be accessed and modified by reference---which offers the added advantage that R6 classes are instantly recognizable for developers with a background in \proglang{Java} or \proglang{C++}. Finally, when compared to the older R5 reference class system, R6 classes are lighter-weight and (as they do not make use of S4 classes) do not require the methods package---which makes \pkg{contextual} substantially less resource-hungry than it would otherwise have been.
 
-\subsection{Main classes}
+\subsection{Main Classes}
 
 In this section, we go over each of \pkg{contextual}'s six main classes in some more detail---with an emphasis on the Bandit and Policy classes. To clarify \pkg{contextual}'s class structure, we also include two UML diagrams (UML or "Unified Modeling Language" is a modeling language that presents a standard way to visualize the overall class structure and general design of a software application or framework). The UML class diagram shown in Figure \ref{fig:contextual_class} on page \pageref{fig:contextual_class} visualizes \pkg{contextual}'s static object model, showing how its classes inherit from, and interface with, each other. The UML sequence diagram in figure Figure \ref{fig:contextual_sequence} on page \pageref{fig:contextual_sequence}, on the other hand, illustrates how \pkg{contextual}'s classes interact dynamically over time.
 
@@ -1315,66 +1315,35 @@ We were able to run seven policies (Random, EGreedy, EGreedySeg, LinUCB Dis, Lin
 
 From the plot, it seems that after 24 hours of training the policies had not yet settled. Which might also be concluded from our version of the original chart comparing policies' CTR's after one day of training. As can be observed in the plot below, our results did approximate the original---but not completely so. We expect this to be the result of starting our training on day three instead of day one, in combination with the longer than 24 hour period that may be needed to stabilize a comparison between all policies.
 
-\section{Discussion}
-\label{sec:conc4}
+\section{Discussion and Future Work}
 
-\section{Future Work}
+The current paper introduces the object-oriented \proglang{R} package \pkg{contextual}, an object-oriented and extensible framework that facilitates the parallelized comparison of contextual and non-contextual Bandit policies through both simulation and offline analysis. In making the package publicly available, we hope to further the dissemination and evaluation of both existing and new cMAB policies. By developing the package \proglang{R}, we furthermore hope to offer an arena for the lively exchange of policies between scientists and practitioners---as \proglang{R} has proven itself to be the de facto domain specific computer language in both academia and industry, from the social and medical sciences to statistics and business analytics \citep{Tippmann2015}.
 
-Seeing the ease with which contextual can be extended to simulate most any bandit related scenario, we expect the bandit
+As the package is intended to be usable by practitioners, scientists and students alike, we started our paper with a general introduction to the (contextual) multi-armed bandit problem, followed by a compact formalization. We then demonstrated how our implementation flows naturally from this formalisation, with Agents that cycle Bandits and Policies through four function calls: get_context(), get_action(), get_reward() and set_reward(). Next, we evaluated some of \pkg{contextual}'s built-in Policies, delved deeper into \pkg{contextual}'s class structure, extended \pkg{contextual}'s Bandit and Policy superclasses, demonstrated how to evaluate Policies on offline data sets, and, finally replicated a seminal cMAB paper.
 
-\subsection{Doubly Robust}
-
-\subsection{Policy Library}
-
-\subsection{Other Bandits}
-
-
-
-\section{Acknowledgments}
-
-Thanks go to my colleagues at the Jheronimus Academy of Data Science and Tilburg University!
-
-\section{UML Diagrams}
-
-\begin{figure}[H]
-  \centering
-    \includegraphics[width=.99\textwidth]{fig/contextual_class}
-
-      \caption{\pkg{contextual} UML Class Diagram}
-          \label{fig:contextual_class}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-    \includegraphics[width=.99\textwidth]{fig/contextual_sequence}
-
-      \caption{\pkg{contextual} UML Sequence Diagram}
-      \label{fig:contextual_sequence}
-\end{figure}
-
-
-
-
-\section{UML Diagrams}
-
-\begin{figure}[H]
-  \centering
-    \includegraphics[width=.99\textwidth]{fig/contextual_class}
-
-      \caption{\pkg{contextual} UML Class Diagram}
-          \label{fig:contextual_class}
-\end{figure}
-
-\begin{figure}[H]
-  \centering
-    \includegraphics[width=.99\textwidth]{fig/contextual_sequence}
-
-      \caption{\pkg{contextual} UML Sequence Diagram}
-      \label{fig:contextual_sequence}
-\end{figure}
-
+Though the package is fully functional and we expect no more changes to its core architecture and API, there is still ample room to extend and improve \pkg{contextual} further. We intend to extend \pkg{contextual}'s documentation and test suite. There are several Bandit paradigms we might add, such as dueling or combinatorial bandits. We are thinking about the replication of some additional oft-cited cMAB papers. We would like to add a Doubly Robust Bandit. Finally, we are interested in the extension of our Policy library---or the creation of a new repository where both existing and new cMAB policies are shared, evaluated and compared.
 
 %\bibliographystyle{apacite}
 \bibliography{jss}
+
+\newpage
+
+\section{Appendix A: UML Diagrams}
+
+\begin{figure}[H]
+  \centering
+    \includegraphics[width=.99\textwidth]{fig/contextual_class}
+
+      \caption{\pkg{contextual} UML Class Diagram}
+          \label{fig:contextual_class}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+    \includegraphics[width=.99\textwidth]{fig/contextual_sequence}
+
+      \caption{\pkg{contextual} UML Sequence Diagram}
+      \label{fig:contextual_sequence}
+\end{figure}
 
 \end{document}
