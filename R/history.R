@@ -67,8 +67,6 @@ History <- R6::R6Class(
           data.table::set(data, index, 9L, list(list(context_value)))
         } else if (!self$save_context) {
           data.table::set(data, index, 9L, list(list(theta_value)))
-          ## if split over mult col
-          # data[index, (paste0("X.", seq_along(context))) := context]
         } else {
           data.table::set(data, index, 9L, list(list(context_value)))
           data.table::set(data, index, 10L, list(list(theta_value)))
@@ -155,7 +153,7 @@ History <- R6::R6Class(
         }
       }
     },
-    save_data_table = function(filename = NA) {
+    save = function(filename = NA) {
       if (is.na(filename)) {
         filename <- paste("contextual_data_",
           format(Sys.time(), "%y%m%d_%H%M%S"),
@@ -167,7 +165,7 @@ History <- R6::R6Class(
       saveRDS(private$.data, file = filename, compress = TRUE)
       invisible(self)
     },
-    load_data_table = function(filename, interval = 0, auto_stats = TRUE, bind_to_existing = FALSE) {
+    load = function(filename, interval = 0, auto_stats = TRUE, bind_to_existing = FALSE) {
       if (isTRUE(bind_to_existing) && nrow(private$.data) > 1 && private$.data$agent[[1]] != "") {
         temp_data <- readRDS(filename)
         if (interval > 0) temp_data <- temp_data[t %% interval == 0]
@@ -183,8 +181,36 @@ History <- R6::R6Class(
       if (isTRUE(auto_stats)) private$calculate_cum_stats()
       invisible(self)
     },
-    get_data_frame = function() {
-      as.data.frame(private$.data)
+    save_csv = function(filename = NA, context_to_columns = FALSE) {
+      if (is.na(filename)) {
+        filename <- paste("contextual_data_",
+                          format(Sys.time(), "%y%m%d_%H%M%S"),
+                          ".csv",
+                          sep = ""
+        )
+      }
+      if (context_to_columns) {
+        context_cols <- c(paste0("X.", seq_along(unlist(private$.data[1,]$context))))
+        dt_to_save <- copy(private$.data)
+        dt_to_save[, context_string := lapply(.SD, function(x) paste( unlist(x), collapse=',') ),
+                                    by=1:nrow(private$.data), .SDcols = c("context")]
+        dt_to_save$k <- dim(private$.data[1,]$context[[1]])[2]
+        dt_to_save$d <- dim(private$.data[1,]$context[[1]])[1]
+        dt_to_save[, (context_cols) := tstrsplit(context_string, ",", fixed=TRUE)]
+        dt_to_save$context = NULL
+        dt_to_save$context_string = NULL
+        fwrite(dt_to_save[,which(dt_to_save[,colSums(is.na(dt_to_save))<nrow(dt_to_save)]), with =F],
+               file = filename)
+        rm(dt_to_save)
+        gc()
+      } else {
+        fwrite(private$.data[,which(private$.data[,colSums(is.na(private$.data))<nrow(private$.data)]),
+                             with =F], file = filename)
+      }
+      invisible(self)
+    },
+    get_data_frame = function(context_to_columns = FALSE) {
+        as.data.frame(private$.data)
     },
     set_data_frame = function(df, auto_stats = TRUE) {
       private$.data <- as.data.table(df)
@@ -362,7 +388,7 @@ History <- R6::R6Class(
 #' and can save or load simulation log data files.
 #'
 #' @name History
-#' @aliases print_data reindex delete_empty_rows clear_data_table set_data_table get_data_table set_data_frame get_data_frame load_data_table cumulative save
+#' @aliases print_data reindex delete_empty_rows clear_data_table set_data_table get_data_table set_data_frame get_data_frame load cumulative save
 #'
 #' @section Usage:
 #' \preformatted{
@@ -402,11 +428,11 @@ History <- R6::R6Class(
 #'                      theta_value = NA)}}{
 #'      Saves one row of simulation data. Is generally not called directly, but from a {Simulator} instance.
 #'   }
-#'   \item{\code{save_data_table(filename = NA)}}{
+#'   \item{\code{save(filename = NA)}}{
 #'      Writes the \code{History} log file in its default data.table format,
 #'      with \code{filename} as the name of the file which the data is to be written to.
 #'   }
-#'   \item{\code{load_data_table = function(filename, interval = 0)}}{
+#'   \item{\code{load = function(filename, interval = 0)}}{
 #'      Reads a \code{History} log file in its default \code{data.table} format,
 #'      with \code{filename} as the name of the file which the data are to be read from.
 #'      If \code{interval} is larger than 0, every \code{interval} of data is read instead of the

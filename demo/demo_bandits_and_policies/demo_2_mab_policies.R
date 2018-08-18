@@ -5,12 +5,11 @@ source("../dev.R")
 
 weight_per_arm     <- c(0.9, 0.1, 0.1)
 horizon            <- 100
-simulations        <- 100
+simulations        <- 1000
 
-bandit             <- SyntheticBandit$new(weights = weight_per_arm, precaching = TRUE)
+bandit             <- SyntheticBandit$new(weights = weight_per_arm)
 
-agents             <- list(Agent$new(EpsilonGreedyPolicy$new(0.1), bandit),
-                           Agent$new(RandomPolicy$new(), bandit),
+agents             <- list(Agent$new(RandomPolicy$new(), bandit),
                            Agent$new(OraclePolicy$new(), bandit),
                            Agent$new(ThompsonSamplingPolicy$new(1.0, 1.0), bandit),
                            Agent$new(Exp3Policy$new(0.1), bandit),
@@ -18,19 +17,70 @@ agents             <- list(Agent$new(EpsilonGreedyPolicy$new(0.1), bandit),
                            Agent$new(UCB1Policy$new(), bandit)
 )
 
-simulation         <- Simulator$new(agents, horizon, simulations, do_parallel = FALSE)
+simulation         <- Simulator$new(agents, horizon, simulations)
 history            <- simulation$run()
 
-par(mfrow = c(2,2),mar = c(5,5,1,1))
+par(mfrow = c(3, 2), mar = c(3, 5, 1, 1))
 
-plot(history, type = "cumulative", regret = TRUE, no_par = TRUE, interval = 4, use_colors = TRUE)
-plot(history, type = "cumulative", regret = FALSE, no_par = TRUE, legend = FALSE,
-                                interval = 4, use_colors = TRUE)
-plot(history, type = "average", ci = "ci", regret = FALSE, no_par = TRUE, legend = FALSE,
-                                interval = 10, use_colors = TRUE, smooth = TRUE)
-plot(history, type = "arms", regret = FALSE, no_par = TRUE, legend = TRUE, interval = 4, use_colors = TRUE)
+plot(history,
+     type = "cumulative",
+     no_par = TRUE,
+     use_colors = FALSE)
 
-par(mfrow = c(1,1))
+plot(
+  history,
+  type = "cumulative",
+  regret = FALSE,
+  legend = FALSE,
+  limit_agents = c("UCB1"),
+  traces = TRUE,
+  no_par = TRUE
+)
+
+plot(
+  history,
+  type = "cumulative",
+  regret = FALSE,
+  rate = TRUE,
+  ci = "sd",
+  limit_agents = c("Exp3", "ThompsonSampling"),
+  legend_position = "bottomright",
+  no_par = TRUE
+)
+
+plot(
+  history,
+  type = "cumulative",
+  rate = TRUE,
+  plot_only_ci = TRUE,
+  ci = "var",
+  limit_agents = c("UCB1", "GittinsBrezziLai"),
+  legend_position = "topright",
+  smooth = TRUE,
+  no_par = TRUE
+)
+
+plot(
+  history,
+  type = "average",
+  ci = "ci",
+  regret = FALSE,
+  interval = 10,
+  use_colors = TRUE,
+  legend_position = "bottomright",
+  smooth = TRUE,
+  no_par = TRUE
+)
+
+plot(
+  history,
+  limit_agents = c("ThompsonSampling"),
+  type = "arms",
+  interval = 20,
+  no_par = TRUE
+)
+
+par(mfrow = c(1, 1))
 
 print(history)
 summary(history)

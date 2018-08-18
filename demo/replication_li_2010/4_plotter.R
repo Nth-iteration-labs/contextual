@@ -11,7 +11,7 @@ history  <- History$new()
 
 # Take a look at the results ---------------------------------------------------------------------------------
 
-history$load_data_table(load_file_name)
+history$load(load_file_name)
 
 message("Data imported")
 

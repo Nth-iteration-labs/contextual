@@ -36,7 +36,7 @@ Plot <- R6::R6Class(
 
       if (regret) {
         if (rate) {
-          ylab_title     <- "Cumulative regret - rate"
+          ylab_title     <- "Cumulative regret rate"
           line_data_name <- "cum_regret_rate"
           ci_data_name   <- "cum_regret_rate_none"
         } else {
@@ -46,7 +46,7 @@ Plot <- R6::R6Class(
         }
       } else {
         if (rate) {
-          ylab_title     <- "Cumulative reward - rate"
+          ylab_title     <- "Cumulative reward rate"
           line_data_name <- "cum_reward_rate"
           ci_data_name   <- "cum_reward_rate_none"
         } else {

@@ -48,7 +48,7 @@ history     <- Simulator$new(agents = agents,
                              reindex = TRUE,
                              do_parallel = TRUE)$run()
 
-history$save_data_table(paste0(data_dir,"LiEG_1000.RData"))
+history$save(paste0(data_dir,"LiEG_1000.RData"))
 
 ##################### Plot #############################
 
@@ -60,7 +60,7 @@ data_dir       <- "data/"
 
 history = History$new()
 history$clear_data_table()
-history$load_data_table(paste0(data_dir,"LiEG_all_1000.RData"))
+history$load(paste0(data_dir,"LiEG_all_1000.RData"))
 
 h <- history$get_data_table()
 

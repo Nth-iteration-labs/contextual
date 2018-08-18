@@ -28,7 +28,7 @@ simulation  <-
   )
 
 before <- simulation$run()
-before$save_data_table("test.RData")
+before$save("test.RData")
 plot(before, type = "cumulative")
 
 b <- before$get_data_table()
@@ -36,7 +36,7 @@ b <- before$get_data_table()
 ######################## use the log to test a policy ##########################
 
 history <- History$new()
-history$load_data_table("test.RData")
+history$load("test.RData")
 log_S <- history$get_data_table()
 
 bandit <- LiSamplingOfflineBandit$new(data_stream = log_S, k = 3, d = 3)

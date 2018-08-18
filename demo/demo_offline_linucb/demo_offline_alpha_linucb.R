@@ -51,10 +51,11 @@ bandit      <- LiSamplingOfflineBandit$new(data_stream = log_S, k = 10, d = 100)
 
 agents <-
   list(
-    Agent$new(LinUCBDisjointOptimizedPolicy$new(0.001), bandit, name = "LinUCB alpha = 0.001"),
+
     Agent$new(LinUCBDisjointOptimizedPolicy$new(0.01), bandit, name = "LinUCB alpha = 0.01"),
-    Agent$new(LinUCBDisjointOptimizedPolicy$new(0.1), bandit, name = "LinUCB alpha = 0.1"),
-    Agent$new(LinUCBDisjointOptimizedPolicy$new(1.0), bandit, name = "LinUCB alpha = 1.0")
+    Agent$new(LinUCBDisjointOptimizedPolicy$new(0.05), bandit, name = "LinUCB alpha = 0.05")
+    #Agent$new(LinUCBDisjointOptimizedPolicy$new(0.1), bandit, name = "LinUCB alpha = 0.1"),
+    #Agent$new(LinUCBDisjointOptimizedPolicy$new(1.0), bandit, name = "LinUCB alpha = 1.0")
   )
 
 # define the simulation
@@ -64,8 +65,8 @@ simulation <-
     agents = agents,
     simulations = simulations,
     horizon = horizon,
-    do_parallel = TRUE,
-    worker_max = 2,
+    worker_max = 3,
+    save_context = TRUE,
     reindex = TRUE
   )
 
@@ -74,13 +75,16 @@ linucb_sim  <- simulation$run()
 
 ################ Phase III - Take a look at the results ##################
 
-# total duration sim
-
-print(linucb_sim$meta$sim_total_duration)
-
 # plot the results
 
 plot(linucb_sim,
      regret = FALSE,
      rate = TRUE,
+     legend_position = "bottomright",
      type = "cumulative")
+
+linucb_sim$save_csv(NA,context_to_columns = TRUE)
+
+dt <- linucb_sim$get_data_table()
+
+df <- linucb_sim$get_data_frame(context_to_columns = TRUE)

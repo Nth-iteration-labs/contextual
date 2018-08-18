@@ -79,7 +79,7 @@ history  <- simulation$run()
 
 # Take a look at the results ---------------------------------------------------------------------------------
 
-history$save_data_table(save_file_name)
+history$save(save_file_name)
 
 print(history$meta$sim_total_duration)
 

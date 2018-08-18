@@ -32,7 +32,7 @@ for (dp in do_poisson) {
         for (subpol in subpolicies)   {
           sim_str <- paste0(subpol,pol,"_b",beta[1],"_s",sn,"_p",as.numeric(dp), "_r",simulations,".RData")
           message(paste0("Plotting: ",sim_str))
-          plot_log$load_data_table(paste0(data_dir,sim_str))
+          plot_log$load(paste0(data_dir,sim_str))
         }
         if (i == 1) { do_legend <- TRUE } else {do_legend <- FALSE }
         plot(plot_log, no_par = TRUE, type = "cumulative", rate = FALSE, legend = do_legend,
