@@ -1,27 +1,42 @@
 library(contextual)
-library(lobstr)
 
-# Config -----------------------------------------------------------------------------------------------------
 
-load_file_name          <- "D:/results/Yahoo_T_37450000_sparse_0.95.RData"
-
-# Setup ------------------------------------------------------------------------------------------------------
+load_file_names         <- list("D:/results/Yahoo_T_5e+06/Yahoo_T_5e+06_sparse_0.RData",
+                                "D:/results/Yahoo_T_5e+06/Yahoo_T_5e+06_sparse_0.7.RData",
+                                "D:/results/Yahoo_T_5e+06/Yahoo_T_5e+06_sparse_0.8.RData",
+                                "D:/results/Yahoo_T_5e+06/Yahoo_T_5e+06_sparse_0.9.RData",
+                                "D:/results/Yahoo_T_5e+06/Yahoo_T_5e+06_sparse_0.95.RData",
+                                "D:/results/Yahoo_T_5e+06/Yahoo_T_5e+06_sparse_0.99.RData")
 
 history  <- History$new()
 
-# Take a look at the results ---------------------------------------------------------------------------------
+ctr_list        <- list()
 
-history$load(load_file_name)
+for(i in seq_along(load_file_names)) {
+  history$load(load_file_names[[i]])
+  first_day_n     <- floor(history$meta$sim$max_t)
+  first_day_data  <- history$get_cumulative_result(as_list = FALSE, t = first_day_n)
+  ctr             <- first_day_data$cum_reward_rate
+  agents          <- first_day_data$agent
+  ctr_relative    <- ctr / ctr[match("Random",agents)]
+  ctr_relative    <- ctr_relative[!ctr_relative==1]
 
-message("Data imported")
+  ctr_list[[i]]   <- c(ctr_relative)
+}
 
-first_day_n     <- floor(as.integer(history$meta$max_t)/8)
-first_day_data  <- history$get_cumulative_result(as_list = FALSE, t = first_day_n)
-ctr             <- first_day_data$cum_reward_rate
-agents          <- first_day_ctr$agent
+agents_relative <- agents[!agents=="Random"]
 
-barplot(ctr,  xpd = FALSE,col=gray.colors(6),
-        #legend = agents, args.legend = list(x = 'topright'),
-        ylim = c(0.03,0.055))
+all_ctr <- data.frame("100%" = ctr_list[[1]],   "30%" = ctr_list[[2]],
+                      "20%"  = ctr_list[[3]],   "10%" = ctr_list[[4]],
+                      "5%"   = ctr_list[[5]],   "1%"  = ctr_list[[6]],  check.names = FALSE)
+
+omniscient <- 1.615
+barplot(as.matrix(all_ctr),  xpd = FALSE, beside=TRUE, legend = FALSE,
+        ylab="ctr", las=1, xlab="data size", ylim = c(1,1.8))
+abline(h=omniscient, col="gray", lwd=1, lty=2)
+barplot(as.matrix(all_ctr),  xpd = FALSE,col=gray.colors(6), beside=TRUE,
+        legend = agents_relative, args.legend = list(x = 'topright'),
+        ylab="ctr", las=1, xlab="data size", ylim = c(1,1.8),add=TRUE)
+box(lwd=3)
 
 message("Plot completed")
