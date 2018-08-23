@@ -13,7 +13,8 @@ bandit             <- BasicContextualBandit$new(k = 10L, d = 5L)
 
 agents             <- list(
                            Agent$new(LinUCBDisjointPolicy$new(0.1), bandit),
-                           Agent$new(EpsilonGreedyPolicy$new(0.1), bandit),
+                           Agent$new(EpsilonGreedyPolicy$new(), bandit),
+                           Agent$new(ContextualThompsonSamplingPolicy$new(), bandit),
                            Agent$new(ContextualEpochGreedyDisjointPolicy$new(20), bandit),
                            Agent$new(ContextualDisjointThompsonSamplingPolicy$new(v=0.1), bandit)
                           )

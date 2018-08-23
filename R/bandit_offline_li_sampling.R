@@ -13,7 +13,7 @@ LiSamplingOfflineBandit <- R6::R6Class(
       self$k <- k               # Number of arms (integer)
       self$d <- d               # Dimension of context feature vector (integer)
       self$randomize <-randomize
-      data_stream <- data_stream[sample(nrow(data_stream))]
+      #############################data_stream <- data_stream[sample(nrow(data_stream))]
       private$S <- data_stream  # Data stream, here as a data.table
     },
     post_initialization = function() {

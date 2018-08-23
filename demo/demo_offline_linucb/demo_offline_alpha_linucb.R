@@ -11,7 +11,7 @@ setwd(here("demo", "demo_offline_linucb"))
 
 # import linucb data
 
-url        <- "https://raw.githubusercontent.com/Nth-iteration-labs/contextual_data/master/data_criteo_basic/"
+url        <- "https://raw.githubusercontent.com/Nth-iteration-labs/contextual_data/master/data_cmab_basic/"
 
 file       <- "dataset.txt"
 

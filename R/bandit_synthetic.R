@@ -11,8 +11,6 @@ SyntheticBandit <- R6::R6Class(
     reward_family = NULL,
     has_cache     = NULL,
     precaching    = NULL,
-    not_zero_features = NULL,
-    random_one_feature = NULL,
     weights   = NULL,
     class_name = "SyntheticBandit",
     initialize   = function(
@@ -20,24 +18,18 @@ SyntheticBandit <- R6::R6Class(
       reward_means         = 4.0,
       reward_stds          = 1.0,
       weights              = NULL,
-      precaching           = TRUE,
-      not_zero_features    = TRUE,
-      random_one_feature   = FALSE
+      precaching           = TRUE
     ) {
       if (!(reward_family %in% c("Bernoulli","Gaussian","Poisson"))) {
         stop('Reward family needs to be one of "Bernoulli", "Gaussian" or "Poisson".' , call. = FALSE)
       }
-
       if (is.vector(self$weights)) self$weights <- matrix(self$weights, nrow = 1L)
-
       super$initialize(weights)
       self$has_cache            <- FALSE
       self$precaching           <- precaching
       self$reward_family        <- reward_family
       self$reward_means         <- reward_means
       self$reward_stds          <- reward_stds
-      self$not_zero_features    <- not_zero_features
-      self$random_one_feature   <- random_one_feature
     },
     set_weights = function(local_W) {
       if (is.vector(local_W)) private$W <- matrix(local_W, nrow = 1L)
@@ -57,9 +49,7 @@ SyntheticBandit <- R6::R6Class(
     get_reward = function(t, context, action) {
       private$reward_to_list(t, action)
     },
-
-    generate_bandit_data = function(n = 1L,
-                                    silent = TRUE ) {
+    generate_bandit_data = function(n = 1L, silent = TRUE ) {
       if (!silent) message("Precaching bandit" )
       private$O <- matrix(0, self$k, n)
       private$R <- matrix(0, self$k, n)
@@ -77,14 +67,14 @@ SyntheticBandit <- R6::R6Class(
     context_list = list(),
     reward_list = list(),
     generate_context = function(n = 1L) {
-      private$X <- array(sample(c(0, 1), replace = TRUE, size = self$d * self$k * n), dim = c(self$d, self$k, n))
-
+      #private$X <- array(sample(c(0, 1), replace = TRUE, size = self$d * self$k * n), dim = c(self$d, self$k, n))
+      private$X <- array(sample(c(0, 1), replace = TRUE, size = self$d * n), dim = c(self$d, self$k, n))
       private$X
     },
     generate_weights = function(n) {
-      weight_array  <- array(t(matrix( private$W, self$k , self$d, byrow = TRUE )), dim = c(self$d, self$k, n))
+      weight_array  <- array(t(matrix(private$W, self$k , self$d, byrow = TRUE )), dim = c(self$d, self$k, n))
       Wg <- private$X*weight_array
-      private$O <- colSums(Wg) #/ colSums(private$X)
+      private$O <- colSums(Wg)
       private$O[is.nan(private$O)] <- 0
     },
     generate_rewards = function(n) {

@@ -176,7 +176,7 @@
   title      = {Streamingbandit: {A} Platform for Developing Adaptive Persuasive Systems},
   journal    = {JSS},
   year       = {2016},
-  pdf        = {\:PDF\:PDF:pdf/\:PDF\:pdf/\:Snapshot//\:http///\://repository.ubn.ru.nl/bitstream/handle/2066/161901/161901.pdf//\://\;Fulltext//\:http///\://repository.ubn.ru.nl/bitstream/handle/2066/161901/161901.pdf//\:application/pdf/\:PDF\:PDF:PDF},
+  file       = {\:PDF\:PDF:/\:PDF/\:PDF\:pdf//\:PDF/\:pdf//\:Snapshot///\:http////\://repository.ubn.ru.nl/bitstream/handle/2066/161901/161901.pdf///\:///\;Fulltext///\:http////\://repository.ubn.ru.nl/bitstream/handle/2066/161901/161901.pdf///\:application/pdf//\:PDF/\:PDF\:PDF:PDF},
   publisher  = {Salzburg: Center for Human-Computer Interaction, Department of Computer Science, University of Salzburg},
   shorttitle = {Streamingbandit},
 }
@@ -221,9 +221,9 @@
   publisher = {ACM},
   abstract  = {Contextual bandit algorithms have become popular for online recommendation systems such as Digg, Yahoo! Buzz, and news recommendation in general. Offline evaluation of the effectiveness of new algorithms in these applications is critical for protecting online user experiences but very challenging due to their partial-label nature. Common practice is to create a simulator which simulates the online environment for the problem at hand and then run an algorithm against this simulator. However, creating simulator itself is often difficult and modeling bias is usually unavoidably introduced. In this paper, we introduce a replay methodology for contextual bandit algorithm evaluation. Different from simulator-based approaches, our method is completely data-driven and very easy to adapt to different applications. More importantly, our method can provide provably unbiased evaluations. Our empirical results on a large-scale news article recommendation dataset collected from Yahoo! Front Page conform well with our theoretical results. Furthermore, comparisons between our offline replay and online bucket evaluation of several contextual bandit algorithms show accuracy and effectiveness of our offline evaluation method.},
   doi       = {10.1145/1935826.1935878},
+  file      = {pdf\:PDF:pdf\:ACM Full Text PDF/\:http//\://dl.acm.org/ft_gateway.cfm?id=1935878&type=pdf/\:application/pdf\:PDF:PDF},
   isbn      = {9781450304931},
   keywords  = {benchmark dataset, contextual bandit, multi-armed bandit, offline evaluation, recommendation},
-  pdf       = {pdf:ACM Full Text PDF\:http/\://dl.acm.org/ft_gateway.cfm?id=1935878&type=pdf\:application/pdf:PDF},
   urldate   = {2018-08-01TZ},
 }
 
@@ -283,8 +283,8 @@
   abstract      = {The multi-armed bandit problem is a popular model for studying exploration/exploitation trade-off in sequential decision problems. Many algorithms are now available for this well-studied problem. One of the earliest algorithms, given by W. R. Thompson, dates back to 1933. This algorithm, referred to as Thompson Sampling, is a natural Bayesian algorithm. The basic idea is to choose an arm to play according to its probability of being the best arm. Thompson Sampling algorithm has experimentally been shown to be close to optimal. In addition, it is efficient to implement and exhibits several desirable properties such as small regret for delayed feedback. However, theoretical understanding of this algorithm was quite limited. In this paper, for the first time, we show that Thompson Sampling algorithm achieves logarithmic expected regret for the multi-armed bandit problem. More precisely, for the two-armed bandit problem, the expected regret in time $T$ is $O(\frac{\ln T}{\Delta} + \frac{1}{\Delta^3})$. And, for the $N$-armed bandit problem, the expected regret in time $T$ is $O([(\sum_{i=2}^N \frac{1}{\Delta_i^2})^2] \ln T)$. Our bounds are optimal but for the dependence on $\Delta_i$ and the constant factors in big-Oh.},
   archiveprefix = {arXiv},
   eprint        = {http://arxiv.org/abs/1111.1797v3},
+  file          = {\:PDF\:PDF:1111.1797v3/\:PDF\:/\:http//\://arxiv.org/pdf/1111.1797v3/\:PDF\:PDF:PDF},
   keywords      = {cs.LG, cs.DS, 68W40, 68Q25, F.2.0},
-  pdf           = {1111.1797v3\:PDF:\:http/\://arxiv.org/pdf/1111.1797v3\:PDF:PDF},
   primaryclass  = {cs.LG},
 }
 
@@ -297,8 +297,8 @@
   abstract      = {Thompson sampling provides a solution to bandit problems in which new observations are allocated to arms with the posterior probability that an arm is optimal. While sometimes easy to implement and asymptotically optimal, Thompson sampling can be computationally demanding in large scale bandit problems, and its performance is dependent on the model fit to the observed data. We introduce bootstrap Thompson sampling (BTS), a heuristic method for solving bandit problems which modifies Thompson sampling by replacing the posterior distribution used in Thompson sampling by a bootstrap distribution. We first explain BTS and show that the performance of BTS is competitive to Thompson sampling in the well-studied Bernoulli bandit case. Subsequently, we detail why BTS using the online bootstrap is more scalable than regular Thompson sampling, and we show through simulation that BTS is more robust to a misspecified error distribution. BTS is an appealing modification of Thompson sampling, especially when samples from the posterior are otherwise not available or are costly.},
   archiveprefix = {arXiv},
   eprint        = {http://arxiv.org/abs/1410.4009v1},
+  file          = {\:PDF\:PDF:1410.4009v1/\:PDF\:/\:http//\://arxiv.org/pdf/1410.4009v1/\:PDF\:PDF:PDF},
   keywords      = {cs.LG, stat.CO, stat.ML, 68W27, 62L05, G.3; I.2.6},
-  pdf           = {1410.4009v1\:PDF:\:http/\://arxiv.org/pdf/1410.4009v1\:PDF:PDF},
   primaryclass  = {cs.LG},
 }
 
@@ -311,8 +311,8 @@
   abstract      = {Thompson Sampling is one of the oldest heuristics for multi-armed bandit problems. It is a randomized algorithm based on Bayesian ideas, and has recently generated significant interest after several studies demonstrated it to have better empirical performance compared to the state-of-the-art methods. However, many questions regarding its theoretical performance remained open. In this paper, we design and analyze a generalization of Thompson Sampling algorithm for the stochastic contextual multi-armed bandit problem with linear payoff functions, when the contexts are provided by an adaptive adversary. This is among the most important and widely studied versions of the contextual bandits problem. We provide the first theoretical guarantees for the contextual version of Thompson Sampling. We prove a high probability regret bound of $\tilde{O}(d^{3/2}\sqrt{T})$ (or $\tilde{O}(d\sqrt{T \log(N)})$), which is the best regret bound achieved by any computationally efficient algorithm available for this problem in the current literature, and is within a factor of $\sqrt{d}$ (or $\sqrt{\log(N)}$) of the information-theoretic lower bound for this problem.},
   archiveprefix = {arXiv},
   eprint        = {http://arxiv.org/abs/1209.3352v4},
+  file          = {\:PDF\:PDF:1209.3352v4/\:PDF\:/\:http//\://arxiv.org/pdf/1209.3352v4/\:PDF\:PDF:PDF},
   keywords      = {cs.LG, cs.DS, stat.ML, 68W40, 68Q25, F.2.0},
-  pdf           = {1209.3352v4\:PDF:\:http/\://arxiv.org/pdf/1209.3352v4\:PDF:PDF},
   primaryclass  = {cs.LG},
 }
 
@@ -326,8 +326,8 @@
   month     = mar,
   issn      = {1532-4435},
   abstract  = {We show how a standard tool from statistics --- namely confidence bounds --- can be used to elegantly deal with situations which exhibit an exploitation-exploration trade-off. Our technique for designing and analyzing algorithms for such situations is general and can be applied when an algorithm has to make exploitation-versus-exploration decisions based on uncertain information provided by a random process. We apply our technique to two models with such an exploitation-exploration trade-off. For the adversarial bandit problem with shifting our new algorithm suffers only O((ST)1/2) regret with high probability over T trials with S shifts. Such a regret bound was previously known only in expectation. The second model we consider is associative reinforcement learning with linear value functions. For this model our technique improves the regret from O(T3/4) to O(T1/2).},
+  file      = {pdf\:PDF:pdf\:ACM Full Text PDF/\:http//\://dl.acm.org/ft_gateway.cfm?id=944941&type=pdf/\:application/pdf\:PDF:PDF},
   keywords  = {bandit problem, exploitation-exploration, linear value function, online Learning, reinforcement learning},
-  pdf       = {pdf:ACM Full Text PDF\:http/\://dl.acm.org/ft_gateway.cfm?id=944941&type=pdf\:application/pdf:PDF},
   publisher = {JMLR.org},
   url       = {http://dl.acm.org/citation.cfm?id=944919.944941},
   urldate   = {2018-08-03TZ},
@@ -340,8 +340,8 @@
   year     = {2016},
   abstract = {Multi-armed bandit problems are receiving a great deal of attention because they adequately formalize the exploration-exploitation trade-offs arising in several industrially relevant applications, such as online advertisement and, more generally, recommendation systems. In many cases, however, these applications have a strong social component, whose integration in the bandit algorithms could lead to a dramatic performance increase. For instance, we may want to serve content to a group of users by taking advantage of an underlying network of social relationships among them. The purpose of this thesis is to introduce novel and principled algorithmic approaches to the solution of such networked bandit problems. Starting from a global (Laplacian-based) strategy which allocates a bandit algorithm to each network node (user), and allows it to share signals (contexts and payoffs) with the neghboring nodes, our goal is to derive and experimentally test more scalable approaches based on different ways of clustering the graph nodes. More importantly, we shall investigate the case when the graph structure is not given ahead of time, and has to be inferred based on past user behavior. A general difficulty arising in such practical scenarios is that data sequences are typically nonstationary, implying that traditional statistical inference methods should be used cautiously, possibly replacing them with by more robust nonstochastic (e.g., game-theoretic) inference methods.
 In this thesis, we will firstly introduce the centralized clustering bandits. Then, we propose the corresponding solution in decentralized scenario. After that, we explain the generic collaborative clustering bandits. Finally, we extend and showcase the state-of-the-art clustering bandits that we developed in the quantification problem.},
+  file     = {html\:PDF:html\:Full Text PDF/\:http//\://insubriaspace.cineca.it/bitstream/10277/729/1/PhD_Thesis_Lishuai_completa.pdf/\:application/pdf/\;Snapshot/\:http//\://insubriaspace.cineca.it/handle/10277/729/\:text/html\:PDF:PDF},
   language = {eng},
-  pdf      = {html:Full Text PDF\:http/\://insubriaspace.cineca.it/bitstream/10277/729/1/PhD_Thesis_Lishuai_completa.pdf\:application/pdf\;Snapshot\:http/\://insubriaspace.cineca.it/handle/10277/729\:text/html:PDF},
   url      = {http://insubriaspace.cineca.it/handle/10277/729},
   urldate  = {CURRENT\_TIMESTAMP},
 }
@@ -354,11 +354,11 @@ In this thesis, we will firstly introduce the centralized clustering bandits. Th
   pages      = {1097--1104},
   publisher  = {ACM},
   doi        = {10.1145/1557019.1557138},
-  pdf        = {pdf\:PDF:pdf\:Snapshot/\:https//\://dl.acm.org/citation.cfm?id=1557138/\:/\;Fulltext/\:http//\://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.297.3657&rep=rep1&type=pdf/\:application/pdf\:PDF:PDF},
+  file       = {\:PDF\:PDF:pdf/\:PDF\:pdf/\:Snapshot//\:https///\://dl.acm.org/citation.cfm?id=1557138//\://\;Fulltext//\:http///\://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.297.3657&rep=rep1&type=pdf//\:application/pdf/\:PDF\:PDF:PDF},
   shorttitle = {A case study of behavior-driven conjoint analysis on {Yahoo}!},
 }
 
-@Article{DBLP:journals/debu/IdreosGNMMK12,
+@Article{IdreosGNMMK12,
   author   = {Stratos Idreos and Fabian Groffen and Niels Nes and Stefan Manegold and K. Sjoerd Mullender and Martin L. Kersten},
   title    = {Monetdb: Two Decades of Research in Column-oriented Database Architectures},
   journal  = {IEEE Data Engineering Bulletin},
@@ -377,7 +377,7 @@ In this thesis, we will firstly introduce the centralized clustering bandits. Th
   pages     = {437--448},
   publisher = {Springer},
   doi       = {10.1007/11564096_42},
-  pdf       = {pdf:Snapshot\:https/\://link.springer.com/chapter/10.1007/11564096_42\:\;Fulltext\:http/\://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.109.4518&rep=rep1&type=pdf\:application/pdf:PDF},
+  file      = {pdf\:PDF:pdf\:Snapshot/\:https//\://link.springer.com/chapter/10.1007/11564096_42/\:/\;Fulltext/\:http//\://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.109.4518&rep=rep1&type=pdf/\:application/pdf\:PDF:PDF},
 }
 
 @Article{Brezzi2002,
@@ -389,7 +389,7 @@ In this thesis, we will firstly introduce the centralized clustering bandits. Th
   number    = {1},
   pages     = {87--108},
   doi       = {10.1016/s0165-1889(01)00028-8},
-  pdf       = {pdf:Snapshot\:https\\\://www.sciencedirect.com/science/article/pii/S0165188901000288\:\;Fulltext\:https\\\://pdfs.semanticscholar.org/42e2/708e1d6c73ecef5ddc4fd7935a4f055de774.pdf\:application/pdf:PDF},
+  file      = {pdf\:PDF:pdf\:Snapshot\\\:https\\\\\\\://www.sciencedirect.com/science/article/pii/S0165188901000288\\\:\\\;Fulltext\\\:https\\\\\\\://pdfs.semanticscholar.org/42e2/708e1d6c73ecef5ddc4fd7935a4f055de774.pdf\\\:application/pdf\:PDF:PDF},
   publisher = {Elsevier},
 }
 
@@ -401,7 +401,7 @@ In this thesis, we will firstly introduce the centralized clustering bandits. Th
   volume     = {2},
   pages      = {16082},
   doi        = {10.1057/palcomms.2016.82},
-  pdf        = {html:Snapshot\:https\\\://www.nature.com/articles/palcomms201682\:\;Fulltext\:https\\\://www.nature.com/articles/palcomms201682\:text/html:PDF},
+  file       = {html\:PDF:html\:Snapshot\\\:https\\\\\\\://www.nature.com/articles/palcomms201682\\\:\\\;Fulltext\\\:https\\\\\\\://www.nature.com/articles/palcomms201682\\\:text/html\:PDF:PDF},
   publisher  = {Nature Publishing Group},
   shorttitle = {Tracking the decoy},
 }
@@ -414,7 +414,7 @@ In this thesis, we will firstly introduce the centralized clustering bandits. Th
   volume     = {517},
   number     = {7532},
   pages      = {109},
-  pdf        = {pdf:Snapshot\:https\\\://www.nature.com/articles/517109a\:\;Fulltext\:http\\\://www.startfactor.pt/uploads/3/8/5/0/38505347/rinnature.pdf\:application/pdf:PDF},
+  file       = {pdf\:PDF:pdf\:Snapshot\\\:https\\\\\\\://www.nature.com/articles/517109a\\\:\\\;Fulltext\\\:http\\\\\\\://www.startfactor.pt/uploads/3/8/5/0/38505347/rinnature.pdf\\\:application/pdf\:PDF:PDF},
   shorttitle = {Programming tools},
 }
 
@@ -424,9 +424,9 @@ In this thesis, we will firstly introduce the centralized clustering bandits. Th
   month    = apr,
   year     = {2012},
   abstract = {by Robert A. Muenchen Abstract This article, formerly known as The Popularity of Data Analysis Software, presents various ways of measuring the popularity or market share of software for advanced a{\ldots}},
+  file     = {html\:PDF:html\:Snapshot/\:http//\://r4stats.com/articles/popularity//\:text/html\:PDF:PDF},
   journal  = {r4stats.com},
   language = {en},
-  pdf      = {html:Snapshot\:http/\://r4stats.com/articles/popularity/\:text/html:PDF},
   url      = {http://r4stats.com/articles/popularity/},
   urldate  = {CURRENT\_TIMESTAMP},
 }
@@ -448,7 +448,7 @@ In this thesis, we will firstly introduce the centralized clustering bandits. Th
   number    = {5964},
   pages     = {415--416},
   doi       = {10.1126/science.1179653},
-  pdf       = {html:Snapshot\:http\\\://science.sciencemag.org/content/327/5964/415.short\:\;Fulltext\:https\\\://www.ncbi.nlm.nih.gov/pmc/articles/PMC3878063/\:text/html:PDF},
+  file      = {html\:PDF:html\:Snapshot\\\:http\\\\\\\://science.sciencemag.org/content/327/5964/415.short\\\:\\\;Fulltext\\\:https\\\\\\\://www.ncbi.nlm.nih.gov/pmc/articles/PMC3878063/\\\:text/html\:PDF:PDF},
   publisher = {American Association for the Advancement of Science},
 }
 
@@ -457,7 +457,7 @@ In this thesis, we will firstly introduce the centralized clustering bandits. Th
   publisher = {Chapman and Hall/CRC},
   year      = {2016},
   author    = {Gandrud, Christopher},
-  pdf       = {9781498715386\::Snapshot\:https\\\://www.taylorfrancis.com/books/9781498715386\::PDF},
+  file      = {\:\:PDF:9781498715386\\\:\:Snapshot\\\:https\\\\\\\://www.taylorfrancis.com/books/9781498715386\\\:\:PDF:PDF},
 }
 
 @InCollection{Buckheit1995,
@@ -468,7 +468,7 @@ In this thesis, we will firstly introduce the centralized clustering bandits. Th
   year      = {1995},
   pages     = {55--81},
   doi       = {10.1007/978-1-4612-2544-7_5},
-  pdf       = {pdf:Snapshot\:https/\://link.springer.com/10.1007/978-1-4612-2544-7_5\:\;Fulltext\:https/\://statistics.stanford.edu/sites/default/files/EFS%20NSF%20474.pdf\:application/pdf:PDF},
+  file      = {pdf\:PDF:pdf\:Snapshot/\:https//\://link.springer.com/10.1007/978-1-4612-2544-7_5/\:/\;Fulltext/\:https//\://statistics.stanford.edu/sites/default/files/EFS%20NSF%20474.pdf/\:application/pdf\:PDF:PDF},
 }
 
 @Article{Stodden2013,
@@ -480,7 +480,7 @@ In this thesis, we will firstly introduce the centralized clustering bandits. Th
   number     = {6},
   pages      = {e67111},
   doi        = {10.1371/journal.pone.0067111},
-  pdf        = {html:Snapshot\:http/\://journals.plos.org/plosone/article?id=10.1371/journal.pone.0067111\:\;Fulltext\:http/\://journals.plos.org/plosone/article?id=10.1371/journal.pone.0067111\:text/html:PDF},
+  file       = {html\:PDF:html\:Snapshot/\:http//\://journals.plos.org/plosone/article?id=10.1371/journal.pone.0067111/\:/\;Fulltext/\:http//\://journals.plos.org/plosone/article?id=10.1371/journal.pone.0067111/\:text/html\:PDF:PDF},
   publisher  = {Public Library of Science},
   shorttitle = {Toward reproducible computational research},
 }
@@ -498,7 +498,7 @@ In this thesis, we will firstly introduce the centralized clustering bandits. Th
   title   = {Doubly Robust Policy Evaluation and Learning},
   journal = {arXiv preprint arXiv:1103.4601},
   year    = {2011},
-  pdf     = {pdf:Snapshot\:https/\://arxiv.org/abs/1103.4601\:\;Fulltext\:https/\://arxiv.org/pdf/1103.4601\:application/pdf:PDF},
+  file    = {pdf\:PDF:pdf\:Snapshot/\:https//\://arxiv.org/abs/1103.4601/\:/\;Fulltext/\:https//\://arxiv.org/pdf/1103.4601/\:application/pdf\:PDF:PDF},
 }
 
 @Book{Zheng2016,
@@ -507,7 +507,7 @@ In this thesis, we will firstly introduce the centralized clustering bandits. Th
   year      = {2016},
   author    = {Zheng, Rong and Hua, Cunqing},
   doi       = {10.1007/978-3-319-50502-2},
-  pdf       = {978-3-319-50502-2.pdf\::Snapshot\:https/\://link.springer.com/content/pdf/10.1007/978-3-319-50502-2.pdf\::PDF},
+  file      = {\:\:PDF:978-3-319-50502-2.pdf/\:\:Snapshot/\:https//\://link.springer.com/content/pdf/10.1007/978-3-319-50502-2.pdf/\:\:PDF:PDF},
 }
 
 @Article{Agrawal1995,
@@ -519,7 +519,7 @@ In this thesis, we will firstly introduce the centralized clustering bandits. Th
   number    = {6},
   pages     = {1926--1951},
   doi       = {10.1137/s0363012992237273},
-  pdf       = {S0363012992237273\::Snapshot\:https/\://epubs.siam.org/doi/abs/10.1137/S0363012992237273\::PDF},
+  file      = {\:\:PDF:S0363012992237273/\:\:Snapshot/\:https//\://epubs.siam.org/doi/abs/10.1137/S0363012992237273/\:\:PDF:PDF},
   publisher = {SIAM},
 }
 
@@ -531,15 +531,15 @@ In this thesis, we will firstly introduce the centralized clustering bandits. Th
   year      = {2016},
   pages     = {9--25},
   doi       = {10.1007/978-3-319-50502-2_2},
-  pdf       = {978-3-319-50502-2_2\::Snapshot\:https/\://link.springer.com/chapter/10.1007/978-3-319-50502-2_2\::PDF},
+  file      = {\:\:PDF:978-3-319-50502-2_2/\:\:Snapshot/\:https//\://link.springer.com/chapter/10.1007/978-3-319-50502-2_2/\:\:PDF:PDF},
 }
 
 @Article{Kuleshov2014,
   author  = {Kuleshov, Volodymyr and Precup, Doina},
-  title   = {Algorithms for ulti-armed bandit problems},
+  title   = {Algorithms for Multi-Armed Bandit Problems},
   journal = {arXiv preprint arXiv:1402.6028},
   year    = {2014},
-  pdf     = {Snapshot:https\://arxiv.org/abs/1402.6028:;Fulltext:https\://arxiv.org/pdf/1402.6028:application/pdf},
+  file    = {pdf:Snapshot\:https/\://arxiv.org/abs/1402.6028\:\;Fulltext\:https/\://arxiv.org/pdf/1402.6028\:application/pdf:PDF},
 }
 
 @InProceedings{Langford2008a,
@@ -563,7 +563,7 @@ In this thesis, we will firstly introduce the centralized clustering bandits. Th
 
 @InProceedings{Strehl2006a,
   author    = {Strehl, Alexander L. and Li, Lihong and Wiewiora, Eric and Langford, John and Littman, Michael L.},
-  title     = {{PAC} model-free reinforcement learning},
+  title     = {{PAC} Model-Free Reinforcement Learning},
   booktitle = {Proceedings of the 23rd international conference on {Machine} learning},
   year      = {2006},
   pages     = {881--888},
@@ -580,23 +580,106 @@ In this thesis, we will firstly introduce the centralized clustering bandits. Th
 }
 
 @InProceedings{Mandel2016,
-  author        = {Mandel, Travis and Liu, Yun-En and Brunskill, Emma and Popovic, Zoran},
-  title         = {Offline {Evaluation} of {Online} {Reinforcement} {Learning} {Algorithms}.},
-  booktitle     = {{AAAI}},
-  year          = {2016},
-  pages         = {1926--1933},
-  __markedentry = {[robin:]},
-  file          = {Snapshot:http\://www.aaai.org/ocs/index.php/AAAI/AAAI16/paper/download/12475/11824:;Fulltext:http\://www.aaai.org/ocs/index.php/AAAI/AAAI16/paper/download/12475/11824:application/pdf},
+  author    = {Mandel, Travis and Liu, Yun-En and Brunskill, Emma and Popovic, Zoran},
+  title     = {Offline {Evaluation} of {Online} {Reinforcement} {Learning} {Algorithms}.},
+  booktitle = {{AAAI}},
+  year      = {2016},
+  pages     = {1926--1933},
+  file      = {Snapshot:http\://www.aaai.org/ocs/index.php/AAAI/AAAI16/paper/download/12475/11824:;Fulltext:http\://www.aaai.org/ocs/index.php/AAAI/AAAI16/paper/download/12475/11824:application/pdf},
 }
 
 @InProceedings{Strehl2010,
-  author        = {Strehl, Alex and Langford, John and Li, Lihong and Kakade, Sham M.},
-  title         = {Learning from logged implicit exploration data},
-  booktitle     = {Advances in {Neural} {Information} {Processing} {Systems}},
-  year          = {2010},
-  pages         = {2217--2225},
+  author    = {Strehl, Alex and Langford, John and Li, Lihong and Kakade, Sham M.},
+  title     = {Learning From Logged Implicit Exploration Data},
+  booktitle = {Advances in {Neural} {Information} {Processing} {Systems}},
+  year      = {2010},
+  pages     = {2217--2225},
+  file      = {Snapshot:http\://papers.nips.cc/paper/3977-learning-from-logged-implicit-exploration-data:;Fulltext:http\://papers.nips.cc/paper/3977-learning-from-logged-implicit-exploration-data.pdf:application/pdf},
+}
+
+@Book{Wirfs-Brock1990,
+  title     = {Designing Object-Oriented Software},
+  publisher = {CUMINCAD},
+  year      = {1990},
+  author    = {Wirfs-Brock, Rebecca and Wilkerson, Brian and Wiener, Lauren},
+  file      = {Snapshot:http\://papers.cumincad.org/cgi-bin/works/Show?81d1:},
+}
+
+@Book{Rumbaugh2004,
+  title     = {Unified Modeling Language Reference Manual},
+  publisher = {Pearson Higher Education},
+  year      = {2004},
+  author    = {Rumbaugh, James and Jacobson, Ivar and Booch, Grady},
+  file      = {Snapshot:https\://dl.acm.org/citation.cfm?id=993859:},
+}
+
+@Article{Kirkpatrick1983,
+  author    = {Kirkpatrick, Scott and Gelatt, C. Daniel and Vecchi, Mario P.},
+  title     = {Optimization by simulated annealing},
+  journal   = {science},
+  year      = {1983},
+  volume    = {220},
+  number    = {4598},
+  pages     = {671--680},
+  file      = {Snapshot:http\://science.sciencemag.org/content/220/4598/671.short:;Fulltext:http\://sci2s.ugr.es/sites/default/files/files/Teaching/GraduatesCourses/Metaheuristicas/Bibliography/1983-Science-Kirkpatrick-sim_anneal.pdf:application/pdf},
+  publisher = {American Association for the Advancement of Science},
+}
+
+@InProceedings{Cesa-Bianchi1998,
+  author    = {Cesa-Bianchi, Nicolo and Fischer, Paul},
+  title     = {Finite-{Time} {Regret} {Bounds} for the {Multiarmed} {Bandit} {Problem}.},
+  booktitle = {{ICML}},
+  year      = {1998},
+  pages     = {100--108},
+  publisher = {Citeseer},
+  file      = {Snapshot:http\://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.57.4710&rep=rep1&type=pdf:;Fulltext:http\://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.57.4710&rep=rep1&type=pdf:application/pdf},
+}
+
+@Article{Presman1991,
+  author    = {Presman, Ernst L.},
+  title     = {Poisson Version of the Two-Armed Bandit Problem with Discounting},
+  journal   = {Theory of Probability \& Its Applications},
+  year      = {1991},
+  volume    = {35},
+  number    = {2},
+  pages     = {307--317},
+  file      = {Snapshot:https\://epubs.siam.org/doi/pdf/10.1137/1135038:},
+  publisher = {SIAM},
+}
+
+@Article{Kaptein2018,
+  author    = {Kaptein, Maurits and McFarland, Richard and Parvinen, Petri},
+  title     = {Automated adaptive selling},
+  journal   = {European Journal of Marketing},
+  year      = {2018},
+  volume    = {52},
+  number    = {5/6},
+  pages     = {1037--1059},
+  file      = {Snapshot:https\://www.emeraldinsight.com/doi/abs/10.1108/EJM-08-2016-0485:},
+  publisher = {Emerald Publishing Limited},
+}
+
+@InProceedings{Shen2015,
+  author        = {Shen, Weiwei and Wang, Jun and Jiang, Yu-Gang and Zha, Hongyuan},
+  title         = {Portfolio {Choices} with {Orthogonal} {Bandit} {Learning}.},
+  booktitle     = {{IJCAI}},
+  year          = {2015},
+  volume        = {15},
+  pages         = {974--980},
+  __markedentry = {[robin:]},
+  file          = {Snapshot:http\://www.aaai.org/ocs/index.php/IJCAI/IJCAI15/paper/download/10972/10798:;Fulltext:http\://www.aaai.org/ocs/index.php/IJCAI/IJCAI15/paper/download/10972/10798:application/pdf},
+}
+
+@InProceedings{Rabbi2015,
+  author        = {Rabbi, Mashfiqui and Aung, Min Hane and Zhang, Mi and Choudhury, Tanzeem},
+  title         = {{MyBehavior}: utomatic personalized health feedback from user behaviors and preferences using smartphones},
+  booktitle     = {Proceedings of the 2015 {ACM} {International} {Joint} {Conference} on {Pervasive} and {Ubiquitous} {Computing}},
+  year          = {2015},
+  pages         = {707--718},
+  publisher     = {ACM},
   __markedentry = {[robin:6]},
-  file          = {Snapshot:http\://papers.nips.cc/paper/3977-learning-from-logged-implicit-exploration-data:;Fulltext:http\://papers.nips.cc/paper/3977-learning-from-logged-implicit-exploration-data.pdf:application/pdf},
+  file          = {Snapshot:https\://dl.acm.org/citation.cfm?id=2805840:;Fulltext:https\://www.researchgate.net/profile/Mi_Zhang2/publication/310769788_MyBehavior_automatic_personalized_health_feedback_from_user_behaviors_and_preferences_using_smartphones/links/597d5b06aca272d56813210d/MyBehavior-automatic-personalized-health-feedback-from-user-behaviors-and-preferences-using-smartphones.pdf:application/pdf},
+  shorttitle    = {{MyBehavior}},
 }
 
 @Comment{jabref-meta: databaseType:bibtex;}

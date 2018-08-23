@@ -10,7 +10,7 @@
 \alias{get_data_table}
 \alias{set_data_frame}
 \alias{get_data_frame}
-\alias{load_data_table}
+\alias{load}
 \alias{cumulative}
 \alias{save}
 \title{History}
@@ -61,11 +61,11 @@ Resets a \code{History} instance to its original initialisation values.
                      theta_value = NA)}}{
 Saves one row of simulation data. Is generally not called directly, but from a {Simulator} instance.
 }
-\item{\code{save_data_table(filename = NA)}}{
+\item{\code{save(filename = NA)}}{
 Writes the \code{History} log file in its default data.table format,
 with \code{filename} as the name of the file which the data is to be written to.
 }
-\item{\code{load_data_table = function(filename, interval = 0)}}{
+\item{\code{load = function(filename, interval = 0)}}{
 Reads a \code{History} log file in its default \code{data.table} format,
 with \code{filename} as the name of the file which the data are to be read from.
 If \code{interval} is larger than 0, every \code{interval} of data is read instead of the
