@@ -33,8 +33,7 @@ LiSamplingOfflineBandit <- R6::R6Class(
       reward_at_index  <- as.double(private$S$reward[[index]])
       if (private$S$choice[[index]] == action$choice) {
         list(
-          reward = reward_at_index,
-          if (!is.null(optimal_at_index)) optimal_reward_value <- optimal_at_index
+          reward = reward_at_index
         )
       } else {
         NULL
@@ -43,15 +42,19 @@ LiSamplingOfflineBandit <- R6::R6Class(
   )
 )
 
-url <- "https://raw.githubusercontent.com/Nth-iteration-labs/contextual_data/"
-url <- paste0(url,"master/data_persuasion_api/persuasion_api_daypart.csv")
-website_data   <- getURL(url)
-website_data   <- setDT(read.csv(textConnection(website_data)))
+#url <- "https://raw.githubusercontent.com/Nth-iteration-labs/contextual_data/"
+#url <- paste0(url,"master/data_persuasion_api/persuasion_api_daypart.csv")
+#website_data   <- getURL(setDT(read.csv(textConnection(website_data))))
+
+website_data   <- setDT(read.csv("persuasion_api_daypart-2.csv"))
 
 horizon        <- nrow(website_data)
 simulations    <- 10L
 bandit         <- LiSamplingOfflineBandit$new(website_data, k = 4, d = 1)
-agents         <- list(Agent$new(ThompsonSamplingPolicy$new(1.0, 1.0), bandit))
+agents         <- list(#Agent$new(ThompsonSamplingPolicy$new(1.0, 1.0), bandit),
+                       Agent$new(LinUCBDisjointOptimizedPolicy$new(0.05), bandit)
+                       #Agent$new(ContextualThompsonSamplingPolicy$new(delta=0.5, R=0.01, epsilon=0.5), bandit)
+                       )
 
 history        <- Simulator$new(agents, horizon, simulations, reindex = TRUE)$run()
 

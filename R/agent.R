@@ -26,7 +26,12 @@ Agent <- R6::R6Class(
       self$reset()
     },
     reset = function() {
-      if(!is.null(self$bandit$d) && is.null(self$bandit$unique)) self$bandit$unique <- c(1:self$bandit$d)
+      if(!is.null(self$bandit$d) && is.null(self$bandit$unique)) {
+        self$bandit$unique <- c(1:self$bandit$d)
+      }
+      if(!is.null(self$bandit$d) && is.null(self$bandit$shared)) {
+        self$bandit$shared <- c(1:self$bandit$d)
+      }
       context_initial_params        <- list ()
       context_initial_params$d      <- self$bandit$d
       context_initial_params$k      <- self$bandit$k
@@ -43,6 +48,7 @@ Agent <- R6::R6Class(
       agent_t  <<- agent_t + 1L
       context   <- bandit$get_context(agent_t)
       if(!is.null(context$d) && is.null(context$unique)) context$unique <- c(1:context$d)
+      if(!is.null(context$d) && is.null(context$shared)) context$shared <- c(1:context$d)
       action    <- policy$get_action (policy_t, context)
       reward    <- bandit$get_reward (agent_t, context, action)
       if (is.null(reward)) {

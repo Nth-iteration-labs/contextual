@@ -1,12 +1,12 @@
 library(contextual)
 
 
-load_file_names         <- list("D:/results/Yahoo_T_4681992/Yahoo_T_4681992_sparse_0.RData",
-                                "D:/results/Yahoo_T_4681992/Yahoo_T_4681992_sparse_0.7.RData",
-                                "D:/results/Yahoo_T_4681992/Yahoo_T_4681992_sparse_0.8.RData",
-                                "D:/results/Yahoo_T_4681992/Yahoo_T_4681992_sparse_0.9.RData",
-                                "D:/results/Yahoo_T_4681992/Yahoo_T_4681992_sparse_0.95.RData",
-                                "D:/results/Yahoo_T_4681992/Yahoo_T_4681992_sparse_0.99.RData")
+load_file_names         <- list("D:/results/Yahoo_T_4681992_2/Yahoo_T_4681992_sparse_0.RData",
+                                "D:/results/Yahoo_T_4681992_2/Yahoo_T_4681992_sparse_0.7.RData",
+                                "D:/results/Yahoo_T_4681992_2/Yahoo_T_4681992_sparse_0.8.RData",
+                                "D:/results/Yahoo_T_4681992_2/Yahoo_T_4681992_sparse_0.9.RData",
+                                "D:/results/Yahoo_T_4681992_2/Yahoo_T_4681992_sparse_0.95.RData",
+                                "D:/results/Yahoo_T_4681992_2/Yahoo_T_4681992_sparse_0.99.RData")
 
 history  <- History$new()
 

@@ -5,9 +5,9 @@ source("../dev.R")
 
 horizon            <- 100L
 simulations        <- 100L
-context_weights    <- matrix(  c( 0.4, 0.2, 0.4,
-                                  0.3, 0.4, 0.3,
-                                  0.1, 0.8, 0.1),  nrow = 3, ncol = 3, byrow = TRUE)
+context_weights    <- matrix(  c(0.4, 0.2, 0.4,
+                                 0.3, 0.4, 0.3,
+                                 0.1, 0.8, 0.1),  nrow = 3, ncol = 3, byrow = TRUE)
 
 bandit             <- SyntheticBandit$new(weights = context_weights, precaching = FALSE)
 

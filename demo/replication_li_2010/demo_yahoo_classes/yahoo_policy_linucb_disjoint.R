@@ -11,6 +11,7 @@ YahooLinUCBDisjointPolicy <- R6::R6Class(
     },
     set_parameters = function(context_params) {
       ul <- length(context_params$unique)
+
       self$theta_to_arms <- list( 'A' = diag(1,ul,ul), 'b' = rep(0,ul),
                                   'A_inv' = solve(diag(1,ul,ul)))
     },

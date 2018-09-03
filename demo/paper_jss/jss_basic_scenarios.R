@@ -27,7 +27,7 @@ plot(history, type = "cumulative", regret = FALSE, rate = TRUE, legend_position 
 
 #                                    +-----+----+----------->  arms:      three ads
 #                                    |     |    |
-click_probabilities <- matrix(  c(  0.2,  0.3, 0.1,     # -->  context 1: older
+click_probabilities <- matrix(  c(  0.2,  0.3, 0.1,     # -->  context 1: old
                                     0.6,  0.1, 0.1   ), # -->  context 2: young
 
                                   nrow = 2, ncol = 3, byrow = TRUE)

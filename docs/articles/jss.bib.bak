@@ -512,7 +512,7 @@ In this thesis, we will firstly introduce the centralized clustering bandits. Th
 
 @Article{Agrawal1995,
   author    = {Agrawal, Rajeev},
-  title     = {The Continuum-armed Bandit Problem},
+  title     = {The Continuum-Armed Bandit Problem},
   journal   = {SIAM journal on control and optimization},
   year      = {1995},
   volume    = {33},
@@ -525,7 +525,7 @@ In this thesis, we will firstly introduce the centralized clustering bandits. Th
 
 @InCollection{Zheng2016a,
   author    = {Zheng, Rong and Hua, Cunqing},
-  title     = {Stochastic {Multi}-armed {Bandit}},
+  title     = {Stochastic {Multi}-Armed {Bandit}},
   booktitle = {Sequential {Learning} and {Decision}-{Making} in {Wireless} {Resource} {Management}},
   publisher = {Springer},
   year      = {2016},
@@ -615,7 +615,7 @@ In this thesis, we will firstly introduce the centralized clustering bandits. Th
 
 @Article{Kirkpatrick1983,
   author    = {Kirkpatrick, Scott and Gelatt, C. Daniel and Vecchi, Mario P.},
-  title     = {Optimization by simulated annealing},
+  title     = {Optimization by Simulated Annealing},
   journal   = {science},
   year      = {1983},
   volume    = {220},
@@ -649,7 +649,7 @@ In this thesis, we will firstly introduce the centralized clustering bandits. Th
 
 @Article{Kaptein2018,
   author    = {Kaptein, Maurits and McFarland, Richard and Parvinen, Petri},
-  title     = {Automated adaptive selling},
+  title     = {Automated Adaptive Selling},
   journal   = {European Journal of Marketing},
   year      = {2018},
   volume    = {52},
@@ -660,26 +660,123 @@ In this thesis, we will firstly introduce the centralized clustering bandits. Th
 }
 
 @InProceedings{Shen2015,
-  author        = {Shen, Weiwei and Wang, Jun and Jiang, Yu-Gang and Zha, Hongyuan},
-  title         = {Portfolio {Choices} with {Orthogonal} {Bandit} {Learning}.},
-  booktitle     = {{IJCAI}},
-  year          = {2015},
-  volume        = {15},
-  pages         = {974--980},
-  __markedentry = {[robin:]},
-  file          = {Snapshot:http\://www.aaai.org/ocs/index.php/IJCAI/IJCAI15/paper/download/10972/10798:;Fulltext:http\://www.aaai.org/ocs/index.php/IJCAI/IJCAI15/paper/download/10972/10798:application/pdf},
+  author    = {Shen, Weiwei and Wang, Jun and Jiang, Yu-Gang and Zha, Hongyuan},
+  title     = {Portfolio {Choices} with {Orthogonal} {Bandit} {Learning}.},
+  booktitle = {{IJCAI}},
+  year      = {2015},
+  volume    = {15},
+  pages     = {974--980},
+  file      = {Snapshot:http\://www.aaai.org/ocs/index.php/IJCAI/IJCAI15/paper/download/10972/10798:;Fulltext:http\://www.aaai.org/ocs/index.php/IJCAI/IJCAI15/paper/download/10972/10798:application/pdf},
 }
 
 @InProceedings{Rabbi2015,
-  author        = {Rabbi, Mashfiqui and Aung, Min Hane and Zhang, Mi and Choudhury, Tanzeem},
-  title         = {{MyBehavior}: utomatic personalized health feedback from user behaviors and preferences using smartphones},
-  booktitle     = {Proceedings of the 2015 {ACM} {International} {Joint} {Conference} on {Pervasive} and {Ubiquitous} {Computing}},
-  year          = {2015},
-  pages         = {707--718},
-  publisher     = {ACM},
+  author     = {Rabbi, Mashfiqui and Aung, Min Hane and Zhang, Mi and Choudhury, Tanzeem},
+  title      = {{MyBehavior}: Automatic Personalized Health Feedback From User Behaviors and Preferences Using Smartphones},
+  booktitle  = {Proceedings of the 2015 {ACM} {International} {Joint} {Conference} on {Pervasive} and {Ubiquitous} {Computing}},
+  year       = {2015},
+  pages      = {707--718},
+  publisher  = {ACM},
+  file       = {Snapshot:https\://dl.acm.org/citation.cfm?id=2805840:;Fulltext:https\://www.researchgate.net/profile/Mi_Zhang2/publication/310769788_MyBehavior_automatic_personalized_health_feedback_from_user_behaviors_and_preferences_using_smartphones/links/597d5b06aca272d56813210d/MyBehavior-automatic-personalized-health-feedback-from-user-behaviors-and-preferences-using-smartphones.pdf:application/pdf},
+  shorttitle = {{MyBehavior}},
+}
+
+@InProceedings{Kohavi2007,
+  author     = {Kohavi, Ron and Henne, Randal M. and Sommerfield, Dan},
+  title      = {Practical Guide to Controlled Experiments on the Web},
+  booktitle  = {Proceedings of the 13th {ACM} {SIGKDD} international conference on {Knowledge} discovery and data mining},
+  year       = {2007},
+  pages      = {959--967},
+  publisher  = {ACM},
+  file       = {Snapshot:https\://dl.acm.org/citation.cfm?id=1281295:;Fulltext:http\://courses.cs.washington.edu/courses/cse454/15au/papers/p959-kohavi.pdf:application/pdf},
+  shorttitle = {Practical guide to controlled experiments on the web},
+}
+
+@Misc{BibEntry2018Aug2,
+  author = {Google},
+  title  = {Google Analytics},
+  month  = {Aug},
+  year   = {2018},
+  note   = {[Online; accessed 26. Aug. 2018]},
+  url    = {https://marketingplatform.google.com/about/analytics},
+}
+
+@Misc{BibEntry2018Aug3,
+  author = {Optimizely},
+  title  = {{Optimizely}},
+  month  = {Aug},
+  year   = {2018},
+  note   = {[Online; accessed 26. Aug. 2018]},
+  url    = {https://www.optimizely.com},
+}
+
+@Misc{BibEntry2018Aug1,
+  author  = {Mixpanel},
+  title   = {{Mixpanel}},
+  month   = {Aug},
+  year    = {2018},
+  note    = {[Online; accessed 26. Aug. 2018]},
+  journal = {Mixpanel},
+  url     = {https://mixpanel.com},
+}
+
+@Article{Agarwal2016,
+  author  = {Agarwal, Alekh and Bird, Sarah and Cozowicz, Markus and Hoang, Luong and Langford, John and Lee, Stephen and Li, Jiaji and Melamed, Dan and Oshri, Gal and Ribas, Oswaldo},
+  title   = {Making Contextual Decisions with Low Technical Debt},
+  journal = {arXiv preprint arXiv:1606.03966},
+  year    = {2016},
+  file    = {Snapshot:https\://arxiv.org/abs/1606.03966:;Fulltext:https\://arxiv.org/pdf/1606.03966:application/pdf},
+}
+
+@InProceedings{Hido2013,
+  author     = {Hido, Shohei and Tokui, Seiya and Oda, Satoshi},
+  title      = {Jubatus: {An} open source platform for distributed online machine learning},
+  booktitle  = {{NIPS} 2013 {Workshop} on {Big} {Learning}, {Lake} {Tahoe}},
+  year       = {2013},
+  file       = {Snapshot:https\://pdfs.semanticscholar.org/e081/165c4abd8fb773658db7e411384d6d02fb13.pdf:;Fulltext:https\://pdfs.semanticscholar.org/e081/165c4abd8fb773658db7e411384d6d02fb13.pdf:application/pdf},
+  shorttitle = {Jubatus},
+}
+
+@InProceedings{Abadi2016,
+  author        = {Abadi, Martín and Barham, Paul and Chen, Jianmin and Chen, Zhifeng and Davis, Andy and Dean, Jeffrey and Devin, Matthieu and Ghemawat, Sanjay and Irving, Geoffrey and Isard, Michael},
+  title         = {Tensorflow: A System for Large-Scale Machine Learning.},
+  booktitle     = {{OSDI}},
+  year          = {2016},
+  volume        = {16},
+  pages         = {265--283},
+  __markedentry = {[robin:]},
+  file          = {Snapshot:https\://www.usenix.org/system/files/conference/osdi16/osdi16-abadi.pdf:;Fulltext:https\://www.usenix.org/system/files/conference/osdi16/osdi16-abadi.pdf:application/pdf},
+  shorttitle    = {Tensorflow},
+}
+
+@Misc{2018,
+  author        = {Yelp},
+  title         = {{MOE}: {A} Global, Black Box Optimization Engine For Real World Metric Optimization},
+  month         = aug,
+  year          = {2018},
+  note          = {original-date: 2014-02-24T21:55:56Z},
   __markedentry = {[robin:6]},
-  file          = {Snapshot:https\://dl.acm.org/citation.cfm?id=2805840:;Fulltext:https\://www.researchgate.net/profile/Mi_Zhang2/publication/310769788_MyBehavior_automatic_personalized_health_feedback_from_user_behaviors_and_preferences_using_smartphones/links/597d5b06aca272d56813210d/MyBehavior-automatic-personalized-health-feedback-from-user-behaviors-and-preferences-using-smartphones.pdf:application/pdf},
-  shorttitle    = {{MyBehavior}},
+  shorttitle    = {{MOE}},
+  url           = {https://github.com/Yelp/MOE},
+  urldate       = {2018-08-26TZ},
+}
+
+@Misc{BibEntry2018AugA,
+  author  = {ABTasty},
+  title   = {AB Tasty},
+  month   = {Aug},
+  year    = {2018},
+  note    = {[Online; accessed 27. Aug. 2018]},
+  journal = {AB Tasty},
+  url     = {https://www.abtasty.com},
+}
+
+@Misc{BibEntry2018AugB,
+  author = {Adobe},
+  title  = {{Adobe Target}},
+  month  = {Aug},
+  year   = {2018},
+  note   = {[Online; accessed 27. Aug. 2018]},
+  url    = {https://www.adobe.com/marketing/target.html},
 }
 
 @Comment{jabref-meta: databaseType:bibtex;}

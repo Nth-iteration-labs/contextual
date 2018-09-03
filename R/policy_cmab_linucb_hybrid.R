@@ -13,6 +13,7 @@ LinUCBHybridPolicy <- R6::R6Class(
     set_parameters = function(context_params) {
       ul                 <- length(context_params$unique)
       sl                 <- length(context_params$unique) * length(context_params$shared)
+
       self$theta         <- list( 'A0' = diag(1,sl,sl), 'A0_inv' = diag(1,sl,sl),
                                   'b0' = rep(0,sl),'z' = matrix(0,ul,ul), 'x' = rep(0,ul))
       self$theta_to_arms <- list( 'A' = diag(1,ul,ul), 'A_inv' = diag(1,ul,ul),
@@ -42,16 +43,23 @@ LinUCBHybridPolicy <- R6::R6Class(
 
         theta_hat  <- A_inv %*% (b - B %*% beta_hat)
 
+
+
         sd <- sqrt(  (t(z) %*% A0_inv %*% z) -
                        2*(t(z) %*% A0_inv %*% t(B) %*% A_inv %*% x) +
                        (t(x) %*% A_inv %*% x) +
                        (t(x) %*% A_inv %*% B %*% A0_inv %*% t(B) %*% A_inv %*% x))
 
+
+
         mean <- (t(z) %*% beta_hat)  +  (t(x) %*% theta_hat)
+
 
 
         expected_rewards[arm] <- mean + self$alpha * sd
       }
+
+
 
       ################## choose arm with highest expected reward #######################
 

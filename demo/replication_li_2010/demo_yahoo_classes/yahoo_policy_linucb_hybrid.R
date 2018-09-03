@@ -17,7 +17,7 @@ YahooLinUCBHybridPolicy <- R6::R6Class(
       self$theta         <- list( 'A0' = diag(1,sl,sl), 'A0_inv' = diag(1,sl,sl),
                                   'b0' = rep(0,sl),'z' = matrix(0,ul,ul), 'x' = rep(0,ul))
       self$theta_to_arms <- list( 'A' = diag(1,ul,ul), 'A_inv' = diag(1,ul,ul),
-                                  'B' = matrix(0,ul,sl), 'b' = rep(0,ul))
+                                  'B' = matrix(0,ul,sl), 'b' = rep(0,ul) )
     },
     get_action = function(t, context) {
 
@@ -36,8 +36,8 @@ YahooLinUCBHybridPolicy <- R6::R6Class(
         B                <- self$theta$B[[local_arms[arm]]]
         b                <- self$theta$b[[local_arms[arm]]]
 
-        x                <- context$X[context$unique,arm]
-        z                <- matrix(as.vector(outer(x,context$X[context$shared,arm])))
+        x                <- c(context$X[context$unique,arm])
+        z                <- matrix(as.vector(outer(as.vector(context$X[context$unique,arm]),context$X[context$shared,arm])))
 
         ################## compute expected reward per arm #############################
 
@@ -74,7 +74,7 @@ YahooLinUCBHybridPolicy <- R6::R6Class(
 
 
       x            <- context$X[context$unique,arm_index]
-      z            <- matrix(as.vector(outer(x,context$X[context$shared,arm_index])))
+      z            <- matrix(as.vector(outer(context$X[context$unique,arm_index],context$X[context$shared,arm_index])))
 
       A0           <- self$theta$A0
       A0_inv       <- self$theta$A0_inv
