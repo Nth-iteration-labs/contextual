@@ -1,3 +1,4 @@
+#' @import nleqslv
 #' @export
 LinUCBHybridPolicy <- R6::R6Class(
   portable = FALSE,

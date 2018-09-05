@@ -9,11 +9,13 @@ ContextualGeneratorHybridBandit <- R6::R6Class(
     betas_u = NULL,                                                 ## regression betas unique per arm
     s       = NULL,                                                 ## nr shared features/betas
     u       = NULL,                                                 ## nr unique features/betas
+    sigma   = NULL,                                                 ## standard deviation of noise
 
     class_name = "ContextualGeneratorHybridBandit",
     precaching = FALSE,
-    initialize  = function(k, s=0, u=0, assign_context_type = TRUE) {
+    initialize  = function(k, s, u, sigma = 1.0, assign_context_type = TRUE) {
 
+      self$sigma   <- sigma
       self$k       <- k                                             ## nr of arms
       self$s       <- s                                             ## nr shared features/betas
       self$u       <- u                                             ## nr unique features/betas
@@ -46,7 +48,9 @@ ContextualGeneratorHybridBandit <- R6::R6Class(
     },
     get_reward = function(t, context, action) {
       betas        <- c(self$betas_s, self$betas_u[,action$choice])
-      reward       <- rbinom(1,1,1/(1+exp(-betas%*%context$X[,action$choice])))
+      trb          <- betas%*%context$X[,action$choice]
+      trb          <- trb + rnorm(1,0,self$sigma)
+      reward       <- rbinom(1,1,1/(1+exp(-trb)))
       rewardlist   <- list(
         reward                   = reward,
         optimal_reward_value     = 1
