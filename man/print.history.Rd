@@ -19,8 +19,8 @@ print.history, a method for the print generic. It is designed for a quick look a
 Core contextual classes: \code{\link{Simulator}},
 \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 
-Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBandit}},
-\code{\link{LiSamplingOfflineBandit}}, \code{\link{SyntheticBandit}}
+Bandit classes: \code{\link{Bandit}}, \code{\link{MabWeightBandit}},
+\code{\link{LiSamplingOfflineBandit}}, \code{\link{ContextualWeightBandit}}
 
 Other contextual: \code{\link{plot.history}},
   \code{\link{summary.history}}

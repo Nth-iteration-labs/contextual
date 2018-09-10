@@ -256,16 +256,109 @@ var_welford <- function(z){
   return(S[[n]] / (n - 1))
 }
 
+#' The Inverse Gamma Distribution
+#'
+#' Density, distribution function, quantile function and random
+#' generation for the inverse gamma distribution.
+#'
+#' The inverse gamma distribution with parameters shape and rate has
+#' density \emph{f(x) = rate^shape/Gamma(shape) x^(-1-shape)
+#' e^(-rate/x)} it is the inverse of the standard gamma
+#' parameterzation in R.
+#'
+#' The functions (d/p/q/r)invgamma simply wrap those of the standard
+#' (d/p/q/r)gamma R implementation, so look at, say,
+#' \code{\link{dgamma}} for details.
+#'
+#'
+#' @param x,q vector of quantiles.
+#' @param p vector of probabilities.
+#' @param n number of observations. If length(n) > 1, the length is
+#'   taken to be the number required.
+#' @param shape inverse gamma shape parameter
+#' @param rate inverse gamma rate parameter
+#' @param scale alternative to rate; scale = 1/rate
+#' @param log,log.p logical; if TRUE, probabilities p are given as
+#'   log(p).
+#' @param lower.tail logical; if TRUE (default), probabilities are P(X <= x) otherwise, P(X > x).
+#' @name invgamma
+#' @importFrom stats dgamma pgamma qgamma rgamma
+#' @examples
+#'
+#' s <- seq(0, 5, .01)
+#' plot(s, dinvgamma(s, 7, 10), type = 'l')
+#'
+#' f <- function(x) dinvgamma(x, 7, 10)
+#' q <- 2
+#' integrate(f, 0, q)
+#' (p <- pinvgamma(q, 7, 10))
+#' qinvgamma(p, 7, 10) # = q
+#' mean(rinvgamma(1e5, 7, 10) <= q)
+#'
+#'
+#'
+NULL
 
 
+#' @rdname invgamma
 #' @export
-sgd <- function(y, X, beta, lambda=.1){
-  p <- inv_logit(X%*%beta)
-  beta <- beta + lambda*(y-p)%*%X
-  return(beta)
+dinvgamma <- function(x, shape, rate = 1, scale = 1/rate, log = FALSE) {
+  if(missing(rate) && !missing(scale)) rate <- 1/scale
+  log_f <- dgamma(1/x, shape, rate, log = TRUE) - 2*log(x)
+  if(log) return(log_f)
+  exp(log_f)
 }
 
+#' @rdname invgamma
+#' @export
+pinvgamma <- function(q, shape, rate = 1, scale = 1/rate, lower.tail = TRUE, log.p = FALSE) {
+  if(missing(rate) && !missing(scale)) rate <- 1/scale
+  pgamma(1/q, shape, rate, lower.tail = !lower.tail, log.p = log.p)
+}
+
+#' @rdname invgamma
+#' @export
+qinvgamma <- function(p, shape, rate = 1, scale = 1/rate, lower.tail = TRUE, log.p = FALSE) {
+  if(missing(rate) && !missing(scale)) rate <- 1/scale
+  qgamma(1-p, shape, rate, lower.tail = lower.tail, log.p = log.p)^(-1)
+}
+
+#' @rdname invgamma
+#' @export
+rinvgamma <- function(n, shape, rate = 1, scale = 1/rate) {
+  if(missing(rate) && !missing(scale)) rate <- 1/scale
+  1 / rgamma(n, shape, rate)
+}
+
+#' Inverse Logit Function
+#'
+#' Given a numeric object return the inverse logit of the values.
+#'
+#' @param x A numeric object.
+#'
+#' @return An object of the same type as x containing the inverse logits of the input values.
+#'
 #' @export
 inv_logit <- function(x){
   exp(x)/(1+exp(x))
+}
+
+#' Simulate from a Multivariate Normal Distribution
+#'
+#' Produces one or more samples from the specified
+#' multivariate normal distribution.
+#'
+#' @param n the number of samples required.
+#' @param mu a vector giving the means of the variables.
+#' @param sigma a positive-definite symmetric matrix specifying the covariance matrix of the variables.
+#'
+#' @return If \code{n = 1} a vector of the same length as \code{mu}, otherwise an \code{n} by
+#' \code{length(mu)} matrix with one sample in each row.
+#'
+#' @export
+mvrnorm = function(n, mu, sigma)
+{
+  ncols <- ncol(sigma)
+  mu <- rep(mu, each = n)
+  mu + matrix(stats::rnorm(n * ncols), ncol = ncols) %*% chol(sigma)
 }

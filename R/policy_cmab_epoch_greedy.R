@@ -17,7 +17,6 @@ ContextualEpochGreedyPolicy <- R6::R6Class(
       self$theta <- list( 'A' = diag(1,d,d), 'b' = rep(0,d), 'n' = 0)
     },
     get_action = function(t, context) {
-
       if (t <= self$p || t <= context$k) {
         arm <- 1 + (t %% context$k)
         self$action$choice = arm
@@ -44,7 +43,6 @@ ContextualEpochGreedyPolicy <- R6::R6Class(
       }
     },
     set_reward = function(t, context, action, reward) {
-
       if (t <= self$p || t <= context$k || self$e==1) {
         arm                      <- action$choice
         reward                   <- reward$reward
@@ -62,7 +60,7 @@ ContextualEpochGreedyPolicy <- R6::R6Class(
 
 #' Policy: A Time and Space Efficient Algorithm for Contextual Linear Bandits
 #'
-#' @name ContextualEpochGreedyDisjointPolicy
+#' @name ContextualEpochGreedyPolicy
 #' @family contextual subclasses
 #'
 #' @section Usage:

@@ -86,9 +86,10 @@ Li, L., Chu, W., Langford, J., & Schapire, R. E. (2010, April). A contextual-ban
 Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 
-Other contextual subclasses: \code{\link{BasicBandit}},
-  \code{\link{ContextualEpochGreedyDisjointPolicy}},
+Other contextual subclasses: \code{\link{ContextualEpochGreedyPolicy}},
+  \code{\link{ContextualThompsonHybrid}},
   \code{\link{ContextualThompsonSamplingPolicy}},
+  \code{\link{ContextualWeightBandit}},
   \code{\link{ContinuumBandit}},
   \code{\link{EpsilonFirstPolicy}},
   \code{\link{EpsilonGreedyPolicy}},
@@ -101,9 +102,9 @@ Other contextual subclasses: \code{\link{BasicBandit}},
   \code{\link{LinUCBGeneralPolicy}},
   \code{\link{LinUCBHybridPolicy}},
   \code{\link{LinUCBOFULPolicy}},
+  \code{\link{MabWeightBandit}},
   \code{\link{OraclePolicy}}, \code{\link{RandomPolicy}},
   \code{\link{SoftmaxPolicy}},
-  \code{\link{SyntheticBandit}},
   \code{\link{ThompsonSamplingPolicy}},
   \code{\link{UCB1Policy}}
 }

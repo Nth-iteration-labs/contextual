@@ -1,8 +1,8 @@
-context("BasicBandit")
+context("Bandit")
 
-test_that("BasicBandit simulation", {
+test_that("Bandit simulation", {
 
-  bandit      <- BasicBandit$new()
+  bandit      <- Bandit$new()
   expect_identical(typeof(bandit), "environment")
 
 })

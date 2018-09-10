@@ -1,5 +1,5 @@
  #' @export
-BasicBandit <- R6::R6Class(
+MabWeightBandit <- R6::R6Class(
   inherit = Bandit,
   portable = TRUE,
   class = FALSE,
@@ -9,7 +9,7 @@ BasicBandit <- R6::R6Class(
     W = NULL
   ),
   public = list(
-    class_name = "BasicBandit",
+    class_name = "MabWeightBandit",
     initialize   = function(weights = NULL) {
       if (!is.null(weights)) self$set_weights(weights)
       private$X <- array(1, dim = c(self$d, self$k, 1))
@@ -42,15 +42,15 @@ BasicBandit <- R6::R6Class(
   )
 )
 
-#' Bandit: BasicBandit
+#' Bandit: MabWeightBandit
 #'
-#' BasicBandit intro
+#' MabWeightBandit intro
 #'
-#' @name BasicBandit
+#' @name MabWeightBandit
 #' @family contextual subclasses
 #'
 #' @section Usage:
-#' \preformatted{b <- BasicBandit$new()
+#' \preformatted{b <- MabWeightBandit$new()
 #'
 #' b$reset()
 #'
@@ -59,11 +59,11 @@ BasicBandit <- R6::R6Class(
 #'
 #' @section Arguments:
 #' \describe{
-#'   \item{b}{A \code{BasicBandit} object.}
+#'   \item{b}{A \code{MabWeightBandit} object.}
 #' }
 #'
 #' @section Details:
-#' \code{$new()} starts a new BasicBandit, it uses \code{\link[base]{pipe}}.
+#' \code{$new()} starts a new MabWeightBandit, it uses \code{\link[base]{pipe}}.
 #' R does \emph{not} wait for the process to finish, but returns
 #' immediately.
 #'

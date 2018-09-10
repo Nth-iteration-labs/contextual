@@ -9,7 +9,7 @@ setwd(here("demo","demo_bandits_and_policies"))
 horizon            <- 500L
 simulations        <- 50L
 
-bandit             <- MixedContextualBandit$new(k = 3L, shared = 10, unique = 10)
+bandit             <- ContextualHybridBandit$new(k = 3L, shared = 10, unique = 10)
 
 agents             <- list(Agent$new(LinUCBDisjointPolicy$new(0.1), bandit),
                            Agent$new(EpsilonGreedyPolicy$new(0.1), bandit),

@@ -1,6 +1,6 @@
 #' @export
-ContextualGeneratorHybridBandit <- R6::R6Class(
-  "ContextualGeneratorHybridBandit",
+ContextualHybridBandit <- R6::R6Class(
+  "ContextualHybridBandit",
   inherit = Bandit,
   portable = TRUE,
   class = FALSE,
@@ -11,7 +11,7 @@ ContextualGeneratorHybridBandit <- R6::R6Class(
     u       = NULL,                                                 ## nr unique features/betas
     sigma   = NULL,                                                 ## standard deviation of noise
 
-    class_name = "ContextualGeneratorHybridBandit",
+    class_name = "ContextualHybridBandit",
     precaching = FALSE,
     initialize  = function(k, s, u, sigma = 1.0, assign_context_type = TRUE) {
 
@@ -59,3 +59,9 @@ ContextualGeneratorHybridBandit <- R6::R6Class(
     }
   )
 )
+
+#' ContextualHybridBandit
+#'
+#' @name ContextualHybridBandit
+#'
+NULL

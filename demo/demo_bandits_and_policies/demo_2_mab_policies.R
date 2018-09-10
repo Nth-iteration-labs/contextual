@@ -7,7 +7,7 @@ weight_per_arm     <- c(0.9, 0.1, 0.1)
 horizon            <- 100
 simulations        <- 1000
 
-bandit             <- SyntheticBandit$new(weights = weight_per_arm)
+bandit             <- ContextualWeightBandit$new(weights = weight_per_arm)
 
 agents             <- list(Agent$new(RandomPolicy$new(), bandit),
                            Agent$new(OraclePolicy$new(), bandit),

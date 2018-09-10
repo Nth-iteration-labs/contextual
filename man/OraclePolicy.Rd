@@ -64,9 +64,10 @@ Gittins, J., Glazebrook, K., & Weber, R. (2011). Multi-armed bandit allocation i
 Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 
-Other contextual subclasses: \code{\link{BasicBandit}},
-  \code{\link{ContextualEpochGreedyDisjointPolicy}},
+Other contextual subclasses: \code{\link{ContextualEpochGreedyPolicy}},
+  \code{\link{ContextualThompsonHybrid}},
   \code{\link{ContextualThompsonSamplingPolicy}},
+  \code{\link{ContextualWeightBandit}},
   \code{\link{ContinuumBandit}},
   \code{\link{EpsilonFirstPolicy}},
   \code{\link{EpsilonGreedyPolicy}},
@@ -80,8 +81,8 @@ Other contextual subclasses: \code{\link{BasicBandit}},
   \code{\link{LinUCBHybridOptimizedPolicy}},
   \code{\link{LinUCBHybridPolicy}},
   \code{\link{LinUCBOFULPolicy}},
+  \code{\link{MabWeightBandit}},
   \code{\link{RandomPolicy}}, \code{\link{SoftmaxPolicy}},
-  \code{\link{SyntheticBandit}},
   \code{\link{ThompsonSamplingPolicy}},
   \code{\link{UCB1Policy}}
 }

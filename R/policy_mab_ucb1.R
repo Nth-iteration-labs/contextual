@@ -114,7 +114,7 @@ UCB1Policy <- R6::R6Class(
 #' weights            <- c(0.9, 0.1, 0.1)
 #'
 #' policy             <- UCB1Policy$new()
-#' bandit             <- SyntheticBandit$new(weights = weights, precaching = FALSE)
+#' bandit             <- MabWeightBandit$new(weights = weights)
 #' agent              <- Agent$new(policy, bandit)
 #'
 #' history            <- Simulator$new(agent, horizon, simulations, do_parallel = FALSE)$run()

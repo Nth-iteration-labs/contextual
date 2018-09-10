@@ -18,7 +18,8 @@ Imports:
     foreach,
     doParallel,
     itertools,
-    iterators
+    iterators,
+    nleqslv
 Suggests:
     testthat,
     covr,

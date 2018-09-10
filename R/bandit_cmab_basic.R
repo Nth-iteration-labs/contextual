@@ -1,103 +1,43 @@
-# Samples data from linearly parameterized arms.
-#
-# The reward for context X and arm j is given by X^T beta_j, for some latent
-# set of parameters {beta_j : j = 1, ..., k}. The beta's are sampled uniformly
-# at random, the contexts are Gaussian, and sigma-noise is added to the rewards.
-#
-# Args:
-# num_contexts: Number of contexts to sample.
-# dim_context: Dimension of the contexts.
-# num_actions: Number of arms for the multi-armed bandit.
-# sigma: Standard deviation of the additive noise. Set to zero for no noise.
-#
-# Returns:
-# data: A [n, d+k] numpy array with the data.
-# betas: Latent parameters that determine expected reward for each arm.
-# opt: (optimal_rewards, optimal_actions) for all contexts.
-
 #' @export
-BasicContextualBandit <- R6::R6Class(
-  "BasicContextualBandit",
+ContextualBasicBandit <- R6::R6Class(
+  "ContextualBasicBandit",
   inherit = Bandit,
   portable = TRUE,
   class = FALSE,
   public = list(
     rewards = NULL,
     betas   = NULL,
-    sigma   = NULL,
-    binary  = NULL,
-    class_name = "BasicContextualBandit",
+    class_name = "ContextualBasicBandit",
     precaching = FALSE,
-    initialize  = function(k, d, sigma = 0.1, binary_rewards = FALSE) {
-      self$k                                    <- k
-      self$d                                    <- d
-      self$sigma                                <- sigma
-      self$binary                               <- binary_rewards
+    initialize  = function(k, d) {
+      self$k       <- k
+      self$d       <- d
     },
     post_initialization = function() {
-      self$betas                                <- matrix(runif(self$d*self$k, -1, 1), self$d, self$k)
-      self$betas                                <- self$betas / norm(self$betas, type = "F")
+      self$betas   <- rnorm(self$d,0,1)
     },
     get_context = function(t) {
-
-      context                                   <- rnorm(self$d)
-      reward_vector                             <- context %*% self$betas
-      context                                   <- matrix(context, self$d,self$k)
-      reward_vector                             <- reward_vector + rnorm(self$k, sd = self$sigma)
-
-      if (isTRUE(self$binary)) {
-        self$rewards                            <- rep(0,self$k)
-        self$rewards[which.max(reward_vector)]  <- 1
-      } else {
-        self$rewards                            <- reward_vector
-      }
+      X <- matrix(runif(self$d*self$k, 0, 1), self$d, self$k)
       context_list <- list(
         k = self$k,
         d = self$d,
-        X = context
+        X = X
       )
       context_list
     },
-    get_reward = function(t, context_common, action) {
+    get_reward = function(t, context, action) {
+      reward <- rbinom(1,1,1/(1+exp(-self$betas%*%context$X[,action$choice])))
       rewardlist <- list(
-        reward                   = self$rewards[action$choice],
-        optimal_reward_value     = self$rewards[which.max(self$rewards)]
+        reward                   = reward,
+        optimal_reward_value     = 1
       )
       rewardlist
     }
   )
 )
 
-#' Bandit: BasicContextualBandit
+#' ContextualBasicBandit
 #'
-#' BasicContextualBandit intro
-#'
-#' Following Allen Day DataGenerator
-#'
-#' @name BasicContextualBandit
-#' @family context_commonual subclasses
-#'
-#' @section Usage:
-#' \preformatted{b <- BasicContextualBandit$new()
-#'
-#' b$reset()
-#'
-#' print(b)
-#' }
-#'
-#' @section Arguments:
-#' \describe{
-#'   \item{b}{A \code{BasicContextualBandit} object.}
-#' }
-#'
-#' @section Details:
-#' \code{$new()} starts a new BasicContextualBandit, it uses \code{\link[base]{pipe}}.
-#' R does \emph{not} wait for the process to finish, but returns
-#' immediately.
-#'
-#' @seealso
-#'
-#' Core context_commonual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
-#' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
+#' @name ContextualBasicBandit
 #'
 NULL

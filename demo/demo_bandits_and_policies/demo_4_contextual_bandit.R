@@ -9,7 +9,7 @@ setwd(here("demo","demo_bandits_and_policies"))
 horizon            <- 200L
 simulations        <- 50L
 
-bandit             <- BasicContextualBandit$new(k = 10L, d = 5L)
+bandit             <- ContextualBasicBandit$new(k = 10L, d = 5L)
 
 agents             <- list(
                            Agent$new(LinUCBDisjointPolicy$new(0.1), bandit),

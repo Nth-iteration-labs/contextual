@@ -1,9 +1,7 @@
-context("SyntheticBandit")
+context("ContextualWeightBandit")
 
-## add precaching = FALSE and much more..
-
-test_that("SyntheticBandit simulation", {
-  bandit      <- SyntheticBandit$new()
+test_that("ContextualWeightBandit simulation", {
+  bandit      <- ContextualWeightBandit$new()
   expect_identical(typeof(bandit), "environment")
 
   bandit$set_weights(matrix(c(0.1, 0.9, 0.1, 0.9), 2, 2))

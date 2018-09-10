@@ -1,3 +1,4 @@
+#' @importFrom nleqslv nleqslv
 #' @export
 GlmUCB <- R6::R6Class(
   portable = FALSE,
@@ -60,20 +61,20 @@ GlmUCB <- R6::R6Class(
       exploit + explore
     },
     to_optimize = function(x) {
-
       sum_matrix <- matrix(0.0, length(self$rewards), self$d)
-
       for (t in seq_along(self$rewards)) {
         R_k             <- self$rewards[[t]]
         mu_k            <- self$link(x %*% self$contexts[[t]])
-
         m_ak            <- self$contexts[[t]]
         sum_matrix[t,]  <- as.numeric(R_k - mu_k) * m_ak
       }
-
       colSums(sum_matrix)
     }
   )
 )
 
-#' Policy: GlmUCB
+#' GlmUCB
+#'
+#' @name GlmUCB
+#'
+NULL

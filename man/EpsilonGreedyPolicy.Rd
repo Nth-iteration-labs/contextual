@@ -71,7 +71,7 @@ simulations        <- 100L
 weights            <- c(0.9, 0.1, 0.1)
 
 policy             <- EpsilonGreedyPolicy$new(epsilon = 0.1)
-bandit             <- SyntheticBandit$new(weights = weights, precaching = FALSE)
+bandit             <- MabWeightBandit$new(weights = weights)
 agent              <- Agent$new(policy, bandit)
 
 history            <- Simulator$new(agent, horizon, simulations, do_parallel = FALSE)$run()
@@ -95,9 +95,10 @@ Yue, Y., Broder, J., Kleinberg, R., & Joachims, T. (2012). The k-armed dueling b
 Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 
-Other contextual subclasses: \code{\link{BasicBandit}},
-  \code{\link{ContextualEpochGreedyDisjointPolicy}},
+Other contextual subclasses: \code{\link{ContextualEpochGreedyPolicy}},
+  \code{\link{ContextualThompsonHybrid}},
   \code{\link{ContextualThompsonSamplingPolicy}},
+  \code{\link{ContextualWeightBandit}},
   \code{\link{ContinuumBandit}},
   \code{\link{EpsilonFirstPolicy}},
   \code{\link{Exp3Policy}},
@@ -110,9 +111,9 @@ Other contextual subclasses: \code{\link{BasicBandit}},
   \code{\link{LinUCBHybridOptimizedPolicy}},
   \code{\link{LinUCBHybridPolicy}},
   \code{\link{LinUCBOFULPolicy}},
+  \code{\link{MabWeightBandit}},
   \code{\link{OraclePolicy}}, \code{\link{RandomPolicy}},
   \code{\link{SoftmaxPolicy}},
-  \code{\link{SyntheticBandit}},
   \code{\link{ThompsonSamplingPolicy}},
   \code{\link{UCB1Policy}}
 }

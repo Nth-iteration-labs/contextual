@@ -1,6 +1,6 @@
 #' @export
-SyntheticBandit <- R6::R6Class(
-  inherit = BasicBandit,
+ContextualWeightBandit <- R6::R6Class(
+  inherit = MabWeightBandit,
   portable = TRUE,
   class = FALSE,
   public = list(
@@ -12,7 +12,7 @@ SyntheticBandit <- R6::R6Class(
     has_cache     = NULL,
     precaching    = NULL,
     weights   = NULL,
-    class_name = "SyntheticBandit",
+    class_name = "ContextualWeightBandit",
     initialize   = function(
       reward_family        = 'Bernoulli',
       reward_means         = 4.0,
@@ -107,15 +107,15 @@ SyntheticBandit <- R6::R6Class(
   )
 )
 
-#' Bandit: SyntheticBandit
+#' Bandit: ContextualWeightBandit
 #'
-#' SyntheticBandit intro
+#' ContextualWeightBandit intro
 #'
-#' @name SyntheticBandit
+#' @name ContextualWeightBandit
 #' @family contextual subclasses
 #'
 #' @section Usage:
-#' \preformatted{b <- SyntheticBandit$new()
+#' \preformatted{b <- ContextualWeightBandit$new()
 #'
 #' b$reset()
 #'
@@ -124,11 +124,11 @@ SyntheticBandit <- R6::R6Class(
 #'
 #' @section Arguments:
 #' \describe{
-#'   \item{b}{A \code{SyntheticBandit} object.}
+#'   \item{b}{A \code{ContextualWeightBandit} object.}
 #' }
 #'
 #' @section Details:
-#' \code{$new()} starts a new SyntheticBandit, it uses \code{\link[base]{pipe}}.
+#' \code{$new()} starts a new ContextualWeightBandit, it uses \code{\link[base]{pipe}}.
 #' R does \emph{not} wait for the process to finish, but returns
 #' immediately.
 #'

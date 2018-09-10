@@ -8,15 +8,13 @@ setwd(here("demo","demo_bandits_and_policies"))
 
 policy             <- EpsilonGreedyPolicy$new(epsilon = 0.1)
 
-bandit             <- SyntheticBandit$new(weights = c(0.6, 0.1, 0.1))
+bandit             <- ContextualWeightBandit$new(weights = c(0.6, 0.1, 0.1))
 agent              <- Agent$new(policy,bandit)
 
 history            <- Simulator$new(
                           agents = agent,
                           horizon = 100,
-                          simulations = 100,
-                          do_parallel = FALSE,
-                          progress_file = FALSE
+                          simulations = 100
                         )$run()
 
 
