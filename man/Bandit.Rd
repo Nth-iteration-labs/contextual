@@ -36,26 +36,24 @@ through \code{get_context()}, and returning rewards through \code{get_reward()}.
 \item{\code{get_context(t)}}{
 argument:
 \itemize{
-\item \code{t}: integer, time step t.
+\item \code{t}: integer, time step \code{t}.
 }
-returns a named list \code{list(k = n_arms, d = n_features, X = context)}
-containing the current \code{d x k} dimensional \code{context} matrix \code{X},
-the number of arms \code{k} and the number of features \code{d}.
+returns a named \code{list}
+containing the current \code{d x k} dimensional matrix \code{context$X},
+the number of arms \code{context$k} and the number of features \code{context$d}.
 }
 
 \item{\code{get_reward(t, context, action)}}{
 arguments:
 \itemize{
-\item \code{t}: integer, time step t.
-\item \code{context}: list, containing \code{context$X} (d x k context matrix) \code{context$d}
-(number of context feaures) and \code{context$k} (number of arms).
-\item \code{action}:  list, containing \code{policy}'s \code{action$choice}.
+\item \code{t}: integer, time step \code{t}.
+\item \code{context}: list, containing the current \code{context$X} (d x k context matrix),
+\code{context$k} (number of arms) and \code{context$d} (number of context feaures)
+(as set by \code{bandit}).
+\item \code{action}:  list, containing \code{action$choice} (as set by \code{policy}).
 }
-returns:
-\itemize{
-\item \code{list} containing \code{reward} and, if available, the \code{optimal} (or "oracle")
-reward for the current \code{t}
-}
+returns a named \code{list} containing \code{reward$reward} and, if available,
+\code{reward$optimal} (only to be used by "oracle" policies or to calculate regret).
 }
 
 \item{\code{post_initialization()}}{

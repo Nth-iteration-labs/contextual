@@ -21,6 +21,7 @@ test_that("Agent", {
   history            <- Simulator$new(agents = agent,
                                       horizon = 10,
                                       simulations = 10,
+                                      do_parallel = FALSE,
                                       progress_file = TRUE)$run()
 
   expect_identical(history$cumulative$testme$reward,0.3)

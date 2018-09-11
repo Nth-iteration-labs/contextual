@@ -8,13 +8,13 @@
 \alias{initialize_theta}
 \title{Policy}
 \description{
-The R6 class \code{Policy} is the parent class of all \code{Policy} implementations in
-\code{\{contextual\}}. Classes that extend this abstract \code{Policy}
-superclass are expected to take into account the current \code{d} dimensional \code{context},
+R6 class \code{Policy} is the parent class of all \code{Policy} implementations in
+\code{\{contextual\}}. Classes that extend this abstract superclass are expected to take into
+account the current \code{d} dimensional \code{context},
 together with a limited set of parameters denoted \code{theta} (summarizing all past actions),
-to choose one of a \code{Bandit}'s arms at each time step \code{t}.
-On choosing one of the {k} arms of the Bandit and receiving its corresponding \code{reward},
-the \code{Policy} then uses the current \code{context}, \code{action} and \code{reward} to
+to choose one of \code{k} \code{Bandit} arms at each time step \code{t}.
+On choosing one of the \code{k} arms and receiving its corresponding \code{reward},
+the \code{Policy} then utilizes the current \code{context}, \code{action} and \code{reward} to
 update its set of parameters \code{theta}.
 }
 \section{Usage}{
@@ -24,49 +24,47 @@ update its set of parameters \code{theta}.
 }
 }
 
-\section{Arguments}{
-
-
-\describe{
-\item{\code{name}}{
-A character string identifying this \code{Policy} It is, amongst others, saved to the \code{History} log
-and displayed in summaries and plots.
-}
-}
-}
-
 \section{Methods}{
 
 
 \describe{
-\item{\code{new(name)}}{
+\item{\code{new()}}{
 Generates and initializes a new \code{Policy} object.
 }
 
-\item{\code{initialize(name)}}{
-#TODO
+\item{\code{get_action(t, context)}}{
+arguments:
+\itemize{
+\item \code{t}: integer, time step \code{t}.
+\item \code{context}: list, containing the current \code{context$X} (d x k context matrix),
+\code{context$k} (number of arms) and \code{context$d} (number of context feaures)
+}
+computes which arm to play based on the current values in named list \code{theta}
+and the current \code{context}. Returns a named list containing
+\code{action$choice}, which holds the index of the arm to play.
+}
+
+\item{\code{set_reward(t, context, action, reward)}}{
+arguments:
+\itemize{
+\item \code{t}: integer, time step \code{t}.
+\item \code{context}: list, containing the current \code{context$X} (d x k context matrix),
+\code{context$k} (number of arms) and \code{context$d} (number of context feaures)
+(as set by \code{bandit}).
+\item \code{action}:  list, containing \code{action$choice} (as set by \code{policy}).
+\item \code{reward}:  list, containing \code{reward$reward} and, if available,
+\code{reward$optimal} (as set by \code{bandit}).
+}
+utilizes the above arguments to update and return the set of parameters in list \code{theta}.
 }
 
 \item{\code{set_parameters()}}{
-This helper function, called during a Policy's initialisation, assigns the values
+Helper function, called during a Policy's initialisation, assigns the values
 it finds in list \code{self$theta_to_arms} to each of the Policy's k arms.
 The parameters defined here can then be accessed by arm index in the following way:
 \code{theta[[index_of_arm]]$parameter_name}.
 }
 
-\item{\code{get_action(t, context)}}{
-Calculates which arm to play based on the current values in named list \code{theta}
-and the current \code{context}. Returns a named list
-\code{list(choice = arm_chosen_by_policy)} that holds the index of the arm
-to play.
-}
-
-\item{\code{set_reward(t, context, action, reward)}}{
-Returns the named list
-\code{list(reward = reward_for_choice_made, optimal = optimal_reward_value)} containing the \code{reward}
-for the \code{action} previously returned by \code{policy} and, optionally, the \code{optimal} reward
-at the current time \code{t}.
-}
 }
 }
 
