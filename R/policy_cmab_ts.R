@@ -47,9 +47,9 @@ ContextualThompsonSamplingPolicy <- R6::R6Class(
 #'
 #' \code{ContextualThompsonSamplingPolicy} implements Thompson Sampling with Linear
 #' Payoffs, following Agrawal and Goyal (2011).
-#' Thompson Sampling with Linear Payoffs is a contextual multi-armed bandit
-#' algorithm which assumes the underlying relationship between rewards and contexts
-#' is linear. Check the reference for more details.
+#' Thompson Sampling with Linear Payoffs is a contextual Thompson Sampling multi-armed bandit
+#' Policy which assumes the underlying relationship between rewards and contexts
+#' are linear. Check the reference for more details.
 #'
 #' @name ContextualThompsonSamplingPolicy
 #' @family contextual subclasses
@@ -63,16 +63,16 @@ ContextualThompsonSamplingPolicy <- R6::R6Class(
 #'
 #' \describe{
 #'   \item{\code{delta}}{
-#'    numeric, 0 < \code{delta} <= 1.
+#'    numeric; 0 < \code{delta} <= 1.
 #'    With probability 1 - delta, ContextualThompsonSamplingPolicy satisfies the theoretical regret bound.
 #'   }
 #'   \item{\code{R}}{
-#'    numeric. \code{R} >= 0.
+#'    numeric; \code{R} >= 0.
 #'    Assume that the residual  \eqn{ri(t) - bi(t)^T \hat{\mu}} is R-sub-gaussian.
 #'    In this case, \eqn{R^2} represents the variance for residuals of the linear model \eqn{bi(t)^T}.
 #'    }
 #'   \item{\code{epsilon}}{
-#'    numeric. 0 < \code{epsilon} < 1
+#'    numeric; 0 < \code{epsilon} < 1
 #'    If the total trials T is known, we can choose epsilon = 1/ln(T).
 #'   }
 #' }
@@ -80,20 +80,20 @@ ContextualThompsonSamplingPolicy <- R6::R6Class(
 #' @section Methods:
 #'
 #' \describe{
-#'   \item{\code{new(...)}}{ Instantiates a new \code{ContextualThompsonSamplingPolicy} instance.
+#'   \item{\code{new(...)}}{ instantiates a new \code{ContextualThompsonSamplingPolicy} instance.
 #'      Arguments defined in the Arguments section above.}
 #' }
 #'
 #' \describe{
 #'   \item{\code{set_parameters(context_params)}}{
-#'      Initialization of policy parameters, utilising \code{context_params$k} (number of arms) and
+#'      initialization of policy parameters, utilising \code{context_params$k} (number of arms) and
 #'      \code{context_params$d} (number of context features).
 #'   }
 #' }
 #'
 #' \describe{
 #'   \item{\code{get_action(t,context)}}{
-#'     Selects an arm based on \code{self$theta} and \code{context}, returning the index of the selected arm
+#'     selects an arm based on \code{self$theta} and \code{context}, returning the index of the selected arm
 #'     in \code{action$choice}. The {context} argument consists of a list with \code{context$k} (number of arms),
 #'     \code{context$d} (number of features), and the feature matrix \code{context$X} with dimensions
 #'     \eqn{d \times k}{d x k}.
@@ -102,9 +102,9 @@ ContextualThompsonSamplingPolicy <- R6::R6Class(
 #'
 #'  \describe{
 #'   \item{\code{set_reward(t, context, action, reward)}}{
-#'     Updates parameter list \code{theta} in accordance with the current \code{reward$reward},
+#'     updates parameter list \code{theta} in accordance with the current \code{reward$reward},
 #'     \code{action$choice} and the feature matrix \code{context$X} with dimensions
-#'     \eqn{d \times k}{d x k}. Returns the updated \code{theta} instance.
+#'     \eqn{d \times k}{d x k}. Returns the updated \code{theta}.
 #'    }
 #'   }
 #'
@@ -112,7 +112,7 @@ ContextualThompsonSamplingPolicy <- R6::R6Class(
 #'
 #' Shipra Agrawal, and Navin Goyal. "Thompson Sampling for Contextual Bandits with Linear Payoffs." Advances in Neural Information Processing Systems 24. 2011.
 #'
-#' Implementation follows linthompsamp from https://github.com/ntucllab/striatum
+#' Implementation follows linthompsamp from \url{https://github.com/ntucllab/striatum}
 #'
 #' @seealso
 #'

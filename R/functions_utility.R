@@ -299,7 +299,6 @@ var_welford <- function(z){
 #'
 NULL
 
-
 #' @rdname invgamma
 #' @export
 dinvgamma <- function(x, shape, rate = 1, scale = 1/rate, log = FALSE) {

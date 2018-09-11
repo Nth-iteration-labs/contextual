@@ -81,47 +81,60 @@ Agent <- R6::R6Class(
 
 #' Agent
 #'
-#' The R6 class \code{Agent} is responsible for the state, flow of information
-#' between and the running of one \code{Bandit} and \code{Policy} pair.
-#' As such, multiple \code{Agent}s can be run in parallel with each separate Agent keeping
-#' track of \code{t} and the parameters in named list \code{theta} for its assigned \code{Policy}
-#' and \code{Bandit} pair.
+#' R6 class \code{Agent} oversees the running of one \code{\link{Bandit}} and \code{\link{Policy}}
+#' pair over each time step \code{t}. A \code{\link{Simulator}} instance generally runs multiple
+#' \code{Agent}si n parallel.
 #'
 #' @name Agent
 #' @aliases do_step get_t set_t
 #'
 #' @section Usage:
 #' \preformatted{
-#' agent <- Agent$new(policy, bandit)
+#' agent <- Agent$new(policy, bandit, name=NULL, sparse = 0.0)
 #' }
 #'
 #' @section Arguments:
 #'
 #' \describe{
+#'
+#'   \item{\code{new()}}{ Generates and instantializes a new \code{Agent} instance. }
+#'
 #'   \item{\code{policy}}{
-#'    A \code{Policy} object, expected to take into account the current \code{d} dimensional \code{context}
-#'    feature vector \code{X}, together with a limited set of parameters denoted \code{theta} (summarizing
-#'    all past actions), to choose one of the k arms of its corresponding bandit's arms at each time step \code{t}.
+#'    \code{\link{Policy}} instance.
 #'   }
 #'  \item{\code{bandit}}{
-#'    A \code{Bandit} object, responsible for both the generation of \code{d} dimensional \code{context}
-#'    vectors \code{X} and the \code{k} I.I.D. distributions each generating a \code{reward} for each of
-#'    its \code{k} arms at each time step \code{t}.
+#'    \code{\link{Bandit}} instance.
 #'   }
+#'   \item{\code{name}}{
+#'    character; sets the name of the \code{Agent}. If \code{NULL} (default), \code{Agent} generates a name
+#'    based on its \code{\link{Policy}}'s name.
+#'   }
+#'   \item{\code{sparse}}{
+#'     numeric; artificially reduces the data size by setting a sparsity level for the current
+#'     \code{\link{Bandit}} and \code{\link{Policy}} pair.
+#'     When set to a value between \code{0.0} (default) and \code{1.0} only a fraction \code{sparse} of
+#'     the \code{\link{Bandit}}'s data is randomly chosen to be available to improve the \code{Agent}'s
+#'     \code{\link{Policy}} through \code{policy$set_reward}.
+#'   }
+#'
 #' }
 #'
 #' @section Methods:
 #'
 #' \describe{
 #'
+#'   \item{\code{do_step()}}{
+#'      completes one time step by consecutively calling \code{bandit$get_context()},
+#'      \code{policy$get_action()}, \code{bandit$get_reward()} and \code{policy$set_reward()}.
+#'    }
+#'
 #'   \item{\code{set_t(t)}}{
-#'      Setter function, sets the state of the state variable holding the current time step \code{t}.
+#'      integer; Sets the current time step to \code{t}.
 #'   }
 #'
-#'   \item{\code{do_step()}}{
-#'      Completes one time step \code{t} by consecutively calling
-#'      \code{bandit$get_context()}, \code{policy$get_action()}, \code{bandit$get_reward()} and \code{policy$set_reward()}.
-#'    }
+#'   \item{\code{get_t()}}{
+#'      returns the current time step \code{t}.
+#'   }
 #'
 #'   }
 #'
@@ -134,4 +147,16 @@ Agent <- R6::R6Class(
 #'
 #' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 #'
+#' @examples
+#' \donttest{
+#'   policy    <- EpsilonGreedyPolicy$new(epsilon = 0.1)
+#'   bandit    <- MabWeightBandit$new(weights = c(0.6, 0.1, 0.1))
+#'
+#'   agent     <- Agent$new(policy, bandit, name = "E.G.", sparse = 0.5)
+#'
+#'   history   <- Simulator$new(agents = agent,
+#'                              horizon = 10,
+#'                              simulations = 10,
+#'                              progress_file = TRUE)$run()
+#' }
 NULL

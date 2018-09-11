@@ -7,11 +7,17 @@
 \alias{generate_bandit_data}
 \title{Bandit}
 \description{
-The R6 class \code{Bandit} is the parent class of all \code{Bandits} implemented in \code{\{contextual\}}.
-Classes that extend the abstract superclass \code{Bandit} are responsible for both the generation
-of \code{d} dimensional \code{context} vectors \code{X} and the \code{k} I.I.D. distributions
-each generating a \code{reward} for each of its \code{k} arms at each time step \code{t}.
-\code{Bandit} subclasses may (pre)generate these values synthetically, based on offline data, etc.
+R6 class \code{Bandit} is the parent of all \code{\{contextual\}} \code{Bandit} subclasses.
+In \code{\{contextual\}}, \code{Bandits} are responsible for the generation of contexts and rewards.
+}
+\details{
+On initialisation, any \code{Bandit} subclass has to define the number of arms \code{self$k}
+and the number of contextual feature dimensions \code{self$d}.
+
+\code{Bandit} subclasses are also responsible for returning \code{self$d x self$k} context matrices
+through \code{get_context()}, and returning rewards through \code{get_reward()}.
+
+\code{Bandit} subclasses have option to (pre-)generate these values in \code{generate_bandit_data()}.
 }
 \section{Usage}{
 
@@ -25,30 +31,43 @@ each generating a \code{reward} for each of its \code{k} arms at each time step 
 
 \describe{
 
-\item{\code{new()}}{ Generates and initializes a new \code{Bandit} object. }
-
-\item{\code{post_initialization()}}{
-Called right after \code{Simulator} sets its seed,
-but before it starts iterating over all time steps \code{t} in T. If you need to initialize random values in a \code{Policy},
-this is the place to do so.
-}
+\item{\code{new()}}{ Generates and instantializes a new \code{Bandit} instance. }
 
 \item{\code{get_context(t)}}{
-Returns a named list \code{list(k = n_arms, d = n_features, X = context)}
-with the current \code{d} dimensional \code{context} feature vector \code{X} together with the number of arms \code{k}.
+argument:
+\itemize{
+\item \code{t}: integer, time step t.
+}
+returns a named list \code{list(k = n_arms, d = n_features, X = context)}
+containing the current \code{d x k} dimensional \code{context} matrix \code{X},
+the number of arms \code{k} and the number of features \code{d}.
 }
 
 \item{\code{get_reward(t, context, action)}}{
-Returns the named list \code{list(reward = reward_for_choice_made,
-     optimal = optimal_reward_value)} containing the \code{reward}
-for the \code{action} previously returned by \code{policy} and,
-optionally, the \code{optimal} reward
-at the current time \code{t}.
+arguments:
+\itemize{
+\item \code{t}: integer, time step t.
+\item \code{context}: list, containing \code{context$X} (d x k context matrix) \code{context$d}
+(number of context feaures) and \code{context$k} (number of arms).
+\item \code{action}:  list, containing \code{policy}'s \code{action$choice}.
+}
+returns:
+\itemize{
+\item \code{list(reward, optimal)} with the \code{reward} awarded to \code{action$choice}, and,
+if available, an \code{optimal} (or "oracle") reward.
+}
+}
+
+\item{\code{post_initialization()}}{
+Called right after \code{Simulator} sets its seed,
+but before it starts iterating over all time steps \code{t} in T.
+If you need to set random values that remain available throughout the life of a \code{Bandit}
+instance, this is the place to do so.
 }
 
 \item{\code{generate_bandit_data()}}{
-A helper function that is called before \code{Simulator} starts iterating over all time steps \code{t} in T.
-This function is called when \code{bandit$precaching} has been set to \code{TRUE}.
+Helper function called before \code{Simulator} starts iterating over all time steps \code{t} in T.
+This function is only called when \code{bandit$precaching} is \code{TRUE} (default \code{FALSE}).
 Pregenerate \code{contexts} and \code{rewards} here.
 }
 }
