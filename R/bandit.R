@@ -86,8 +86,8 @@ Bandit <- R6::R6Class(
 #'      }
 #'      returns:
 #'      \itemize{
-#'          \item \code{list(reward, optimal)} with the \code{reward} awarded to \code{action$choice}, and,
-#'          if available, an \code{optimal} (or "oracle") reward.
+#'          \item \code{list} containing \code{reward} and, if available, the \code{optimal} (or "oracle")
+#'          reward for the current \code{t}
 #'      }
 #'  }
 #'
