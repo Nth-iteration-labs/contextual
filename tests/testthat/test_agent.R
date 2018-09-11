@@ -22,6 +22,7 @@ test_that("Agent", {
                                       horizon = 10,
                                       simulations = 10,
                                       do_parallel = FALSE,
+                                      log_interval = 1,
                                       progress_file = TRUE)$run()
 
   expect_identical(history$cumulative$testme$reward,0.3)

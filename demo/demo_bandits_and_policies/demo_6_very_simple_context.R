@@ -3,7 +3,7 @@ library(here)
 setwd(here("demo","demo_bandits_and_policies"))
 source("../dev.R")
 
-horizon       <- 10L
+horizon       <- 500L
 simulations   <- 10L
 
 ################### mostly shared

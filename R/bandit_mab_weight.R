@@ -19,7 +19,6 @@ MabWeightBandit <- R6::R6Class(
     },
     set_weights = function(local_W) {
       if (is.vector(local_W)) private$W <- matrix(local_W, nrow = 1L)
-      if (is.matrix(local_W)) private$W <- local_W
       self$d <- as.integer(dim(private$W)[1])
       self$k <- as.integer(dim(private$W)[2])
       invisible(private$W)

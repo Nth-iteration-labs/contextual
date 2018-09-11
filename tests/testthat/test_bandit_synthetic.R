@@ -20,5 +20,4 @@ test_that("ContextualWeightBandit simulation", {
   agent       <- Agent$new(policy, bandit)
   expect_identical(typeof(agent), "environment")
 
-
 })

@@ -249,12 +249,12 @@ summary.History <- function(object, ...) {
   print(cum[,c("agent","t", "sims", "cum_reward", "cum_reward_var",
                "cum_reward_sd", "cum_reward_ci")], fill = TRUE, row.names = FALSE)
 
-  cat("\n\nRelative Cumulative Reward / Click Through Rate:\n\n")
-  ctr <- cum[,c("agent","t", "sims", "cum_reward_rate", "cum_reward_rate_var",
+  cat("\n\nCumulative Reward Rate:\n\n")
+  crr <- cum[,c("agent","t", "sims", "cum_reward_rate", "cum_reward_rate_var",
                "cum_reward_rate_sd", "cum_reward_rate_ci")]
-  names(ctr) <- c("agent","t", "sims", "ctr_reward", "ctr_reward_var",
-               "ctr_reward_sd", "ctr_reward_ci")
-  print(ctr, fill = TRUE, row.names = FALSE)
+  names(crr) <- c("agent","t", "sims", "crr_reward", "crr_reward_var",
+               "crr_reward_sd", "crr_reward_ci")
+  print(crr, fill = TRUE, row.names = FALSE)
 
 
   cat("\n")
