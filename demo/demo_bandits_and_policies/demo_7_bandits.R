@@ -3,7 +3,7 @@ library(here)
 setwd(here("demo","demo_bandits_and_policies"))
 source("../dev.R")
 
-horizon       <- 5000L
+horizon       <- 10L
 simulations   <- 10L
 
 delta         <- 0.95
@@ -16,7 +16,6 @@ std_large     <- 0.01
 
 bandit        <- ContextualWheelBandit$new(delta, mean_v, std_v, mu_large, std_large)
 agents        <- list(Agent$new(UCB1Policy$new(), bandit),
-                      Agent$new(ContextualThompsonSamplingPolicy$new(delta=0.5, R=0.01, epsilon=0.5), bandit),
                       Agent$new(LinUCBDisjointOptimizedPolicy$new(0.6), bandit))
 
 simulation     <- Simulator$new(agents, horizon, simulations, do_parallel = FALSE)

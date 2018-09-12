@@ -83,7 +83,7 @@ Agent <- R6::R6Class(
 #'
 #' R6 class \code{Agent} oversees the running of one \code{\link{Bandit}} and \code{\link{Policy}}
 #' pair over each time step \code{t}. A \code{\link{Simulator}} instance generally runs multiple
-#' \code{Agent}si n parallel.
+#' \code{Agents} n parallel.
 #'
 #' @name Agent
 #' @aliases do_step get_t set_t
@@ -96,8 +96,6 @@ Agent <- R6::R6Class(
 #' @section Arguments:
 #'
 #' \describe{
-#'
-#'   \item{\code{new()}}{ Generates and instantializes a new \code{Agent} instance. }
 #'
 #'   \item{\code{policy}}{
 #'    \code{\link{Policy}} instance.
@@ -123,6 +121,8 @@ Agent <- R6::R6Class(
 #'
 #' \describe{
 #'
+#'   \item{\code{new()}}{ generates and instantializes a new \code{Agent} instance. }
+#'
 #'   \item{\code{do_step()}}{
 #'      completes one time step by consecutively calling \code{bandit$get_context()},
 #'      \code{policy$get_action()}, \code{bandit$get_reward()} and \code{policy$set_reward()}.
@@ -143,7 +143,7 @@ Agent <- R6::R6Class(
 #' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
-#' Bandit subclass examples: \code{\link{MabWeightBandit}}, \code{\link{ContextualBasicBandit}},  \code{\link{LiSamplingOfflineBandit}}
+#' Bandit subclass examples: \code{\link{MabWeightBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{LiSamplingOfflineBandit}}
 #'
 #' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 #'

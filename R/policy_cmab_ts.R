@@ -125,7 +125,7 @@ ContextualThompsonSamplingPolicy <- R6::R6Class(
 #' horizon            <- 1000L
 #' simulations        <- 10L
 #'
-#' bandit             <- ContextualBasicBandit$new(k = 5, d = 5)
+#' bandit             <- ContextualLogitBandit$new(k = 5, d = 5)
 #'
 #' delta              <- 0.5
 #' R                  <- 0.01

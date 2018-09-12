@@ -45,8 +45,8 @@ Bandit <- R6::R6Class(
 #' On initialisation, any \code{Bandit} subclass has to define the number of arms \code{self$k}
 #' and the number of contextual feature dimensions \code{self$d}.
 #'
-#' \code{Bandit} subclasses are also responsible for returning \code{self$d x self$k} context matrices
-#' through \code{get_context()}, and returning rewards through \code{get_reward()}.
+#' \code{Bandit} subclasses are responsible for returning \code{self$d x self$k} context matrices
+#' through \code{get_context()} and for returning rewards through \code{get_reward()}.
 #'
 #' \code{Bandit} subclasses have option to (pre-)generate these values in \code{generate_bandit_data()}.
 #'
@@ -64,7 +64,7 @@ Bandit <- R6::R6Class(
 #'
 #' \describe{
 #'
-#'   \item{\code{new()}}{ Generates and instantializes a new \code{Bandit} instance. }
+#'   \item{\code{new()}}{ generates and instantializes a new \code{Bandit} instance. }
 #'
 #'   \item{\code{get_context(t)}}{
 #'      argument:
@@ -90,14 +90,14 @@ Bandit <- R6::R6Class(
 #'  }
 #'
 #'   \item{\code{post_initialization()}}{
-#'      Called right after \code{Simulator} sets its seed,
+#'      called right after \code{Simulator} sets its seed,
 #'      but before it starts iterating over all time steps \code{t} in T.
 #'      If you need to set random values that remain available throughout the life of a \code{Bandit}
 #'      instance, this is the place to do so.
 #'   }
 #'
 #'   \item{\code{generate_bandit_data()}}{
-#'      Helper function called before \code{Simulator} starts iterating over all time steps \code{t} in T.
+#'      helper function called before \code{Simulator} starts iterating over all time steps \code{t} in T.
 #'      This function is only called when \code{bandit$precaching} is \code{TRUE} (default \code{FALSE}).
 #'      Pregenerate \code{contexts} and \code{rewards} here.
 #'   }
@@ -108,7 +108,7 @@ Bandit <- R6::R6Class(
 #' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
-#' Bandit subclass examples: \code{\link{MabWeightBandit}}, \code{\link{ContextualBasicBandit}},  \code{\link{LiSamplingOfflineBandit}}
+#' Bandit subclass examples: \code{\link{MabWeightBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{LiSamplingOfflineBandit}}
 #'
 #' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 #'
