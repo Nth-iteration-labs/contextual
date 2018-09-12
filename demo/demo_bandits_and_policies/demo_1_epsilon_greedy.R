@@ -8,7 +8,7 @@ setwd(here("demo","demo_bandits_and_policies"))
 
 policy             <- EpsilonGreedyPolicy$new(epsilon = 0.1)
 
-bandit             <- ContextualWeightBandit$new(weights = c(0.6, 0.1, 0.1))
+bandit             <- MabWeightBandit$new(weights = c(0.6, 0.1, 0.1))
 agent              <- Agent$new(policy,bandit)
 
 history            <- Simulator$new(
@@ -17,8 +17,6 @@ history            <- Simulator$new(
                           simulations = 100
                         )$run()
 
-
-plot(history, type = "average", regret = TRUE, ci = "ci", smooth = FALSE, interval = 1)
 plot(history, type = "cumulative", regret = TRUE, ci = "ci",  traces_max = 100, traces_alpha = 0.1,
      traces = TRUE, smooth = FALSE, interval = 1)
 

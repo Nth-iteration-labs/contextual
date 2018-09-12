@@ -4,55 +4,112 @@
 \alias{ContextualWeightBandit}
 \title{Bandit: ContextualWeightBandit}
 \description{
-ContextualWeightBandit intro
+Contextual extension of MabWeightBandit. Employs a user defined weight matrix for reward generation.
+}
+\details{
+\code{ContextualWeightBandit} illustrates different types of rewards (\code{Bernoulli}, \code{Gaussian} and
+\code{Poisson}) and the \code{contextual} context and reward precaching mechanism.
+
+The \code{d x k} weight matrix determines the number of simulated arms \code{k} and contextual
+features \code{d}. For every \code{t}, some context features (rows) are sampled at random. Rewards for an
+arm are determined by its column mean in the weight matrix
 }
 \section{Usage}{
 
-\preformatted{b <- ContextualWeightBandit$new()
-
-b$reset()
-
-print(b)
+\preformatted{
+  policy <- ContextualWeightBandit$new(reward_family = "Bernoulli", reward_means = 4.0, reward_stds = 1.0, weights = NULL, precaching  = TRUE)
 }
 }
 
 \section{Arguments}{
 
+
 \describe{
-\item{b}{A \code{ContextualWeightBandit} object.}
+
+\item{\code{reward_family}}{
+integer; number of bandit arms
+}
+\item{\code{reward_means}}{
+integer; number of contextual features
+}
+\item{\code{reward_stds}}{
+logical; if TRUE (default) it adds a constant (1.0) dimension to each context X at the end.
+}
+\item{\code{weights}}{
+integer; number of bandit arms
+}
+\item{\code{precaching}}{
+logical; determines if the bandit precaches all contexts and rewards. Faster if TRUE (default).
+}
+
 }
 }
 
-\section{Details}{
+\section{Methods}{
 
-\code{$new()} starts a new ContextualWeightBandit, it uses \code{\link[base]{pipe}}.
-R does \emph{not} wait for the process to finish, but returns
-immediately.
+
+\describe{
+
+\item{\code{new(k, d, intercept = NULL)}}{
+generates and instantializes a new \code{Bandit} instance.
+For arguments, see Argument section above.
+
 }
 
+\item{\code{get_context(t)}}{
+argument:
+\itemize{
+\item \code{t}: integer, time step \code{t}.
+}
+returns a named \code{list}
+containing the current \code{d x k} dimensional matrix \code{context$X},
+the number of arms \code{context$k} and the number of features \code{context$d}.
+}
+
+\item{\code{get_reward(t, context, action)}}{
+arguments:
+\itemize{
+\item \code{t}: integer, time step \code{t}.
+\item \code{context}: list, containing the current \code{context$X} (d x k context matrix),
+\code{context$k} (number of arms) and \code{context$d} (number of context feaures)
+(as set by \code{bandit}).
+\item \code{action}:  list, containing \code{action$choice} (as set by \code{policy}).
+}
+returns a named \code{list} containing \code{reward$reward}
+}
+
+\item{\code{post_initialization()}}{
+initialzes \code{d x k} beta matrix.
+}
+}
+}
+
+\examples{
+\donttest{
+horizon            <- 100L
+simulations        <- 100L
+context_weights    <- matrix(  c(0.4, 0.2, 0.4,
+                                 0.3, 0.4, 0.3,
+                                 0.1, 0.8, 0.1),  nrow = 3, ncol = 3, byrow = TRUE)
+
+bandit             <- ContextualWeightBandit$new(weights = context_weights, precaching = FALSE)
+
+agents             <- list( Agent$new(EpsilonGreedyPolicy$new(0.1), bandit),
+                            Agent$new(LinUCBDisjointOptimizedPolicy$new(0.6), bandit))
+
+simulation         <- Simulator$new(agents, horizon, simulations, do_parallel = FALSE)
+history            <- simulation$run()
+
+plot(history, type = "cumulative")
+
+
+}
+}
 \seealso{
 Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 
-Other contextual subclasses: \code{\link{ContextualEpochGreedyPolicy}},
-  \code{\link{ContextualThompsonHybrid}},
-  \code{\link{ContextualThompsonSamplingPolicy}},
-  \code{\link{ContinuumBandit}},
-  \code{\link{EpsilonFirstPolicy}},
-  \code{\link{EpsilonGreedyPolicy}},
-  \code{\link{Exp3Policy}},
-  \code{\link{GittinsBrezziLaiPolicy}},
-  \code{\link{LiSamplingOfflineBandit}},
-  \code{\link{LifPolicy}},
-  \code{\link{LinUCBDisjointOptimizedPolicy}},
-  \code{\link{LinUCBDisjointPolicy}},
-  \code{\link{LinUCBGeneralPolicy}},
-  \code{\link{LinUCBHybridOptimizedPolicy}},
-  \code{\link{LinUCBHybridPolicy}},
-  \code{\link{LinUCBOFULPolicy}},
-  \code{\link{MabWeightBandit}},
-  \code{\link{OraclePolicy}}, \code{\link{RandomPolicy}},
-  \code{\link{SoftmaxPolicy}},
-  \code{\link{ThompsonSamplingPolicy}},
-  \code{\link{UCB1Policy}}
+Bandit subclass examples: \code{\link{MabWeightBandit}}, \code{\link{ContextualWeightBandit}},  \code{\link{LiSamplingOfflineBandit}}
+
+Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 }

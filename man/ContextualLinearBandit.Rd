@@ -92,7 +92,7 @@ agents        <- list(Agent$new(EpsilonGreedyPolicy$new(0.1), bandit),
 simulation     <- Simulator$new(agents, horizon, simulations, do_parallel = FALSE)
 history        <- simulation$run()
 
-plot(history, type = "cumulative", regret = FALSE, rate = TRUE, legend_position = "right", smooth = T)
+plot(history, type = "cumulative", regret = FALSE, rate = TRUE, legend_position = "right")
 }
 }
 \references{

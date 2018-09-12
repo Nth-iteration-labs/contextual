@@ -14,6 +14,7 @@ test_that("Bandit superclass", {
 })
 
 test_that("ContextualWeightBandit simulation", {
+
   bandit      <- ContextualWeightBandit$new()
   expect_identical(typeof(bandit), "environment")
 
@@ -141,11 +142,9 @@ test_that("ContextualWheelBandit", {
   expect_equal(history$cumulative$LinUCBDisjointOptimized$cum_regret_var,2360.296, tolerance = 0.001)
   expect_equal(history$cumulative$UCB1$cum_regret_var,1087, tolerance = 0.001)
 
-
 })
 
 test_that("MabWeightBandit MAB policies", {
-
 
   weight_per_arm     <- c(0.9, 0.1, 0.1)
   horizon            <- 10
@@ -154,7 +153,7 @@ test_that("MabWeightBandit MAB policies", {
   bandit             <- MabWeightBandit$new(weights = weight_per_arm)
 
   agents             <- list(Agent$new(RandomPolicy$new(), bandit),
-                             Agent$new(EpsilonFirstPolicy$new(2), bandit),
+                             Agent$new(EpsilonFirstPolicy$new(4), bandit),
                              Agent$new(EpsilonGreedyPolicy$new(0.1), bandit),
                              Agent$new(ThompsonSamplingPolicy$new(1.0, 1.0), bandit),
                              Agent$new(Exp3Policy$new(0.1), bandit),
@@ -173,14 +172,13 @@ test_that("MabWeightBandit MAB policies", {
   expect_equal(history$cumulative$UCB1$cum_regret_var,0.711, tolerance = 0.01)
   expect_equal(history$cumulative$ThompsonSampling$cum_regret_var,1.07, tolerance = 0.01)
   expect_equal(history$cumulative$EpsilonGreedy$cum_regret_var,13.6, tolerance = 0.01)
-  expect_equal(history$cumulative$EpsilonFirst$cum_regret_var,0.667, tolerance = 0.01)
+  expect_equal(history$cumulative$EpsilonFirst$cum_regret_var,1.11, tolerance = 0.01)
   expect_equal(history$cumulative$Softmax$cum_regret_var,3.79, tolerance = 0.01)
   expect_equal(history$cumulative$SimpleBTS$cum_regret_var,3.12, tolerance = 0.01)
 
 })
 
 test_that("ContextualWeightBandit MAB policies", {
-
 
   weight_per_arm     <- c(0.9, 0.1, 0.1)
   horizon            <- 10
@@ -189,7 +187,7 @@ test_that("ContextualWeightBandit MAB policies", {
   bandit             <- ContextualWeightBandit$new(weights = weight_per_arm)
 
   agents             <- list(Agent$new(RandomPolicy$new(), bandit),
-                             Agent$new(EpsilonFirstPolicy$new(2), bandit),
+                             Agent$new(EpsilonFirstPolicy$new(4), bandit),
                              Agent$new(EpsilonGreedyPolicy$new(0.1), bandit),
                              Agent$new(ThompsonSamplingPolicy$new(1.0, 1.0), bandit),
                              Agent$new(Exp3Policy$new(0.1), bandit),
@@ -209,13 +207,42 @@ test_that("ContextualWeightBandit MAB policies", {
   expect_equal(history$cumulative$UCB1$cum_regret_var,2.72, tolerance = 0.01)
   expect_equal(history$cumulative$ThompsonSampling$cum_regret_var,1.66, tolerance = 0.01)
   expect_equal(history$cumulative$EpsilonGreedy$cum_regret_var,4.93, tolerance = 0.01)
-  expect_equal(history$cumulative$EpsilonFirst$cum_regret_var,0.278, tolerance = 0.01)
+  expect_equal(history$cumulative$EpsilonFirst$cum_regret_var,0.989, tolerance = 0.01)
   expect_equal(history$cumulative$Softmax$cum_regret_var,2.77, tolerance = 0.01)
   expect_equal(history$cumulative$SimpleBTS$cum_regret_var,1.43, tolerance = 0.01)
 
-
 })
 
+test_that("ContextualWeightBandit options", {
 
+  weight_per_arm     <- c(0.9, 0.1, 0.1)
+  horizon            <- 10
+  simulations        <- 10
 
+  expect_error(ContextualWeightBandit$new(weights = weight_per_arm, reward_family = "notgood"))
+
+  # Gaussian
+
+  bandit             <- ContextualWeightBandit$new(weights = weight_per_arm, reward_family = "Gaussian")
+  agents             <- list(Agent$new(EpsilonGreedyPolicy$new(0.1), bandit))
+  simulation         <- Simulator$new(agents, horizon, simulations, do_parallel = FALSE)
+  history            <- simulation$run()
+
+  expect_equal(history$cumulative$EpsilonGreedy$cum_regret_var, 6.52, tolerance = 0.01)
+
+  # Poisson, without precaching
+
+  bandit             <- ContextualWeightBandit$new(weights = weight_per_arm,
+                                                   reward_family = "Poisson",
+                                                   precaching = FALSE)
+
+  agents             <- list(Agent$new(EpsilonGreedyPolicy$new(0.1), bandit))
+  simulation         <- Simulator$new(agents, horizon, simulations, do_parallel = FALSE)
+  history            <- simulation$run()
+
+  expect_equal(history$cumulative$EpsilonGreedy$cum_regret_var,  14.1, tolerance = 0.01)
+
+  expect_message(bandit$generate_bandit_data(n = 1L, silent = FALSE), "Precaching bandit")
+
+})
 

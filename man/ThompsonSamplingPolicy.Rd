@@ -94,7 +94,6 @@ Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link
 Other contextual subclasses: \code{\link{ContextualEpochGreedyPolicy}},
   \code{\link{ContextualThompsonHybrid}},
   \code{\link{ContextualThompsonSamplingPolicy}},
-  \code{\link{ContextualWeightBandit}},
   \code{\link{ContinuumBandit}},
   \code{\link{EpsilonFirstPolicy}},
   \code{\link{EpsilonGreedyPolicy}},
@@ -108,7 +107,6 @@ Other contextual subclasses: \code{\link{ContextualEpochGreedyPolicy}},
   \code{\link{LinUCBHybridOptimizedPolicy}},
   \code{\link{LinUCBHybridPolicy}},
   \code{\link{LinUCBOFULPolicy}},
-  \code{\link{MabWeightBandit}},
   \code{\link{OraclePolicy}}, \code{\link{RandomPolicy}},
   \code{\link{SoftmaxPolicy}}, \code{\link{UCB1Policy}}
 }

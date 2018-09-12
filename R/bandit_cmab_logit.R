@@ -137,7 +137,8 @@ ContextualLogitBandit <- R6::R6Class(
 #'
 #' bandit        <- ContextualLogitBandit$new(k = 5, d = 5, intercept = TRUE)
 #'
-#' agents        <- list(Agent$new(ContextualThompsonSamplingPolicy$new(delta=0.5, R=0.01, epsilon=0.5), bandit),
+#' agents        <- list(Agent$new(ContextualThompsonSamplingPolicy$new(delta=0.5,
+#'                                                        R=0.01, epsilon=0.5), bandit),
 #'                       Agent$new(EpsilonGreedyPolicy$new(0.1), bandit),
 #'                       Agent$new(LinUCBGeneralPolicy$new(0.6), bandit),
 #'                       Agent$new(ContextualEpochGreedyPolicy$new(8), bandit),
@@ -147,6 +148,7 @@ ContextualLogitBandit <- R6::R6Class(
 #' simulation     <- Simulator$new(agents, horizon, simulations, do_parallel = FALSE)
 #' history        <- simulation$run()
 #'
-#' plot(history, type = "cumulative", regret = FALSE, rate = TRUE, legend_position = "right", smooth = T)
+#' plot(history, type = "cumulative", regret = FALSE,
+#'               rate = TRUE, legend_position = "right")
 #' }
 NULL
