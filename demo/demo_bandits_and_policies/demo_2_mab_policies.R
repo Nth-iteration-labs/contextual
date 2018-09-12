@@ -4,20 +4,20 @@ source("../dev.R")
 
 
 weight_per_arm     <- c(0.9, 0.1, 0.1)
-horizon            <- 100
-simulations        <- 1000
+horizon            <- 10
+simulations        <- 10
 
-bandit             <- ContextualWeightBandit$new(weights = weight_per_arm)
+bandit             <- MabWeightBandit$new(weights = weight_per_arm)
 
 agents             <- list(Agent$new(RandomPolicy$new(), bandit),
-                           Agent$new(OraclePolicy$new(), bandit),
+                           #Agent$new(OraclePolicy$new(), bandit),
                            Agent$new(ThompsonSamplingPolicy$new(1.0, 1.0), bandit),
                            Agent$new(Exp3Policy$new(0.1), bandit),
                            Agent$new(GittinsBrezziLaiPolicy$new(), bandit),
                            Agent$new(UCB1Policy$new(), bandit)
 )
 
-simulation         <- Simulator$new(agents, horizon, simulations)
+simulation         <- Simulator$new(agents, horizon, simulations, do_parallel = FALSE)
 history            <- simulation$run()
 
 par(mfrow = c(3, 2), mar = c(3, 5, 1, 1))
@@ -85,4 +85,3 @@ par(mfrow = c(1, 1))
 print(history)
 summary(history)
 
-print(history$meta$sim_total_duration)

@@ -144,6 +144,78 @@ test_that("ContextualWheelBandit", {
 
 })
 
+test_that("MabWeightBandit MAB policies", {
+
+
+  weight_per_arm     <- c(0.9, 0.1, 0.1)
+  horizon            <- 10
+  simulations        <- 10
+
+  bandit             <- MabWeightBandit$new(weights = weight_per_arm)
+
+  agents             <- list(Agent$new(RandomPolicy$new(), bandit),
+                             Agent$new(EpsilonFirstPolicy$new(2), bandit),
+                             Agent$new(EpsilonGreedyPolicy$new(0.1), bandit),
+                             Agent$new(ThompsonSamplingPolicy$new(1.0, 1.0), bandit),
+                             Agent$new(Exp3Policy$new(0.1), bandit),
+                             Agent$new(GittinsBrezziLaiPolicy$new(), bandit),
+                             Agent$new(UCB1Policy$new(), bandit),
+                             Agent$new(SoftmaxPolicy$new(0.1), bandit),
+                             Agent$new(SimpleBTSPolicy$new(), bandit)
+  )
+
+  simulation         <- Simulator$new(agents, horizon, simulations, do_parallel = FALSE)
+  history            <- simulation$run()
+
+  expect_equal(history$cumulative$Random$cum_regret_var,1.82, tolerance = 0.01)
+  expect_equal(history$cumulative$GittinsBrezziLai$cum_regret_var,1.43, tolerance = 0.01)
+  expect_equal(history$cumulative$Exp3$cum_regret_var,1.17, tolerance = 0.01)
+  expect_equal(history$cumulative$UCB1$cum_regret_var,0.711, tolerance = 0.01)
+  expect_equal(history$cumulative$ThompsonSampling$cum_regret_var,1.07, tolerance = 0.01)
+  expect_equal(history$cumulative$EpsilonGreedy$cum_regret_var,13.6, tolerance = 0.01)
+  expect_equal(history$cumulative$EpsilonFirst$cum_regret_var,0.667, tolerance = 0.01)
+  expect_equal(history$cumulative$Softmax$cum_regret_var,3.79, tolerance = 0.01)
+  expect_equal(history$cumulative$SimpleBTS$cum_regret_var,3.12, tolerance = 0.01)
+
+})
+
+test_that("ContextualWeightBandit MAB policies", {
+
+
+  weight_per_arm     <- c(0.9, 0.1, 0.1)
+  horizon            <- 10
+  simulations        <- 10
+
+  bandit             <- ContextualWeightBandit$new(weights = weight_per_arm)
+
+  agents             <- list(Agent$new(RandomPolicy$new(), bandit),
+                             Agent$new(EpsilonFirstPolicy$new(2), bandit),
+                             Agent$new(EpsilonGreedyPolicy$new(0.1), bandit),
+                             Agent$new(ThompsonSamplingPolicy$new(1.0, 1.0), bandit),
+                             Agent$new(Exp3Policy$new(0.1), bandit),
+                             Agent$new(GittinsBrezziLaiPolicy$new(), bandit),
+                             Agent$new(UCB1Policy$new(), bandit),
+                             Agent$new(SoftmaxPolicy$new(0.1), bandit),
+                             Agent$new(SimpleBTSPolicy$new(), bandit)
+
+  )
+
+  simulation         <- Simulator$new(agents, horizon, simulations, do_parallel = FALSE)
+  history            <- simulation$run()
+
+  expect_equal(history$cumulative$Random$cum_regret_var,2.84, tolerance = 0.01)
+  expect_equal(history$cumulative$GittinsBrezziLai$cum_regret_var,2.89, tolerance = 0.01)
+  expect_equal(history$cumulative$Exp3$cum_regret_var,2.9, tolerance = 0.01)
+  expect_equal(history$cumulative$UCB1$cum_regret_var,2.72, tolerance = 0.01)
+  expect_equal(history$cumulative$ThompsonSampling$cum_regret_var,1.66, tolerance = 0.01)
+  expect_equal(history$cumulative$EpsilonGreedy$cum_regret_var,4.93, tolerance = 0.01)
+  expect_equal(history$cumulative$EpsilonFirst$cum_regret_var,0.278, tolerance = 0.01)
+  expect_equal(history$cumulative$Softmax$cum_regret_var,2.77, tolerance = 0.01)
+  expect_equal(history$cumulative$SimpleBTS$cum_regret_var,1.43, tolerance = 0.01)
+
+
+})
+
 
 
 

@@ -24,19 +24,19 @@ MabWeightBandit <- R6::R6Class(
       invisible(private$W)
     },
     get_context = function(t) {
-      contextlist <- list(
+      context <- list(
         k = self$k,
         d = self$d
       )
-      contextlist
+      context
     },
     get_reward = function(t, context, action) {
       private$R  <- as.double(matrix(runif(self$k) < self$get_weights(), self$k, self$d))
-      rewardlist <- list(
+      reward <- list(
         reward                   = private$R[action$choice],
         optimal_reward_value     = private$R[which.max(private$R)]
       )
-      rewardlist
+      reward
     }
   )
 )

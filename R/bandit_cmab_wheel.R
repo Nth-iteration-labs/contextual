@@ -24,12 +24,16 @@ ContextualWheelBandit <- R6::R6Class(
     },
     get_context = function(t) {
 
+      # sample uniform contexts in unit ball
+
       repeat{
         context                                 <- runif(self$d, -1, 1)
         if(norm(as.matrix(context),"2") <= 1) {
           break
         }
       }
+      # sample rewards
+
       self$rewards                              <- rnorm(self$k,self$mean_v,self$std_v)
 
       if (norm(as.matrix(context),"2") >= self$delta) {
