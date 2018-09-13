@@ -24,6 +24,7 @@ Agent <- R6::R6Class(
         self$name  <- name
       }
       self$reset()
+      invisible(self)
     },
     reset = function() {
       if(!is.null(self$bandit$d) && is.null(self$bandit$unique)) {
@@ -43,6 +44,7 @@ Agent <- R6::R6Class(
       self$log_interval <- 1000L
       agent_t <<- 0L
       policy_t <<- 1L
+      invisible(self)
     },
     do_step = function() {
       agent_t  <<- agent_t + 1L
@@ -72,6 +74,7 @@ Agent <- R6::R6Class(
     },
     set_t = function(t) {
       agent_t <<- t
+      invisible(self)
     },
     get_t = function(t) {
       agent_t
@@ -124,8 +127,9 @@ Agent <- R6::R6Class(
 #'   \item{\code{new()}}{ generates and instantializes a new \code{Agent} instance. }
 #'
 #'   \item{\code{do_step()}}{
-#'      completes one time step by consecutively calling \code{bandit$get_context()},
+#'      advances a simulation by one time step by consecutively calling \code{bandit$get_context()},
 #'      \code{policy$get_action()}, \code{bandit$get_reward()} and \code{policy$set_reward()}.
+#'      Returns a list of lists with context, action, reward and theta.
 #'    }
 #'
 #'   \item{\code{set_t(t)}}{
@@ -143,14 +147,14 @@ Agent <- R6::R6Class(
 #' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
-#' Bandit subclass examples: \code{\link{MabWeightBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{LiSamplingOfflineBandit}}
+#' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{LiSamplingOfflineBandit}}
 #'
 #' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 #'
 #' @examples
 #' \donttest{
 #'   policy    <- EpsilonGreedyPolicy$new(epsilon = 0.1)
-#'   bandit    <- MabWeightBandit$new(weights = c(0.6, 0.1, 0.1))
+#'   bandit    <- BasicBernoulliBandit$new(weights = c(0.6, 0.1, 0.1))
 #'
 #'   agent     <- Agent$new(policy, bandit, name = "E.G.", sparse = 0.5)
 #'

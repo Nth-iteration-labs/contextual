@@ -9,6 +9,7 @@
 \details{
 The key assumption of the method is that the individual events are i.i.d., and
 that the logging policy chose each arm at each time step uniformly at random.
+
 Take care: if A is a stationary policy that does not change over trials,
 data may be used more efficiently via propensity
 scoring (Langford et al., 2008; Strehl et al., 2011) and related

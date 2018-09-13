@@ -27,8 +27,8 @@ ContextualWheelBandit <- R6::R6Class(
       # sample uniform contexts in unit ball
 
       repeat{
-        context                                 <- runif(self$d, -1, 1)
-        if(norm(as.matrix(context),"2") <= 1) {
+        X                                 <- runif(self$d, -1, 1)
+        if(norm(as.matrix(X),"2") <= 1) {
           break
         }
       }
@@ -36,16 +36,16 @@ ContextualWheelBandit <- R6::R6Class(
 
       self$rewards                              <- rnorm(self$k,self$mean_v,self$std_v)
 
-      if (norm(as.matrix(context),"2") >= self$delta) {
+      if (norm(as.matrix(X),"2") >= self$delta) {
         r_big                                   <- rnorm(1,self$mu_large, self$std_large)
-        if (context[1] > 0) {
-          if (context[2] > 0) {
+        if (X[1] > 0) {
+          if (X[2] > 0) {
             self$rewards[1]                     <- r_big
           } else {
             self$rewards[2]                     <- r_big
           }
         } else {
-          if (context[2] > 0) {
+          if (X[2] > 0) {
             self$rewards[3]                     <- r_big
           } else {
             self$rewards[4]                     <- r_big
@@ -53,22 +53,22 @@ ContextualWheelBandit <- R6::R6Class(
         }
       }
 
-      context                                   <- matrix(context, self$d,self$k)
+      X                                         <- matrix(X, self$d,self$k)
 
-      context_list <- list(
+      context                                   <- list(
         k = self$k,
         d = self$d,
-        X = context
+        X = X
       )
 
-      context_list
+      context
     },
     get_reward = function(t, context_common, action) {
-      rewardlist <- list(
+      reward <- list(
         reward                   = self$rewards[action$choice],
         optimal_reward_value     = self$rewards[which.max(self$rewards)]
       )
-      rewardlist
+      reward
     }
   )
 )
@@ -170,7 +170,7 @@ ContextualWheelBandit <- R6::R6Class(
 #' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
-#' Bandit subclass examples: \code{\link{MabWeightBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{LiSamplingOfflineBandit}}
+#' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{LiSamplingOfflineBandit}}
 #'
 #' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 #'

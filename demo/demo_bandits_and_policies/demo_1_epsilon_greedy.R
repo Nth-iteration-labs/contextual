@@ -8,7 +8,7 @@ setwd(here("demo","demo_bandits_and_policies"))
 
 policy             <- EpsilonGreedyPolicy$new(epsilon = 0.1)
 
-bandit             <- MabWeightBandit$new(weights = c(0.6, 0.1, 0.1))
+bandit             <- BasicBernoulliBandit$new(weights = c(0.6, 0.1, 0.1))
 agent              <- Agent$new(policy,bandit)
 
 history            <- Simulator$new(

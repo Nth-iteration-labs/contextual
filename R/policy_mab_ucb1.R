@@ -111,10 +111,10 @@ UCB1Policy <- R6::R6Class(
 #'
 #' horizon            <- 100L
 #' simulations        <- 100L
-#' weights            <- c(0.9, 0.1, 0.1)
+#' p_per_arm          <- c(0.9, 0.1, 0.1)
 #'
 #' policy             <- UCB1Policy$new()
-#' bandit             <- MabWeightBandit$new(weights = weights)
+#' bandit             <- BasicBernoulliBandit$new(p_per_arm = p_per_arm)
 #' agent              <- Agent$new(policy, bandit)
 #'
 #' history            <- Simulator$new(agent, horizon, simulations, do_parallel = FALSE)$run()

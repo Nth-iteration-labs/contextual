@@ -144,13 +144,28 @@ test_that("ContextualWheelBandit", {
 
 })
 
-test_that("MabWeightBandit MAB policies", {
+
+test_that("BasicGaussianBandit", {
+
+  horizon            <- 10
+  sims               <- 10
+  policy             <- EpsilonGreedyPolicy$new(epsilon = 0.1)
+  bandit             <- BasicGaussianBandit$new(c(0,0,1), c(1,1,1))
+  agent              <- Agent$new(policy,bandit)
+
+  history            <- Simulator$new(agent, horizon, sims, do_parallel = FALSE)$run()
+
+  expect_equal(history$cumulative$EpsilonGreedy$cum_regret_var, 15.8, tolerance = 0.01)
+
+})
+
+test_that("BasicBernoulliBandit MAB policies", {
 
   weight_per_arm     <- c(0.9, 0.1, 0.1)
   horizon            <- 10
   simulations        <- 10
 
-  bandit             <- MabWeightBandit$new(weights = weight_per_arm)
+  bandit             <- BasicBernoulliBandit$new(weight_per_arm)
 
   agents             <- list(Agent$new(RandomPolicy$new(), bandit),
                              Agent$new(EpsilonFirstPolicy$new(4), bandit),
@@ -246,3 +261,103 @@ test_that("ContextualWeightBandit options", {
 
 })
 
+test_that("BasicBernoulliBandit MAB policies", {
+
+
+  context_weights    <- matrix(  c( 0.8, 0.1, 0.1,
+                                    0.1, 0.8, 0.1,
+                                    0.1, 0.1, 0.8), nrow = 3, ncol = 3, byrow = TRUE)
+  horizon     <- 40L
+  simulations <- 1L
+  bandit      <- ContextualWeightBandit$new(weights = context_weights, sum_weights = TRUE)
+
+  # This can only be random policy, otherwise rejection sampling will
+  # produce severely biased results.
+
+  policy      <- RandomPolicy$new()
+
+  agents <-
+    list(
+      Agent$new(EpsilonGreedyPolicy$new(0.01), bandit),
+      Agent$new(LinUCBDisjointPolicy$new(0.6), bandit)
+    )
+
+  simulation  <-
+    Simulator$new(
+      agents,
+      horizon = horizon,
+      simulations = simulations,
+      save_context = TRUE,
+      do_parallel = FALSE
+    )
+
+  direct <- simulation$run()
+
+  expect_equal(direct$get_cumulative_result(t=20)$LinUCBDisjoint$cum_reward,15)
+  expect_equal(direct$get_cumulative_result(t=20)$EpsilonGreedy$cum_reward,8)
+
+  ########################### create random log data ################################
+
+  context_weights    <- matrix(  c( 0.9, 0.1, 0.1,
+                                    0.1, 0.9, 0.1,
+                                    0.1, 0.1, 0.9), nrow = 3, ncol = 3, byrow = TRUE)
+  horizon     <- 100L
+  simulations <- 1L
+  bandit      <- ContextualWeightBandit$new(weights = context_weights, sum_weights = TRUE)
+
+  # This can only be random policy, otherwise rejection sampling will
+  # produce severely biased results.
+
+  policy      <- RandomPolicy$new()
+
+  agent       <- Agent$new(policy, bandit)
+
+  simulation  <-
+    Simulator$new(
+      agent,
+      horizon = horizon,
+      simulations = simulations,
+      save_context = TRUE,
+      do_parallel = FALSE
+    )
+
+  before <- simulation$run()
+  before$save("test.RData")
+
+  expect_equal(before$get_cumulative_result(t=20)$Random$cum_reward,17)
+  expect_equal(before$get_cumulative_result(t=40)$Random$cum_reward,27)
+
+  ######################## use the log to test a policy ##########################
+
+  history <- History$new()
+  history$load("test.RData")
+  log_S <- history$get_data_table()
+
+  bandit <- LiSamplingOfflineBandit$new(data_stream = log_S, k = 3, d = 3)
+
+  agents <-
+    list(
+      Agent$new(EpsilonGreedyPolicy$new(0.01), bandit),
+      Agent$new(LinUCBDisjointPolicy$new(0.6), bandit)
+    )
+
+  simulation <-
+    Simulator$new(
+      agents,
+      horizon = horizon,
+      simulations = simulations,
+      t_over_sims = TRUE,
+      do_parallel = FALSE,
+      reindex = TRUE
+    )
+
+  after <- simulation$run()
+  if (file.exists("test.RData")) file.remove("test.RData")
+
+  expect_equal(after$get_cumulative_result(t=20)$LinUCBDisjoint$cum_reward,16)
+  expect_equal(after$get_cumulative_result(t=20)$EpsilonGreedy$cum_reward,13)
+
+  expect_equal(after$get_cumulative_result(t=30)$LinUCBDisjoint$cum_reward,26)
+  expect_equal(after$get_cumulative_result(t=30)$EpsilonGreedy$cum_reward,17)
+
+})

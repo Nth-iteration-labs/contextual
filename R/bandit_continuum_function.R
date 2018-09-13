@@ -13,15 +13,15 @@ ContinuumBandit <- R6::R6Class(
       self$k            <- 1
     },
     get_context = function(t) {
-      contextlist       <- list()
-      contextlist$k     <- self$k
-      contextlist$d     <- self$d
-      contextlist
+      context           <- list()
+      context$k         <- self$k
+      context$d         <- self$d
+      context
     },
     get_reward = function(t, context, action) {
-      rewardlist        <- list()
-      rewardlist$reward <- self$arm_function(action$choice)
-      rewardlist
+      reward            <- list()
+      reward$reward     <- self$arm_function(action$choice)
+      reward
     }
   )
 )

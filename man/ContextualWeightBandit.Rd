@@ -4,7 +4,7 @@
 \alias{ContextualWeightBandit}
 \title{Bandit: ContextualWeightBandit}
 \description{
-Contextual extension of MabWeightBandit. Employs a user defined weight matrix for reward generation.
+Contextual extension of BasicBernoulliBandit. Employs a user defined weight matrix for reward generation.
 }
 \details{
 \code{ContextualWeightBandit} illustrates different types of rewards (\code{Bernoulli}, \code{Gaussian} and
@@ -39,6 +39,9 @@ logical; if TRUE (default) it adds a constant (1.0) dimension to each context X 
 integer; number of bandit arms
 }
 \item{\code{precaching}}{
+logical; determines if the bandit precaches all contexts and rewards. Faster if TRUE (default).
+}
+\item{\code{sum_weights}}{
 logical; determines if the bandit precaches all contexts and rewards. Faster if TRUE (default).
 }
 
@@ -109,7 +112,7 @@ plot(history, type = "cumulative")
 Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 
-Bandit subclass examples: \code{\link{MabWeightBandit}}, \code{\link{ContextualWeightBandit}},  \code{\link{LiSamplingOfflineBandit}}
+Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{LiSamplingOfflineBandit}}
 
 Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 }

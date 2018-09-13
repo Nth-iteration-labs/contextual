@@ -24,12 +24,12 @@ ContextualLogitBandit <- R6::R6Class(
     },
     get_context = function(t) {
       X <- matrix(runif(self$d*self$k, 0, 1), self$d, self$k)
-      context_list <- list(
+      context <- list(
         k = self$k,
         d = self$d,
         X = X
       )
-      context_list
+      context
     },
     get_reward = function(t, context, action) {
       X          <- context$X                             # context matrix
@@ -126,7 +126,7 @@ ContextualLogitBandit <- R6::R6Class(
 #' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
-#' Bandit subclass examples: \code{\link{MabWeightBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{LiSamplingOfflineBandit}}
+#' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{LiSamplingOfflineBandit}}
 #'
 #' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 #'

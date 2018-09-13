@@ -1,6 +1,6 @@
 #' @export
 LiSamplingOfflineBandit <- R6::R6Class(
-  inherit = BasicBandit,
+  inherit = Bandit,
   portable = TRUE,
   class = FALSE,
   private = list(
@@ -13,19 +13,18 @@ LiSamplingOfflineBandit <- R6::R6Class(
       self$k <- k               # Number of arms (integer)
       self$d <- d               # Dimension of context feature vector (integer)
       self$randomize <-randomize
-      #############################data_stream <- data_stream[sample(nrow(data_stream))]
       private$S <- data_stream  # Data stream, here as a data.table
     },
     post_initialization = function() {
       if(isTRUE(self$randomize))private$S <- private$S[sample(nrow(private$S))]
     },
     get_context = function(index) {
-      contextlist <- list(
+      context <- list(
         k = self$k,
         d = self$d,
         X = matrix(private$S$context[[index]], self$d, self$k)
       )
-      contextlist
+      context
     },
     get_reward = function(index, context, action) {
       reward_at_index  <- as.double(private$S$reward[[index]])
@@ -48,6 +47,7 @@ LiSamplingOfflineBandit <- R6::R6Class(
 #'
 #' The key assumption of the method is that the individual events are i.i.d., and
 #' that the logging policy chose each arm at each time step uniformly at random.
+#'
 #' Take care: if A is a stationary policy that does not change over trials,
 #' data may be used more efficiently via propensity
 #' scoring (Langford et al., 2008; Strehl et al., 2011) and related

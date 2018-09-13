@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Policy — Policy • contextual</title>
+<title>Bandit: BasicBernoulliBandit — BasicBernoulliBandit • contextual</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -36,16 +36,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Policy — Policy" />
+<meta property="og:title" content="Bandit: BasicBernoulliBandit — BasicBernoulliBandit" />
 
-<meta property="og:description" content="R6 class Policy is the parent class of all Policy implementations in
-{contextual}. Classes that extend this abstract superclass are expected to take into
-account the current d dimensional context,
-together with a limited set of parameters denoted theta (summarizing all past actions),
-to choose one of k Bandit arms at each time step t.
-On choosing one of the k arms and receiving its corresponding reward,
-the Policy then utilizes the current context, action and reward to
-update its set of parameters theta." />
+<meta property="og:description" content="Context-free Bernoulli or Binary multi-armed bandit." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -138,82 +131,98 @@ update its set of parameters theta." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Policy</h1>
-    <small class="dont-index">Source: <a href='https://github.com/Nth-iteration-labs/contextual/blob/master/R/policy.R'><code>R/policy.R</code></a></small>
-    <div class="hidden name"><code>Policy.Rd</code></div>
+    <h1>Bandit: BasicBernoulliBandit</h1>
+    <small class="dont-index">Source: <a href='https://github.com/Nth-iteration-labs/contextual/blob/master/R/bandit_basic_bernoulli.R'><code>R/bandit_basic_bernoulli.R</code></a></small>
+    <div class="hidden name"><code>BasicBernoulliBandit.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>R6 class <code>Policy</code> is the parent class of all <code>Policy</code> implementations in
-<code>{contextual}</code>. Classes that extend this abstract superclass are expected to take into
-account the current <code>d</code> dimensional <code>context</code>,
-together with a limited set of parameters denoted <code>theta</code> (summarizing all past actions),
-to choose one of <code>k</code> <code>Bandit</code> arms at each time step <code>t</code>.
-On choosing one of the <code>k</code> arms and receiving its corresponding <code>reward</code>,
-the <code>Policy</code> then utilizes the current <code>context</code>, <code>action</code> and <code>reward</code> to
-update its set of parameters <code>theta</code>.</p>
+    <p>Context-free Bernoulli or Binary multi-armed bandit.</p>
     
     </div>
 
         
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Simulates <code>k</code> Bernoulli arms where each arm issues a reward of one with
+uniform probability <code>p</code>, and otherwise a reward of zero.</p>
+<p>In a bandit scenario, this can be used to simulate a hit or miss event,
+such as if a user clicks on a headline, ad, or recommended product.</p>
+    
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 
     
     <pre>
-  policy &lt;- Policy$new()
+  policy &lt;- BasicBernoulliBandit$new(p_per_arm)
 </pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+
+    
+    <dl class='dl-horizontal'>
+<dt><code>p_per_arm</code></dt><dd><p>numeric vector; p value for each of the bandit's <code>k</code> arms</p></dd>
+</dl>
     
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     
     <dl class='dl-horizontal'>
-<dt><code>new()</code></dt><dd><p>Generates and initializes a new <code>Policy</code> object.</p></dd>
-    <dt><code>get_action(t, context)</code></dt><dd><p>arguments:
+    <dt><code>new(p_per_arm)</code></dt><dd><p>generates and instantializes a new <code>Bandit</code> instance.
+For arguments, see Argument section above.</p></dd>
+    <dt><code><a href='Bandit.html'>get_context(t)</a></code></dt><dd><p>argument:
 <ul>
 <li><p><code>t</code>: integer, time step <code>t</code>.</p></li>
-<li><p><code>context</code>: list, containing the current <code>context$X</code> (d x k context matrix),
-<code>context$k</code> (number of arms) and <code>context$d</code> (number of context feaures)</p></li>
 </ul>
-computes which arm to play based on the current values in named list <code>theta</code>
-and the current <code>context</code>. Returns a named list containing
-<code>action$choice</code>, which holds the index of the arm to play.</p></dd>
-    <dt><code>set_reward(t, context, action, reward)</code></dt><dd><p>arguments:
+returns a named <code>list</code>
+containing the number of arms as <code>context$k</code>.</p></dd>
+    <dt><code>get_reward(t, context, action)</code></dt><dd><p>arguments:
 <ul>
 <li><p><code>t</code>: integer, time step <code>t</code>.</p></li>
-<li><p><code>context</code>: list, containing the current <code>context$X</code> (d x k context matrix),
-<code>context$k</code> (number of arms) and <code>context$d</code> (number of context feaures)
-(as set by <code>bandit</code>).</p></li>
+<li><p><code>context</code>: list, with <code>context$k</code> (number of arms).</p></li>
 <li><p><code>action</code>:  list, containing <code>action$choice</code> (as set by <code>policy</code>).</p></li>
-<li><p><code>reward</code>:  list, containing <code>reward$reward</code> and, if available,
-<code>reward$optimal</code> (as set by <code>bandit</code>).</p></li>
 </ul>
-utilizes the above arguments to update and return the set of parameters in list <code>theta</code>.</p></dd>
-    <dt><code>set_parameters()</code></dt><dd><p>Helper function, called during a Policy's initialisation, assigns the values
-it finds in list <code>self$theta_to_arms</code> to each of the Policy's k arms.
-The parameters defined here can then be accessed by arm index in the following way:
-<code>theta[[index_of_arm]]$parameter_name</code>.</p></dd>
-    </dl>
+returns a named <code>list</code> containing <code>reward$reward</code></p></dd>
+</dl>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Core contextual classes: <code><a href='Bandit.html'>Bandit</a></code>, <code>Policy</code>, <code><a href='Simulator.html'>Simulator</a></code>,
+    <div class='dont-index'><p>Core contextual classes: <code><a href='Bandit.html'>Bandit</a></code>, <code><a href='Policy.html'>Policy</a></code>, <code><a href='Simulator.html'>Simulator</a></code>,
 <code><a href='Agent.html'>Agent</a></code>, <code><a href='History.html'>History</a></code>, <code><a href='Plot.html'>Plot</a></code></p>
-<p>Bandit subclass examples: <code><a href='BasicBernoulliBandit.html'>BasicBernoulliBandit</a></code>, <code><a href='ContextualLogitBandit.html'>ContextualLogitBandit</a></code>,  <code><a href='LiSamplingOfflineBandit.html'>LiSamplingOfflineBandit</a></code></p>
+<p>Bandit subclass examples: <code>BasicBernoulliBandit</code>, <code><a href='ContextualLogitBandit.html'>ContextualLogitBandit</a></code>,  <code><a href='LiSamplingOfflineBandit.html'>LiSamplingOfflineBandit</a></code></p>
 <p>Policy subclass examples: <code><a href='EpsilonGreedyPolicy.html'>EpsilonGreedyPolicy</a></code>, <code><a href='ContextualThompsonSamplingPolicy.html'>ContextualThompsonSamplingPolicy</a></code></p></div>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'>
+<span class='no'>horizon</span>            <span class='kw'>&lt;-</span> <span class='fl'>100</span>
+<span class='no'>sims</span>               <span class='kw'>&lt;-</span> <span class='fl'>100</span>
+
+<span class='no'>policy</span>             <span class='kw'>&lt;-</span> <span class='no'>EpsilonGreedyPolicy</span>$<span class='fu'>new</span>(<span class='kw'>epsilon</span> <span class='kw'>=</span> <span class='fl'>0.1</span>)
+
+<span class='no'>bandit</span>             <span class='kw'>&lt;-</span> <span class='no'>BasicBernoulliBandit</span>$<span class='fu'>new</span>(<span class='kw'>p_per_arm</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0.6</span>, <span class='fl'>0.1</span>, <span class='fl'>0.1</span>))
+<span class='no'>agent</span>              <span class='kw'>&lt;-</span> <span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>policy</span>,<span class='no'>bandit</span>)
+
+<span class='no'>history</span>            <span class='kw'>&lt;-</span> <span class='no'>Simulator</span>$<span class='fu'>new</span>(<span class='no'>agent</span>, <span class='no'>horizon</span>, <span class='no'>sims</span>)$<span class='fu'><a href='Simulator.html'>run</a></span>()</div><div class='output co'>#&gt; <span class='message'>Cloning, precaching and precalculating bandits and policies</span></div><div class='output co'>#&gt; <span class='message'>Preworkercreation</span></div><div class='output co'>#&gt; <span class='message'>Cores available: 4</span></div><div class='output co'>#&gt; <span class='message'>Workers assigned: 3</span></div><div class='output co'>#&gt; <span class='message'>Postworkercreation</span></div><div class='input'>
+<span class='fu'>plot</span>(<span class='no'>history</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"cumulative"</span>, <span class='kw'>regret</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='img'><img src='BasicBernoulliBandit-1.png' alt='' width='700' height='433' /></div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       
+      <li><a href="#details">Details</a></li>
+
       <li><a href="#usage">Usage</a></li>
+
+      <li><a href="#arguments">Arguments</a></li>
 
       <li><a href="#methods">Methods</a></li>
 
       <li><a href="#see-also">See also</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

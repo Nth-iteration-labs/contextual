@@ -1,6 +1,6 @@
 #' @export
 ContextualWeightBandit <- R6::R6Class(
-  inherit = MabWeightBandit,
+  inherit = Bandit,
   portable = TRUE,
   class = FALSE,
   public = list(
@@ -11,19 +11,26 @@ ContextualWeightBandit <- R6::R6Class(
     reward_family = NULL,
     has_cache     = NULL,
     precaching    = NULL,
+    sum_weights   = NULL,
     weights   = NULL,
     class_name = "ContextualWeightBandit",
-    initialize   = function( reward_family = 'Bernoulli', reward_means = 4.0, reward_stds = 1.0, weights = NULL, precaching  = TRUE ) {
+    initialize   = function( reward_family = 'Bernoulli', reward_means = 4.0, reward_stds = 1.0,
+                             weights = NULL, precaching  = TRUE, sum_weights = FALSE ) {
+
       if (!(reward_family %in% c("Bernoulli","Gaussian","Poisson"))) {
         stop('Reward family needs to be one of "Bernoulli", "Gaussian" or "Poisson".' , call. = FALSE)
       }
+
       if (is.vector(self$weights)) self$weights <- matrix(self$weights, nrow = 1L)
-      super$initialize(weights)
+      if (!is.null(weights)) self$set_weights(weights)
+
+      private$X <- array(1, dim = c(self$d, self$k, 1))
       self$has_cache            <- FALSE
       self$precaching           <- precaching
       self$reward_family        <- reward_family
       self$reward_means         <- reward_means
       self$reward_stds          <- reward_stds
+      self$sum_weights          <- sum_weights
     },
     set_weights = function(local_W) {
       if (is.vector(local_W)) private$W <- matrix(local_W, nrow = 1L)
@@ -61,6 +68,8 @@ ContextualWeightBandit <- R6::R6Class(
     context_list = list(),
     reward_list = list(),
     generate_context = function(n = 1L) {
+      # private$X <- array(sample(c(0, 1), replace = TRUE,
+                           # size = self$d * self$k * n), dim = c(self$d, self$k, n))
       private$X <- array(sample(c(0, 1), replace = TRUE, size = self$d * n), dim = c(self$d, self$k, n))
       private$X
     },
@@ -68,6 +77,7 @@ ContextualWeightBandit <- R6::R6Class(
       weight_array  <- array(t(matrix(private$W, self$k , self$d, byrow = TRUE )), dim = c(self$d, self$k, n))
       Wg <- private$X*weight_array
       private$O <- colSums(Wg)
+      if (!isTRUE(self$sum_weights)) private$O <- private$O / self$d
       private$O[is.nan(private$O)] <- 0
     },
     generate_rewards = function(n) {
@@ -102,7 +112,7 @@ ContextualWeightBandit <- R6::R6Class(
 
 #' Bandit: ContextualWeightBandit
 #'
-#' Contextual extension of MabWeightBandit. Employs a user defined weight matrix for reward generation.
+#' Contextual extension of BasicBernoulliBandit. Employs a user defined weight matrix for reward generation.
 #'
 #' \code{ContextualWeightBandit} illustrates different types of rewards (\code{Bernoulli}, \code{Gaussian} and
 #' \code{Poisson}) and the \code{contextual} context and reward precaching mechanism.
@@ -137,6 +147,9 @@ ContextualWeightBandit <- R6::R6Class(
 #'      integer; number of bandit arms
 #'   }
 #'  \item{\code{precaching}}{
+#'      logical; determines if the bandit precaches all contexts and rewards. Faster if TRUE (default).
+#'   }
+#'   \item{\code{sum_weights}}{
 #'      logical; determines if the bandit precaches all contexts and rewards. Faster if TRUE (default).
 #'   }
 #'
@@ -185,7 +198,7 @@ ContextualWeightBandit <- R6::R6Class(
 #' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
-#' Bandit subclass examples: \code{\link{MabWeightBandit}}, \code{\link{ContextualWeightBandit}},  \code{\link{LiSamplingOfflineBandit}}
+#' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{LiSamplingOfflineBandit}}
 #'
 #' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 #'

@@ -13,8 +13,8 @@
 #' Core contextual classes: \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
-#' Bandit classes: \code{\link{Bandit}}, \code{\link{MabWeightBandit}},
-#' \code{\link{LiSamplingOfflineBandit}}, \code{\link{ContextualWeightBandit}}
+#' Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBernoulliBandit}},
+#' \code{\link{LiSamplingOfflineBandit}}, \code{\link{ContextualLogitBandit}}
 #'
 #' @export
 plot.History <- function(x, ...) {
@@ -199,8 +199,8 @@ plot.History <- function(x, ...) {
 #' Core contextual classes: \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
-#' Bandit classes: \code{\link{Bandit}}, \code{\link{MabWeightBandit}},
-#' \code{\link{LiSamplingOfflineBandit}}, \code{\link{ContextualWeightBandit}}
+#' Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBernoulliBandit}},
+#' \code{\link{LiSamplingOfflineBandit}}, \code{\link{ContextualLogitBandit}}
 #'
 #' @export
 print.History <- function(x, ...) {
@@ -221,8 +221,8 @@ print.History <- function(x, ...) {
 #' Core contextual classes: \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
-#' Bandit classes: \code{\link{Bandit}}, \code{\link{MabWeightBandit}},
-#' \code{\link{LiSamplingOfflineBandit}}, \code{\link{ContextualWeightBandit}}
+#' Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBernoulliBandit}},
+#' \code{\link{LiSamplingOfflineBandit}}, \code{\link{ContextualLogitBandit}}
 #'
 #' @importFrom data.table data.table setcolorder rbindlist
 #' @export

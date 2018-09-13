@@ -38,7 +38,7 @@
 
 <meta property="og:title" content="Bandit: ContextualWeightBandit — ContextualWeightBandit" />
 
-<meta property="og:description" content="Contextual extension of MabWeightBandit. Employs a user defined weight matrix for reward generation." />
+<meta property="og:description" content="Contextual extension of BasicBernoulliBandit. Employs a user defined weight matrix for reward generation." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -138,7 +138,7 @@
 
     <div class="ref-description">
     
-    <p>Contextual extension of MabWeightBandit. Employs a user defined weight matrix for reward generation.</p>
+    <p>Contextual extension of BasicBernoulliBandit. Employs a user defined weight matrix for reward generation.</p>
     
     </div>
 
@@ -167,6 +167,7 @@ arm are determined by its column mean in the weight matrix</p>
 <dt><code>reward_stds</code></dt><dd><p>logical; if TRUE (default) it adds a constant (1.0) dimension to each context X at the end.</p></dd>
 <dt><code>weights</code></dt><dd><p>integer; number of bandit arms</p></dd>
 <dt><code>precaching</code></dt><dd><p>logical; determines if the bandit precaches all contexts and rewards. Faster if TRUE (default).</p></dd>
+<dt><code>sum_weights</code></dt><dd><p>logical; determines if the bandit precaches all contexts and rewards. Faster if TRUE (default).</p></dd>
     </dl>
     
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
@@ -198,7 +199,7 @@ returns a named <code>list</code> containing <code>reward$reward</code></p></dd>
 
     <div class='dont-index'><p>Core contextual classes: <code><a href='Bandit.html'>Bandit</a></code>, <code><a href='Policy.html'>Policy</a></code>, <code><a href='Simulator.html'>Simulator</a></code>,
 <code><a href='Agent.html'>Agent</a></code>, <code><a href='History.html'>History</a></code>, <code><a href='Plot.html'>Plot</a></code></p>
-<p>Bandit subclass examples: <code><a href='MabWeightBandit.html'>MabWeightBandit</a></code>, <code>ContextualWeightBandit</code>,  <code><a href='LiSamplingOfflineBandit.html'>LiSamplingOfflineBandit</a></code></p>
+<p>Bandit subclass examples: <code><a href='BasicBernoulliBandit.html'>BasicBernoulliBandit</a></code>, <code><a href='ContextualLogitBandit.html'>ContextualLogitBandit</a></code>,  <code><a href='LiSamplingOfflineBandit.html'>LiSamplingOfflineBandit</a></code></p>
 <p>Policy subclass examples: <code><a href='EpsilonGreedyPolicy.html'>EpsilonGreedyPolicy</a></code>, <code><a href='ContextualThompsonSamplingPolicy.html'>ContextualThompsonSamplingPolicy</a></code></p></div>
     
 

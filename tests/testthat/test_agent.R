@@ -5,14 +5,14 @@ test_that("Agent", {
   policy             <- EpsilonGreedyPolicy$new(epsilon = 0.1)
   expect_identical(typeof(policy), "environment")
 
-  bandit             <- MabWeightBandit$new(weights = c(0.6, 0.1, 0.1))
+  bandit             <- BasicBernoulliBandit$new(c(0.6, 0.1, 0.1))
   expect_identical(typeof(bandit), "environment")
 
   agent              <- Agent$new(policy, bandit, name = "testme", sparse = 0.5)
   expect_identical(typeof(agent), "environment")
   expect_equal(agent$name, "testme")
   expect_equal(agent$sparse, 0.5)
-  expect_equal(agent$bandit$d, 1)
+  expect_equal(agent$bandit$d, NULL)
   expect_equal(agent$bandit$k, 3)
   expect_equal(agent$policy$class_name, "EpsilonGreedyPolicy")
   expect_equal(agent$policy$epsilon, 0.1)

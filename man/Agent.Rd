@@ -52,8 +52,9 @@ the \code{\link{Bandit}}'s data is randomly chosen to be available to improve th
 \item{\code{new()}}{ generates and instantializes a new \code{Agent} instance. }
 
 \item{\code{do_step()}}{
-completes one time step by consecutively calling \code{bandit$get_context()},
+advances a simulation by one time step by consecutively calling \code{bandit$get_context()},
 \code{policy$get_action()}, \code{bandit$get_reward()} and \code{policy$set_reward()}.
+Returns a list of lists with context, action, reward and theta.
 }
 
 \item{\code{set_t(t)}}{
@@ -70,7 +71,7 @@ returns the current time step \code{t}.
 \examples{
 \donttest{
   policy    <- EpsilonGreedyPolicy$new(epsilon = 0.1)
-  bandit    <- MabWeightBandit$new(weights = c(0.6, 0.1, 0.1))
+  bandit    <- BasicBernoulliBandit$new(weights = c(0.6, 0.1, 0.1))
 
   agent     <- Agent$new(policy, bandit, name = "E.G.", sparse = 0.5)
 
@@ -84,7 +85,7 @@ returns the current time step \code{t}.
 Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 
-Bandit subclass examples: \code{\link{MabWeightBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{LiSamplingOfflineBandit}}
+Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{LiSamplingOfflineBandit}}
 
 Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 }

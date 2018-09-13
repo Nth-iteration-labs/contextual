@@ -3,14 +3,18 @@ setwd(here("demo","demo_bandits_and_policies"))
 source("../dev.R")
 
 
-weight_per_arm     <- c(0.9, 0.1, 0.1)
-horizon            <- 10
-simulations        <- 10
+prob_per_arm     <- c(0.9, 0.1, 0.1)
+horizon            <- 100
+simulations        <- 100
 
-bandit             <- MabWeightBandit$new(weights = weight_per_arm)
+bandit             <- BasicBernoulliBandit$new(prob_per_arm)
+
+bandit             <- BasicGaussianBandit$new(c(0,0,1),c(1,1,1))
+
 
 agents             <- list(Agent$new(RandomPolicy$new(), bandit),
                            #Agent$new(OraclePolicy$new(), bandit),
+                           Agent$new(EpsilonGreedyPolicy$new(0.1), bandit),
                            Agent$new(ThompsonSamplingPolicy$new(1.0, 1.0), bandit),
                            Agent$new(Exp3Policy$new(0.1), bandit),
                            Agent$new(GittinsBrezziLaiPolicy$new(), bandit),

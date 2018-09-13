@@ -72,10 +72,10 @@ based on the reward received, and, potentially, the current context.
 
 horizon            <- 100L
 simulations        <- 100L
-weights            <- c(0.9, 0.1, 0.1)
+p_per_arm          <- c(0.9, 0.1, 0.1)
 
 policy             <- EpsilonFirstPolicy$new(first = 50)
-bandit             <- MabWeightBandit$new(weights = weights)
+bandit             <- BasicBernoulliBandit$new(p_per_arm = p_per_arm)
 agent              <- Agent$new(policy, bandit)
 
 history            <- Simulator$new(agent, horizon, simulations, do_parallel = FALSE)$run()

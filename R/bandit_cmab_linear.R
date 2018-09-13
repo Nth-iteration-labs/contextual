@@ -22,9 +22,9 @@ ContextualLinearBandit <- R6::R6Class(
       self$betas                                <- self$betas / norm(self$betas, type = "2")
     },
     get_context = function(t) {
-      context                                   <- rnorm(self$d)
-      reward_vector                             <- context %*% self$betas
-      context                                   <- matrix(context, self$d,self$k)
+      X                                         <- rnorm(self$d)
+      reward_vector                             <- X %*% self$betas
+      X                                         <- matrix(X, self$d,self$k)
       reward_vector                             <- reward_vector + rnorm(self$k, sd = self$sigma)
 
       if (isTRUE(self$binary)) {
@@ -33,19 +33,19 @@ ContextualLinearBandit <- R6::R6Class(
       } else {
         self$rewards                            <- reward_vector
       }
-      context_list <- list(
+      context <- list(
         k = self$k,
         d = self$d,
-        X = context
+        X = X
       )
-      context_list
+      context
     },
     get_reward = function(t, context_common, action) {
-      rewardlist <- list(
+      reward <- list(
         reward                   = self$rewards[action$choice],
         optimal_reward_value     = self$rewards[which.max(self$rewards)]
       )
-      rewardlist
+      reward
     }
   )
 )
@@ -136,7 +136,7 @@ ContextualLinearBandit <- R6::R6Class(
 #' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
-#' Bandit subclass examples: \code{\link{MabWeightBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{LiSamplingOfflineBandit}}
+#' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{LiSamplingOfflineBandit}}
 #'
 #' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 #'
