@@ -4,23 +4,20 @@ OraclePolicy <- R6::R6Class(
   class = FALSE,
   inherit = Policy,
   public = list(
+    is_oracle  = TRUE,
     class_name = "OraclePolicy",
     initialize = function() {
       super$initialize()
     },
     set_parameters = function(context_params) {
-      self$theta_to_arms          <- list('n' = 0, 'mean' = 0)
     },
     get_action = function(t, context) {
-      action$propensity           <- 1
-      action$choice               <- context$o
+      action$choice = 1 # agent sets this for oracles
       action
     },
     set_reward = function(t, context, action, reward) {
-      arm                         <- action$choice
-      reward                      <- reward$reward
-      inc(self$theta$n[[arm]])    <- 1
-      inc(self$theta$mean[[arm]]) <- (reward - self$theta$mean[[arm]]) / self$theta$n[[arm]]
+      self$theta$optimal_arm      <- reward$optimal_arm
+      self$theta$optimal_reward   <- reward$optimal_reward
       self$theta
     }
   )

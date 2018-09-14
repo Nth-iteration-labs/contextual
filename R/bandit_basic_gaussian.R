@@ -16,15 +16,15 @@ BasicGaussianBandit <- R6::R6Class(
       context <- list(
         k = self$k
       )
-      context
     },
     get_reward = function(t, context, action) {
       rewards <- rnorm(self$k, self$mu_per_arm, self$sigma_per_arm)
+      optimal_arm    <- which.max(rewards)
       reward  <- list(
         reward                   = rewards[action$choice],
-        optimal_reward_value     = rewards[which.max(rewards)]
+        optimal_arm              = optimal_arm,
+        optimal_reward           = rewards[optimal_arm]
       )
-      reward
     }
   )
 )

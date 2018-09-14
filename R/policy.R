@@ -6,10 +6,12 @@ Policy <- R6::R6Class(
     action        = NULL,      # action results (list)
     theta         = NULL,      # policy parameters theta (list)
     theta_to_arms = NULL,      # theta to arms "helper" (list)
+    is_oracle     = NULL,      # is policy an oracle? (logical)
     class_name    = "Policy",  # policy name - required (character)
     initialize = function() {
       self$theta  <- list()    # initializes theta list
       self$action <- list()    # initializes action list
+      is_oracle   <- FALSE     # very seldom TRUE
       invisible(self)
     },
     get_action = function(t, context) {

@@ -96,15 +96,15 @@ ContextualWeightBandit <- R6::R6Class(
       list(
         k = self$k,
         d = self$d,
-        X = private$X[,, idx],
-        o = which_max_tied(private$O[, idx])
+        X = private$X[,, idx]
       )
     },
     reward_to_list = function(t, action) {
       if (self$precaching) idx <- t else idx <- 1
       list(
         reward = private$R[action$choice, idx],
-        optimal_reward_value = as.double(private$R[which_max_tied(private$O[, idx]), idx])
+        optimal_reward = as.double(private$R[which_max_tied(private$R[, idx]), idx]),
+        optimal_arm = which_max_tied(private$R[, idx])
       )
     }
   )

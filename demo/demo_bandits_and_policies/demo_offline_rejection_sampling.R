@@ -8,8 +8,8 @@ source("../dev.R")
 context_weights    <- matrix(  c( 0.8, 0.1, 0.1,
                                   0.1, 0.8, 0.1,
                                   0.1, 0.1, 0.8), nrow = 3, ncol = 3, byrow = TRUE)
-horizon     <- 40L
-simulations <- 1L
+horizon     <- 100L
+simulations <- 10L
 bandit      <- ContextualWeightBandit$new(weights = context_weights, sum_weights = TRUE)
 
 # This can only be random policy, otherwise rejection sampling will
@@ -20,7 +20,8 @@ policy      <- RandomPolicy$new()
 agents <-
   list(
     Agent$new(EpsilonGreedyPolicy$new(0.01), bandit),
-    Agent$new(LinUCBDisjointPolicy$new(0.6), bandit)
+    Agent$new(LinUCBDisjointPolicy$new(0.6), bandit),
+    Agent$new(OraclePolicy$new(), bandit)
   )
 
 simulation  <-
@@ -39,7 +40,7 @@ plot(direct, regret = FALSE, type = "cumulative", rate = TRUE, legend_position =
 context_weights    <- matrix(  c( 0.9, 0.1, 0.1,
                                   0.1, 0.9, 0.1,
                                   0.1, 0.1, 0.9), nrow = 3, ncol = 3, byrow = TRUE)
-horizon     <- 40L
+horizon     <- 1000L
 simulations <- 1L
 bandit      <- ContextualWeightBandit$new(weights = context_weights, sum_weights = TRUE)
 
@@ -75,7 +76,8 @@ bandit <- LiSamplingOfflineBandit$new(data_stream = log_S, k = 3, d = 3)
 agents <-
   list(
     Agent$new(EpsilonGreedyPolicy$new(0.01), bandit),
-    Agent$new(LinUCBDisjointPolicy$new(0.6), bandit)
+    Agent$new(LinUCBDisjointPolicy$new(0.6), bandit),
+    Agent$new(OraclePolicy$new(), bandit)
   )
 
 simulation <-
@@ -84,12 +86,14 @@ simulation <-
     horizon = horizon,
     simulations = simulations,
     t_over_sims = TRUE,
-    do_parallel = TRUE,
+    do_parallel = FALSE,
     reindex = TRUE
   )
 
 after <- simulation$run()
-dt <- after$get_data_table()                                  # TODO: Why no optimal (so no regret) at all here anymore?
+dt <- after$get_data_table()
+
+
 plot(after, regret = FALSE, type = "cumulative", rate = TRUE, legend_position = "bottomright")
 a <- after$get_data_table()
 if (file.exists("test.RData")) file.remove("test.RData")

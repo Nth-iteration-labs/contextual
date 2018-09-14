@@ -40,22 +40,30 @@ History <- R6::R6Class(
         propensity <- action[["propensity"]]
       }
 
-      if (is.null(reward[["optimal_reward_value"]])) {
-        optimal_reward_value <- NA
+      if (is.null(reward[["optimal_reward"]])) {
+        optimal_reward <- NA
       } else {
-        optimal_reward_value <- reward[["optimal_reward_value"]]
+        optimal_reward <- reward[["optimal_reward"]]
       }
+
+      if (is.null(reward[["optimal_arm"]])) {
+        optimal_arm <- NA
+      } else {
+        optimal_arm <- reward[["optimal_arm"]]
+      }
+
       data.table::set(
         data,
         index,
-        1L:8L,
+        1L:9L,
         list(
           t,
           simulation_index,
           action[["choice"]],
           reward[["reward"]],
-          as.integer(reward$reward == optimal_reward_value),
-          optimal_reward_value,
+          as.integer(reward$reward == optimal_reward),
+          as.integer(optimal_arm),
+          optimal_reward,
           propensity,
           agent_name
         )
@@ -64,12 +72,12 @@ History <- R6::R6Class(
 
       if (save_context || save_theta) {
         if (!save_theta) {
-          data.table::set(data, index, 9L, list(list(context_value)))
+          data.table::set(data, index, 10L, list(list(context_value)))
         } else if (!self$save_context) {
-          data.table::set(data, index, 9L, list(list(theta_value)))
-        } else {
-          data.table::set(data, index, 9L, list(list(context_value)))
           data.table::set(data, index, 10L, list(list(theta_value)))
+        } else {
+          data.table::set(data, index, 10L, list(list(context_value)))
+          data.table::set(data, index, 11L, list(list(theta_value)))
         }
       }
       invisible(self)
@@ -177,7 +185,7 @@ History <- R6::R6Class(
       }
       private$.meta <- attributes(private$.data)$meta
       if ("opimal" %in% colnames(private$.data))
-        setnames(private$.data, old = "opimal", new = "optimal_reward_value")
+        setnames(private$.data, old = "opimal", new = "optimal_reward")
       if (isTRUE(auto_stats)) private$calculate_cum_stats()
       invisible(self)
     },
@@ -271,7 +279,8 @@ History <- R6::R6Class(
         choice = rep(0.0, self$n),
         reward = rep(0.0, self$n),
         choice_is_optimal = rep(0L, self$n),
-        optimal_reward_value = rep(0.0, self$n),
+        optimal_arm = rep(0.0, self$n),
+        optimal_reward = rep(0.0, self$n),
         propensity = rep(0.0, self$n),
         agent = rep("", self$n)
       )
@@ -294,7 +303,7 @@ History <- R6::R6Class(
       self$set_meta_data("agents",min(private$.data[, .(count = data.table::uniqueN(agent))]$count))
       self$set_meta_data("simulations",min(private$.data[, .(count = data.table::uniqueN(sim))]$count))
 
-      private$.data[, regret:= optimal_reward_value - reward]
+      private$.data[, regret:= optimal_reward - reward]
 
       private$.data[, cum_reward:= cumsum(reward), by = list(agent, sim)]
       private$.data[, cum_reward_rate := cum_reward / t]

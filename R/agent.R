@@ -61,6 +61,10 @@ Agent <- R6::R6Class(
         } else {
           theta   <- policy$theta
         }
+        if (!is.null(policy$is_oracle) && policy$is_oracle  == TRUE) {
+          reward$reward    <- theta$optimal_reward
+          action$choice    <- theta$optimal_arm
+        }
         policy_t  <<- policy_t + 1L
       }
       if(isTRUE(self$progress_file)) {

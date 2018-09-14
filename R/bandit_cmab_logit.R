@@ -29,7 +29,6 @@ ContextualLogitBandit <- R6::R6Class(
         d = self$d,
         X = X
       )
-      context
     },
     get_reward = function(t, context, action) {
       X          <- context$X                             # context matrix
@@ -38,13 +37,14 @@ ContextualLogitBandit <- R6::R6Class(
 
       z          <- as.vector(self$beta%*%X)              # compute linear predictor
       pr         <- 1/(1+exp(-z))                         # inverse logit transform of linear predictor
-      reward     <- rbinom(d,1,pr)                        # binary rewards from the Bernoulli distribution
+      rewards    <- rbinom(d,1,pr)                        # binary rewards from the Bernoulli distribution
 
-      reward <- list(
-        reward                   = reward[arm],
-        optimal_reward_value     = reward[which.max(reward)]
+      optimal_arm    <- which.max(rewards)
+      reward  <- list(
+        reward                   = rewards[action$choice],
+        optimal_arm              = optimal_arm,
+        optimal_reward           = rewards[optimal_arm]
       )
-      reward
     }
   )
 )
