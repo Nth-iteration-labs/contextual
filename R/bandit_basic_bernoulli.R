@@ -50,7 +50,7 @@ BasicBernoulliBandit <- R6::R6Class(
 #'
 #' \describe{
 #'   \item{\code{p_per_arm}}{
-#'      numeric vector; p value for each of the bandit's \code{k} arms
+#'      numeric vector; probability of reward values for each of the bandit's \code{k} arms
 #'   }
 #' }
 #'

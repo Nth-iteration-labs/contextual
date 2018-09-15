@@ -13,7 +13,7 @@ context_weights    <- matrix(  c( 0.9, 0.1, 0.1,
                                   0.1, 0.9, 0.1,
                                   0.1, 0.1, 0.9), nrow = 3, ncol = 3, byrow = TRUE)
 
-bandit             <- ContextualWeightBandit$new(weights = context_weights, precaching = FALSE)
+bandit             <- ContextualBernoulliBandit$new(weights = context_weights, precaching = FALSE)
 
 agents             <- list( Agent$new(EpsilonGreedyPolicy$new(0.1), bandit),
                             Agent$new(LinUCBDisjointOptimizedPolicy$new(0.6), bandit))

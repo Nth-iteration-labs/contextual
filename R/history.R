@@ -279,7 +279,7 @@ History <- R6::R6Class(
         choice = rep(0.0, self$n),
         reward = rep(0.0, self$n),
         choice_is_optimal = rep(0L, self$n),
-        optimal_arm = rep(0.0, self$n),
+        optimal_arm = rep(0L, self$n),
         optimal_reward = rep(0.0, self$n),
         propensity = rep(0.0, self$n),
         agent = rep("", self$n)

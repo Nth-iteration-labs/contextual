@@ -25,7 +25,7 @@ such as if a user clicks on a headline, ad, or recommended product.
 
 \describe{
 \item{\code{p_per_arm}}{
-numeric vector; p value for each of the bandit's \code{k} arms
+numeric vector; probability of reward values for each of the bandit's \code{k} arms
 }
 }
 }

@@ -13,18 +13,19 @@ test_that("Bandit superclass", {
 
 })
 
-test_that("ContextualWeightBandit simulation", {
+test_that("ContextualBernoulliBandit simulation", {
 
-  bandit      <- ContextualWeightBandit$new()
+  bandit      <- ContextualBernoulliBandit$new(weights = matrix(c(0.1, 0.9, 0.1, 0.9), 2, 2))
   expect_identical(typeof(bandit), "environment")
-
-  bandit$set_weights(matrix(c(0.1, 0.9, 0.1, 0.9), 2, 2))
 
   expect_equal(bandit$k, 2)
   expect_equal(bandit$d, 2)
   expect_true(bandit$precaching)
 
-  bandit$set_weights(c(0.1, 0.9))
+
+  bandit      <- ContextualBernoulliBandit$new(weights = c(0.1, 0.9))
+  expect_identical(typeof(bandit), "environment")
+
   expect_equal(bandit$k, 2)
   expect_equal(bandit$d, 1)
 
@@ -193,13 +194,13 @@ test_that("BasicBernoulliBandit MAB policies", {
 
 })
 
-test_that("ContextualWeightBandit MAB policies", {
+test_that("ContextualBernoulliBandit MAB policies", {
 
   weight_per_arm     <- c(0.9, 0.1, 0.1)
   horizon            <- 10
   simulations        <- 10
 
-  bandit             <- ContextualWeightBandit$new(weights = weight_per_arm)
+  bandit             <- ContextualBernoulliBandit$new(weights = weight_per_arm)
 
   agents             <- list(Agent$new(RandomPolicy$new(), bandit),
                              Agent$new(OraclePolicy$new(), bandit),
@@ -230,34 +231,35 @@ test_that("ContextualWeightBandit MAB policies", {
 
 })
 
-test_that("ContextualWeightBandit options", {
+test_that("ContextualBernoulliBandit options", {
 
   weight_per_arm     <- c(0.9, 0.1, 0.1)
   horizon            <- 10
   simulations        <- 10
 
-  expect_error(ContextualWeightBandit$new(weights = weight_per_arm, reward_family = "notgood"))
+  expect_error(ContextualBernoulliBandit$new(weights = weight_per_arm, reward_family = "notgood"))
 
-  # Gaussian
+  # without precaching
 
-  bandit             <- ContextualWeightBandit$new(weights = weight_per_arm, reward_family = "Gaussian")
-  agents             <- list(Agent$new(EpsilonGreedyPolicy$new(0.1), bandit))
-  simulation         <- Simulator$new(agents, horizon, simulations, do_parallel = FALSE)
-  history            <- simulation$run()
-
-  expect_equal(history$cumulative$EpsilonGreedy$cum_regret,4.61, tolerance = 0.01)
-
-  # Poisson, without precaching
-
-  bandit             <- ContextualWeightBandit$new(weights = weight_per_arm,
-                                                   reward_family = "Poisson",
-                                                   precaching = FALSE)
+  bandit             <- ContextualBernoulliBandit$new(weights = weight_per_arm, precaching = FALSE)
 
   agents             <- list(Agent$new(EpsilonGreedyPolicy$new(0.1), bandit))
   simulation         <- Simulator$new(agents, horizon, simulations, do_parallel = FALSE)
   history            <- simulation$run()
 
-  expect_equal(history$cumulative$EpsilonGreedy$cum_regret,  11.5, tolerance = 0.01)
+  expect_equal(history$cumulative$EpsilonGreedy$cum_regret,  2.1, tolerance = 0.01)
+
+  expect_message(bandit$generate_bandit_data(n = 1L, silent = FALSE), "Precaching bandit")
+
+  # sum_weights = TRUE
+
+  bandit             <- ContextualBernoulliBandit$new(weights = weight_per_arm, sum_weights = TRUE)
+
+  agents             <- list(Agent$new(EpsilonGreedyPolicy$new(0.1), bandit))
+  simulation         <- Simulator$new(agents, horizon, simulations, do_parallel = FALSE)
+  history            <- simulation$run()
+
+  expect_equal(history$cumulative$EpsilonGreedy$cum_regret,  2.3, tolerance = 0.01)
 
   expect_message(bandit$generate_bandit_data(n = 1L, silent = FALSE), "Precaching bandit")
 
@@ -271,7 +273,7 @@ test_that("BasicBernoulliBandit MAB policies", {
                                     0.1, 0.1, 0.8), nrow = 3, ncol = 3, byrow = TRUE)
   horizon     <- 40L
   simulations <- 1L
-  bandit      <- ContextualWeightBandit$new(weights = context_weights, sum_weights = TRUE)
+  bandit      <- ContextualBernoulliBandit$new(weights = context_weights, sum_weights = TRUE)
 
   # This can only be random policy, otherwise rejection sampling will
   # produce severely biased results.
@@ -307,7 +309,7 @@ test_that("BasicBernoulliBandit MAB policies", {
                                     0.1, 0.1, 0.9), nrow = 3, ncol = 3, byrow = TRUE)
   horizon     <- 100L
   simulations <- 1L
-  bandit      <- ContextualWeightBandit$new(weights = context_weights, sum_weights = TRUE)
+  bandit      <- ContextualBernoulliBandit$new(weights = context_weights, sum_weights = TRUE)
 
   # This can only be random policy, otherwise rejection sampling will
   # produce severely biased results.

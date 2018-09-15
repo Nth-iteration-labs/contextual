@@ -10,10 +10,9 @@ plot$set_external(T, 11L, 6L)
 agents <- list()
 
 bandit  = SyntheticBandit$new(
-  reward_family =         "Bernoulli"
+  weights = c(0.2, 0.4, 0.8)
 )
-                     #k1  #k2  #k3
-bandit$set_weights(c(0.2, 0.4, 0.8))
+
 
 policyEG       <- EpsilonGreedyPolicy$new(0.1, "\U190-greedy")
 agents$EG      <- Agent$new(policyEG, bandit)

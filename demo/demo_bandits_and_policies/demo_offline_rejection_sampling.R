@@ -8,9 +8,9 @@ source("../dev.R")
 context_weights    <- matrix(  c( 0.8, 0.1, 0.1,
                                   0.1, 0.8, 0.1,
                                   0.1, 0.1, 0.8), nrow = 3, ncol = 3, byrow = TRUE)
-horizon     <- 100L
-simulations <- 10L
-bandit      <- ContextualWeightBandit$new(weights = context_weights, sum_weights = TRUE)
+horizon     <- 600L
+simulations <- 20L
+bandit      <- ContextualBernoulliBandit$new(weights = context_weights, sum_weights = TRUE)
 
 # This can only be random policy, otherwise rejection sampling will
 # produce severely biased results.
@@ -33,16 +33,16 @@ simulation  <-
   )
 
 direct <- simulation$run()
-plot(direct, regret = FALSE, type = "cumulative", rate = TRUE, legend_position = "bottomright")
+plot(direct, regret = FALSE, type = "cumulative", rate = TRUE, legend_position = "bottomright",ylim = c(0.5,0.95))
 
 ########################### create random log data ################################
 
 context_weights    <- matrix(  c( 0.9, 0.1, 0.1,
                                   0.1, 0.9, 0.1,
                                   0.1, 0.1, 0.9), nrow = 3, ncol = 3, byrow = TRUE)
-horizon     <- 1000L
-simulations <- 1L
-bandit      <- ContextualWeightBandit$new(weights = context_weights, sum_weights = TRUE)
+horizon     <- 2000L
+simulations <- 10L
+bandit      <- ContextualBernoulliBandit$new(weights = context_weights, sum_weights = TRUE)
 
 # This can only be random policy, otherwise rejection sampling will
 # produce severely biased results.
@@ -94,6 +94,6 @@ after <- simulation$run()
 dt <- after$get_data_table()
 
 
-plot(after, regret = FALSE, type = "cumulative", rate = TRUE, legend_position = "bottomright")
+plot(after, regret = FALSE, type = "cumulative", rate = TRUE, ylim = c(0.5,0.95),legend_position = "bottomright")
 a <- after$get_data_table()
 if (file.exists("test.RData")) file.remove("test.RData")

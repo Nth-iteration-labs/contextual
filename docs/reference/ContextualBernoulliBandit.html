@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Bandit: BasicBernoulliBandit — BasicBernoulliBandit • contextual</title>
+<title>Bandit: ContextualBernoulliBandit — ContextualBernoulliBandit • contextual</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -36,9 +36,11 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Bandit: BasicBernoulliBandit — BasicBernoulliBandit" />
+<meta property="og:title" content="Bandit: ContextualBernoulliBandit — ContextualBernoulliBandit" />
 
-<meta property="og:description" content="Context-free Bernoulli or Binary multi-armed bandit." />
+<meta property="og:description" content="Contextual extension of BasicBernoulliBandit where cd x k dimensional matrix takes the
+place of BasicBernoulliBandit's k dimensional probability vector. Here, each row d represents a feature
+with k probability values per arms." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -131,44 +133,49 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Bandit: BasicBernoulliBandit</h1>
-    <small class="dont-index">Source: <a href='https://github.com/Nth-iteration-labs/contextual/blob/master/R/bandit_basic_bernoulli.R'><code>R/bandit_basic_bernoulli.R</code></a></small>
-    <div class="hidden name"><code>BasicBernoulliBandit.Rd</code></div>
+    <h1>Bandit: ContextualBernoulliBandit</h1>
+    <small class="dont-index">Source: <a href='https://github.com/Nth-iteration-labs/contextual/blob/master/R/bandit_cmab_bernoulli.R'><code>R/bandit_cmab_bernoulli.R</code></a></small>
+    <div class="hidden name"><code>ContextualBernoulliBandit.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Context-free Bernoulli or Binary multi-armed bandit.</p>
+    <p>Contextual extension of BasicBernoulliBandit where cd x k dimensional matrix takes the
+place of BasicBernoulliBandit's k dimensional probability vector. Here, each row d represents a feature
+with k probability values per arms.</p>
     
     </div>
 
         
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Simulates <code>k</code> Bernoulli arms where each arm issues a reward of one with
-uniform probability <code>p</code>, and otherwise a reward of zero.</p>
-<p>In a bandit scenario, this can be used to simulate a hit or miss event,
-such as if a user clicks on a headline, ad, or recommended product.</p>
+    <p>For every <code>t</code>, ContextualBernoulliBandit samples from its d features or rows at random, then
+generates rewards contingent on either the sum or mean p per column or arm for the selected features.</p>
+<p>Illustrates precaching of contexts and rewards.</p>
     
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 
     
     <pre>
-  policy &lt;- BasicBernoulliBandit$new(p_per_arm)
+  policy &lt;- ContextualBernoulliBandit$new(weights = NULL, precaching  = TRUE, sum_weights = FALSE)
 </pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
 
     
     <dl class='dl-horizontal'>
-<dt><code>p_per_arm</code></dt><dd><p>numeric vector; probability of reward values for each of the bandit's <code>k</code> arms</p></dd>
+<dt><code>weights</code></dt><dd><p>numeric matrix; d x k dimensional matrix, where each row d represents a feature with k
+p values per arms.</p></dd>
+<dt><code>precaching</code></dt><dd><p>logical; determines if the bandit precaches all contexts and rewards.</p></dd>
+<dt><code>sum_weights</code></dt><dd><p>logical; determines whether ContextualBernoulliBandit takes the sum or the mean (default) of the
+available p values per arm before the bandit generates its rewards.</p></dd>
 </dl>
     
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     
     <dl class='dl-horizontal'>
-    <dt><code>new(p_per_arm)</code></dt><dd><p>generates and instantializes a new <code>Bandit</code> instance.
+    <dt><code>new(weights = NULL, precaching  = TRUE, sum_weights = FALSE)</code></dt><dd><p>generates and instantializes a new <code>Bandit</code> instance.
 For arguments, see Argument section above.</p></dd>
     <dt><code><a href='Bandit.html'>get_context(t)</a></code></dt><dd><p>argument:
 <ul>
@@ -183,28 +190,35 @@ containing the number of arms as <code>context$k</code>.</p></dd>
 <li><p><code>action</code>:  list, containing <code>action$choice</code> (as set by <code>policy</code>).</p></li>
 </ul>
 returns a named <code>list</code> containing <code>reward$reward</code></p></dd>
-</dl>
+    <dt><code><a href='Bandit.html'>generate_bandit_data()</a></code></dt><dd><p>helper function called before <code>Simulator</code> starts iterating over all time steps <code>t</code> in T.
+This function is only called when <code>bandit$precaching</code> is <code>TRUE</code> (default <code>FALSE</code>).
+Pregenerates <code>contexts</code> and <code>rewards</code>.</p></dd>
+    </dl>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Core contextual classes: <code><a href='Bandit.html'>Bandit</a></code>, <code><a href='Policy.html'>Policy</a></code>, <code><a href='Simulator.html'>Simulator</a></code>,
 <code><a href='Agent.html'>Agent</a></code>, <code><a href='History.html'>History</a></code>, <code><a href='Plot.html'>Plot</a></code></p>
-<p>Bandit subclass examples: <code>BasicBernoulliBandit</code>, <code><a href='ContextualLogitBandit.html'>ContextualLogitBandit</a></code>,  <code><a href='LiSamplingOfflineBandit.html'>LiSamplingOfflineBandit</a></code></p>
+<p>Bandit subclass examples: <code><a href='BasicBernoulliBandit.html'>BasicBernoulliBandit</a></code>, <code><a href='ContextualLogitBandit.html'>ContextualLogitBandit</a></code>,  <code><a href='LiSamplingOfflineBandit.html'>LiSamplingOfflineBandit</a></code></p>
 <p>Policy subclass examples: <code><a href='EpsilonGreedyPolicy.html'>EpsilonGreedyPolicy</a></code>, <code><a href='ContextualThompsonSamplingPolicy.html'>ContextualThompsonSamplingPolicy</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='no'>horizon</span>            <span class='kw'>&lt;-</span> <span class='fl'>100</span>
-<span class='no'>sims</span>               <span class='kw'>&lt;-</span> <span class='fl'>100</span>
+    <pre class="examples"><div class='input'><span class='no'>horizon</span>            <span class='kw'>&lt;-</span> <span class='fl'>100L</span>
+<span class='no'>simulations</span>        <span class='kw'>&lt;-</span> <span class='fl'>100L</span>
+<span class='no'>context_weights</span>    <span class='kw'>&lt;-</span> <span class='fu'>matrix</span>(  <span class='fu'>c</span>(<span class='fl'>0.4</span>, <span class='fl'>0.2</span>, <span class='fl'>0.4</span>,
+                                 <span class='fl'>0.3</span>, <span class='fl'>0.4</span>, <span class='fl'>0.3</span>,
+                                 <span class='fl'>0.1</span>, <span class='fl'>0.8</span>, <span class='fl'>0.1</span>),  <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>byrow</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-<span class='no'>policy</span>             <span class='kw'>&lt;-</span> <span class='no'>EpsilonGreedyPolicy</span>$<span class='fu'>new</span>(<span class='kw'>epsilon</span> <span class='kw'>=</span> <span class='fl'>0.1</span>)
+<span class='no'>bandit</span>             <span class='kw'>&lt;-</span> <span class='no'>ContextualBernoulliBandit</span>$<span class='fu'>new</span>(<span class='kw'>weights</span> <span class='kw'>=</span> <span class='no'>context_weights</span>, <span class='kw'>precaching</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
 
-<span class='no'>bandit</span>             <span class='kw'>&lt;-</span> <span class='no'>BasicBernoulliBandit</span>$<span class='fu'>new</span>(<span class='kw'>p_per_arm</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0.6</span>, <span class='fl'>0.1</span>, <span class='fl'>0.1</span>))
-<span class='no'>agent</span>              <span class='kw'>&lt;-</span> <span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>policy</span>,<span class='no'>bandit</span>)
+<span class='no'>agents</span>             <span class='kw'>&lt;-</span> <span class='fu'>list</span>( <span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>EpsilonGreedyPolicy</span>$<span class='fu'>new</span>(<span class='fl'>0.1</span>), <span class='no'>bandit</span>),
+                            <span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>LinUCBDisjointOptimizedPolicy</span>$<span class='fu'>new</span>(<span class='fl'>0.6</span>), <span class='no'>bandit</span>))
 
-<span class='no'>history</span>            <span class='kw'>&lt;-</span> <span class='no'>Simulator</span>$<span class='fu'>new</span>(<span class='no'>agent</span>, <span class='no'>horizon</span>, <span class='no'>sims</span>)$<span class='fu'><a href='Simulator.html'>run</a></span>()</div><div class='output co'>#&gt; <span class='message'>Cloning, precaching and precalculating bandits and policies</span></div><div class='output co'>#&gt; <span class='message'>Preworkercreation</span></div><div class='output co'>#&gt; <span class='message'>Cores available: 4</span></div><div class='output co'>#&gt; <span class='message'>Workers assigned: 3</span></div><div class='output co'>#&gt; <span class='message'>Postworkercreation</span></div><div class='input'>
-<span class='fu'>plot</span>(<span class='no'>history</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"cumulative"</span>, <span class='kw'>regret</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='img'><img src='BasicBernoulliBandit-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='no'>simulation</span>         <span class='kw'>&lt;-</span> <span class='no'>Simulator</span>$<span class='fu'>new</span>(<span class='no'>agents</span>, <span class='no'>horizon</span>, <span class='no'>simulations</span>, <span class='kw'>do_parallel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; <span class='message'>Cloning, precaching and precalculating bandits and policies</span></div><div class='input'><span class='no'>history</span>            <span class='kw'>&lt;-</span> <span class='no'>simulation</span>$<span class='fu'><a href='Simulator.html'>run</a></span>()
+
+<span class='fu'>plot</span>(<span class='no'>history</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"cumulative"</span>)</div><div class='img'><img src='ContextualBernoulliBandit-1.png' alt='' width='700' height='433' /></div><div class='input'>
+
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

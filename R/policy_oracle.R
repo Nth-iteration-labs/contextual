@@ -12,7 +12,9 @@ OraclePolicy <- R6::R6Class(
     set_parameters = function(context_params) {
     },
     get_action = function(t, context) {
-      action$choice = 1 # agent sets this for oracles
+      # when self$is_oracle == TRUE, agent will later
+      # override action$choice and set it to optimal arm
+      action$choice = 1
       action
     },
     set_reward = function(t, context, action, reward) {
