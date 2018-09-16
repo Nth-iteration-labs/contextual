@@ -58,6 +58,7 @@ history_theta           <- Simulator$new(agents, horizon = 3, simulations = 3,
                                     do_parallel = FALSE, save_context = TRUE,
                                     save_theta = TRUE)$run()
 
-expect_equal(history_theta$cumulative$GittinsBrezziLai$reward, history$cumulative$GittinsBrezziLai$reward)
+expect_equal(history_theta$cumulative$GittinsBrezziLai$cum_regret,
+                   history$cumulative$GittinsBrezziLai$cum_regret)
 
 
