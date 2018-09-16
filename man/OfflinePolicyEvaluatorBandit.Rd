@@ -82,7 +82,7 @@ returns a named \code{list} containing \code{reward$reward}
 \examples{
 \donttest{
 
-## generate random policy log
+## generate random policy log and save it
 
 context_weights    <- matrix(  c( 0.9, 0.1, 0.1,
                                   0.1, 0.9, 0.1,
@@ -109,7 +109,7 @@ simulation  <-
 random_data_stream <- simulation$run()
 random_data_stream$save("log.RData")
 
-## Use log to evaluate policies with OfflinePolicyEvaluatorBandit
+## use saved log to evaluate policies with OfflinePolicyEvaluatorBandit
 
 history <- History$new()
 history$load("log.RData")

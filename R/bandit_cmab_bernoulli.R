@@ -11,7 +11,6 @@ ContextualBernoulliBandit <- R6::R6Class(
     weights       = NULL,
     class_name = "ContextualBernoulliBandit",
     initialize   = function(weights = NULL, precaching  = TRUE, sum_weights = FALSE) {
-      if (is.vector(self$weights)) self$weights <- matrix(self$weights, nrow = 1L)
       if (!is.null(weights)) self$set_weights(weights)
       private$X <- array(1, dim = c(self$d, self$k, 1))
       self$precaching           <- precaching
@@ -34,7 +33,7 @@ ContextualBernoulliBandit <- R6::R6Class(
       self$d <- as.integer(dim(private$W)[1])
       self$k <- as.integer(dim(private$W)[2])
     },
-    generate_bandit_data = function(n = 1L, silent = TRUE ) {
+    generate_bandit_data = function(n = 1L, silent = TRUE) {
       if (!silent) message("Precaching bandit" )
       private$O <- matrix(0, self$k, n)
       private$R <- matrix(0, self$k, n)
@@ -54,7 +53,7 @@ ContextualBernoulliBandit <- R6::R6Class(
       private$X <- array(sample(c(0, 1), replace = TRUE, size = self$d * n), dim = c(self$d, self$k, n))
     },
     generate_weights = function(n) {
-      weight_array  <- array(t(matrix(private$W, self$k , self$d, byrow = TRUE)), dim = c(self$d, self$k, n))
+      weight_array <- array(t(matrix(private$W, self$k , self$d, byrow = TRUE)), dim = c(self$d, self$k, n))
       private$O <- colSums(private$X*weight_array)
       if (!isTRUE(self$sum_weights)) private$O <- private$O / colSums(private$X)
       private$O[is.nan(private$O)] <- 0
@@ -151,9 +150,6 @@ ContextualBernoulliBandit <- R6::R6Class(
 #'      This function is only called when \code{bandit$precaching} is \code{TRUE} (default \code{FALSE}).
 #'      Pregenerates \code{contexts} and \code{rewards}.
 #'  }
-#'
-#'
-#'
 #' }
 #'
 #' @seealso
@@ -161,7 +157,7 @@ ContextualBernoulliBandit <- R6::R6Class(
 #' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
-#' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflinePolicyEvaluatorBandit}}
+#' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}}, \code{\link{OfflinePolicyEvaluatorBandit}}
 #'
 #' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 #'
@@ -169,6 +165,9 @@ ContextualBernoulliBandit <- R6::R6Class(
 #' \donttest{
 #' horizon            <- 100L
 #' simulations        <- 100L
+#'
+#' # rows represent features, columns represent arms:
+#'
 #' context_weights    <- matrix(  c(0.4, 0.2, 0.4,
 #'                                  0.3, 0.4, 0.3,
 #'                                  0.1, 0.8, 0.1),  nrow = 3, ncol = 3, byrow = TRUE)
@@ -182,7 +181,6 @@ ContextualBernoulliBandit <- R6::R6Class(
 #' history            <- simulation$run()
 #'
 #' plot(history, type = "cumulative")
-#'
 #'
 #' }
 NULL

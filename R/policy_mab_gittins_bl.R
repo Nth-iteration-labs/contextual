@@ -55,7 +55,7 @@ GittinsBrezziLaiPolicy          <- R6::R6Class(
     },
     phi = function(s) {
       if (s > 15) {
-        (2*log(s) - log(log(s)) - log(16*pi))^0.5
+        (2*log(s) - log(log(s)) - log(16*pi))^0.5         # nocov
       } else if (5 < s && s <= 15) {
         0.77 - 0.58*s^(-0.5)
       } else if (1 < s && s <= 5) {
@@ -65,8 +65,8 @@ GittinsBrezziLaiPolicy          <- R6::R6Class(
       } else if (0 <= s && s <= 0.2) {
         sqrt(s/2.0)
       } else {
-        message('Domain error in Brezzi_Lai Phi-function')
-        0.0
+        message('Domain error in Brezzi_Lai Phi-function') # nocov
+        0.0                                                # nocov
       }
     }
   )

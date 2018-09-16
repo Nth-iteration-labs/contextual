@@ -3,8 +3,8 @@ library(here)
 setwd(here("demo","demo_bandits_and_policies"))
 source("../dev.R")
 
-horizon            <- 10
-simulations        <- 10
+horizon            <- 1000
+simulations        <- 100
 
 continuous_arms  <- function(x) {
   -0.1*(x - 5) ^ 2 + 3.5  + rnorm(length(x),0,0.4)
@@ -25,6 +25,6 @@ agent              <- Agent$new(policy,bandit)
 history            <- Simulator$new(     agents = agent,
                                          horizon = horizon,
                                          simulations = simulations,
-                                         do_parallel =  FALSE)$run()
+                                         do_parallel =  TRUE)$run()
 
 plot(history, type = "average", regret = FALSE)

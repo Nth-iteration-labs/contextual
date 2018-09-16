@@ -78,7 +78,6 @@ helper function called before \code{Simulator} starts iterating over all time st
 This function is only called when \code{bandit$precaching} is \code{TRUE} (default \code{FALSE}).
 Pregenerates \code{contexts} and \code{rewards}.
 }
-
 }
 }
 
@@ -86,6 +85,9 @@ Pregenerates \code{contexts} and \code{rewards}.
 \donttest{
 horizon            <- 100L
 simulations        <- 100L
+
+# rows represent features, columns represent arms:
+
 context_weights    <- matrix(  c(0.4, 0.2, 0.4,
                                  0.3, 0.4, 0.3,
                                  0.1, 0.8, 0.1),  nrow = 3, ncol = 3, byrow = TRUE)
@@ -100,14 +102,13 @@ history            <- simulation$run()
 
 plot(history, type = "cumulative")
 
-
 }
 }
 \seealso{
 Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 
-Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflinePolicyEvaluatorBandit}}
+Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}}, \code{\link{OfflinePolicyEvaluatorBandit}}
 
 Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 }
