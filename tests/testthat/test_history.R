@@ -1,0 +1,53 @@
+context("history")
+
+bandit             <- ContextualBernoulliBandit$new(weights = c(0.9, 0.1, 0.1))
+
+agents             <- list(Agent$new(RandomPolicy$new(), bandit),
+                           Agent$new(OraclePolicy$new(), bandit),
+                           Agent$new(ThompsonSamplingPolicy$new(1.0, 1.0), bandit),
+                           Agent$new(Exp3Policy$new(0.1), bandit),
+                           Agent$new(GittinsBrezziLaiPolicy$new(), bandit),
+                           Agent$new(UCB1Policy$new(), bandit))
+
+history            <- Simulator$new(agents, horizon = 3, simulations = 3,
+                                    do_parallel = FALSE, save_context = TRUE)$run()
+
+############
+
+csv_comparison_file <- read.csv("history_test.ref")
+
+history$save_csv()
+
+import_context <- read.csv(dir(pattern='contextual_data_*')[1])
+
+expect_equal(csv_comparison_file, import_context)
+
+#############
+
+history$save_csv("save.csv")
+
+import_file <- read.csv("save.csv")
+
+expect_equal(csv_comparison_file,  import_file)
+
+#############
+
+csv_comparison_file <- read.csv("history_context_test.ref")
+
+history$save_csv("save_context.csv", context_to_columns = TRUE)
+
+import_file <- read.csv("save_context.csv")
+
+expect_equal(csv_comparison_file,  import_file)
+
+#############
+
+df1 <- history$get_data_frame()
+
+history$set_data_frame(df1)
+
+df2 <- history$get_data_frame()
+
+expect_equal(df1, df2)
+
+

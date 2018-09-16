@@ -202,8 +202,10 @@ History <- R6::R6Class(
         dt_to_save <- copy(private$.data)
         dt_to_save[, context_string := lapply(.SD, function(x) paste( unlist(x), collapse=',') ),
                                     by=1:nrow(private$.data), .SDcols = c("context")]
-        dt_to_save$k <- dim(private$.data[1,]$context[[1]])[2]
-        dt_to_save$d <- dim(private$.data[1,]$context[[1]])[1]
+        one_context <- private$.data[1,]$context[[1]]
+        if (is.vector(one_context)) one_context <- matrix(one_context, nrow = 1L)
+        dt_to_save$k <- dim(one_context)[2]
+        dt_to_save$d <- dim(one_context)[1]
         dt_to_save[, (context_cols) := tstrsplit(context_string, ",", fixed=TRUE)]
         dt_to_save$context = NULL
         dt_to_save$context_string = NULL
