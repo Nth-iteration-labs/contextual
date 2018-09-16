@@ -19,7 +19,7 @@ Documentation
 -------------
 
 -   [Online reference](https://nth-iteration-labs.github.io/contextual/reference/index.html)
--   [Blog at Pavlov](https://pavlov.tech/category/contextual/)
+<!---   [Blog at Pavlov](https://pavlov.tech/category/contextual/)-->
 
 Installation
 ------------
