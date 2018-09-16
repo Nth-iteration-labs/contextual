@@ -7,7 +7,7 @@ Contextual: Multi-Armed Bandits in R
 Overview
 --------
 
-Contextual is an R package to facilitate the simulation and analysis of contextual and context-free Multi-Armed Bandit policies or algorithms.
+An R package facilitating the simulation and analysis of contextual and context-free Multi-Armed Bandit policies or algorithms.
 
 Maintainers
 -----------
