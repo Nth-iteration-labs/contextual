@@ -20,7 +20,7 @@ For more information, see \url{https://arxiv.org/abs/1802.09127}.
 \section{Usage}{
 
 \preformatted{
-  policy <- ContextualWheelBandit$new(delta, mean_v, std_v, mu_large, std_large)
+  bandit <- ContextualWheelBandit$new(delta, mean_v, std_v, mu_large, std_large)
 }
 }
 
@@ -80,10 +80,6 @@ arguments:
 }
 returns a named \code{list} containing \code{reward$reward}
 }
-
-\item{\code{post_initialization()}}{
-initialzes \code{d x k} beta matrix.
-}
 }
 }
 
@@ -119,7 +115,7 @@ Implementation follows \url{https://github.com/tensorflow/models/tree/master/res
 Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 
-Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{LiSamplingOfflineBandit}}
+Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflinePolicyEvaluatorBandit}}
 
 Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 }

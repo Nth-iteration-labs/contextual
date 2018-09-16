@@ -61,7 +61,7 @@ Agent <- R6::R6Class(
         } else {
           theta   <- policy$theta
         }
-        if (!is.null(policy$is_oracle) && policy$is_oracle  == TRUE) {
+        if (!is.null(policy$is_oracle) && isTRUE(policy$is_oracle)) {
           reward$reward    <- theta$optimal_reward
           action$choice    <- theta$optimal_arm
         }
@@ -151,7 +151,7 @@ Agent <- R6::R6Class(
 #' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
-#' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{LiSamplingOfflineBandit}}
+#' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflinePolicyEvaluatorBandit}}
 #'
 #' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 #'

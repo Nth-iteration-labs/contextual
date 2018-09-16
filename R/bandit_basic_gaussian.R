@@ -42,7 +42,7 @@ BasicGaussianBandit <- R6::R6Class(
 #'
 #' @section Usage:
 #' \preformatted{
-#'   policy <- BasicGaussianBandit$new(mu_per_arm, sigma_per_arm)
+#'   bandit <- BasicGaussianBandit$new(mu_per_arm, sigma_per_arm)
 #' }
 #'
 #' @section Arguments:
@@ -92,7 +92,7 @@ BasicGaussianBandit <- R6::R6Class(
 #' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
-#' Bandit subclass examples: \code{\link{BasicGaussianBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{LiSamplingOfflineBandit}}
+#' Bandit subclass examples: \code{\link{BasicGaussianBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflinePolicyEvaluatorBandit}}
 #'
 #' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 #'

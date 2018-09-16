@@ -194,6 +194,24 @@ test_that("BasicBernoulliBandit MAB policies", {
 
 })
 
+
+test_that("BasicBernoulliBandit Long", {
+
+  weight_per_arm     <- c(0.6, 0.1, 0.1)
+  horizon            <- 1000
+  simulations        <- 1
+
+  bandit             <- BasicBernoulliBandit$new(weight_per_arm)
+
+  agents             <- list(Agent$new(GittinsBrezziLaiPolicy$new(), bandit))
+
+  simulation         <- Simulator$new(agents, horizon, simulations, do_parallel = FALSE)
+  history            <- simulation$run()
+
+  expect_equal(history$cumulative$GittinsBrezziLai$cum_regret, 82, tolerance = 0.01)
+
+})
+
 test_that("ContextualBernoulliBandit MAB policies", {
 
   weight_per_arm     <- c(0.9, 0.1, 0.1)
@@ -212,7 +230,6 @@ test_that("ContextualBernoulliBandit MAB policies", {
                              Agent$new(UCB1Policy$new(), bandit),
                              Agent$new(SoftmaxPolicy$new(0.1), bandit),
                              Agent$new(SimpleBTSPolicy$new(), bandit)
-
   )
 
   simulation         <- Simulator$new(agents, horizon, simulations, do_parallel = FALSE)
@@ -262,6 +279,36 @@ test_that("ContextualBernoulliBandit options", {
   expect_equal(history$cumulative$EpsilonGreedy$cum_regret,  2.3, tolerance = 0.01)
 
   expect_message(bandit$generate_bandit_data(n = 1L, silent = FALSE), "Precaching bandit")
+
+})
+
+test_that("ContinuumBandit", {
+
+  horizon            <- 10
+  simulations        <- 10
+
+  continuous_arms  <- function(x) {
+    -0.1*(x - 5) ^ 2 + 3.5  + rnorm(length(x),0,0.4)
+  }
+
+  int_time    <- 100
+  amplitude   <- 0.2
+  learn_rate  <- 0.3
+  omega       <- 2*pi/int_time
+  x0_start    <- 2.0
+
+  policy             <- LifPolicy$new(int_time, amplitude, learn_rate, omega, x0_start)
+
+  bandit             <- ContinuumBandit$new(FUN = continuous_arms)
+
+  agent              <- Agent$new(policy,bandit)
+
+  history            <- Simulator$new(     agents = agent,
+                                           horizon = horizon,
+                                           simulations = simulations,
+                                           do_parallel =  FALSE)$run()
+
+  expect_equal(history$cumulative$Lif$reward,  2.8, tolerance = 0.01)
 
 })
 
@@ -339,7 +386,7 @@ test_that("BasicBernoulliBandit MAB policies", {
   history$load("test.RData")
   log_S <- history$get_data_table()
 
-  bandit <- LiSamplingOfflineBandit$new(data_stream = log_S, k = 3, d = 3)
+  bandit <- OfflinePolicyEvaluatorBandit$new(data_stream = log_S, k = 3, d = 3)
 
   agents <-
     list(

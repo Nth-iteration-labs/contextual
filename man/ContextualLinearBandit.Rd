@@ -14,7 +14,7 @@ at random, the contexts are Gaussian, and sigma-noise is added to the rewards.
 \section{Usage}{
 
 \preformatted{
-  policy <- ContextualLinearBandit$new(k, d, sigma = 0.1, binary_rewards = FALSE)
+  bandit <- ContextualLinearBandit$new(k, d, sigma = 0.1, binary_rewards = FALSE)
 }
 }
 
@@ -104,7 +104,7 @@ Implementation follows \url{https://github.com/tensorflow/models/tree/master/res
 Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 
-Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{LiSamplingOfflineBandit}}
+Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflinePolicyEvaluatorBandit}}
 
 Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 }

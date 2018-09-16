@@ -79,12 +79,16 @@ ContextualBernoulliBandit <- R6::R6Class(
 
 #' Bandit: ContextualBernoulliBandit
 #'
-#' Contextual extension of BasicBernoulliBandit where c{d x k} dimensional matrix takes the
-#' place of BasicBernoulliBandit's {k} dimensional probability vector. Here, each row {d} represents a feature
-#' with {k} probability values per arms.
+#' Contextual extension of \code{\link{BasicBernoulliBandit}}.
 #'
-#' For every \code{t}, ContextualBernoulliBandit samples from its {d} features or rows at random, then
-#' generates rewards contingent on either the sum or mean {p} per column or arm for the selected features.
+#' Contextual extension of \code{\link{BasicBernoulliBandit}} where a user specified \code{d x k} dimensional
+#' matrix takes the place of \code{\link{BasicBernoulliBandit}} \code{k} dimensional probability vector. Here,
+#' each row \code{d} represents a feature with \code{k} reward probability values per arm.
+#'
+#' For every \code{t}, \code{ContextualBernoulliBandit} randomly samples from its \code{d} features/rows at
+#' random, yielding a binary \code{context} matrix representing sampled (all 1 rows) and unsampled (all 0)
+#' features/rows. Next, \code{ContextualBernoulliBandit} generates \code{rewards} contingent on either sum or
+#' mean (default) probabilities of each arm/column over all of the sampled features/rows.
 #'
 #' Illustrates precaching of contexts and rewards.
 #'
@@ -94,22 +98,22 @@ ContextualBernoulliBandit <- R6::R6Class(
 #'
 #' @section Usage:
 #' \preformatted{
-#'   policy <- ContextualBernoulliBandit$new(weights = NULL, precaching  = TRUE, sum_weights = FALSE)
+#'   bandit <- ContextualBernoulliBandit$new(weights = NULL, precaching  = TRUE, sum_weights = FALSE)
 #' }
 #'
 #' @section Arguments:
 #'
 #' \describe{
 #'   \item{\code{weights}}{
-#'      numeric matrix; {d x k} dimensional matrix, where each row {d} represents a feature with {k}
-#'      p values per arms.
+#'      numeric matrix; \code{d x k} dimensional matrix where each row \code{d} represents a feature with
+#'      \code{k} reward probability values per arm.
 #'   }
 #'  \item{\code{precaching}}{
 #'      logical; determines if the bandit precaches all contexts and rewards.
 #'   }
 #'   \item{\code{sum_weights}}{
-#'      logical; determines whether ContextualBernoulliBandit takes the sum or the mean (default) of the
-#'      available p values per arm before the bandit generates its rewards.
+#'      logical; determines whether \code{ContextualBernoulliBandit} takes the sum or the mean (default) of
+#'      an arm's probability values over all selected feature rows.
 #'   }
 #' }
 #'
@@ -128,7 +132,8 @@ ContextualBernoulliBandit <- R6::R6Class(
 #'          \item \code{t}: integer, time step \code{t}.
 #'      }
 #'      returns a named \code{list}
-#'      containing the number of arms as \code{context$k}.
+#'      containing the current \code{d x k} dimensional matrix \code{context$X},
+#'      number of arms \code{context$k} and number of features \code{context$d}.
 #'  }
 #'
 #'   \item{\code{get_reward(t, context, action)}}{
@@ -156,7 +161,7 @@ ContextualBernoulliBandit <- R6::R6Class(
 #' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
-#' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{LiSamplingOfflineBandit}}
+#' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflinePolicyEvaluatorBandit}}
 #'
 #' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 #'

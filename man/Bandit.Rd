@@ -22,7 +22,7 @@ through \code{get_context()} and for returning rewards through \code{get_reward(
 \section{Usage}{
 
 \preformatted{
-  policy <- Bandit$new()
+  bandit <- Bandit$new()
 }
 }
 
@@ -75,7 +75,7 @@ Pregenerate \code{contexts} and \code{rewards} here.
 Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 
-Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{LiSamplingOfflineBandit}}
+Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflinePolicyEvaluatorBandit}}
 
 Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 }

@@ -1,5 +1,5 @@
 #' @export
-LiSamplingOfflineBandit <- R6::R6Class(
+OfflinePolicyEvaluatorBandit <- R6::R6Class(
   inherit = Bandit,
   portable = TRUE,
   class = FALSE,
@@ -7,13 +7,13 @@ LiSamplingOfflineBandit <- R6::R6Class(
     S = NULL
   ),
   public = list(
-    class_name = "LiSamplingOfflineBandit",
+    class_name = "OfflinePolicyEvaluatorBandit",
     randomize = NULL,
     initialize   = function(data_stream, k, d, unique = NULL, shared = NULL, randomize = TRUE) {
-      self$k <- k               # Number of arms (integer)
-      self$d <- d               # Dimension of context feature vector (integer)
-      self$randomize <-randomize
-      private$S <- data_stream  # Data stream, here as a data.table
+      self$k <- k                 # Number of arms (integer)
+      self$d <- d                 # Dimension of context feature vector (integer)
+      self$randomize <-randomize  # Randomize logged events for every simulation? (logical)
+      private$S <- data_stream    # Logged events (data.table)
     },
     post_initialization = function() {
       if(isTRUE(self$randomize))private$S <- private$S[sample(nrow(private$S))]
@@ -43,37 +43,152 @@ LiSamplingOfflineBandit <- R6::R6Class(
   )
 )
 
-#' Bandit: Li Sampling Offline Evaluation
+#' Bandit: Li's Offline Policy Evaluator
 #'
-#' \code{LiSamplingOfflineBandit} uses data from a randomly assigned policy for offline evaluation.
+#' Policy for the evaluation of policies with offline data.
 #'
-#' The key assumption of the method is that the individual events are i.i.d., and
-#' that the logging policy chose each arm at each time step uniformly at random.
+#' The key assumption of the method is that that the original logging policy chose
+#' i.i.d. arms uniformly at random.
 #'
-#' Take care: if A is a stationary policy that does not change over trials,
-#' data may be used more efficiently via propensity
-#' scoring (Langford et al., 2008; Strehl et al., 2011) and related
-#' techniques like doubly robust estimation (Dudik et al., 2011).
+#' Take care: if the original logging policy does not change over trials, data may be
+#' used more efficiently via propensity scoring (Langford et al., 2008; Strehl et al., 2011)
+#' and related techniques like doubly robust estimation (Dudik et al., 2011).
 #'
-#' @name LiSamplingOfflineBandit
+#' @name OfflinePolicyEvaluatorBandit
 #' @family contextual subclasses
+#'
 #'
 #' @section Usage:
 #' \preformatted{
-#'    bandit <- LiSamplingOfflineBandit(data_stream, k, d)
+#'   bandit <- OfflinePolicyEvaluatorBandit(data_stream, k, d, unique = NULL, shared = NULL, randomize = TRUE)
+#' }
+#'
+#' @section Arguments:
+#'
+#' \describe{
+#'   \item{\code{data_stream}}{
+#'     data.table; data stream (required)
+#'   }
+#'   \item{\code{k}}{
+#'     integer; number of arms (required)
+#'   }
+#'   \item{\code{d}}{
+#'     integer; number of contextual features (required)
+#'   }
+#'   \item{\code{randomize}}{
+#'     logical; randomize rows of data stream per simulation (optional, default: TRUE)
+#'   }
+#'   \item{\code{unique}}{
+#'     integer vector; index of disjoint features (optional)
+#'   }
+#'   \item{\code{shared}}{
+#'     integer vector; index of shared features (optional)
+#'   }
+#'
+#' }
+#'
+#' @section Methods:
+#'
+#' \describe{
+#'
+#'   \item{\code{new(data_stream, k, d, unique = NULL, shared = NULL, randomize = TRUE)}}{
+#'      generates and instantializes a new \code{Bandit} instance.
+#'      For arguments, see Argument section above.
+#'   }
+#'
+#'   \item{\code{get_context(t)}}{
+#'      argument:
+#'      \itemize{
+#'          \item \code{t}: integer, time step \code{t}.
+#'      }
+#'      returns a named \code{list}
+#'      containing the current \code{d x k} dimensional matrix \code{context$X},
+#'      number of arms \code{context$k} and number of features \code{context$d}.
+#'  }
+#'
+#'   \item{\code{get_reward(t, context, action)}}{
+#'      arguments:
+#'      \itemize{
+#'          \item \code{t}: integer, time step \code{t}.
+#'          \item \code{context}: list, with \code{context$k} (number of arms).
+#'          \item \code{action}:  list, containing \code{action$choice} (as set by \code{policy}).
+#'      }
+#'      returns a named \code{list} containing \code{reward$reward}
+#'  }
 #' }
 #'
 #' @references
 #'
-#' Li, L., Chu, W., Langford, J., & Wang, X. (2011, February). Unbiased offline evaluation of contextual-bandit-based news article recommendation algorithms. In Proceedings of the fourth ACM international conference on Web search and data mining (pp. 297-306). ACM.
+#' Agrawal, R. (1995). The continuum-armed bandit problem. SIAM journal on control and optimization, 33(6), 1926-1951.
 #'
 #' @seealso
 #'
 #' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
+#' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflinePolicyEvaluatorBandit}}
+#'
+#' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
+#'
 #' @examples
+#' \donttest{
 #'
-#' horizon            <- 100L
+#' ## generate random policy log and save it
 #'
+#' context_weights    <- matrix(  c( 0.9, 0.1, 0.1,
+#'                                   0.1, 0.9, 0.1,
+#'                                   0.1, 0.1, 0.9), nrow = 3, ncol = 3, byrow = TRUE)
+#' horizon     <- 2000L
+#' simulations <- 1L
+#' bandit      <- ContextualBernoulliBandit$new(weights = context_weights, sum_weights = TRUE)
+#'
+#' # For the generation of random data choose a random policy,
+#' # otherwise rejection sampling will produce biased results.
+#'
+#' policy      <- RandomPolicy$new()
+#'
+#' agent       <- Agent$new(policy, bandit)
+#'
+#' simulation  <-
+#'   Simulator$new(
+#'     agent,
+#'     horizon = horizon,
+#'     simulations = simulations,
+#'     save_context = TRUE
+#'   )
+#'
+#' random_data_stream <- simulation$run()
+#' random_data_stream$save("log.RData")
+#'
+#' ## use saved log to evaluate policies with OfflinePolicyEvaluatorBandit
+#'
+#' history <- History$new()
+#' history$load("log.RData")
+#' log_S <- history$get_data_table()
+#'
+#' bandit <- OfflinePolicyEvaluatorBandit$new(data_stream = log_S, k = 3, d = 3)
+#'
+#' agents <-
+#'   list(
+#'     Agent$new(EpsilonGreedyPolicy$new(0.01), bandit),
+#'     Agent$new(LinUCBDisjointPolicy$new(0.6), bandit)
+#'   )
+#'
+#' simulation <-
+#'   Simulator$new(
+#'     agents,
+#'     horizon = horizon,
+#'     simulations = simulations,
+#'     t_over_sims = TRUE,
+#'     do_parallel = FALSE,
+#'     reindex = TRUE
+#'   )
+#'
+#' li_bandit_history <- simulation$run()
+#'
+#' plot(after, regret = FALSE, type = "cumulative", rate = TRUE)
+#'
+#' if (file.exists("log.RData")) file.remove("log.RData")
+#'
+#' }
 NULL

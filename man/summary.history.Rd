@@ -20,7 +20,7 @@ Core contextual classes: \code{\link{Simulator}},
 \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 
 Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBernoulliBandit}},
-\code{\link{LiSamplingOfflineBandit}}, \code{\link{ContextualLogitBandit}}
+\code{\link{OfflinePolicyEvaluatorBandit}}, \code{\link{ContextualLogitBandit}}
 
 Other contextual: \code{\link{plot.history}},
   \code{\link{print.history}}

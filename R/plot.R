@@ -165,7 +165,7 @@ Plot <- R6::R6Class(
 
       self$history <- history
 
-      if (no_par == FALSE) {
+      if (!isTRUE(no_par)) {
         dev.hold()
         old.par <- par(no.readonly = TRUE)
         par(mar = c(5, 5, 1, 1))
@@ -267,7 +267,7 @@ Plot <- R6::R6Class(
           inset = c(0.08, 0.1)
         )
       }
-      if (no_par == FALSE) {
+      if (!isTRUE(no_par)) {
         dev.flush()
         par(old.par)
       }
@@ -340,7 +340,7 @@ Plot <- R6::R6Class(
         }
       }
 
-      if (no_par == FALSE) {
+      if (!isTRUE(no_par)) {
         dev.hold()
         old.par <- par(no.readonly = TRUE)
         par(mar = c(5, 5, 1, 1))
@@ -365,7 +365,7 @@ Plot <- R6::R6Class(
       if (lty_step > 1) {
         lt <- rep(1:round(lty_step), each = round(n_agents / lty_step))
       }
-      if (use_colors == FALSE) {
+      if (!isTRUE(FALSE)) {
         lt <- seq(1, n_agents)
       }
       if (!is.null(ci) && !isTRUE(plot_only_ci)) {
@@ -480,7 +480,7 @@ Plot <- R6::R6Class(
         } else {
           bty <- "o"
         }
-        if (use_colors == FALSE) {
+        if (!isTRUE(use_colors)) {
           cl <- rgb(0.2, 0.2, 0.2, 0.8)
         }
         legend(
@@ -495,7 +495,7 @@ Plot <- R6::R6Class(
           bg    = "white"
         )
       }
-      if (no_par == FALSE) {
+      if (!isTRUE(no_par)) {
         dev.flush()
         par(old.par)
       }
@@ -616,7 +616,7 @@ Plot <- R6::R6Class(
 #' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
-#' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{LiSamplingOfflineBandit}}
+#' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflinePolicyEvaluatorBandit}}
 #'
 #' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 #'

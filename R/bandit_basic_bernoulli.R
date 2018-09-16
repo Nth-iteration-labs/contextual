@@ -43,7 +43,7 @@ BasicBernoulliBandit <- R6::R6Class(
 #'
 #' @section Usage:
 #' \preformatted{
-#'   policy <- BasicBernoulliBandit$new(p_per_arm)
+#'   bandit <- BasicBernoulliBandit$new(p_per_arm)
 #' }
 #'
 #' @section Arguments:
@@ -89,7 +89,7 @@ BasicBernoulliBandit <- R6::R6Class(
 #' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
-#' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{LiSamplingOfflineBandit}}
+#' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflinePolicyEvaluatorBandit}}
 #'
 #' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 #'

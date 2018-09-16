@@ -45,7 +45,7 @@ horizon     <- horizon
 
 log_S       <- linucb_dt
 
-bandit      <- LiSamplingOfflineBandit$new(data_stream = log_S, k = 10, d = 100)
+bandit      <- OfflinePolicyEvaluatorBandit$new(data_stream = log_S, k = 10, d = 100)
 
 # define two LinUCBDisjointSmPolicy agents
 

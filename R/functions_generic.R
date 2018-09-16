@@ -14,7 +14,7 @@
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
 #' Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBernoulliBandit}},
-#' \code{\link{LiSamplingOfflineBandit}}, \code{\link{ContextualLogitBandit}}
+#' \code{\link{OfflinePolicyEvaluatorBandit}}, \code{\link{ContextualLogitBandit}}
 #'
 #' @export
 plot.History <- function(x, ...) {
@@ -200,7 +200,7 @@ plot.History <- function(x, ...) {
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
 #' Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBernoulliBandit}},
-#' \code{\link{LiSamplingOfflineBandit}}, \code{\link{ContextualLogitBandit}}
+#' \code{\link{OfflinePolicyEvaluatorBandit}}, \code{\link{ContextualLogitBandit}}
 #'
 #' @export
 print.History <- function(x, ...) {
@@ -222,7 +222,7 @@ print.History <- function(x, ...) {
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
 #' Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBernoulliBandit}},
-#' \code{\link{LiSamplingOfflineBandit}}, \code{\link{ContextualLogitBandit}}
+#' \code{\link{OfflinePolicyEvaluatorBandit}}, \code{\link{ContextualLogitBandit}}
 #'
 #' @importFrom data.table data.table setcolorder rbindlist
 #' @export

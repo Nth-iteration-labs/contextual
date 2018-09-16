@@ -3,7 +3,7 @@ library(data.table)
 library(RCurl)
 library(foreign)
 
-LiSamplingOfflineBandit <- R6::R6Class(
+OfflinePolicyEvaluatorBandit <- R6::R6Class(
   inherit = BasicBandit,
   portable = TRUE,
   class = FALSE,
@@ -11,7 +11,7 @@ LiSamplingOfflineBandit <- R6::R6Class(
     S = NULL
   ),
   public = list(
-    class_name = "LiSamplingOfflineBandit",
+    class_name = "OfflinePolicyEvaluatorBandit",
     randomize = NULL,
     initialize   = function(data_stream, k, d) {
       self$k <- k               # Number of arms (integer)
@@ -50,7 +50,7 @@ website_data   <- setDT(read.csv("persuasion_api_daypart-2.csv"))
 
 horizon        <- nrow(website_data)
 simulations    <- 10L
-bandit         <- LiSamplingOfflineBandit$new(website_data, k = 4, d = 1)
+bandit         <- OfflinePolicyEvaluatorBandit$new(website_data, k = 4, d = 1)
 agents         <- list(#Agent$new(ThompsonSamplingPolicy$new(1.0, 1.0), bandit),
                        Agent$new(LinUCBDisjointOptimizedPolicy$new(0.05), bandit)
                        #Agent$new(ContextualThompsonSamplingPolicy$new(delta=0.5, R=0.01, epsilon=0.5), bandit)

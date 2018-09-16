@@ -44,8 +44,8 @@ horizon     <- 2000L
 simulations <- 10L
 bandit      <- ContextualBernoulliBandit$new(weights = context_weights, sum_weights = TRUE)
 
-# This can only be random policy, otherwise rejection sampling will
-# produce severely biased results.
+# Has to be a random policy, otherwise rejection sampling will
+# produce biased results.
 
 policy      <- RandomPolicy$new()
 
@@ -59,11 +59,8 @@ simulation  <-
     save_context = TRUE
   )
 
-before <- simulation$run()
-before$save("test.RData")
-plot(before, regret = FALSE, type = "cumulative", rate = TRUE, legend_position = "topright")
-
-b <- before$get_data_table()
+random_stream <- simulation$run()
+random_stream$save("test.RData")
 
 ######################## use the log to test a policy ##########################
 
@@ -71,13 +68,12 @@ history <- History$new()
 history$load("test.RData")
 log_S <- history$get_data_table()
 
-bandit <- LiSamplingOfflineBandit$new(data_stream = log_S, k = 3, d = 3)
+bandit <- OfflinePolicyEvaluatorBandit$new(data_stream = log_S, k = 3, d = 3)
 
 agents <-
   list(
     Agent$new(EpsilonGreedyPolicy$new(0.01), bandit),
     Agent$new(LinUCBDisjointPolicy$new(0.6), bandit),
-    Agent$new(OraclePolicy$new(), bandit)
   )
 
 simulation <-
