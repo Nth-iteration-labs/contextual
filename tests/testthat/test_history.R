@@ -24,6 +24,8 @@ expect_equal(csv_comparison_file, import_context)
 
 #############
 
+history$delete_empty_rows()
+
 history$save_csv("save.csv")
 
 import_file <- read.csv("save.csv")
@@ -49,5 +51,13 @@ history$set_data_frame(df1)
 df2 <- history$get_data_frame()
 
 expect_equal(df1, df2)
+
+#############
+
+history_theta           <- Simulator$new(agents, horizon = 3, simulations = 3,
+                                    do_parallel = FALSE, save_context = TRUE,
+                                    save_theta = TRUE)$run()
+
+expect_equal(history_theta$cumulative$GittinsBrezziLai$reward, history$cumulative$GittinsBrezziLai$reward)
 
 

@@ -207,8 +207,8 @@ History <- R6::R6Class(
         dt_to_save$k <- dim(one_context)[2]
         dt_to_save$d <- dim(one_context)[1]
         dt_to_save[, (context_cols) := tstrsplit(context_string, ",", fixed=TRUE)]
-        dt_to_save$context = NULL
-        dt_to_save$context_string = NULL
+        dt_to_save$context <- NULL
+        dt_to_save$context_string <- NULL
         fwrite(dt_to_save[,which(dt_to_save[,colSums(is.na(dt_to_save))<nrow(dt_to_save)]), with =F],
                file = filename)
         rm(dt_to_save)
