@@ -38,7 +38,9 @@
 
 <meta property="og:title" content="Bandit: ContinuumBandit — ContinuumBandit" />
 
-<meta property="og:description" content="ContinuumBandit intro" />
+<meta property="og:description" content="A function based continuum multiarmed bandit
+where arms are chosen from a subset of the real line and the mean rewards
+are assumed to be a continuous function of the arms." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -138,7 +140,9 @@
 
     <div class="ref-description">
     
-    <p>ContinuumBandit intro</p>
+    <p>A function based continuum multiarmed bandit
+where arms are chosen from a subset of the real line and the mean rewards
+are assumed to be a continuous function of the arms.</p>
     
     </div>
 
@@ -146,24 +150,40 @@
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 
     
-    <pre>b &lt;- ContinuumBandit$new()
-    b$reset()
-    print(b)
+    <pre>
+   bandit &lt;- ContinuumBandit$new(FUN)
 </pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
 
     
     <dl class='dl-horizontal'>
-<dt>b</dt><dd><p>A <code>ContinuumBandit</code> object.</p></dd>
+<dt>FUN</dt><dd><p>continuous function.</p></dd>
 </dl>
     
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     
-    <p><code>$new()</code> starts a new ContinuumBandit, it uses <code><a href='http://www.rdocumentation.org/packages/base/topics/connections'>pipe</a></code>.
-R does <em>not</em> wait for the process to finish, but returns
-immediately.</p>
+    <dl class='dl-horizontal'>
+    <dt><code>new(FUN)</code></dt><dd><p>generates and instantializes a new <code>Bandit</code> instance.
+For arguments, see Argument section above.</p></dd>
+    <dt><code><a href='Bandit.html'>get_context(t)</a></code></dt><dd><p>argument:
+<ul>
+<li><p><code>t</code>: integer, time step <code>t</code>.</p></li>
+</ul>
+returns a named <code>list</code>
+optionally containing the current <code>d x k</code> dimensional matrix <code>context$X</code>,
+the number of arms <code>context$k</code> and the number of features <code>context$d</code>.</p></dd>
+    <dt><code>get_reward(t, context, action)</code></dt><dd><p>arguments:
+<ul>
+<li><p><code>t</code>: integer, time step <code>t</code>.</p></li>
+<li><p><code>context</code>: list, containing the current <code>context$X</code> (d x k context matrix),
+<code>context$k</code> (number of arms) and <code>context$d</code> (number of context feaures)
+(as set by <code>bandit</code>).</p></li>
+<li><p><code>action</code>:  list, containing <code>action$choice</code> (as set by <code>policy</code>).</p></li>
+</ul>
+returns a named <code>list</code> containing <code>reward$reward</code></p></dd>
+</dl>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -176,7 +196,6 @@ immediately.</p>
   <code><a href='EpsilonGreedyPolicy.html'>EpsilonGreedyPolicy</a></code>,
   <code><a href='Exp3Policy.html'>Exp3Policy</a></code>,
   <code><a href='GittinsBrezziLaiPolicy.html'>GittinsBrezziLaiPolicy</a></code>,
-  <code><a href='LiSamplingOfflineBandit.html'>LiSamplingOfflineBandit</a></code>,
   <code><a href='LifPolicy.html'>LifPolicy</a></code>,
   <code><a href='LinUCBDisjointOptimizedPolicy.html'>LinUCBDisjointOptimizedPolicy</a></code>,
   <code><a href='LinUCBDisjointPolicy.html'>LinUCBDisjointPolicy</a></code>,
@@ -184,12 +203,40 @@ immediately.</p>
   <code><a href='LinUCBHybridOptimizedPolicy.html'>LinUCBHybridOptimizedPolicy</a></code>,
   <code><a href='LinUCBHybridPolicy.html'>LinUCBHybridPolicy</a></code>,
   <code><a href='LinUCBOFULPolicy.html'>LinUCBOFULPolicy</a></code>,
+  <code><a href='OfflinePolicyEvaluatorBandit.html'>OfflinePolicyEvaluatorBandit</a></code>,
   <code><a href='OraclePolicy.html'>OraclePolicy</a></code>, <code><a href='RandomPolicy.html'>RandomPolicy</a></code>,
   <code><a href='SoftmaxPolicy.html'>SoftmaxPolicy</a></code>,
   <code><a href='ThompsonSamplingPolicy.html'>ThompsonSamplingPolicy</a></code>,
   <code><a href='UCB1Policy.html'>UCB1Policy</a></code></p></div>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'>
+<span class='no'>horizon</span>            <span class='kw'>&lt;-</span> <span class='fl'>1500</span>
+<span class='no'>simulations</span>        <span class='kw'>&lt;-</span> <span class='fl'>100</span>
+
+<span class='no'>continuous_arms</span>  <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span>) {
+  -<span class='fl'>0.1</span>*(<span class='no'>x</span> - <span class='fl'>5</span>) ^ <span class='fl'>2</span> + <span class='fl'>3.5</span>  + <span class='fu'>rnorm</span>(<span class='fu'>length</span>(<span class='no'>x</span>),<span class='fl'>0</span>,<span class='fl'>0.4</span>)
+}
+
+<span class='no'>int_time</span>    <span class='kw'>&lt;-</span> <span class='fl'>100</span>
+<span class='no'>amplitude</span>   <span class='kw'>&lt;-</span> <span class='fl'>0.2</span>
+<span class='no'>learn_rate</span>  <span class='kw'>&lt;-</span> <span class='fl'>0.3</span>
+<span class='no'>omega</span>       <span class='kw'>&lt;-</span> <span class='fl'>2</span>*<span class='no'>pi</span>/<span class='no'>int_time</span>
+<span class='no'>x0_start</span>    <span class='kw'>&lt;-</span> <span class='fl'>2.0</span>
+
+<span class='no'>policy</span>             <span class='kw'>&lt;-</span> <span class='no'>LifPolicy</span>$<span class='fu'>new</span>(<span class='no'>int_time</span>, <span class='no'>amplitude</span>, <span class='no'>learn_rate</span>, <span class='no'>omega</span>, <span class='no'>x0_start</span>)
+
+<span class='no'>bandit</span>             <span class='kw'>&lt;-</span> <span class='no'>ContinuumBandit</span>$<span class='fu'>new</span>(<span class='kw'>FUN</span> <span class='kw'>=</span> <span class='no'>continuous_arms</span>)
+
+<span class='no'>agent</span>              <span class='kw'>&lt;-</span> <span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>policy</span>,<span class='no'>bandit</span>)
+
+<span class='no'>history</span>            <span class='kw'>&lt;-</span> <span class='no'>Simulator</span>$<span class='fu'>new</span>(     <span class='kw'>agents</span> <span class='kw'>=</span> <span class='no'>agent</span>,
+                                         <span class='kw'>horizon</span> <span class='kw'>=</span> <span class='no'>horizon</span>,
+                                         <span class='kw'>simulations</span> <span class='kw'>=</span> <span class='no'>simulations</span>,
+                                         <span class='kw'>save_theta</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>             )$<span class='fu'><a href='Simulator.html'>run</a></span>()</div><div class='output co'>#&gt; <span class='message'>Cloning, precaching and precalculating bandits and policies</span></div><div class='output co'>#&gt; <span class='message'>Preworkercreation</span></div><div class='output co'>#&gt; <span class='message'>Cores available: 4</span></div><div class='output co'>#&gt; <span class='message'>Workers assigned: 3</span></div><div class='output co'>#&gt; <span class='message'>Postworkercreation</span></div><div class='input'>
+<span class='fu'>plot</span>(<span class='no'>history</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"average"</span>, <span class='kw'>regret</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='img'><img src='ContinuumBandit-1.png' alt='' width='700' height='433' /></div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -199,10 +246,12 @@ immediately.</p>
 
       <li><a href="#arguments">Arguments</a></li>
 
-      <li><a href="#details">Details</a></li>
+      <li><a href="#methods">Methods</a></li>
 
       <li><a href="#see-also">See also</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

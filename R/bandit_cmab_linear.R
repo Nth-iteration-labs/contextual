@@ -51,7 +51,7 @@ ContextualLinearBandit <- R6::R6Class(
   )
 )
 
-#' ContextualLinearBandit
+#' Bandit: ContextualLinearBandit
 #'
 #' Samples data from linearly parameterized arms.
 #'

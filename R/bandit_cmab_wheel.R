@@ -76,7 +76,7 @@ ContextualWheelBandit <- R6::R6Class(
 )
 
 
-#' ContextualWheelBandit
+#' Bandit: ContextualWheelBandit
 #'
 #' Samples from Wheel bandit game.
 #'

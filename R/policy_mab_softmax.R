@@ -40,7 +40,7 @@ SoftmaxPolicy <- R6::R6Class(
   )
 )
 
-#' Policy: Softmax ..
+#' Policy: Softmax
 #'
 #' \code{SoftmaxPolicy} chooses an arm at
 #' random (explores) with probability \code{epsilon}, otherwise it

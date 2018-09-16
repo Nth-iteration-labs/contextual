@@ -2,7 +2,7 @@
 % Please edit documentation in R/bandit_cmab_wheel.R
 \name{ContextualWheelBandit}
 \alias{ContextualWheelBandit}
-\title{ContextualWheelBandit}
+\title{Bandit: ContextualWheelBandit}
 \description{
 Samples from Wheel bandit game.
 }

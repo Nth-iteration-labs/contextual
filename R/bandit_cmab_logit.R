@@ -49,7 +49,7 @@ ContextualLogitBandit <- R6::R6Class(
   )
 )
 
-#' ContextualLogitBandit
+#' Bandit: ContextualLogitBandit
 #'
 #' Samples data from a basic logistic regression model.
 #'

@@ -35,7 +35,7 @@ UCB1Policy <- R6::R6Class(
   )
 )
 
-#' Policy: UCB1  ..
+#' Policy: UCB1
 #'
 #' \code{UCB1Policy} chooses an arm at
 #' random (explores) with probability \code{epsilon}, otherwise it

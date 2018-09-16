@@ -152,7 +152,7 @@ distribution with provided mean <code>mu</code> and standard deviation <code>sig
 
     
     <pre>
-  policy &lt;- BasicGaussianBandit$new(mu_per_arm, sigma_per_arm)
+  bandit &lt;- BasicGaussianBandit$new(mu_per_arm, sigma_per_arm)
 </pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -189,7 +189,7 @@ returns a named <code>list</code> containing <code>reward$reward</code></p></dd>
 
     <div class='dont-index'><p>Core contextual classes: <code><a href='Bandit.html'>Bandit</a></code>, <code><a href='Policy.html'>Policy</a></code>, <code><a href='Simulator.html'>Simulator</a></code>,
 <code><a href='Agent.html'>Agent</a></code>, <code><a href='History.html'>History</a></code>, <code><a href='Plot.html'>Plot</a></code></p>
-<p>Bandit subclass examples: <code>BasicGaussianBandit</code>, <code><a href='ContextualLogitBandit.html'>ContextualLogitBandit</a></code>,  <code><a href='LiSamplingOfflineBandit.html'>LiSamplingOfflineBandit</a></code></p>
+<p>Bandit subclass examples: <code>BasicGaussianBandit</code>, <code><a href='ContextualLogitBandit.html'>ContextualLogitBandit</a></code>,  <code><a href='OfflinePolicyEvaluatorBandit.html'>OfflinePolicyEvaluatorBandit</a></code></p>
 <p>Policy subclass examples: <code><a href='EpsilonGreedyPolicy.html'>EpsilonGreedyPolicy</a></code>, <code><a href='ContextualThompsonSamplingPolicy.html'>ContextualThompsonSamplingPolicy</a></code></p></div>
     
 

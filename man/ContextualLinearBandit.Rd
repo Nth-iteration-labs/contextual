@@ -2,7 +2,7 @@
 % Please edit documentation in R/bandit_cmab_linear.R
 \name{ContextualLinearBandit}
 \alias{ContextualLinearBandit}
-\title{ContextualLinearBandit}
+\title{Bandit: ContextualLinearBandit}
 \description{
 Samples data from linearly parameterized arms.
 }

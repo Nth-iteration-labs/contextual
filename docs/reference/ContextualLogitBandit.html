@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>ContextualLogitBandit — ContextualLogitBandit • contextual</title>
+<title>Bandit: ContextualLogitBandit — ContextualLogitBandit • contextual</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -36,7 +36,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="ContextualLogitBandit — ContextualLogitBandit" />
+<meta property="og:title" content="Bandit: ContextualLogitBandit — ContextualLogitBandit" />
 
 <meta property="og:description" content="Samples data from a basic logistic regression model." />
 <meta name="twitter:card" content="summary" />
@@ -131,7 +131,7 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>ContextualLogitBandit</h1>
+    <h1>Bandit: ContextualLogitBandit</h1>
     <small class="dont-index">Source: <a href='https://github.com/Nth-iteration-labs/contextual/blob/master/R/bandit_cmab_logit.R'><code>R/bandit_cmab_logit.R</code></a></small>
     <div class="hidden name"><code>ContextualLogitBandit.Rd</code></div>
     </div>
@@ -154,7 +154,7 @@ vectors by randomly sampling from a Bernoulli distribution.</p>
 
     
     <pre>
-  policy &lt;- ContextualLogitBandit$new(k, d, intercept = TRUE)
+  bandit &lt;- ContextualLogitBandit$new(k, d, intercept = TRUE)
 </pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -195,7 +195,7 @@ returns a named <code>list</code> containing <code>reward$reward</code></p></dd>
 
     <div class='dont-index'><p>Core contextual classes: <code><a href='Bandit.html'>Bandit</a></code>, <code><a href='Policy.html'>Policy</a></code>, <code><a href='Simulator.html'>Simulator</a></code>,
 <code><a href='Agent.html'>Agent</a></code>, <code><a href='History.html'>History</a></code>, <code><a href='Plot.html'>Plot</a></code></p>
-<p>Bandit subclass examples: <code><a href='BasicBernoulliBandit.html'>BasicBernoulliBandit</a></code>, <code>ContextualLogitBandit</code>,  <code><a href='LiSamplingOfflineBandit.html'>LiSamplingOfflineBandit</a></code></p>
+<p>Bandit subclass examples: <code><a href='BasicBernoulliBandit.html'>BasicBernoulliBandit</a></code>, <code>ContextualLogitBandit</code>,  <code><a href='OfflinePolicyEvaluatorBandit.html'>OfflinePolicyEvaluatorBandit</a></code></p>
 <p>Policy subclass examples: <code><a href='EpsilonGreedyPolicy.html'>EpsilonGreedyPolicy</a></code>, <code><a href='ContextualThompsonSamplingPolicy.html'>ContextualThompsonSamplingPolicy</a></code></p></div>
     
 

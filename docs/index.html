@@ -100,7 +100,7 @@
 <div id="overview" class="section level2">
 <h2 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h2>
-<p>Contextual is an R package to facilitate the simulation and analysis of contextual and context-free Multi-Armed Bandit policies or algorithms.</p>
+<p>An R package facilitating the simulation and analysis of contextual and context-free Multi-Armed Bandit policies or algorithms.</p>
 </div>
 <div id="maintainers" class="section level2">
 <h2 class="hasAnchor">
@@ -111,8 +111,9 @@
 <h2 class="hasAnchor">
 <a href="#documentation" class="anchor"></a>Documentation</h2>
 <ul>
-<li><a href="https://nth-iteration-labs.github.io/contextual/reference/index.html">Online reference</a></li>
-<li><a href="https://pavlov.tech/category/contextual/">Blog at Pavlov</a></li>
+<li>
+<a href="https://nth-iteration-labs.github.io/contextual/reference/index.html">Online reference</a> <!---   [Blog at Pavlov](https://pavlov.tech/category/contextual/)-->
+</li>
 </ul>
 </div>
 <div id="installation" class="section level2">
@@ -122,57 +123,6 @@
 <span class="co"># install.packages("devtools")</span>
 devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"Nth-iteration-labs/contextual"</span>)</code></pre></div>
 <p>If you encounter a clear bug, please file a minimal reproducible example on <a href="https://github.com/Nth-iteration-labs/contextual/issues">GitHub</a>.</p>
-</div>
-<div id="usage" class="section level2">
-<h2 class="hasAnchor">
-<a href="#usage" class="anchor"></a>Usage</h2>
-<p>Running a simulation to compare basic Multi-Armed Bandit policies:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(contextual)
-
-horizon            &lt;-<span class="st"> </span>100L
-simulations        &lt;-<span class="st"> </span>1000L
-
-weight_per_arm     &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">0.9</span>, <span class="fl">0.1</span>, <span class="fl">0.1</span>)
-
-bandit             &lt;-<span class="st"> </span>SyntheticBandit<span class="op">$</span><span class="kw">new</span>(<span class="dt">data =</span> weight_per_arm)
-
-agents             &lt;-<span class="st"> </span><span class="kw">list</span>( Agent<span class="op">$</span><span class="kw">new</span>(EpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.1</span>, <span class="st">"\U190-greedy"</span>), bandit),
-                            Agent<span class="op">$</span><span class="kw">new</span>(RandomPolicy<span class="op">$</span><span class="kw">new</span>(<span class="st">"Random"</span>), bandit),
-                            Agent<span class="op">$</span><span class="kw">new</span>(OraclePolicy<span class="op">$</span><span class="kw">new</span>(<span class="st">"Oracle"</span>), bandit),
-                            Agent<span class="op">$</span><span class="kw">new</span>(ThompsonSamplingPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">1.0</span>, <span class="fl">1.0</span>, <span class="st">"TS"</span>), bandit),
-                            Agent<span class="op">$</span><span class="kw">new</span>(Exp3Policy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.1</span>, <span class="st">"Exp3"</span>), bandit),
-                            Agent<span class="op">$</span><span class="kw">new</span>(LinUCBPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">1.0</span>, <span class="st">"LinUCB"</span>), bandit) )
-
-simulation         &lt;-<span class="st"> </span>Simulator<span class="op">$</span><span class="kw">new</span>(agents, horizon, simulations)
-
-history            &lt;-<span class="st"> </span>simulation<span class="op">$</span><span class="kw"><a href="reference/Simulator.html">run</a></span>()
-
-<span class="kw">plot</span>(history, <span class="dt">type =</span> <span class="st">"grid"</span>)</code></pre></div>
-<p><img src="https://raw.githubusercontent.com/Nth-iteration-labs/contextual/master/tools/readme/basic_multi_plot.png" width="100%"></p>
-<p>Running a simulation to compare a contextual (LinUCB) and some non-contextual Multi-Armed Bandit policies:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(contextual)
-
-horizon            &lt;-<span class="st"> </span>100L
-simulations        &lt;-<span class="st"> </span>5000L
-                                  <span class="co">#k1  #k2  #k3   -&gt; k armed bandit</span>
-weights            &lt;-<span class="st"> </span><span class="kw">matrix</span>(  <span class="kw">c</span>( <span class="fl">0.9</span>, <span class="fl">0.3</span>, <span class="fl">0.2</span>,                        <span class="co">#d1</span>
-                                  <span class="fl">0.5</span>, <span class="fl">0.6</span>, <span class="fl">0.2</span>,                        <span class="co">#d2</span>
-                                  <span class="fl">0.2</span>, <span class="fl">0.1</span>, <span class="fl">0.5</span>),  <span class="dt">nrow =</span> <span class="dv">3</span>, <span class="dt">ncol =</span> <span class="dv">3</span>)  <span class="co">#d3  -&gt; d features in context</span>
-
-bandit             &lt;-<span class="st"> </span>SyntheticBandit<span class="op">$</span><span class="kw">new</span>(<span class="dt">data =</span> weights )
-
-agents             &lt;-<span class="st"> </span><span class="kw">list</span>( Agent<span class="op">$</span><span class="kw">new</span>(EpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.1</span>, <span class="st">"\U190-greedy"</span>), bandit),
-                            Agent<span class="op">$</span><span class="kw">new</span>(LinUCBPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">1.0</span>, <span class="st">"LinUCB"</span>), bandit),
-                            Agent<span class="op">$</span><span class="kw">new</span>(OraclePolicy<span class="op">$</span><span class="kw">new</span>(<span class="st">"Oracle"</span>), bandit),
-                            Agent<span class="op">$</span><span class="kw">new</span>(RandomPolicy<span class="op">$</span><span class="kw">new</span>(<span class="st">"Random"</span>), bandit),
-                            Agent<span class="op">$</span><span class="kw">new</span>(<span class="kw"><a href="reference/ThompsonSamplingPolicy.html">ThompsonSamplingPolicy</a></span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="st">"TSampling"</span>), bandit) )
-
-simulation         &lt;-<span class="st"> </span>Simulator<span class="op">$</span><span class="kw">new</span>(agents, horizon, simulations)
-
-history            &lt;-<span class="st"> </span>simulation<span class="op">$</span><span class="kw"><a href="reference/Simulator.html">run</a></span>()
-
-<span class="kw">plot</span>(history, <span class="dt">type =</span> <span class="st">"grid"</span>)</code></pre></div>
-<p><img src="https://raw.githubusercontent.com/Nth-iteration-labs/contextual/master/tools/readme/basic_contextual_plot.png" width="100%"></p>
 </div>
 </div>
   </div>

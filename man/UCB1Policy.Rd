@@ -2,7 +2,7 @@
 % Please edit documentation in R/policy_mab_ucb1.R
 \name{UCB1Policy}
 \alias{UCB1Policy}
-\title{Policy: UCB1  ..}
+\title{Policy: UCB1}
 \description{
 \code{UCB1Policy} chooses an arm at
 random (explores) with probability \code{epsilon}, otherwise it

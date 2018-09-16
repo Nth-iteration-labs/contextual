@@ -2,7 +2,7 @@
 % Please edit documentation in R/policy_mab_softmax.R
 \name{SoftmaxPolicy}
 \alias{SoftmaxPolicy}
-\title{Policy: Softmax ..}
+\title{Policy: Softmax}
 \description{
 \code{SoftmaxPolicy} chooses an arm at
 random (explores) with probability \code{epsilon}, otherwise it

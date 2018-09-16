@@ -2,7 +2,7 @@
 % Please edit documentation in R/bandit_cmab_logit.R
 \name{ContextualLogitBandit}
 \alias{ContextualLogitBandit}
-\title{ContextualLogitBandit}
+\title{Bandit: ContextualLogitBandit}
 \description{
 Samples data from a basic logistic regression model.
 }
