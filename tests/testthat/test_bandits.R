@@ -203,7 +203,9 @@ test_that("BasicBernoulliBandit Long", {
 
   bandit             <- BasicBernoulliBandit$new(weight_per_arm)
 
-  agents             <- list(Agent$new(GittinsBrezziLaiPolicy$new(), bandit))
+  prior              <- matrix(c(1,1,1,1,1,1),3,2) # arms x a/b
+
+  agents             <- list(Agent$new(GittinsBrezziLaiPolicy$new(prior=prior), bandit))
 
   simulation         <- Simulator$new(agents, horizon, simulations, do_parallel = FALSE)
   history            <- simulation$run()
