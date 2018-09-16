@@ -82,7 +82,7 @@ Plot <- R6::R6Class(
         smooth              = smooth
       )
 
-      invisible(self)
+      invisible(recordPlot())
     },
 
     average = function(history,
@@ -146,7 +146,7 @@ Plot <- R6::R6Class(
         smooth              = smooth
       )
 
-      invisible(self)
+      invisible(recordPlot())
     },
 
     arms = function(history,
@@ -271,7 +271,7 @@ Plot <- R6::R6Class(
         dev.flush()
         par(old.par)
       }
-      invisible(self)
+      invisible(recordPlot())
     }
   ),
   private = list(

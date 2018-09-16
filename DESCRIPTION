@@ -28,6 +28,7 @@ Suggests:
     rmarkdown,
     devtools,
     ggplot2
+Remotes: lionel-/vdiffr
 VignetteBuilder: knitr
 URL: https://github.com/Nth-iteration-labs/contextual
 BugReports: https://github.com/Nth-iteration-labs/contextual/issues
