@@ -46,6 +46,8 @@ test_that("ContextualLogitBandit intercept TRUE", {
   horizon       <- 10L
   simulations   <- 10L
 
+  LinUCBGeneralPolicy
+
   policy        <- ContextualThompsonSamplingPolicy$new(delta=0.5, R=0.01, epsilon=0.5)
   expect_identical(typeof(policy), "environment")
 
@@ -56,6 +58,23 @@ test_that("ContextualLogitBandit intercept TRUE", {
   history       <- simulation$run()
 
   expect_equal(history$cumulative$ContextualThompsonSampling$cum_regret,3.4,tolerance = 0.00001)
+
+
+  ###############
+
+
+
+  policy        <- LinUCBGeneralPolicy$new(0.6)
+  expect_identical(typeof(policy), "environment")
+
+  agent         <- Agent$new(policy, bandit)
+  expect_identical(typeof(agent), "environment")
+
+  simulation    <- Simulator$new(agent, horizon, simulations, do_parallel = FALSE)
+  history       <- simulation$run()
+
+  expect_equal(history$cumulative$LinUCBGeneral$cum_regret,4.5,tolerance = 0.00001)
+
 
 })
 
@@ -108,12 +127,15 @@ test_that("ContextualLinearBandit, binary_rewards = TRUE", {
   expect_identical(typeof(bandit), "environment")
 
   agents        <- list(Agent$new(EpsilonGreedyPolicy$new(0.1), bandit),
-                        Agent$new(LinUCBDisjointOptimizedPolicy$new(0.6), bandit))
+                        Agent$new(LinUCBDisjointOptimizedPolicy$new(0.6), bandit),
+                        Agent$new(LinUCBDisjointPolicy$new(0.6), bandit))
 
   simulation     <- Simulator$new(agents, horizon, simulations, do_parallel = FALSE)
   history        <- simulation$run()
 
-  expect_equal(history$cumulative$LinUCBDisjointOptimized$cum_regret,7.4, tolerance = 0.001)
+  expect_equal(history$cumulative$LinUCBDisjoint$cum_regret,7.4, tolerance = 0.001)
+  expect_equal(history$cumulative$LinUCBDisjoint$cum_regret,
+               history$cumulative$LinUCBDisjointOptimized$cum_regret)
 
 })
 
