@@ -111,11 +111,12 @@ Simulator <- R6::R6Class(
       # run foreach either parallel or not, create workers
       `%fun%` <- foreach::`%do%`
       workers <- 1
+      # parallel tests do not do well on CRAN, so no test coverage for parallel section
       # nocov start
       if (self$do_parallel) {
         message("Preworkercreation")
         nr_cores <- parallel::detectCores()
-        if (nr_cores >= 3) workers <- nr_cores - 1                              # nocov
+        if (nr_cores >= 3) workers <- nr_cores - 1
         if (!is.null(worker_max)) {
           if (workers > worker_max) workers <- worker_max
         }
@@ -148,9 +149,10 @@ Simulator <- R6::R6Class(
         `%fun%` <- foreach::`%dopar%`
         message("Postworkercreation")
       }
-      # nocov end
-      # If Microsoft R, set MKL threads to 1, i
+      # If Microsoft R, set MKL threads to 1
       try({library(RevoUtilsMath);RevoUtilsMath::setMKLthreads(1);}, silent = TRUE)
+      # nocov end
+
       # copy relevant variables to local environment
       horizon <- self$horizon
       sims_and_agents_list <- self$sims_and_agents_list
