@@ -5,8 +5,8 @@ ContextualHybridBandit <- R6::R6Class(
   portable = TRUE,
   class = FALSE,
   public = list(
-    betas_s = NULL,                                                 ## regression betas shared over all arms
-    betas_u = NULL,                                                 ## regression betas unique per arm
+    betas_s = NULL,                                                 ## betas shared over all arms
+    betas_u = NULL,                                                 ## betas unique per arm
     s       = NULL,                                                 ## nr shared features/betas
     u       = NULL,                                                 ## nr unique features/betas
     sigma   = NULL,                                                 ## standard deviation of noise
@@ -68,7 +68,7 @@ ContextualHybridBandit <- R6::R6Class(
 #'
 #' @section Usage:
 #' \preformatted{
-#'   bandit <- ContextualHybridBandit$new(k, d, intercept = TRUE)
+#'   bandit <- ContextualHybridBandit$new(k, shared_features, unique_features, sigma = 1.0)
 #' }
 #'
 #' @section Arguments:
@@ -78,11 +78,14 @@ ContextualHybridBandit <- R6::R6Class(
 #'   \item{\code{k}}{
 #'      integer; number of bandit arms
 #'   }
-#'  \item{\code{d}}{
-#'      integer; number of contextual features
+#'  \item{\code{shared_features}}{
+#'      integer; number of shared features
 #'   }
-#'   \item{\code{intercept}}{
-#'      logical; if TRUE (default) it adds a constant (1.0) dimension to each context X at the end.
+#'  \item{\code{unique_features}}{
+#'      integer; number of unique/disjoint features
+#'   }
+#'  \item{\code{sigma}}{
+#'      integer; standard deviation of additive Gaussian noise
 #'   }
 #'
 #' }
@@ -91,7 +94,7 @@ ContextualHybridBandit <- R6::R6Class(
 #'
 #' \describe{
 #'
-#'   \item{\code{new(k, d, intercept = NULL)}}{
+#'   \item{\code{new(k, shared_features, unique_features, sigma = 1.0)}}{
 #'     generates and instantializes a new \code{Bandit} instance.
 #'     For arguments, see Argument section above.
 #'   }
