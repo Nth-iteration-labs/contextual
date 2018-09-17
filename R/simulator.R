@@ -111,6 +111,7 @@ Simulator <- R6::R6Class(
       # run foreach either parallel or not, create workers
       `%fun%` <- foreach::`%do%`
       workers <- 1
+      # nocov start
       if (self$do_parallel) {
         message("Preworkercreation")
         nr_cores <- parallel::detectCores()
@@ -147,6 +148,7 @@ Simulator <- R6::R6Class(
         `%fun%` <- foreach::`%dopar%`
         message("Postworkercreation")
       }
+      # nocov end
       # If Microsoft R, set MKL threads to 1, i
       try({library(RevoUtilsMath);RevoUtilsMath::setMKLthreads(1);}, silent = TRUE)
       # copy relevant variables to local environment
@@ -239,12 +241,14 @@ Simulator <- R6::R6Class(
       self$history
     },
     close = function() {
+      # nocov start
       if (self$do_parallel) {
         try({
           parallel::stopCluster(self$cl)
         })
         doParallel::stopImplicitCluster()
       }
+      # nocov end
     },
     finalize = function() {
       #closeAllConnections()
