@@ -54,7 +54,7 @@ expect_equal(df1, df2)
 
 #############
 
-history_theta           <- Simulator$new(agents, horizon = 3, simulations = 3,
+history_theta      <- Simulator$new(agents, horizon = 3, simulations = 3,
                                     do_parallel = FALSE, save_context = TRUE,
                                     save_theta = TRUE)$run()
 

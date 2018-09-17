@@ -177,7 +177,7 @@ ContextualBernoulliBandit <- R6::R6Class(
 #' agents             <- list( Agent$new(EpsilonGreedyPolicy$new(0.1), bandit),
 #'                             Agent$new(LinUCBDisjointOptimizedPolicy$new(0.6), bandit))
 #'
-#' simulation         <- Simulator$new(agents, horizon, simulations, do_parallel = FALSE)
+#' simulation         <- Simulator$new(agents, horizon, simulations)
 #' history            <- simulation$run()
 #'
 #' plot(history, type = "cumulative")

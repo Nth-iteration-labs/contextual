@@ -1,4 +1,5 @@
 #' @importFrom data.table data.table set setorder setkeyv copy uniqueN setcolorder
+#' @import checkmate
 #' @export
 History <- R6::R6Class(
   "History",

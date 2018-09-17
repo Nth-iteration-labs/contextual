@@ -216,7 +216,6 @@ test_that("BasicBernoulliBandit MAB policies", {
 
 })
 
-
 test_that("BasicBernoulliBandit Long", {
 
   weight_per_arm     <- c(0.6, 0.1, 0.1)
@@ -333,6 +332,32 @@ test_that("ContinuumBandit", {
                                            do_parallel =  FALSE)$run()
 
   expect_equal(history$cumulative$Lif$reward,  2.8, tolerance = 0.01)
+
+})
+
+test_that("ContextualHybridBandit", {
+
+  horizon       <- 10L
+  simulations   <- 10L
+
+  bandit        <- ContextualHybridBandit$new(k = 100, shared_features = 10, unique_features = 2)
+
+  agents        <- list(Agent$new(ContextualThompsonSamplingPolicy$new(delta=0.5, R=0.01, epsilon=0.5), bandit),
+                        Agent$new(EpsilonGreedyPolicy$new(0.1), bandit),
+                        Agent$new(LinUCBGeneralPolicy$new(0.6), bandit),
+                        Agent$new(ContextualEpochGreedyPolicy$new(8), bandit),
+                        Agent$new(LinUCBHybridOptimizedPolicy$new(0.6), bandit),
+                        Agent$new(LinUCBDisjointOptimizedPolicy$new(0.6), bandit))
+
+  simulation     <- Simulator$new(agents, horizon, simulations, do_parallel = FALSE)
+  history        <- simulation$run()
+
+  expect_equal(history$cumulative$ContextualThompsonSampling$reward,  0.9, tolerance = 0.01)
+  expect_equal(history$cumulative$EpsilonGreedy$reward,  0.7, tolerance = 0.01)
+  expect_equal(history$cumulative$LinUCBGeneral$reward,  0.8, tolerance = 0.01)
+  expect_equal(history$cumulative$ContextualEpochGreedy$reward,  0.6, tolerance = 0.01)
+  expect_equal(history$cumulative$LinUCBHybridOptimized$reward,  0.9, tolerance = 0.01)
+  expect_equal(history$cumulative$LinUCBDisjointOptimized$reward,  0.7, tolerance = 0.01)
 
 })
 

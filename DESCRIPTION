@@ -20,7 +20,8 @@ Imports:
     doParallel,
     itertools,
     iterators,
-    nleqslv
+    nleqslv,
+    checkmate
 Suggests:
     testthat,
     vdiffr,

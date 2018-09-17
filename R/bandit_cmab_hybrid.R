@@ -1,70 +1,74 @@
 #' @export
-ContextualLogitBandit <- R6::R6Class(
-  "ContextualLogitBandit",
+ContextualHybridBandit <- R6::R6Class(
+  "ContextualHybridBandit",
   inherit = Bandit,
   portable = TRUE,
   class = FALSE,
   public = list(
-    rewards = NULL,
-    beta   = NULL,
-    intercept = NULL,
-    class_name = "ContextualLogitBandit",
+    betas_s = NULL,                                                 ## regression betas shared over all arms
+    betas_u = NULL,                                                 ## regression betas unique per arm
+    s       = NULL,                                                 ## nr shared features/betas
+    u       = NULL,                                                 ## nr unique features/betas
+    sigma   = NULL,                                                 ## standard deviation of noise
+
+    class_name = "ContextualHybridBandit",
     precaching = FALSE,
-    initialize  = function(k, d, intercept = TRUE) {
-      self$k              <- k
-      self$d              <- d
-      self$intercept      <- intercept
+    initialize  = function(k, shared_features, unique_features, sigma = 1.0) {
+
+      assert_count(shared_features, positive = TRUE)
+      assert_count(unique_features, positive = TRUE)
+      assert_number(sigma, lower = 0)
+
+      self$sigma   <- sigma
+      self$k       <- k                                             ## nr of arms
+      self$s       <- shared_features                               ## nr shared features/betas
+      self$u       <- unique_features                               ## nr unique/disjoint features/betas
+      self$d       <- self$u + self$s                               ## total number of features
+
+      self$shared  <- c(1:self$s)
+      self$unique  <- c((self$s+1):(self$u+self$s))
     },
     post_initialization = function() {
-      if (self$intercept && self$d > 1) {
-        self$beta   <- c(rnorm(self$d-1,0,1),1)
-      } else {
-        self$beta   <- c(rnorm(self$d,0,1))
-      }
+      self$betas_s <- runif(self$s,0,1/(self$u+1))                  ## generate unique/disjoint features/betas
+      self$betas_u <- matrix(runif(self$u*self$k), self$u, self$k)  ## generate shared features/betas
     },
     get_context = function(t) {
       X <- matrix(runif(self$d*self$k, 0, 1), self$d, self$k)
-      context <- list(
+      context_list <- list(
         k = self$k,
         d = self$d,
+        unique = self$unique,
+        shared = self$shared,
         X = X
       )
+      context_list
     },
     get_reward = function(t, context, action) {
-      X          <- context$X                             # context matrix
-      d          <- context$d                             # number of context features
-      arm        <- action$choice                         # arm chosen by policy
-
-      z          <- as.vector(self$beta%*%X)              # compute linear predictor
-      pr         <- 1/(1+exp(-z))                         # inverse logit transform of linear predictor
-      rewards    <- rbinom(d,1,pr)                        # binary rewards from the Bernoulli distribution
-
-      optimal_arm    <- which.max(rewards)
-      reward  <- list(
-        reward                   = rewards[action$choice],
-        optimal_arm              = optimal_arm,
-        optimal_reward           = rewards[optimal_arm]
+      betas        <- c(self$betas_s, self$betas_u[,action$choice])
+      trb          <- betas%*%context$X[,action$choice]
+      trb          <- trb + rnorm(1,0,self$sigma)
+      reward       <- rbinom(1,1,1/(1+exp(-trb)))
+      rewardlist   <- list(
+        reward                   = reward,
+        optimal_reward_value     = 1
       )
+      rewardlist
     }
   )
 )
 
-#' Bandit: ContextualLogitBandit
+#' Bandit: ContextualHybridBandit
 #'
-#' Samples data from a basic logistic regression model.
+#' Extension of \code{ContextualLogitBandit} modeling hybrid rewards with a combination of unique (or
+#' "disjoint") and shared contextual features.
 #'
-#' ContextualLogitBandit linear predictors are generated from the dot product of a random \code{d} dimensional
-#' normal weight vector and uniform random \code{d x k} dimensional context matrices with equal weights per
-#' arm. This product is then inverse-logit transformed to generate \code{k} dimensional binary (0/1) reward
-#' vectors by randomly sampling from a Bernoulli distribution.
-#'
-#' @name ContextualLogitBandit
+#' @name ContextualHybridBandit
 #'
 #' @importFrom R6 R6Class
 #'
 #' @section Usage:
 #' \preformatted{
-#'   bandit <- ContextualLogitBandit$new(k, d, intercept = TRUE)
+#'   bandit <- ContextualHybridBandit$new(k, d, intercept = TRUE)
 #' }
 #'
 #' @section Arguments:
@@ -88,9 +92,8 @@ ContextualLogitBandit <- R6::R6Class(
 #' \describe{
 #'
 #'   \item{\code{new(k, d, intercept = NULL)}}{
-#'   generates and instantializes a new \code{Bandit} instance.
-#'   For arguments, see Argument section above.
-#'
+#'     generates and instantializes a new \code{Bandit} instance.
+#'     For arguments, see Argument section above.
 #'   }
 #'
 #'   \item{\code{get_context(t)}}{
@@ -133,12 +136,12 @@ ContextualLogitBandit <- R6::R6Class(
 #' @examples
 #' \donttest{
 #' horizon       <- 800L
-#' simulations   <- 30L
+#' simulations   <- 100L
 #'
-#' bandit        <- ContextualLogitBandit$new(k = 5, d = 5, intercept = TRUE)
+#' bandit        <- ContextualHybridBandit$new(k = 100, shared_features = 10, unique_features = 2)
 #'
 #' agents        <- list(Agent$new(ContextualThompsonSamplingPolicy$new(delta=0.5,
-#'                                                        R=0.01, epsilon=0.5), bandit),
+#'                                                    R=0.01, epsilon=0.5), bandit),
 #'                       Agent$new(EpsilonGreedyPolicy$new(0.1), bandit),
 #'                       Agent$new(LinUCBGeneralPolicy$new(0.6), bandit),
 #'                       Agent$new(ContextualEpochGreedyPolicy$new(8), bandit),
@@ -148,7 +151,6 @@ ContextualLogitBandit <- R6::R6Class(
 #' simulation     <- Simulator$new(agents, horizon, simulations)
 #' history        <- simulation$run()
 #'
-#' plot(history, type = "cumulative", regret = FALSE,
-#'               rate = TRUE, legend_position = "right")
+#' plot(history, type = "cumulative", regret = FALSE, rate = TRUE, legend_position = "bottomright")
 #' }
 NULL

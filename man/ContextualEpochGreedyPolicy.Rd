@@ -14,8 +14,7 @@ policy <- EpsilonGreedyPolicy(epsilon = 0.1)
 }
 
 \seealso{
-Other contextual subclasses: \code{\link{ContextualThompsonHybrid}},
-  \code{\link{ContextualThompsonSamplingPolicy}},
+Other contextual subclasses: \code{\link{ContextualThompsonSamplingPolicy}},
   \code{\link{ContinuumBandit}},
   \code{\link{EpsilonFirstPolicy}},
   \code{\link{EpsilonGreedyPolicy}},
@@ -27,7 +26,6 @@ Other contextual subclasses: \code{\link{ContextualThompsonHybrid}},
   \code{\link{LinUCBGeneralPolicy}},
   \code{\link{LinUCBHybridOptimizedPolicy}},
   \code{\link{LinUCBHybridPolicy}},
-  \code{\link{LinUCBOFULPolicy}},
   \code{\link{OfflinePolicyEvaluatorBandit}},
   \code{\link{OraclePolicy}}, \code{\link{RandomPolicy}},
   \code{\link{SoftmaxPolicy}},

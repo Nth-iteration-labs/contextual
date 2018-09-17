@@ -12,7 +12,6 @@ the number of successes and failures associated with each arm.
 }
 \seealso{
 Other contextual subclasses: \code{\link{ContextualEpochGreedyPolicy}},
-  \code{\link{ContextualThompsonHybrid}},
   \code{\link{ContextualThompsonSamplingPolicy}},
   \code{\link{ContinuumBandit}},
   \code{\link{EpsilonFirstPolicy}},
@@ -23,7 +22,6 @@ Other contextual subclasses: \code{\link{ContextualEpochGreedyPolicy}},
   \code{\link{LinUCBGeneralPolicy}},
   \code{\link{LinUCBHybridOptimizedPolicy}},
   \code{\link{LinUCBHybridPolicy}},
-  \code{\link{LinUCBOFULPolicy}},
   \code{\link{OfflinePolicyEvaluatorBandit}},
   \code{\link{OraclePolicy}}, \code{\link{RandomPolicy}},
   \code{\link{SoftmaxPolicy}},
