@@ -1,6 +1,6 @@
 #' @importFrom nleqslv nleqslv
 #' @export
-GlmUCB <- R6::R6Class(
+GlmUCBPolicy <- R6::R6Class(
   portable = FALSE,
   class = FALSE,
   inherit = Policy,
@@ -9,7 +9,7 @@ GlmUCB <- R6::R6Class(
     contexts = NULL,
     d = NULL,
     link = NULL,
-    class_name = "GlmUCB",
+    class_name = "GlmUCBPolicy",
     initialize = function(link_function = function(x) exp(x) / (1 + exp(x)) ) {
       super$initialize()
       self$rewards  <- list()
@@ -73,8 +73,8 @@ GlmUCB <- R6::R6Class(
   )
 )
 
-#' GlmUCB
+#' GlmUCBPolicy
 #'
-#' @name GlmUCB
+#' @name GlmUCBPolicy
 #'
 NULL

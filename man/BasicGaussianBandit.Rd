@@ -25,8 +25,8 @@ distribution with provided mean \code{mu} and standard deviation \code{sigma}.
 numeric vector; mean \code{mu} for each of the bandit's \code{k} arms
 }
 \item{\code{sigma_per_arm}}{
-numeric vector; standard deviation \code{sigma} for each of
-the bandit's \code{k} arms
+numeric vector; standard deviation of additive Gaussian noise for each of
+the bandit's \code{k} arms. Set to zero for no noise.
 }
 }
 }

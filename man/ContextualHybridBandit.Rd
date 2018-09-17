@@ -10,7 +10,7 @@ Extension of \code{ContextualLogitBandit} modeling hybrid rewards with a combina
 \section{Usage}{
 
 \preformatted{
-  bandit <- ContextualHybridBandit$new(k, d, intercept = TRUE)
+  bandit <- ContextualHybridBandit$new(k, shared_features, unique_features, sigma = 1.0)
 }
 }
 
@@ -22,11 +22,14 @@ Extension of \code{ContextualLogitBandit} modeling hybrid rewards with a combina
 \item{\code{k}}{
 integer; number of bandit arms
 }
-\item{\code{d}}{
-integer; number of contextual features
+\item{\code{shared_features}}{
+integer; number of shared features
 }
-\item{\code{intercept}}{
-logical; if TRUE (default) it adds a constant (1.0) dimension to each context X at the end.
+\item{\code{unique_features}}{
+integer; number of unique/disjoint features
+}
+\item{\code{sigma}}{
+integer; standard deviation of additive Gaussian noise
 }
 
 }
@@ -37,7 +40,7 @@ logical; if TRUE (default) it adds a constant (1.0) dimension to each context X 
 
 \describe{
 
-\item{\code{new(k, d, intercept = NULL)}}{
+\item{\code{new(k, shared_features, unique_features, sigma = 1.0)}}{
 generates and instantializes a new \code{Bandit} instance.
 For arguments, see Argument section above.
 }
@@ -75,13 +78,10 @@ initialzes \code{d x k} beta matrix.
 horizon       <- 800L
 simulations   <- 100L
 
-
-
 bandit        <- ContextualHybridBandit$new(k = 100, shared_features = 10, unique_features = 2)
 
-#bandit        <- ContextualLogitBandit$new(k = 5, d = 5, intercept = TRUE)
-
-agents        <- list(Agent$new(ContextualThompsonSamplingPolicy$new(delta=0.5, R=0.01, epsilon=0.5), bandit),
+agents        <- list(Agent$new(ContextualThompsonSamplingPolicy$new(delta=0.5,
+                                                   R=0.01, epsilon=0.5), bandit),
                       Agent$new(EpsilonGreedyPolicy$new(0.1), bandit),
                       Agent$new(LinUCBGeneralPolicy$new(0.6), bandit),
                       Agent$new(ContextualEpochGreedyPolicy$new(8), bandit),

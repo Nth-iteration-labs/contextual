@@ -12,53 +12,68 @@ agents             <- list(Agent$new(RandomPolicy$new(), bandit),
 history            <- Simulator$new(agents, horizon = 3, simulations = 3,
                                     do_parallel = FALSE, save_context = TRUE)$run()
 
-############
 
-csv_comparison_file <- read.csv("history_test.ref")
+test_that("History summary and print", {
 
-history$save_csv()
+  expect_equal_to_reference(capture.output(summary(history)), file = "summary_history.rds")
+  expect_equal_to_reference(capture.output(print(history)), file = "summary_history.rds")
 
-import_context <- read.csv(dir(pattern='contextual_data_*')[1])
+})
 
-expect_equal(csv_comparison_file, import_context)
+test_that("History save_csv without filename", {
 
-#############
+  csv_comparison_file <- read.csv("history_test.ref")
+  history$save_csv()
+  import_context <- read.csv(dir(pattern='contextual_data_*')[1])
+  expect_equal(csv_comparison_file, import_context)
 
-history$delete_empty_rows()
+})
 
-history$save_csv("save.csv")
+test_that("History save_csv without filename", {
 
-import_file <- read.csv("save.csv")
+  csv_comparison_file <- read.csv("history_test.ref")
+  history$delete_empty_rows()
+  history$save_csv("save.csv")
+  import_file <- read.csv("save.csv")
+  expect_equal(csv_comparison_file,  import_file)
 
-expect_equal(csv_comparison_file,  import_file)
+})
 
-#############
+test_that("History save_csv with context", {
 
-csv_comparison_file <- read.csv("history_context_test.ref")
+  csv_comparison_file <- read.csv("history_context_test.ref")
+  history$save_csv("save_context.csv", context_to_columns = TRUE)
+  import_file <- read.csv("save_context.csv")
+  expect_equal(csv_comparison_file,  import_file)
 
-history$save_csv("save_context.csv", context_to_columns = TRUE)
+})
 
-import_file <- read.csv("save_context.csv")
+test_that("History get and set data.table", {
 
-expect_equal(csv_comparison_file,  import_file)
+  df1 <- history$get_data_table()
+  history$set_data_table(df1)
+  df2 <- history$get_data_table()
+  expect_equal(df1, df2)
 
-#############
+})
 
-df1 <- history$get_data_frame()
+test_that("History get and set data.frame", {
 
-history$set_data_frame(df1)
+  df1 <- history$get_data_frame()
+  history$set_data_frame(df1)
+  df2 <- history$get_data_frame()
+  expect_equal(df1, df2)
 
-df2 <- history$get_data_frame()
+})
 
-expect_equal(df1, df2)
 
-#############
+test_that("History inc theta", {
+  history_theta      <- Simulator$new(agents, horizon = 3, simulations = 3,
+                                      do_parallel = FALSE, save_context = TRUE,
+                                      save_theta = TRUE)$run()
 
-history_theta      <- Simulator$new(agents, horizon = 3, simulations = 3,
-                                    do_parallel = FALSE, save_context = TRUE,
-                                    save_theta = TRUE)$run()
-
-expect_equal(history_theta$cumulative$GittinsBrezziLai$cum_regret,
-                   history$cumulative$GittinsBrezziLai$cum_regret)
+  expect_equal(history_theta$cumulative$GittinsBrezziLai$cum_regret,
+                     history$cumulative$GittinsBrezziLai$cum_regret)
+})
 
 

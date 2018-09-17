@@ -346,7 +346,9 @@ test_that("ContextualHybridBandit", {
                         Agent$new(EpsilonGreedyPolicy$new(0.1), bandit),
                         Agent$new(LinUCBGeneralPolicy$new(0.6), bandit),
                         Agent$new(ContextualEpochGreedyPolicy$new(8), bandit),
+                        Agent$new(LinUCBHybridPolicy$new(0.6), bandit),
                         Agent$new(LinUCBHybridOptimizedPolicy$new(0.6), bandit),
+                        Agent$new(GlmUCBPolicy$new(), bandit),
                         Agent$new(LinUCBDisjointOptimizedPolicy$new(0.6), bandit))
 
   simulation     <- Simulator$new(agents, horizon, simulations, do_parallel = FALSE)
@@ -356,8 +358,25 @@ test_that("ContextualHybridBandit", {
   expect_equal(history$cumulative$EpsilonGreedy$reward,  0.7, tolerance = 0.01)
   expect_equal(history$cumulative$LinUCBGeneral$reward,  0.8, tolerance = 0.01)
   expect_equal(history$cumulative$ContextualEpochGreedy$reward,  0.6, tolerance = 0.01)
-  expect_equal(history$cumulative$LinUCBHybridOptimized$reward,  0.9, tolerance = 0.01)
   expect_equal(history$cumulative$LinUCBDisjointOptimized$reward,  0.7, tolerance = 0.01)
+  expect_equal(history$cumulative$GlmUCB$cum_reward,  7.2, tolerance = 0.01)
+
+
+  expect_equal(history$cumulative$LinUCBHybridOptimized$cum_reward, 7.7, tolerance = 0.01)
+  expect_equal(history$cumulative$LinUCBHybrid$cum_reward,  history$cumulative$LinUCBHybridOptimized$cum_reward)
+
+
+  horizon       <- 100L
+  simulations   <- 1L
+
+  bandit        <- ContextualHybridBandit$new(k = 10, shared_features = 10, unique_features = 2)
+
+  agents        <- list(Agent$new(ContextualEpochGreedyPolicy$new(8), bandit))
+
+  simulation     <- Simulator$new(agents, horizon, simulations, do_parallel = FALSE)
+  history        <- simulation$run()
+
+  expect_equal(history$cumulative$ContextualEpochGreedy$cum_reward,  73, tolerance = 0.01)
 
 })
 

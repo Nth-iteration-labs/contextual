@@ -125,7 +125,7 @@ inv <- function(M) {
 #'
 #' @export
 is_rstudio <- function() {
-  .Platform$GUI == "RStudio"
+  .Platform$GUI == "RStudio"    #nocov
 }
 #' @title Change Default Graphing Device from RStudio
 #' @description
@@ -164,6 +164,7 @@ is_rstudio <- function() {
 set_external <- function(ext = TRUE,
                         width = 10,
                         height = 6) {
+  # nocov start
   if (is_rstudio()) {
     if (isTRUE(ext)) {
       sysname <- tolower(Sys.info()["sysname"])
@@ -181,8 +182,9 @@ set_external <- function(ext = TRUE,
       options("device" = "RStudioGD")
     }
     graphics.off()
+
   }
-}
+} # nocov end
 #' Sample one of
 #'
 #' Sample one of the values in a vector.
