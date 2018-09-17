@@ -32,15 +32,25 @@ test_that("InvGamma", {
 
   s <- seq(0, 5, .01)
   x <- dinvgamma(s, 7, 10)
+  x2 <- dinvgamma(s, 7, scale = 0.10)
 
   expect_equal_to_reference(x, file = "dinvgamma.rds")
+  expect_equal_to_reference(x2, file = "dinvgamma.rds")
+
+  x <- dinvgamma(s, 7, 10, log = TRUE)
+  expect_equal_to_reference(x, file = "dinvgamma_log.rds")
 
   q <- 2
-
   (p <- pinvgamma(q, 7, 10))
   expect_equal(qinvgamma(p, 7, 10), q)
 
+  q <- 2
+  (p <- pinvgamma(q, 7, scale = 0.10))
+  expect_equal(qinvgamma(p, 7, scale = 0.10), q)
+
   expect_equal(mean(rinvgamma(1e5, 7, 10) <= q),0.76088, tolerance = 0.002)
+
+  expect_equal(mean(rinvgamma(1e5, 7, scale = 0.10) <= q),0.763, tolerance = 0.02)
 
 })
 
