@@ -76,4 +76,22 @@ test_that("History inc theta", {
                      history$cumulative$GittinsBrezziLai$cum_regret)
 })
 
+test_that("History save_csv inc theta removal without filename", {
+
+  csv_comparison_file <- read.csv("history_theta_test.ref")
+  history$save_csv("save_t.csv")
+  import_file <- read.csv("save_t.csv")
+  expect_equal(csv_comparison_file,  import_file)
+
+})
+
+test_that("History save_csv nc theta removal theta with context", {
+
+  csv_comparison_file <- read.csv("history_context_theta_test.ref")
+  history$save_csv("save_context_t.csv", context_to_columns = TRUE)
+  import_file <- read.csv("save_context_t.csv")
+  expect_equal(csv_comparison_file,  import_file)
+
+})
+
 
