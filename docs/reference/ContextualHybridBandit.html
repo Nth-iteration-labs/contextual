@@ -38,8 +38,8 @@
 
 <meta property="og:title" content="Bandit: ContextualHybridBandit — ContextualHybridBandit" />
 
-<meta property="og:description" content="Extension of ContextualLogitBandit modeling hybrid rewards with a combination of unique (or
-&quot;disjoint&quot;) and shared contextual features." />
+<meta property="og:description" content="Extension of ContextualLogitBandit modeling hybrid rewards with a combination
+of unique (or &quot;disjoint&quot;) and shared contextual features." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -69,7 +69,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">contextual</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.9.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.0</span>
       </span>
     </div>
 
@@ -139,8 +139,8 @@
 
     <div class="ref-description">
     
-    <p>Extension of <code>ContextualLogitBandit</code> modeling hybrid rewards with a combination of unique (or
-"disjoint") and shared contextual features.</p>
+    <p>Extension of <code>ContextualLogitBandit</code> modeling hybrid rewards with a combination
+of unique (or "disjoint") and shared contextual features.</p>
     
     </div>
 
@@ -149,7 +149,7 @@
 
     
     <pre>
-  bandit &lt;- ContextualHybridBandit$new(k, d, intercept = TRUE)
+  bandit &lt;- ContextualHybridBandit$new(k, shared_features, unique_features, sigma = 1.0)
 </pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -157,15 +157,16 @@
     
     <dl class='dl-horizontal'>
     <dt><code>k</code></dt><dd><p>integer; number of bandit arms</p></dd>
-<dt><code>d</code></dt><dd><p>integer; number of contextual features</p></dd>
-<dt><code>intercept</code></dt><dd><p>logical; if TRUE (default) it adds a constant (1.0) dimension to each context X at the end.</p></dd>
+<dt><code>shared_features</code></dt><dd><p>integer; number of shared features</p></dd>
+<dt><code>unique_features</code></dt><dd><p>integer; number of unique/disjoint features</p></dd>
+<dt><code>sigma</code></dt><dd><p>integer; standard deviation of additive Gaussian noise</p></dd>
     </dl>
     
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     
     <dl class='dl-horizontal'>
-    <dt><code>new(k, d, intercept = NULL)</code></dt><dd><p>generates and instantializes a new <code>Bandit</code> instance.
+    <dt><code>new(k, shared_features, unique_features, sigma = 1.0)</code></dt><dd><p>generates and instantializes a new <code>Bandit</code> instance.
 For arguments, see Argument section above.</p></dd>
     <dt><code><a href='Bandit.html'>get_context(t)</a></code></dt><dd><p>argument:
 <ul>
@@ -195,24 +196,26 @@ returns a named <code>list</code> containing <code>reward$reward</code></p></dd>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>horizon</span>       <span class='kw'>&lt;-</span> <span class='fl'>800L</span>
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='no'>horizon</span>       <span class='kw'>&lt;-</span> <span class='fl'>800L</span>
 <span class='no'>simulations</span>   <span class='kw'>&lt;-</span> <span class='fl'>100L</span>
-
-
 
 <span class='no'>bandit</span>        <span class='kw'>&lt;-</span> <span class='no'>ContextualHybridBandit</span>$<span class='fu'>new</span>(<span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>shared_features</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>unique_features</span> <span class='kw'>=</span> <span class='fl'>2</span>)
 
-<span class='co'>#bandit        &lt;- ContextualLogitBandit$new(k = 5, d = 5, intercept = TRUE)</span>
-
-<span class='no'>agents</span>        <span class='kw'>&lt;-</span> <span class='fu'>list</span>(<span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>ContextualThompsonSamplingPolicy</span>$<span class='fu'>new</span>(<span class='kw'>delta</span><span class='kw'>=</span><span class='fl'>0.5</span>, <span class='kw'>R</span><span class='kw'>=</span><span class='fl'>0.01</span>, <span class='kw'>epsilon</span><span class='kw'>=</span><span class='fl'>0.5</span>), <span class='no'>bandit</span>),
+<span class='no'>agents</span>        <span class='kw'>&lt;-</span> <span class='fu'>list</span>(<span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>ContextualThompsonSamplingPolicy</span>$<span class='fu'>new</span>(<span class='kw'>delta</span><span class='kw'>=</span><span class='fl'>0.5</span>,
+                                                   <span class='kw'>R</span><span class='kw'>=</span><span class='fl'>0.01</span>, <span class='kw'>epsilon</span><span class='kw'>=</span><span class='fl'>0.5</span>), <span class='no'>bandit</span>),
                       <span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>EpsilonGreedyPolicy</span>$<span class='fu'>new</span>(<span class='fl'>0.1</span>), <span class='no'>bandit</span>),
                       <span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>LinUCBGeneralPolicy</span>$<span class='fu'>new</span>(<span class='fl'>0.6</span>), <span class='no'>bandit</span>),
                       <span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>ContextualEpochGreedyPolicy</span>$<span class='fu'>new</span>(<span class='fl'>8</span>), <span class='no'>bandit</span>),
                       <span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>LinUCBHybridOptimizedPolicy</span>$<span class='fu'>new</span>(<span class='fl'>0.6</span>), <span class='no'>bandit</span>),
                       <span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>LinUCBDisjointOptimizedPolicy</span>$<span class='fu'>new</span>(<span class='fl'>0.6</span>), <span class='no'>bandit</span>))
 
-<span class='no'>simulation</span>     <span class='kw'>&lt;-</span> <span class='no'>Simulator</span>$<span class='fu'>new</span>(<span class='no'>agents</span>, <span class='no'>horizon</span>, <span class='no'>simulations</span>)</div><div class='output co'>#&gt; <span class='message'>Cloning, precaching and precalculating bandits and policies</span></div><div class='input'><span class='no'>history</span>        <span class='kw'>&lt;-</span> <span class='no'>simulation</span>$<span class='fu'><a href='Simulator.html'>run</a></span>()</div><div class='output co'>#&gt; <span class='message'>Preworkercreation</span></div><div class='output co'>#&gt; <span class='message'>Cores available: 4</span></div><div class='output co'>#&gt; <span class='message'>Workers assigned: 3</span></div><div class='output co'>#&gt; <span class='message'>Postworkercreation</span></div><div class='input'>
-<span class='fu'>plot</span>(<span class='no'>history</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"cumulative"</span>, <span class='kw'>regret</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>rate</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>legend_position</span> <span class='kw'>=</span> <span class='st'>"bottomright"</span>)</div><div class='img'><img src='ContextualHybridBandit-1.png' alt='' width='700' height='433' /></div></pre>
+<span class='no'>simulation</span>     <span class='kw'>&lt;-</span> <span class='no'>Simulator</span>$<span class='fu'>new</span>(<span class='no'>agents</span>, <span class='no'>horizon</span>, <span class='no'>simulations</span>)
+<span class='no'>history</span>        <span class='kw'>&lt;-</span> <span class='no'>simulation</span>$<span class='fu'><a href='Simulator.html'>run</a></span>()
+
+<span class='fu'>plot</span>(<span class='no'>history</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"cumulative"</span>, <span class='kw'>regret</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>rate</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>legend_position</span> <span class='kw'>=</span> <span class='st'>"bottomright"</span>)
+<span class='co'># }</span><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

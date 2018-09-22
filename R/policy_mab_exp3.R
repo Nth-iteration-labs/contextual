@@ -54,7 +54,7 @@ Exp3Policy <- R6::R6Class(
 #' a probability mass exponential in the estimated cumulative reward for that action.
 #'
 #' @name Exp3Policy
-#' @family contextual subclasses
+#'
 #'
 #' @section Usage:
 #' \preformatted{
@@ -111,7 +111,9 @@ Exp3Policy <- R6::R6Class(
 #' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
+#' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflinePolicyEvaluatorBandit}}
 #'
+#' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 #'
 #' @examples
 #'
@@ -128,6 +130,4 @@ Exp3Policy <- R6::R6Class(
 #' plot(history, type = "cumulative")
 #'
 #' plot(history, type = "arms")
-#'
-#'
 NULL

@@ -6,16 +6,29 @@
 \alias{set_reward}
 \alias{set_parameters}
 \alias{initialize_theta}
+\alias{policy}
+\alias{theta}
 \title{Policy}
 \description{
-R6 class \code{Policy} is the parent class of all \code{Policy} implementations in
-\code{\{contextual\}}. Classes that extend this abstract superclass are expected to take into
-account the current \code{d} dimensional \code{context},
-together with a limited set of parameters denoted \code{theta} (summarizing all past actions),
-to choose one of \code{k} \code{Bandit} arms at each time step \code{t}.
-On choosing one of the \code{k} arms and receiving its corresponding \code{reward},
-the \code{Policy} then utilizes the current \code{context}, \code{action} and \code{reward} to
-update its set of parameters \code{theta}.
+Parent or superclass of all \code{\{contextual\}} \code{Policy} subclasses.
+}
+\details{
+On every \emph{t} = {1, \ldots, T}, a policy receives a \code{d x k} dimensional matrix
+\code{context$X}*, the current number of \code{\link{Bandit}} arms in \code{context$k}, and the current
+number of contextual features in \code{context$d}. It has to compute which of the \code{k}
+\code{\link{Bandit}} arms to pull by taking into account this contextual information plus the policy's
+current parameter values stored in the named list \code{theta}. On selecting an arm, the policy then
+returns its index as \code{action$choice}.
+
+\figure{3b_policy_get_action.jpeg}{contextual diagram: get context}
+
+On pulling a \code{\link{Bandit}} arm the policy receives a \code{\link{Bandit}} reward through
+\code{reward$reward}. In combination with the current \code{context$X}* and \code{action$choice},
+this reward can then be used to update to the policy's parameters as stored in list \code{theta}.
+
+\figure{3d_policy_set_reward.jpeg}{contextual diagram: get context}
+
+* Note: in context-free scenario's, \code{context$X} can be omitted.
 }
 \section{Usage}{
 

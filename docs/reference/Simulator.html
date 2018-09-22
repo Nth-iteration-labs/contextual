@@ -38,10 +38,7 @@
 
 <meta property="og:title" content="Simulator — Simulator" />
 
-<meta property="og:description" content="The R6 class Simulator is the entry point of any contextual
-simulation. It encapsulates one or more Agents, clones them if necessary,
-runs the Agents (in parallel, by default), and saves the log of all of the Agents
-interactions to a History object." />
+<meta property="og:description" content="The entry point of any contextual simulation." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -71,7 +68,7 @@ interactions to a History object." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">contextual</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.9.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.0</span>
       </span>
     </div>
 
@@ -141,14 +138,24 @@ interactions to a History object." />
 
     <div class="ref-description">
     
-    <p>The R6 class <code>Simulator</code> is the entry point of any <span class="pkg">contextual</span>
-simulation. It encapsulates one or more <code>Agents</code>, clones them if necessary,
-runs the <code>Agents</code> (in parallel, by default), and saves the log of all of the <code>Agents</code>
-interactions to a <code>History</code> object.</p>
+    <p>The entry point of any <span class="pkg">contextual</span> simulation.</p>
     
     </div>
 
         
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>A Simulator takes, at a minimum, one or more <code><a href='Agent.html'>Agent</a></code> instances, a horizon
+(the length of an invidiual simulation, <em>t</em> = 1, &#8230;, T) and the number of simulations
+(How many times to repeat each simulation over <em>t</em> = 1, &#8230;, T, with a new seed
+on each repeat*).</p>
+<p>It then runs all simulations (in parallel by default), keeping a log of all <code><a href='Policy.html'>Policy</a></code> and
+<code><a href='Bandit.html'>Bandit</a></code> interactions in a <code><a href='History.html'>History</a></code> instance.</p>
+<p>* Note: to be able to fairly evaluate and compare each agent's performance, and to make sure that
+simulations are replicable, for each seperate agent, seeds are set equally and deterministically for
+each agent over all <code>horizon x simulations</code> time steps.</p>
+<p><img src='figures/1_simulator.jpeg' alt='contextual diagram: simulator' /></p>
+    
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 
     
@@ -171,16 +178,15 @@ simulator &lt;- Simulator$new(agents,
 
     
     <dl class='dl-horizontal'>
-<dt><code>agents</code></dt><dd><p>An <code>Agent</code> instance, or a <code>list</code> of <code>Agent</code> instances to be run
-by the instantiated <code>Simulator</code>.</p></dd>
-<dt><code>horizon</code></dt><dd><p><code>integer</code>. The T time steps to run the instantiated <code>Simulator</code>, where <em>t</em> = 1, &#8230;, T.</p></dd>
+<dt><code>agents</code></dt><dd><p>An <code>Agent</code> instance or a <code>list</code> of <code>Agent</code> instances.</p></dd>
+<dt><code>horizon</code></dt><dd><p><code>integer</code>. The number of pulls or time steps to run each agent, where <em>t</em> = 1, &#8230;, T.</p></dd>
 <dt><code>simulations</code></dt><dd><p><code>integer</code>. How many times to repeat each agent's simulation over <em>t</em> = 1, &#8230;, T,
 with a new seed on each repeat (itself deterministically derived from set\_seed).</p></dd>
 <dt><code>save_context</code></dt><dd><p><code>logical</code>. Save the context matrices <code>X</code> to the History log during a simulation?</p></dd>
 <dt><code>save_theta</code></dt><dd><p><code>logical</code>. Save the parameter list <code>theta</code> to the History log during a simulation?</p></dd>
 <dt><code>do_parallel</code></dt><dd><p><code>logical</code>. Run <code>Simulator</code> processes in parallel?</p></dd>
-<dt><code>worker_max</code></dt><dd><p><code>integer</code>. Specifies how many parallel workers are to be used, when <code>do_parallel</code>
-is <code>TRUE</code>. If unspecified, the amount of workers defaults to <code>max(workers_available)-1</code>.</p></dd>
+<dt><code>worker_max</code></dt><dd><p><code>integer</code>. Specifies how many parallel workers are to be used.
+If unspecified, the amount of workers defaults to <code>max(workers_available)-1</code>.</p></dd>
 <dt><code>t_over_sims</code></dt><dd><p><code>logical</code>. Of use to, amongst others, offline Bandits.
 If <code>t_over_sims</code> is set to <code>TRUE</code>, the current <code>Simulator</code>
 iterates over all rows in a data set for each repeated simulation.
@@ -219,6 +225,8 @@ grouped by agent and simulation.</p></dd>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       
+      <li><a href="#details">Details</a></li>
+
       <li><a href="#usage">Usage</a></li>
 
       <li><a href="#arguments">Arguments</a></li>

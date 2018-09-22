@@ -86,21 +86,7 @@ Li, L., Chu, W., Langford, J., & Schapire, R. E. (2010, April). A contextual-ban
 Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 
-Other contextual subclasses: \code{\link{ContextualEpochGreedyPolicy}},
-  \code{\link{ContextualThompsonSamplingPolicy}},
-  \code{\link{ContinuumBandit}},
-  \code{\link{EpsilonFirstPolicy}},
-  \code{\link{EpsilonGreedyPolicy}},
-  \code{\link{Exp3Policy}},
-  \code{\link{GittinsBrezziLaiPolicy}},
-  \code{\link{LifPolicy}},
-  \code{\link{LinUCBDisjointOptimizedPolicy}},
-  \code{\link{LinUCBDisjointPolicy}},
-  \code{\link{LinUCBGeneralPolicy}},
-  \code{\link{LinUCBHybridPolicy}},
-  \code{\link{OfflinePolicyEvaluatorBandit}},
-  \code{\link{OraclePolicy}}, \code{\link{RandomPolicy}},
-  \code{\link{SoftmaxPolicy}},
-  \code{\link{ThompsonSamplingPolicy}},
-  \code{\link{UCB1Policy}}
+Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflinePolicyEvaluatorBandit}}
+
+Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 }

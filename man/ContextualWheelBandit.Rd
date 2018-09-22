@@ -53,11 +53,8 @@ numeric; standard deviation of the reward for optimal action if context norm is 
 
 \describe{
 
-\item{\code{new(delta, mean_v, std_v, mu_large, std_large)}}{
-generates and instantializes a new \code{Bandit} instance.
-For arguments, see Argument section above.
-
-}
+\item{\code{new(delta, mean_v, std_v, mu_large, std_large)}}{ generates and instantializes a
+new \code{ContextualWheelBandit} instance. }
 
 \item{\code{get_context(t)}}{
 argument:
@@ -78,13 +75,15 @@ arguments:
 (as set by \code{bandit}).
 \item \code{action}:  list, containing \code{action$choice} (as set by \code{policy}).
 }
-returns a named \code{list} containing \code{reward$reward}
+returns a named \code{list} containing \code{reward$reward} and, where computable,
+\code{reward$optimal} (used by "oracle" policies and to calculate regret).
 }
 }
 }
 
 \examples{
-\donttest{
+\dontrun{
+
 horizon       <- 1000L
 simulations   <- 10L
 

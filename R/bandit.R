@@ -1,3 +1,4 @@
+#' @importFrom R6 R6Class
 #' @export
 Bandit <- R6::R6Class(
   portable = TRUE,
@@ -39,21 +40,30 @@ Bandit <- R6::R6Class(
 
 #' Bandit
 #'
-#' R6 class \code{Bandit} is the parent of all \code{\{contextual\}} \code{Bandit} subclasses.
-#' In \code{\{contextual\}}, \code{Bandits} are responsible for the generation of contexts and rewards.
+#' Parent or superclass of all \code{\{contextual\}} \code{Bandit} subclasses.
 #'
-#' On initialisation, any \code{Bandit} subclass has to define the number of arms \code{self$k}
+#' In \code{\{contextual\}}, \code{Bandits} are responsible for the generation of (either
+#' synthetic or offline) contexts and rewards.
+#'
+#' On initialisation, a \code{Bandit} subclass has to define the number of arms \code{self$k}
 #' and the number of contextual feature dimensions \code{self$d}.
 #'
-#' \code{Bandit} subclasses are responsible for returning \code{self$d x self$k} context matrices
-#' through \code{get_context()} and for returning rewards through \code{get_reward()}.
+#' For each \emph{t} = \{1, \ldots, T\} a \code{Bandit} then generates a \code{list} containing
+#' current context in \code{d x k} dimensional matrix \code{context$X},
+#' the number of arms in \code{context$k} and the number of features in \code{context$d}.
 #'
-#' \code{Bandit} subclasses have option to (pre-)generate these values in \code{generate_bandit_data()}.
+#' Note: in context-free scenario's, \code{context$X} can be omitted.
+#'
+#' ![](3a_bandit_get_context.jpeg "contextual diagram: get context")
+#'
+#' On receiving the index of a \code{\link{Policy}}-chosen arm through \code{action$choice},
+#' \code{Bandit} is expected to return a named \code{list} containing at least \code{reward$reward}
+#' and,  where computable, \code{reward$optimal}.
+#'
+#' ![](3c_bandit_get_reward.jpeg "contextual diagram: get context")
 #'
 #' @name Bandit
-#' @aliases post_initialization get_context generate_bandit_data
-#'
-#' @importFrom R6 R6Class
+#' @aliases post_initialization get_context generate_bandit_data bandit
 #'
 #' @section Usage:
 #' \preformatted{
@@ -85,20 +95,18 @@ Bandit <- R6::R6Class(
 #'          (as set by \code{bandit}).
 #'          \item \code{action}:  list, containing \code{action$choice} (as set by \code{policy}).
 #'      }
-#'      returns a named \code{list} containing \code{reward$reward} and, if available,
-#'         \code{reward$optimal} (only to be used by "oracle" policies or to calculate regret).
+#'      returns a named \code{list} containing \code{reward$reward} and, where computable,
+#'         \code{reward$optimal} (used by "oracle" policies and to calculate regret).
 #'  }
 #'
 #'   \item{\code{post_initialization()}}{
-#'      called right after \code{Simulator} sets its seed,
-#'      but before it starts iterating over all time steps \code{t} in T.
-#'      If you need to set random values that remain available throughout the life of a \code{Bandit}
-#'      instance, this is the place to do so.
+#'      Called after class and seed initialisation, but before the start of the simulation.
+#'      Set random values that remain available sthroughout the life of a \code{Bandit} here.
 #'   }
 #'
 #'   \item{\code{generate_bandit_data()}}{
-#'      helper function called before \code{Simulator} starts iterating over all time steps \code{t} in T.
-#'      This function is only called when \code{bandit$precaching} is \code{TRUE} (default \code{FALSE}).
+#'      Called after class and seed initialisation, but before the start of a simulation.
+#'      Only called when \code{bandit$precaching} is set to \code{TRUE} (default \code{FALSE}).
 #'      Pregenerate \code{contexts} and \code{rewards} here.
 #'   }
 #' }
@@ -111,6 +119,4 @@ Bandit <- R6::R6Class(
 #' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflinePolicyEvaluatorBandit}}
 #'
 #' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
-#'
-#'
 NULL

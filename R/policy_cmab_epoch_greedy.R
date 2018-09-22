@@ -56,17 +56,22 @@ ContextualEpochGreedyPolicy <- R6::R6Class(
   )
 )
 
-
-
 #' Policy: A Time and Space Efficient Algorithm for Contextual Linear Bandits
 #'
 #' @name ContextualEpochGreedyPolicy
-#' @family contextual subclasses
+#'
 #'
 #' @section Usage:
 #' \preformatted{
 #' policy <- EpsilonGreedyPolicy(epsilon = 0.1)
 #' }
 #'
+#' @seealso
 #'
+#' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
+#' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
+#'
+#' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflinePolicyEvaluatorBandit}}
+#'
+#' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 NULL

@@ -35,10 +35,8 @@ numeric vector; probability of reward values for each of the bandit's \code{k} a
 
 \describe{
 
-\item{\code{new(p_per_arm)}}{
-generates and instantializes a new \code{Bandit} instance.
-For arguments, see Argument section above.
-}
+\item{\code{new(p_per_arm)}}{ generates and instantializes a new \code{BasicBernoulliBandit}
+instance. }
 
 \item{\code{get_context(t)}}{
 argument:
@@ -46,23 +44,27 @@ argument:
 \item \code{t}: integer, time step \code{t}.
 }
 returns a named \code{list}
-containing the number of arms as \code{context$k}.
+containing the current \code{d x k} dimensional matrix \code{context$X},
+the number of arms \code{context$k} and the number of features \code{context$d}.
 }
 
 \item{\code{get_reward(t, context, action)}}{
 arguments:
 \itemize{
 \item \code{t}: integer, time step \code{t}.
-\item \code{context}: list, with \code{context$k} (number of arms).
+\item \code{context}: list, containing the current \code{context$X} (d x k context matrix),
+\code{context$k} (number of arms) and \code{context$d} (number of context feaures)
+(as set by \code{bandit}).
 \item \code{action}:  list, containing \code{action$choice} (as set by \code{policy}).
 }
-returns a named \code{list} containing \code{reward$reward}
+returns a named \code{list} containing \code{reward$reward} and, where computable,
+\code{reward$optimal} (used by "oracle" policies and to calculate regret).
 }
 }
 }
 
 \examples{
-\donttest{
+\dontrun{
 
 horizon            <- 100
 sims               <- 100

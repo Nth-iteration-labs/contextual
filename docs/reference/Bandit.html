@@ -38,8 +38,7 @@
 
 <meta property="og:title" content="Bandit — Bandit" />
 
-<meta property="og:description" content="R6 class Bandit is the parent of all {contextual} Bandit subclasses.
-In {contextual}, Bandits are responsible for the generation of contexts and rewards." />
+<meta property="og:description" content="Parent class of all Bandit implementations." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -69,7 +68,7 @@ In {contextual}, Bandits are responsible for the generation of contexts and rewa
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">contextual</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.9.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.0</span>
       </span>
     </div>
 
@@ -139,19 +138,28 @@ In {contextual}, Bandits are responsible for the generation of contexts and rewa
 
     <div class="ref-description">
     
-    <p>R6 class <code>Bandit</code> is the parent of all <code>{contextual}</code> <code>Bandit</code> subclasses.
-In <code>{contextual}</code>, <code>Bandits</code> are responsible for the generation of contexts and rewards.</p>
+    <p>Parent class of all <code>Bandit</code> implementations.</p>
     
     </div>
 
         
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>On initialisation, any <code>Bandit</code> subclass has to define the number of arms <code>self$k</code>
+    <p><code>Bandit</code> is the parent of all <code>{contextual}</code> <code>Bandit</code> subclasses.
+In <code>{contextual}</code>, <code>Bandits</code> are responsible for the generation of contexts and rewards.</p>
+<p>On initialisation, any <code>Bandit</code> subclass has to define the number of arms <code>self$k</code>
 and the number of contextual feature dimensions <code>self$d</code>.</p>
-<p><code>Bandit</code> subclasses are responsible for returning <code>self$d x self$k</code> context matrices
-through <code>get_context()</code> and for returning rewards through <code>get_reward()</code>.</p>
-<p><code>Bandit</code> subclasses have option to (pre-)generate these values in <code>generate_bandit_data()</code>.</p>
+<p>Then, for each <em>t</em> = 1, &#8230;, T it first generates a <code>list</code> containing
+current context in <code>d x k</code> dimensional matrix <code>context$X</code> *
+the number of arms in <code>context$k</code> and the number of features in <code>context$d</code>.</p>
+<p>* Note: in context-free scenario's, <code>context$X</code> can be omitted.</p>
+<p><img src='figures/3a_bandit_get_context.jpeg' alt='contextual diagram: get context' /></p>
+<p>On receiving <code>action$choice</code>, which contains the index of the arm chosen by the
+<code><a href='Policy.html'>Policy</a></code> currently under evaluation, the <code>Bandit</code> returns a named <code>list</code>
+containing at least <code>reward$reward</code> and, if available, <code>reward$optimal</code>.</p>
+<p><img src='figures/3c_bandit_get_reward.jpeg' alt='contextual diagram: get context' /></p>
+<p>Additionally, <code>Bandit</code> subclasses have the option to (pre-)generate contexts and rewards
+by implementing <code>generate_bandit_data()</code>.</p>
     
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 

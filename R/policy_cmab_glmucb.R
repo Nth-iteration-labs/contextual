@@ -76,5 +76,4 @@ GlmUCBPolicy <- R6::R6Class(
 #' GlmUCBPolicy
 #'
 #' @name GlmUCBPolicy
-#'
 NULL

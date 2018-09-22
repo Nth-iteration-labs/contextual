@@ -27,11 +27,7 @@ are assumed to be a continuous function of the arms.
 
 \describe{
 
-\item{\code{new(FUN)}}{
-generates and instantializes a new \code{Bandit} instance.
-For arguments, see Argument section above.
-
-}
+\item{\code{new(FUN)}}{ generates and instantializes a new \code{ContinuumBandit} instance. }
 
 \item{\code{get_context(t)}}{
 argument:
@@ -39,7 +35,7 @@ argument:
 \item \code{t}: integer, time step \code{t}.
 }
 returns a named \code{list}
-optionally containing the current \code{d x k} dimensional matrix \code{context$X},
+containing the current \code{d x k} dimensional matrix \code{context$X},
 the number of arms \code{context$k} and the number of features \code{context$d}.
 }
 
@@ -52,13 +48,14 @@ arguments:
 (as set by \code{bandit}).
 \item \code{action}:  list, containing \code{action$choice} (as set by \code{policy}).
 }
-returns a named \code{list} containing \code{reward$reward}
+returns a named \code{list} containing \code{reward$reward} and, where computable,
+\code{reward$optimal} (used by "oracle" policies and to calculate regret).
 }
 }
 }
 
 \examples{
-\donttest{
+\dontrun{
 
 horizon            <- 1500
 simulations        <- 100
@@ -86,27 +83,12 @@ history            <- Simulator$new(     agents = agent,
 
 plot(history, type = "average", regret = FALSE)
 }
-
 }
 \seealso{
 Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 
-Other contextual subclasses: \code{\link{ContextualEpochGreedyPolicy}},
-  \code{\link{ContextualThompsonSamplingPolicy}},
-  \code{\link{EpsilonFirstPolicy}},
-  \code{\link{EpsilonGreedyPolicy}},
-  \code{\link{Exp3Policy}},
-  \code{\link{GittinsBrezziLaiPolicy}},
-  \code{\link{LifPolicy}},
-  \code{\link{LinUCBDisjointOptimizedPolicy}},
-  \code{\link{LinUCBDisjointPolicy}},
-  \code{\link{LinUCBGeneralPolicy}},
-  \code{\link{LinUCBHybridOptimizedPolicy}},
-  \code{\link{LinUCBHybridPolicy}},
-  \code{\link{OfflinePolicyEvaluatorBandit}},
-  \code{\link{OraclePolicy}}, \code{\link{RandomPolicy}},
-  \code{\link{SoftmaxPolicy}},
-  \code{\link{ThompsonSamplingPolicy}},
-  \code{\link{UCB1Policy}}
+Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflinePolicyEvaluatorBandit}}
+
+Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 }

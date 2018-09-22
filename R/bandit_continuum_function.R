@@ -38,7 +38,6 @@ ContinuumBandit <- R6::R6Class(
 #' }
 #'
 #' @name ContinuumBandit
-#' @family contextual subclasses
 #'
 #'
 #' @section Arguments:
@@ -50,11 +49,7 @@ ContinuumBandit <- R6::R6Class(
 #'
 #' \describe{
 #'
-#'   \item{\code{new(FUN)}}{
-#'   generates and instantializes a new \code{Bandit} instance.
-#'   For arguments, see Argument section above.
-#'
-#'   }
+#'   \item{\code{new(FUN)}}{ generates and instantializes a new \code{ContinuumBandit} instance. }
 #'
 #'   \item{\code{get_context(t)}}{
 #'      argument:
@@ -62,7 +57,7 @@ ContinuumBandit <- R6::R6Class(
 #'          \item \code{t}: integer, time step \code{t}.
 #'      }
 #'      returns a named \code{list}
-#'      optionally containing the current \code{d x k} dimensional matrix \code{context$X},
+#'      containing the current \code{d x k} dimensional matrix \code{context$X},
 #'      the number of arms \code{context$k} and the number of features \code{context$d}.
 #'  }
 #'
@@ -75,7 +70,8 @@ ContinuumBandit <- R6::R6Class(
 #'          (as set by \code{bandit}).
 #'          \item \code{action}:  list, containing \code{action$choice} (as set by \code{policy}).
 #'      }
-#'      returns a named \code{list} containing \code{reward$reward}
+#'      returns a named \code{list} containing \code{reward$reward} and, where computable,
+#'         \code{reward$optimal} (used by "oracle" policies and to calculate regret).
 #'  }
 #
 #' }
@@ -85,8 +81,12 @@ ContinuumBandit <- R6::R6Class(
 #' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
+#' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflinePolicyEvaluatorBandit}}
+#'
+#' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
+#'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #'
 #' horizon            <- 1500
 #' simulations        <- 100
@@ -114,5 +114,4 @@ ContinuumBandit <- R6::R6Class(
 #'
 #' plot(history, type = "average", regret = FALSE)
 #' }
-#'
 NULL

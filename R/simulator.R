@@ -265,13 +265,24 @@ Simulator <- R6::R6Class(
 
 #' Simulator
 #'
-#' The R6 class \code{Simulator} is the entry point of any \pkg{contextual}
-#' simulation. It encapsulates one or more \code{Agents}, clones them if necessary,
-#' runs the \code{Agents} (in parallel, by default), and saves the log of all of the \code{Agents}
-#' interactions to a \code{History} object.
+#' The entry point of any \pkg{contextual} simulation.
+#'
+#' A Simulator takes, at a minimum, one or more \code{\link{Agent}} instances, a horizon
+#' (the length of an invidiual simulation, \emph{t} = \{1, \ldots, T\}) and the number of simulations
+#' (How many times to repeat each simulation over \emph{t} = \{1, \ldots, T\}, with a new seed
+#' on each repeat*).
+#'
+#' It then runs all simulations (in parallel by default), keeping a log of all \code{\link{Policy}} and
+#' \code{\link{Bandit}} interactions in a \code{\link{History}} instance.
+#'
+#' &ast; Note: to be able to fairly evaluate and compare each agent's performance, and to make sure that
+#' simulations are replicable, for each seperate agent, seeds are set equally and deterministically for
+#' each agent over all \code{horizon x simulations} time steps.
+#'
+#' ![](1_simulator.jpeg "contextual diagram: simulator")
 #'
 #' @name Simulator
-#' @aliases run
+#' @aliases run simulator
 #'
 #' @section Usage:
 #' \preformatted{
@@ -293,11 +304,10 @@ Simulator <- R6::R6Class(
 #'
 #' \describe{
 #'   \item{\code{agents}}{
-#'     An \code{Agent} instance, or a \code{list} of \code{Agent} instances to be run
-#'     by the instantiated \code{Simulator}.
+#'     An \code{Agent} instance or a \code{list} of \code{Agent} instances.
 #'   }
 #'   \item{\code{horizon}}{
-#'     \code{integer}. The T time steps to run the instantiated \code{Simulator}, where \emph{t} = \{1, \ldots, T\}.
+#'     \code{integer}. The number of pulls or time steps to run each agent, where \emph{t} = \{1, \ldots, T\}.
 #'   }
 #'   \item{\code{simulations}}{
 #'     \code{integer}. How many times to repeat each agent's simulation over \emph{t} = \{1, \ldots, T\},
@@ -313,8 +323,8 @@ Simulator <- R6::R6Class(
 #'      \code{logical}. Run \code{Simulator} processes in parallel?
 #'   }
 #'   \item{\code{worker_max}}{
-#'      \code{integer}. Specifies how many parallel workers are to be used, when \code{do_parallel}
-#'      is \code{TRUE}. If unspecified, the amount of workers defaults to \code{max(workers_available)-1}.
+#'      \code{integer}. Specifies how many parallel workers are to be used.
+#'      If unspecified, the amount of workers defaults to \code{max(workers_available)-1}.
 #'
 #'   }
 #'   \item{\code{t_over_sims}}{
@@ -343,7 +353,6 @@ Simulator <- R6::R6Class(
 #'      grouped by agent and simulation.
 #'   }
 #'
-#'
 #' }
 #'
 #' @section Methods:
@@ -368,5 +377,4 @@ Simulator <- R6::R6Class(
 #' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflinePolicyEvaluatorBandit}}
 #'
 #' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
-#'
 NULL

@@ -17,7 +17,7 @@ and related techniques like doubly robust estimation (Dudik et al., 2011).
 \section{Usage}{
 
 \preformatted{
-  bandit <- OfflinePolicyEvaluatorBandit(data_stream, k, d, unique = NULL, shared = NULL, randomize = TRUE)
+  bandit <- OfflinePolicyEvaluatorBandit(offline_data, k, d, unique = NULL, shared = NULL, randomize = TRUE)
 }
 }
 
@@ -25,8 +25,8 @@ and related techniques like doubly robust estimation (Dudik et al., 2011).
 
 
 \describe{
-\item{\code{data_stream}}{
-data.table; data stream (required)
+\item{\code{offline_data}}{
+data.table; offline data source (required)
 }
 \item{\code{k}}{
 integer; number of arms (required)
@@ -52,10 +52,8 @@ integer vector; index of shared features (optional)
 
 \describe{
 
-\item{\code{new(data_stream, k, d, unique = NULL, shared = NULL, randomize = TRUE)}}{
-generates and instantializes a new \code{Bandit} instance.
-For arguments, see Argument section above.
-}
+\item{\code{new(offline_data, k, d, unique = NULL, shared = NULL, randomize = TRUE)}}{ generates
+and instantializes a new \code{OfflinePolicyEvaluatorBandit} instance. }
 
 \item{\code{get_context(t)}}{
 argument:
@@ -64,23 +62,31 @@ argument:
 }
 returns a named \code{list}
 containing the current \code{d x k} dimensional matrix \code{context$X},
-number of arms \code{context$k} and number of features \code{context$d}.
+the number of arms \code{context$k} and the number of features \code{context$d}.
 }
 
 \item{\code{get_reward(t, context, action)}}{
 arguments:
 \itemize{
 \item \code{t}: integer, time step \code{t}.
-\item \code{context}: list, with \code{context$k} (number of arms).
+\item \code{context}: list, containing the current \code{context$X} (d x k context matrix),
+\code{context$k} (number of arms) and \code{context$d} (number of context feaures)
+(as set by \code{bandit}).
 \item \code{action}:  list, containing \code{action$choice} (as set by \code{policy}).
 }
-returns a named \code{list} containing \code{reward$reward}
+returns a named \code{list} containing \code{reward$reward} and, where computable,
+\code{reward$optimal} (used by "oracle" policies and to calculate regret).
+}
+
+\item{\code{post_initialization()}}{
+Randomize offline data by shuffling the offline data.table before the start of each
+individual simulation when self$randomize is TRuE (default)
 }
 }
 }
 
 \examples{
-\donttest{
+\dontrun{
 
 ## generate random policy log and save it
 
@@ -106,8 +112,8 @@ simulation  <-
     save_context = TRUE
   )
 
-random_data_stream <- simulation$run()
-random_data_stream$save("log.RData")
+random_offline_data <- simulation$run()
+random_offline_data$save("log.RData")
 
 ## use saved log to evaluate policies with OfflinePolicyEvaluatorBandit
 
@@ -115,7 +121,7 @@ history <- History$new()
 history$load("log.RData")
 log_S <- history$get_data_table()
 
-bandit <- OfflinePolicyEvaluatorBandit$new(data_stream = log_S, k = 3, d = 3)
+bandit <- OfflinePolicyEvaluatorBandit$new(offline_data = log_S, k = 3, d = 3)
 
 agents <-
   list(
@@ -151,22 +157,4 @@ Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link
 Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflinePolicyEvaluatorBandit}}
 
 Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
-
-Other contextual subclasses: \code{\link{ContextualEpochGreedyPolicy}},
-  \code{\link{ContextualThompsonSamplingPolicy}},
-  \code{\link{ContinuumBandit}},
-  \code{\link{EpsilonFirstPolicy}},
-  \code{\link{EpsilonGreedyPolicy}},
-  \code{\link{Exp3Policy}},
-  \code{\link{GittinsBrezziLaiPolicy}},
-  \code{\link{LifPolicy}},
-  \code{\link{LinUCBDisjointOptimizedPolicy}},
-  \code{\link{LinUCBDisjointPolicy}},
-  \code{\link{LinUCBGeneralPolicy}},
-  \code{\link{LinUCBHybridOptimizedPolicy}},
-  \code{\link{LinUCBHybridPolicy}},
-  \code{\link{OraclePolicy}}, \code{\link{RandomPolicy}},
-  \code{\link{SoftmaxPolicy}},
-  \code{\link{ThompsonSamplingPolicy}},
-  \code{\link{UCB1Policy}}
 }

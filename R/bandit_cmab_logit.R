@@ -60,8 +60,6 @@ ContextualLogitBandit <- R6::R6Class(
 #'
 #' @name ContextualLogitBandit
 #'
-#' @importFrom R6 R6Class
-#'
 #' @section Usage:
 #' \preformatted{
 #'   bandit <- ContextualLogitBandit$new(k, d, intercept = TRUE)
@@ -87,11 +85,8 @@ ContextualLogitBandit <- R6::R6Class(
 #'
 #' \describe{
 #'
-#'   \item{\code{new(k, d, intercept = NULL)}}{
-#'   generates and instantializes a new \code{Bandit} instance.
-#'   For arguments, see Argument section above.
-#'
-#'   }
+#'   \item{\code{new(k, d, intercept = TRUE)}}{ generates and instantializes a new
+#'   \code{ContextualLogitBandit} instance. }
 #'
 #'   \item{\code{get_context(t)}}{
 #'      argument:
@@ -112,7 +107,8 @@ ContextualLogitBandit <- R6::R6Class(
 #'          (as set by \code{bandit}).
 #'          \item \code{action}:  list, containing \code{action$choice} (as set by \code{policy}).
 #'      }
-#'      returns a named \code{list} containing \code{reward$reward}
+#'      returns a named \code{list} containing \code{reward$reward} and, where computable,
+#'         \code{reward$optimal} (used by "oracle" policies and to calculate regret).
 #'  }
 #'
 #'   \item{\code{post_initialization()}}{
@@ -131,7 +127,8 @@ ContextualLogitBandit <- R6::R6Class(
 #' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
+#'
 #' horizon       <- 800L
 #' simulations   <- 30L
 #'

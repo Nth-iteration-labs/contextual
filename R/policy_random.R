@@ -33,7 +33,7 @@ RandomPolicy <- R6::R6Class(
 #' which would always seek to exploit.
 #'
 #' @name RandomPolicy
-#' @family contextual subclasses
+#'
 #'
 #' @section Usage:
 #' \preformatted{
@@ -86,6 +86,10 @@ RandomPolicy <- R6::R6Class(
 #' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
+#' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflinePolicyEvaluatorBandit}}
+#'
+#' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
+#'
 #' @examples
 #'
 #' horizon            <- 100L
@@ -99,6 +103,4 @@ RandomPolicy <- R6::R6Class(
 #' history            <- Simulator$new(agent, horizon, simulations, do_parallel = FALSE)$run()
 #'
 #' plot(history, type = "arms")
-#'
-#'
 NULL

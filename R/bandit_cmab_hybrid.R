@@ -59,12 +59,10 @@ ContextualHybridBandit <- R6::R6Class(
 
 #' Bandit: ContextualHybridBandit
 #'
-#' Extension of \code{ContextualLogitBandit} modeling hybrid rewards with a combination of unique (or
-#' "disjoint") and shared contextual features.
+#' Extension of \code{ContextualLogitBandit} modeling hybrid rewards with a combination
+#' of unique (or "disjoint") and shared contextual features.
 #'
 #' @name ContextualHybridBandit
-#'
-#' @importFrom R6 R6Class
 #'
 #' @section Usage:
 #' \preformatted{
@@ -94,10 +92,8 @@ ContextualHybridBandit <- R6::R6Class(
 #'
 #' \describe{
 #'
-#'   \item{\code{new(k, shared_features, unique_features, sigma = 1.0)}}{
-#'     generates and instantializes a new \code{Bandit} instance.
-#'     For arguments, see Argument section above.
-#'   }
+#'   \item{\code{new(k, shared_features, unique_features, sigma = 1.0)}}{ generates
+#'   and instantializes a new \code{ContextualHybridBandit} instance. }
 #'
 #'   \item{\code{get_context(t)}}{
 #'      argument:
@@ -118,7 +114,8 @@ ContextualHybridBandit <- R6::R6Class(
 #'          (as set by \code{bandit}).
 #'          \item \code{action}:  list, containing \code{action$choice} (as set by \code{policy}).
 #'      }
-#'      returns a named \code{list} containing \code{reward$reward}
+#'      returns a named \code{list} containing \code{reward$reward} and, where computable,
+#'         \code{reward$optimal} (used by "oracle" policies and to calculate regret).
 #'  }
 #'
 #'   \item{\code{post_initialization()}}{
@@ -137,7 +134,8 @@ ContextualHybridBandit <- R6::R6Class(
 #' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
+#'
 #' horizon       <- 800L
 #' simulations   <- 100L
 #'
@@ -156,4 +154,5 @@ ContextualHybridBandit <- R6::R6Class(
 #'
 #' plot(history, type = "cumulative", regret = FALSE, rate = TRUE, legend_position = "bottomright")
 #' }
+#'
 NULL

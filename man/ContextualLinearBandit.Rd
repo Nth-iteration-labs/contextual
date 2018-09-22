@@ -45,11 +45,8 @@ When set to \code{TRUE}, rewards are binary (0/1).
 
 \describe{
 
-\item{\code{new(k, d, sigma = 0.1, binary_rewards = FALSE)}}{
-generates and instantializes a new \code{Bandit} instance.
-For arguments, see Argument section above.
-
-}
+\item{\code{new(k, d, sigma = 0.1, binary_rewards = FALSE)}}{ generates and
+instantializes a new \code{ContextualLinearBandit} instance. }
 
 \item{\code{get_context(t)}}{
 argument:
@@ -70,7 +67,8 @@ arguments:
 (as set by \code{bandit}).
 \item \code{action}:  list, containing \code{action$choice} (as set by \code{policy}).
 }
-returns a named \code{list} containing \code{reward$reward}
+returns a named \code{list} containing \code{reward$reward} and, where computable,
+\code{reward$optimal} (used by "oracle" policies and to calculate regret).
 }
 
 \item{\code{post_initialization()}}{
@@ -80,7 +78,8 @@ initialzes \code{d x k} beta matrix.
 }
 
 \examples{
-\donttest{
+\dontrun{
+
 horizon       <- 800L
 simulations   <- 30L
 

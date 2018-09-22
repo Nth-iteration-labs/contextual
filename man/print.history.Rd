@@ -21,7 +21,4 @@ Core contextual classes: \code{\link{Simulator}},
 
 Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBernoulliBandit}},
 \code{\link{OfflinePolicyEvaluatorBandit}}, \code{\link{ContextualLogitBandit}}
-
-Other contextual: \code{\link{plot.history}},
-  \code{\link{summary.history}}
 }

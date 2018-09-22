@@ -150,6 +150,7 @@ is_rstudio <- function() {
 #'
 #' @examples
 #' \dontrun{
+#'
 #' # Turn on external graphs
 #' external_graphs()
 #'
@@ -272,7 +273,6 @@ var_welford <- function(z){
 #' (d/p/q/r)gamma R implementation, so look at, say,
 #' \code{\link{dgamma}} for details.
 #'
-#'
 #' @param x,q vector of quantiles.
 #' @param p vector of probabilities.
 #' @param n number of observations. If length(n) > 1, the length is
@@ -296,9 +296,6 @@ var_welford <- function(z){
 #' (p <- pinvgamma(q, 7, 10))
 #' qinvgamma(p, 7, 10) # = q
 #' mean(rinvgamma(1e5, 7, 10) <= q)
-#'
-#'
-#'
 NULL
 
 #' @rdname invgamma

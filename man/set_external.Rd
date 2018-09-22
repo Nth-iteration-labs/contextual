@@ -33,6 +33,7 @@ As a result, any graphs that are open will be deleted. You will have to regraph 
 }
 \examples{
 \dontrun{
+
 # Turn on external graphs
 external_graphs()
 

@@ -42,11 +42,8 @@ logical; if TRUE (default) it adds a constant (1.0) dimension to each context X 
 
 \describe{
 
-\item{\code{new(k, d, intercept = NULL)}}{
-generates and instantializes a new \code{Bandit} instance.
-For arguments, see Argument section above.
-
-}
+\item{\code{new(k, d, intercept = TRUE)}}{ generates and instantializes a new
+\code{ContextualLogitBandit} instance. }
 
 \item{\code{get_context(t)}}{
 argument:
@@ -67,7 +64,8 @@ arguments:
 (as set by \code{bandit}).
 \item \code{action}:  list, containing \code{action$choice} (as set by \code{policy}).
 }
-returns a named \code{list} containing \code{reward$reward}
+returns a named \code{list} containing \code{reward$reward} and, where computable,
+\code{reward$optimal} (used by "oracle" policies and to calculate regret).
 }
 
 \item{\code{post_initialization()}}{
@@ -77,7 +75,8 @@ initialzes \code{d x k} beta matrix.
 }
 
 \examples{
-\donttest{
+\dontrun{
+
 horizon       <- 800L
 simulations   <- 30L
 

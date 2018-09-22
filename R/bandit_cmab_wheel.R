@@ -92,8 +92,6 @@ ContextualWheelBandit <- R6::R6Class(
 #'
 #' @name ContextualWheelBandit
 #'
-#' @importFrom R6 R6Class
-#'
 #' @section Usage:
 #' \preformatted{
 #'   bandit <- ContextualWheelBandit$new(delta, mean_v, std_v, mu_large, std_large)
@@ -125,11 +123,8 @@ ContextualWheelBandit <- R6::R6Class(
 #'
 #' \describe{
 #'
-#'   \item{\code{new(delta, mean_v, std_v, mu_large, std_large)}}{
-#'   generates and instantializes a new \code{Bandit} instance.
-#'   For arguments, see Argument section above.
-#'
-#'   }
+#'   \item{\code{new(delta, mean_v, std_v, mu_large, std_large)}}{ generates and instantializes a
+#'   new \code{ContextualWheelBandit} instance. }
 #'
 #'   \item{\code{get_context(t)}}{
 #'      argument:
@@ -150,7 +145,8 @@ ContextualWheelBandit <- R6::R6Class(
 #'          (as set by \code{bandit}).
 #'          \item \code{action}:  list, containing \code{action$choice} (as set by \code{policy}).
 #'      }
-#'      returns a named \code{list} containing \code{reward$reward}
+#'      returns a named \code{list} containing \code{reward$reward} and, where computable,
+#'         \code{reward$optimal} (used by "oracle" policies and to calculate regret).
 #'  }
 #
 #' }
@@ -171,7 +167,8 @@ ContextualWheelBandit <- R6::R6Class(
 #' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
+#'
 #' horizon       <- 1000L
 #' simulations   <- 10L
 #'

@@ -77,8 +77,6 @@ agent              <- Agent$new(policy, bandit)
 history            <- Simulator$new(agent, horizon, simulations, do_parallel = FALSE)$run()
 
 plot(history, type = "cumulative")
-
-
 }
 \references{
 Thompson, W. R. (1933). On the likelihood that one unknown probability exceeds another in view of the evidence of two samples. Biometrika, 25(3/4), 285-294.
@@ -86,25 +84,12 @@ Thompson, W. R. (1933). On the likelihood that one unknown probability exceeds a
 Chapelle, O., & Li, L. (2011). An empirical evaluation of thompson sampling. In Advances in neural information processing systems (pp. 2249-2257).
 
 Agrawal, S., & Goyal, N. (2013, February). Thompson sampling for contextual bandits with linear payoffs. In International Conference on Machine Learning (pp. 127-135).b
-
-Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
-\code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 }
 \seealso{
-Other contextual subclasses: \code{\link{ContextualEpochGreedyPolicy}},
-  \code{\link{ContextualThompsonSamplingPolicy}},
-  \code{\link{ContinuumBandit}},
-  \code{\link{EpsilonFirstPolicy}},
-  \code{\link{EpsilonGreedyPolicy}},
-  \code{\link{Exp3Policy}},
-  \code{\link{GittinsBrezziLaiPolicy}},
-  \code{\link{LifPolicy}},
-  \code{\link{LinUCBDisjointOptimizedPolicy}},
-  \code{\link{LinUCBDisjointPolicy}},
-  \code{\link{LinUCBGeneralPolicy}},
-  \code{\link{LinUCBHybridOptimizedPolicy}},
-  \code{\link{LinUCBHybridPolicy}},
-  \code{\link{OfflinePolicyEvaluatorBandit}},
-  \code{\link{OraclePolicy}}, \code{\link{RandomPolicy}},
-  \code{\link{SoftmaxPolicy}}, \code{\link{UCB1Policy}}
+Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
+\code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
+
+Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflinePolicyEvaluatorBandit}}
+
+Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 }

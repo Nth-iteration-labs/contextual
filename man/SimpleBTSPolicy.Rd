@@ -16,4 +16,8 @@ policy <- SimpleBTSPolicy(alpha = 1.0)
 \seealso{
 Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
+
+Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflinePolicyEvaluatorBandit}}
+
+Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 }

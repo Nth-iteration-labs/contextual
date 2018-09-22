@@ -75,8 +75,6 @@ history            <- Simulator$new(agent, horizon, simulations, do_parallel = F
 plot(history, type = "cumulative")
 
 plot(history, type = "arms")
-
-
 }
 \references{
 Auer, P., Cesa-Bianchi, N., Freund, Y., & Schapire, R. E. (2002). The nonstochastic multiarmed bandit problem. SIAM journal on computing, 32(1), 48-77. Strehl, A., & Littman, M. (2004). Exploration via modelbased interval estimation. In International Conference on Machine Learning, number Icml.
@@ -86,21 +84,7 @@ Strehl, A., & Littman, M. (2004). Exploration via modelbased interval estimation
 Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 
-Other contextual subclasses: \code{\link{ContextualEpochGreedyPolicy}},
-  \code{\link{ContextualThompsonSamplingPolicy}},
-  \code{\link{ContinuumBandit}},
-  \code{\link{EpsilonFirstPolicy}},
-  \code{\link{EpsilonGreedyPolicy}},
-  \code{\link{GittinsBrezziLaiPolicy}},
-  \code{\link{LifPolicy}},
-  \code{\link{LinUCBDisjointOptimizedPolicy}},
-  \code{\link{LinUCBDisjointPolicy}},
-  \code{\link{LinUCBGeneralPolicy}},
-  \code{\link{LinUCBHybridOptimizedPolicy}},
-  \code{\link{LinUCBHybridPolicy}},
-  \code{\link{OfflinePolicyEvaluatorBandit}},
-  \code{\link{OraclePolicy}}, \code{\link{RandomPolicy}},
-  \code{\link{SoftmaxPolicy}},
-  \code{\link{ThompsonSamplingPolicy}},
-  \code{\link{UCB1Policy}}
+Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflinePolicyEvaluatorBandit}}
+
+Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 }

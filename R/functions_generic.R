@@ -3,7 +3,6 @@
 #' plot.history, a method for the plot generic. It is designed for a quick look at History data.
 #'
 #' @name plot.history
-#' @family contextual
 #'
 #' @param x A \code{History} object.
 #' @param ... Further plotting parameters.
@@ -189,7 +188,6 @@ plot.History <- function(x, ...) {
 #' print.history, a method for the print generic. It is designed for a quick look at History data.
 #'
 #' @name print.history
-#' @family contextual
 #'
 #' @param x A \code{History} object.
 #' @param ... Further plotting parameters.
@@ -211,18 +209,18 @@ print.History <- function(x, ...) {
 #' summary.history, a method for the summary generic. It is designed for a quick summary of History data.
 #'
 #' @name summary.history
-#' @family contextual
 #'
 #' @param object A \code{History} object.
 #' @param ... Further summary parameters.
 #'
 #' @seealso
 #'
-#' Core contextual classes: \code{\link{Simulator}},
+#' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
-#' Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBernoulliBandit}},
-#' \code{\link{OfflinePolicyEvaluatorBandit}}, \code{\link{ContextualLogitBandit}}
+#' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflinePolicyEvaluatorBandit}}
+#'
+#' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 #'
 #' @importFrom data.table data.table setcolorder rbindlist
 #' @export
@@ -241,19 +239,19 @@ summary.History <- function(object, ...) {
   agents <- object$get_agent_list()
   cat(paste(' ', agents, collapse = ', '))
 
-  cat("\n\nCumulative Regret:\n\n")
+  cat("\n\nCumulative regret:\n\n")
   print(cum[,c("agent","t", "sims", "cum_regret", "cum_regret_var",
-               "cum_regret_sd", "cum_regret_ci")], fill = TRUE, row.names = FALSE)
+               "cum_regret_sd")], fill = TRUE, row.names = FALSE)
 
-  cat("\n\nCumulative Reward:\n\n")
+  cat("\n\nCumulative reward:\n\n")
   print(cum[,c("agent","t", "sims", "cum_reward", "cum_reward_var",
-               "cum_reward_sd", "cum_reward_ci")], fill = TRUE, row.names = FALSE)
+               "cum_reward_sd")], fill = TRUE, row.names = FALSE)
 
-  cat("\n\nCumulative Reward Rate:\n\n")
+  cat("\n\nCumulative reward rate:\n\n")
   crr <- cum[,c("agent","t", "sims", "cum_reward_rate", "cum_reward_rate_var",
-               "cum_reward_rate_sd", "cum_reward_rate_ci")]
-  names(crr) <- c("agent","t", "sims", "crr_reward", "crr_reward_var",
-               "crr_reward_sd", "crr_reward_ci")
+               "cum_reward_rate_sd")]
+  names(crr) <- c("agent","t", "sims", "cur_reward", "cur_reward_var",
+               "cur_reward_sd")
   print(crr, fill = TRUE, row.names = FALSE)
 
 

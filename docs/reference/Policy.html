@@ -38,14 +38,7 @@
 
 <meta property="og:title" content="Policy — Policy" />
 
-<meta property="og:description" content="R6 class Policy is the parent class of all Policy implementations in
-{contextual}. Classes that extend this abstract superclass are expected to take into
-account the current d dimensional context,
-together with a limited set of parameters denoted theta (summarizing all past actions),
-to choose one of k Bandit arms at each time step t.
-On choosing one of the k arms and receiving its corresponding reward,
-the Policy then utilizes the current context, action and reward to
-update its set of parameters theta." />
+<meta property="og:description" content="Parent class of all Policy implementations." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -75,7 +68,7 @@ update its set of parameters theta." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">contextual</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.9.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.0</span>
       </span>
     </div>
 
@@ -145,18 +138,26 @@ update its set of parameters theta." />
 
     <div class="ref-description">
     
-    <p>R6 class <code>Policy</code> is the parent class of all <code>Policy</code> implementations in
-<code>{contextual}</code>. Classes that extend this abstract superclass are expected to take into
-account the current <code>d</code> dimensional <code>context</code>,
-together with a limited set of parameters denoted <code>theta</code> (summarizing all past actions),
-to choose one of <code>k</code> <code>Bandit</code> arms at each time step <code>t</code>.
-On choosing one of the <code>k</code> arms and receiving its corresponding <code>reward</code>,
-the <code>Policy</code> then utilizes the current <code>context</code>, <code>action</code> and <code>reward</code> to
-update its set of parameters <code>theta</code>.</p>
+    <p>Parent class of all <code>Policy</code> implementations.</p>
     
     </div>
 
         
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>On every <em>t</em> = 1, &#8230;, T, a policy receives a <code>d x k</code> dimensional matrix
+<code>context$X</code> *, the current number of <code><a href='Bandit.html'>Bandit</a></code> arms in <code>context$k</code>, and the current
+number of contextual features in <code>context$d</code>. It has to compute which of the <code>k</code>
+<code><a href='Bandit.html'>Bandit</a></code> arms to pull by taking into account this contextual information plus the policy's
+current parameter values stored in the named list <code>theta</code>. On selecting an arm, the policy then
+returns its index as <code>action$choice</code>.</p>
+<p><img src='figures/3b_policy_get_action.jpeg' alt='contextual diagram: get context' /></p>
+<p>On pulling a <code><a href='Bandit.html'>Bandit</a></code> arm the policy receives a <code><a href='Bandit.html'>Bandit</a></code> reward through
+<code>reward$reward</code>. In combination with the current <code>context$X</code> * and <code>action$choice</code>,
+this reward can then be used to update to the policy's parameters as stored in list <code>theta</code>.</p>
+<p><img src='figures/3d_policy_set_reward.jpeg' alt='contextual diagram: get context' /></p>
+<p>* Note: in context-free scenario's, <code>context$X</code> can be omitted.</p>
+    
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 
     
@@ -208,6 +209,8 @@ The parameters defined here can then be accessed by arm index in the following w
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       
+      <li><a href="#details">Details</a></li>
+
       <li><a href="#usage">Usage</a></li>
 
       <li><a href="#methods">Methods</a></li>

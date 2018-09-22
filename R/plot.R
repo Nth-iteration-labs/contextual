@@ -40,7 +40,7 @@ Plot <- R6::R6Class(
           line_data_name <- "cum_regret_rate"
           ci_data_name   <- "cum_regret_rate_none"
         } else {
-          ylab_title     <- "Cumulative expected regret"
+          ylab_title     <- "Cumulative regret"
           line_data_name <- "cum_regret"
           ci_data_name   <- "cum_regret_none"
         }
@@ -361,12 +361,11 @@ Plot <- R6::R6Class(
       plot.new()
       cl <- private$gg_color_hue(round(n_agents / color_step))
       cl <- rep(cl, round(color_step))
-      lt <- rep(1, n_agents)
+
       if (lty_step > 1) {
         lt <- rep(1:round(lty_step), each = round(n_agents / lty_step))
-      }
-      if (!isTRUE(FALSE)) {
-        lt <- seq(1, n_agents)
+      } else {
+        lt <- rep(1, n_agents)
       }
       if (!is.null(ci) && !isTRUE(plot_only_ci)) {
         min_ylim <- data[, min(ci_lower)]
@@ -601,14 +600,13 @@ Plot <- R6::R6Class(
 #'   \item{\code{color_step}}{
 #'      \code{(integer, 1)} Linecharts will cycle through agents/color_step colors.
 #'   }
-#'   \item{\code{color_step}}{
+#'   \item{\code{lty_step}}{
 #'      \code{(integer, 1)} Linecharts will cycle through agents/lty_step line types
 #'   }
 #'   \item{\code{lwd}}{
 #'      \code{(integer, 1)} Linecharts will be of lwd width.
 #'   }
 #'  }
-#'
 #'
 #'
 #' @seealso
@@ -619,5 +617,4 @@ Plot <- R6::R6Class(
 #' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflinePolicyEvaluatorBandit}}
 #'
 #' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
-#'
 NULL

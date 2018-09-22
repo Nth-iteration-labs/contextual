@@ -16,12 +16,10 @@
 summary.history, a method for the summary generic. It is designed for a quick summary of History data.
 }
 \seealso{
-Core contextual classes: \code{\link{Simulator}},
+Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 
-Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBernoulliBandit}},
-\code{\link{OfflinePolicyEvaluatorBandit}}, \code{\link{ContextualLogitBandit}}
+Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflinePolicyEvaluatorBandit}}
 
-Other contextual: \code{\link{plot.history}},
-  \code{\link{print.history}}
+Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 }

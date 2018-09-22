@@ -48,10 +48,8 @@ an arm's probability values over all selected feature rows.
 
 \describe{
 
-\item{\code{new(weights = NULL, precaching  = TRUE, sum_weights = FALSE)}}{
-generates and instantializes a new \code{Bandit} instance.
-For arguments, see Argument section above.
-}
+\item{\code{new(weights = NULL, precaching  = TRUE, sum_weights = FALSE)}}{ generates
+and instantializes a new \code{ContextualBernoulliBandit} instance. }
 
 \item{\code{get_context(t)}}{
 argument:
@@ -60,17 +58,20 @@ argument:
 }
 returns a named \code{list}
 containing the current \code{d x k} dimensional matrix \code{context$X},
-number of arms \code{context$k} and number of features \code{context$d}.
+the number of arms \code{context$k} and the number of features \code{context$d}.
 }
 
 \item{\code{get_reward(t, context, action)}}{
 arguments:
 \itemize{
 \item \code{t}: integer, time step \code{t}.
-\item \code{context}: list, with \code{context$k} (number of arms).
+\item \code{context}: list, containing the current \code{context$X} (d x k context matrix),
+\code{context$k} (number of arms) and \code{context$d} (number of context feaures)
+(as set by \code{bandit}).
 \item \code{action}:  list, containing \code{action$choice} (as set by \code{policy}).
 }
-returns a named \code{list} containing \code{reward$reward}
+returns a named \code{list} containing \code{reward$reward} and, where computable,
+\code{reward$optimal} (used by "oracle" policies and to calculate regret).
 }
 
 \item{\code{generate_bandit_data()}}{
@@ -82,7 +83,8 @@ Pregenerates \code{contexts} and \code{rewards}.
 }
 
 \examples{
-\donttest{
+\dontrun{
+
 horizon            <- 100L
 simulations        <- 100L
 
@@ -108,7 +110,7 @@ plot(history, type = "cumulative")
 Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 
-Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}}, \code{\link{OfflinePolicyEvaluatorBandit}}
+Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflinePolicyEvaluatorBandit}}
 
 Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 }

@@ -1,4 +1,5 @@
 #' @export
+#' @export
 Agent <- R6::R6Class(
   "Agent",
   portable = FALSE,
@@ -88,12 +89,19 @@ Agent <- R6::R6Class(
 
 #' Agent
 #'
-#' R6 class \code{Agent} oversees the running of one \code{\link{Bandit}} and \code{\link{Policy}}
-#' pair over each time step \code{t}. A \code{\link{Simulator}} instance generally runs multiple
-#' \code{Agents} n parallel.
+#' Keeps track of one \code{\link{Bandit}} and \code{\link{Policy}} pair.
+#'
+#' Controls the running of one \code{\link{Bandit}} and \code{\link{Policy}}
+#' pair over \emph{t} = \{1, \ldots, T\} looping over, consecutively,
+#' \code{bandit$get_context(), policy$get_action(), bandit$get_reward()} and \code{policy$set_reward()}
+#' for each time step \code{t}.
+#'
+#' @section Schematic:
+#'
+#' ![](2_agent.jpeg "contextual diagram: simulator")
 #'
 #' @name Agent
-#' @aliases do_step get_t set_t
+#' @aliases do_step get_t set_t agent
 #'
 #' @section Usage:
 #' \preformatted{
@@ -112,7 +120,7 @@ Agent <- R6::R6Class(
 #'   }
 #'   \item{\code{name}}{
 #'    character; sets the name of the \code{Agent}. If \code{NULL} (default), \code{Agent} generates a name
-#'    based on its \code{\link{Policy}}'s name.
+#'    based on its \code{\link{Policy}} instance's name.
 #'   }
 #'   \item{\code{sparse}}{
 #'     numeric; artificially reduces the data size by setting a sparsity level for the current
@@ -133,15 +141,15 @@ Agent <- R6::R6Class(
 #'   \item{\code{do_step()}}{
 #'      advances a simulation by one time step by consecutively calling \code{bandit$get_context()},
 #'      \code{policy$get_action()}, \code{bandit$get_reward()} and \code{policy$set_reward()}.
-#'      Returns a list of lists with context, action, reward and theta.
+#'      Returns a list of lists containing \code{context}, \code{action}, \code{reward} and \code{theta}.
 #'    }
 #'
 #'   \item{\code{set_t(t)}}{
-#'      integer; Sets the current time step to \code{t}.
+#'      integer; sets the current time step to \code{t}.
 #'   }
 #'
 #'   \item{\code{get_t()}}{
-#'      returns the current time step \code{t}.
+#'      returns current time step \code{t}.
 #'   }
 #'
 #'   }
@@ -156,7 +164,8 @@ Agent <- R6::R6Class(
 #' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
+#'
 #'   policy    <- EpsilonGreedyPolicy$new(epsilon = 0.1)
 #'   bandit    <- BasicBernoulliBandit$new(weights = c(0.6, 0.1, 0.1))
 #'

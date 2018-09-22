@@ -9,11 +9,11 @@ OfflinePolicyEvaluatorBandit <- R6::R6Class(
   public = list(
     class_name = "OfflinePolicyEvaluatorBandit",
     randomize = NULL,
-    initialize   = function(data_stream, k, d, unique = NULL, shared = NULL, randomize = TRUE) {
+    initialize   = function(offline_data, k, d, unique = NULL, shared = NULL, randomize = TRUE) {
       self$k <- k                 # Number of arms (integer)
       self$d <- d                 # Dimension of context feature vector (integer)
       self$randomize <-randomize  # Randomize logged events for every simulation? (logical)
-      private$S <- data_stream    # Logged events (data.table)
+      private$S <- offline_data   # Logged events (by default, as a data.table)
     },
     post_initialization = function() {
       if(isTRUE(self$randomize))private$S <- private$S[sample(nrow(private$S))]
@@ -55,19 +55,18 @@ OfflinePolicyEvaluatorBandit <- R6::R6Class(
 #' and related techniques like doubly robust estimation (Dudik et al., 2011).
 #'
 #' @name OfflinePolicyEvaluatorBandit
-#' @family contextual subclasses
 #'
 #'
 #' @section Usage:
 #' \preformatted{
-#'   bandit <- OfflinePolicyEvaluatorBandit(data_stream, k, d, unique = NULL, shared = NULL, randomize = TRUE)
+#'   bandit <- OfflinePolicyEvaluatorBandit(offline_data, k, d, unique = NULL, shared = NULL, randomize = TRUE)
 #' }
 #'
 #' @section Arguments:
 #'
 #' \describe{
-#'   \item{\code{data_stream}}{
-#'     data.table; data stream (required)
+#'   \item{\code{offline_data}}{
+#'     data.table; offline data source (required)
 #'   }
 #'   \item{\code{k}}{
 #'     integer; number of arms (required)
@@ -91,10 +90,8 @@ OfflinePolicyEvaluatorBandit <- R6::R6Class(
 #'
 #' \describe{
 #'
-#'   \item{\code{new(data_stream, k, d, unique = NULL, shared = NULL, randomize = TRUE)}}{
-#'      generates and instantializes a new \code{Bandit} instance.
-#'      For arguments, see Argument section above.
-#'   }
+#'   \item{\code{new(offline_data, k, d, unique = NULL, shared = NULL, randomize = TRUE)}}{ generates
+#'    and instantializes a new \code{OfflinePolicyEvaluatorBandit} instance. }
 #'
 #'   \item{\code{get_context(t)}}{
 #'      argument:
@@ -103,18 +100,26 @@ OfflinePolicyEvaluatorBandit <- R6::R6Class(
 #'      }
 #'      returns a named \code{list}
 #'      containing the current \code{d x k} dimensional matrix \code{context$X},
-#'      number of arms \code{context$k} and number of features \code{context$d}.
+#'      the number of arms \code{context$k} and the number of features \code{context$d}.
 #'  }
 #'
 #'   \item{\code{get_reward(t, context, action)}}{
 #'      arguments:
 #'      \itemize{
 #'          \item \code{t}: integer, time step \code{t}.
-#'          \item \code{context}: list, with \code{context$k} (number of arms).
+#'          \item \code{context}: list, containing the current \code{context$X} (d x k context matrix),
+#'          \code{context$k} (number of arms) and \code{context$d} (number of context feaures)
+#'          (as set by \code{bandit}).
 #'          \item \code{action}:  list, containing \code{action$choice} (as set by \code{policy}).
 #'      }
-#'      returns a named \code{list} containing \code{reward$reward}
+#'      returns a named \code{list} containing \code{reward$reward} and, where computable,
+#'         \code{reward$optimal} (used by "oracle" policies and to calculate regret).
 #'  }
+#'
+#'   \item{\code{post_initialization()}}{
+#'      Randomize offline data by shuffling the offline data.table before the start of each
+#'      individual simulation when self$randomize is TRuE (default)
+#'   }
 #' }
 #'
 #' @references
@@ -131,7 +136,7 @@ OfflinePolicyEvaluatorBandit <- R6::R6Class(
 #' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 #'
 #' @examples
-#' \donttest{
+#' \dontrun{
 #'
 #' ## generate random policy log and save it
 #'
@@ -157,8 +162,8 @@ OfflinePolicyEvaluatorBandit <- R6::R6Class(
 #'     save_context = TRUE
 #'   )
 #'
-#' random_data_stream <- simulation$run()
-#' random_data_stream$save("log.RData")
+#' random_offline_data <- simulation$run()
+#' random_offline_data$save("log.RData")
 #'
 #' ## use saved log to evaluate policies with OfflinePolicyEvaluatorBandit
 #'
@@ -166,7 +171,7 @@ OfflinePolicyEvaluatorBandit <- R6::R6Class(
 #' history$load("log.RData")
 #' log_S <- history$get_data_table()
 #'
-#' bandit <- OfflinePolicyEvaluatorBandit$new(data_stream = log_S, k = 3, d = 3)
+#' bandit <- OfflinePolicyEvaluatorBandit$new(offline_data = log_S, k = 3, d = 3)
 #'
 #' agents <-
 #'   list(

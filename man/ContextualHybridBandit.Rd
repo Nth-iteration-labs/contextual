@@ -4,8 +4,8 @@
 \alias{ContextualHybridBandit}
 \title{Bandit: ContextualHybridBandit}
 \description{
-Extension of \code{ContextualLogitBandit} modeling hybrid rewards with a combination of unique (or
-"disjoint") and shared contextual features.
+Extension of \code{ContextualLogitBandit} modeling hybrid rewards with a combination
+of unique (or "disjoint") and shared contextual features.
 }
 \section{Usage}{
 
@@ -40,10 +40,8 @@ integer; standard deviation of additive Gaussian noise
 
 \describe{
 
-\item{\code{new(k, shared_features, unique_features, sigma = 1.0)}}{
-generates and instantializes a new \code{Bandit} instance.
-For arguments, see Argument section above.
-}
+\item{\code{new(k, shared_features, unique_features, sigma = 1.0)}}{ generates
+and instantializes a new \code{ContextualHybridBandit} instance. }
 
 \item{\code{get_context(t)}}{
 argument:
@@ -64,7 +62,8 @@ arguments:
 (as set by \code{bandit}).
 \item \code{action}:  list, containing \code{action$choice} (as set by \code{policy}).
 }
-returns a named \code{list} containing \code{reward$reward}
+returns a named \code{list} containing \code{reward$reward} and, where computable,
+\code{reward$optimal} (used by "oracle" policies and to calculate regret).
 }
 
 \item{\code{post_initialization()}}{
@@ -74,7 +73,8 @@ initialzes \code{d x k} beta matrix.
 }
 
 \examples{
-\donttest{
+\dontrun{
+
 horizon       <- 800L
 simulations   <- 100L
 
@@ -93,6 +93,7 @@ history        <- simulation$run()
 
 plot(history, type = "cumulative", regret = FALSE, rate = TRUE, legend_position = "bottomright")
 }
+
 }
 \seealso{
 Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},

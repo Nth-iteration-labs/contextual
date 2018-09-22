@@ -68,7 +68,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">contextual</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">0.9.0</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.0</span>
       </span>
     </div>
 
@@ -206,7 +206,8 @@ returns a named <code>list</code> containing <code>reward$reward</code></p></dd>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>horizon</span>       <span class='kw'>&lt;-</span> <span class='fl'>800L</span>
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='no'>horizon</span>       <span class='kw'>&lt;-</span> <span class='fl'>800L</span>
 <span class='no'>simulations</span>   <span class='kw'>&lt;-</span> <span class='fl'>30L</span>
 
 <span class='no'>bandit</span>        <span class='kw'>&lt;-</span> <span class='no'>ContextualLinearBandit</span>$<span class='fu'>new</span>(<span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>d</span> <span class='kw'>=</span> <span class='fl'>5</span>)
@@ -214,8 +215,11 @@ returns a named <code>list</code> containing <code>reward$reward</code></p></dd>
 <span class='no'>agents</span>        <span class='kw'>&lt;-</span> <span class='fu'>list</span>(<span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>EpsilonGreedyPolicy</span>$<span class='fu'>new</span>(<span class='fl'>0.1</span>), <span class='no'>bandit</span>),
                       <span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>LinUCBDisjointOptimizedPolicy</span>$<span class='fu'>new</span>(<span class='fl'>0.6</span>), <span class='no'>bandit</span>))
 
-<span class='no'>simulation</span>     <span class='kw'>&lt;-</span> <span class='no'>Simulator</span>$<span class='fu'>new</span>(<span class='no'>agents</span>, <span class='no'>horizon</span>, <span class='no'>simulations</span>)</div><div class='output co'>#&gt; <span class='message'>Cloning, precaching and precalculating bandits and policies</span></div><div class='input'><span class='no'>history</span>        <span class='kw'>&lt;-</span> <span class='no'>simulation</span>$<span class='fu'><a href='Simulator.html'>run</a></span>()</div><div class='output co'>#&gt; <span class='message'>Preworkercreation</span></div><div class='output co'>#&gt; <span class='message'>Cores available: 4</span></div><div class='output co'>#&gt; <span class='message'>Workers assigned: 3</span></div><div class='output co'>#&gt; <span class='message'>Postworkercreation</span></div><div class='input'>
-<span class='fu'>plot</span>(<span class='no'>history</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"cumulative"</span>, <span class='kw'>regret</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>rate</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>legend_position</span> <span class='kw'>=</span> <span class='st'>"right"</span>)</div><div class='img'><img src='ContextualLinearBandit-1.png' alt='' width='700' height='433' /></div></pre>
+<span class='no'>simulation</span>     <span class='kw'>&lt;-</span> <span class='no'>Simulator</span>$<span class='fu'>new</span>(<span class='no'>agents</span>, <span class='no'>horizon</span>, <span class='no'>simulations</span>)
+<span class='no'>history</span>        <span class='kw'>&lt;-</span> <span class='no'>simulation</span>$<span class='fu'><a href='Simulator.html'>run</a></span>()
+
+<span class='fu'>plot</span>(<span class='no'>history</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"cumulative"</span>, <span class='kw'>regret</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>rate</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>legend_position</span> <span class='kw'>=</span> <span class='st'>"right"</span>)
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

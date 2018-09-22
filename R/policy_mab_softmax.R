@@ -48,7 +48,7 @@ SoftmaxPolicy <- R6::R6Class(
 #' reward.
 #'
 #' @name SoftmaxPolicy
-#' @family contextual subclasses
+#'
 #'
 #' @section Usage:
 #' \preformatted{
@@ -112,6 +112,9 @@ SoftmaxPolicy <- R6::R6Class(
 #' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
+#' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflinePolicyEvaluatorBandit}}
+#'
+#' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 #'
 #' @examples
 #'
@@ -128,6 +131,4 @@ SoftmaxPolicy <- R6::R6Class(
 #' plot(history, type = "cumulative")
 #'
 #' plot(history, type = "arms")
-#'
-#'
 NULL

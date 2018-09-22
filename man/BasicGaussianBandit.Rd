@@ -36,10 +36,8 @@ the bandit's \code{k} arms. Set to zero for no noise.
 
 \describe{
 
-\item{\code{new(mu_per_arm, sigma_per_arm)}}{
-generates and instantializes a new \code{Bandit} instance.
-For arguments, see Argument section above.
-}
+\item{\code{new(mu_per_arm, sigma_per_arm)}}{ generates and instantializes a
+new \code{BasicGaussianBandit} instance. }
 
 \item{\code{get_context(t)}}{
 argument:
@@ -47,23 +45,27 @@ argument:
 \item \code{t}: integer, time step \code{t}.
 }
 returns a named \code{list}
-containing the number of arms as \code{context$k}.
+containing the current \code{d x k} dimensional matrix \code{context$X},
+the number of arms \code{context$k} and the number of features \code{context$d}.
 }
 
 \item{\code{get_reward(t, context, action)}}{
 arguments:
 \itemize{
 \item \code{t}: integer, time step \code{t}.
-\item \code{context}: list, with \code{context$k} (number of arms).
+\item \code{context}: list, containing the current \code{context$X} (d x k context matrix),
+\code{context$k} (number of arms) and \code{context$d} (number of context feaures)
+(as set by \code{bandit}).
 \item \code{action}:  list, containing \code{action$choice} (as set by \code{policy}).
 }
-returns a named \code{list} containing \code{reward$reward}
+returns a named \code{list} containing \code{reward$reward} and, where computable,
+\code{reward$optimal} (used by "oracle" policies and to calculate regret).
 }
 }
 }
 
 \examples{
-\donttest{
+\dontrun{
 
 horizon            <- 100
 sims               <- 100
@@ -83,7 +85,7 @@ plot(history, type = "cumulative", regret = TRUE)
 Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 
-Bandit subclass examples: \code{\link{BasicGaussianBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflinePolicyEvaluatorBandit}}
+Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflinePolicyEvaluatorBandit}}
 
 Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 }

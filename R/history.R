@@ -426,7 +426,6 @@ History <- R6::R6Class(
 #'     \code{logical}. Save parameter lists \code{theta} when writing simulation data?
 #'   }
 #'
-#'
 #' }
 #'
 #' @section Methods:
@@ -490,5 +489,4 @@ History <- R6::R6Class(
 #' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflinePolicyEvaluatorBandit}}
 #'
 #' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
-#'
 NULL
