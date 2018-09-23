@@ -38,7 +38,7 @@
 
 <meta property="og:title" content="Bandit — Bandit" />
 
-<meta property="og:description" content="Parent class of all Bandit implementations." />
+<meta property="og:description" content="Parent or superclass of all {contextual} Bandit subclasses." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -138,28 +138,26 @@
 
     <div class="ref-description">
     
-    <p>Parent class of all <code>Bandit</code> implementations.</p>
+    <p>Parent or superclass of all <code>{contextual}</code> <code>Bandit</code> subclasses.</p>
     
     </div>
 
         
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><code>Bandit</code> is the parent of all <code>{contextual}</code> <code>Bandit</code> subclasses.
-In <code>{contextual}</code>, <code>Bandits</code> are responsible for the generation of contexts and rewards.</p>
-<p>On initialisation, any <code>Bandit</code> subclass has to define the number of arms <code>self$k</code>
+    <p>In <code>{contextual}</code>, <code>Bandits</code> are responsible for the generation of (either
+synthetic or offline) contexts and rewards.</p>
+<p>On initialisation, a <code>Bandit</code> subclass has to define the number of arms <code>self$k</code>
 and the number of contextual feature dimensions <code>self$d</code>.</p>
-<p>Then, for each <em>t</em> = 1, &#8230;, T it first generates a <code>list</code> containing
-current context in <code>d x k</code> dimensional matrix <code>context$X</code> *
+<p>For each <em>t</em> = 1, &#8230;, T a <code>Bandit</code> then generates a <code>list</code> containing
+current context in <code>d x k</code> dimensional matrix <code>context$X</code>,
 the number of arms in <code>context$k</code> and the number of features in <code>context$d</code>.</p>
-<p>* Note: in context-free scenario's, <code>context$X</code> can be omitted.</p>
+<p>Note: in context-free scenario's, <code>context$X</code> can be omitted.</p>
 <p><img src='figures/3a_bandit_get_context.jpeg' alt='contextual diagram: get context' /></p>
-<p>On receiving <code>action$choice</code>, which contains the index of the arm chosen by the
-<code><a href='Policy.html'>Policy</a></code> currently under evaluation, the <code>Bandit</code> returns a named <code>list</code>
-containing at least <code>reward$reward</code> and, if available, <code>reward$optimal</code>.</p>
+<p>On receiving the index of a <code><a href='Policy.html'>Policy</a></code>-chosen arm through <code>action$choice</code>,
+<code>Bandit</code> is expected to return a named <code>list</code> containing at least <code>reward$reward</code>
+and,  where computable, <code>reward$optimal</code>.</p>
 <p><img src='figures/3c_bandit_get_reward.jpeg' alt='contextual diagram: get context' /></p>
-<p>Additionally, <code>Bandit</code> subclasses have the option to (pre-)generate contexts and rewards
-by implementing <code>generate_bandit_data()</code>.</p>
     
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 
@@ -188,14 +186,12 @@ the number of arms <code>context$k</code> and the number of features <code>conte
 (as set by <code>bandit</code>).</p></li>
 <li><p><code>action</code>:  list, containing <code>action$choice</code> (as set by <code>policy</code>).</p></li>
 </ul>
-returns a named <code>list</code> containing <code>reward$reward</code> and, if available,
-<code>reward$optimal</code> (only to be used by "oracle" policies or to calculate regret).</p></dd>
-    <dt><code>post_initialization()</code></dt><dd><p>called right after <code>Simulator</code> sets its seed,
-but before it starts iterating over all time steps <code>t</code> in T.
-If you need to set random values that remain available throughout the life of a <code>Bandit</code>
-instance, this is the place to do so.</p></dd>
-    <dt><code>generate_bandit_data()</code></dt><dd><p>helper function called before <code>Simulator</code> starts iterating over all time steps <code>t</code> in T.
-This function is only called when <code>bandit$precaching</code> is <code>TRUE</code> (default <code>FALSE</code>).
+returns a named <code>list</code> containing <code>reward$reward</code> and, where computable,
+<code>reward$optimal</code> (used by "oracle" policies and to calculate regret).</p></dd>
+    <dt><code>post_initialization()</code></dt><dd><p>Called after class and seed initialisation, but before the start of the simulation.
+Set random values that remain available sthroughout the life of a <code>Bandit</code> here.</p></dd>
+    <dt><code>generate_bandit_data()</code></dt><dd><p>Called after class and seed initialisation, but before the start of a simulation.
+Only called when <code>bandit$precaching</code> is set to <code>TRUE</code> (default <code>FALSE</code>).
 Pregenerate <code>contexts</code> and <code>rewards</code> here.</p></dd>
 </dl>
     

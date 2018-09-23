@@ -81,7 +81,7 @@ plot.History <- function(x, ...) {
   if ("lwd" %in% names(args))
     lwd <- eval(args$lwd)
   else
-    lwd <- 1
+    lwd <- 2
   if ("ylim" %in% names(args))
     ylim <- eval(args$ylim)
   else

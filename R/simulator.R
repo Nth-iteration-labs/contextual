@@ -90,7 +90,7 @@ Simulator <- R6::R6Class(
       }
 
       # clone, precache and precalculate bandits and policies where relevant
-      message("Cloning, precaching and precalculating bandits and policies")
+      message("Cloning bandits and policies")
       index <- 1
       for (sim_index in 1L:self$simulations) {
         for (agent_index in 1L:self$agent_count) {
@@ -105,7 +105,7 @@ Simulator <- R6::R6Class(
           index <- index + 1
         }
       }
-
+      message("Finished cloning bandits and policies")
     },
     run = function() {
       # run foreach either parallel or not, create workers

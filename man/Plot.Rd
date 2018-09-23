@@ -104,7 +104,7 @@ that is, at an opacity of 30%.
 \item{\code{color_step}}{
 \code{(integer, 1)} Linecharts will cycle through agents/color_step colors.
 }
-\item{\code{color_step}}{
+\item{\code{lty_step}}{
 \code{(integer, 1)} Linecharts will cycle through agents/lty_step line types
 }
 \item{\code{lwd}}{

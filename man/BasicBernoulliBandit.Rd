@@ -16,7 +16,7 @@ such as if a user clicks on a headline, ad, or recommended product.
 \section{Usage}{
 
 \preformatted{
-  bandit <- BasicBernoulliBandit$new(p_per_arm)
+  bandit <- BasicBernoulliBandit$new(weights)
 }
 }
 
@@ -24,7 +24,7 @@ such as if a user clicks on a headline, ad, or recommended product.
 
 
 \describe{
-\item{\code{p_per_arm}}{
+\item{\code{weights}}{
 numeric vector; probability of reward values for each of the bandit's \code{k} arms
 }
 }
@@ -35,7 +35,7 @@ numeric vector; probability of reward values for each of the bandit's \code{k} a
 
 \describe{
 
-\item{\code{new(p_per_arm)}}{ generates and instantializes a new \code{BasicBernoulliBandit}
+\item{\code{new(weights)}}{ generates and instantializes a new \code{BasicBernoulliBandit}
 instance. }
 
 \item{\code{get_context(t)}}{
@@ -71,7 +71,7 @@ sims               <- 100
 
 policy             <- EpsilonGreedyPolicy$new(epsilon = 0.1)
 
-bandit             <- BasicBernoulliBandit$new(p_per_arm = c(0.6, 0.1, 0.1))
+bandit             <- BasicBernoulliBandit$new(weights = c(0.6, 0.1, 0.1))
 agent              <- Agent$new(policy,bandit)
 
 history            <- Simulator$new(agent, horizon, sims)$run()

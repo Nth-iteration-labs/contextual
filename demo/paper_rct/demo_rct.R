@@ -77,7 +77,7 @@ horizon     <- nrow(log_S)
 
 # initiate Li bandit, with 10 arms, and 100 dimensions
 
-bandit      <- OfflinePolicyEvaluatorBandit$new(data_stream = log_S, k = 2, d = length(context_cols))
+bandit      <- OfflinePolicyEvaluatorBandit$new(offline_data = log_S, k = 2, d = length(context_cols))
 
 # define two LinUCBDisjointSmPolicy agents
 

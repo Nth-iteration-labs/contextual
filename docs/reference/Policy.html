@@ -38,7 +38,7 @@
 
 <meta property="og:title" content="Policy — Policy" />
 
-<meta property="og:description" content="Parent class of all Policy implementations." />
+<meta property="og:description" content="Parent or superclass of all {contextual} Policy subclasses." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -138,7 +138,7 @@
 
     <div class="ref-description">
     
-    <p>Parent class of all <code>Policy</code> implementations.</p>
+    <p>Parent or superclass of all <code>{contextual}</code> <code>Policy</code> subclasses.</p>
     
     </div>
 
@@ -146,14 +146,14 @@
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>On every <em>t</em> = 1, &#8230;, T, a policy receives a <code>d x k</code> dimensional matrix
-<code>context$X</code> *, the current number of <code><a href='Bandit.html'>Bandit</a></code> arms in <code>context$k</code>, and the current
+<code>context$X</code>*, the current number of <code><a href='Bandit.html'>Bandit</a></code> arms in <code>context$k</code>, and the current
 number of contextual features in <code>context$d</code>. It has to compute which of the <code>k</code>
 <code><a href='Bandit.html'>Bandit</a></code> arms to pull by taking into account this contextual information plus the policy's
 current parameter values stored in the named list <code>theta</code>. On selecting an arm, the policy then
 returns its index as <code>action$choice</code>.</p>
 <p><img src='figures/3b_policy_get_action.jpeg' alt='contextual diagram: get context' /></p>
 <p>On pulling a <code><a href='Bandit.html'>Bandit</a></code> arm the policy receives a <code><a href='Bandit.html'>Bandit</a></code> reward through
-<code>reward$reward</code>. In combination with the current <code>context$X</code> * and <code>action$choice</code>,
+<code>reward$reward</code>. In combination with the current <code>context$X</code>* and <code>action$choice</code>,
 this reward can then be used to update to the policy's parameters as stored in list <code>theta</code>.</p>
 <p><img src='figures/3d_policy_set_reward.jpeg' alt='contextual diagram: get context' /></p>
 <p>* Note: in context-free scenario's, <code>context$X</code> can be omitted.</p>

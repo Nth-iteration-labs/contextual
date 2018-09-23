@@ -4,11 +4,11 @@ BasicBernoulliBandit <- R6::R6Class(
   portable = TRUE,
   class = FALSE,
   public = list(
-    p_per_arm = NULL,
+    weights = NULL,
     class_name = "BasicBernoulliBandit",
-    initialize = function(p_per_arm) {
-      self$p_per_arm   <- p_per_arm
-      self$k           <- length(self$p_per_arm)
+    initialize = function(weights) {
+      self$weights     <- weights
+      self$k           <- length(self$weights)
     },
     get_context = function(t) {
       context <- list(
@@ -16,7 +16,7 @@ BasicBernoulliBandit <- R6::R6Class(
       )
     },
     get_reward = function(t, context, action) {
-      rewards        <- as.double(runif(self$k) < self$p_per_arm)
+      rewards        <- as.double(runif(self$k) < self$weights)
       optimal_arm    <- which.max(rewards)
       reward  <- list(
         reward                   = rewards[action$choice],
@@ -41,13 +41,13 @@ BasicBernoulliBandit <- R6::R6Class(
 #'
 #' @section Usage:
 #' \preformatted{
-#'   bandit <- BasicBernoulliBandit$new(p_per_arm)
+#'   bandit <- BasicBernoulliBandit$new(weights)
 #' }
 #'
 #' @section Arguments:
 #'
 #' \describe{
-#'   \item{\code{p_per_arm}}{
+#'   \item{\code{weights}}{
 #'      numeric vector; probability of reward values for each of the bandit's \code{k} arms
 #'   }
 #' }
@@ -56,7 +56,7 @@ BasicBernoulliBandit <- R6::R6Class(
 #'
 #' \describe{
 #'
-#'   \item{\code{new(p_per_arm)}}{ generates and instantializes a new \code{BasicBernoulliBandit}
+#'   \item{\code{new(weights)}}{ generates and instantializes a new \code{BasicBernoulliBandit}
 #'    instance. }
 #'
 #'   \item{\code{get_context(t)}}{
@@ -101,7 +101,7 @@ BasicBernoulliBandit <- R6::R6Class(
 #'
 #' policy             <- EpsilonGreedyPolicy$new(epsilon = 0.1)
 #'
-#' bandit             <- BasicBernoulliBandit$new(p_per_arm = c(0.6, 0.1, 0.1))
+#' bandit             <- BasicBernoulliBandit$new(weights = c(0.6, 0.1, 0.1))
 #' agent              <- Agent$new(policy,bandit)
 #'
 #' history            <- Simulator$new(agent, horizon, sims)$run()

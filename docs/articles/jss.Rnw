@@ -184,7 +184,7 @@ In practice, the most popular performance measure for bandit policies is \textit
 
 Where expectation $\mathbb{E}\left[ \mathord{\cdot}\right]$ is taken with respect to random draws of both rewards assigned by a bandit and arms as selected by a policy \citep{Zheng2016a}.
 
-\subsection{Implementation: core classes} \label{implementation}
+\subsection{Implementation} \label{implementation}
 
 \begin{figure}[H]
   \centering
@@ -220,7 +220,7 @@ The six building blocks introduced in the previous section are essentially all t
 library(contextual)
 
 policy    <- ThompsonSamplingPolicy$new()
-bandit    <- BasicBernoulliBandit$new(p_per_arm = c(0.9, 0.1, 0.1))
+bandit    <- BasicBernoulliBandit$new(weights = c(0.9, 0.1, 0.1))
 agent     <- Agent$new(policy,bandit)
 simulator <- Simulator$new(agents = agent, simulations = 100, horizon = 50)
 history   <- simulator$run()
@@ -324,7 +324,7 @@ In the current subsection we demonstrate how run simulations with \pkg{contextua
 
 \subsubsection{The scenario} \label{scen}
 
-As bandit policies are currently probably the most widely applied in advertising, we will use this field as the setting for our basic bandit tutorial. Generally, the goal in online advertising is to determine which out of several ads to serve a visitor to a particular web page. Translated to a bandit setting, in online advertising:
+Since online advertising is one of the areas where bandit policies have found widespread application, we will use it as the setting for our basic bandit tutorial. Generally, the goal in online advertising is to determine which out of several ads to serve a visitor to a particular web page. Translated to a bandit setting, in online advertising:
 
 \begin{itemize}
          \item The context is usually determined by visitor and web page characteristics.
@@ -333,80 +333,84 @@ As bandit policies are currently probably the most widely applied in advertising
          \item The reward is a visitor's click (a reward of 1) or non-click (a reward of 0) on an ad.
 \end{itemize}
 
-In the case of the simulations in the current section, we limit the number of advertisements in the pool to 3, and set ourselves the goal of finding the policy that offers the highest overall click-through rate within 400 impressions---with the higher level goal of choosing the best policy to implement on a live website.
+In the case of the simulations in the current section, we limit the number of advertisements we want to evaluate to 3, and set ourselves the objective of finding out which policy would offer us the highest total click-through rate over 400 impressions.
 
 \subsubsection{Comparing context-free policies} \label{ncp}
 
-Before we are able to evaluate any policies, we first have to model the three ads---with each a different probability of generating a click---as the arms of a bandit. We choose to model the ads with the weight-based \code{SyntheticBandit} as this enabled us to easily set uniformly distributed weights determining the probability of the rewards for each arm. As can be observed in the source code below, for the current simulation, we set the weights of the arms to respectively $p = 0.8$, $p = 0.4$ and $p = 0.2$.
+Before we are able to evaluate any policies, we first have to model our three ads---each with a different probability of generating a click---as arms of a bandit. We choose to model the ads with the weight-based \code{ContextualBernoulliBandit} as it allows us to set uniformly distributed weights determining the probability of the rewards for each arm. As can be observed in the source code below, for the current simulation, we set the weights of the arms to respectively $p = 0.8$, $p = 0.4$ and $p = 0.2$.
 
 We also choose two context-free policies to evaluate and compare:
 
 \begin{itemize}
-         \item \code{EpsilonFirstPolicy}: explores all three ads at uniformly at random for a preset period and from thereon exploits the ad with the best click-through rate \footnote{A type of policy also known as an A/B test \cite{Kohavi2007}.}. For our current scenario, we set the exploration period to 50 impressions. A formal definition and an implementation of the algorithm can be found in section \ref{epsfirst}.
+         \item \code{EpsilonFirstPolicy}: explores all three ads at uniformly at random for a preset period and from thereon exploits the ad with the best click-through rate \footnote{A type of policy also known as an A/B test \cite{Kohavi2007}.}. For our current scenario, we set the exploration period to one hundred impressions. A formal definition and an implementation of the algorithm can be found in section \ref{epsfirst}.
 
-         \item \code{EpsilonGreedyPolicy}: explores one of the ads at uniformly at random $\epsilon$ of the time and exploits the ad with the best current click-through rate $1 - \epsilon$ of the time. For our current scenario, we set $\epsilon = 0.2$. For a formal definition and implementation see section \ref{epsgreedy}.
+         \item \code{EpsilonGreedyPolicy}: explores one of the ads at uniformly at random $\epsilon$ of the time and exploits the ad with the best current click-through rate $1 - \epsilon$ of the time. For our current scenario, we set $\epsilon = 0.4$. For a formal definition and implementation see section \ref{epsgreedy}.
 \end{itemize}
 
-Next, we assign the one \code{bandit} instance and two \code{policy} instances to two \code{agents}, ensuring that both policies are run on the same set of generated data. Finally, we assign a \code{list} holding both \code{agents} to a \code{Simulator} instance, set the \code{simulator}'s horizon to 400 and the number of repeats to 1000, run the simulation, and \code{plot()} its results:
+Next, we assign the \code{bandit} and our two \code{policy} instances to two \code{agents}, ensuring that both policies use the same starting seeds in each of their simulations. Finally, we assign a \code{list} holding both \code{agents} to a \code{Simulator} instance, set the \code{simulator}'s horizon to four hundred and the number of repeats to ten thousand, run the simulation, and \code{plot()} its results:
 
 \begin{Code}
 # Load and attach the contextual package.
 library(contextual)
 # Define for how long the simulation will run.
-horizon             <- 400
+horizon <- 400
 # Define how many times to repeat the simulation.
-simulations         <- 1000
+simulations <- 10000
 # Define the probability that each ad will be clicked.
 click_probabilities <- c(0.8, 0.4, 0.2)
-# Initialize a SyntheticBandit, which takes probabilites per arm for an argument.
-bandit              <- SyntheticBandit$new(weights = click_probabilities)
-# Initialize an EpsilonGreedyPolicy with a 20% exploiration rate.
-eg_policy           <- EpsilonGreedyPolicy$new(epsilon = 0.2)
-# Initialize an EpsilonFirstPolicy with a 50 step exploration period.
-ef_policy           <- EpsilonFirstPolicy$new(first = 50)
+# Initialize a ContextualBernoulliBandit
+bandit <- ContextualBernoulliBandit$new(weights = click_probabilities)
+# Initialize an EpsilonGreedyPolicy with a 40% exploiration rate.
+eg_policy <- EpsilonGreedyPolicy$new(epsilon = 0.4)
+# Initialize an EpsilonFirstPolicy with a 100 step exploration period.
+ef_policy <- EpsilonFirstPolicy$new(first = 100)
 # Initialize two Agents, binding each policy to a bandit.
-ef_agent            <- Agent$new(ef_policy, bandit)
-eg_agent            <- Agent$new(eg_policy, bandit)
+ef_agent <- Agent$new(ef_policy, bandit)
+eg_agent <- Agent$new(eg_policy, bandit)
 # Assign both agents to a list.
-agents              <- list(ef_agent, eg_agent)
-# Initialize a Simulator with the agent list, horizon, and number of simulations.
-simulator           <- Simulator$new(agents, horizon, simulations)
+agents <- list(ef_agent, eg_agent)
+# Initialize Simulator with agent list, horizon, and nr of simulations.
+simulator <- Simulator$new(agents, horizon, simulations)
 # Now run the simulator.
-history             <- simulator$run()
-# And plot the cumulative reward rate (equals Click Through Rate)
-plot(history, type = "cumulative", regret = FALSE, rate = TRUE)
+history <- simulator$run()
+# Finally, plot the average reward per time step t
+plot(history, type = "average", regret = FALSE, lwd = 2)
+# And the cumulative reward rate, which equals the Click Through Rate)
+plot(history, type = "cumulative", regret = FALSE, rate = TRUE, lwd = 2)
+
 \end{Code}
 \begin{figure}[H]
 \centering
-\includegraphics[width=.99\textwidth]{fig/simple_one}
-\label{fig:simple_one}
-\caption{Cumulative reward rate (equals click-through rate) of a context-free bandit scenario comparing $\epsilon$-first and $\epsilon$-greedy policies.}
+\includegraphics[width=.99\textwidth]{fig/section_3_2_1}
+\label{fig:section_3_2_1}
+\caption{Average reward (left) and cumulative reward rate (equaling click-through rate, right) of $\epsilon$-first and $\epsilon$-greedy policies.}
 \end{figure}
 
-As can be observed in Figure \ref{fig:simple_one}, within our horizon of $T = 400$, \code{EpsilonFirstPolicy} has accumulated more rewards than \code{EpsilonGreedytPolicy}. It is easy to see why: The winning arm is consistently the best - by a margin.  So \code{EpsilonFirstPolicy} has no difficulty in finding the optimal arm within its exploration period of 50 impressions. Up to that point, \code{EpsilonGreedyPolicy} had the advantage of a headstart---from the moment it established which arm was best, it was able to exploit it for $1- \epsilon$ or 80 percent of the time. However, in contrast to \code{EpsilonFirstPolicy}, it is not able to exploit it consistently from 50 impressions on---the \code{EpsilonGreedyPolicy} is obliged to keep exploring lesser arms for 20 percent of the time.
+As can be observed in Figure \ref{fig:section_3_2_1}, within our horizon of $T = 400$, \code{EpsilonFirstPolicy} has accumulated more rewards than \code{EpsilonGreedytPolicy}. It is easy to see why: The winning arm is better than the other two by a margin. That means that  \code{EpsilonFirstPolicy} has no difficulty in finding the optimal arm within its exploration period of one hundred impressions. Up to that point, \code{EpsilonGreedyPolicy} had the advantage of a headstart, as it was already able to exploit for $1- \epsilon$ or sixty percent of the time. But from one hundred impressions on, \code{EpsilonFirstPolicy} switches from full exploration to full exploitation mode. In contrast to \code{EpsilonGreedyPolicy}, it is now able to exploit the arm that proved best during exploration all of the time. As a result, it can catch up and pass the rewards cumulated by \code{EpsilonGreedyPolicy} within less than one hundred and fifty impressions.
 
 \subsubsection{Adding context}
 
-If that is all we know of our visitors, we expect the results to be stationary over time, and these are the only policies available, the choice is clear: we will use \code{EpsilonFirstPolicy} on our live website\footnote{Also: if our bandit represents our visitors' click behavior realistically, if our policies' parameters are optimal, etcetera.}. However, if we have contextual information on our visitors---for instance, their age---we might be able to do better. Let us suggest, for instance, that we expect that some of our ads are more effective for older visitors, and other ads more effective for younger visitors.
+If that is all we know of our visitors, we expect the results to be stationary over time, and these are the only policies available, the choice is clear: it's best to deploy \code{EpsilonFirstPolicy} on our live website\footnote{Also: if our bandit represents our visitors' click behavior realistically, if our policies' parameters are optimal, etcetera.}. However, if we have contextual information on our visitors---for instance, their age---we might be able to do better. Let us suggest that we expect that some of our ads are more effective for older visitors, and other ads more effective for younger visitors.
 
-To incorporate this expectation in our simulation, we need to change the way our bandit generates its rewards. Fortunately, in the case of our \code{SyntheticBandit}, the introduction of two contextual features only requires the addition of a single row to its weight matrix---as \code{SyntheticBandit} parses each of the $d$ rows of its weight matrix as a binary feature generated with a probability of $p_{d,t} = 1/d$.
+To incorporate this expectation in our simulation, we need to change the way our bandit generates its rewards. Fortunately, in the case of our \code{ContextualBernoulliBandit}, the introduction of two contextual features only requires the addition of a single row to its weight matrix---as \code{ContextualBernoulliBandit} parses each of the $d$ rows of its weight matrix as a binary contextual feature generated with a probability of $p_{d,t} = 1/d$.
+
+
 
 As can be seen in the source code below, in choosing our weights, we have taken care to keep the average rewards per arm over the two features equal to the rewards per arm in the previous simulation. So we do not expect a substantial difference with the previous simulation's outcome for context-free policies \code{EpsilonFirstPolicy} and \code{EpsilonGreedyPolicy}.
 
 We therefore also include the contextual \code{LinUCBDisjointPolicy} \citep{Li2010}, which, in assuming its reward function is a linear function of the context, is able to incorporate our new contextual information into its decision-making process. See \ref{linucbc} for a detailed description and implementation details of this policy. Now let us rerun the simulation:
 
-
 \begin{Code}
-#                                    +-----+----+-----------> ads: k = 3
-#                                    |     |    |
-click_probabilities <- matrix(  c(  0.2,  0.3, 0.1,     # --> d1: old   (p=.5)
-                                    0.6,  0.1, 0.1   ), # --> d2: young (p=.5)
-                                                        #     features: d = 2
+#                                  +-----+----+-----------> ads: k = 3
+#                                  |     |    |
+click_probs         <- matrix(c(  0.2,  0.3, 0.1,     # --> d1: old   (p=.5)
+                                  0.6,  0.1, 0.1   ), # --> d2: young (p=.5)
+                                                      #     features: d = 2
 
                                   nrow = 2, ncol = 3, byrow = TRUE)
 
-# Initialize a SyntheticBandit with contextual weights
-context_bandit      <- SyntheticBandit$new(weights = click_probabilities)
+# Initialize a ContextualBernoulliBandit with contextual weights
+context_bandit      <- ContextualBernoulliBandit$new(weights = click_probs)
 # Initialize LinUCBDisjointPolicy
 lu_policy           <- LinUCBDisjointPolicy$new(0.6)
 # Initialize three Agents, binding each policy to a bandit.
@@ -415,7 +419,7 @@ eg_agent            <- Agent$new(eg_policy, context_bandit)
 lu_agent            <- Agent$new(lu_policy, context_bandit)
 # Assign all agents to a list.
 agents              <- list(ef_agent, eg_agent, lu_agent)
-# Initialize a Simulator with the agent list, horizon, and number of simulations.
+# Initialize Simulator with agent list, horizon, and nr of simulations.
 simulator           <- Simulator$new(agents, horizon, simulations)
 # Now run the simulator.
 history             <- simulator$run()
@@ -424,16 +428,16 @@ plot(history, type = "cumulative", regret = FALSE, rate = TRUE)
 \end{Code}
 \begin{figure}[H]
 \centering
-\includegraphics[width=.99\textwidth]{fig/simple_two}
-\label{fig:simple_two}
-\caption{Cumulative reward rate (equals click-through rate) of a contextual bandit scenario comparing LinUCB, $\epsilon$-first and $\epsilon$-greedy policies.}
+\includegraphics[width=.99\textwidth]{fig/section_3_2_2}
+\label{fig:section_3_2_2}
+\caption{Average reward (left) and cumulative reward rate (equaling click-through rate, right) of LinUCB, $\epsilon$-first and $\epsilon$-greedy policies.}
 \end{figure}
 
-As can be observed in Figure \ref{fig:simple_two}, both context-free bandit's results do indeed about as well as before. On the other hand, \code{LinUCBDisjointPolicy} does very well, as this contextual policy is able to map its rewards to the observed contextual features. All in all, this time around, you would probably choose the \code{LinUCBDisjointPolicy} for your website---with the added advantage of being able to incorporate other contextual features to optimize results further.
+As can be observed in Figure \ref{fig:section_3_2_2}, both context-free bandit's results do indeed not do better than before. On the other hand, \code{LinUCBDisjointPolicy} does very well, as it is able to map its rewards to the available contextual features. All in all, this time around, you would choose \code{LinUCBDisjointPolicy} to implement on your website---with the added advantage that you will now be in a position to incorporate other contextual features to optimize results further.
 
-Of course, neither simulation in the current section is very realistic. One way to do better would be to write a Bandit subclass with a more complex generative model. How to create such a bandit subclass is delineated in section 5. Another option would, for example, be to evaluate policies on an offline dataset---more on that in section 6.
+Of course, the simulations in the current section are not very realistic. One way to ameliorate that would be to write a Bandit subclass with a more complex generative model. Section 5.5 shows how to get started with that. Another option would be to evaluate policies on an offline dataset---more on how to go about that in section 6.
 
-\section{Class structure} \label{classstructure}
+\section{Core classes} \label{classstructure}
 
 Since it is \pkg{contextual}'s explicit goal to offer researchers and developers an easily extensible framework to develop, evaluate and compare their own \code{Policy} and \code{Bandit} implementations, the current section offers additional background information on \pkg{contextual}'s class structure---both on the R6 class system \cite{R6} and on each of the six previously introduced core \pkg{contextual} classes.
 
@@ -445,187 +449,11 @@ Though widely used as a procedural language, \proglang{R} offers several Object 
 
 In this section, we go over each of \pkg{contextual}'s six main classes in some more detail---with an emphasis on the \code{Bandit} and \code{Policy} classes. To clarify \pkg{contextual}'s class structure, we also include two UML diagrams (UML, or "unified modeling language" presents a standardized way to visualize the overall class structure and general design of a software application or framework \citep{Rumbaugh2004}). The UML class diagram shown in Figure \ref{fig:contextual_class} on page \pageref{fig:contextual_class} visualizes \pkg{contextual}'s static object model, showing how its classes inherit from, and interface with, each other. The UML sequence diagram in figure Figure \ref{fig:contextual_sequence} on page \pageref{fig:contextual_sequence}, on the other hand, illustrates how \pkg{contextual}'s classes interact dynamically over time.
 
-\subsubsection{Bandit}
-
-In \pkg{contextual}, any bandit implementation is expected to subclass and extend the \code{Bandit} superclass. It is then up to these subclasses themselves to provide an implementation for each of its abstract methods. In practice, this entials that \code{Bandit} subclasses are, firstly, responsible for setting the instance variable \code{self\$k} to the number of arms, and instance variable \code{self\$d} to the number of context features. Next, any \code{Bandit} siblings are expected to implement at least \code{get_context()} and \code{do_action()}:
-
-\begin{Code}
-#' @export
-Bandit <- R6::R6Class(
-  portable = TRUE,
-  class    = FALSE,
-  public   = list(
-    k           = NULL,     # Number of arms (integer)
-    d           = NULL,     # Dimension of context feature vectors (integer)
-    ...
-    precaching  = FALSE,    # Pregenerate context & reward matrices? (boolean)
-    class_name  = "Bandit", # Bandit name - required (character)
-    initialize  = function() {
-      # Initialize Bandit. Set self$d and self$k here.
-    },
-    ...
-    get_context = function(t) {
-      stop("Bandit subclass needs to implement bandit$get_context()", call. = FALSE)
-      # Return a list with self$k, self$d and, where applicable, a context matrix X.
-      list(X = context, k = arms, d = features)
-    },
-    get_reward = function(t, context, action) {
-      stop("Bandit subclass needs to implement bandit$get_reward()", call. = FALSE)
-      # Return a list with the reward and, if known, the reward of the best arm.
-      list(reward = reward_for_choice_made, optimal = optimal_reward_value)
-    },
-    ...
-  )
-)
-\end{Code}
-
-
-The main \code{Bandit} functions can be futher detailed as follows:
-
-\begin{itemize}
-  \item{\code{new()}}{ Generates and initializes a new \code{Bandit} object. }
-  \item{\code{pre_calculate()}}{
-     Called right after \code{Simulator} sets its seed,
-     but before it starts iterating over all time steps \code{t} in T. If you need to initialize random values in a \code{Policy},
-     this is the place to do so.
-  }
-  \item{\code{get_context(t)}}{
-     Returns a named list \code{list(k = n_arms, d = n_features, X = context)}
-     with the current \code{d x k} dimensional \code{context} feature matrix \code{X} together with the number of arms \code{k}.
- }
-  \item{\code{get_reward(t, context, action)}}{
-     Returns the named list \code{list(reward = reward_for_choice_made,
-     optimal = optimal_reward_value)} containing the \code{reward}
-     for the \code{action} previously returned by \code{policy} and,
-     optionally, the \code{optimal} reward
-     at the current time \code{t}.
- }
-  \item{\code{generate_bandit_data()}}{
-     A helper function that is called before \code{Simulator} starts iterating over all time steps \code{t} in T.
-     This function is called when \code{bandit$precaching} has been set to \code{TRUE}.
-     Pregenerate \code{contexts} and \code{rewards} here.
-  }
-\end{itemize}
-
-As already previously indicated in Table \ref{table:overview_bandits} from Section 3.1 \code{Bandit}, \pkg{contextual} already contains several predefined Bandits. For each of these Bandits, the package offers at least one example script, to be found in the package’s demo directory:
-
-\begin{itemize}
-         \item \code{BasicBandit}: this basic (context-free) k-armed bandit synthetically generates rewards based on a weight vector. It returns a unit vector for context matrix X.
-                  \item \code{SyntheticBandit}: an example of a more complex and versatile synthetic bandit. It pregenerates both a randomized context matrix and reward vectors
-         \item \code{ContextualBandit}: a contextual bandit that synthetically generates contextual rewards based on randomly set weights. It can simulate mixed user (cross-arm) and article (arm) feature vectors, generated from parameters k, d and num\_users.
-         \item \code{ContinuumBandit}: a basic example of a continuum bandit.
-         \item \code{LiBandit}: a basic example of a bandit that makes use of offline data - here, an implementation of Li's [reference].
-\end{itemize}
-
-Each of these bandits can be deployed to run policies without further ado. They can, however, also be used as either examples or templates for your own custom \code{Bandit} implementation(s), or as superclasses for sub-subclass implementations.
-
-\subsubsection{Policy}
-
-\code{Policy} is the second often subclassed contexual superclass. Just like the \code{Bandit} superclass, \code{Policy} is an abstract class that declares methods without itself offering an implementation. Any \code{Policy} subclass is therefore expected to implement \code{get_action()} and \code{set_reward()}. Also, any parameters that keep track or summarize \code{context}, \code{action} and \code{reward} values are required to be saved to \code{Policy}'s \textit{named list} \code{theta}.
-
-\begin{Code}
-#' @export
-Policy <- R6::R6Class(
-  portable = FALSE,
-  class = FALSE,
-  public = list(
-    action        = NULL,      # action results (list)
-    theta         = NULL,      # policy parameters theta (list)
-    theta_to_arms = NULL,      # theta to arms "helper" (list)
-    class_name    = "Policy",  # policy name - required (character)
-    initialize = function() {
-      self$theta  <- list()    # initializes theta list
-      self$action <- list()    # initializes action list
-    },
-    get_action = function(t, context) {
-      # Selects an arm based on self$theta and context, returns it in action$choice
-      stop("Policy$get_action() has not been implemented.", call. = FALSE)
-    },
-    set_reward = function(t, context, action, reward) {
-      # Updates parameters in theta based on reward awarded by bandit
-      stop("Policy$set_reward() has not been implemented.", call. = FALSE)
-    },
-    set_parameters = function(context_params) {
-      # Policy parameter (not theta!) initialisation happens here
-      stop("Policy$set_parameters() has not been implemented.", call. = FALSE)
-    },
-    initialize_theta = function(k) {
-      # Called during contextual's initialisation.
-      # Copies theta_to_arms k times, makes the copies available through theta.
-      ...
-    }
-  )
-)
-\end{Code}
-
-\code{Policy}'s main functions can be futher detailed as follows:
-
-\begin{itemize}
-
-\item{\code{set_parameters()}}{
- This helper function, called during a \code{Policy}'s initialisation, assigns the values
- it finds in list \code{self$theta_to_arms} to each of the \code{Policy}'s k arms.
- The parameters defined here can then be accessed by arm index in the following way:
- \code{theta[[index_of_arm]]$parameter_name}. The source code in section \ref{epsfirst}
- illustrates the mechanism further.
-}
-
-\item{\code{get_action(t, context)}}{
- Calculates which arm to play based on the current values in named list \code{theta}
- and the current \code{context}. Returns a named list
- \code{list(choice = arm_chosen_by_policy)} that holds the index of the arm
- to play.
-}
-
-\item{\code{set_reward(t, context, action, reward)}}{
- Returns the named list
- \code{list(reward = reward_for_choice_made, optimal = optimal_reward_value)} containing the \code{reward}
- for the \code{action} previously returned by \code{policy} and, optionally, the \code{optimal} reward
- at the current time \code{t}.
- }
-\end{itemize}
-
-\subsubsection{Agent}
-
-To ease the encapsulation of parallel \code{Bandit} and \code{Policy} simulations, \code{Agent} is responsibe for the flow of information between and the running of one \code{Bandit} and \code{Policy} pair, for example:
-
-\begin{Code}
-policy             <- EpsilonGreedyPolicy$new(epsilon = 0.1, name = "EG")
-bandit             <- SyntheticBandit$new(weights = c(0.9, 0.1, 0.1))
-agent              <- Agent$new(policy,bandit)
-\end{Code}
-
-It does this by keeping track of \code{t}  through its private named list variable \code{state} and by making sure that, at each time step \code{t}, all four main \code{Bandit} and \code{Policy} CMAB methods are called in correct order, one after the other:
-
-\begin{Code}
-Agent <- R6::R6Class(
-  public = list(
-    #...
-    do_step = function() {
-      t <- t + 1
-      context = bandit$get_context(t)
-      action  = policy$get_action (t, context)
-      reward  = bandit$get_reward (t, context, action)
-      theta   = policy$set_reward (t, context, action, reward)
-      list(context = context, action = action, reward = reward,theta = theta)
-    }
-    #...
-  )
-)
-\end{Code}
-
-Its main function is \code{do_step()}, generally called by a \code{Simulator} object (or, more specifically, by the \code{Simulator}-started parallel worker that is repsonsible for this particular \code{Agent}):
-
-\begin{itemize}
-   \item{\code{do_step()}}{
-      Completes one time step \code{t} by consecutively calling
-      \code{bandit$get_context()}, \code{policy$get_action()}, \code{bandit$get_reward()} and \code{policy$set_reward()}.
-    }
-\end{itemize}
-
 \subsubsection{Simulator}
 
-A \code{Policy} instance is the entry point of any \pkg{contextual} simulation. It encapsulates one or more \code{Agents}, clones them if necessary, runs the \code{Agents} (in parallel, by default), and saves the log of all of the \code{Agents} interactions to a \code{History} object:
+\includegraphics[width=\textwidth]{fig/all_cmab_phases_Part1}
+
+A \code{Simulator} instance is the entry point of any \pkg{contextual} simulation. It encapsulates one or more \code{Agents}, clones them if necessary, runs the \code{Agents} (in parallel, by default), and saves the log of all of the \code{Agents} interactions to a \code{History} object:
 
 \begin{Code}
 history <- Simulator$new(agents = agent, horizon = 10, simulations = 10)$run()
@@ -684,7 +512,194 @@ To specify how to run a simulation and which data is to be saved to a \code{Simu
    }
 \end{itemize}
 
+
+\subsubsection{Agent}
+
+\includegraphics[width=\textwidth]{fig/all_cmab_phases_Part2}
+
+To ease the encapsulation of parallel \code{Bandit} and \code{Policy} simulations, \code{Agent} is responsibe for the flow of information between and the running of one \code{Bandit} and \code{Policy} pair, for example:
+
+\begin{Code}
+policy             <- EpsilonGreedyPolicy$new(epsilon = 0.1, name = "EG")
+bandit             <- ContextualBernoulliBandit$new(weights = c(0.9, 0.1, 0.1))
+agent              <- Agent$new(policy,bandit)
+\end{Code}
+
+It does this by keeping track of \code{t}  through its private named list variable \code{state} and by making sure that, at each time step \code{t}, all four main \code{Bandit} and \code{Policy} CMAB methods are called in correct order, one after the other:
+
+\begin{Code}
+Agent <- R6::R6Class(
+  public = list(
+    #...
+    do_step = function() {
+      t <- t + 1
+      context = bandit$get_context(t)
+      action  = policy$get_action (t, context)
+      reward  = bandit$get_reward (t, context, action)
+      theta   = policy$set_reward (t, context, action, reward)
+      list(context = context, action = action, reward = reward,theta = theta)
+    }
+    #...
+  )
+)
+\end{Code}
+
+Its main function is \code{do_step()}, generally called by a \code{Simulator} object (or, more specifically, by the \code{Simulator}-started parallel worker that is repsonsible for this particular \code{Agent}):
+
+\begin{itemize}
+   \item{\code{do_step()}}{
+      Completes one time step \code{t} by consecutively calling
+      \code{bandit$get_context()}, \code{policy$get_action()}, \code{bandit$get_reward()} and \code{policy$set_reward()}.
+    }
+\end{itemize}
+
+\subsubsection{Bandit}
+
+\includegraphics[width=\textwidth]{fig/all_cmab_phases_Part3_5}
+
+In \pkg{contextual}, any bandit implementation is expected to subclass and extend the \code{Bandit} superclass. It is then up to these subclasses themselves to provide an implementation for each of its abstract methods. In practice, this entials that \code{Bandit} subclasses are, firstly, responsible for setting the instance variable \code{self\$k} to the number of arms, and instance variable \code{self\$d} to the number of context features. Next, any \code{Bandit} siblings are expected to implement at least \code{get_context()} and \code{get_reward()}.
+
+\begin{Code}
+#' @export
+Bandit <- R6::R6Class(
+  portable = TRUE,
+  class    = FALSE,
+  public   = list(
+    k           = NULL,     # Number of arms (integer)
+    d           = NULL,     # Dimension of context feature vectors (integer)
+    ...
+    precaching  = FALSE,    # Pregenerate contexts & rewards? (boolean)
+    class_name  = "Bandit", # Bandit name - required (character)
+    initialize  = function() {
+      # Initialize Bandit. Set self$d and self$k here.
+    },
+    ...
+    get_context = function(t) {
+      stop("Bandit subclass needs to implement bandit$get_context()")
+      # Return list with self$k, self$d & if applicable context matrix X.
+      list(X = context, k = arms, d = features)
+    },
+    get_reward = function(t, context, action) {
+      stop("Bandit subclass needs to implement bandit$get_reward()")
+      # Return list with the reward.
+      list(reward = reward_for_choice_made, optimal = optimal_reward_value)
+    },
+    ...
+  )
+)
+\end{Code}
+
+
+The main \code{Bandit} functions can be futher detailed as follows:
+
+\begin{itemize}
+  \item{\code{new()}}{ Generates and initializes a new \code{Bandit} object. }
+  \item{\code{pre_calculate()}}{
+     Called right after \code{Simulator} sets its seed,
+     but before it starts iterating over all time steps \code{t} in T. If you need to initialize random values in a \code{Policy},
+     this is the place to do so.
+  }
+  \item{\code{get_context(t)}}{
+     Returns a named list \code{list(k = n_arms, d = n_features, X = context)}
+     with the current \code{d x k} dimensional \code{context} feature matrix \code{X} together with the number of arms \code{k}.
+ }
+  \item{\code{get_reward(t, context, action)}}{
+     Returns the named list \code{list(reward = reward_for_choice_made,
+     optimal = optimal_reward_value)} containing the \code{reward}
+     for the \code{action} previously returned by \code{policy} and,
+     optionally, the \code{optimal} reward
+     at the current time \code{t}.
+ }
+  \item{\code{generate_bandit_data()}}{
+     A helper function that is called before \code{Simulator} starts iterating over all time steps \code{t} in T.
+     This function is called when \code{bandit$precaching} has been set to \code{TRUE}.
+     Pregenerate \code{contexts} and \code{rewards} here.
+  }
+\end{itemize}
+
+As already previously indicated in Table \ref{table:overview_bandits} from Section 3.1 \code{Bandit}, \pkg{contextual} already contains several predefined Bandits. For each of these Bandits, the package offers at least one example script, to be found in the package’s demo directory:
+
+\begin{itemize}
+         \item \code{BasicBernoulliBandit}: this basic (context-free) k-armed bandit synthetically generates rewards based on a weight vector. It returns a unit vector for context matrix X.
+                  \item \code{ContextualBernoulliBandit}: an example of a more complex and versatile synthetic bandit. It pregenerates both a randomized context matrix and reward vectors
+         \item \code{ContextualBandit}: a contextual bandit that synthetically generates contextual rewards based on randomly set weights. It can simulate mixed user (cross-arm) and article (arm) feature vectors, generated from parameters k, d and num\_users.
+         \item \code{ContinuumBandit}: a basic example of a continuum bandit.
+         \item \code{LiBandit}: a basic example of a bandit that makes use of offline data - here, an implementation of Li's [reference].
+\end{itemize}
+
+Each of these bandits can be deployed to run policies without further ado. They can, however, also be used as either examples or templates for your own custom \code{Bandit} implementation(s), or as superclasses for sub-subclass implementations.
+
+\subsubsection{Policy}
+
+\includegraphics[width=\textwidth]{fig/all_cmab_phases_Part4_6}
+
+\code{Policy} is the second often subclassed contexual superclass. Just like the \code{Bandit} superclass, \code{Policy} is an abstract class that declares methods without itself offering an implementation. Any \code{Policy} subclass is therefore expected to implement \code{get_action()} and \code{set_reward()}. Also, any parameters that keep track or summarize \code{context}, \code{action} and \code{reward} values are required to be saved to \code{Policy}'s \textit{named list} \code{theta}.
+
+\begin{Code}
+#' @export
+Policy <- R6::R6Class(
+  portable = FALSE,
+  class = FALSE,
+  public = list(
+    action        = NULL,      # action results (list)
+    theta         = NULL,      # policy parameters theta (list)
+    theta_to_arms = NULL,      # theta to arms "helper" (list)
+    class_name    = "Policy",  # policy name - required (character)
+    initialize = function() {
+      self$theta  <- list()    # initializes theta list
+      self$action <- list()    # initializes action list
+    },
+    get_action = function(t, context) {
+      # Selects arm based on theta & context, returns it in action$choice
+      stop("Policy$get_action() has not been implemented.")
+    },
+    set_reward = function(t, context, action, reward) {
+      # Updates parameters in theta based on reward awarded by bandit
+      stop("Policy$set_reward() has not been implemented.")
+    },
+    set_parameters = function(context_params) {
+      # Policy parameter initialisation happens here
+      stop("Policy$set_parameters() has not been implemented.")
+    },
+    initialize_theta = function(k) {
+      # Called during contextual's initialisation.
+      # Copies theta_to_arms k times, adds to theta.
+      ...
+    }
+  )
+)
+\end{Code}
+
+\code{Policy}'s main functions can be futher detailed as follows:
+
+\begin{itemize}
+
+\item{\code{set_parameters()}}{
+ This helper function, called during a \code{Policy}'s initialisation, assigns the values
+ it finds in list \code{self$theta_to_arms} to each of the \code{Policy}'s k arms.
+ The parameters defined here can then be accessed by arm index in the following way:
+ \code{theta[[index_of_arm]]$parameter_name}. The source code in section \ref{epsfirst}
+ illustrates the mechanism further.
+}
+
+\item{\code{get_action(t, context)}}{
+ Calculates which arm to play based on the current values in named list \code{theta}
+ and the current \code{context}. Returns a named list
+ \code{list(choice = arm_chosen_by_policy)} that holds the index of the arm
+ to play.
+}
+
+\item{\code{set_reward(t, context, action, reward)}}{
+ Returns the named list
+ \code{list(reward = reward_for_choice_made, optimal = optimal_reward_value)} containing the \code{reward}
+ for the \code{action} previously returned by \code{policy} and, optionally, the \code{optimal} reward
+ at the current time \code{t}.
+ }
+\end{itemize}
+
 \subsubsection{History}
+
+\includegraphics[width=\textwidth]{fig/all_cmab_phases_Part7}
 
 A \code{Simulator} aggregates the data acquired during a simulation in a \code{History} object's private \code{data.table} log. It also calculates per agent average cumulative reward, and, when the optimal outcome per \code{t} is known, per agent average cumulative regret. It is furthermore possible to \code{plot()} a \code{History object}, \code{summarize()} it, or obtain, for example, a \code{data.frame()} or a \code{data.table()} from any \code{History} instance:
 
@@ -726,6 +741,8 @@ Some other \code{History} functions:
 
 \subsubsection{Plot}
 
+\includegraphics[width=\textwidth]{fig/all_cmab_phases_Part8}
+
 The \code{Plot} class takes an \code{History} object and offers several ways to plot it, each optimized to be able to plot gigabytes worth of data, quickly:
 
 \begin{itemize}
@@ -749,15 +766,21 @@ p2 <- Plot$new()$average(history)
 Multiple agents can be combined within one \code{Plot}, and multiple plots can themselves again be combined into one graph by turning off the default \code{par} formatting of the \code{Plot} class and redefining \code{par} through, for example \code{par(mfrow, mar)}. Some example plots that illustrate many of \code{Plot()}'s features:
 
 \begin{Code}
-bandit             <- SyntheticBandit$new(weights = c(0.9, 0.1, 0.1))
-agents             <- list(Agent$new(RandomPolicy$new(), bandit),
-                           Agent$new(OraclePolicy$new(), bandit),
-                           Agent$new(ThompsonSamplingPolicy$new(1.0, 1.0), bandit),
-                           Agent$new(Exp3Policy$new(0.1), bandit),
-                           Agent$new(GittinsBrezziLaiPolicy$new(), bandit),
-                           Agent$new(UCB1Policy$new(), bandit))
-history            <- Simulator$new(agents, horizon = 100, simulations = 1000)$run()
+bandit     <- ContextualBernoulliBandit$new(weights = c(0.9, 0.1, 0.1))
+
+agents     <- list(Agent$new(RandomPolicy$new(), bandit),
+                   Agent$new(OraclePolicy$new(), bandit),
+                   Agent$new(ThompsonSamplingPolicy$new(1.0, 1.0), bandit),
+                   Agent$new(Exp3Policy$new(0.1), bandit),
+                   Agent$new(GittinsBrezziLaiPolicy$new(), bandit),
+                   Agent$new(UCB1Policy$new(), bandit))
+
+history    <- Simulator$new(agents,
+                            horizon     = 100,
+                            simulations = 1000)$run()
+
 par(mfrow = c(3, 2), mar = c(5, 5, 1, 1))
+
 plot(history, type = "cumulative", use_colors = FALSE, no_par = TRUE)
 
 plot(history, type = "cumulative", regret = FALSE, legend = FALSE,
@@ -768,64 +791,60 @@ plot(history, type = "cumulative", regret = FALSE, rate = TRUE, ci = "sd",
      legend_position = "bottomright", no_par = TRUE)
 
 plot(history, type = "cumulative", rate = TRUE, plot_only_ci = TRUE,
-     ci = "var", smooth = TRUE, limit_agents = c("UCB1", "GittinsBrezziLai"),
-     legend_position = "topright", no_par = TRUE)
+     ci = "var", limit_agents = c("UCB1", "GittinsBrezziLai"),
+     smooth = TRUE, legend_position = "topright", no_par = TRUE)
 
 plot(history, type = "average", ci = "ci", regret = FALSE, interval = 10,
      smooth = TRUE, legend_position = "bottomright", no_par = TRUE)
 
 plot(history, limit_agents = c("ThompsonSampling"), type = "arms",
      interval = 20, no_par = TRUE)
+
 par(mfrow = c(1, 1))
 \end{Code}
-\includegraphics[width=\textwidth]{fig/plot_examples}
+\includegraphics[width=\textwidth]{fig/section_4_2_plot}
 
 \section{Implementing and extending Policy and Bandit subclasses} \label{extending}
 
 Though section 3 provides a first introduction to all of \pkg{contextual}'s main classes, in practice, researchers will mostly focus on subclassing \code{Policies} and \code{Bandits}. The current section therefore first demonstrates how to implement some well-known bandit algorithms, and, secondly, how to create \code{Policy} and \code{Bandit} sub-subclasses.
 
-\subsection{BasicBandit: a Minimal Bernoulli Bandit} \label{basicbandit}
+\subsection{BasicBernoulliBandit: a Minimal Bernoulli Bandit} \label{BasicBernoulliBandit}
 
 Where not otherwise noted, all \code{Bandit} implementations in the current paper refer to (or will be configured as) multi-armed \code{Bandits} with Bernoulli rewards. For Bernoulli \code{Bandits}, the reward received is either a zero or a one: on each $t$ they offer either a reward of $1$ with probability $p$ or a reward of $0$ with probability $1 - p$. In other words, a Bernoulli bandit has a finite set of arms a \(  \in \left\{ 1, \dots, k \right\} \) where the rewards for each arm $a$ is distributed Bernoulli with parameter $p_a$, the expected reward of the arm.
 
-One example of a very simple context-free Bernoulli bandit is \pkg{contextual}'s minimal \code{Bandit} implementation, \code{BasicBandit}:
+One example of a very simple context-free Bernoulli bandit is \pkg{contextual}'s minimal \code{Bandit} implementation, \code{BasicBernoulliBandit}:
 
 \begin{Code}
-BasicBandit <- R6::R6Class(
+BasicBernoulliBandit <- R6::R6Class(
   inherit = Bandit,
+  portable = TRUE,
+  class = FALSE,
   public = list(
-    initialize   = function(weights = NULL) {
-      self$set_weights(weights)                         # arm weight vector
-      private$X <- array(1, dim = c(self$d, self$k, 1)) # context matrix of ones
-    },
-    # ...
-    get_weights = function() {
-      private$W
-    },
-    set_weights = function(local_W) {
-      private$W <- matrix(local_W, nrow = 1L)           # arm weight vector
-      self$d    <- as.integer(dim(private$W)[1])        # context dimensions
-      self$k    <- as.integer(dim(private$W)[2])        # arms
-      private$W
+    weights = NULL,
+    class_name = "BasicBernoulliBandit",
+    initialize = function(weights) {
+      self$weights     <- weights
+      self$k           <- length(self$weights)
     },
     get_context = function(t) {
-      contextlist <- list(k = self$k, d = self$d, X = private$X)
-      contextlist
+      context <- list(
+        k = self$k
+      )
     },
     get_reward = function(t, context, action) {
-      private$R  <- as.double(matrix(runif(self$k) < get_weights(), self$k, self$d))
-      rewardlist <- list(
-        reward                   = private$R[action$choice],
-        optimal_reward_value     = private$R[which.max(private$R)]
+      rewards        <- as.double(runif(self$k) < self$weights)
+      optimal_arm    <- which.max(rewards)
+      reward  <- list(
+        reward                   = rewards[action$choice],
+        optimal_arm              = optimal_arm,
+        optimal_reward           = rewards[optimal_arm]
       )
-      rewardlist
     }
-    # ...
   )
 )
 \end{Code}
 
-\code{BasicBandit} expects a \code{weight} vector of probabilities, where every element in \code{weight} represents the probability of \code{BasicBandit} returning a reward of $1$ for one of its \code{k} arms. Also, observe that, at every \code{t}, \code{BasicBandit} sets private \code{context} matrix \code{X} to an unchanging, neutral \code{d} features times \code{k} arms unit matrix, which alludes to the fact that \code{BasicBandit} does not generate any covaried contextual cues related to its arms.
+\code{BasicBernoulliBandit} expects a \code{weight} vector of probabilities, where every element in \code{weight} represents the probability of \code{BasicBernoulliBandit} returning a reward of $1$ for one of its \code{k} arms.
 
 \subsection{EpsilonFirstPolicy} \label{epsfirst}
 
@@ -871,24 +890,24 @@ EpsilonFirstPolicy <- R6::R6Class(
     set_parameters = function() {
       self$theta_to_arms <- list('n' = 0, 'mean' = 0)
 
-      # Here, we define a list with 'n' and 'mean' theta parameters to each arm
-      # through helper variable self$theta_to_arms. That is, when the number of
-      # arms is 'k', the above would equal:
+      # Here, we define a list with 'n' and 'mean' theta parameters to each
+      # arm through helper variable self$theta_to_arms. That is, when the
+      # number of arms is 'k', the above would equal:
 
       # self$theta <- list(n = rep(list(0,k)), 'mean' = rep(list(0,k)))
 
       # ... which would also work just fine, but is much less concise.
 
-      # When assigning both to self$theta directly and via self$theta_to_arms,
-      # do make sure to do it in that order.
+      # When assigning both to self$theta directly & via self$theta_to_arms,
+      # make sure to do it in that particular order.
 
     },
     get_action = function(context, t) {
       if (sum_of(theta$n) < first) {
-        action$choice          <- sample.int(context$k, 1, replace = TRUE)
+        action$choice       <- sample.int(context$k, 1, replace = TRUE)
         action$propensity   <- (1/context$k)
       } else {
-        action$choice          <- max_in(theta$mean, equal_is_random = FALSE)
+        action$choice       <- max_in(theta$mean, equal_is_random = FALSE)
         action$propensity   <- 1
       }
       action
@@ -899,7 +918,7 @@ EpsilonFirstPolicy <- R6::R6Class(
 
       inc(theta$n[[arm]]) <- 1
       if (sum_of(theta$n) < first - 1)
-        inc(theta$mean[[arm]] ) <- (reward - theta$mean[[arm]]) / theta$n[[arm]]
+        inc(theta$mean[[arm]]) <- (reward-theta$mean[[arm]]) / theta$n[[arm]]
 
       theta
     }
@@ -907,7 +926,7 @@ EpsilonFirstPolicy <- R6::R6Class(
 )
 \end{Code}
 
-To evaluate this policy, instantiate both an \code{EpsilonFirstPolicy} and a \code{SyntheticBandit} (a contextual and more versatile \code{BasicBandit} subclass). Then add the \code{Bandit}/\code{Policy} pair to an \code{Agent}. Next, add the \code{Agent} to a \code{Simulator}. Finally, run the \code{Simulator}, and \code{plot()} the its \code{History} log:
+To evaluate this policy, instantiate both an \code{EpsilonFirstPolicy} and a \code{ContextualBernoulliBandit} (a contextual and more versatile \code{BasicBernoulliBandit} subclass). Then add the \code{Bandit}/\code{Policy} pair to an \code{Agent}. Next, add the \code{Agent} to a \code{Simulator}. Finally, run the \code{Simulator}, and \code{plot()} the its \code{History} log:
 
 \begin{Code}
 horizon            <- 100
@@ -915,7 +934,7 @@ simulations        <- 1000
 weights            <- c(0.6, 0.3, 0.3)
 
 policy             <- EpsilonFirstPolicy$new(first = 50)
-bandit             <- SyntheticBandit$new(weights = weights)
+bandit             <- ContextualBernoulliBandit$new(weights = weights)
 
 agent              <- Agent$new(policy,bandit)
 
@@ -926,10 +945,12 @@ simulator          <- Simulator$new(agents = agent,
 
 history            <- simulator$run()
 
-par(mfrow = c(1, 2), mar = c(2,4,1,1))
-plot(history, type = "cumulative", no_par = TRUE)
+par(mfrow = c(1, 2), mar = c(1, 4, 2, 1), cex=1.3)
+plot(history, type = "cumulative", no_par = TRUE, legend_border = FALSE)
 plot(history, type = "arms", no_par = TRUE)
+par(mfrow = c(1, 1))
 \end{Code}
+\includegraphics[width=\textwidth]{fig/section_5_2}
 
 \subsection{EpsilonGreedyPolicy} \label{epsgreedy}
 
@@ -987,14 +1008,15 @@ EpsilonGreedyPolicy <- R6::R6Class(
       arm <- action$choice
       reward <- reward$reward
       inc(theta$n[[arm]])    <- 1
-      inc(theta$mean[[arm]]) <- (reward - theta$mean[[arm]]) / theta$n[[arm]]
+      inc(theta$mean[[arm]]) <- (reward-theta$mean[[arm]]) / theta$n[[arm]]
       theta
     }
   )
 )
 \end{Code}
+\includegraphics[width=\textwidth]{fig/section_5_3}
 
-Assign the new class, together with \code{SyntheticBandit}, to an \code{Agent}. Again, assign the \code{Agent} to a \code{Simulator}. Then run the \code{Simulator} and \code{plot()}:
+Assign the new class, together with \code{ContextualBernoulliBandit}, to an \code{Agent}. Again, assign the \code{Agent} to a \code{Simulator}. Then run the \code{Simulator} and \code{plot()}:
 
 \begin{Code}
 horizon            <- 100
@@ -1002,7 +1024,7 @@ simulations        <- 1000
 weights            <- c(0.6, 0.3, 0.3)
 
 policy             <- EpsilonGreedyPolicy$new(epsilon = 0.1)
-bandit             <- SyntheticBandit$new(weights = weights)
+bandit             <- ContextualBernoulliBandit$new(weights = weights)
 
 agent              <- Agent$new(policy,bandit)
 
@@ -1020,7 +1042,7 @@ plot(history, type = "arms", no_par = TRUE)
 
 \subsection{Contextual Bandit: LinUCB with Linear Disjoint Models} \label{linucbc}
 
-As a final example of how to subclass \pkg{contextual}'s \code{Bandit} superclass, we move from context-free algorithms to a contextual one. As described in section 1, contextual bandits make use of side information to help them choose the current best arm to play. For example, contextual information such as a website visitors' location may be related to which article's headline (or arm) on the frontpage of the website will be clicked on most.
+As a final example of how to subclass \pkg{contextual}'s \code{Bandit} superclass, we move from context-free algorithms to a contextual one. As described in section \ref{intro}, contextual bandits make use of side information to help them choose the current best arm to play. For example, contextual information such as a website visitors' location may be related to which article's headline (or arm) on the frontpage of the website will be clicked on most.
 
 Here, we show how to implement and evaluate probably one of the most cited out of all contextual policies, the LinUCB algorithm with Linear Disjoint Models \cite{Li2010}. The policy is more complicated than the previous two bandits, but when following its pseudocode description to the letter, it translates nicely to yet another \code{Bandit} subclass.
 
@@ -1064,7 +1086,8 @@ LinUCBDisjointPolicy <- R6::R6Class(
       self$alpha <- alpha
     },
     set_parameters = function() {
-      self$theta_to_arms <- list( 'A' = diag(1,self$d,self$d), 'b' = rep(0,self$d))
+      self$theta_to_arms <- list( 'A' = diag(1,self$d,self$d),
+                                  'b' = rep(0,self$d))
     },
     get_action = function(context, t) {
       expected_rewards <- rep(0.0, context$k)
@@ -1096,60 +1119,68 @@ LinUCBDisjointPolicy <- R6::R6Class(
 )
 \end{Code}
 
-Now it is possible to evaluate the \code{LinUCBDisjointPolicy} using a Bernoulli \code{SyntheticBandit} with three arms and three context features. In the code below we define each of \code{SyntheticBandit}'s arms to be, on average, equally probable to return a reward. However, at the same time, the presence of a random context feature vector exercises a strong influence on the distribution of rewards over the arms per time step t: in the presence of a specific feature, one of the arms becomes much more likely to offer a reward. In this setting, the \code{EpsilonGreedyPolicy} does not do better than chance. But the \code{LinUCBDisjointPolicy} is able to learn the relationships between arms, rewards, and features without much difficulty:
+Now it is possible to evaluate the \code{LinUCBDisjointPolicy} using a Bernoulli \code{ContextualBernoulliBandit} with three arms and three context features. In the code below we define each of \code{ContextualBernoulliBandit}'s arms to be, on average, equally probable to return a reward. However, at the same time, the presence of a random context feature vector exercises a strong influence on the distribution of rewards over the arms per time step t: in the presence of a specific feature, one of the arms becomes much more likely to offer a reward. In this setting, the \code{EpsilonGreedyPolicy} does not do better than chance. But the \code{LinUCBDisjointPolicy} is able to learn the relationships between arms, rewards, and features without much difficulty---though, as can be seen in the plots below, on average, both \code{EpsilonGreedyPolicy} and \code{LinUCBDisjointPolicy} choose each arm on average about as often as the others:
 
 \begin{Code}
 
-horizon      <- 100L
-simulations  <- 300L
+horizon     <- 100L
+simulations <- 300L
 
-                      # k=1  k=2  k=3              -> columns represent arms
+                      # k=1  k=2  k=3             -> columns represent arms
 
-weights     <- matrix(c(0.8, 0.1, 0.1,     # d=1   -> rows represent
-                        0.1, 0.8, 0.1,     # d=2      context features
+weights     <- matrix(c(0.8, 0.1, 0.1,     # d=1  -> rows represent
+                        0.1, 0.8, 0.1,     # d=2     context features
                         0.1, 0.1, 0.8),    # d=3
 
                         nrow = 3, ncol = 3, byrow = TRUE)
 
-bandit      <- SyntheticBandit$new(weights = weights, precaching = TRUE)
+bandit      <- ContextualBernoulliBandit$new(weights    = weights,
+                                             precaching = TRUE)
 
-agents      <- list(Agent$new(EpsilonGreedyPolicy$new(0.1), bandit, "EGreedy"),
-                    Agent$new(LinUCBDisjointPolicy$new(1.0), bandit, "LinUCB"))
+eg_policy   <- EpsilonGreedyPolicy$new(0.1)
+lucb_policy <- EpsilonGreedyPolicy$new(0.1)
 
-simulation  <- Simulator$new(agents, horizon, simulations, do_parallel = FALSE)
+agents      <- list(Agent$new(eg_policy, bandit, "EGreedy"),
+                    Agent$new(lucb_policy, bandit, "LinUCB"))
+
+simulation  <- Simulator$new(agents, horizon, simulations)
 history     <- simulation$run()
 
-par(mfrow = c(1, 2), mar = c(2,4,1,1))
-plot(history, type = "cumulative", regret = FALSE, no_par = TRUE)
-plot(history, type = "cumulative", no_par = TRUE)
+par(mfrow = c(1, 3), mar = c(2, 4, 0.5, 1), cex=1.5)
+plot(history, type = "cumulative", no_par = TRUE, legend_border = FALSE)
+plot(history, type = "arms",  limit_agents = c("EGreedy"), no_par = TRUE)
+plot(history, type = "arms",  limit_agents = c("LinUCB"), no_par = TRUE)
 \end{Code}
+\includegraphics[width=\textwidth]{fig/section_5_4}
 
 \subsection{Subclassing Policies and Bandits} \label{subclpb}
 
 \pkg{contextual}'s extensibility does not limit itself to the subclassing of \code{Policy} classes. Through its R6 based object system it is easy to extend and override any \pkg{contextual} super- or subclass. Below, we demonstrate how to apply that extensibility to sub-subclass one \code{Bandit} and one \code{Policy} subclass.
-First, we extend \code{ BasicBandit}'s code{PoissonRewardBandit}, replacing \code{ BasicBandit}'s Bernoulli based reward function with a Poisson based one \citep{Presman1991}. Next, we implement an \code{EpsilonGreedyAnnealingPolicy} version of the $\epsilon$-greedy policy introduced in section \ref{epsgreedy}---where its \code{EpsilonGreedyAnnealingPolicy} subclass introduces a gradual reduction ("annealing") of the policy's $epsilon$ parameter over T \citep{Cesa-Bianchi1998,Kirkpatrick1983}, in effect moving the policy from more explorative to a more exploitative over time.
+First, we extend \code{}'s code{PoissonRewardBandit}, replacing \code{ BasicBernoulliBandit}'s Bernoulli based reward function with a Poisson based one \citep{Presman1991}. Next, we implement an \code{EpsilonGreedyAnnealingPolicy} version of the $\epsilon$-greedy policy introduced in section \ref{epsgreedy}---where its \code{EpsilonGreedyAnnealingPolicy} subclass introduces a gradual reduction ("annealing") of the policy's $epsilon$ parameter over T \citep{Cesa-Bianchi1998,Kirkpatrick1983}, in effect making the policy more exploitative over time.
 
 \begin{Code}
-PoissonRewardBandit <- R6::R6Class(
-  # Class extends BasicBandit
-  inherit = BasicBandit,
+BasicPoissonBandit <- R6::R6Class(
+  inherit = BasicBernoulliBandit,
+  portable = TRUE,
+  class = FALSE,
   public = list(
-    class_name = "PoissonRewardBandit",
-    initialize = function(weights) {
-      super$initialize(weights)
-    },
-    # Overrides BasicBandit's get_reward to generate Poisson based rewards
+    weights = NULL,
+    class_name = "BasicPoissonBandit",
+    # OVerride get_reward & generate Poisson based rewards
     get_reward = function(t, context, action) {
-      reward_means = c(2,2,2)
-      rpm <- rpois(3, reward_means)
-      private$R <- matrix(rpm < self$get_weights(), self$k, self$d)*1
-      list(
-        reward                   = private$R[action$choice],
-        optimal_reward_value     = private$R[which.max(private$R)]
+      reward_means = rep(2,self$k)
+      rpm <- rpois(self$k, reward_means)
+      rewards <- matrix(rpm < self$weights, self$k, 1)*1
+      optimal_arm    <- which.max(rewards)
+      reward  <- list(
+        reward                   = rewards[action$choice],
+        optimal_arm              = optimal_arm,
+        optimal_reward           = rewards[optimal_arm]
       )
     }
   )
 )
+
 EpsilonGreedyAnnealingPolicy <- R6::R6Class(
   # Class extends EpsilonGreedyPolicy
   inherit = EpsilonGreedyPolicy,
@@ -1163,21 +1194,27 @@ EpsilonGreedyAnnealingPolicy <- R6::R6Class(
     }
   )
 )
-weights     <- c(7,1,2)
-horizon     <- 200
-simulations <- 100
-bandit      <- PoissonRewardBandit$new(weights)
-agents      <- list(Agent$new(EpsilonGreedyPolicy$new(0.1), bandit, "EG Annealing"),
-                    Agent$new(EpsilonGreedyAnnealingPolicy$new(0.1), bandit, "EG"))
-simulation  <- Simulator$new(agents, horizon, simulations, do_parallel = FALSE)
 
-history     <- simulation$run()
+weights <- c(7,1,2)
+horizon <- 200
+simulations <- 1000
+bandit <- BasicPoissonBandit$new(weights)
+eg_policy  <- EpsilonGreedyPolicy$new(0.1)
+ega_policy <- EpsilonGreedyAnnealingPolicy$new(0.1)
+agents <- list(Agent$new(ega_policy, bandit, "EG Annealing"),
+               Agent$new(eg_policy, bandit, "EG"))
+simulation <- Simulator$new(agents, horizon, simulations, do_parallel = FALSE)
+history <- simulation$run()
 
-par(mfrow = c(1, 2), mar = c(2,4,1,1))
-plot(history, type = "cumulative", no_par = TRUE)
-plot(history, type = "average", regret = FALSE, no_par = TRUE)
-
+par(mfrow = c(1, 3), mar = c(2, 4, 0.5, 1), cex=1.4)
+plot(history, type = "cumulative", no_par = TRUE, legend_border = FALSE,
+              legend_position = "bottomright")
+plot(history, type = "arms",  limit_agents = c("EG Annealing"), no_par = TRUE,
+              interval = 25)
+plot(history, type = "arms",  limit_agents = c("EG"), no_par = TRUE,
+              interval = 25)
 \end{Code}
+\includegraphics[width=\textwidth]{fig/section_5_5}
 
 \section{Offline evaluation} \label{offl}
 
@@ -1219,7 +1256,7 @@ The first, and most important, step in using offline data in policy evaluation i
 
 Below, an example of Algorithm \ref{Alg:LiBandit} converted to a basic version of \pkg{contextual}'s  LiSamplingOfflineBandit run on an offline simulation. The offline dataset in this example,as used before in \cite{Kaptein2018}, has been provided by a web store. Each of the dataset's 570061 rows represents a page view of a user browsing the site's products. For each view, the users were shown one out of four strategies to persuade them to buy the product on the page: no strategy (control group), authority (e.g., "recommended product"), social proof (e.g., "bestseller"), and scarcity (e.g., "almost out of stock"). Adding the product on a page to a shopping basked is counted as a success (rewarded by 1), and not adding a product as a failure (rewarded by 0).
 
-We then proceed to run a context-free ThompsonSamplingPolicy (ignoring "time of day" and repeat visits as potential contextual side information) over the offline data set, with the three different persuasion strategies plus the strategy free control as the four to be selected arms. See Figure \ref{fig:ctr_comparison} for the policy's simulated resulting click-through rate over time.
+We then proceed to run a context-free ThompsonSamplingPolicy (ignoring "time of day" and repeat visits as potential contextual side information) over the offline data set, with the three different persuasion strategies plus the strategy free control as the four to be selected arms. See Figure \ref{fig:section_8_bar} for the policy's simulated resulting click-through rate over time.
 
 \begin{Code}
 library(contextual)
@@ -1228,7 +1265,7 @@ library(RCurl)
 library(foreign)
 
 LiSamplingOfflineBandit <- R6::R6Class(
-  inherit = BasicBandit,
+  inherit = BasicBernoulliBandit,
   portable = TRUE,
   class = FALSE,
   private = list(
@@ -1239,7 +1276,7 @@ LiSamplingOfflineBandit <- R6::R6Class(
     randomize = NULL,
     initialize   = function(data_stream, k, d) {
       self$k <- k               # Number of arms (integer)
-      self$d <- d               # Dimension of context feature vectors (integer)
+      self$d <- d               # Dimension context features (integer)
       private$S <- data_stream  # Data stream, as a data.table
     },
     post_initialization = function() {
@@ -1266,19 +1303,20 @@ LiSamplingOfflineBandit <- R6::R6Class(
   )
 )
 
-url <- "https://raw.githubusercontent.com/Nth-iteration-labs/contextual_data/"
-url <- paste0(url,"master/data_persuasion_api/persuasion_api_daypart.csv")
+url <- "https://raw.githubusercontent.com/"
+url <- paste0(url,"Nth-iteration-labs/contextual_data/master/")
+url <- paste0(url,"data_persuasion_api/persuasion_api_daypart.csv")
 website_data   <- getURL(setDT(read.csv(textConnection(website_data))))
 
-horizon        <- nrow(website_data)
-simulations    <- 10L
-bandit         <- LiSamplingOfflineBandit$new(website_data, k = 4, d = 1)
-agents         <- list(Agent$new(LinUCBHybridPolicy$new(0.6), bandit))
+horizon     <- nrow(website_data)
+sims        <- 10L
+bandit      <- LiSamplingOfflineBandit$new(website_data, k = 4, d = 1)
+agents      <- list(Agent$new(LinUCBHybridPolicy$new(0.6), bandit))
 
-history        <- Simulator$new(agents, horizon, simulations, reindex = TRUE)$run()
+history     <- Simulator$new(agents, horizon, sims, reindex = T)$run()
 
-plot(history, type = "cumulative", regret = FALSE, smooth = TRUE, traces = TRUE,
-     rate = TRUE, ylim = c(0.0105, 0.014), legend_position = "topright")
+plot(history, type = "cumulative", regret = FALSE, smooth = TRUE,
+     traces = TRUE, rate = TRUE, ylim = c(0.0105, 0.014), legend = FALSE)
 \end{Code}
 
 \begin{figure}[H]
@@ -1315,17 +1353,17 @@ In effect, first, our YahooBandit receives a \code{self$arm_lookup} table with a
     get_context = function(index) {
       ...
       # Retrieve the index of all arms this row/event.
-      arm_indices_this_event   <- seq(10, 184, by = 7)
-      article_ids              <- row[arm_indices_this_event]
-      article_ids              <- article_ids[!is.na(article_ids)]
-      article_ids              <- match(article_ids,self$arm_lookup)
+      arm_indices_this_event  <- seq(10, 184, by = 7)
+      article_ids             <- row[arm_indices_this_event]
+      article_ids             <- article_ids[!is.na(article_ids)]
+      article_ids             <- match(article_ids,self$arm_lookup)
       ...
       contextlist <- list(
         k = self$k,
         d = self$d,
-        unique = self$unique, # <-- Indexes of all disjoint arms (user features)
-        shared = self$shared, # <-- Indexes of all shared arms (article features)
-        arms = article_ids,   # <-- Indexes of arms this event.
+        unique = self$unique, # Indexes of disjoint arms (user features)
+        shared = self$shared, # Indexes of shared arms (article features)
+        arms = article_ids,   # Indexes of arms this event.
         X = X
       )
     }
@@ -1337,11 +1375,11 @@ These indexes are then picked up by the policy classes, which use the article id
     get_action = function(t, context) {
       if (runif(1) > self$epsilon) {
         # get the max of context$arms *currently in play*
-        max_index            <- context$arms[max_in(theta$mean[context$arms])]
-        self$action$choice   <- max_index
+        max_index          <- context$arms[max_in(theta$mean[context$arms])]
+        self$action$choice <- max_index
       } else {
         # sample from the arms *currently in play*
-        self$action$choice   <- sample(context$arms, 1)
+        self$action$choice <- sample(context$arms, 1)
       }
       self$action
     }
@@ -1354,7 +1392,7 @@ simulations             <- 1
 horizon                 <- 37.45e6
 ...
 con <- DBI::dbConnect(MonetDB.R(), host=monetdb_host, dbname=monetdb_dbname,
-                                   user=monetdb_user, password=monetdb_password)
+                                   user=monetdb_user, password=monetdb_pass)
 
 message(paste0("MonetDB: connection to '",dbListTables(con),"' succesful!"))
 
@@ -1366,7 +1404,7 @@ arm_lookup_table <- rev(as.vector(arm_lookup_table))
 bandit <- YahooBandit$new(k = 217L, unique = c(1:6), shared = c(7:12),
                           arm_lookup = arm_lookup_table, host = monetdb_host,
                           dbname = monetdb_dbname, user = monetdb_user,
-                          password = monetdb_password, buffer_size = buffer_size)
+                          password = monetdb_pass, buffer_size = buffer_size)
 
 agents <-
   list (Agent$new(YahooLinUCBDisjointPolicy$new(0.2),
@@ -1407,23 +1445,23 @@ We were able to complete a $7\times6=42$ Agent simulation learning over all of t
 
 \begin{figure}[H]
   \centering
-    \includegraphics[width=.99\textwidth]{fig/ctr_comparison}
+    \includegraphics[width=.99\textwidth]{fig/section_8_bar}
       \caption{Replication of Figure 4b on Yahoo! dataset's day three: "CTRs in evaluation data with varying data sizes in the learning bucket." from \cite{Li2010}.}
-      \label{fig:ctr_comparison}
+      \label{fig:section_8_bar}
 \end{figure}
 
-As can be observed in Figure \ref{fig:ctr_comparison}, after one day of learning, the conclusions of the original paper still stand. First, features again prove to be of use at all levels of sparsity, as LinUCB policies outperform the others consistently. Second, UCB policies generally outperform $\epsilon$-greedy ones. And third, Hybrid LinUCB again shows benefits when the data is small, as can be deduced from it doing better in the 1\% bucket. Still, as we started our simulation on the third day instead of the first, our results are close to, but not quite the same as those reported in the original paper. Particularly the third conclusion, that of the relative advantage of Hybrid LinUCB with sparse data, seems to be less convincing in our Figure \ref{fig:ctr_comparison}.
+As can be observed in Figure \ref{fig:section_8_bar}, after one day of learning, the conclusions of the original paper still stand. First, features again prove to be of use at all levels of sparsity, as LinUCB policies outperform the others consistently. Second, UCB policies generally outperform $\epsilon$-greedy ones. And third, Hybrid LinUCB again shows benefits when the data is small, as can be deduced from it doing better in the 1\% bucket. Still, as we started our simulation on the third day instead of the first, our results are close to, but not quite the same as those reported in the original paper. Particularly the third conclusion, that of the relative advantage of Hybrid LinUCB with sparse data, seems to be less convincing in our Figure \ref{fig:section_8_bar}.
 
 So we decided to run a simulation that would continue to learn beyond the first day on sparse (1\%) data to test whether Hybrid LinUCB's relative advantage would prove stable over time.
 
 \begin{figure}[H]
   \centering
-    \includegraphics[width=.99\textwidth]{fig/one_day}
+    \includegraphics[width=.99\textwidth]{fig/section_8_plot}
       \caption{A plot of the cummulative reward rate (equals click-through rate) for EGreedy, EGreedySeg, LinUCB Dis, LinUCB Hyb, UCB1 and UCB1Seg policies over eight days of events from the Yahoo dataset.}
-      \label{fig:one_day}
+      \label{fig:section_8_plot}
 \end{figure}
 
-From this new Figure \ref{fig:ctr_comparison}, it seems that after one day of training the policies did not settle yet. Looking at the full span of about eight days of learning under 1\% sparse conditions, the advantage of Hybrid LinUCB over Disjoint LinUCB seems to melt away and change into an advantage of the Disjoint version. Also, surprisingly, over the full eight days, the $\epsilon$-greedy policy goes from the worst to third best policy overall, and to best context-free policy---outperforming both context-free UCB policies. Though we intend to further analyze this discrepancy in the near future, for now, these results seem to contradict two out of three conclusions drawn from the original figure---leaving only the first outcome, the superiority of the contextual LinUCB in comparison to several context-free ones, standing. Underlining the benefits of \pkg{contextual}, as it enabled us to replicate and confirm the original \cite{Li2010} paper, and then explore it further with ease. All within about two days of work: extending \code{Bandit} and \code{Policy} classes, simulating all policy classes in parallel on an offline dataset, and plotting and analyzing the results.
+From this new Figure \ref{fig:section_8_bar}, it seems that after one day of training the policies did not settle yet. Looking at the full span of about eight days of learning under 1\% sparse conditions, the advantage of Hybrid LinUCB over Disjoint LinUCB seems to melt away and change into an advantage of the Disjoint version. Also, surprisingly, over the full eight days, the $\epsilon$-greedy policy goes from the worst to third best policy overall, and to best context-free policy---outperforming both context-free UCB policies. Though we intend to further analyze this discrepancy in the near future, for now, these results seem to contradict two out of three conclusions drawn from the original figure---leaving only the first outcome, the superiority of the contextual LinUCB in comparison to several context-free ones, standing. Underlining the benefits of \pkg{contextual}, as it enabled us to replicate and confirm the original \cite{Li2010} paper, and then explore it further with ease. All within about two days of work: extending \code{Bandit} and \code{Policy} classes, simulating all policy classes in parallel on an offline dataset, and plotting and analyzing the results.
 
 \section{Discussion and Future Work} \label{future}
 

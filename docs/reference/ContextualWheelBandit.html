@@ -175,8 +175,8 @@ reward dependent on a <code>d = 2</code> dimensional context.</p>
 
     
     <dl class='dl-horizontal'>
-    <dt><code>new(delta, mean_v, std_v, mu_large, std_large)</code></dt><dd><p>generates and instantializes a new <code>Bandit</code> instance.
-For arguments, see Argument section above.</p></dd>
+    <dt><code>new(delta, mean_v, std_v, mu_large, std_large)</code></dt><dd><p>generates and instantializes a
+new <code>ContextualWheelBandit</code> instance.</p></dd>
     <dt><code><a href='Bandit.html'>get_context(t)</a></code></dt><dd><p>argument:
 <ul>
 <li><p><code>t</code>: integer, time step <code>t</code>.</p></li>
@@ -192,7 +192,8 @@ the number of arms <code>context$k</code> and the number of features <code>conte
 (as set by <code>bandit</code>).</p></li>
 <li><p><code>action</code>:  list, containing <code>action$choice</code> (as set by <code>policy</code>).</p></li>
 </ul>
-returns a named <code>list</code> containing <code>reward$reward</code></p></dd>
+returns a named <code>list</code> containing <code>reward$reward</code> and, where computable,
+<code>reward$optimal</code> (used by "oracle" policies and to calculate regret).</p></dd>
 </dl>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>

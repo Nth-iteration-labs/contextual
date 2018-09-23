@@ -168,21 +168,25 @@ the bandit's <code>k</code> arms. Set to zero for no noise.</p></dd>
 
     
     <dl class='dl-horizontal'>
-    <dt><code>new(mu_per_arm, sigma_per_arm)</code></dt><dd><p>generates and instantializes a new <code>Bandit</code> instance.
-For arguments, see Argument section above.</p></dd>
+    <dt><code>new(mu_per_arm, sigma_per_arm)</code></dt><dd><p>generates and instantializes a
+new <code>BasicGaussianBandit</code> instance.</p></dd>
     <dt><code><a href='Bandit.html'>get_context(t)</a></code></dt><dd><p>argument:
 <ul>
 <li><p><code>t</code>: integer, time step <code>t</code>.</p></li>
 </ul>
 returns a named <code>list</code>
-containing the number of arms as <code>context$k</code>.</p></dd>
+containing the current <code>d x k</code> dimensional matrix <code>context$X</code>,
+the number of arms <code>context$k</code> and the number of features <code>context$d</code>.</p></dd>
     <dt><code>get_reward(t, context, action)</code></dt><dd><p>arguments:
 <ul>
 <li><p><code>t</code>: integer, time step <code>t</code>.</p></li>
-<li><p><code>context</code>: list, with <code>context$k</code> (number of arms).</p></li>
+<li><p><code>context</code>: list, containing the current <code>context$X</code> (d x k context matrix),
+<code>context$k</code> (number of arms) and <code>context$d</code> (number of context feaures)
+(as set by <code>bandit</code>).</p></li>
 <li><p><code>action</code>:  list, containing <code>action$choice</code> (as set by <code>policy</code>).</p></li>
 </ul>
-returns a named <code>list</code> containing <code>reward$reward</code></p></dd>
+returns a named <code>list</code> containing <code>reward$reward</code> and, where computable,
+<code>reward$optimal</code> (used by "oracle" policies and to calculate regret).</p></dd>
 </dl>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>

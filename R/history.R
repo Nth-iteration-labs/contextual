@@ -312,7 +312,10 @@ History <- R6::R6Class(
       self$set_meta_data("agents",min(private$.data[, .(count = data.table::uniqueN(agent))]$count))
       self$set_meta_data("simulations",min(private$.data[, .(count = data.table::uniqueN(sim))]$count))
 
-      private$.data[, regret:= optimal_reward - reward]
+      if ("optimal_reward" %in% colnames(private$.data))
+        private$.data[, regret:= optimal_reward - reward]
+      else
+        private$.data[, optimal_reward:= NA]
 
       private$.data[, cum_reward:= cumsum(reward), by = list(agent, sim)]
       private$.data[, cum_reward_rate := cum_reward / t]

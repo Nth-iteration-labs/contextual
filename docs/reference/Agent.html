@@ -146,7 +146,7 @@
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Controls the running of one <code><a href='Bandit.html'>Bandit</a></code> and <code><a href='Policy.html'>Policy</a></code>
-pair over <em>t</em> = 1, &#8230;, T, and looping over, consecutively,
+pair over <em>t</em> = 1, &#8230;, T looping over, consecutively,
 <code>bandit$get_context(), policy$get_action(), bandit$get_reward()</code> and <code>policy$set_reward()</code>
 for each time step <code>t</code>.</p>
     
@@ -169,7 +169,7 @@ agent &lt;- Agent$new(policy, bandit, name=NULL, sparse = 0.0)
     <dt><code>policy</code></dt><dd><p><code><a href='Policy.html'>Policy</a></code> instance.</p></dd>
 <dt><code>bandit</code></dt><dd><p><code><a href='Bandit.html'>Bandit</a></code> instance.</p></dd>
 <dt><code>name</code></dt><dd><p>character; sets the name of the <code>Agent</code>. If <code>NULL</code> (default), <code>Agent</code> generates a name
-based on its <code><a href='Policy.html'>Policy</a></code>'s name.</p></dd>
+based on its <code><a href='Policy.html'>Policy</a></code> instance's name.</p></dd>
 <dt><code>sparse</code></dt><dd><p>numeric; artificially reduces the data size by setting a sparsity level for the current
 <code><a href='Bandit.html'>Bandit</a></code> and <code><a href='Policy.html'>Policy</a></code> pair.
 When set to a value between <code>0.0</code> (default) and <code>1.0</code> only a fraction <code>sparse</code> of
@@ -184,9 +184,9 @@ the <code><a href='Bandit.html'>Bandit</a></code>'s data is randomly chosen to b
     <dt><code>new()</code></dt><dd><p>generates and instantializes a new <code>Agent</code> instance.</p></dd>
     <dt><code>do_step()</code></dt><dd><p>advances a simulation by one time step by consecutively calling <code>bandit$get_context()</code>,
 <code>policy$get_action()</code>, <code>bandit$get_reward()</code> and <code>policy$set_reward()</code>.
-Returns a list of lists with context, action, reward and theta.</p></dd>
-    <dt><code>set_t(t)</code></dt><dd><p>integer; Sets the current time step to <code>t</code>.</p></dd>
-    <dt><code>get_t()</code></dt><dd><p>returns the current time step <code>t</code>.</p></dd>
+Returns a list of lists containing <code>context</code>, <code>action</code>, <code>reward</code> and <code>theta</code>.</p></dd>
+    <dt><code>set_t(t)</code></dt><dd><p>integer; sets the current time step to <code>t</code>.</p></dd>
+    <dt><code>get_t()</code></dt><dd><p>returns current time step <code>t</code>.</p></dd>
     </dl>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>

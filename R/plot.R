@@ -25,7 +25,7 @@ Plot <- R6::R6Class(
                           use_colors         = TRUE,
                           color_step         = 1,
                           lty_step           = 1,
-                          lwd                = 1,
+                          lwd                = 2,
                           legend_labels      = NULL,
                           legend_border      = NULL,
                           legend_position    = "topleft",
@@ -102,7 +102,7 @@ Plot <- R6::R6Class(
                        use_colors         = TRUE,
                        color_step         = 1,
                        lty_step           = 1,
-                       lwd                = 1,
+                       lwd                = 2,
                        legend_labels      = NULL,
                        legend_border      = NULL,
                        legend_position    = "topleft",
@@ -184,7 +184,7 @@ Plot <- R6::R6Class(
         warning(strwrap(
           prefix = " ", initial = "",
           "## Arm percentage plot always plots the results of one agent, either at
-          index position one, or the agent specified in limit_agents."
+          index position one, or the first agent specified in limit_agents."
         ),
         call. = FALSE
         )
@@ -288,7 +288,7 @@ Plot <- R6::R6Class(
                        interval            = 1,
                        color_step          = 1,
                        lty_step            = 1,
-                       lwd                 = 1,
+                       lwd                 = 2,
                        legend_labels       = NULL,
                        legend_border       = NULL,
                        legend_position     = "topleft",
@@ -366,6 +366,10 @@ Plot <- R6::R6Class(
         lt <- rep(1:round(lty_step), each = round(n_agents / lty_step))
       } else {
         lt <- rep(1, n_agents)
+      }
+      if (!isTRUE(use_colors) && lty_step == 1) {
+        lty_step <- n_agents
+        lt <- rep(1:round(lty_step), each = round(n_agents / lty_step))
       }
       if (!is.null(ci) && !isTRUE(plot_only_ci)) {
         min_ylim <- data[, min(ci_lower)]

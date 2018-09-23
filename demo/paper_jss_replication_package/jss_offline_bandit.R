@@ -13,10 +13,10 @@ OfflinePolicyEvaluatorBandit <- R6::R6Class(
   public = list(
     class_name = "OfflinePolicyEvaluatorBandit",
     randomize = NULL,
-    initialize   = function(data_stream, k, d) {
+    initialize   = function(offline_data, k, d) {
       self$k <- k               # Number of arms (integer)
       self$d <- d               # Dimension of context feature vector (integer)
-      private$S <- data_stream  # Data stream, as a data.table
+      private$S <- offline_data  # Data stream, as a data.table
     },
     post_initialization = function() {
       private$S <- private$S[sample(nrow(private$S))]

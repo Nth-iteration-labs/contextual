@@ -8,10 +8,10 @@ DependentObservationsLiBandit <- R6::R6Class(
     S = NULL
   ),
   public = list(
-    initialize   = function(data_stream, arms) {
+    initialize   = function(offline_data, arms) {
       self$k <- arms
       self$d <- 1
-      private$S <- data_stream
+      private$S <- offline_data
     },
     get_context = function(index) {
       contextlist <- list(

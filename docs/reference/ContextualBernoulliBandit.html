@@ -176,22 +176,25 @@ an arm's probability values over all selected feature rows.</p></dd>
 
     
     <dl class='dl-horizontal'>
-    <dt><code>new(weights = NULL, precaching  = TRUE, sum_weights = FALSE)</code></dt><dd><p>generates and instantializes a new <code>Bandit</code> instance.
-For arguments, see Argument section above.</p></dd>
+    <dt><code>new(weights = NULL, precaching  = TRUE, sum_weights = FALSE)</code></dt><dd><p>generates
+and instantializes a new <code>ContextualBernoulliBandit</code> instance.</p></dd>
     <dt><code><a href='Bandit.html'>get_context(t)</a></code></dt><dd><p>argument:
 <ul>
 <li><p><code>t</code>: integer, time step <code>t</code>.</p></li>
 </ul>
 returns a named <code>list</code>
 containing the current <code>d x k</code> dimensional matrix <code>context$X</code>,
-number of arms <code>context$k</code> and number of features <code>context$d</code>.</p></dd>
+the number of arms <code>context$k</code> and the number of features <code>context$d</code>.</p></dd>
     <dt><code>get_reward(t, context, action)</code></dt><dd><p>arguments:
 <ul>
 <li><p><code>t</code>: integer, time step <code>t</code>.</p></li>
-<li><p><code>context</code>: list, with <code>context$k</code> (number of arms).</p></li>
+<li><p><code>context</code>: list, containing the current <code>context$X</code> (d x k context matrix),
+<code>context$k</code> (number of arms) and <code>context$d</code> (number of context feaures)
+(as set by <code>bandit</code>).</p></li>
 <li><p><code>action</code>:  list, containing <code>action$choice</code> (as set by <code>policy</code>).</p></li>
 </ul>
-returns a named <code>list</code> containing <code>reward$reward</code></p></dd>
+returns a named <code>list</code> containing <code>reward$reward</code> and, where computable,
+<code>reward$optimal</code> (used by "oracle" policies and to calculate regret).</p></dd>
     <dt><code><a href='Bandit.html'>generate_bandit_data()</a></code></dt><dd><p>helper function called before <code>Simulator</code> starts iterating over all time steps <code>t</code> in T.
 This function is only called when <code>bandit$precaching</code> is <code>TRUE</code> (default <code>FALSE</code>).
 Pregenerates <code>contexts</code> and <code>rewards</code>.</p></dd>

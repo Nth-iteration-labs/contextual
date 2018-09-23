@@ -166,8 +166,8 @@ of unique (or "disjoint") and shared contextual features.</p>
 
     
     <dl class='dl-horizontal'>
-    <dt><code>new(k, shared_features, unique_features, sigma = 1.0)</code></dt><dd><p>generates and instantializes a new <code>Bandit</code> instance.
-For arguments, see Argument section above.</p></dd>
+    <dt><code>new(k, shared_features, unique_features, sigma = 1.0)</code></dt><dd><p>generates
+and instantializes a new <code>ContextualHybridBandit</code> instance.</p></dd>
     <dt><code><a href='Bandit.html'>get_context(t)</a></code></dt><dd><p>argument:
 <ul>
 <li><p><code>t</code>: integer, time step <code>t</code>.</p></li>
@@ -183,7 +183,8 @@ the number of arms <code>context$k</code> and the number of features <code>conte
 (as set by <code>bandit</code>).</p></li>
 <li><p><code>action</code>:  list, containing <code>action$choice</code> (as set by <code>policy</code>).</p></li>
 </ul>
-returns a named <code>list</code> containing <code>reward$reward</code></p></dd>
+returns a named <code>list</code> containing <code>reward$reward</code> and, where computable,
+<code>reward$optimal</code> (used by "oracle" policies and to calculate regret).</p></dd>
     <dt><code><a href='Bandit.html'>post_initialization()</a></code></dt><dd><p>initialzes <code>d x k</code> beta matrix.</p></dd>
 </dl>
     

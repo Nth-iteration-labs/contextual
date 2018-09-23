@@ -155,14 +155,14 @@ and related techniques like doubly robust estimation (Dudik et al., 2011).</p>
 
     
     <pre>
-  bandit &lt;- OfflinePolicyEvaluatorBandit(data_stream, k, d, unique = NULL, shared = NULL, randomize = TRUE)
+  bandit &lt;- OfflinePolicyEvaluatorBandit(offline_data, k, d, unique = NULL, shared = NULL, randomize = TRUE)
 </pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
 
     
     <dl class='dl-horizontal'>
-<dt><code>data_stream</code></dt><dd><p>data.table; data stream (required)</p></dd>
+<dt><code>offline_data</code></dt><dd><p>data.table; offline data source (required)</p></dd>
 <dt><code>k</code></dt><dd><p>integer; number of arms (required)</p></dd>
 <dt><code>d</code></dt><dd><p>integer; number of contextual features (required)</p></dd>
 <dt><code>randomize</code></dt><dd><p>logical; randomize rows of data stream per simulation (optional, default: TRUE)</p></dd>
@@ -174,22 +174,27 @@ and related techniques like doubly robust estimation (Dudik et al., 2011).</p>
 
     
     <dl class='dl-horizontal'>
-    <dt><code>new(data_stream, k, d, unique = NULL, shared = NULL, randomize = TRUE)</code></dt><dd><p>generates and instantializes a new <code>Bandit</code> instance.
-For arguments, see Argument section above.</p></dd>
+    <dt><code>new(offline_data, k, d, unique = NULL, shared = NULL, randomize = TRUE)</code></dt><dd><p>generates
+and instantializes a new <code>OfflinePolicyEvaluatorBandit</code> instance.</p></dd>
     <dt><code><a href='Bandit.html'>get_context(t)</a></code></dt><dd><p>argument:
 <ul>
 <li><p><code>t</code>: integer, time step <code>t</code>.</p></li>
 </ul>
 returns a named <code>list</code>
 containing the current <code>d x k</code> dimensional matrix <code>context$X</code>,
-number of arms <code>context$k</code> and number of features <code>context$d</code>.</p></dd>
+the number of arms <code>context$k</code> and the number of features <code>context$d</code>.</p></dd>
     <dt><code>get_reward(t, context, action)</code></dt><dd><p>arguments:
 <ul>
 <li><p><code>t</code>: integer, time step <code>t</code>.</p></li>
-<li><p><code>context</code>: list, with <code>context$k</code> (number of arms).</p></li>
+<li><p><code>context</code>: list, containing the current <code>context$X</code> (d x k context matrix),
+<code>context$k</code> (number of arms) and <code>context$d</code> (number of context feaures)
+(as set by <code>bandit</code>).</p></li>
 <li><p><code>action</code>:  list, containing <code>action$choice</code> (as set by <code>policy</code>).</p></li>
 </ul>
-returns a named <code>list</code> containing <code>reward$reward</code></p></dd>
+returns a named <code>list</code> containing <code>reward$reward</code> and, where computable,
+<code>reward$optimal</code> (used by "oracle" policies and to calculate regret).</p></dd>
+    <dt><code><a href='Bandit.html'>post_initialization()</a></code></dt><dd><p>Randomize offline data by shuffling the offline data.table before the start of each
+individual simulation when self$randomize is TRuE (default)</p></dd>
 </dl>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
@@ -230,8 +235,8 @@ returns a named <code>list</code> containing <code>reward$reward</code></p></dd>
     <span class='kw'>save_context</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
   )
 
-<span class='no'>random_data_stream</span> <span class='kw'>&lt;-</span> <span class='no'>simulation</span>$<span class='fu'><a href='Simulator.html'>run</a></span>()
-<span class='no'>random_data_stream</span>$<span class='fu'><a href='History.html'>save</a></span>(<span class='st'>"log.RData"</span>)
+<span class='no'>random_offline_data</span> <span class='kw'>&lt;-</span> <span class='no'>simulation</span>$<span class='fu'><a href='Simulator.html'>run</a></span>()
+<span class='no'>random_offline_data</span>$<span class='fu'><a href='History.html'>save</a></span>(<span class='st'>"log.RData"</span>)
 
 <span class='co'>## use saved log to evaluate policies with OfflinePolicyEvaluatorBandit</span>
 
@@ -239,7 +244,7 @@ returns a named <code>list</code> containing <code>reward$reward</code></p></dd>
 <span class='no'>history</span>$<span class='fu'><a href='History.html'>load</a></span>(<span class='st'>"log.RData"</span>)
 <span class='no'>log_S</span> <span class='kw'>&lt;-</span> <span class='no'>history</span>$<span class='fu'><a href='History.html'>get_data_table</a></span>()
 
-<span class='no'>bandit</span> <span class='kw'>&lt;-</span> <span class='no'>OfflinePolicyEvaluatorBandit</span>$<span class='fu'>new</span>(<span class='kw'>data_stream</span> <span class='kw'>=</span> <span class='no'>log_S</span>, <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>d</span> <span class='kw'>=</span> <span class='fl'>3</span>)
+<span class='no'>bandit</span> <span class='kw'>&lt;-</span> <span class='no'>OfflinePolicyEvaluatorBandit</span>$<span class='fu'>new</span>(<span class='kw'>offline_data</span> <span class='kw'>=</span> <span class='no'>log_S</span>, <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>d</span> <span class='kw'>=</span> <span class='fl'>3</span>)
 
 <span class='no'>agents</span> <span class='kw'>&lt;-</span>
   <span class='fu'>list</span>(
