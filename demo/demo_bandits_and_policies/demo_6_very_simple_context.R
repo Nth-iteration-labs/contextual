@@ -3,8 +3,8 @@ library(here)
 setwd(here("demo","demo_bandits_and_policies"))
 source("../dev.R")
 
-horizon       <- 500L
-simulations   <- 500L
+horizon       <- 5000000L
+simulations   <- 5L
 
 bandit        <- ContextualLogitBandit$new(k = 5, d = 10, intercept = TRUE)
 
@@ -18,6 +18,7 @@ simulation     <- Simulator$new(agents, horizon, simulations)
 history        <- simulation$run()
 
 plot(history, type = "cumulative", rate = TRUE, regret = FALSE, legend_position = "bottomright", smooth = TRUE)
+plot(history, type = "cumulative", rate = FALSE, regret = TRUE, legend_position = "bottomright", smooth = TRUE)
 
 
 ##########

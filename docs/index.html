@@ -100,12 +100,14 @@
 <div id="overview" class="section level2">
 <h2 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h2>
-<p>R package facilitating the simulation and evaluation of context-free and contextual Multi-Armed Bandit policies or algorithms.</p>
+<p><a href="https://github.com/r-lib/R6">R6</a> based R package facilitating the simulation and evaluation of context-free and contextual Multi-Armed Bandit policies or algorithms.</p>
 </div>
-<div id="maintainers" class="section level2">
+<div id="installation" class="section level2">
 <h2 class="hasAnchor">
-<a href="#maintainers" class="anchor"></a>Maintainers</h2>
-<p>Robin van Emden: author, maintainer Maurits Kaptein: supervisor</p>
+<a href="#installation" class="anchor"></a>Installation</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Install development version from GitHub:</span>
+<span class="co"># install.packages("devtools")</span>
+devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"Nth-iteration-labs/contextual"</span>)</code></pre></div>
 </div>
 <div id="documentation" class="section level2">
 <h2 class="hasAnchor">
@@ -116,12 +118,31 @@
 </li>
 </ul>
 </div>
-<div id="installation" class="section level2">
+<div id="core-class-diagram" class="section level2">
 <h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Install development version from GitHub:</span>
-<span class="co"># install.packages("devtools")</span>
-devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"Nth-iteration-labs/contextual"</span>)</code></pre></div>
+<a href="#core-class-diagram" class="anchor"></a>Core class diagram</h2>
+<p><img src="https://raw.githubusercontent.com/Nth-iteration-labs/contextual/master/man/figures/cmab_all_large.jpg" alt="Contextual’s core class diagram"> Basic example ————-</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">horizon       &lt;-<span class="st"> </span>500L
+simulations   &lt;-<span class="st"> </span>500L
+
+bandit        &lt;-<span class="st"> </span>ContextualLogitBandit<span class="op">$</span><span class="kw">new</span>(<span class="dt">k =</span> <span class="dv">5</span>, <span class="dt">d =</span> <span class="dv">10</span>, <span class="dt">intercept =</span> <span class="ot">TRUE</span>)
+
+agents        &lt;-<span class="st"> </span><span class="kw">list</span>(Agent<span class="op">$</span><span class="kw">new</span>(ContextualThompsonSamplingPolicy<span class="op">$</span><span class="kw">new</span>(<span class="dt">delta=</span><span class="fl">0.5</span>, <span class="dt">R=</span><span class="fl">0.01</span>, <span class="dt">epsilon=</span><span class="fl">0.5</span>), bandit),
+                      Agent<span class="op">$</span><span class="kw">new</span>(EpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.1</span>), bandit),
+                      Agent<span class="op">$</span><span class="kw">new</span>(LinUCBGeneralPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.6</span>), bandit),
+                      Agent<span class="op">$</span><span class="kw">new</span>(ContextualEpochGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="dv">8</span>), bandit))
+
+simulation     &lt;-<span class="st"> </span>Simulator<span class="op">$</span><span class="kw">new</span>(agents, horizon, simulations)
+
+history        &lt;-<span class="st"> </span>simulation<span class="op">$</span><span class="kw"><a href="reference/Simulator.html">run</a></span>()
+
+<span class="kw">plot</span>(history, <span class="dt">type =</span> <span class="st">"cumulative"</span>, <span class="dt">rate =</span> <span class="ot">TRUE</span>, <span class="dt">regret =</span> <span class="ot">FALSE</span>, <span class="dt">legend_position =</span> <span class="st">"bottomright"</span>, <span class="dt">smooth =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<p><img src="https://raw.githubusercontent.com/Nth-iteration-labs/contextual/master/man/figures/example.jpg" alt="Contextual’s core class diagram"></p>
+</div>
+<div id="maintainers" class="section level2">
+<h2 class="hasAnchor">
+<a href="#maintainers" class="anchor"></a>Maintainers</h2>
+<p>Robin van Emden: author, maintainer Maurits Kaptein: supervisor</p>
 <p>If you encounter a clear bug, please file a minimal reproducible example on <a href="https://github.com/Nth-iteration-labs/contextual/issues">GitHub</a>.</p>
 </div>
 </div>
@@ -156,7 +177,7 @@ devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocument
 <h2>Dev status</h2>
 <ul class="list-unstyled">
 <li><a href="https://tidyverse.org/lifecycle/#maturing"><img src="https://img.shields.io/badge/lifecycle-maturing-blue.svg" alt="lifecycle"></a></li>
-<li><a href="https://ci.appveyor.com/project/Nth-iteration-labs/contextual"><img src="https://ci.appveyor.com/api/projects/status/github/Nth-iteration-labs/contextual?branch=master&amp;svg=true" alt="AppVeyor Build Status"></a></li>
+<li><a href="https://ci.appveyor.com/project/robinvanemden/contextual"><img src="https://ci.appveyor.com/api/projects/status/github/Nth-iteration-labs/contextual?branch=master&amp;svg=true" alt="AppVeyor Build Status"></a></li>
 <li><a href="https://travis-ci.org/Nth-iteration-labs/contextual"><img src="https://travis-ci.org/Nth-iteration-labs/contextual.svg?branch=master" alt="Build Status"></a></li>
 <li><a href="https://codecov.io/gh/Nth-iteration-labs/contextual"><img src="https://codecov.io/gh/Nth-iteration-labs/contextual/branch/master/graph/badge.svg" alt="codecov"></a></li>
 <li><a href="https://github.com/Nth-iteration-labs/contextual"><img src="https://img.shields.io/badge/devel%20version-0.9.0-green.svg?style=flat" alt="develVersion"></a></li>
