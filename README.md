@@ -9,18 +9,6 @@ Overview
 
 R package facilitating the simulation and evaluation of context-free and contextual Multi-Armed Bandit policies or algorithms.
 
-Maintainers
------------
-
-Robin van Emden: author, maintainer
-Maurits Kaptein: supervisor
-
-Documentation
--------------
-
--   [Online reference](https://nth-iteration-labs.github.io/contextual/reference/index.html)
-<!---   [Blog at Pavlov](https://pavlov.tech/category/contextual/)-->
-
 Installation
 ------------
 
@@ -29,5 +17,17 @@ Installation
 # install.packages("devtools")
 devtools::install_github("Nth-iteration-labs/contextual")
 ```
+
+Documentation
+-------------
+
+-   [Online reference](https://nth-iteration-labs.github.io/contextual/reference/index.html)
+<!---   [Blog at Pavlov](https://pavlov.tech/category/contextual/)-->
+
+Maintainers
+-----------
+
+Robin van Emden: author, maintainer
+Maurits Kaptein: supervisor
 
 If you encounter a clear bug, please file a minimal reproducible example on [GitHub](https://github.com/Nth-iteration-labs/contextual/issues).
