@@ -28,27 +28,6 @@ Core class diagram
 ------------------
 
 ![Contextual's core class diagram](https://raw.githubusercontent.com/Nth-iteration-labs/contextual/master/man/figures/cmab_all_large.jpg)
-Basic example
--------------
-
-```r
-horizon       <- 500L
-simulations   <- 500L
-
-bandit        <- ContextualLogitBandit$new(k = 5, d = 10, intercept = TRUE)
-
-agents        <- list(Agent$new(ContextualThompsonSamplingPolicy$new(delta=0.5, R=0.01, epsilon=0.5), bandit),
-                      Agent$new(EpsilonGreedyPolicy$new(0.1), bandit),
-                      Agent$new(LinUCBGeneralPolicy$new(0.6), bandit),
-                      Agent$new(ContextualEpochGreedyPolicy$new(8), bandit))
-
-simulation     <- Simulator$new(agents, horizon, simulations)
-
-history        <- simulation$run()
-
-plot(history, type = "cumulative", rate = TRUE, regret = FALSE, legend_position = "bottomright", smooth = TRUE)
-```
-![Contextual's core class diagram](https://raw.githubusercontent.com/Nth-iteration-labs/contextual/master/man/figures/example.jpg)
 
 Maintainers
 -----------
