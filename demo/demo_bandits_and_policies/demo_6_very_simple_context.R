@@ -3,26 +3,26 @@ library(here)
 setwd(here("demo","demo_bandits_and_policies"))
 source("../dev.R")
 
-horizon       <- 10L
-simulations   <- 10L
+horizon       <- 500L
+simulations   <- 500L
 
-################### mostly shared
-
-bandit        <- ContextualHybridBandit$new(k = 100, shared_features = 10, unique_features = 2)
-
-#bandit        <- ContextualLogitBandit$new(k = 5, d = 5, intercept = TRUE)
+bandit        <- ContextualLogitBandit$new(k = 5, d = 10, intercept = TRUE)
 
 agents        <- list(Agent$new(ContextualThompsonSamplingPolicy$new(delta=0.5, R=0.01, epsilon=0.5), bandit),
                       Agent$new(EpsilonGreedyPolicy$new(0.1), bandit),
                       Agent$new(LinUCBGeneralPolicy$new(0.6), bandit),
-                      Agent$new(ContextualEpochGreedyPolicy$new(8), bandit),
-                      Agent$new(LinUCBHybridOptimizedPolicy$new(0.6), bandit),
-                      Agent$new(LinUCBDisjointOptimizedPolicy$new(0.6), bandit))
+                      Agent$new(ContextualEpochGreedyPolicy$new(8), bandit))
 
-simulation     <- Simulator$new(agents, horizon, simulations, do_parallel = FALSE)
+simulation     <- Simulator$new(agents, horizon, simulations)
+
 history        <- simulation$run()
 
-plot(history, type = "cumulative", regret = FALSE, rate = TRUE, legend_position = "bottomright")
+plot(history, type = "cumulative", rate = TRUE, regret = FALSE, legend_position = "bottomright", smooth = TRUE)
+
+
+##########
+#bandit        <- ContextualHybridBandit$new(k = 100, shared_features = 10, unique_features = 2)
+##########
 
 horizon       <- 10L
 simulations   <- 10L
