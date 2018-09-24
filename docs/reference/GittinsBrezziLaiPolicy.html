@@ -38,11 +38,8 @@
 
 <meta property="og:title" content="Policy: Gittins Approximation algorithm for choosing arms in a MAB problem. — GittinsBrezziLaiPolicy" />
 
-<meta property="og:description" content="GittinsBrezziLaiPolicy Algorithm based on Brezzi and Lai (2002) &quot;Optimal learning
-and experimentation in bandit problems.&quot;
-The algorithm provides an approximation of the Gittins index, by specifying
-a closed-form expression, which is a function of the discount factor, and
-the number of successes and failures associated with each arm." />
+<meta property="og:description" content="GittinsBrezziLaiPolicy Algorithm based on Brezzi and Lai (2002)
+&quot;Optimal learning and experimentation in bandit problems.&quot;" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -142,15 +139,72 @@ the number of successes and failures associated with each arm." />
 
     <div class="ref-description">
     
-    <p><code>GittinsBrezziLaiPolicy</code> Algorithm based on Brezzi and Lai (2002) "Optimal learning
-and experimentation in bandit problems."
-The algorithm provides an approximation of the Gittins index, by specifying
-a closed-form expression, which is a function of the discount factor, and
-the number of successes and failures associated with each arm.</p>
+    <p><code>GittinsBrezziLaiPolicy</code> Algorithm based on Brezzi and Lai (2002)
+"Optimal learning and experimentation in bandit problems."</p>
     
     </div>
 
         
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>The algorithm provides an approximation of the Gittins index, by specifying
+a closed-form expression, which is a function of the discount factor, and
+the number of successes and failures associated with each arm.</p>
+    
+    <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
+
+    
+    <pre>
+  policy &lt;- GittinsBrezziLaiPolicy$new(discount=0.95, prior=NULL)
+</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+
+    
+    <dl class='dl-horizontal'>
+<dt><code>discount</code></dt><dd><p>numeric; discount factor</p></dd>
+<dt><code>prior</code></dt><dd><p>numeric matrix; prior beliefs over Bernoulli parameters governing each arm.
+Beliefs are specified by Beta distribution with two parameters (alpha,beta)
+where alpha = number of success, beta = number of failures.
+Matrix is of arms times two (alpha / beta) dimensions</p></dd>
+</dl>
+    
+    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
+
+    
+    <dl class='dl-horizontal'>
+<dt><code>new(discount=0.95, prior=NULL)</code></dt><dd><p>Generates and initializes a new <code>Policy</code> object.</p></dd>
+    <dt><code><a href='Policy.html'>get_action(t, context)</a></code></dt><dd><p>arguments:
+<ul>
+<li><p><code>t</code>: integer, time step <code>t</code>.</p></li>
+<li><p><code>context</code>: list, containing the current <code>context$X</code> (d x k context matrix),
+<code>context$k</code> (number of arms) and <code>context$d</code> (number of context feaures)</p></li>
+</ul>
+computes which arm to play based on the current values in named list <code>theta</code>
+and the current <code>context</code>. Returns a named list containing
+<code>action$choice</code>, which holds the index of the arm to play.</p></dd>
+    <dt><code><a href='Policy.html'>set_reward(t, context, action, reward)</a></code></dt><dd><p>arguments:
+<ul>
+<li><p><code>t</code>: integer, time step <code>t</code>.</p></li>
+<li><p><code>context</code>: list, containing the current <code>context$X</code> (d x k context matrix),
+<code>context$k</code> (number of arms) and <code>context$d</code> (number of context feaures)
+(as set by <code>bandit</code>).</p></li>
+<li><p><code>action</code>:  list, containing <code>action$choice</code> (as set by <code>policy</code>).</p></li>
+<li><p><code>reward</code>:  list, containing <code>reward$reward</code> and, if available,
+<code>reward$optimal</code> (as set by <code>bandit</code>).</p></li>
+</ul>
+utilizes the above arguments to update and return the set of parameters in list <code>theta</code>.</p></dd>
+    <dt><code><a href='Policy.html'>set_parameters()</a></code></dt><dd><p>Helper function, called during a Policy's initialisation, assigns the values
+it finds in list <code>self$theta_to_arms</code> to each of the Policy's k arms.
+The parameters defined here can then be accessed by arm index in the following way:
+<code>theta[[index_of_arm]]$parameter_name</code>.</p></dd>
+    </dl>
+    
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>Brezzi, M., &amp; Lai, T. L. (2002). Optimal learning and experimentation in bandit problems. Journal of Economic Dynamics and Control, 27(1), 87-108.</p>
+<p>Implementation follows <a href='https://github.com/elarry/bandit-algorithms-simulated'>https://github.com/elarry/bandit-algorithms-simulated</a></p>
+    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Core contextual classes: <code><a href='Bandit.html'>Bandit</a></code>, <code><a href='Policy.html'>Policy</a></code>, <code><a href='Simulator.html'>Simulator</a></code>,
@@ -164,6 +218,16 @@ the number of successes and failures associated with each arm.</p>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       
+      <li><a href="#details">Details</a></li>
+
+      <li><a href="#usage">Usage</a></li>
+
+      <li><a href="#arguments">Arguments</a></li>
+
+      <li><a href="#methods">Methods</a></li>
+
+      <li><a href="#references">References</a></li>
+
       <li><a href="#see-also">See also</a></li>
           </ul>
 
