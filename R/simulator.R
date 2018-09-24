@@ -105,7 +105,7 @@ Simulator <- R6::R6Class(
           index <- index + 1
         }
       }
-      message("Finished cloning bandits and policies")
+      message("Starting main simulation")
     },
     run = function() {
       # run foreach either parallel or not, create workers
@@ -237,8 +237,10 @@ Simulator <- R6::R6Class(
       if (reindex) self$history$reindex()
       self$history$update_statistics()
       self$history$set_meta_data("sim_end_time",format(Sys.time(), "%a %b %d %X %Y"))
+      formatted_duration <- formatted_difftime(private$end_time - private$start_time)
       self$history$set_meta_data("sim_total_duration",
                                  formatted_difftime(private$end_time - private$start_time))
+      message(paste0("Completed simulation in ",formatted_duration))
       self$close()
       self$history
     },

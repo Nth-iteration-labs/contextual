@@ -26,13 +26,13 @@ simulator <- Simulator$new(agents, horizon, simulations, progress_file = TRUE)
 # Now run the simulator.
 history <- simulator$run()
 
+#                                    +-----+----+----------->  arms:      three ads
+#                                    |     |    |
+click_probabilities <- matrix(  c(  0.8,  0.4, 0.1,     # -->  context 1: older (p=.5)
+                                    0.4,  0.8, 0.1   ), # -->  context 2: young (p=.5)
 
-# +-----+----+-----------> ads: k = 3
-# | | |
-click_probabilities <- matrix( c( 0.2, 0.3, 0.1,   # --> d1: old (p=.5)
-                                  0.6, 0.1, 0.1 ), # --> d2: young (p=.5)
-                               # features: d = 2
-                               nrow = 2, ncol = 3, byrow = TRUE)
+                                  nrow = 2, ncol = 3, byrow = TRUE)
+
 # Initialize a SyntheticBandit with contextual weights
 context_bandit <- SyntheticBandit$new(weights = click_probabilities)
 # Initialize LinUCBDisjointPolicy

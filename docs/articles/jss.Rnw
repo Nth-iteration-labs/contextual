@@ -1092,7 +1092,6 @@ The LinUCBDisjoint algorithm works by running a linear regression with coefficie
 Next, translating the above pseudocode into a well organized \code{Bandit} subclass:
 
 \begin{Code}
-#' @export
 LinUCBDisjointPolicy <- R6::R6Class(
   public = list(
     alpha = NULL,
@@ -1274,11 +1273,10 @@ Below, a basic implementation of this algorithm (a version of \pkg{contextual}'s
 \begin{Code}
 library(contextual)
 library(data.table)
-library(RCurl)
-library(foreign)
+setwd(here("demo","paper_jss_replication_package"))
 
 OfflinePolicyEvaluatorBandit <- R6::R6Class(
-  inherit = BasicBernoulliBandit,
+  inherit = Bandit,
   portable = TRUE,
   class = FALSE,
   private = list(
@@ -1288,26 +1286,26 @@ OfflinePolicyEvaluatorBandit <- R6::R6Class(
     class_name = "OfflinePolicyEvaluatorBandit",
     randomize = NULL,
     initialize   = function(data_stream, k, d) {
-      self$k <- k               # Number of arms (integer)
-      self$d <- d               # Dimension context features (integer)
-      private$S <- data_stream  # Data stream, as a data.table
+      self$k    <- k           # Number of arms (integer)
+      self$d    <- d           # Dimension context features (integer)
+      private$S <- data_stream # Data stream, as data.table
     },
     post_initialization = function() {
       private$S <- private$S[sample(nrow(private$S))]
     },
     get_context = function(index) {
-      contextlist <- list(
+      context <- list(
         k = self$k,
         d = self$d,
-        X = matrix(private$S$day_part, self$d, self$k)
+        X = matrix(private$S$daypart[[index]], self$d, self$k)
       )
-      contextlist
+      context
     },
     get_reward = function(index, context, action) {
-      reward_at_index  <- as.double(private$S$reward[[index]])
+      reward           <- as.double(private$S$reward[[index]])
       if (private$S$choice[[index]] == action$choice) {
         list(
-          reward = reward_at_index
+          reward = reward
         )
       } else {
         NULL
@@ -1316,17 +1314,18 @@ OfflinePolicyEvaluatorBandit <- R6::R6Class(
   )
 )
 
-url <- "https://raw.githubusercontent.com/"
-url <- paste0(url,"Nth-iteration-labs/contextual_data/master/")
-url <- paste0(url,"data_persuasion_api/persuasion_api_daypart.csv")
-website_data   <- getURL(setDT(read.csv(textConnection(website_data))))
+data_url <- "https://raw.githubusercontent.com"
+data_url <- paste0(data_url,"/Nth-iteration-labs/contextual_data/master")
+data_url <- paste0(data_url,"/data_persuasion_api/persuasion_api_daypart.csv")
 
-horizon     <- nrow(website_data)
-sims        <- 10L
-bandit      <- OfflinePolicyEvaluatorBandit$new(website_data, k = 4, d = 1)
-agents      <- list(Agent$new(LinUCBHybridPolicy$new(0.6), bandit))
+data     <- data.table::fread(data_url)
 
-history     <- Simulator$new(agents, horizon, sims, reindex = T)$run()
+horizon  <- nrow(data)
+sims     <- 10L
+bandit   <- OfflinePolicyEvaluatorBandit$new(data, k = 4, d = 1)
+agents   <- list(Agent$new(LinUCBHybridPolicy$new(0.6), bandit))
+
+history  <- Simulator$new(agents, horizon, sims, reindex = TRUE, do_parallel = FALSE)$run()
 
 plot(history, type = "cumulative", regret = FALSE, smooth = TRUE,
      traces = TRUE, rate = TRUE, ylim = c(0.0105, 0.014), legend = FALSE)
@@ -1373,7 +1372,7 @@ To facilitate these shifting arms, \code{YahooBandit} makes use of an \code{self
       article_ids             <- article_ids[!is.na(article_ids)]
       article_ids             <- match(article_ids,self$arm_lookup)
       ...
-      contextlist <- list(
+      context <- list(
         k = self$k,
         d = self$d,
         unique = self$unique, # Indexes of disjoint arms (user features)

@@ -166,7 +166,7 @@
 
 @Misc{Langford2007,
   author   = {Langford, John and Li, Lihong and Strehl, Alex},
-  title    = {Vowpal \{{W}\}abbit},
+  title    = {Vowpal Wabbit},
   year     = {2007},
   keywords = {cj-bib},
 }
@@ -729,7 +729,7 @@ In this thesis, we will firstly introduce the centralized clustering bandits. Th
 
 @InProceedings{Hido2013,
   author     = {Hido, Shohei and Tokui, Seiya and Oda, Satoshi},
-  title      = {Jubatus: {An} open source platform for distributed online machine learning},
+  title      = {Jubatus: An Open Source Platform for Distributed Online Machine Learning},
   booktitle  = {{NIPS} 2013 {Workshop} on {Big} {Learning}, {Lake} {Tahoe}},
   year       = {2013},
   file       = {Snapshot:https\://pdfs.semanticscholar.org/e081/165c4abd8fb773658db7e411384d6d02fb13.pdf:;Fulltext:https\://pdfs.semanticscholar.org/e081/165c4abd8fb773658db7e411384d6d02fb13.pdf:application/pdf},
@@ -788,7 +788,7 @@ In this thesis, we will firstly introduce the centralized clustering bandits. Th
 
 @Article{Briggs1997,
   author        = {Briggs, Rex and Hollis, Nigel},
-  title         = {Advertising on the web: is there response before click-through?},
+  title         = {Advertising on the Web: Is There Response Before Click-Through?},
   journal       = {Journal of Advertising research},
   year          = {1997},
   volume        = {37},
@@ -802,7 +802,7 @@ In this thesis, we will firstly introduce the centralized clustering bandits. Th
 
 @Article{Bottou2013,
   author        = {Bottou, Léon and Peters, Jonas and Quiñonero-Candela, Joaquin and Charles, Denis X. and Chickering, D. Max and Portugaly, Elon and Ray, Dipankar and Simard, Patrice and Snelson, Ed},
-  title         = {Counterfactual reasoning and learning systems: {The} example of computational advertising},
+  title         = {Counterfactual Reasoning and Learning Systems: The Example of Computational Advertising},
   journal       = {The Journal of Machine Learning Research},
   year          = {2013},
   volume        = {14},
