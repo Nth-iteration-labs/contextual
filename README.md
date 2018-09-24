@@ -24,12 +24,10 @@ Documentation
 -   [Online reference](https://nth-iteration-labs.github.io/contextual/reference/index.html)
 <!---   [Blog at Pavlov](https://pavlov.tech/category/contextual/)-->
 
-
 Core class diagram
 ------------------
 
 ![Contextual's core class diagram](https://raw.githubusercontent.com/Nth-iteration-labs/contextual/master/man/figures/cmab_all_large.jpg)
-
 Basic example
 -------------
 
