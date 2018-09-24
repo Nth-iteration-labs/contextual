@@ -48,8 +48,9 @@ simulation     <- Simulator$new(agents, horizon, simulations)
 
 history        <- simulation$run()
 
-plot(history, type = "cumulative", rate = TRUE, regret = FALSE, legend_position = "bottomright")
+plot(history, type = "cumulative", rate = TRUE, regret = FALSE, legend_position = "bottomright", smooth = TRUE)
 ```
+![Contextual's core class diagram](https://raw.githubusercontent.com/Nth-iteration-labs/contextual/master/man/figures/example.jpg)
 
 Maintainers
 -----------
