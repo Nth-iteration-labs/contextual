@@ -5,13 +5,20 @@ SimpleBTSPolicy <- R6::R6Class(
   inherit = Policy,
   public = list(
     J = NULL,
+    a = NULL,
+    b = NULL,
     class_name = "SimpleBTSPolicy",
-    initialize = function(J = 100) {
+    initialize = function(J = 100,
+                          a = 1,
+                          b = 1) {
       super$initialize()
       self$J  <- J
+      self$a  <- a
+      self$b  <- b
     },
     set_parameters = function(context_params) {
-      self$theta_to_arms <- list('alpha' = rep(self$b,self$J),  'beta' = rep(self$b,self$J))
+      self$theta_to_arms <- list('alpha' = rep(self$b,self$J),
+                                 'beta' = rep(self$b,self$J))
     },
     get_action = function(t, context) {
       point_estimate_of_mean <- vector("double", context$k)
@@ -27,7 +34,8 @@ SimpleBTSPolicy <- R6::R6Class(
     set_reward = function(t, context, action, reward) {
       arm    <- action$choice
       reward <- reward$reward
-      some_replicates <- which(rbinom(self$J, 1, .5) == 1) # double_or_nothing_bootstrap
+      # double_or_nothing_bootstrap
+      some_replicates <- which(rbinom(self$J, 1, .5) == 1)
       inc(self$theta$alpha[[arm]][some_replicates]) <- reward
       inc(self$theta$beta[[arm]][some_replicates])  <- 1 - reward
       self$theta

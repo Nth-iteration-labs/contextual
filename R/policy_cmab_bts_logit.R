@@ -1,11 +1,11 @@
 #' @export
-ContextualLogitBTS <- R6::R6Class(
+ContextualLogitBTSPolicy <- R6::R6Class(
   portable = FALSE,
   class = FALSE,
   inherit = Policy,
   public = list(
     J = NULL,
-    class_name = "ContextualLogitBTS",
+    class_name = "ContextualLogitBTSPolicy",
     initialize = function(J = 100) {
       self$J  <- J
     },
@@ -50,11 +50,11 @@ ContextualLogitBTS <- R6::R6Class(
   )
 )
 
-#' Policy: ContextualLogitBTS
+#' Policy: ContextualLogitBTSPolicy
 #'
-#' Each time step t, \code{ContextualLogitBTS} runs ...
+#' Each time step t, \code{ContextualLogitBTSPolicy} runs ...
 #'
-#' @name ContextualLogitBTS
+#' @name ContextualLogitBTSPolicy
 #'
 #' @seealso
 #'
@@ -67,6 +67,6 @@ ContextualLogitBTS <- R6::R6Class(
 #'
 #' @section Usage:
 #' \preformatted{
-#' policy <- ContextualLogitBTS()
+#' policy <- ContextualLogitBTSPolicy()
 #' }
 NULL

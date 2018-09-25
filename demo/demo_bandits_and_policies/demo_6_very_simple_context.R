@@ -28,17 +28,17 @@ source("../dev.R")
 horizon       <- 1000L
 simulations   <- 10L
 
-bandit        <- ContextualLinearBandit$new(k = 5, d = 5)
+bandit        <- ContextualLinearBandit$new(k = 5, d = 5, binary_rewards = TRUE)
 
 agents        <-list(#Agent$new(EpsilonGreedyPolicy$new(0.1), bandit),
-                     Agent$new(ContextualLogitBTS$new(), bandit)
+                     Agent$new(ContextualLogitBTSPolicy$new(10), bandit),
                      #Agent$new(ContextualThompsonSamplingPolicy$new(delta=0.5, R=0.01, epsilon=0.5), bandit),
-                     #Agent$new(LinUCBDisjointOptimizedPolicy$new(0.6), bandit)
+                     Agent$new(LinUCBDisjointOptimizedPolicy$new(0.6), bandit)
                      )
 
 simulation     <- Simulator$new(agents, horizon, simulations, do_parallel = FALSE)
 history        <- simulation$run()
-plot(history, type = "cumulative", regret = FALSE, rate = TRUE, legend_position = "bottomright", smooth = T)
+plot(history, type = "cumulative", regret = FALSE, rate = TRUE, legend_position = "bottomright")
 
 
 
