@@ -67,7 +67,8 @@ simulation <-
     horizon = horizon,
     worker_max = 3,
     save_context = TRUE,
-    reindex = TRUE
+    reindex = TRUE,
+    do_parallel = TRUE
   )
 
 # run the simulation

@@ -9,11 +9,8 @@ simulations        <- 100
 
 bandit             <- BasicBernoulliBandit$new(prob_per_arm)
 
-bandit             <- BasicGaussianBandit$new(c(0,0,1),c(1,1,1))
-
-
 agents             <- list(Agent$new(RandomPolicy$new(), bandit),
-                           #Agent$new(OraclePolicy$new(), bandit),
+                           Agent$new(OraclePolicy$new(), bandit),
                            Agent$new(EpsilonGreedyPolicy$new(0.1), bandit),
                            Agent$new(ThompsonSamplingPolicy$new(1.0, 1.0), bandit),
                            Agent$new(Exp3Policy$new(0.1), bandit),

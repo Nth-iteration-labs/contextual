@@ -5,16 +5,10 @@ SimpleBTSPolicy <- R6::R6Class(
   inherit = Policy,
   public = list(
     J = NULL,
-    a = NULL,
-    b = NULL,
     class_name = "SimpleBTSPolicy",
-    initialize = function(J = 100,
-                          a = 1,
-                          b = 1) {
+    initialize = function(J = 100) {
       super$initialize()
       self$J  <- J
-      self$a  <- a
-      self$b  <- b
     },
     set_parameters = function(context_params) {
       self$theta_to_arms <- list('alpha' = rep(self$b,self$J),  'beta' = rep(self$b,self$J))

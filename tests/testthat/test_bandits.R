@@ -509,7 +509,6 @@ test_that("BasicBernoulliBandit MAB policies", {
     )
 
   after <- simulation$run()
-  if (file.exists("test.RData")) file.remove("test.RData")
 
   expect_equal(after$get_cumulative_result(t=20)$LinUCBDisjoint$cum_reward,15)
   expect_equal(after$get_cumulative_result(t=20)$EpsilonGreedy$cum_reward,11)
@@ -518,5 +517,44 @@ test_that("BasicBernoulliBandit MAB policies", {
   expect_equal(after$get_cumulative_result(t=25)$LinUCBDisjoint$cum_reward,18)
   expect_equal(after$get_cumulative_result(t=25)$EpsilonGreedy$cum_reward,13)
   expect_equal(after$get_cumulative_result(t=25)$Oracle$cum_reward,22)
+
+  ######################## remove optimal values from log and try again ##########################
+
+  history <- History$new()
+  history$load("test.RData")
+  log_S <- history$get_data_table()
+
+  log_S$optimal_arm <- NULL
+  log_S$optimal_reward <- NULL
+
+  bandit <- OfflinePolicyEvaluatorBandit$new(offline_data = log_S, k = 3, d = 3)
+
+  agents <-
+    list(
+      Agent$new(EpsilonGreedyPolicy$new(0.01), bandit),
+      Agent$new(LinUCBDisjointPolicy$new(0.6), bandit),
+      Agent$new(OraclePolicy$new(), bandit)
+    )
+
+  simulation <-
+    Simulator$new(
+      agents,
+      horizon = horizon,
+      simulations = simulations,
+      t_over_sims = TRUE,
+      do_parallel = FALSE,
+      reindex = TRUE
+    )
+
+  after <- simulation$run()
+  if (file.exists("test.RData")) file.remove("test.RData")
+
+  expect_equal(after$get_cumulative_result(t=20)$LinUCBDisjoint$cum_reward,15)
+  expect_equal(after$get_cumulative_result(t=20)$EpsilonGreedy$cum_reward,11)
+  expect_equal(is.na(after$get_cumulative_result(t=20)$Oracle$cum_reward), TRUE)
+
+  expect_equal(after$get_cumulative_result(t=25)$LinUCBDisjoint$cum_reward,18)
+  expect_equal(after$get_cumulative_result(t=25)$EpsilonGreedy$cum_reward,13)
+  expect_equal(is.na(after$get_cumulative_result(t=25)$Oracle$cum_reward), TRUE)
 
 })

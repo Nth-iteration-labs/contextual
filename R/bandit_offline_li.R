@@ -4,16 +4,22 @@ OfflinePolicyEvaluatorBandit <- R6::R6Class(
   portable = TRUE,
   class = FALSE,
   private = list(
-    S = NULL
+    S = NULL,
+    oa = NULL,
+    or = NULL
   ),
   public = list(
     class_name = "OfflinePolicyEvaluatorBandit",
     randomize = NULL,
-    initialize   = function(offline_data, k, d, unique = NULL, shared = NULL, randomize = TRUE) {
+    initialize   = function(offline_data, k, d, unique = NULL,
+                            shared = NULL, randomize = TRUE) {
       self$k <- k                 # Number of arms (integer)
       self$d <- d                 # Dimension of context feature vector (integer)
       self$randomize <-randomize  # Randomize logged events for every simulation? (logical)
       private$S <- offline_data   # Logged events (by default, as a data.table)
+
+      private$oa <- "optimal_arm" %in% colnames(offline_data)
+      private$or <- "optimal_reward" %in% colnames(offline_data)
     },
     post_initialization = function() {
       if(isTRUE(self$randomize))private$S <- private$S[sample(nrow(private$S))]
@@ -27,14 +33,17 @@ OfflinePolicyEvaluatorBandit <- R6::R6Class(
       context
     },
     get_reward = function(index, context, action) {
-      reward           <- as.double(private$S$reward[[index]])
-      optimal_reward   <- as.double(private$S$optimal_reward[[index]])
-      optimal_arm      <- as.double(private$S$optimal_arm[[index]])
       if (private$S$choice[[index]] == action$choice) {
         list(
-          reward = reward,
-          optimal_reward = optimal_reward,
-          optimal_arm = optimal_arm
+          reward = as.double(private$S$reward[[index]]),
+
+          optimal_reward = ifelse(private$or,
+                                  as.double(private$S$optimal_reward[[index]]),
+                                  NA),
+
+          optimal_arm    = ifelse(private$oa,
+                                  as.double(private$S$optimal_arm[[index]]),
+                                  NA)
         )
       } else {
         NULL
