@@ -1,7 +1,11 @@
 context("Plot")
 
-#vdiffr::validate_cases()
-#skip_on_cran()
+# run vdiffr::validate_cases() at commandline first
+# did not help to make testing with vdiffr work..
+
+# print(gdtools::version_freetype())
+
+# dev.new(width = 550, height = 330, unit = "px", noRStudioGD = TRUE)
 
 bandit             <- ContextualBernoulliBandit$new(weights = c(0.9, 0.1, 0.1))
 agents             <- list(Agent$new(RandomPolicy$new(), bandit),
@@ -14,65 +18,85 @@ agents             <- list(Agent$new(RandomPolicy$new(), bandit),
 history            <- Simulator$new(agents, horizon = 20, simulations = 20,
                                     do_parallel = FALSE)$run()
 
-#### necessary for some reason while diffr::validate_cases()
-#### svg(width=7,height=5)
+vdiffr::expect_doppelganger(
+  "Basic cumulative plot",
+   plot(history, type = "cumulative", use_colors = FALSE, no_par = TRUE)
+)
 
-a <- plot(history, type = "cumulative", use_colors = FALSE)
+vdiffr::expect_doppelganger(
+  "Cumulative traces plot",
+  plot(history, type = "cumulative", regret = FALSE, legend = FALSE,
+     limit_agents = c("UCB1"), traces = TRUE, no_par = TRUE))
 
-b <- plot(history, type = "cumulative", regret = FALSE, legend = FALSE,
-     limit_agents = c("UCB1"), traces = TRUE)
-
-c <- plot(history, type = "cumulative", regret = FALSE, rate = TRUE, ci = "sd",
+vdiffr::expect_doppelganger(
+  "Cumulative sd plot",
+  plot(history, type = "cumulative", regret = FALSE, rate = TRUE, ci = "sd",
      limit_agents = c("Exp3", "ThompsonSampling"),
-     legend_position = "bottomright")
+     legend_position = "bottomright", no_par = TRUE))
 
-d <- plot(history, type = "cumulative", rate = TRUE, plot_only_ci = TRUE,
+vdiffr::expect_doppelganger(
+  "Only sd plot",
+  plot(history, type = "cumulative", rate = TRUE, plot_only_ci = TRUE,
      ci = "var", smooth = TRUE, limit_agents = c("UCB1", "GittinsBrezziLai"),
-     legend_position = "topright")
+     legend_position = "topright", no_par = TRUE))
 
-e <- plot(history, type = "average", ci = "ci", regret = FALSE, interval = 10,
-     smooth = TRUE, legend_position = "bottomright")
+vdiffr::expect_doppelganger(
+  "Average reward plot",
+   plot(history, type = "average", ci = "ci", regret = FALSE, interval = 10,
+     smooth = TRUE, legend_position = "bottomright", no_par = TRUE))
 
-f <- plot(history, type = "average", ci = "ci", regret = TRUE, interval = 10,
-          smooth = TRUE, legend_position = "bottomright")
+vdiffr::expect_doppelganger(
+  "Average regret plot",
+  plot(history, type = "average", ci = "ci", regret = TRUE, interval = 10,
+          smooth = TRUE, legend_position = "bottomright", no_par = TRUE))
 
-g <- plot(history, type = "arms", limit_agents = c("UCB1"),
-     interval = 10)
+vdiffr::expect_doppelganger(
+  "Arm plot",
+  plot(history, type = "arms", limit_agents = c("UCB1"),
+     interval = 10, no_par = TRUE))
 
-h <- plot(history, type = "cumulative", xlim=c(1,10), ylim(c(0,20)),
-          legend_border = FALSE)
+vdiffr::expect_doppelganger(
+  "Limits plot",
+  plot(history, type = "cumulative", xlim=c(1,10), ylim(c(0,20)),
+          legend_border = FALSE, no_par = TRUE))
 
-i <- plot(history, type = "cumulative", regret = FALSE, legend = FALSE,
-          limit_agents = c("UCB1"), traces = TRUE, smooth = TRUE)
+vdiffr::expect_doppelganger(
+  "Traces plot smooth",
+  plot(history, type = "cumulative", regret = FALSE, legend = FALSE,
+          limit_agents = c("UCB1"), traces = TRUE, smooth = TRUE, no_par = TRUE))
 
-j <- plot(history, traces_alpha = 0.2, traces_max = 2, traces = TRUE)
+vdiffr::expect_doppelganger(
+  "Traces alpha and max plot",
+  plot(history, traces_alpha = 0.2, traces_max = 2, traces = TRUE, no_par = TRUE))
 
-k <- plot(history, traces_alpha = 0.2, traces_max = 2, lwd = 1, traces = TRUE)
+vdiffr::expect_doppelganger(
+  "Lwd pot",
+  plot(history, traces_alpha = 0.2, traces_max = 2, lwd = 1, traces = TRUE, no_par = TRUE))
 
-l <- plot(history, color_step  = 2, lty_step = 2)
+vdiffr::expect_doppelganger(
+  "Color and lty stepping",
+  plot(history, color_step  = 2, lty_step = 2, no_par = TRUE))
 
-m <- plot(history, legend_labels = c(1:5), legend_title = "Policies")
+vdiffr::expect_doppelganger(
+  "Legend title and labels plot",
+  plot(history, legend_labels = c(1:5), legend_title = "Policies", no_par = TRUE))
 
-n <- plot(history, ylim = c(0.3,3.5))
+vdiffr::expect_doppelganger(
+  "Ylim plot",
+  plot(history, ylim = c(0.3,3.5), no_par = TRUE))
 
-vdiffr::expect_doppelganger("Basic cumulative plot", a)
-vdiffr::expect_doppelganger("Cumulative traces plot", b)
-vdiffr::expect_doppelganger("Cumulative sd plot", c)
-vdiffr::expect_doppelganger("Only sd plot", d)
-vdiffr::expect_doppelganger("Average reward plot", e)
-vdiffr::expect_doppelganger("Average regret plot", f)
-vdiffr::expect_doppelganger("Arm plot", g)
-vdiffr::expect_doppelganger("Limits plot", h)
-vdiffr::expect_doppelganger("Traces plot smooth", i)
+vdiffr::expect_doppelganger(
+  "Arms lims",
+   plot(history, type = "arms", ylim = c(10,80), xlim = c(2,9), limit_agents = c("UCB1"), no_par = TRUE))
 
-vdiffr::expect_doppelganger("Traces alpha and max plot", j)
-vdiffr::expect_doppelganger("Lwd pot", k)
-vdiffr::expect_doppelganger("Color and lty stepping", l)
-vdiffr::expect_doppelganger("Legend title and labels plot", m)
-vdiffr::expect_doppelganger("Ylim plot", n)
+vdiffr::expect_doppelganger(
+  "Arms color",
+   plot(history, type = "arms", use_colors = FALSE, limit_agents = c("UCB1"), no_par = TRUE))
 
-o <- plot(history, ylim = c(0.3,3.5), xlim = c(1,10), no_par = TRUE)
-p <- plot(history, ylim = c(0.3,3.5), xlim = c(1,10), no_par = FALSE)
+############################
+
+q <- plot(history, ylim = c(0.3,3.5), xlim = c(1,10), no_par = FALSE)
+r <- plot(history, ylim = c(0.3,3.5), xlim = c(1,10), no_par = TRUE)
 
 expect_warning(plot(history, type = "arms", interval = 10),
                "results of one agent")

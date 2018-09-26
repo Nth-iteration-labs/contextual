@@ -27,3 +27,12 @@ plot(history, color_step  = 2, lty_step = 2)
 plot(history, legend_labels = c(1:5), legend_title = "Policies")
 
 plot(history, ylim = c(0.3,3.5), xlim = c(1,20))
+
+plot(history, type = "arms", ylim = c(10,80), xlim = c(2,9))
+
+
+record_plot <-  function() {
+  plot(1:10)
+  invisible(recordPlot())
+}
+p <- record_plot()
