@@ -34,7 +34,7 @@ SoftmaxPolicy <- R6::R6Class(
         inc(cumulative_probability) <- probs[i]
         if ( cumulative_probability > runif(1) ) return(i)
       }
-      sample(arms, 1, replace = TRUE)
+      sample(arms, 1, replace = TRUE) #nocov
     }
 
   )

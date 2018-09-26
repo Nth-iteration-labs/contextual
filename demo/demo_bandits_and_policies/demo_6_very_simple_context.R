@@ -25,8 +25,8 @@ source("../dev.R")
 #bandit        <- ContextualHybridBandit$new(k = 100, shared_features = 10, unique_features = 2)
 ##########
 
-horizon       <- 1000L
-simulations   <- 10L
+horizon       <- 3000L
+simulations   <- 2L
 
 bandit        <- ContextualLinearBandit$new(k = 5, d = 5, binary_rewards = TRUE)
 
@@ -38,7 +38,8 @@ agents        <-list(#Agent$new(EpsilonGreedyPolicy$new(0.1), bandit),
 
 simulation     <- Simulator$new(agents, horizon, simulations, do_parallel = FALSE)
 history        <- simulation$run()
-plot(history, type = "cumulative", regret = FALSE, rate = TRUE, legend_position = "bottomright")
+plot(history, type = "cumulative", regret = FALSE, rate = FALSE, legend_position = "bottomright")
+plot(history, type = "cumulative", regret = TRUE, rate = FALSE, legend_position = "bottomright")
 
 
 

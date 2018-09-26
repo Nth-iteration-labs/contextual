@@ -19,4 +19,3 @@ test_that("ContextualLogitBTSPolicy simulation", {
   expect_equal(history$cumulative$ContextualLogitBTS$cum_regret,  14.4, tolerance = 0.01)
 
 })
-

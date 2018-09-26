@@ -20,6 +20,7 @@ test_that("History summary and print", {
 
 })
 
+
 test_that("History save_csv without filename", {
 
   csv_comparison_file <- read.csv("history_test.ref")
@@ -91,6 +92,12 @@ test_that("History save_csv nc theta removal theta with context", {
   history$save_csv("save_context_t.csv", context_to_columns = TRUE)
   import_file <- read.csv("save_context_t.csv")
   expect_equal(csv_comparison_file,  import_file)
+
+})
+
+test_that("Limit agents", {
+
+  expect_equal_to_reference(capture.output(summary(history, limit_agents = c("Exp3","UCB1"))), file = "summary_history_limit.rds")
 
 })
 

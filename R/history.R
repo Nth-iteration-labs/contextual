@@ -142,7 +142,7 @@ History <- R6::R6Class(
           if (as_list) {
             private$data_table_to_named_nested_list(cum_results[agent %in% limit_agents], transpose = FALSE)
           } else {
-            cum_results(cum_results[agent %in% limit_agents])
+            cum_results[agent %in% limit_agents]
           }
         }
       } else {
@@ -157,7 +157,7 @@ History <- R6::R6Class(
             private$data_table_to_named_nested_list(cum_results[, mget(limit_cols)]
                                             [agent %in% limit_agents], transpose = FALSE)
           } else {
-            cum_results(cum_results[, mget(limit_cols)][agent %in% limit_agents])
+            cum_results[, mget(limit_cols)][agent %in% limit_agents]
           }
         }
       }

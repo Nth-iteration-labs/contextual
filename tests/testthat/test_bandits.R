@@ -314,7 +314,7 @@ test_that("ContinuumBandit", {
     -0.1*(x - 5) ^ 2 + 3.5  + rnorm(length(x),0,0.4)
   }
 
-  int_time    <- 100
+  int_time    <- 5
   amplitude   <- 0.2
   learn_rate  <- 0.3
   omega       <- 2*pi/int_time
@@ -331,7 +331,7 @@ test_that("ContinuumBandit", {
                                            simulations = simulations,
                                            do_parallel =  FALSE)$run()
 
-  expect_equal(history$cumulative$Lif$reward,  2.8, tolerance = 0.01)
+  expect_equal(history$cumulative$Lif$reward,  2.84, tolerance = 0.01)
 
 })
 

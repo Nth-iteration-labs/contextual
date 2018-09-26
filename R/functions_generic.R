@@ -22,10 +22,6 @@ plot.History <- function(x, ...) {
     type <- eval(args$type)
   else
     type <- "cumulative"
-  if ("args" %in% names(args))
-    no_par <- eval(args$no_par)
-  else
-    no_par <- FALSE
   if ("xlim" %in% names(args))
     xlim <- eval(args$xlim)
   else
