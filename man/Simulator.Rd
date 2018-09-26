@@ -21,7 +21,7 @@ It then runs all simulations (in parallel by default), keeping a log of all \cod
 simulations are replicable, for each seperate agent, seeds are set equally and deterministically for
 each agent over all \code{horizon x simulations} time steps.
 
-\figure{1_simulator.jpeg}{contextual diagram: simulator}
+\figure{1simulator.jpeg}{contextual diagram: simulator}
 }
 \section{Usage}{
 

@@ -1,10 +1,7 @@
 context("Plot")
 
 # run vdiffr::validate_cases() at commandline first
-# did not help to make testing with vdiffr work..
-
 # print(gdtools::version_freetype())
-
 # dev.new(width = 550, height = 330, unit = "px", noRStudioGD = TRUE)
 
 bandit             <- ContextualBernoulliBandit$new(weights = c(0.9, 0.1, 0.1))

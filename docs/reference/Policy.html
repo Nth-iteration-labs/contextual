@@ -151,11 +151,11 @@ number of contextual features in <code>context$d</code>. It has to compute which
 <code><a href='Bandit.html'>Bandit</a></code> arms to pull by taking into account this contextual information plus the policy's
 current parameter values stored in the named list <code>theta</code>. On selecting an arm, the policy then
 returns its index as <code>action$choice</code>.</p>
-<p><img src='figures/3b_policy_get_action.jpeg' alt='contextual diagram: get context' /></p>
+<p><img src='figures/3bpolicy.jpeg' alt='contextual diagram: get context' /></p>
 <p>On pulling a <code><a href='Bandit.html'>Bandit</a></code> arm the policy receives a <code><a href='Bandit.html'>Bandit</a></code> reward through
 <code>reward$reward</code>. In combination with the current <code>context$X</code>* and <code>action$choice</code>,
 this reward can then be used to update to the policy's parameters as stored in list <code>theta</code>.</p>
-<p><img src='figures/3d_policy_set_reward.jpeg' alt='contextual diagram: get context' /></p>
+<p><img src='figures/3dpolicy.jpeg' alt='contextual diagram: get context' /></p>
 <p>* Note: in context-free scenario's, <code>context$X</code> can be omitted.</p>
     
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>

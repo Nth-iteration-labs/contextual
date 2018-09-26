@@ -281,7 +281,7 @@ Simulator <- R6::R6Class(
 #' simulations are replicable, for each seperate agent, seeds are set equally and deterministically for
 #' each agent over all \code{horizon x simulations} time steps.
 #'
-#' ![](1_simulator.jpeg "contextual diagram: simulator")
+#' ![](1simulator.jpeg "contextual diagram: simulator")
 #'
 #' @name Simulator
 #' @aliases run simulator

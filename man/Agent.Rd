@@ -19,7 +19,7 @@ for each time step \code{t}.
 \section{Schematic}{
 
 
-\figure{2_agent.jpeg}{contextual diagram: simulator}
+\figure{2agent.jpeg}{contextual diagram: simulator}
 }
 
 \section{Usage}{

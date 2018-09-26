@@ -20,13 +20,13 @@ number of contextual features in \code{context$d}. It has to compute which of th
 current parameter values stored in the named list \code{theta}. On selecting an arm, the policy then
 returns its index as \code{action$choice}.
 
-\figure{3b_policy_get_action.jpeg}{contextual diagram: get context}
+\figure{3bpolicy.jpeg}{contextual diagram: get context}
 
 On pulling a \code{\link{Bandit}} arm the policy receives a \code{\link{Bandit}} reward through
 \code{reward$reward}. In combination with the current \code{context$X}* and \code{action$choice},
 this reward can then be used to update to the policy's parameters as stored in list \code{theta}.
 
-\figure{3d_policy_set_reward.jpeg}{contextual diagram: get context}
+\figure{3dpolicy.jpeg}{contextual diagram: get context}
 
 * Note: in context-free scenario's, \code{context$X} can be omitted.
 }

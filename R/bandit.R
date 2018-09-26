@@ -54,13 +54,13 @@ Bandit <- R6::R6Class(
 #'
 #' Note: in context-free scenario's, \code{context$X} can be omitted.
 #'
-#' ![](3a_bandit_get_context.jpeg "contextual diagram: get context")
+#' ![](3abandit.jpeg "contextual diagram: get context")
 #'
 #' On receiving the index of a \code{\link{Policy}}-chosen arm through \code{action$choice},
 #' \code{Bandit} is expected to return a named \code{list} containing at least \code{reward$reward}
 #' and,  where computable, \code{reward$optimal}.
 #'
-#' ![](3c_bandit_get_reward.jpeg "contextual diagram: get context")
+#' ![](3cbandit.jpeg "contextual diagram: get context")
 #'
 #' @name Bandit
 #' @aliases post_initialization get_context generate_bandit_data bandit

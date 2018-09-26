@@ -98,7 +98,7 @@ Agent <- R6::R6Class(
 #'
 #' @section Schematic:
 #'
-#' ![](2_agent.jpeg "contextual diagram: simulator")
+#' ![](2agent.jpeg "contextual diagram: simulator")
 #'
 #' @name Agent
 #' @aliases do_step get_t set_t agent
