@@ -202,7 +202,7 @@ History <- R6::R6Class(
         context_cols <- c(paste0("X.", seq_along(unlist(private$.data[1,]$context))))
         dt_to_save <- copy(private$.data)
         dt_to_save[, context_string := lapply(.SD, function(x) paste( unlist(x), collapse=',') ),
-                                    by=1:nrow(private$.data), .SDcols = c("context")]
+                                    by=1:private$.data[, .N], .SDcols = c("context")]
         one_context <- private$.data[1,]$context[[1]]
         if (is.vector(one_context)) one_context <- matrix(one_context, nrow = 1L)
         dt_to_save$k <- dim(one_context)[2]
@@ -211,7 +211,7 @@ History <- R6::R6Class(
         dt_to_save$context <- NULL
         if ("theta" %in% names(dt_to_save)) dt_to_save$theta <- NULL
         dt_to_save$context_string <- NULL
-        fwrite(dt_to_save[,which(dt_to_save[,colSums(is.na(dt_to_save))<nrow(dt_to_save)]), with = F],
+        fwrite(dt_to_save[,which(dt_to_save[,colSums(is.na(dt_to_save))<nrow(dt_to_save)]), with = FALSE],
                file = filename)
         rm(dt_to_save)
         gc()

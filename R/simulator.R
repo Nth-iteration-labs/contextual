@@ -150,7 +150,9 @@ Simulator <- R6::R6Class(
         message("Postworkercreation")
       }
       # If Microsoft R, set MKL threads to 1
-      try({library(RevoUtilsMath);RevoUtilsMath::setMKLthreads(1);}, silent = TRUE)
+      if ("RevoUtilsMath" %in% rownames(installed.packages())) {
+        RevoUtilsMath::setMKLthreads(1)
+      }
       # nocov end
 
       # copy relevant variables to local environment

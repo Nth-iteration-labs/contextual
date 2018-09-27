@@ -58,12 +58,6 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/glossary.html">Glossary</a>
-    </li>
-    <li>
-      <a href="articles/literature.html">literature</a>
-    </li>
-    <li>
       <a href="articles/posts.html">Posts</a>
     </li>
   </ul>
@@ -101,6 +95,11 @@
 <h2 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h2>
 <p><a href="https://github.com/r-lib/R6">R6</a> based R package facilitating the simulation and evaluation of context-free and contextual Multi-Armed Bandit policies or algorithms.</p>
+<p>The package has been developed to:</p>
+<ul>
+<li>Introduce a wider audience to the advanced sequential decision strategies offered by contextual bandit policies.</li>
+<li>Ease the implementation, evaluation and dissemination of both existing and new contextual Multi-Armed Bandit algorithms and policies.</li>
+</ul>
 </div>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
@@ -113,20 +112,70 @@ devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocument
 <h2 class="hasAnchor">
 <a href="#documentation" class="anchor"></a>Documentation</h2>
 <ul>
-<li>
-<a href="https://nth-iteration-labs.github.io/contextual/reference/index.html">Online reference</a> <!---   [Blog at Pavlov](https://pavlov.tech/category/contextual/)-->
-</li>
+<li><a href="https://nth-iteration-labs.github.io/contextual/reference/index.html">Class reference</a></li>
+<li><a href="https://nth-iteration-labs.github.io/contextual/articles/contextual.html">Getting started: running simulations</a></li>
 </ul>
+<!---   [Blog at Pavlov](https://pavlov.tech/category/contextual/)-->
 </div>
 <div id="overview-of-core-classes" class="section level2">
 <h2 class="hasAnchor">
 <a href="#overview-of-core-classes" class="anchor"></a>Overview of core classes</h2>
 <p><img src="https://raw.githubusercontent.com/Nth-iteration-labs/contextual/master/man/figures/cmab_all_large.jpg" alt="Contextual’s core class diagram"></p>
 </div>
+<div id="policies-and-bandits" class="section level2">
+<h2 class="hasAnchor">
+<a href="#policies-and-bandits" class="anchor"></a>Policies and Bandits</h2>
+<p>Overview of contextual’s growing library of contextual and context-free bandit policies:</p>
+<table class="table">
+<colgroup>
+<col width="8%">
+<col width="48%">
+<col width="42%">
+</colgroup>
+<thead><tr class="header">
+<th>General</th>
+<th>Context-free</th>
+<th>Contextual</th>
+</tr></thead>
+<tbody><tr class="odd">
+<td>Random<br> Oracle<br><br><br><br><br><br>
+</td>
+<td>Epsilon-Greedy<br> Epsilon-First<br> UCB-tuned<br> Thompson Sampling<br> BootstrapTS<br> Softmax<br> Gittins</td>
+<td>CMAB Epoch-Greedy<br> LinUCB (General, Disjoint, Hybrid)<br> COFIBA*<br> LinTS<br> LogitBTS<br><br><br>
+</td>
+</tr></tbody>
+</table>
+<p>Overview of contextual’s bandit library:</p>
+<table class="table">
+<colgroup>
+<col width="20%">
+<col width="42%">
+<col width="29%">
+<col width="6%">
+</colgroup>
+<thead><tr class="header">
+<th>Context-free</th>
+<th>Contextual</th>
+<th>Offline</th>
+<th>Continuous</th>
+</tr></thead>
+<tbody><tr class="odd">
+<td>BasicBernoulliBandit<br> BasicGaussianBandit<br><br><br><br>
+</td>
+<td>ContextualBernoulli<br> ContextualLogit<br> ContextualHybrid<br> ContextualLinear<br> ContextualWheel</td>
+<td>OfflinePolicyEvaluator<br> PropensityEvaluator<em><br> DoublyRobust</em><br><br><br>
+</td>
+<td>Continuum <br><br><br><br><br>
+</td>
+</tr></tbody>
+</table>
+<p>* available soon</p>
+</div>
 <div id="maintainers" class="section level2">
 <h2 class="hasAnchor">
 <a href="#maintainers" class="anchor"></a>Maintainers</h2>
-<p>Robin van Emden: author, maintainer Maurits Kaptein: supervisor</p>
+<p>Robin van Emden: author, maintainer<em> Maurits Kaptein: supervisor</em></p>
+<p>* <a href="https://www.tilburguniversity.edu/">Tilburg University</a> / <a href="https://www.jads.nl/research.html">Jheronimus Academy of Data Science</a>.</p>
 <p>If you encounter a clear bug, please file a minimal reproducible example on <a href="https://github.com/Nth-iteration-labs/contextual/issues">GitHub</a>.</p>
 </div>
 </div>
