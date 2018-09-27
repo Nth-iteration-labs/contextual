@@ -46,7 +46,7 @@ Overview of contextual's bandit library:
 |------------------------------------------|---------------------------------------------------------------------------------------|------------------------------------------------------------|------------|
 | BasicBernoulliBandit<br>  BasicGaussianBandit<br><br> <br> <br>    | ContextualBernoulli<br>  ContextualLogit<br>  ContextualHybrid<br>  ContextualLinear<br>  ContextualWheel | OfflinePolicyEvaluator<br>  PropensityEvaluator*<br>   DoublyRobust*<br> <br> <br>   | Continuum <br> <br> <br> <br> <br> |
 
-\* Currently under development
+\* available soon
 
 Maintainers
 -----------
