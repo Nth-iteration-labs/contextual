@@ -7,7 +7,9 @@ Contextual: Multi-Armed Bandits in R
 Overview
 --------
 
-[R6](https://github.com/r-lib/R6) based R package facilitating the simulation and evaluation of context-free and contextual Multi-Armed Bandit policies or algorithms. It has been developed to introduce a wider audience to the refined sequential decision strategies offered by contextual bandit policies and to ease the implementation, evaluation and dissemination of both existing and new contextual Multi-Armed Bandit algorithms and policies. 
+[R6](https://github.com/r-lib/R6) based R package facilitating the simulation and evaluation of context-free and contextual Multi-Armed Bandit policies or algorithms. 
+
+The package has been developed to introduce a wider audience to the advanced sequential decision strategies offered by contextual bandit policies - and to ease the implementation, evaluation and dissemination of both existing and new contextual Multi-Armed Bandit algorithms and policies. 
 
 Installation
 ------------
