@@ -12,7 +12,7 @@ library(RPushbullet)
 simulations             <- 1
 horizon                 <- 37450000
 buffer_size             <- 1000
-sparsity_vector         <- c(0.00,0.70,0.80,0.90,0.95,0.99)
+sparsity_vector         <- c(0.99,0.80,0.90,0.95,0.99) #0.00 0.70
 worker_max              <- 7
 
 monetdb_host            <- "monetdb_ip"
@@ -78,7 +78,7 @@ for (sparsity in sparsity_vector) {
 
   history  <- simulation$run()
 
-  history$save_data_table(save_file_name)
+  history$save(save_file_name)
 
   history$clear_data_table()
   gc()

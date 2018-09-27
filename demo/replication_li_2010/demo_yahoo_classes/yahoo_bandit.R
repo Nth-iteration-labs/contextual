@@ -1,5 +1,5 @@
 YahooBandit <- R6::R6Class(
-  inherit = BasicBandit,
+  inherit = Bandit,
   portable = TRUE,
   class = FALSE,
   public = list(

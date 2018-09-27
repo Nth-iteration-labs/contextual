@@ -18,7 +18,7 @@ History <- R6::R6Class(
       self$reset()
     },
     reset = function() {
-      gc(reset = FALSE, full = TRUE)
+      gc()
       self$clear_data_table()
       private$initialize_data_tables()
       invisible(self)

@@ -1,8 +1,9 @@
 library(contextual)
+library(lobstr)
 
 # Config -----------------------------------------------------------------------------------------------------
 
-load_file_name          <- "D:/results/Yahoo_T_37450000_first_try_no_random/Yahoo_T_37450000_sparse_0.99.RData"
+load_file_name          <- "Yahoo_T_2e+06_sparse_0.99.RData"
 
 # Setup ------------------------------------------------------------------------------------------------------
 
@@ -10,12 +11,6 @@ history  <- History$new()
 
 # Take a look at the results ---------------------------------------------------------------------------------
 
-history$load(load_file_name)
+history$load_data_table(load_file_name)
 
-par(mfrow = c(1, 1), mar = c(4, 4, 0.1, 0.1), cex=1.35)
-plot(history, regret = FALSE, rate = TRUE, type = "cumulative",
-     legend_position = "bottomright",
-     legend_border = FALSE,
-     no_par = TRUE,
-     ylim = c(0.025,0.053),
-     interval = 20000)
+plot(history, regret = FALSE, rate = TRUE, type = "cumulative", legend_position = "bottomright", interval = 1000)
