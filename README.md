@@ -29,6 +29,23 @@ Overview of core classes
 
 ![Contextual's core class diagram](https://raw.githubusercontent.com/Nth-iteration-labs/contextual/master/man/figures/cmab_all_large.jpg)
 
+Policies and Bandits
+--------------------
+
+Overview of contextual's growing Policy library:
+
+| General | Context-free | Contextual |
+|---------------|-------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------|
+| Random<br>  Oracle<br> <br> <br> <br> <br><br>   | Epsilon-Greedy<br>  Epsilon-First<br>  UCB-tuned<br>   Thompson Sampling<br>   BootstrapTS<br>   Softmax<br>   Gittins | CMAB Epoch-Greedy<br>   LinUCB (General, Disjoint, Hybrid)<br>  COFIBA*<br>   LinTS<br>   LogitBTS<br><br> <br>   |
+
+Overview of contextual's growing Bandit library:
+
+| Context-free  | Contextual | Offline | Continuous |
+|------------------------------------------|---------------------------------------------------------------------------------------|------------------------------------------------------------|------------|
+| BasicBernoulliBandit<br>  BasicGaussianBandit<br><br> <br> <br>    | ContextualBernoulli<br>  ContextualLogit<br>  ContextualHybrid<br>  ContextualLinear<br>  ContextualWheel | OfflinePolicyEvaluator<br>  PropensityEvaluator*<br>   DoublyRobust*<br> <br> <br>   | Continuum <br> <br> <br> <br> <br> |
+
+* Currently under development
+
 Maintainers
 -----------
 
