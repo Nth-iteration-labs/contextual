@@ -1,7 +1,4 @@
 library(contextual)
-library(here)
-setwd(here("demo","demo_bandits_and_policies"))
-source("../dev.R")
 
 horizon            <- 1000
 simulations        <- 100
@@ -22,9 +19,8 @@ bandit             <- ContinuumBandit$new(FUN = continuous_arms)
 
 agent              <- Agent$new(policy,bandit)
 
-history            <- Simulator$new(     agents = agent,
-                                         horizon = horizon,
-                                         simulations = simulations,
-                                         do_parallel =  TRUE)$run()
+history            <- Simulator$new(agents      = agent,
+                                    horizon     = horizon,
+                                    simulations = simulations)$run()
 
 plot(history, type = "average", regret = FALSE)

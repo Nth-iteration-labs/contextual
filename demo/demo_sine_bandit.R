@@ -1,9 +1,7 @@
-#library(contextual)
-library(here)
-setwd(here("demo","demo_bandits_and_policies"))
-source("../dev.R")
+library(contextual)
 
-# Idea from Dai Shi thesis Exploring Bandit Algorithms for Automatic Content Selection
+# Inspired by Dai Shi's thesis
+# "Exploring Bandit Algorithms for Automatic Content Selection"
 
 horizon     <- 600L
 simulations <- 300L
@@ -27,7 +25,7 @@ TwoArmedSineBandit <- R6::R6Class(
        reward      <- sapply(rseq,self$noisy_sine,t,self$sigma)
        rewardlist <- list(
          reward                   = reward[action$choice],
-         optimal_reward_value     = reward[which.max(reward)]
+         optimal_reward           = reward[which.max(reward)]
        )
      },
      noisy_sine = function(phi, t, sigma) {
@@ -37,20 +35,18 @@ TwoArmedSineBandit <- R6::R6Class(
    )
  )
 
-bandit <- TwoArmedSineBandit$new()
+bandit     <- TwoArmedSineBandit$new()
 
-agents <- list(Agent$new(Exp3Policy$new(0.1), bandit),
-               Agent$new(UCB1Policy$new(), bandit))
+agents     <- list(Agent$new(Exp3Policy$new(0.1), bandit),
+                   Agent$new(UCB1Policy$new(), bandit))
 
-simulation <- Simulator$new(agents, horizon = horizon, simulations = simulations, do_parallel = TRUE)
+simulation <- Simulator$new(agents, horizon = horizon, simulations = simulations, progress_file = TRUE)
 
-history <- simulation$run()
+history    <- simulation$run()
 
 plot(history, type = "average", regret = FALSE, ci = "var", plot_only_ci = TRUE)
 plot(history, type = "average", regret = TRUE, ci = "var", plot_only_ci = TRUE)
 plot(history, type = "cumulative", ci = "var", rate = TRUE, plot_only_ci = TRUE)
-
 plot(history, type = "average", regret = FALSE, ci = "var")
 plot(history, type = "average", regret = TRUE, ci = "var")
 plot(history, type = "cumulative", ci = "var", rate = TRUE)
-plot(history, type = "cumulative", ci = "var")

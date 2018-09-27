@@ -1,11 +1,9 @@
 library(contextual)
-source("../dev.R")
 
 library(data.table)
 library(DBI)
 library(MonetDBLite)
 library(here)
-
 
 setwd(here("demo", "replication_li_2010"))
 

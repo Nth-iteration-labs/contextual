@@ -1,11 +1,4 @@
 library(contextual)
-library(here)
-setwd(here("demo","demo_bandits_and_policies"))
-source("../dev.R")
-
-#library(contextual)
-#library(here)
-#setwd(here("demo","paper_jss_replication_package"))
 
 horizon <- 100L
 simulations <- 300L

@@ -24,6 +24,7 @@ Simulator <- R6::R6Class(
     progress_file = NULL,
     log_interval = NULL,
     include_packages = NULL,
+    outfile = NULL,
     cl = NULL,
     reindex = NULL,
     initialize = function(agents,
@@ -66,7 +67,12 @@ Simulator <- R6::R6Class(
       if (self$progress_file) cat(paste0(""), file = "progress.log", append = FALSE)
 
       # create or clear parallel.log file
-      if (self$progress_file) cat(paste0(""), file = "parallel.log", append = FALSE)
+      if (self$progress_file) {
+        cat(paste0(""), file = "parallel.log", append = FALSE)
+        self$outfile <- "parallel.log"
+      } else {
+        self$outfile <- ""
+      }
 
       # (re)create history's data.table
       self$history <- History$new(self$horizon * self$agent_count * self$simulations)
@@ -111,7 +117,7 @@ Simulator <- R6::R6Class(
       # run foreach either parallel or not, create workers
       `%fun%` <- foreach::`%do%`
       workers <- 1
-      # parallel tests do not do well on CRAN, so no test coverage for parallel section
+      # parallel tests are problematic, therefor no test coverage for parallel section
       # nocov start
       if (self$do_parallel) {
         message("Preworkercreation")
@@ -127,16 +133,16 @@ Simulator <- R6::R6Class(
           # Windows
 
           self$cl <- parallel::makeCluster(workers, useXDR = FALSE, type = "PSOCK",
-                                           methods = FALSE, setup_timeout = 30, outfile = "parallel.log")
+                                           methods = FALSE, setup_timeout = 30, outfile = self$outfile)
         } else {
           # Linux or MacOS
           # self$cl <- parallel::makeCluster(workers, useXDR = FALSE, type = "FORK", methods=FALSE,
-          #                                   port=11999, outfile = "parallel.log")
+          #                                   port=11999, outfile = self$outfile)
 
           # There are issues with FORK that pop up irregularly and have proven hard to pin down.
           # So to make sure sims work, we use PSOCK for all operating systems - for now.
           self$cl <- parallel::makeCluster(workers, useXDR = FALSE, type = "PSOCK",
-                                           methods = FALSE, setup_timeout = 30, outfile = "parallel.log")
+                                           methods = FALSE, setup_timeout = 30, outfile = self$outfile)
           if (grepl('darwin', version$os)) {
             # macOS - potential future osx/linux specific settings go here.
           } else {

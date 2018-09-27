@@ -1,11 +1,5 @@
-library(here)
+library(contextual)
 library(data.table)
-setwd(here("demo", "demo_offline_linucb"))
-source("../dev.R")
-#library(contextual)
-library(here)
-library(data.table)
-setwd(here("demo", "demo_offline_linucb"))
 
 ################ Phase I - Importing and parsing linucb data #############
 
@@ -50,25 +44,20 @@ bandit      <- OfflinePolicyEvaluatorBandit$new(offline_data = log_S, k = 10, d 
 # define two LinUCBDisjointSmPolicy agents
 
 agents <-
-  list(
-
-    Agent$new(LinUCBDisjointOptimizedPolicy$new(0.01), bandit, name = "LinUCB alpha = 0.01"),
-    Agent$new(LinUCBDisjointOptimizedPolicy$new(0.05), bandit, name = "LinUCB alpha = 0.05"),
-    Agent$new(LinUCBDisjointOptimizedPolicy$new(0.1), bandit, name = "LinUCB alpha = 0.1"),
-    Agent$new(LinUCBDisjointOptimizedPolicy$new(1.0), bandit, name = "LinUCB alpha = 1.0")
-  )
+  list(Agent$new(LinUCBDisjointOptimizedPolicy$new(0.01), bandit, name = "LinUCB alpha = 0.01"),
+       Agent$new(LinUCBDisjointOptimizedPolicy$new(0.05), bandit, name = "LinUCB alpha = 0.05"),
+       Agent$new(LinUCBDisjointOptimizedPolicy$new(0.1),  bandit, name = "LinUCB alpha = 0.1"),
+       Agent$new(LinUCBDisjointOptimizedPolicy$new(1.0),  bandit, name = "LinUCB alpha = 1.0"))
 
 # define the simulation
 
 simulation <-
   Simulator$new(
-    agents = agents,
-    simulations = simulations,
-    horizon = horizon,
-    worker_max = 3,
-    save_context = TRUE,
-    reindex = TRUE,
-    do_parallel = TRUE
+    agents           = agents,
+    simulations      = simulations,
+    horizon          = horizon,
+    save_context     = TRUE,
+    reindex          = TRUE
   )
 
 # run the simulation
@@ -79,10 +68,10 @@ linucb_sim  <- simulation$run()
 # plot the results
 
 plot(linucb_sim,
-     regret = FALSE,
-     rate = TRUE,
+     regret          = FALSE,
+     rate            = TRUE,
      legend_position = "bottomright",
-     type = "cumulative")
+     type            = "cumulative")
 
 linucb_sim$save_csv(NA,context_to_columns = TRUE)
 
