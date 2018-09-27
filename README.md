@@ -11,7 +11,7 @@ Overview
 
 The package has been developed to: 
 
-* Introduce a wider audience to the advanced sequential decision strategies offered by contextual bandit policies 
+* Introduce a wider audience to the advanced sequential decision strategies offered by contextual bandit policies.
 * Ease the implementation, evaluation and dissemination of both existing and new contextual Multi-Armed Bandit algorithms and policies. 
 
 Installation
