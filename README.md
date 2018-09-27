@@ -26,7 +26,9 @@ devtools::install_github("Nth-iteration-labs/contextual")
 Documentation
 -------------
 
--   [Online reference](https://nth-iteration-labs.github.io/contextual/reference/index.html)
+* [Class reference](https://nth-iteration-labs.github.io/contextual/reference/index.html)
+* [Getting started: running simulations](https://nth-iteration-labs.github.io/contextual/articles/contextual.html)
+
 <!---   [Blog at Pavlov](https://pavlov.tech/category/contextual/)-->
 
 Overview of core classes
