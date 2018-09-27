@@ -9,7 +9,10 @@ Overview
 
 [R6](https://github.com/r-lib/R6) based R package facilitating the simulation and evaluation of context-free and contextual Multi-Armed Bandit policies or algorithms. 
 
-The package has been developed to introduce a wider audience to the advanced sequential decision strategies offered by contextual bandit policies - and to ease the implementation, evaluation and dissemination of both existing and new contextual Multi-Armed Bandit algorithms and policies. 
+The package has been developed to: 
+
+* Introduce a wider audience to the advanced sequential decision strategies offered by contextual bandit policies 
+* Ease the implementation, evaluation and dissemination of both existing and new contextual Multi-Armed Bandit algorithms and policies. 
 
 Installation
 ------------
@@ -51,7 +54,9 @@ Overview of contextual's bandit library:
 Maintainers
 -----------
 
-Robin van Emden: author, maintainer
-Maurits Kaptein: supervisor
+Robin van Emden: author, maintainer*
+Maurits Kaptein: supervisor*
+
+\* [Tilburg University](https://www.tilburguniversity.edu/) / [Jheronimus Academy of Data Science](https://www.jads.nl/research.html).
 
 If you encounter a clear bug, please file a minimal reproducible example on [GitHub](https://github.com/Nth-iteration-labs/contextual/issues).
