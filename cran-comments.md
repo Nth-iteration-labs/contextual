@@ -2,7 +2,7 @@ New submission.
 
 ## Test environments
 
-* local Windows 10 (x64) release, R 3.5.0
+* local Windows 10 (x64) release, R 3.5.1
 * OS X install (on travis-ci) R-release
 * Ubuntu 12.04 (on travis-ci) R-release
 * Windows Server 2012 R2 x64 install (on appveyor), R 3.5.1

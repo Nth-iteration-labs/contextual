@@ -184,14 +184,14 @@ the number of arms <code>context$k</code> and the number of features <code>conte
 <ul>
 <li><p><code>t</code>: integer, time step <code>t</code>.</p></li>
 <li><p><code>context</code>: list, containing the current <code>context$X</code> (d x k context matrix),
-<code>context$k</code> (number of arms) and <code>context$d</code> (number of context feaures)
+<code>context$k</code> (number of arms) and <code>context$d</code> (number of context features)
 (as set by <code>bandit</code>).</p></li>
 <li><p><code>action</code>:  list, containing <code>action$choice</code> (as set by <code>policy</code>).</p></li>
 </ul>
 returns a named <code>list</code> containing <code>reward$reward</code> and, where computable,
 <code>reward$optimal</code> (used by "oracle" policies and to calculate regret).</p></dd>
     <dt><code><a href='Bandit.html'>post_initialization()</a></code></dt><dd><p>Randomize offline data by shuffling the offline data.table before the start of each
-individual simulation when self$randomize is TRuE (default)</p></dd>
+individual simulation when self$randomize is TRUE (default)</p></dd>
 </dl>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>

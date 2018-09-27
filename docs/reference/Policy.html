@@ -171,7 +171,7 @@ this reward can then be used to update to the policy's parameters as stored in l
 <ul>
 <li><p><code>t</code>: integer, time step <code>t</code>.</p></li>
 <li><p><code>context</code>: list, containing the current <code>context$X</code> (d x k context matrix),
-<code>context$k</code> (number of arms) and <code>context$d</code> (number of context feaures)</p></li>
+<code>context$k</code> (number of arms) and <code>context$d</code> (number of context features)</p></li>
 </ul>
 computes which arm to play based on the current values in named list <code>theta</code>
 and the current <code>context</code>. Returns a named list containing
@@ -180,7 +180,7 @@ and the current <code>context</code>. Returns a named list containing
 <ul>
 <li><p><code>t</code>: integer, time step <code>t</code>.</p></li>
 <li><p><code>context</code>: list, containing the current <code>context$X</code> (d x k context matrix),
-<code>context$k</code> (number of arms) and <code>context$d</code> (number of context feaures)
+<code>context$k</code> (number of arms) and <code>context$d</code> (number of context features)
 (as set by <code>bandit</code>).</p></li>
 <li><p><code>action</code>:  list, containing <code>action$choice</code> (as set by <code>policy</code>).</p></li>
 <li><p><code>reward</code>:  list, containing <code>reward$reward</code> and, if available,

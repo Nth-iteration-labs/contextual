@@ -67,7 +67,7 @@ Plots in a no_par.
 \code{(character , NULL)} Set a legend title.
 }
 \item{\code{legend_labels}}{
-\code{(list , NULL)} Set legend labels to custom values as specificed in this list.
+\code{(list , NULL)} Set legend labels to custom values as specified in this list.
 }
 \item{\code{legend_border}}{
 \code{(logical , NULL)} Set a legend title.

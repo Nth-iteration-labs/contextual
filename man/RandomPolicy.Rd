@@ -21,7 +21,7 @@ policy <- RandomPolicy(name = "RandomPolicy")
 \describe{
 \item{\code{name}}{
 character string specifying this policy. \code{name}
-is, amongst others, saved to the History log and displayed in summaries and plots.
+is, among others, saved to the History log and displayed in summaries and plots.
 }
 }
 }

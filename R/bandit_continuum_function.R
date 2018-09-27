@@ -28,7 +28,7 @@ ContinuumBandit <- R6::R6Class(
 
 #' Bandit: ContinuumBandit
 #'
-#' A function based continuum multiarmed bandit
+#' A function based continuum multi-armed bandit
 #' where arms are chosen from a subset of the real line and the mean rewards
 #' are assumed to be a continuous function of the arms.
 #'
@@ -66,7 +66,7 @@ ContinuumBandit <- R6::R6Class(
 #'      \itemize{
 #'          \item \code{t}: integer, time step \code{t}.
 #'          \item \code{context}: list, containing the current \code{context$X} (d x k context matrix),
-#'          \code{context$k} (number of arms) and \code{context$d} (number of context feaures)
+#'          \code{context$k} (number of arms) and \code{context$d} (number of context features)
 #'          (as set by \code{bandit}).
 #'          \item \code{action}:  list, containing \code{action$choice} (as set by \code{policy}).
 #'      }

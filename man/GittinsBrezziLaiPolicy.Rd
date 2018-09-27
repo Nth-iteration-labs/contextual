@@ -49,7 +49,7 @@ arguments:
 \itemize{
 \item \code{t}: integer, time step \code{t}.
 \item \code{context}: list, containing the current \code{context$X} (d x k context matrix),
-\code{context$k} (number of arms) and \code{context$d} (number of context feaures)
+\code{context$k} (number of arms) and \code{context$d} (number of context features)
 }
 computes which arm to play based on the current values in named list \code{theta}
 and the current \code{context}. Returns a named list containing
@@ -61,7 +61,7 @@ arguments:
 \itemize{
 \item \code{t}: integer, time step \code{t}.
 \item \code{context}: list, containing the current \code{context$X} (d x k context matrix),
-\code{context$k} (number of arms) and \code{context$d} (number of context feaures)
+\code{context$k} (number of arms) and \code{context$d} (number of context features)
 (as set by \code{bandit}).
 \item \code{action}:  list, containing \code{action$choice} (as set by \code{policy}).
 \item \code{reward}:  list, containing \code{reward$reward} and, if available,

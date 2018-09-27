@@ -64,7 +64,7 @@ EpsilonFirstPolicy              <- R6::R6Class(
 #'   }
 #'   \item{\code{name}}{
 #'    character string specifying this policy. \code{name}
-#'    is, amongst others, saved to the History log and displayed in summaries and plots.
+#'    is, among others, saved to the History log and displayed in summaries and plots.
 #'   }
 #' }
 #'
@@ -102,7 +102,7 @@ EpsilonFirstPolicy              <- R6::R6Class(
 #'
 #' Sutton, R. S. (1996). Generalization in reinforcement learning: Successful examples using sparse coarse coding. In Advances in neural information processing systems (pp. 1038-1044).
 #'
-#' Strehl, A., & Littman, M. (2004). Exploration via modelbased interval estimation. In International Conference on Machine Learning, number Icml.
+#' Strehl, A., & Littman, M. (2004). Exploration via model based interval estimation. In International Conference on Machine Learning, number Icml.
 #'
 #' @seealso
 #'

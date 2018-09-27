@@ -40,7 +40,7 @@ ThompsonSamplingPolicy <- R6::R6Class(
 #' Policy: Thompson Sampling
 #'
 #' \code{ThompsonSamplingPolicy} works by maintaining a prior on the the mean rewards of its arms.
-#' In this, it follows a beta–binomial model with parameters alpha and beta, sampling values
+#' In this, it follows a beta-binomial model with parameters alpha and beta, sampling values
 #' for each arm from its prior and picking the arm with the highest value.
 #' When an arm is pulled and a Bernoulli reward is observed, it modifies the prior based on the reward.
 #' This procedure is repeated for the next arm pull.
@@ -64,7 +64,7 @@ ThompsonSamplingPolicy <- R6::R6Class(
 #'   }
 #'   \item{\code{name}}{
 #'    character string specifying this policy. \code{name}
-#'    is, amongst others, saved to the History log and displayed in summaries and plots.
+#'    is, among others, saved to the History log and displayed in summaries and plots.
 #'   }
 #' }
 #'

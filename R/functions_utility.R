@@ -146,7 +146,7 @@ is_rstudio <- function() {
 #' until the end of the session.
 #'
 #' Also, the active graphing environment will be killed.
-#' As a result, any graphs that are open will be deleted. You will have to regraph them.
+#' As a result, any graphs that are open will be deleted. 
 #'
 #' @examples
 #' \dontrun{
@@ -267,7 +267,7 @@ var_welford <- function(z){
 #' The inverse gamma distribution with parameters shape and rate has
 #' density \emph{f(x) = rate^shape/Gamma(shape) x^(-1-shape)
 #' e^(-rate/x)} it is the inverse of the standard gamma
-#' parameterzation in R.
+#' parameterization in R.
 #'
 #' The functions (d/p/q/r)invgamma simply wrap those of the standard
 #' (d/p/q/r)gamma R implementation, so look at, say,

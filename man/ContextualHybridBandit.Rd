@@ -58,7 +58,7 @@ arguments:
 \itemize{
 \item \code{t}: integer, time step \code{t}.
 \item \code{context}: list, containing the current \code{context$X} (d x k context matrix),
-\code{context$k} (number of arms) and \code{context$d} (number of context feaures)
+\code{context$k} (number of arms) and \code{context$d} (number of context features)
 (as set by \code{bandit}).
 \item \code{action}:  list, containing \code{action$choice} (as set by \code{policy}).
 }
@@ -67,7 +67,7 @@ returns a named \code{list} containing \code{reward$reward} and, where computabl
 }
 
 \item{\code{post_initialization()}}{
-initialzes \code{d x k} beta matrix.
+initializes \code{d x k} beta matrix.
 }
 }
 }

@@ -179,14 +179,14 @@ the number of arms <code>context$k</code> and the number of features <code>conte
 <ul>
 <li><p><code>t</code>: integer, time step <code>t</code>.</p></li>
 <li><p><code>context</code>: list, containing the current <code>context$X</code> (d x k context matrix),
-<code>context$k</code> (number of arms) and <code>context$d</code> (number of context feaures)
+<code>context$k</code> (number of arms) and <code>context$d</code> (number of context features)
 (as set by <code>bandit</code>).</p></li>
 <li><p><code>action</code>:  list, containing <code>action$choice</code> (as set by <code>policy</code>).</p></li>
 </ul>
 returns a named <code>list</code> containing <code>reward$reward</code> and, where computable,
 <code>reward$optimal</code> (used by "oracle" policies and to calculate regret).</p></dd>
     <dt><code>post_initialization()</code></dt><dd><p>Called after class and seed initialisation, but before the start of the simulation.
-Set random values that remain available sthroughout the life of a <code>Bandit</code> here.</p></dd>
+Set random values that remain available throughout the life of a <code>Bandit</code> here.</p></dd>
     <dt><code>generate_bandit_data()</code></dt><dd><p>Called after class and seed initialisation, but before the start of a simulation.
 Only called when <code>bandit$precaching</code> is set to <code>TRUE</code> (default <code>FALSE</code>).
 Pregenerate <code>contexts</code> and <code>rewards</code> here.</p></dd>

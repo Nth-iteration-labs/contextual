@@ -143,13 +143,13 @@
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>A Simulator takes, at a minimum, one or more <code><a href='Agent.html'>Agent</a></code> instances, a horizon
-(the length of an invidiual simulation, <em>t</em> = 1, &#8230;, T) and the number of simulations
+(the length of an individual simulation, <em>t</em> = 1, &#8230;, T) and the number of simulations
 (How many times to repeat each simulation over <em>t</em> = 1, &#8230;, T, with a new seed
 on each repeat*).</p>
 <p>It then runs all simulations (in parallel by default), keeping a log of all <code><a href='Policy.html'>Policy</a></code> and
 <code><a href='Bandit.html'>Bandit</a></code> interactions in a <code><a href='History.html'>History</a></code> instance.</p>
 <p>* Note: to be able to fairly evaluate and compare each agent's performance, and to make sure that
-simulations are replicable, for each seperate agent, seeds are set equally and deterministically for
+simulations are replicable, for each separate agent, seeds are set equally and deterministically for
 each agent over all <code>horizon x simulations</code> time steps.</p>
 <p><img src='figures/1simulator.jpeg' alt='contextual diagram: simulator' /></p>
     
@@ -184,12 +184,12 @@ with a new seed on each repeat (itself deterministically derived from set\_seed)
 <dt><code>do_parallel</code></dt><dd><p><code>logical</code>. Run <code>Simulator</code> processes in parallel?</p></dd>
 <dt><code>worker_max</code></dt><dd><p><code>integer</code>. Specifies how many parallel workers are to be used.
 If unspecified, the amount of workers defaults to <code>max(workers_available)-1</code>.</p></dd>
-<dt><code>t_over_sims</code></dt><dd><p><code>logical</code>. Of use to, amongst others, offline Bandits.
+<dt><code>t_over_sims</code></dt><dd><p><code>logical</code>. Of use to, among others, offline Bandits.
 If <code>t_over_sims</code> is set to <code>TRUE</code>, the current <code>Simulator</code>
 iterates over all rows in a data set for each repeated simulation.
 If <code>FALSE</code>, it splits the data into <code>simulations</code> parts,
 and a different subset of the data for each repeat of an agent's simulation.</p></dd>
-<dt><code>set_seed</code></dt><dd><p><code>integer</code>. Sets the seed of R‘s random number generator for the current <code>Simulator</code>.</p></dd>
+<dt><code>set_seed</code></dt><dd><p><code>integer</code>. Sets the seed of R's random number generator for the current <code>Simulator</code>.</p></dd>
 <dt><code>progress_file</code></dt><dd><p><code>logical</code>. If <code>TRUE</code>, <code>Simulator</code> writes <code>progress.log</code> and <code>parallel.log</code>
 files to the current working directory, allowing you to keep track of <code>workers</code>, iterations,
 and potential errors when running a <code>Simulator</code> in parallel.</p></dd>

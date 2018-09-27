@@ -65,11 +65,11 @@ Exp3Policy <- R6::R6Class(
 #'
 #' \describe{
 #'   \item{\code{gamma}}{
-#'    double, value in the closed interval \code{(0,1]}, controls the exploration - often refered to as the learning rate
+#'    double, value in the closed interval \code{(0,1]}, controls the exploration - often referred to as the learning rate
 #'   }
 #'   \item{\code{name}}{
 #'    character string specifying this policy. \code{name}
-#'    is, amongst others, saved to the History log and displayed in summaries and plots.
+#'    is, among others, saved to the History log and displayed in summaries and plots.
 #'   }
 #' }
 #'
@@ -103,8 +103,8 @@ Exp3Policy <- R6::R6Class(
 #'
 #' @references
 #'
-#' Auer, P., Cesa-Bianchi, N., Freund, Y., & Schapire, R. E. (2002). The nonstochastic multiarmed bandit problem. SIAM journal on computing, 32(1), 48-77. Strehl, A., & Littman, M. (2004). Exploration via modelbased interval estimation. In International Conference on Machine Learning, number Icml.
-#' Strehl, A., & Littman, M. (2004). Exploration via modelbased interval estimation. In International Conference on Machine Learning, number Icml.
+#' Auer, P., Cesa-Bianchi, N., Freund, Y., & Schapire, R. E. (2002). The nonstochastic multi-armed bandit problem. SIAM journal on computing, 32(1), 48-77. Strehl, A., & Littman, M. (2004). Exploration via model based interval estimation. In International Conference on Machine Learning, number Icml.
+#' Strehl, A., & Littman, M. (2004). Exploration via model based interval estimation. In International Conference on Machine Learning, number Icml.
 #'
 #' @seealso
 #'

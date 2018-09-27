@@ -278,7 +278,7 @@ Simulator <- R6::R6Class(
 #' The entry point of any \pkg{contextual} simulation.
 #'
 #' A Simulator takes, at a minimum, one or more \code{\link{Agent}} instances, a horizon
-#' (the length of an invidiual simulation, \emph{t} = \{1, \ldots, T\}) and the number of simulations
+#' (the length of an individual simulation, \emph{t} = \{1, \ldots, T\}) and the number of simulations
 #' (How many times to repeat each simulation over \emph{t} = \{1, \ldots, T\}, with a new seed
 #' on each repeat*).
 #'
@@ -286,7 +286,7 @@ Simulator <- R6::R6Class(
 #' \code{\link{Bandit}} interactions in a \code{\link{History}} instance.
 #'
 #' &ast; Note: to be able to fairly evaluate and compare each agent's performance, and to make sure that
-#' simulations are replicable, for each seperate agent, seeds are set equally and deterministically for
+#' simulations are replicable, for each separate agent, seeds are set equally and deterministically for
 #' each agent over all \code{horizon x simulations} time steps.
 #'
 #' ![](1simulator.jpeg "contextual diagram: simulator")
@@ -338,14 +338,14 @@ Simulator <- R6::R6Class(
 #'
 #'   }
 #'   \item{\code{t_over_sims}}{
-#'      \code{logical}. Of use to, amongst others, offline Bandits.
+#'      \code{logical}. Of use to, among others, offline Bandits.
 #'      If \code{t_over_sims} is set to \code{TRUE}, the current \code{Simulator}
 #'      iterates over all rows in a data set for each repeated simulation.
 #'      If \code{FALSE}, it splits the data into \code{simulations} parts,
 #'      and a different subset of the data for each repeat of an agent's simulation.
 #'   }
 #'   \item{\code{set_seed}}{
-#'      \code{integer}. Sets the seed of R‘s random number generator for the current \code{Simulator}.
+#'      \code{integer}. Sets the seed of R's random number generator for the current \code{Simulator}.
 #'   }
 #'   \item{\code{progress_file}}{
 #'       \code{logical}. If \code{TRUE}, \code{Simulator} writes \code{progress.log} and \code{parallel.log}
