@@ -34,13 +34,13 @@ Overview of core classes
 Policies and Bandits
 --------------------
 
-Overview of contextual's growing Policy library:
+Overview of contextual's growing library of contextual and context-free bandit policies:
 
 | General | Context-free | Contextual |
 |---------------|-------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------|
 | Random<br>  Oracle<br> <br> <br> <br> <br><br>   | Epsilon-Greedy<br>  Epsilon-First<br>  UCB-tuned<br>   Thompson Sampling<br>   BootstrapTS<br>   Softmax<br>   Gittins | CMAB Epoch-Greedy<br>   LinUCB (General, Disjoint, Hybrid)<br>  COFIBA*<br>   LinTS<br>   LogitBTS<br><br> <br>   |
 
-Overview of contextual's growing Bandit library:
+Overview of contextual's bandit library:
 
 | Context-free  | Contextual | Offline | Continuous |
 |------------------------------------------|---------------------------------------------------------------------------------------|------------------------------------------------------------|------------|
