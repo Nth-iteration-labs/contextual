@@ -191,7 +191,7 @@ test_that("BasicBernoulliBandit MAB policies", {
   bandit             <- BasicBernoulliBandit$new(weight_per_arm)
 
   agents             <- list(Agent$new(RandomPolicy$new(), bandit),
-                             Agent$new(EpsilonFirstPolicy$new(4), bandit),
+                             Agent$new(EpsilonFirstPolicy$new(0.4,10), bandit),
                              Agent$new(EpsilonGreedyPolicy$new(0.1), bandit),
                              Agent$new(ThompsonSamplingPolicy$new(1.0, 1.0), bandit),
                              Agent$new(Exp3Policy$new(0.1), bandit),
@@ -210,7 +210,7 @@ test_that("BasicBernoulliBandit MAB policies", {
   expect_equal(history$cumulative$UCB1$cum_regret, 3.6, tolerance = 0.01)
   expect_equal(history$cumulative$ThompsonSampling$cum_regret,2.8, tolerance = 0.01)
   expect_equal(history$cumulative$EpsilonGreedy$cum_regret,3.3, tolerance = 0.01)
-  expect_equal(history$cumulative$EpsilonFirst$cum_regret,2, tolerance = 0.01)
+  expect_equal(history$cumulative$EpsilonFirst$cum_regret,3.4, tolerance = 0.01)
   expect_equal(history$cumulative$Softmax$cum_regret,1.7, tolerance = 0.01)
   expect_equal(history$cumulative$SimpleBTS$cum_regret,1.7, tolerance = 0.01)
 
@@ -245,7 +245,7 @@ test_that("ContextualBernoulliBandit MAB policies", {
 
   agents             <- list(Agent$new(RandomPolicy$new(), bandit),
                              Agent$new(OraclePolicy$new(), bandit),
-                             Agent$new(EpsilonFirstPolicy$new(4), bandit),
+                             Agent$new(EpsilonFirstPolicy$new(0.4,horizon), bandit),
                              Agent$new(EpsilonGreedyPolicy$new(0.1), bandit),
                              Agent$new(ThompsonSamplingPolicy$new(1.0, 1.0), bandit),
                              Agent$new(Exp3Policy$new(0.1), bandit),
@@ -265,7 +265,7 @@ test_that("ContextualBernoulliBandit MAB policies", {
   expect_equal(history$cumulative$UCB1$cum_regret,2.8, tolerance = 0.01)
   expect_equal(history$cumulative$ThompsonSampling$cum_regret,2.8, tolerance = 0.01)
   expect_equal(history$cumulative$EpsilonGreedy$cum_regret,2.3, tolerance = 0.01)
-  expect_equal(history$cumulative$EpsilonFirst$cum_regret, 1.3, tolerance = 0.01)
+  expect_equal(history$cumulative$EpsilonFirst$cum_regret, 3.5, tolerance = 0.01)
   expect_equal(history$cumulative$Softmax$cum_regret,1.9, tolerance = 0.01)
   expect_equal(history$cumulative$SimpleBTS$cum_regret,2.1, tolerance = 0.01)
 

@@ -12,10 +12,10 @@ simulations <- 10000
 click_probabilities <- c(0.8, 0.4, 0.2)
 # Initialize a SyntheticBandit, which takes probabilites per arm for an argument.
 bandit <- ContextualBernoulliBandit$new(weights = click_probabilities)
-# Initialize an EpsilonGreedyPolicy with a 40% exploiration rate.
+# Initialize EpsilonGreedyPolicy with a 40% exploiration rate.
 eg_policy <- EpsilonGreedyPolicy$new(epsilon = 0.4)
-# Initialize an EpsilonFirstPolicy with a 100 step exploration period.
-ef_policy <- EpsilonFirstPolicy$new(first = 100)
+# Initialize EpsilonFirstPolicy with a .25 x 400 = 100 step exploration period.
+ef_policy <- EpsilonFirstPolicy$new(epsilon = 0.25, N = horizon)
 # Initialize two Agents, binding each policy to a bandit.
 ef_agent <- Agent$new(ef_policy, bandit)
 eg_agent <- Agent$new(eg_policy, bandit)

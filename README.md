@@ -33,7 +33,9 @@ Documentation
 * [Class reference](https://nth-iteration-labs.github.io/contextual/reference/index.html)
 * [Getting started: running simulations](https://nth-iteration-labs.github.io/contextual/articles/contextual.html)
 
-<!---   [Blog at Pavlov](https://pavlov.tech/category/contextual/)-->
+<!---
+* [Blog at Pavlov](https://pavlov.tech/category/contextual/)
+-->
 
 Overview of core classes
 ------------------------

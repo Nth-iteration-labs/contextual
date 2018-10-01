@@ -6,19 +6,31 @@ EpsilonFirstPolicy              <- R6::R6Class(
   public = list(
     first = NULL,
     class_name = "EpsilonFirstPolicy",
-    initialize = function(first = 100) {
+    initialize = function(epsilon = 0.1, N = 1000) {
       super$initialize()
-      self$first                <- first
+      self$first                <- ceiling(epsilon*N)
     },
     set_parameters = function(context_params) {
       self$theta_to_arms        <- list('n' = 0, 'mean' = 0)
+
+      # Above, we define a list with 'n' and 'mean' theta parameters to each
+      # arm through helper variable self$theta_to_arms. That is, when the
+      # number of arms is 'k', the above would equal:
+
+      # self$theta <- list(n = rep(list(0,k)), 'mean' = rep(list(0,k)))
+
+      # ... which would also work just fine, but is much less concise.
+
+      # When assigning both to self$theta directly & via self$theta_to_arms,
+      # make sure to do it in that particular order.
+
     },
     get_action = function(t, context) {
-      if (sum_of(self$theta$n) < first) {
+      if (sum_of(self$theta$n) < self$first) {
         action$choice           <- sample.int(context$k, 1, replace = TRUE)
         action$propensity       <- (1/context$k)
       } else {
-        action$choice           <- max_in(self$theta$mean, equal_is_random = FALSE)
+        action$choice           <- max_in(self$theta$mean)
         action$propensity       <- 1
       }
       action
@@ -28,7 +40,8 @@ EpsilonFirstPolicy              <- R6::R6Class(
       reward                    <- reward$reward
       inc(self$theta$n[[arm]])  <- 1
       if (sum_of(self$theta$n) < self$first - 1) {
-        inc(self$theta$mean[[arm]]) <- (reward - self$theta$mean[[arm]]) / self$theta$n[[arm]]
+        inc(self$theta$mean[[arm]]) <-
+          (reward - self$theta$mean[[arm]]) / self$theta$n[[arm]]
       }
       self$theta
     }
@@ -37,41 +50,45 @@ EpsilonFirstPolicy              <- R6::R6Class(
 
 #' Policy: Epsilon First
 #'
-#' \code{EpsilonFirstPolicy} implements a "naive" policy. That is, \code{EpsilonFirstPolicy}
-#' starts out by choosing randomly (exploring) from all available arms for a fixed number of steps.
-#' At that point, the \code{EpsilonFirstPolicy} algorithm checks which arm has the highest
-#' estimated payoff. From thereon \code{EpsilonFirstPolicy} will only choose that particular
-#' arm, never looking back (keep on exploiting that arm for ever).
+#' \code{EpsilonFirstPolicy} implements a "naive" policy where a pure exploration phase
+#' is followed by a pure exploitation phase.
+#'
+#' Exploration happens within the first \code{epsilon * N} time steps.
+#' During this time, at each time step \code{t}, \code{EpsilonFirstPolicy} selects an arm at random.
+#'
+#' Exploitation happens in the following \code{(1-epsilon) * N} steps,
+#' selecting the best arm up until \code{epsilon * N} for either the remaining N trials or horizon T.
+#'
+#' In case of a tie in the exploitation phase, \code{EpsilonFirstPolicy} randomly selects and arm.
 #'
 #' @section Algorithm:
 #'
-#' ![](algoepsilonfirst.jpg "epsilon first algorithm")
+#' ![](algoepsilonfirst.jpg "epsilon epsilon algorithm")
 #'
 #' @name EpsilonFirstPolicy
 #'
 #'
 #' @section Usage:
 #' \preformatted{
-#' policy <- EpsilonFirstPolicy(first = 100)
+#' policy <- EpsilonFirstPolicy(epsilon = 0.1, N = 100)
 #' }
 #'
 #' @section Arguments:
 #'
 #' \describe{
-#'   \item{\code{first}}{
-#'    integer, a natural number N>0 indicating for how many steps \code{EpsilonFirstPolicy} will choose an arm at random,
-#'    from thereon settling for the arm that proved to offer the highest reward up till then.
+#'   \item{\code{epsilon}}{
+#'    numeric; value in the closed interval \code{(0,1]} that sets the number of time steps to explore
+#'    through \code{epsilon * N}.
 #'   }
-#'   \item{\code{name}}{
-#'    character string specifying this policy. \code{name}
-#'    is, among others, saved to the History log and displayed in summaries and plots.
+#'   \item{\code{N}}{
+#'    integer; positive integer which sets the number of time steps to explore through \code{epsilon * N}.
 #'   }
 #' }
 #'
 #' @section Methods:
 #'
 #' \describe{
-#'   \item{\code{new(first = 100)}}{ Generates a new \code{EpsilonFirstPolicy} object. Arguments are defined in the Argument section above.}
+#'   \item{\code{new(epsilon = 0.1, N = 100)}}{ Generates a new \code{EpsilonFirstPolicy} object. Arguments are defined in the Argument section above.}
 #' }
 #'
 #' \describe{
@@ -119,7 +136,7 @@ EpsilonFirstPolicy              <- R6::R6Class(
 #' simulations        <- 100L
 #' weights          <- c(0.9, 0.1, 0.1)
 #'
-#' policy             <- EpsilonFirstPolicy$new(first = 50)
+#' policy             <- EpsilonFirstPolicy$new(epsilon = 0.5)
 #' bandit             <- BasicBernoulliBandit$new(weights = weights)
 #' agent              <- Agent$new(policy, bandit)
 #'
