@@ -38,11 +38,8 @@
 
 <meta property="og:title" content="Policy: Epsilon First — EpsilonFirstPolicy" />
 
-<meta property="og:description" content="EpsilonFirstPolicy implements a &quot;naive&quot; policy. That is, EpsilonFirstPolicy
-starts out by choosing randomly (exploring) from all available arms for a fixed number of steps.
-At that point, the EpsilonFirstPolicy algorithm checks which arm has the highest
-estimated payoff. From thereon EpsilonFirstPolicy will only choose that particular
-arm, never looking back (keep on exploiting that arm for ever)." />
+<meta property="og:description" content="EpsilonFirstPolicy implements a &quot;naive&quot; policy where a pure exploration phase
+is followed by a pure exploitation phase." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -139,42 +136,46 @@ arm, never looking back (keep on exploiting that arm for ever)." />
 
     <div class="ref-description">
     
-    <p><code>EpsilonFirstPolicy</code> implements a "naive" policy. That is, <code>EpsilonFirstPolicy</code>
-starts out by choosing randomly (exploring) from all available arms for a fixed number of steps.
-At that point, the <code>EpsilonFirstPolicy</code> algorithm checks which arm has the highest
-estimated payoff. From thereon <code>EpsilonFirstPolicy</code> will only choose that particular
-arm, never looking back (keep on exploiting that arm for ever).</p>
+    <p><code>EpsilonFirstPolicy</code> implements a "naive" policy where a pure exploration phase
+is followed by a pure exploitation phase.</p>
     
     </div>
 
         
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Exploration happens within the first <code>epsilon * N</code> time steps.
+During this time, at each time step <code>t</code>, <code>EpsilonFirstPolicy</code> selects an arm at random.</p>
+<p>Exploitation happens in the following <code>(1-epsilon) * N</code> steps,
+selecting the best arm up until <code>epsilon * N</code> for either the remaining N trials or horizon T.</p>
+<p>In case of a tie in the exploitation phase, <code>EpsilonFirstPolicy</code> randomly selects and arm.</p>
+    
     <h2 class="hasAnchor" id="algorithm"><a class="anchor" href="#algorithm"></a>Algorithm</h2>
 
     
-    <p><img src='figures/algoepsilonfirst.jpg' alt='epsilon first algorithm' /></p>
+    <p><img src='figures/algoepsilonfirst.jpg' alt='epsilon epsilon algorithm' /></p>
     
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 
     
     <pre>
-policy &lt;- EpsilonFirstPolicy(first = 100)
+policy &lt;- EpsilonFirstPolicy(epsilon = 0.1, N = 100)
 </pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
 
     
     <dl class='dl-horizontal'>
-<dt><code>first</code></dt><dd><p>integer, a natural number N&gt;0 indicating for how many steps <code>EpsilonFirstPolicy</code> will choose an arm at random,
-from thereon settling for the arm that proved to offer the highest reward up till then.</p></dd>
-<dt><code>name</code></dt><dd><p>character string specifying this policy. <code>name</code>
-is, among others, saved to the History log and displayed in summaries and plots.</p></dd>
+<dt><code>epsilon</code></dt><dd><p>numeric; value in the closed interval <code>(0,1]</code> that sets the number of time steps to explore
+through <code>epsilon * N</code>.</p></dd>
+<dt><code>N</code></dt><dd><p>integer; positive integer which sets the number of time steps to explore through <code>epsilon * N</code>.</p></dd>
 </dl>
     
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     
     <dl class='dl-horizontal'>
-<dt><code>new(first = 100)</code></dt><dd><p>Generates a new <code>EpsilonFirstPolicy</code> object. Arguments are defined in the Argument section above.</p></dd>
+<dt><code>new(epsilon = 0.1, N = 100)</code></dt><dd><p>Generates a new <code>EpsilonFirstPolicy</code> object. Arguments are defined in the Argument section above.</p></dd>
 </dl>
     <dl class='dl-horizontal'>
 <dt><code><a href='Policy.html'>set_parameters()</a></code></dt><dd><p>each policy needs to assign the parameters it wants to keep track of
@@ -211,17 +212,19 @@ based on the reward received, and, potentially, the current context.</p></dd>
 <span class='no'>simulations</span>        <span class='kw'>&lt;-</span> <span class='fl'>100L</span>
 <span class='no'>weights</span>          <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='fl'>0.9</span>, <span class='fl'>0.1</span>, <span class='fl'>0.1</span>)
 
-<span class='no'>policy</span>             <span class='kw'>&lt;-</span> <span class='no'>EpsilonFirstPolicy</span>$<span class='fu'>new</span>(<span class='kw'>first</span> <span class='kw'>=</span> <span class='fl'>50</span>)
+<span class='no'>policy</span>             <span class='kw'>&lt;-</span> <span class='no'>EpsilonFirstPolicy</span>$<span class='fu'>new</span>(<span class='kw'>epsilon</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)
 <span class='no'>bandit</span>             <span class='kw'>&lt;-</span> <span class='no'>BasicBernoulliBandit</span>$<span class='fu'>new</span>(<span class='kw'>weights</span> <span class='kw'>=</span> <span class='no'>weights</span>)
 <span class='no'>agent</span>              <span class='kw'>&lt;-</span> <span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>policy</span>, <span class='no'>bandit</span>)
 
-<span class='no'>history</span>            <span class='kw'>&lt;-</span> <span class='no'>Simulator</span>$<span class='fu'>new</span>(<span class='no'>agent</span>, <span class='no'>horizon</span>, <span class='no'>simulations</span>, <span class='kw'>do_parallel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)$<span class='fu'><a href='Simulator.html'>run</a></span>()</div><div class='output co'>#&gt; <span class='message'>Cloning bandits and policies</span></div><div class='output co'>#&gt; <span class='message'>Starting main simulation</span></div><div class='output co'>#&gt; <span class='message'>Completed simulation in 0:00:01.125</span></div><div class='input'>
+<span class='no'>history</span>            <span class='kw'>&lt;-</span> <span class='no'>Simulator</span>$<span class='fu'>new</span>(<span class='no'>agent</span>, <span class='no'>horizon</span>, <span class='no'>simulations</span>, <span class='kw'>do_parallel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)$<span class='fu'><a href='Simulator.html'>run</a></span>()</div><div class='output co'>#&gt; <span class='message'>Cloning bandits and policies</span></div><div class='output co'>#&gt; <span class='message'>Starting main simulation</span></div><div class='output co'>#&gt; <span class='message'>Completed simulation in 0:00:01.186</span></div><div class='input'>
 <span class='fu'>plot</span>(<span class='no'>history</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"cumulative"</span>)</div><div class='img'><img src='EpsilonFirstPolicy-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>plot</span>(<span class='no'>history</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"arms"</span>)</div><div class='img'><img src='EpsilonFirstPolicy-2.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       
+      <li><a href="#details">Details</a></li>
+
       <li><a href="#algorithm">Algorithm</a></li>
 
       <li><a href="#usage">Usage</a></li>

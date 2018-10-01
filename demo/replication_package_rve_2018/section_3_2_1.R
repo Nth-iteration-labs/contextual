@@ -1,6 +1,4 @@
 library(contextual)
-library(here)
-setwd(here("demo","paper_jss_replication_package"))
 
 # Load and attach the contextual package.
 library(contextual)

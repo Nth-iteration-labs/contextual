@@ -838,15 +838,15 @@ plot(history, type = "cumulative", use_colors = FALSE, no_par = TRUE)
 plot(history, type = "cumulative", regret = FALSE, legend = FALSE,
      limit_agents = c("UCB1"), traces = TRUE, no_par = TRUE)
 
-plot(history, type = "cumulative", regret = FALSE, rate = TRUE, ci = "sd",
+plot(history, type = "cumulative", regret = FALSE, rate = TRUE, disp = "sd",
      limit_agents = c("Exp3", "ThompsonSampling"),
      legend_position = "bottomright", no_par = TRUE)
 
 plot(history, type = "cumulative", rate = TRUE, plot_only_ci = TRUE,
-     ci = "var", limit_agents = c("UCB1", "GittinsBrezziLai"),
+     disp = "var", limit_agents = c("UCB1", "GittinsBrezziLai"),
      smooth = TRUE, legend_position = "topright", no_par = TRUE)
 
-plot(history, type = "average", ci = "ci", regret = FALSE, interval = 10,
+plot(history, type = "average", disp = "ci", regret = FALSE, interval = 10,
      smooth = TRUE, legend_position = "bottomright", no_par = TRUE)
 
 plot(history, limit_agents = c("ThompsonSampling"), type = "arms",
@@ -856,7 +856,7 @@ plot(history, limit_agents = c("ThompsonSampling"), type = "arms",
 \begin{figure}[H]
 \centering
 \includegraphics[width=.99\textwidth]{fig/section_4_2_plot}
-\caption{Overview hightlighting the versatility of contextual's Plot() class. From left to right, and top to bottom: 1. Grayscale plot 2. Plotting traces 3. Cumulative reward plus dispersion plot (here, SD) 4. Dispersion plot (here, variance) 5. Color plot 6. Arm choice percentage plot   }
+\caption{Overview hightlighting the versatility of contextual's Plot() class. From left to right, and top to bottom: 1. Grayscale plot 2. Plotting traces 3. Cumulative reward with SD 4. Dispersion plot (here, variance) 5. Color plot with 95\% confidence interval 6. Arm choice percentage plot }
 \label{fig:section_4_2_plot}
 \end{figure}
 

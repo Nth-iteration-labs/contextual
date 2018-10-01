@@ -387,4 +387,32 @@ Simulator <- R6::R6Class(
 #' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflinePolicyEvaluatorBandit}}
 #'
 #' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
+#'
+#' @examples
+#' \dontrun{
+#'
+#'   policy    <- EpsilonGreedyPolicy$new(epsilon = 0.1)
+#'   bandit    <- BasicBernoulliBandit$new(weights = c(0.6, 0.1, 0.1))
+#'
+#'   agent     <- Agent$new(policy, bandit, name = "E.G.", sparse = 0.5)
+#'
+#'   history   <- Simulator$new(agents = agent,
+#'                              horizon = 10,
+#'                              simulations = 10,
+#'                              progress_file = TRUE)$run()
+#'
+#'   summary(history)
+#'
+#'   plot(history)
+#'
+#'   dt <- history$get_data_table()
+#'
+#'   df <- history$get_data_frame()
+#'
+#'   print(history$cumulative$E.G.$cum_regret_sd)
+#'
+#'   print(history$cumulative$E.G.$cum_regret)
+#'
+#' }
+#'
 NULL

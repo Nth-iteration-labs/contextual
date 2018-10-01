@@ -38,9 +38,7 @@
 
 <meta property="og:title" content="Plot — Plot" />
 
-<meta property="og:description" content="The R6 class Plot generates plots from on History data.
-It is usually actually invoked by calling the generic plot(h), where h
-is an History class instance." />
+<meta property="og:description" content="Generates plots from History data." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -137,61 +135,64 @@ is an History class instance." />
 
     <div class="ref-description">
     
-    <p>The R6 class <code>Plot</code> generates plots from on <code>History</code> data.
-It is usually actually invoked by calling the generic <code>plot(h)</code>, where <code>h</code>
-is an <code>History</code> class instance.</p>
+    <p>Generates plots from <code>History</code> data.</p>
     
     </div>
 
         
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Usually not instantiated directly but invoked by calling the generic <code>plot(h)</code>, where <code>h</code>
+is an <code>History</code> class instance.</p>
+    
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 
     
     <pre>
-Plot &lt;- Plot$new()
+   Plot &lt;- Plot$new()
 </pre>
     
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     
     <dl class='dl-horizontal'>
-    <dt><code><a href='History.html'>cumulative(history,...)</a></code></dt><dd><p>Writes a plot of cumulative regret or reward (depending on parameter regret=TRUE/FALSE)
-over time.</p></dd>
-<dt><code>average(history,...)</code></dt><dd><p>Writes a plot of average regret or reward (depending on parameter regret=TRUE/FALSE)
-over time.</p></dd>
-<dt><code>arms(history),...</code></dt><dd><p>Writes a plot of the ratio with which each arm of a simulation was chosen over time.
-If multiple agents are run, only plots the arm plot of the first agent.</p></dd>
+    <dt><code><a href='History.html'>cumulative(history,...)</a></code></dt><dd><p>Plots cumulative regret or reward (depending on parameter regret=TRUE/FALSE) over time.</p></dd>
+<dt><code>average(history,...)</code></dt><dd><p>Plots average regret or reward (depending on parameter regret=TRUE/FALSE) over time.</p></dd>
+<dt><code>arms(history),...</code></dt><dd><p>Plot the percentage of simulations per time step each arm was chosen over time.
+If multiple agents have been run, plots only the first agent.</p></dd>
 </dl>
     
     <h2 class="hasAnchor" id="plot-method-arguments"><a class="anchor" href="#plot-method-arguments"></a>Plot method arguments</h2>
 
     
     <dl class='dl-horizontal'>
-<dt><code>regret</code></dt><dd><p><code>(logical, TRUE)</code> If regret is TRUE, regret will be plotted on the y-axis.
-When regret is set to FALSE, reward will be plotted on the y-axis.</p></dd>
-<dt><code>rate</code></dt><dd><p>(<code>logical, TRUE)</code> If rate is TRUE, the rate of the regret or reward is plotted.</p></dd>
-<dt><code>limit_agents</code></dt><dd><p><code>(list , NULL)</code> Limit the plotted agents to the agents in list.</p></dd>
-<dt><code>no_par</code></dt><dd><p><code>(logical, FALSE)</code> If no_par is TRUE, Plot() does not set or adjust plotting parameters.
-This makes it possible to set your own plotting parameters, for instance, when position multiple
-Plots in a no_par.</p></dd>
-<dt><code>legend</code></dt><dd><p><code>(logical, TRUE)</code> Print the legend.</p></dd>
-<dt><code>legend_title</code></dt><dd><p><code>(character , NULL)</code> Set a legend title.</p></dd>
-<dt><code>legend_labels</code></dt><dd><p><code>(list , NULL)</code> Set legend labels to custom values as specified in this list.</p></dd>
-<dt><code>legend_border</code></dt><dd><p><code>(logical , NULL)</code> Set a legend title.</p></dd>
-<dt><code>xlim</code></dt><dd><p><code>(c(integer,integer), NULL)</code> Set x-axis limits.</p></dd>
-<dt><code>ylim</code></dt><dd><p><code>(c(integer,integer), NULL)</code> Set y-axis limits.</p></dd>
-<dt><code>use_colors</code></dt><dd><p><code>(logical, TRUE)</code> If use_colors is set to FALSE, plots will be in grayscale.
-Otherwise, plots will make use of a color palette.</p></dd>
-<dt><code>ci</code></dt><dd><p><code>(logical, FALSE)</code> When ci is TRUE, Plot() will display 95<!-- % confidence intervals. --></p></dd>
-<dt><code>traces</code></dt><dd><p><code>(logical , FALSE)</code> When traces is TRUE, Plot() will plot the traces of each independent simulation.</p></dd>
-<dt><code>traces_max</code></dt><dd><p><code>(integer , 100)</code> The maximum number of trace lines.</p></dd>
-<dt><code>traces_alpha</code></dt><dd><p><code>(numeric , 0.3)</code> Sets the opacity of all trace lines. By default traces_alpha is set to 0.3,
-that is, at an opacity of 30<!-- %. --></p></dd>
-<dt><code>smooth</code></dt><dd><p><code>(logical , FALSE)</code> When smooth is TRUE, Plot() will smooth all plots.</p></dd>
-<dt><code>interval</code></dt><dd><p><code>(integer, NULL)</code> Plot only for every every t<!-- %%interval==0 --></p></dd>
-<dt><code>color_step</code></dt><dd><p><code>(integer, 1)</code> Linecharts will cycle through agents/color_step colors.</p></dd>
-<dt><code>lty_step</code></dt><dd><p><code>(integer, 1)</code> Linecharts will cycle through agents/lty_step line types</p></dd>
-<dt><code>lwd</code></dt><dd><p><code>(integer, 1)</code> Linecharts will be of lwd width.</p></dd>
+<dt><code>type</code></dt><dd><p><code>(character, "cumulative")</code> Can be either "cumulative" (default), "average", or "arms".
+Sets the plot method when Plot() is called through R's generic plot() function.
+Methods are descrived in the Methods section above.</p></dd>
+<dt><code>regret</code></dt><dd><p><code>(logical, TRUE)</code> Plot policy regret (default, TRUE) or reward (FALSE)?</p></dd>
+<dt><code>rate</code></dt><dd><p>(<code>logical, TRUE)</code> If rate is TRUE, the rate of regret or reward is plotted.</p></dd>
+<dt><code>limit_agents</code></dt><dd><p><code>(list , NULL)</code> Limit plotted agents to the agents in the list.</p></dd>
+<dt><code>no_par</code></dt><dd><p><code>(logical, FALSE)</code> If no_par is TRUE, Plot() does not set or adjust plotting parameters itself.
+This makes it possible to set custom plotting parameters through R's par() function.</p></dd>
+<dt><code>legend</code></dt><dd><p><code>(logical, TRUE)</code> Shows the legend when TRUE (default).</p></dd>
+<dt><code>legend_title</code></dt><dd><p><code>(character , NULL)</code> Sets a custom legend title.</p></dd>
+<dt><code>legend_labels</code></dt><dd><p><code>(list , NULL)</code> Set legend labels to custom values as specified in list.</p></dd>
+<dt><code>legend_border</code></dt><dd><p><code>(logical , NULL)</code> When TRUE, the legend is borderless.</p></dd>
+<dt><code>xlim</code></dt><dd><p><code>(c(integer,integer), NULL)</code> Sets x-axis limits.</p></dd>
+<dt><code>ylim</code></dt><dd><p><code>(c(integer,integer), NULL)</code> Sets y-axis limits.</p></dd>
+<dt><code>use_colors</code></dt><dd><p><code>(logical, TRUE)</code> If use_colors is FALSE, plots will be in grayscale.
+Otherwise, plots will make use of a color palette (default).</p></dd>
+<dt><code>disp</code></dt><dd><p><code>(character, NULL)</code> When disp (for "dispersion measure") is set to either 'var','sd' or 'ci',
+the variance, standard deviation, or 95<!-- % confidence interval will be added to the plot(s). --></p></dd>
+<dt><code>plot_only_disp</code></dt><dd><p><code>(logical, FALSE)</code> When TRUE and disp is either 'var','sd' or 'ci', plot only dispersion measure.</p></dd>
+<dt><code>traces</code></dt><dd><p><code>(logical , FALSE)</code> Plot traces of independent simulations (default is FALSE).</p></dd>
+<dt><code>traces_max</code></dt><dd><p><code>(integer , 100)</code> The number of trace lines.</p></dd>
+<dt><code>traces_alpha</code></dt><dd><p><code>(numeric , 0.3)</code> Opacity of the trace lines. Default is 0.3 - that is, an opacity of 30<!-- %. --></p></dd>
+<dt><code>smooth</code></dt><dd><p><code>(logical , FALSE)</code> Smooth the plot (default is FALSE)</p></dd>
+<dt><code>interval</code></dt><dd><p><code>(integer, NULL)</code> Plot only every t<!-- %%interval==0 data point. --></p></dd>
+<dt><code>color_step</code></dt><dd><p><code>(integer, 1)</code> When &gt; 1, the plot cycles through <code>nr_agents/color_step</code> colors.</p></dd>
+<dt><code>lty_step</code></dt><dd><p><code>(integer, 1)</code> When &gt; 1, the plot cycles through <code>nr_agents/lty_step</code> line types.</p></dd>
+<dt><code>lwd</code></dt><dd><p><code>(integer, 1)</code> Line width.</p></dd>
 </dl>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
@@ -202,11 +203,51 @@ that is, at an opacity of 30<!-- %. --></p></dd>
 <p>Policy subclass examples: <code><a href='EpsilonGreedyPolicy.html'>EpsilonGreedyPolicy</a></code>, <code><a href='ContextualThompsonSamplingPolicy.html'>ContextualThompsonSamplingPolicy</a></code></p></div>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='no'>bandit</span> <span class='kw'>&lt;-</span> <span class='no'>ContextualBernoulliBandit</span>$<span class='fu'>new</span>(<span class='kw'>weights</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0.9</span>, <span class='fl'>0.1</span>, <span class='fl'>0.1</span>))
+
+<span class='no'>agents</span> <span class='kw'>&lt;-</span> <span class='fu'>list</span>(<span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>RandomPolicy</span>$<span class='fu'>new</span>(), <span class='no'>bandit</span>),
+               <span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>OraclePolicy</span>$<span class='fu'>new</span>(), <span class='no'>bandit</span>),
+               <span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>ThompsonSamplingPolicy</span>$<span class='fu'>new</span>(<span class='fl'>1.0</span>, <span class='fl'>1.0</span>), <span class='no'>bandit</span>),
+               <span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>Exp3Policy</span>$<span class='fu'>new</span>(<span class='fl'>0.1</span>), <span class='no'>bandit</span>),
+               <span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>GittinsBrezziLaiPolicy</span>$<span class='fu'>new</span>(), <span class='no'>bandit</span>),
+               <span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>UCB1Policy</span>$<span class='fu'>new</span>(), <span class='no'>bandit</span>))
+
+<span class='no'>history</span> <span class='kw'>&lt;-</span> <span class='no'>Simulator</span>$<span class='fu'>new</span>(<span class='no'>agents</span>, <span class='kw'>horizon</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>simulations</span> <span class='kw'>=</span> <span class='fl'>1000</span>)$<span class='fu'><a href='Simulator.html'>run</a></span>()
+
+<span class='fu'>par</span>(<span class='kw'>mfrow</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>3</span>, <span class='fl'>2</span>), <span class='kw'>mar</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>1</span>, <span class='fl'>4</span>, <span class='fl'>2</span>, <span class='fl'>1</span>), <span class='kw'>cex</span><span class='kw'>=</span><span class='fl'>1.3</span>)
+
+<span class='fu'>plot</span>(<span class='no'>history</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"cumulative"</span>, <span class='kw'>use_colors</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>no_par</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>legend_border</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+     <span class='kw'>limit_agents</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"GittinsBrezziLai"</span>, <span class='st'>"UCB1"</span>,<span class='st'>"ThompsonSampling"</span>))
+
+<span class='fu'>plot</span>(<span class='no'>history</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"cumulative"</span>, <span class='kw'>regret</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>legend</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+     <span class='kw'>limit_agents</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"UCB1"</span>), <span class='kw'>traces</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>no_par</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
+<span class='fu'>plot</span>(<span class='no'>history</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"cumulative"</span>, <span class='kw'>regret</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>rate</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>disp</span> <span class='kw'>=</span> <span class='st'>"sd"</span>,
+     <span class='kw'>limit_agents</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"Exp3"</span>, <span class='st'>"ThompsonSampling"</span>),
+     <span class='kw'>legend_position</span> <span class='kw'>=</span> <span class='st'>"bottomright"</span>, <span class='kw'>no_par</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
+<span class='fu'>plot</span>(<span class='no'>history</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"cumulative"</span>, <span class='kw'>rate</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>plot_only_disp</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+     <span class='kw'>disp</span> <span class='kw'>=</span> <span class='st'>"var"</span>, <span class='kw'>smooth</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>limit_agents</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"UCB1"</span>, <span class='st'>"GittinsBrezziLai"</span>),
+    <span class='kw'>legend_position</span> <span class='kw'>=</span> <span class='st'>"bottomleft"</span>, <span class='kw'>no_par</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
+<span class='fu'>plot</span>(<span class='no'>history</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"average"</span>, <span class='kw'>disp</span> <span class='kw'>=</span> <span class='st'>"ci"</span>, <span class='kw'>regret</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>interval</span> <span class='kw'>=</span> <span class='fl'>10</span>,
+     <span class='kw'>smooth</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>legend_position</span> <span class='kw'>=</span> <span class='st'>"bottomright"</span>, <span class='kw'>no_par</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>legend</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+
+<span class='fu'>plot</span>(<span class='no'>history</span>, <span class='kw'>limit_agents</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='st'>"ThompsonSampling"</span>), <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"arms"</span>,
+     <span class='kw'>interval</span> <span class='kw'>=</span> <span class='fl'>20</span>, <span class='kw'>no_par</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
+<span class='co'># }</span><div class='input'>
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       
+      <li><a href="#details">Details</a></li>
+
       <li><a href="#usage">Usage</a></li>
 
       <li><a href="#methods">Methods</a></li>
@@ -214,7 +255,9 @@ that is, at an opacity of 30<!-- %. --></p></dd>
       <li><a href="#plot-method-arguments">Plot method arguments</a></li>
 
       <li><a href="#see-also">See also</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

@@ -44,9 +44,9 @@ simulation <- Simulator$new(agents, horizon = horizon, simulations = simulations
 
 history    <- simulation$run()
 
-plot(history, type = "average", regret = FALSE, ci = "var", plot_only_ci = TRUE)
-plot(history, type = "average", regret = TRUE, ci = "var", plot_only_ci = TRUE)
-plot(history, type = "cumulative", ci = "var", rate = TRUE, plot_only_ci = TRUE)
-plot(history, type = "average", regret = FALSE, ci = "var")
-plot(history, type = "average", regret = TRUE, ci = "var")
-plot(history, type = "cumulative", ci = "var", rate = TRUE)
+plot(history, type = "average", regret = FALSE, disp = "var", plot_only_disp = TRUE)
+plot(history, type = "average", regret = TRUE, disp = "var", plot_only_disp = TRUE)
+plot(history, type = "cumulative", disp = "var", rate = TRUE, plot_only_disp = TRUE)
+plot(history, type = "average", regret = FALSE, disp = "var")
+plot(history, type = "average", regret = TRUE, disp = "var")
+plot(history, type = "cumulative", disp = "var", rate = TRUE)

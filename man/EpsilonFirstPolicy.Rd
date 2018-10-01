@@ -4,22 +4,28 @@
 \alias{EpsilonFirstPolicy}
 \title{Policy: Epsilon First}
 \description{
-\code{EpsilonFirstPolicy} implements a "naive" policy. That is, \code{EpsilonFirstPolicy}
-starts out by choosing randomly (exploring) from all available arms for a fixed number of steps.
-At that point, the \code{EpsilonFirstPolicy} algorithm checks which arm has the highest
-estimated payoff. From thereon \code{EpsilonFirstPolicy} will only choose that particular
-arm, never looking back (keep on exploiting that arm for ever).
+\code{EpsilonFirstPolicy} implements a "naive" policy where a pure exploration phase
+is followed by a pure exploitation phase.
+}
+\details{
+Exploration happens within the first \code{epsilon * N} time steps.
+During this time, at each time step \code{t}, \code{EpsilonFirstPolicy} selects an arm at random.
+
+Exploitation happens in the following \code{(1-epsilon) * N} steps,
+selecting the best arm up until \code{epsilon * N} for either the remaining N trials or horizon T.
+
+In case of a tie in the exploitation phase, \code{EpsilonFirstPolicy} randomly selects and arm.
 }
 \section{Algorithm}{
 
 
-\figure{algoepsilonfirst.jpg}{epsilon first algorithm}
+\figure{algoepsilonfirst.jpg}{epsilon epsilon algorithm}
 }
 
 \section{Usage}{
 
 \preformatted{
-policy <- EpsilonFirstPolicy(first = 100)
+policy <- EpsilonFirstPolicy(epsilon = 0.1, N = 100)
 }
 }
 
@@ -27,13 +33,12 @@ policy <- EpsilonFirstPolicy(first = 100)
 
 
 \describe{
-\item{\code{first}}{
-integer, a natural number N>0 indicating for how many steps \code{EpsilonFirstPolicy} will choose an arm at random,
-from thereon settling for the arm that proved to offer the highest reward up till then.
+\item{\code{epsilon}}{
+numeric; value in the closed interval \code{(0,1]} that sets the number of time steps to explore
+through \code{epsilon * N}.
 }
-\item{\code{name}}{
-character string specifying this policy. \code{name}
-is, among others, saved to the History log and displayed in summaries and plots.
+\item{\code{N}}{
+integer; positive integer which sets the number of time steps to explore through \code{epsilon * N}.
 }
 }
 }
@@ -42,7 +47,7 @@ is, among others, saved to the History log and displayed in summaries and plots.
 
 
 \describe{
-\item{\code{new(first = 100)}}{ Generates a new \code{EpsilonFirstPolicy} object. Arguments are defined in the Argument section above.}
+\item{\code{new(epsilon = 0.1, N = 100)}}{ Generates a new \code{EpsilonFirstPolicy} object. Arguments are defined in the Argument section above.}
 }
 
 \describe{
@@ -74,7 +79,7 @@ horizon            <- 100L
 simulations        <- 100L
 weights          <- c(0.9, 0.1, 0.1)
 
-policy             <- EpsilonFirstPolicy$new(first = 50)
+policy             <- EpsilonFirstPolicy$new(epsilon = 0.5)
 bandit             <- BasicBernoulliBandit$new(weights = weights)
 agent              <- Agent$new(policy, bandit)
 

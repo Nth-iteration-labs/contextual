@@ -10,14 +10,16 @@
 \alias{check_history_data}
 \title{Plot}
 \description{
-The R6 class \code{Plot} generates plots from on \code{History} data.
-It is usually actually invoked by calling the generic \code{plot(h)}, where \code{h}
+Generates plots from \code{History} data.
+}
+\details{
+Usually not instantiated directly but invoked by calling the generic \code{plot(h)}, where \code{h}
 is an \code{History} class instance.
 }
 \section{Usage}{
 
 \preformatted{
-Plot <- Plot$new()
+   Plot <- Plot$new()
 }
 }
 
@@ -27,16 +29,14 @@ Plot <- Plot$new()
 \describe{
 
 \item{\code{cumulative(history,...)}}{
-Writes a plot of cumulative regret or reward (depending on parameter regret=TRUE/FALSE)
-over time.
+Plots cumulative regret or reward (depending on parameter regret=TRUE/FALSE) over time.
 }
 \item{\code{average(history,...)}}{
-Writes a plot of average regret or reward (depending on parameter regret=TRUE/FALSE)
-over time.
+Plots average regret or reward (depending on parameter regret=TRUE/FALSE) over time.
 }
 \item{\code{arms(history),...}}{
-Writes a plot of the ratio with which each arm of a simulation was chosen over time.
-If multiple agents are run, only plots the arm plot of the first agent.
+Plot the percentage of simulations per time step each arm was chosen over time.
+If multiple agents have been run, plots only the first agent.
 }
 }
 }
@@ -45,74 +45,120 @@ If multiple agents are run, only plots the arm plot of the first agent.
 
 
 \describe{
+\item{\code{type}}{
+\code{(character, "cumulative")} Can be either "cumulative" (default), "average", or "arms".
+Sets the plot method when Plot() is called through R's generic plot() function.
+Methods are descrived in the Methods section above.
+}
 \item{\code{regret}}{
-\code{(logical, TRUE)} If regret is TRUE, regret will be plotted on the y-axis.
-When regret is set to FALSE, reward will be plotted on the y-axis.
+\code{(logical, TRUE)} Plot policy regret (default, TRUE) or reward (FALSE)?
 }
 \item{\code{rate}}{
-(\code{logical, TRUE)} If rate is TRUE, the rate of the regret or reward is plotted.
+(\code{logical, TRUE)} If rate is TRUE, the rate of regret or reward is plotted.
 }
 \item{\code{limit_agents}}{
-\code{(list , NULL)} Limit the plotted agents to the agents in list.
+\code{(list , NULL)} Limit plotted agents to the agents in the list.
 }
 \item{\code{no_par}}{
-\code{(logical, FALSE)} If no_par is TRUE, Plot() does not set or adjust plotting parameters.
-This makes it possible to set your own plotting parameters, for instance, when position multiple
-Plots in a no_par.
+\code{(logical, FALSE)} If no_par is TRUE, Plot() does not set or adjust plotting parameters itself.
+This makes it possible to set custom plotting parameters through R's par() function.
 }
 \item{\code{legend}}{
-\code{(logical, TRUE)} Print the legend.
+\code{(logical, TRUE)} Shows the legend when TRUE (default).
 }
 \item{\code{legend_title}}{
-\code{(character , NULL)} Set a legend title.
+\code{(character , NULL)} Sets a custom legend title.
 }
 \item{\code{legend_labels}}{
-\code{(list , NULL)} Set legend labels to custom values as specified in this list.
+\code{(list , NULL)} Set legend labels to custom values as specified in list.
 }
 \item{\code{legend_border}}{
-\code{(logical , NULL)} Set a legend title.
+\code{(logical , NULL)} When TRUE, the legend is borderless.
 }
 \item{\code{xlim}}{
-\code{(c(integer,integer), NULL)} Set x-axis limits.
+\code{(c(integer,integer), NULL)} Sets x-axis limits.
 }
 \item{\code{ylim}}{
-\code{(c(integer,integer), NULL)} Set y-axis limits.
+\code{(c(integer,integer), NULL)} Sets y-axis limits.
 }
 \item{\code{use_colors}}{
-\code{(logical, TRUE)} If use_colors is set to FALSE, plots will be in grayscale.
-Otherwise, plots will make use of a color palette.
+\code{(logical, TRUE)} If use_colors is FALSE, plots will be in grayscale.
+Otherwise, plots will make use of a color palette (default).
 }
-\item{\code{ci}}{
-\code{(logical, FALSE)} When ci is TRUE, Plot() will display 95% confidence intervals.
+\item{\code{disp}}{
+\code{(character, NULL)} When disp (for "dispersion measure") is set to either 'var','sd' or 'ci',
+the variance, standard deviation, or 95% confidence interval will be added to the plot(s).
+}
+\item{\code{plot_only_disp}}{
+\code{(logical, FALSE)} When TRUE and disp is either 'var','sd' or 'ci', plot only dispersion measure.
 }
 \item{\code{traces}}{
-\code{(logical , FALSE)} When traces is TRUE, Plot() will plot the traces of each independent simulation.
+\code{(logical , FALSE)} Plot traces of independent simulations (default is FALSE).
 }
 \item{\code{traces_max}}{
-\code{(integer , 100)} The maximum number of trace lines.
+\code{(integer , 100)} The number of trace lines.
 }
 \item{\code{traces_alpha}}{
-\code{(numeric , 0.3)} Sets the opacity of all trace lines. By default traces_alpha is set to 0.3,
-that is, at an opacity of 30%.
+\code{(numeric , 0.3)} Opacity of the trace lines. Default is 0.3 - that is, an opacity of 30%.
 }
 \item{\code{smooth}}{
-\code{(logical , FALSE)} When smooth is TRUE, Plot() will smooth all plots.
+\code{(logical , FALSE)} Smooth the plot (default is FALSE)
 }
 \item{\code{interval}}{
-\code{(integer, NULL)} Plot only for every every t%%interval==0
+\code{(integer, NULL)} Plot only every t%%interval==0 data point.
 }
 \item{\code{color_step}}{
-\code{(integer, 1)} Linecharts will cycle through agents/color_step colors.
+\code{(integer, 1)} When > 1, the plot cycles through \code{nr_agents/color_step} colors.
 }
 \item{\code{lty_step}}{
-\code{(integer, 1)} Linecharts will cycle through agents/lty_step line types
+\code{(integer, 1)} When > 1, the plot cycles through \code{nr_agents/lty_step} line types.
 }
 \item{\code{lwd}}{
-\code{(integer, 1)} Linecharts will be of lwd width.
+\code{(integer, 1)} Line width.
 }
 }
 }
 
+\examples{
+\dontrun{
+
+bandit <- ContextualBernoulliBandit$new(weights = c(0.9, 0.1, 0.1))
+
+agents <- list(Agent$new(RandomPolicy$new(), bandit),
+               Agent$new(OraclePolicy$new(), bandit),
+               Agent$new(ThompsonSamplingPolicy$new(1.0, 1.0), bandit),
+               Agent$new(Exp3Policy$new(0.1), bandit),
+               Agent$new(GittinsBrezziLaiPolicy$new(), bandit),
+               Agent$new(UCB1Policy$new(), bandit))
+
+history <- Simulator$new(agents, horizon = 100, simulations = 1000)$run()
+
+par(mfrow = c(3, 2), mar = c(1, 4, 2, 1), cex=1.3)
+
+plot(history, type = "cumulative", use_colors = FALSE, no_par = TRUE, legend_border = FALSE,
+     limit_agents = c("GittinsBrezziLai", "UCB1","ThompsonSampling"))
+
+plot(history, type = "cumulative", regret = FALSE, legend = FALSE,
+     limit_agents = c("UCB1"), traces = TRUE, no_par = TRUE)
+
+plot(history, type = "cumulative", regret = FALSE, rate = TRUE, disp = "sd",
+     limit_agents = c("Exp3", "ThompsonSampling"),
+     legend_position = "bottomright", no_par = TRUE)
+
+plot(history, type = "cumulative", rate = TRUE, plot_only_disp = TRUE,
+     disp = "var", smooth = TRUE, limit_agents = c("UCB1", "GittinsBrezziLai"),
+    legend_position = "bottomleft", no_par = TRUE)
+
+plot(history, type = "average", disp = "ci", regret = FALSE, interval = 10,
+     smooth = TRUE, legend_position = "bottomright", no_par = TRUE, legend = FALSE)
+
+plot(history, limit_agents = c("ThompsonSampling"), type = "arms",
+     interval = 20, no_par = TRUE)
+
+}
+
+
+}
 \seealso{
 Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}

@@ -21,7 +21,7 @@ policy <- EpsilonGreedyPolicy(epsilon = 0.1)
 
 \describe{
 \item{\code{epsilon}}{
-double, value in the closed interval \code{(0,1]} indicating the probablilty with which
+numeric; value in the closed interval \code{(0,1]} indicating the probablilty with which
 arms are selected at random (explored).
 Otherwise, \code{EpsilonGreedyPolicy} chooses the best arm (exploits)
 with a probability of \code{1 - epsilon}

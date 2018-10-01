@@ -199,6 +199,32 @@ grouped by agent and simulation.</p></dd>
 <p>Policy subclass examples: <code><a href='EpsilonGreedyPolicy.html'>EpsilonGreedyPolicy</a></code>, <code><a href='ContextualThompsonSamplingPolicy.html'>ContextualThompsonSamplingPolicy</a></code></p></div>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+  <span class='no'>policy</span>    <span class='kw'>&lt;-</span> <span class='no'>EpsilonGreedyPolicy</span>$<span class='fu'>new</span>(<span class='kw'>epsilon</span> <span class='kw'>=</span> <span class='fl'>0.1</span>)
+  <span class='no'>bandit</span>    <span class='kw'>&lt;-</span> <span class='no'>BasicBernoulliBandit</span>$<span class='fu'>new</span>(<span class='kw'>weights</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0.6</span>, <span class='fl'>0.1</span>, <span class='fl'>0.1</span>))
+
+  <span class='no'>agent</span>     <span class='kw'>&lt;-</span> <span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>policy</span>, <span class='no'>bandit</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"E.G."</span>, <span class='kw'>sparse</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)
+
+  <span class='no'>history</span>   <span class='kw'>&lt;-</span> <span class='no'>Simulator</span>$<span class='fu'>new</span>(<span class='kw'>agents</span> <span class='kw'>=</span> <span class='no'>agent</span>,
+                             <span class='kw'>horizon</span> <span class='kw'>=</span> <span class='fl'>10</span>,
+                             <span class='kw'>simulations</span> <span class='kw'>=</span> <span class='fl'>10</span>,
+                             <span class='kw'>progress_file</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)$<span class='fu'><a href='Simulator.html'>run</a></span>()
+
+  <span class='fu'>summary</span>(<span class='no'>history</span>)
+
+  <span class='fu'>plot</span>(<span class='no'>history</span>)
+
+  <span class='no'>dt</span> <span class='kw'>&lt;-</span> <span class='no'>history</span>$<span class='fu'>get_data_table</span>()
+
+  <span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='no'>history</span>$<span class='fu'>get_data_frame</span>()
+
+  <span class='fu'>print</span>(<span class='no'>history</span>$<span class='no'>cumulative</span>$<span class='no'>E.G.</span>$<span class='no'>cum_regret_sd</span>)
+
+  <span class='fu'>print</span>(<span class='no'>history</span>$<span class='no'>cumulative</span>$<span class='no'>E.G.</span>$<span class='no'>cum_regret</span>)
+
+<span class='co'># }</span><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -211,7 +237,9 @@ grouped by agent and simulation.</p></dd>
       <li><a href="#methods">Methods</a></li>
 
       <li><a href="#see-also">See also</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

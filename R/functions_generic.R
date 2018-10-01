@@ -38,14 +38,14 @@ plot.History <- function(x, ...) {
     use_colors <- eval(args$use_colors)
   else
     use_colors <- TRUE
-  if ("plot_only_ci" %in% names(args))
-    plot_only_ci <- eval(args$plot_only_ci)
+  if ("plot_only_disp" %in% names(args))
+    plot_only_disp <- eval(args$plot_only_disp)
   else
-    plot_only_ci <- FALSE
-  if ("ci" %in% names(args))
-    ci <- eval(args$ci)
+    plot_only_disp <- FALSE
+  if ("disp" %in% names(args))
+    disp <- eval(args$disp)
   else
-    ci <- NULL
+    disp <- NULL
   if ("traces" %in% names(args))
     traces <- eval(args$traces)
   else
@@ -117,8 +117,8 @@ plot.History <- function(x, ...) {
       legend = legend,
       regret = regret,
       use_colors = use_colors,
-      ci = ci,
-      plot_only_ci = plot_only_ci,
+      disp = disp,
+      plot_only_disp = plot_only_disp,
       traces = traces,
       traces_max = traces_max,
       traces_alpha = traces_alpha,
@@ -143,8 +143,8 @@ plot.History <- function(x, ...) {
       legend = legend,
       regret = regret,
       use_colors = use_colors,
-      ci = ci,
-      plot_only_ci = plot_only_ci,
+      disp = disp,
+      plot_only_disp = plot_only_disp,
       traces = traces,
       traces_max = traces_max,
       traces_alpha = traces_alpha,

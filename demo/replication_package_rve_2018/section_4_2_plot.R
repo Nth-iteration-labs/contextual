@@ -1,6 +1,4 @@
 library(contextual)
-library(here)
-setwd(here("demo","paper_jss_replication_package"))
 
 bandit <- ContextualBernoulliBandit$new(weights = c(0.9, 0.1, 0.1))
 agents <- list(Agent$new(RandomPolicy$new(), bandit),
@@ -16,13 +14,13 @@ plot(history, type = "cumulative", use_colors = FALSE, no_par = TRUE, legend_bor
      limit_agents = c("GittinsBrezziLai", "UCB1","ThompsonSampling"))
 plot(history, type = "cumulative", regret = FALSE, legend = FALSE,
      limit_agents = c("UCB1"), traces = TRUE, no_par = TRUE)
-plot(history, type = "cumulative", regret = FALSE, rate = TRUE, ci = "sd",
+plot(history, type = "cumulative", regret = FALSE, rate = TRUE, disp = "sd",
      limit_agents = c("Exp3", "ThompsonSampling"),
      legend_position = "bottomright", no_par = TRUE)
-plot(history, type = "cumulative", rate = TRUE, plot_only_ci = TRUE,
-     ci = "var", smooth = TRUE, limit_agents = c("UCB1", "GittinsBrezziLai"),
+plot(history, type = "cumulative", rate = TRUE, plot_only_disp = TRUE,
+     disp = "var", smooth = TRUE, limit_agents = c("UCB1", "GittinsBrezziLai"),
      legend_position = "bottomleft", no_par = TRUE)
-plot(history, type = "average", ci = "ci", regret = FALSE, interval = 10,
+plot(history, type = "average", disp = "ci", regret = FALSE, interval = 10,
      smooth = TRUE, legend_position = "bottomright", no_par = TRUE, legend = FALSE)
 plot(history, limit_agents = c("ThompsonSampling"), type = "arms",
      interval = 20, no_par = TRUE)

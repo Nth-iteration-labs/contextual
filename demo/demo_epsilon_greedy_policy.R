@@ -11,7 +11,7 @@ simulator         <- Simulator$new(agents      = agent,
 
 history           <- simulator$run()
 
-plot(history, type = "cumulative", regret = TRUE, ci = "ci",
+plot(history, type = "cumulative", regret = TRUE, disp = "ci",
      traces_max = 100, traces_alpha = 0.1,
      traces = TRUE, smooth = FALSE, interval = 1)
 

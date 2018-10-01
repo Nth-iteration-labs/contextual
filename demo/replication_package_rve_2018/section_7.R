@@ -1,7 +1,7 @@
 library(contextual)
 library(data.table)
 library(here)
-setwd(here("demo","paper_jss_replication_package"))
+setwd(here("demo","replication_package_rve_2018"))
 
 OfflinePolicyEvaluatorBandit <- R6::R6Class(
   inherit = Bandit,

@@ -29,24 +29,24 @@ history            <- Simulator$new(agents, horizon = 20, simulations = 20,
 #
 # vdiffr::expect_doppelganger(
 #   "Cumulative sd plot",
-    plot(history, type = "cumulative", regret = FALSE, rate = TRUE, ci = "sd",
+    plot(history, type = "cumulative", regret = FALSE, rate = TRUE, disp = "sd",
       limit_agents = c("Exp3", "ThompsonSampling"),
       legend_position = "bottomright", no_par = TRUE)
 #
 # vdiffr::expect_doppelganger(
 #   "Only sd plot",
-   plot(history, type = "cumulative", rate = TRUE, plot_only_ci = TRUE,
-      ci = "var", smooth = TRUE, limit_agents = c("UCB1", "GittinsBrezziLai"),
+   plot(history, type = "cumulative", rate = TRUE, plot_only_disp = TRUE,
+      disp = "var", smooth = TRUE, limit_agents = c("UCB1", "GittinsBrezziLai"),
       legend_position = "topright", no_par = TRUE)
 #
 # vdiffr::expect_doppelganger(
 #   "Average reward plot",
-    plot(history, type = "average", ci = "ci", regret = FALSE, interval = 10,
+    plot(history, type = "average", disp = "ci", regret = FALSE, interval = 10,
       smooth = TRUE, legend_position = "bottomright", no_par = TRUE)
 #
 # vdiffr::expect_doppelganger(
 #   "Average regret plot",
-   plot(history, type = "average", ci = "ci", regret = TRUE, interval = 10,
+   plot(history, type = "average", disp = "ci", regret = TRUE, interval = 10,
            smooth = TRUE, legend_position = "bottomright", no_par = TRUE)
 #
 # vdiffr::expect_doppelganger(
