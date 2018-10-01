@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-Though contextual has been developed to ease the implementation and comparison of your own custom Bandits and Policies, it can, of course, also be used to evaluate policies from contextual's growing policy library. In the current vignette we will demonstrate how to run such simulations. 
+Though contextual has been developed to ease the implementation and comparison of custom Bandits and Policies, it can also be used to evaluate policies from contextual's growing policy library. In the current vignette we will demonstrate how to run such simulations. 
 
 Since online advertising is one of the areas where bandit policies have found widespread application, we will use this field as the setting for our tutorial. Generally, the goal in online advertising is to determine which out of several ads to serve a visitor to a particular web page. Translated to a bandit setting, in online advertising:
 
@@ -29,7 +29,7 @@ For the current tutorial, we limit the number of advertisements we want to evalu
 
 #### Comparing context-free policies
 
-Before we are able to evaluate any policies, we first have to model the three ads---each with a different probability of generating a click---as the arms of a bandit. For the current simulation we choose to model the ads with the weight-based ContextualBernoulliBandit, as this allows us to set weights determining the average reward probability of each arm. As can be observed in the source code below, for the current simulation, we set the weights of the arms to respectively $\theta_1 = 0.8$, $\theta_2  = 0.4$ and $\theta_3 = 0.2$.
+Before we are able to evaluate any policies, we first need to model the three ads---each with a different probability of generating a click---as the arms of a bandit. For the current simulation we choose to model the ads with the weight-based ContextualBernoulliBandit, as this allows us to set weights that determine the average reward probability of each arm. As can be observed in the source code below, for the current simulation, we set the weights of the arms to respectively $\theta_1 = 0.8$, $\theta_2  = 0.4$ and $\theta_3 = 0.2$.
 
 We also choose two context-free policies to evaluate and compare:
 
@@ -70,15 +70,14 @@ plot(history, type = "cumulative", regret = FALSE, rate = TRUE, lwd = 2)
 ```
 ![](contextual-fig-1.png){width=98%}
 
-As can be observed in the figure above, within our horizon of $T = 400$, EpsilonFirstPolicy has accumulated more rewards than EpsilonGreedytPolicy. It is easy to see why: The winning arm is better than the other two by a margin. That means that  EpsilonFirstPolicy has no difficulty in finding the optimal arm within its exploration period of one hundred impressions. Up to that point, EpsilonGreedyPolicy had the advantage of a headstart, as it was already able to exploit for $1- \epsilon$ or sixty percent of the time. But from one hundred impressions on, EpsilonFirstPolicy switches from full exploration to full exploitation mode. In contrast to EpsilonGreedyPolicy, it is now able to exploit the arm that proved best during exploration all of the time. As a result, it can catch up and pass the rewards cumulated by EpsilonGreedyPolicy within less than one hundred and fifty impressions.
+As can be observed in the figure above, within our horizon of $T = 400$, EpsilonFirstPolicy has accumulated more rewards than EpsilonGreedytPolicy. It is easy to see why: The winning arm is better than the other two---by a margin. That means that EpsilonFirstPolicy has no difficulty in finding the optimal arm within its exploration period of one hundred impressions. Up to that point, EpsilonGreedyPolicy still had the advantage of a headstart, as it was already able to exploit for $1- \epsilon$ or sixty percent of the time. But from one hundred impressions on, EpsilonFirstPolicy switches from full exploration to full exploitation mode. In contrast to EpsilonGreedyPolicy, it is now able to exploit the arm that proved best during exploration all of the time. As a result, it is able catch up with (and then surpass) the rewards accumulated by EpsilonGreedyPolicy within less than one hundred and fifty impressions.
 
 #### Adding context
 
-If that is all we know of our visitors, we expect the results to be stationary over time, and these are the only policies available, the choice is clear: in the current scenario, it is best to deploy EpsilonFirstPolicy (Also: if the bandit model represents our visitors' click behavior realistically, if our policies' parameters are optimal, etcetera). However, if we have contextual information on our visitors---for instance, their age---we might be able to do better. Let us suggest that we expect that some of our ads are more effective for older visitors, and other ads more effective for younger visitors.
+If that is all we know of our visitors, we expect the results to be stationary over time, and these are the only policies available, the choice is clear: for this scenario, you would pick EpsilonFirstPolicy (Also: if the bandit model represents our visitors' click behavior realistically, if our policies' parameters are optimal, etcetera). However, if we have contextual information on our visitors---for instance, their age---we might be able to do better. Let us suggest that we expect that some of our ads are more effective for older visitors, and other ads more effective for younger visitors.
 
-To incorporate this expectation in our simulation, we need to change the way our bandit generates its rewards. Fortunately, in the case of ContextualBernoulliBandit, the introduction of two contextual features only requires the addition of a single row to its weight matrix---as ContextualBernoulliBandit parses each of the $d$ rows of its weight matrix as a binary contextual feature randomly available on average $1/d$ or 50\% of the time.
+To incorporate this expectation in our simulation, we need to change the way our bandit generates its rewards. Fortunately, in the case of ContextualBernoulliBandit, the introduction of two contextual features only requires the addition of a single row to its weight matrix---as ContextualBernoulliBandit parses each of the $d$ rows of its weight matrix as a binary contextual feature, each randomly selected or sampled $1/d$ of the time.
 
-As can be seen in the source code below, in choosing our weights, we have taken care to keep the average rewards per arm over the two features equal to the rewards per arm in the previous simulation. So we do not expect a substantial difference with the previous simulation's outcome for context-free policies EpsilonFirstPolicy and EpsilonGreedyPolicy.
 
 We therefore also include the contextual LinUCBDisjointPolicy, which, in assuming its reward function is a linear function of the context, is able to incorporate our new contextual information into its decision-making process. Now let us rerun the simulation:
 
@@ -110,10 +109,9 @@ plot(history, type = "cumulative", regret = FALSE, rate = TRUE)
 ```
 ![](contextual-fig-2.png){width=98%}
 
+As can be observed in the figure above, both context-free bandit's do indeed not do better than before. On the other hand, LinUCBDisjointPolicy does very well, as it is able to map its rewards to the available contextual features. 
 
-As can be observed in the figure above, both context-free bandit's results do indeed not do better than before. On the other hand, LinUCBDisjointPolicy does very well, as it is able to map its rewards to the available contextual features. All in all, this time around, you would choose LinUCBDisjointPolicy to implement on your website---with the added advantage that you will now be in a position to incorporate other contextual features to optimize results further.
-
-Of course, the simulations in the current section are not very realistic. One way to ameliorate that would be to write a Bandit subclass with a more complex generative model. More on that in the vignette "Creating your own Policies and Bandits". Another option would be to evaluate policies on offline datasets. For that, see "Evaluating policies with offline datasets"
+Of course, the simulations in the current section are not very realistic. One way to ameliorate this would be to write a Bandit subclass with a more complex generative model. More on that in the vignette "Creating your own Policies and Bandits". Another option would be to evaluate policies on offline datasets. Which is covered in the vignette "Evaluating policies with offline datasets".
 
 
 
