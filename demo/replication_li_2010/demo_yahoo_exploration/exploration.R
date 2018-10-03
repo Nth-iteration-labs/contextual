@@ -4,7 +4,7 @@ library(here)
 library(data.table)
 library(MonetDB.R)
 
-setwd(here("demo", "replication_li_2010", "demo_yahoo_exploration"))
+setwd(here::here("demo", "replication_li_2010", "demo_yahoo_exploration"))
 
 con <- DBI::dbConnect(MonetDB.R(), host="monetdb_ip", dbname="yahoo", user="monetdb", password="monetdb")
 

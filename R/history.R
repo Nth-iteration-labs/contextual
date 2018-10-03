@@ -230,7 +230,7 @@ History <- R6::R6Class(
         as.data.frame(private$.data)
     },
     set_data_frame = function(df, auto_stats = TRUE) {
-      private$.data <- as.data.table::as.data.table(df)
+      private$.data <- data.table::as.data.table(df)
       if (isTRUE(auto_stats)) private$calculate_cum_stats()
       invisible(self)
     },

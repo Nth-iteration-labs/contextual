@@ -7,7 +7,7 @@ library(MonetDBLite)
 library(here)
 
 
-setwd(here("demo", "replication_li_2010"))
+setwd(here::here("demo", "replication_li_2010"))
 
 source("yahoo_bandit.R")
 source("yahoo_policy_epsilon_greedy.R")

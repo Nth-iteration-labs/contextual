@@ -146,7 +146,7 @@ is_rstudio <- function() {
 #' until the end of the session.
 #'
 #' Also, the active graphing environment will be killed.
-#' As a result, any graphs that are open will be deleted. 
+#' As a result, any graphs that are open will be deleted.
 #'
 #' @examples
 #' \dontrun{
@@ -210,11 +210,13 @@ sample_one_of <- function(x) {
 #'
 #' @export
 formatted_difftime <- function(x) UseMethod("formatted_difftime")
+#' @export
 formatted_difftime.difftime <- function(x) {
   units(x) <- "secs"
   x <- unclass(x)
   NextMethod()
 }
+#' @export
 formatted_difftime.default <- function(x) {
   y <- abs(x)
   if (y %/% 86400 > 0) {

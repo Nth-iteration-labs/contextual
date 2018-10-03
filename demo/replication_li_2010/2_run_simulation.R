@@ -20,7 +20,7 @@ monetdb_dbname          <- "yahoo"
 monetdb_user            <- "monetdb"
 monetdb_password        <- "monetdb"
 
-setwd(here("demo", "replication_li_2010"))
+setwd(here::here("demo", "replication_li_2010"))
 
 # Setup ------------------------------------------------------------------------------------------------------
 
