@@ -218,7 +218,6 @@ print.History <- function(x, ...) {
 #'
 #' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 #'
-#' @importFrom data.table data.table setcolorder rbindlist
 #' @export
 summary.History <- function(object, ...) {
 

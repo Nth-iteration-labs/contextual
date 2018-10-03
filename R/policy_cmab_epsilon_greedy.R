@@ -1,39 +1,35 @@
 #' @export
-LinUCBDisjointPolicy <- R6::R6Class(
+ContextualEpsilonGreedy <- R6::R6Class(
   portable = FALSE,
   class = FALSE,
   inherit = Policy,
   public = list(
-    alpha = NULL,
-    class_name = "LinUCBDisjointPolicy",
-    initialize = function(alpha = 1.0) {
+    epsilon = NULL,
+    class_name = "ContextualEpsilonGreedy",
+    initialize = function(epsilon = 1.0) {
       super$initialize()
-      self$alpha <- alpha
+      self$epsilon <- epsilon
     },
     set_parameters = function(context_params) {
-      ul <- length(context_params$unique)
-      self$theta_to_arms <- list('A' = diag(1,ul,ul), 'b' = rep(0,ul))
+      d <- context_params$d
+      self$theta_to_arms <- list('A' = diag(1,d,d), 'b' = rep(0,d))
     },
     get_action = function(t, context) {
-
-      expected_rewards <- rep(0.0, context$k)
-
-      for (arm in 1:context$k) {
-
-        Xa         <- context$X[context$unique,arm]
-        A          <- self$theta$A[[arm]]
-        b          <- self$theta$b[[arm]]
-
-        A_inv      <- inv(A)
-
-        theta_hat  <- A_inv %*% b
-
-        mean       <- Xa %*% theta_hat
-        sd         <- sqrt(tcrossprod(Xa %*% A_inv, Xa))
-
-        expected_rewards[arm] <- mean + self$alpha * sd
+      if (runif(1) > self$epsilon) {
+        expected_rewards <- rep(0.0, context$k)
+        for (arm in 1:context$k) {
+          Xa         <- context$X[,arm]
+          A          <- self$theta$A[[arm]]
+          b          <- self$theta$b[[arm]]
+          A_inv      <- inv(A)
+          theta_hat  <- A_inv %*% b
+          expected_rewards[arm] <- Xa %*% theta_hat
+        }
+        action$choice  <- max_in(expected_rewards)
+      } else {
+        self$action$choice        <- sample.int(context$k, 1, replace = TRUE)
       }
-      action$choice  <- max_in(expected_rewards)
+
       action
     },
     set_reward = function(t, context, action, reward) {
@@ -49,35 +45,21 @@ LinUCBDisjointPolicy <- R6::R6Class(
   )
 )
 
-#' Policy: LinUCB with unique linear models
+#' Policy: ContextualEpsilonGreedy with unique linear models
 #'
-#' Algorithm 1 LinUCB with unique linear models
-#' A Contextual-Bandit Approach to
-#' Personalized News Article Recommendation
-#'
-#' Lihong Li et all
-#'
-#' Each time step t, \code{LinUCBDisjointPolicy} runs a linear regression per arm that produces coefficients for each context feature \code{d}.
-#' It then observes the new context, and generates a predicted payoff or reward together with a confidence interval for each available arm.
-#' It then proceeds to choose the arm with the highest upper confidence bound.
-#'
-#' @name LinUCBDisjointPolicy
+#' @name ContextualEpsilonGreedy
 #'
 #'
 #' @section Usage:
 #' \preformatted{
-#' policy <- LinUCBDisjointPolicy(alpha = 1.0)
+#' policy <- ContextualEpsilonGreedy(epsilon = 0.1)
 #' }
 #'
 #' @section Arguments:
 #'
 #' \describe{
-#'   \item{\code{alpha}}{
+#'   \item{\code{epsilon}}{
 #'    double, a positive real value R+
-#'   }
-#'   \item{\code{name}}{
-#'    character string specifying this policy. \code{name}
-#'    is, among others, saved to the History log and displayed in summaries and plots.
 #'   }
 #' }
 #'
@@ -95,7 +77,7 @@ LinUCBDisjointPolicy <- R6::R6Class(
 #' @section Methods:
 #'
 #' \describe{
-#'   \item{\code{new(alpha = 1)}}{ Generates a new \code{LinUCBDisjointPolicy} object. Arguments are defined in the Argument section above.}
+#'   \item{\code{new(epsilon = 0.1)}}{ Generates a new \code{ContextualEpsilonGreedy} object. Arguments are defined in the Argument section above.}
 #' }
 #'
 #' \describe{
@@ -122,7 +104,7 @@ LinUCBDisjointPolicy <- R6::R6Class(
 #'
 #' @references
 #'
-#' Li, L., Chu, W., Langford, J., & Schapire, R. E. (2010, April). A contextual-bandit approach to personalized news article recommendation. In Proceedings of the 19th international conference on World wide web (pp. 661-670). ACM.
+#' refhere
 #'
 #' @seealso
 #'

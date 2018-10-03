@@ -1,6 +1,6 @@
-#' @importFrom foreach %dopar% %do%
+#' @importFrom foreach %dopar% %do% foreach
 #' @importFrom doParallel registerDoParallel stopImplicitCluster
-#' @importFrom itertools isplitRows
+#' @importFrom itertools isplitVector
 #' @importFrom data.table rbindlist
 #' @importFrom iterators icount
 #'
@@ -118,43 +118,14 @@ Simulator <- R6::R6Class(
       `%fun%` <- foreach::`%do%`
       workers <- 1
       # parallel tests are problematic, therefor no test coverage for parallel section
+
       # nocov start
       if (self$do_parallel) {
-        message("Preworkercreation")
-        nr_cores <- parallel::detectCores()
-        if (nr_cores >= 3) workers <- nr_cores - 1
-        if (!is.null(worker_max)) {
-          if (workers > worker_max) workers <- worker_max
-        }
-        # clean up any leftover processes
-        doParallel::stopImplicitCluster()
-        if (grepl('w|W', .Platform$OS.type)) {
-
-          # Windows
-
-          self$cl <- parallel::makeCluster(workers, useXDR = FALSE, type = "PSOCK",
-                                           methods = FALSE, setup_timeout = 30, outfile = self$outfile)
-        } else {
-          # Linux or MacOS
-          # self$cl <- parallel::makeCluster(workers, useXDR = FALSE, type = "FORK", methods=FALSE,
-          #                                   port=11999, outfile = self$outfile)
-
-          # There are issues with FORK that pop up irregularly and have proven hard to pin down.
-          # So to make sure sims work, we use PSOCK for all operating systems - for now.
-          self$cl <- parallel::makeCluster(workers, useXDR = FALSE, type = "PSOCK",
-                                           methods = FALSE, setup_timeout = 30, outfile = self$outfile)
-          if (grepl('darwin', version$os)) {
-            # macOS - potential future osx/linux specific settings go here.
-          } else {
-            # Linux - potential future osx/linux specific settings go here.
-          }
-        }
-        message(paste0("Cores available: ",nr_cores))
-        message(paste0("Workers assigned: ",workers))
-        doParallel::registerDoParallel(self$cl)
+        self$register_parallel_backend()
         `%fun%` <- foreach::`%dopar%`
         message("Postworkercreation")
       }
+
       # If Microsoft R, set MKL threads to 1
       if ("RevoUtilsMath" %in% rownames(installed.packages())) {
         RevoUtilsMath::setMKLthreads(1)
@@ -239,18 +210,54 @@ Simulator <- R6::R6Class(
         sim_agent$bandit$close
         local_history$get_data_table()
       }
-      foreach_results <- rbindlist(foreach_results)
+      foreach_results <- data.table::rbindlist(foreach_results)
       self$history$set_data_table(foreach_results, auto_stats = FALSE)
       private$end_time <- Sys.time()
       if (reindex) self$history$reindex()
       self$history$update_statistics()
       self$history$set_meta_data("sim_end_time",format(Sys.time(), "%a %b %d %X %Y"))
-      formatted_duration <- formatted_difftime(private$end_time - private$start_time)
-      self$history$set_meta_data("sim_total_duration",
-                                 formatted_difftime(private$end_time - private$start_time))
+      formatted_duration <- contextual::formatted_difftime(private$end_time - private$start_time)
+      self$history$set_meta_data("sim_total_duration", formatted_duration)
       message(paste0("Completed simulation in ",formatted_duration))
       self$close()
       self$history
+    },
+    register_parallel_backend = function() {
+      # nocov start
+      # setup parallel backend
+      message("Setting up parallel backend")
+      nr_cores <- parallel::detectCores()
+      if (nr_cores >= 3) workers <- nr_cores - 1
+      if (!is.null(self$worker_max)) {
+        if (workers > self$worker_max) workers <- self$worker_max
+      }
+      # clean up any leftover processes
+      doParallel::stopImplicitCluster()
+      if (grepl('w|W', .Platform$OS.type)) {
+
+        # Windows
+
+        self$cl <- parallel::makeCluster(workers, useXDR = FALSE, type = "PSOCK",
+                                         methods = FALSE, setup_timeout = 30, outfile = self$outfile)
+      } else {
+        # Linux or MacOS
+        # self$cl <- parallel::makeCluster(workers, useXDR = FALSE, type = "FORK", methods=FALSE,
+        #                                   port=11999, outfile = self$outfile)
+
+        # There are issues with FORK that pop up irregularly and have proven hard to pin down.
+        # So to make sure sims work, we use PSOCK for all operating systems - for now.
+        self$cl <- parallel::makeCluster(workers, useXDR = FALSE, type = "PSOCK",
+                                         methods = FALSE, setup_timeout = 30, outfile = self$outfile)
+        if (grepl('darwin', version$os)) {
+          # macOS - potential future osx/linux specific settings go here.
+        } else {
+          # Linux - potential future osx/linux specific settings go here.
+        }
+      }
+      message(paste0("Cores available: ",nr_cores))
+      message(paste0("Workers assigned: ",workers))
+      doParallel::registerDoParallel(self$cl)
+      # nocov end
     },
     close = function() {
       # nocov start

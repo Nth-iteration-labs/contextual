@@ -1,4 +1,4 @@
-#' @importFrom data.table data.table set setorder setkeyv copy uniqueN setcolorder
+#' @importFrom data.table data.table as.data.table set setorder setkeyv copy uniqueN setcolorder
 #' @import checkmate
 #' @export
 History <- R6::R6Class(
@@ -200,13 +200,13 @@ History <- R6::R6Class(
       }
       if (context_to_columns) {
         context_cols <- c(paste0("X.", seq_along(unlist(private$.data[1,]$context))))
-        dt_to_save <- copy(private$.data)
+        dt_to_save <- data.table::copy(private$.data)
         dt_to_save[, context_string := lapply(.SD, function(x) paste( unlist(x), collapse=',') ),
                                     by=1:private$.data[, .N], .SDcols = c("context")]
         one_context <- private$.data[1,]$context[[1]]
         if (is.vector(one_context)) one_context <- matrix(one_context, nrow = 1L)
-        dt_to_save$k <- dim(one_context)[2]
-        dt_to_save$d <- dim(one_context)[1]
+        dt_to_save$k <- ncol(one_context)
+        dt_to_save$d <- nrow(one_context)
         dt_to_save[, (context_cols) := tstrsplit(context_string, ",", fixed=TRUE)]
         dt_to_save$context <- NULL
         if ("theta" %in% names(dt_to_save)) dt_to_save$theta <- NULL
@@ -230,7 +230,7 @@ History <- R6::R6Class(
         as.data.frame(private$.data)
     },
     set_data_frame = function(df, auto_stats = TRUE) {
-      private$.data <- as.data.table(df)
+      private$.data <- as.data.table::as.data.table(df)
       if (isTRUE(auto_stats)) private$calculate_cum_stats()
       invisible(self)
     },

@@ -14,17 +14,16 @@ LinUCBHybridPolicy <- R6::R6Class(
       ul                 <- length(context_params$unique)
       sl                 <- length(context_params$unique) * length(context_params$shared)
 
-      self$theta         <- list( 'A0' = diag(1,sl,sl), 'A0_inv' = diag(1,sl,sl),
-                                  'b0' = rep(0,sl),'z' = matrix(0,ul,ul), 'x' = rep(0,ul))
-      self$theta_to_arms <- list( 'A' = diag(1,ul,ul), 'A_inv' = diag(1,ul,ul),
-                                  'B' = matrix(0,ul,sl), 'b' = rep(0,ul))
+      self$theta         <- list( 'A0' = diag(1,sl,sl), 'b0' = rep(0,sl),
+                                  'z' = matrix(0,ul,ul), 'x' = rep(0,ul))
+      self$theta_to_arms <- list( 'A' = diag(1,ul,ul), 'B' = matrix(0,ul,sl), 'b' = rep(0,ul))
     },
     get_action = function(t, context) {
       expected_rewards <- rep(0.0, context$k)
 
-      self$theta$A0_inv <- inv(self$theta$A0)
+      A0_inv <- inv(self$theta$A0)
 
-      beta_hat <- self$theta$A0_inv %*% self$theta$b0
+      beta_hat <- A0_inv %*% self$theta$b0
 
       for (arm in 1:context$k) {
 
@@ -36,7 +35,6 @@ LinUCBHybridPolicy <- R6::R6Class(
         b          <- self$theta$b[[arm]]
         x          <- context$X[context$unique,arm]
         z          <- matrix(as.vector(outer(x,context$X[context$shared,arm])))
-        A0_inv     <- self$theta$A0_inv
         A_inv      <- inv(A)
 
         ################## compute expected reward per arm #############################
