@@ -2,7 +2,7 @@ library(foreach)
 library(doAzureParallel)
 library(here)
 
-setwd(here::here("demo","alternative_parallel_backends","microsoft_azure"))
+setwd(here::here("demo","alternative_parallel_backends","azure"))
 
 # 1. Generate your credential and cluster configuration files.
 doAzureParallel::generateClusterConfig("cluster.json")

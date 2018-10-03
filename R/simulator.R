@@ -207,7 +207,7 @@ Simulator <- R6::R6Class(
             }
           }
         }
-        sim_agent$bandit$close
+        sim_agent$bandit$final()
         local_history$get_data_table()
       }
       foreach_results <- data.table::rbindlist(foreach_results)
@@ -219,7 +219,7 @@ Simulator <- R6::R6Class(
       formatted_duration <- contextual::formatted_difftime(private$end_time - private$start_time)
       self$history$set_meta_data("sim_total_duration", formatted_duration)
       message(paste0("Completed simulation in ",formatted_duration))
-      self$close()
+      self$stop_parallel_backend()
       self$history
     },
     register_parallel_backend = function() {
@@ -259,7 +259,7 @@ Simulator <- R6::R6Class(
       doParallel::registerDoParallel(self$cl)
       # nocov end
     },
-    close = function() {
+    stop_parallel_backend = function() {
       # nocov start
       if (self$do_parallel) {
         try({

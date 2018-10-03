@@ -96,7 +96,7 @@ YahooBandit <- R6::R6Class(
         NULL
       }
     },
-    close = function() {
+    final = function() {
       DBI::dbDisconnect(self$con)
     }
   )

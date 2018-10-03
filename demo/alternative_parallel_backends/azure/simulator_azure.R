@@ -1,20 +1,23 @@
-# AzureSimulator is a subclass of contextual's Simulator superclass
-# It replaces doParallel with doAzureParallel.
+# AzureSimulator is a subclass of Simulator
+# substituting doParallel with doAzureParallel.
 
 # devtools::install_github("Azure/rAzureBatch")
 # devtools::install_github("Azure/doAzureParallel")
 
-library(doAzureParallel)
 library(contextual)
+library(foreach)
+library(doAzureParallel)
+library(here)
+
+setwd(here::here("demo","alternative_parallel_backends","azure"))
 
 AzureSimulator <- R6::R6Class(
-  "AzureSimulator",
   portable = FALSE,
   inherit = Simulator,
   class = FALSE,
-  private = list(rewards = NULL),
   public = list(
     register_parallel_backend = function() {
+
       # 1. Generate your credential and cluster configuration files.
       doAzureParallel::generateClusterConfig("cluster.json")
       doAzureParallel::generateCredentialsConfig("credentials.json")
@@ -33,12 +36,12 @@ AzureSimulator <- R6::R6Class(
       # 6. Check that your parallel backend has been registered
       workers = foreach::getDoParWorkers()
 
-      message(paste0("Workers: ", workers))
+      message(paste0("Azure workers: ", workers))
     },
-    close = function() {
-      if (super$do_parallel) {
+    stop_parallel_backend = function() {
+      try({
         doAzureParallel::stopCluster(super$cl)
-      }
+      })
     }
   )
 )

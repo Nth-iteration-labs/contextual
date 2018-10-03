@@ -32,7 +32,7 @@ Bandit <- R6::R6Class(
       stop("Bandit subclass needs to implement bandit$generate_cache()
            when bandit$precaching is TRUE.", call. = FALSE)
     },
-    close = function() {
+    final = function() {
       # called on object destruction
     }
   )
