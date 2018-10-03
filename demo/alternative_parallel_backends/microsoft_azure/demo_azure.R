@@ -21,7 +21,7 @@ agents        <-list(Agent$new(EpsilonGreedyPolicy$new(0.1), bandit),
                      Agent$new(ContextualLogitBTSPolicy$new(10), bandit),
                      Agent$new(LinUCBDisjointOptimizedPolicy$new(1.0), bandit))
 
-simulation     <- AzureSimulator$new(agents, horizon, simulations)
+simulation     <- Simulator$new(agents, horizon, simulations)
 
 history        <- simulation$run()
 
