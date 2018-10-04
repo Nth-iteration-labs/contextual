@@ -49,7 +49,7 @@ Overview of contextual's growing library of contextual and context-free bandit p
 
 | General | Context-free | Contextual |
 |---------------|-------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------|
-| Random<br>  Oracle<br> <br> <br> <br> <br><br>   | Epsilon-Greedy<br>  Epsilon-First<br>  UCB-tuned<br>   Thompson Sampling<br>   BootstrapTS<br>   Softmax<br>   Gittins | CMAB Epoch-Greedy<br>   LinUCB (General, Disjoint, Hybrid)<br>  COFIBA*<br>   LinTS<br>   LogitBTS<br><br> <br>   |
+| Random<br>  Oracle<br> <br> <br> <br> <br><br>   | Epsilon-Greedy<br>  Epsilon-First<br>  UCB-tuned<br>   Thompson Sampling<br>   BootstrapTS<br>   Softmax<br>   Gittins | CMAB Epoch-Greedy<br>   LinUCB (General, Disjoint, Hybrid)<br>  COFIBA*<br>   LinTS<br>   LogitBTS<br>GLMUCB<br> <br>   |
 
 Overview of contextual's bandit library:
 
