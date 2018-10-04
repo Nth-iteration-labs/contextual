@@ -9,7 +9,6 @@ ContextualLogitBandit <- R6::R6Class(
     beta   = NULL,
     intercept = NULL,
     class_name = "ContextualLogitBandit",
-    precaching = FALSE,
     initialize  = function(k, d, intercept = TRUE) {
       self$k              <- k
       self$d              <- d

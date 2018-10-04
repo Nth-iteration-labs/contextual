@@ -9,21 +9,18 @@ test_that("Bandit superclass", {
   expect_identical(bandit$final(), NULL)
   expect_error(bandit$get_context(), "Bandit subclass needs to implement")
   expect_error(bandit$get_reward(), "Bandit subclass needs to implement")
-  expect_error(bandit$generate_bandit_data(), "Bandit subclass needs to implement")
 
 })
 
-test_that("ContextualBernoulliBandit simulation", {
+test_that("ContextualBernoulliPrecachingBandit simulation", {
 
-  bandit      <- ContextualBernoulliBandit$new(weights = matrix(c(0.1, 0.9, 0.1, 0.9), 2, 2))
+  bandit      <- ContextualBernoulliPrecachingBandit$new(weights = matrix(c(0.1, 0.9, 0.1, 0.9), 2, 2))
   expect_identical(typeof(bandit), "environment")
 
   expect_equal(bandit$k, 2)
   expect_equal(bandit$d, 2)
-  expect_true(bandit$precaching)
 
-
-  bandit      <- ContextualBernoulliBandit$new(weights = c(0.1, 0.9))
+  bandit      <- ContextualBernoulliPrecachingBandit$new(weights = c(0.1, 0.9))
   expect_identical(typeof(bandit), "environment")
 
   expect_equal(bandit$k, 2)
@@ -235,13 +232,13 @@ test_that("BasicBernoulliBandit Long", {
 
 })
 
-test_that("ContextualBernoulliBandit MAB policies", {
+test_that("ContextualBernoulliPrecachingBandit MAB policies", {
 
   weight_per_arm     <- c(0.9, 0.1, 0.1)
   horizon            <- 10
   simulations        <- 10
 
-  bandit             <- ContextualBernoulliBandit$new(weights = weight_per_arm)
+  bandit             <- ContextualBernoulliPrecachingBandit$new(weights = weight_per_arm)
 
   agents             <- list(Agent$new(RandomPolicy$new(), bandit),
                              Agent$new(OraclePolicy$new(), bandit),
@@ -271,37 +268,13 @@ test_that("ContextualBernoulliBandit MAB policies", {
 
 })
 
-test_that("ContextualBernoulliBandit options", {
+test_that("ContextualBernoulliPrecachingBandit options", {
 
   weight_per_arm     <- c(0.9, 0.1, 0.1)
   horizon            <- 10
   simulations        <- 10
 
-  expect_error(ContextualBernoulliBandit$new(weights = weight_per_arm, reward_family = "notgood"))
-
-  # without precaching
-
-  bandit             <- ContextualBernoulliBandit$new(weights = weight_per_arm, precaching = FALSE)
-
-  agents             <- list(Agent$new(EpsilonGreedyPolicy$new(0.1), bandit))
-  simulation         <- Simulator$new(agents, horizon, simulations, do_parallel = FALSE)
-  history            <- simulation$run()
-
-  expect_equal(history$cumulative$EpsilonGreedy$cum_regret,  2.1, tolerance = 0.01)
-
-  expect_message(bandit$generate_bandit_data(n = 1L, silent = FALSE), "Precaching bandit")
-
-  # sum_weights = TRUE
-
-  bandit             <- ContextualBernoulliBandit$new(weights = weight_per_arm, sum_weights = TRUE)
-
-  agents             <- list(Agent$new(EpsilonGreedyPolicy$new(0.1), bandit))
-  simulation         <- Simulator$new(agents, horizon, simulations, do_parallel = FALSE)
-  history            <- simulation$run()
-
-  expect_equal(history$cumulative$EpsilonGreedy$cum_regret,  2.3, tolerance = 0.01)
-
-  expect_message(bandit$generate_bandit_data(n = 1L, silent = FALSE), "Precaching bandit")
+  expect_error(ContextualBernoulliPrecachingBandit$new(weights = weight_per_arm, reward_family = "notgood"))
 
 })
 
@@ -380,7 +353,7 @@ test_that("ContextualHybridBandit", {
   expect_equal(history$cumulative$ContextualEpochGreedy$cum_reward,  73, tolerance = 0.01)
 })
 
-test_that("ContextualBernoulliBandit GlmUCB", {
+test_that("ContextualBernoulliPrecachingBandit GlmUCB", {
 
 
   context_weights    <- matrix(  c( 0.8, 0.1, 0.1,
@@ -389,7 +362,7 @@ test_that("ContextualBernoulliBandit GlmUCB", {
 
   horizon     <- 300L
   simulations <- 1L
-  bandit      <- ContextualBernoulliBandit$new(weights = context_weights, sum_weights = TRUE)
+  bandit      <- ContextualBernoulliPrecachingBandit$new(weights = context_weights)
 
   policy      <- RandomPolicy$new()
 
@@ -410,7 +383,7 @@ test_that("ContextualBernoulliBandit GlmUCB", {
 
   # have to delve into this: why glmucb not always stable, 167, 169...
 
-  expect_equal(history$cumulative$GlmUCB$cum_reward,  167, tolerance = 0.2)
+  expect_equal(history$cumulative$GlmUCB$cum_reward,  99, tolerance = 0.2)
 
 })
 
@@ -423,7 +396,7 @@ test_that("BasicBernoulliBandit MAB policies", {
                                     0.1, 0.1, 0.8), nrow = 3, ncol = 3, byrow = TRUE)
   horizon     <- 40L
   simulations <- 1L
-  bandit      <- ContextualBernoulliBandit$new(weights = context_weights, sum_weights = TRUE)
+  bandit      <- ContextualBernoulliPrecachingBandit$new(weights = context_weights)
 
   # This can only be random policy, otherwise rejection sampling will
   # produce severely biased results.
@@ -448,9 +421,9 @@ test_that("BasicBernoulliBandit MAB policies", {
 
   direct <- simulation$run()
 
-  expect_equal(direct$get_cumulative_result(t=20)$LinUCBDisjoint$cum_reward,15)
-  expect_equal(direct$get_cumulative_result(t=20)$EpsilonGreedy$cum_reward,8)
-  expect_equal(direct$get_cumulative_result(t=20)$Oracle$cum_reward,19)
+  expect_equal(direct$get_cumulative_result(t=20)$LinUCBDisjoint$cum_reward,7)
+  expect_equal(direct$get_cumulative_result(t=20)$EpsilonGreedy$cum_reward,6)
+  expect_equal(direct$get_cumulative_result(t=20)$Oracle$cum_reward,13)
 
   ########################### create random log data ################################
 
@@ -459,7 +432,7 @@ test_that("BasicBernoulliBandit MAB policies", {
                                     0.1, 0.1, 0.9), nrow = 3, ncol = 3, byrow = TRUE)
   horizon     <- 100L
   simulations <- 1L
-  bandit      <- ContextualBernoulliBandit$new(weights = context_weights, sum_weights = TRUE)
+  bandit      <- ContextualBernoulliPrecachingBandit$new(weights = context_weights)
 
   # This can only be random policy, otherwise rejection sampling will
   # produce severely biased results.
@@ -480,8 +453,8 @@ test_that("BasicBernoulliBandit MAB policies", {
   before <- simulation$run()
   before$save("test.RData")
 
-  expect_equal(before$get_cumulative_result(t=20)$Random$cum_reward,16)
-  expect_equal(before$get_cumulative_result(t=40)$Random$cum_reward,23)
+  expect_equal(before$get_cumulative_result(t=20)$Random$cum_reward,10)
+  expect_equal(before$get_cumulative_result(t=40)$Random$cum_reward,15)
 
   ######################## use the log to test a policy ##########################
 
@@ -510,13 +483,13 @@ test_that("BasicBernoulliBandit MAB policies", {
 
   after <- simulation$run()
 
-  expect_equal(after$get_cumulative_result(t=20)$LinUCBDisjoint$cum_reward,15)
-  expect_equal(after$get_cumulative_result(t=20)$EpsilonGreedy$cum_reward,11)
-  expect_equal(after$get_cumulative_result(t=20)$Oracle$cum_reward,17)
+  expect_equal(after$get_cumulative_result(t=20)$LinUCBDisjoint$cum_reward,8)
+  expect_equal(after$get_cumulative_result(t=20)$EpsilonGreedy$cum_reward,5)
+  expect_equal(after$get_cumulative_result(t=20)$Oracle$cum_reward,14)
 
-  expect_equal(after$get_cumulative_result(t=25)$LinUCBDisjoint$cum_reward,18)
-  expect_equal(after$get_cumulative_result(t=25)$EpsilonGreedy$cum_reward,13)
-  expect_equal(after$get_cumulative_result(t=25)$Oracle$cum_reward,22)
+  expect_equal(after$get_cumulative_result(t=25)$LinUCBDisjoint$cum_reward,10)
+  expect_equal(after$get_cumulative_result(t=25)$EpsilonGreedy$cum_reward,6)
+  expect_equal(after$get_cumulative_result(t=25)$Oracle$cum_reward,17)
 
   ######################## remove optimal values from log and try again ##########################
 
@@ -549,12 +522,12 @@ test_that("BasicBernoulliBandit MAB policies", {
   after <- simulation$run()
   if (file.exists("test.RData")) file.remove("test.RData")
 
-  expect_equal(after$get_cumulative_result(t=20)$LinUCBDisjoint$cum_reward,15)
-  expect_equal(after$get_cumulative_result(t=20)$EpsilonGreedy$cum_reward,11)
+  expect_equal(after$get_cumulative_result(t=20)$LinUCBDisjoint$cum_reward,8)
+  expect_equal(after$get_cumulative_result(t=20)$EpsilonGreedy$cum_reward,5)
   expect_equal(is.na(after$get_cumulative_result(t=20)$Oracle$cum_reward), TRUE)
 
-  expect_equal(after$get_cumulative_result(t=25)$LinUCBDisjoint$cum_reward,18)
-  expect_equal(after$get_cumulative_result(t=25)$EpsilonGreedy$cum_reward,13)
+  expect_equal(after$get_cumulative_result(t=25)$LinUCBDisjoint$cum_reward,10)
+  expect_equal(after$get_cumulative_result(t=25)$EpsilonGreedy$cum_reward,6)
   expect_equal(is.na(after$get_cumulative_result(t=25)$Oracle$cum_reward), TRUE)
 
 })

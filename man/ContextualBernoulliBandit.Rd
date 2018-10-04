@@ -4,24 +4,12 @@
 \alias{ContextualBernoulliBandit}
 \title{Bandit: ContextualBernoulliBandit}
 \description{
-Contextual extension of \code{\link{BasicBernoulliBandit}}.
-}
-\details{
-Contextual extension of \code{\link{BasicBernoulliBandit}} where a user specified \code{d x k} dimensional
-matrix takes the place of \code{\link{BasicBernoulliBandit}} \code{k} dimensional probability vector. Here,
-each row \code{d} represents a feature with \code{k} reward probability values per arm.
-
-For every \code{t}, \code{ContextualBernoulliBandit} randomly samples from its \code{d} features/rows at
-random, yielding a binary \code{context} matrix representing sampled (all 1 rows) and unsampled (all 0)
-features/rows. Next, \code{ContextualBernoulliBandit} generates \code{rewards} contingent on either sum or
-mean (default) probabilities of each arm/column over all of the sampled features/rows.
-
-Illustrates precaching of contexts and rewards.
+Contextual Bernoulli multi-armed bandit.
 }
 \section{Usage}{
 
 \preformatted{
-  bandit <- ContextualBernoulliBandit$new(weights = NULL, precaching  = TRUE, sum_weights = FALSE)
+  bandit <- ContextualBernoulliBandit$new(weights)
 }
 }
 
@@ -30,15 +18,8 @@ Illustrates precaching of contexts and rewards.
 
 \describe{
 \item{\code{weights}}{
-numeric matrix; \code{d x k} dimensional matrix where each row \code{d} represents a feature with
-\code{k} reward probability values per arm.
-}
-\item{\code{precaching}}{
-logical; determines if the bandit precaches all contexts and rewards.
-}
-\item{\code{sum_weights}}{
-logical; determines whether \code{ContextualBernoulliBandit} takes the sum or the mean (default) of
-an arm's probability values over all selected feature rows.
+numeric matrix; \code{d x k} matrix with probabilities of reward for \code{d} contextual features
+per \code{k} arms
 }
 }
 }
@@ -48,8 +29,8 @@ an arm's probability values over all selected feature rows.
 
 \describe{
 
-\item{\code{new(weights = NULL, precaching  = TRUE, sum_weights = FALSE)}}{ generates
-and instantializes a new \code{ContextualBernoulliBandit} instance. }
+\item{\code{new(weights)}}{ generates and initializes a new \code{ContextualBernoulliBandit}
+instance. }
 
 \item{\code{get_context(t)}}{
 argument:
@@ -73,36 +54,23 @@ arguments:
 returns a named \code{list} containing \code{reward$reward} and, where computable,
 \code{reward$optimal} (used by "oracle" policies and to calculate regret).
 }
-
-\item{\code{generate_bandit_data()}}{
-helper function called before \code{Simulator} starts iterating over all time steps \code{t} in T.
-This function is only called when \code{bandit$precaching} is \code{TRUE} (default \code{FALSE}).
-Pregenerates \code{contexts} and \code{rewards}.
-}
 }
 }
 
 \examples{
 \dontrun{
 
-horizon            <- 100L
-simulations        <- 100L
+horizon            <- 100
+sims               <- 100
 
-# rows represent features, columns represent arms:
+policy             <- EpsilonGreedyPolicy$new(epsilon = 0.1)
 
-context_weights    <- matrix(  c(0.4, 0.2, 0.4,
-                                 0.3, 0.4, 0.3,
-                                 0.1, 0.8, 0.1),  nrow = 3, ncol = 3, byrow = TRUE)
+bandit             <- ContextualBernoulliBandit$new(weights = c(0.6, 0.1, 0.1))
+agent              <- Agent$new(policy,bandit)
 
-bandit             <- ContextualBernoulliBandit$new(weights = context_weights, precaching = FALSE)
+history            <- Simulator$new(agent, horizon, sims)$run()
 
-agents             <- list( Agent$new(EpsilonGreedyPolicy$new(0.1), bandit),
-                            Agent$new(LinUCBDisjointOptimizedPolicy$new(0.6), bandit))
-
-simulation         <- Simulator$new(agents, horizon, simulations)
-history            <- simulation$run()
-
-plot(history, type = "cumulative")
+plot(history, type = "cumulative", regret = TRUE)
 
 }
 }
@@ -110,7 +78,7 @@ plot(history, type = "cumulative")
 Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 
-Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflinePolicyEvaluatorBandit}}
+Bandit subclass examples: \code{\link{ContextualBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflinePolicyEvaluatorBandit}}
 
 Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 }

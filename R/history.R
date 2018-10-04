@@ -3,7 +3,6 @@
 #' @export
 History <- R6::R6Class(
   "History",
-  portable = TRUE,
   public = list(
     n            = NULL,
     save_theta   = NULL,

@@ -154,7 +154,7 @@ OfflinePolicyEvaluatorBandit <- R6::R6Class(
 #'                                   0.1, 0.1, 0.9), nrow = 3, ncol = 3, byrow = TRUE)
 #' horizon     <- 2000L
 #' simulations <- 1L
-#' bandit      <- ContextualBernoulliBandit$new(weights = context_weights, sum_weights = TRUE)
+#' bandit      <- ContextualBernoulliPrecachingBandit$new(weights = context_weights, sum_weights = TRUE)
 #'
 #' # For the generation of random data choose a random policy,
 #' # otherwise rejection sampling will produce biased results.

@@ -75,7 +75,6 @@ Set random values that remain available throughout the life of a \code{Bandit} h
 
 \item{\code{generate_bandit_data()}}{
 Called after class and seed initialisation, but before the start of a simulation.
-Only called when \code{bandit$precaching} is set to \code{TRUE} (default \code{FALSE}).
 Pregenerate \code{contexts} and \code{rewards} here.
 }
 }

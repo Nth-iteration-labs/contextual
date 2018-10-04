@@ -12,7 +12,7 @@ click_probabilities <- matrix( c( 0.2, 0.3, 0.1,   # --> d1: old (p=.5)
                                   0.6, 0.1, 0.1 ), # --> d2: young (p=.5)
                                 nrow = 2, ncol = 3, byrow = TRUE)
 # Initialize a SyntheticBandit with contextual weights
-context_bandit <- ContextualBernoulliBandit$new(weights = click_probabilities, sum_weights = TRUE)
+context_bandit <- ContextualBernoulliPrecachingBandit$new(weights = click_probabilities, sum_weights = TRUE)
 # Initialize LinUCBDisjointPolicy
 lu_policy <- LinUCBDisjointPolicy$new(0.6)
 # Initialize three Agents, binding each policy to a bandit.

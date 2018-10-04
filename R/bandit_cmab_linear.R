@@ -10,7 +10,6 @@ ContextualLinearBandit <- R6::R6Class(
     sigma   = NULL,
     binary  = NULL,
     class_name = "ContextualLinearBandit",
-    precaching = FALSE,
     initialize  = function(k, d, sigma = 0.1, binary_rewards = FALSE) {
       self$k                                    <- k
       self$d                                    <- d

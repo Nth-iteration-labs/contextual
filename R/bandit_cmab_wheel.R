@@ -12,7 +12,6 @@ ContextualWheelBandit <- R6::R6Class(
     mu_large = NULL,
     std_large = NULL,
     class_name = "ContextualWheelBandit",
-    precaching = FALSE,
     initialize  = function(delta, mean_v, std_v, mu_large, std_large) {
       self$k                                    <- 5
       self$d                                    <- 2

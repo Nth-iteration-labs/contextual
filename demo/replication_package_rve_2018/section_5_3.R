@@ -5,7 +5,7 @@ simulations        <- 1000
 weights            <- c(0.6, 0.3, 0.3)
 
 policy             <- EpsilonGreedyPolicy$new(epsilon = 0.1)
-bandit             <- ContextualBernoulliBandit$new(weights = weights)
+bandit             <- ContextualBernoulliPrecachingBandit$new(weights = weights)
 
 agent              <- Agent$new(policy,bandit)
 

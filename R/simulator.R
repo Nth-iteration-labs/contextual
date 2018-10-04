@@ -6,6 +6,7 @@
 #'
 #' @export
 Simulator <- R6::R6Class(
+  "Simulator",
   public = list(
     agents = NULL,
     agent_count = NULL,
@@ -182,9 +183,7 @@ Simulator <- R6::R6Class(
           local_curent_seed <- simulation_index + set_seed*42
           set.seed(local_curent_seed)
           sim_agent$bandit$post_initialization()
-          if (sim_agent$bandit$precaching ) {
-            sim_agent$bandit$generate_bandit_data(n = horizon)
-          }
+          sim_agent$bandit$generate_bandit_data(n = horizon)
           if (t_over_sims) sim_agent$set_t(as.integer((simulation_index - 1L) * horizon))
           step <- list()
 

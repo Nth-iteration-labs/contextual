@@ -1,4 +1,8 @@
 library(contextual)
+library(here)
+
+setwd(here::here("demo","alt_par_backend_examples","azure"))
+
 source("simulator_azure.R")
 
 #devtools::install_github("Azure/rAzureBatch")

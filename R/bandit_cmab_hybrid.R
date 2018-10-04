@@ -12,7 +12,6 @@ ContextualHybridBandit <- R6::R6Class(
     sigma   = NULL,                                                 ## standard deviation of noise
 
     class_name = "ContextualHybridBandit",
-    precaching = FALSE,
     initialize  = function(k, shared_features, unique_features, sigma = 1.0) {
 
       assert_count(shared_features, positive = TRUE)

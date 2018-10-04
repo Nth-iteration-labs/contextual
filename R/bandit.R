@@ -8,7 +8,6 @@ Bandit <- R6::R6Class(
     d           = NULL,  # Dimension of context feature vector (integer, required)
     unique      = NULL,  # Vector of arm indices of unique context features (vector, optional)
     shared      = NULL,  # Vector of arm indices of context features shared between arms (vector, optional)
-    precaching  = FALSE, # Pregenerate context & reward matrices? (boolean, required)
     class_name  = "Bandit",
     initialize  = function() {
       # Initialize Bandit. Set self$d and self$k here.
@@ -28,9 +27,7 @@ Bandit <- R6::R6Class(
       list(reward = reward_for_choice_made, optimal_reward = optimal_reward, optimal_arm = optimal_arm) # nocov
     },
     generate_bandit_data = function(n) {
-      # Called when precaching is TRUE. Pregenerate contexts and rewards here.
-      stop("Bandit subclass needs to implement bandit$generate_cache()
-           when bandit$precaching is TRUE.", call. = FALSE)
+      # Pregenerate n contexts and rewards here.
     },
     final = function() {
       # called on object destruction
@@ -106,7 +103,6 @@ Bandit <- R6::R6Class(
 #'
 #'   \item{\code{generate_bandit_data()}}{
 #'      Called after class and seed initialisation, but before the start of a simulation.
-#'      Only called when \code{bandit$precaching} is set to \code{TRUE} (default \code{FALSE}).
 #'      Pregenerate \code{contexts} and \code{rewards} here.
 #'   }
 #' }

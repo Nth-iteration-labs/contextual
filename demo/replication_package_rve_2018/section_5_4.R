@@ -1,13 +1,13 @@
 library(contextual)
 
 #' @export
-BasicContextualBernoulliBandit <- R6::R6Class(
+BasicContextualBernoulliPrecachingBandit <- R6::R6Class(
   inherit = Bandit,
   portable = TRUE,
   class = FALSE,
   public = list(
     weights = NULL,
-    class_name = "NaiveContextualBernoulliBandit",
+    class_name = "NaiveContextualBernoulliPrecachingBandit",
     initialize = function(weights) {
       self$weights     <- weights        # d x k weight matrix
       self$d           <- nrow(weights)  # d features
@@ -50,7 +50,7 @@ weights <- matrix(c(0.8, 0.1, 0.1,
                     0.1, 0.8, 0.1,
                     0.1, 0.1, 0.8), nrow = 3, ncol = 3, byrow = TRUE)
 
-bandit <- BasicContextualBernoulliBandit$new(weights = weights)
+bandit <- BasicContextualBernoulliPrecachingBandit$new(weights = weights)
 agents <- list(Agent$new(EpsilonGreedyPolicy$new(0.1), bandit, "EGreedy"),
                Agent$new(ContextualEpsilonGreedy$new(0.1), bandit, "cEG"),
                Agent$new(LinUCBDisjointPolicy$new(0.6), bandit, "LinUCB"))
