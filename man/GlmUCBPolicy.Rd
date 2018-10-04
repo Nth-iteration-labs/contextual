@@ -2,7 +2,7 @@
 % Please edit documentation in R/policy_cmab_glmucb.R
 \name{GlmUCBPolicy}
 \alias{GlmUCBPolicy}
-\title{GlmUCBPolicy}
+\title{Policy: GlmUCBPolicy}
 \description{
-GlmUCBPolicy
+Policy: GlmUCBPolicy
 }
