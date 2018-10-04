@@ -33,7 +33,7 @@ GittinsBrezziLaiPolicy          <- R6::R6Class(
       }
     },
     get_action = function(t, context) {
-      action$choice  <- max_in(self$theta$gittins_index)
+      action$choice  <- which_max_tied(self$theta$gittins_index)
       action
     },
     set_reward = function(t, context, action, reward) {

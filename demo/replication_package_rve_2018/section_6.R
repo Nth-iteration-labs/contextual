@@ -12,8 +12,8 @@ BasicPoissonBandit <- R6::R6Class(
       reward_means = rep(2,self$k)
       rpm <- rpois(self$k, reward_means)
       rewards <- matrix(rpm < self$weights, self$k, 1)*1
-      optimal_arm    <- which.max(rewards)
-      reward  <- list(
+      optimal_arm    <- which_max_tied(rewards)
+      reward         <- list(
         reward                   = rewards[action$choice],
         optimal_arm              = optimal_arm,
         optimal_reward           = rewards[optimal_arm]

@@ -33,7 +33,7 @@ LinUCBDisjointPolicy <- R6::R6Class(
 
         expected_rewards[arm] <- mean + self$alpha * sd
       }
-      action$choice  <- max_in(expected_rewards)
+      action$choice  <- which_max_tied(expected_rewards)
       action
     },
     set_reward = function(t, context, action, reward) {

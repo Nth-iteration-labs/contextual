@@ -26,7 +26,7 @@ YahooUCB1AlphaPolicy <- R6::R6Class(
         variance <- self$alpha / sqrt( self$theta$n[[local_arms[arm]]] )
         expected_rewards[arm] <- self$theta$mean[[local_arms[arm]]] + variance
       }
-      action$choice <- local_arms[max_in(expected_rewards)]
+      action$choice <- local_arms[which_max_tied(expected_rewards)]
       action
     },
     set_reward = function(t, context, action, reward) {

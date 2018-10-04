@@ -1,27 +1,39 @@
  #' @export
-BasicGaussianBandit <- R6::R6Class(
+ContextualBasicBandit <- R6::R6Class(
   inherit = Bandit,
   portable = TRUE,
   class = FALSE,
   public = list(
-    mu_per_arm = NULL,
-    sigma_per_arm = NULL,
-    class_name = "BasicGaussianBandit",
-    initialize = function(mu_per_arm, sigma_per_arm) {
-      self$mu_per_arm      <- mu_per_arm
-      self$sigma_per_arm   <- sigma_per_arm
-      self$k               <- length(self$mu_per_arm)
+    weights = NULL,
+    class_name = "ContextualBasicBandit",
+    initialize = function(weights) {
+      self$weights     <- weights        # d x k weight matrix
+      self$d           <- nrow(weights)  # d features
+      self$k           <- ncol(weights)  # k arms
     },
     get_context = function(t) {
+      # generate d dimensional feature vector, one random feature active at a time
+      Xa <- sample(c(1,rep(0,self$d-1)))
+      # convert to d x k matrix: one feature vector, recycled to every arm
+      X  <- matrix(Xa, self$d, self$k)
       context <- list(
-        k = self$k
+        X = X,
+        k = self$k,
+        d = self$d
       )
     },
     get_reward = function(t, context, action) {
-      rewards <- rnorm(self$k, self$mu_per_arm, self$sigma_per_arm)
+      # which arm was selected?
+      arm            <- action$choice
+      # d dimensional feature vector for chosen arm
+      Xa             <- context$X[,arm]
+      # weights of active context
+      weight         <- Xa %*% self$weights
+      # assign rewards for active context with weighted probs
+      rewards        <- as.double(weight > runif(self$k))
       optimal_arm    <- which_max_tied(rewards)
-      reward         <- list(
-        reward                   = rewards[action$choice],
+      reward  <- list(
+        reward                   = rewards[arm],
         optimal_arm              = optimal_arm,
         optimal_reward           = rewards[optimal_arm]
       )
@@ -29,29 +41,23 @@ BasicGaussianBandit <- R6::R6Class(
   )
 )
 
-#' Bandit: BasicGaussianBandit
+#' Bandit: Naive Contextual Bernouilli Bandit
 #'
-#' Context-free Gaussian multi-armed bandit.
+#' Contextual Bernoulli multi-armed bandit with one context feature active per t.
 #'
-#' Simulates \code{k} Gaussian arms where each arm models the reward as a normal
-#' distribution with provided mean \code{mu} and standard deviation \code{sigma}.
-#'
-#' @name BasicGaussianBandit
+#' @name ContextualBasicBandit
 #'
 #' @section Usage:
 #' \preformatted{
-#'   bandit <- BasicGaussianBandit$new(mu_per_arm, sigma_per_arm)
+#'   bandit <- ContextualBasicBandit$new(weights)
 #' }
 #'
 #' @section Arguments:
 #'
 #' \describe{
-#'   \item{\code{mu_per_arm}}{
-#'      numeric vector; mean \code{mu} for each of the bandit's \code{k} arms
-#'   }
-#'   \item{\code{sigma_per_arm}}{
-#'      numeric vector; standard deviation of additive Gaussian noise for each of
-#'      the bandit's \code{k} arms. Set to zero for no noise.
+#'   \item{\code{weights}}{
+#'      numeric matrix; \code{d x k} matrix with probabilities of reward for \code{d} contextual features
+#'      per \code{k} arms
 #'   }
 #' }
 #'
@@ -59,8 +65,8 @@ BasicGaussianBandit <- R6::R6Class(
 #'
 #' \describe{
 #'
-#'   \item{\code{new(mu_per_arm, sigma_per_arm)}}{ generates and instantializes a
-#'   new \code{BasicGaussianBandit} instance. }
+#'   \item{\code{new(weights)}}{ generates and initializes a new \code{ContextualBasicBandit}
+#'    instance. }
 #'
 #'   \item{\code{get_context(t)}}{
 #'      argument:
@@ -92,7 +98,7 @@ BasicGaussianBandit <- R6::R6Class(
 #' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
-#' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflinePolicyEvaluatorBandit}}
+#' Bandit subclass examples: \code{\link{ContextualBasicBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflinePolicyEvaluatorBandit}}
 #'
 #' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 #'
@@ -104,7 +110,7 @@ BasicGaussianBandit <- R6::R6Class(
 #'
 #' policy             <- EpsilonGreedyPolicy$new(epsilon = 0.1)
 #'
-#' bandit             <- BasicGaussianBandit$new(c(0,0,1), c(1,1,1))
+#' bandit             <- ContextualBasicBandit$new(weights = c(0.6, 0.1, 0.1))
 #' agent              <- Agent$new(policy,bandit)
 #'
 #' history            <- Simulator$new(agent, horizon, sims)$run()

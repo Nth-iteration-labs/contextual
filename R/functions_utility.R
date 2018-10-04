@@ -55,10 +55,10 @@ sherman_morrisson <- function(inv, x) {
 #' @examples
 #'
 #' theta = list(par_one = list(1,2,3), par_two = list(2,3,4))
-#' max_in(theta$par_one)
+#' which_max_list(theta$par_one)
 #'
 #' @export
-max_in <- function(x, equal_is_random = TRUE) {
+which_max_list <- function(x, equal_is_random = TRUE) {
   x <- unlist(x, FALSE, FALSE)
   y <- seq_along(x)[x == max(x)]
   if (length(y) > 1L)  {

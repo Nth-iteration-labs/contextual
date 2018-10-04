@@ -29,7 +29,7 @@ ContextualBernoulliBandit <- R6::R6Class(
       Xa             <- context$X[,arm]
       average_weight <- Xa %*% self$weights / sum(Xa)
       rewards        <- as.double(average_weight > runif(self$k))
-      optimal_arm    <- which.max(rewards)
+      optimal_arm    <- which_max_tied(rewards)
       reward  <- list(
         reward                   = rewards[arm],
         optimal_arm              = optimal_arm,
@@ -41,7 +41,7 @@ ContextualBernoulliBandit <- R6::R6Class(
 
 #' Bandit: ContextualBernoulliBandit
 #'
-#' Contextual Bernoulli multi-armed bandit.
+#' Contextual Bernoulli multi-armed bandit with at least one context feature active at a time.
 #'
 #' @name ContextualBernoulliBandit
 #'

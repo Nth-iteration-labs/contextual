@@ -63,9 +63,9 @@ ContextualWheelBandit <- R6::R6Class(
       context
     },
     get_reward = function(t, context_common, action) {
-      rewards <- self$rewards
-      optimal_arm    <- which.max(rewards)
-      reward  <- list(
+      rewards        <- self$rewards
+      optimal_arm    <- which_max_tied(rewards)
+      reward         <- list(
         reward                   = rewards[action$choice],
         optimal_arm              = optimal_arm,
         optimal_reward           = rewards[optimal_arm]

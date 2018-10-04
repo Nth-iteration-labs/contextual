@@ -30,7 +30,7 @@ EpsilonFirstPolicy              <- R6::R6Class(
         action$choice           <- sample.int(context$k, 1, replace = TRUE)
         action$propensity       <- (1/context$k)
       } else {
-        action$choice           <- max_in(self$theta$mean)
+        action$choice           <- which_max_list(self$theta$mean)
         action$propensity       <- 1
       }
       action

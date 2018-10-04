@@ -38,7 +38,7 @@ GlmUCBPolicy <- R6::R6Class(
       for (arm in 1:context$k) {
         expected_rewards[arm] <- self$acquisition_function(theta_hat,context$X[,arm])
       }
-      action$choice  <- max_in(expected_rewards)
+      action$choice  <- which_max_tied(expected_rewards)
 
       action
     },
@@ -73,7 +73,7 @@ GlmUCBPolicy <- R6::R6Class(
   )
 )
 
-#' GlmUCBPolicy
+#' Policy: GlmUCBPolicy
 #'
 #' @name GlmUCBPolicy
 NULL

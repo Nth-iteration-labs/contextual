@@ -33,25 +33,23 @@ ContextualHybridBandit <- R6::R6Class(
     },
     get_context = function(t) {
       X <- matrix(runif(self$d*self$k, 0, 1), self$d, self$k)
-      context_list <- list(
+      context <- list(
         k = self$k,
         d = self$d,
         unique = self$unique,
         shared = self$shared,
         X = X
       )
-      context_list
     },
     get_reward = function(t, context, action) {
       betas        <- c(self$betas_s, self$betas_u[,action$choice])
       trb          <- betas%*%context$X[,action$choice]
       trb          <- trb + rnorm(1,0,self$sigma)
-      reward       <- rbinom(1,1,1/(1+exp(-trb)))
-      rewardlist   <- list(
-        reward                   = reward,
+      rwrd         <- rbinom(1,1,1/(1+exp(-trb)))
+      reward       <- list(
+        reward                   = rwrd,
         optimal_reward_value     = 1
       )
-      rewardlist
     }
   )
 )

@@ -25,7 +25,8 @@ reference:
       - inc<-
       - inv
       - sum_of
-      - max_in
+      - which_max_list
+      - which_max_tied
       - sample_one_of
       - is_rstudio
       - set_external

@@ -7,12 +7,12 @@ BasicPoissonBandit <- R6::R6Class(
   public = list(
     weights = NULL,
     class_name = "BasicPoissonBandit",
-    # OVerride get_reward & generate Poisson based rewards
+    # OVerride get_reward to generate Poisson based rewards
     get_reward = function(t, context, action) {
       reward_means = rep(2,self$k)
       rpm <- rpois(self$k, reward_means)
       rewards <- matrix(rpm < self$weights, self$k, 1)*1
-      optimal_arm    <- which.max(rewards)
+      optimal_arm    <- which_max_tied(rewards)
       reward  <- list(
         reward                   = rewards[action$choice],
         optimal_arm              = optimal_arm,

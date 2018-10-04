@@ -18,14 +18,14 @@ TwoArmedSineBandit <- R6::R6Class(
        self$sigma = sigma
      },
      get_context = function(t) {
-       context_list <- list(k = self$k)
+       context <- list(k = self$k)
      },
      get_reward = function(t, context, action) {
        rseq        <- seq(0,2, by = 2/self$k)[-(self$k+1)]
        reward      <- sapply(rseq,self$noisy_sine,t,self$sigma)
-       rewardlist <- list(
+       reward <- list(
          reward                   = reward[action$choice],
-         optimal_reward           = reward[which.max(reward)]
+         optimal_reward           = reward[which_max_tied(reward)]
        )
      },
      noisy_sine = function(phi, t, sigma) {

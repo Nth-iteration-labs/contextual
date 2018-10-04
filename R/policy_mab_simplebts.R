@@ -28,7 +28,7 @@ SimpleBTSPolicy <- R6::R6Class(
         r_beta  <- self$theta$beta[[arm]][one_replicate]
         point_estimate_of_mean[arm] <- r_alpha / (r_alpha + r_beta)
       }
-      action$choice <- max_in(point_estimate_of_mean)
+      action$choice <- which_max_tied(point_estimate_of_mean)
       action
     },
     set_reward = function(t, context, action, reward) {

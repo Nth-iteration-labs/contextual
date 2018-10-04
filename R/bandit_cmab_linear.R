@@ -28,7 +28,7 @@ ContextualLinearBandit <- R6::R6Class(
 
       if (isTRUE(self$binary)) {
         self$rewards                            <- rep(0,self$k)
-        self$rewards[which.max(reward_vector)]  <- 1
+        self$rewards[which_max_tied(reward_vector)] <- 1
       } else {
         self$rewards                            <- reward_vector
       }
@@ -39,9 +39,9 @@ ContextualLinearBandit <- R6::R6Class(
       )
     },
     get_reward = function(t, context_common, action) {
-      rewards <- self$rewards
-      optimal_arm    <- which.max(rewards)
-      reward  <- list(
+      rewards        <- self$rewards
+      optimal_arm    <- which_max_tied(rewards)
+      reward         <- list(
         reward                   = rewards[action$choice],
         optimal_arm              = optimal_arm,
         optimal_reward           = rewards[optimal_arm]

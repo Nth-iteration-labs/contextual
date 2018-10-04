@@ -22,7 +22,7 @@ UCB1Policy <- R6::R6Class(
         variance <- sqrt( (2*log(sum_of(self$theta$n))) / self$theta$n[[arm]])
         expected_rewards[arm] <- self$theta$mean[[arm]] + variance
       }
-      action$choice <- max_in(expected_rewards)
+      action$choice <- which_max_tied(expected_rewards)
       action
     },
     set_reward = function(t, context, action, reward) {

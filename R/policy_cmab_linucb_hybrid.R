@@ -61,7 +61,7 @@ LinUCBHybridPolicy <- R6::R6Class(
 
       ################## choose arm with highest expected reward #######################
 
-      action$choice  <- max_in(expected_rewards)
+      action$choice  <- which_max_tied(expected_rewards)
       action
     },
     set_reward = function(t, context, action, reward) {

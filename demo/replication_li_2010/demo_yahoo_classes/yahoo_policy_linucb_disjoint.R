@@ -30,7 +30,7 @@ YahooLinUCBDisjointPolicy <- R6::R6Class(
         sd           <- sqrt(tcrossprod(x %*% A_inv, x))
         expected_rewards[arm] <- mean + self$alpha * sd
       }
-      action$choice  <- context$arms[max_in(expected_rewards)]
+      action$choice  <- context$arms[which_max_tied(expected_rewards)]
 
       action
     },

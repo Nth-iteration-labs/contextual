@@ -25,7 +25,7 @@ ContextualEpsilonGreedy <- R6::R6Class(
           theta_hat  <- A_inv %*% b
           expected_rewards[arm] <- Xa %*% theta_hat
         }
-        action$choice  <- max_in(expected_rewards)
+        action$choice  <- which_max_tied(expected_rewards)
       } else {
         self$action$choice        <- sample.int(context$k, 1, replace = TRUE)
       }

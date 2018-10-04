@@ -61,7 +61,7 @@ YahooLinUCBHybridPolicy <- R6::R6Class(
 
       ################## choose arm with highest expected reward #######################
 
-      action$choice  <- context$arms[max_in(expected_rewards)]
+      action$choice  <- context$arms[which_max_tied(expected_rewards)]
       action
     },
     set_reward = function(t, context, action, reward) {

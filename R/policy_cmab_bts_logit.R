@@ -22,7 +22,7 @@ ContextualLogitBTSPolicy <- R6::R6Class(
         coefs <- cbind(self$theta$M,self$theta$i[[arm]])
         pred[,arm]  <- coefs%*%X[, arm]
       }
-      wins          <- apply(pred,1,which.max)
+      wins          <- apply(pred,1,which_max_tied)
       action$choice <- sample(wins,1)
       action
     },

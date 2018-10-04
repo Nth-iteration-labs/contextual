@@ -15,7 +15,7 @@ EpsilonGreedyPolicy          <- R6::R6Class(
     },
     get_action = function(t, context) {
       if (runif(1) > self$epsilon) {
-        self$action$choice        <- max_in(self$theta$mean)
+        self$action$choice        <- which_max_list(self$theta$mean)
         self$action$propensity    <- 1 - self$epsilon
       } else {
         self$action$choice        <- sample.int(context$k, 1, replace = TRUE)

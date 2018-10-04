@@ -38,7 +38,7 @@ ContextualEpochGreedyPolicy <- R6::R6Class(
           mean                  <- X %*% theta_hat
           expected_rewards[arm] <- mean
         }
-        self$action$choice  <- max_in(expected_rewards)
+        self$action$choice  <- which_max_tied(expected_rewards)
         return(self$action)
       }
     },
