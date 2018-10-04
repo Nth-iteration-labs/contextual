@@ -15,23 +15,9 @@ agents <- list(Agent$new(EpsilonGreedyPolicy$new(0.1), bandit, "EGreedy"),
 simulation <- Simulator$new(agents, horizon, simulations)
 history <- simulation$run()
 
-#par(mfrow = c(1, 3), mar = c(2, 4, 0.5, 1)) #cex=1.5)
+par(mfrow = c(1, 3), mar = c(2, 4, 0.5, 1), cex=1.5)
 plot(history, type = "cumulative", no_par = TRUE, legend_border = FALSE, legend_position = "bottomright")
-#plot(history, type = "arms",  limit_agents = c("EGreedy"), no_par = TRUE)
-#plot(history, type = "arms",  limit_agents = c("LinUCB"), no_par = TRUE)
-#par(mfrow = c(1, 1))
-
-bandit <- ContextualBernoulliBandit$new(weights = weights)
-agents <- list(Agent$new(EpsilonGreedyPolicy$new(0.1), bandit, "EGreedy"),
-               Agent$new(ContextualEpsilonGreedy$new(0.1), bandit, "cEGreedy"),
-               Agent$new(ContextualLogitBTSPolicy$new(10), bandit, "LogitBTS"),
-               Agent$new(LinUCBDisjointPolicy$new(0.6), bandit, "LinUCB"))
-simulation <- Simulator$new(agents, horizon, simulations)
-history <- simulation$run()
-
-#par(mfrow = c(1, 3), mar = c(2, 4, 0.5, 1)) #cex=1.5)
-plot(history, type = "cumulative", no_par = TRUE, legend_border = FALSE, legend_position = "bottomright")
-#plot(history, type = "arms",  limit_agents = c("EGreedy"), no_par = TRUE)
-#plot(history, type = "arms",  limit_agents = c("LinUCB"), no_par = TRUE)
-#par(mfrow = c(1, 1))
+plot(history, type = "arms",  limit_agents = c("EGreedy"), no_par = TRUE)
+plot(history, type = "arms",  limit_agents = c("LinUCB"), no_par = TRUE)
+par(mfrow = c(1, 1))
 
