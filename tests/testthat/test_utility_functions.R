@@ -11,6 +11,17 @@ test_that("Inc and Dec", {
 
 })
 
+test_that("which_max_list", {
+  set.seed(1)
+
+  theta = list(par_one = list(1,2,2), par_two = list(2,3,4))
+  expect_equal(which_max_list(theta$par_one, equal_is_random = TRUE), 2)
+
+  theta = list(par_one = list(1,2,2), par_two = list(2,3,4))
+  expect_equal(which_max_list(theta$par_one, equal_is_random = FALSE), 2)
+})
+
+
 test_that("Welford", {
   set.seed(42)
   v <- sample(20)
