@@ -15,6 +15,10 @@ agents             <- list(Agent$new(RandomPolicy$new(), bandit),
 history            <- Simulator$new(agents, horizon = 20, simulations = 20,
                                     do_parallel = FALSE)$run()
 
+expect_error(plot(history, type = "cumulative", plot_only_disp = TRUE, no_par = TRUE),
+             "Need to set disp to")
+
+
 # wait for next version available on cran - works on most test platforms,
 # bot not on all
 
@@ -38,7 +42,14 @@ history            <- Simulator$new(agents, horizon = 20, simulations = 20,
    plot(history, type = "cumulative", rate = TRUE, plot_only_disp = TRUE,
       disp = "var", smooth = TRUE, limit_agents = c("UCB1", "GittinsBrezziLai"),
       legend_position = "topright", no_par = TRUE)
-#
+
+# vdiffr::expect_doppelganger(
+#   "Only sd plot, no color",
+  plot(history, type = "cumulative", rate = TRUE, plot_only_disp = TRUE,
+      disp = "var", smooth = TRUE, limit_agents = c("UCB1", "GittinsBrezziLai"),
+      use_colors = FALSE, legend_position = "topright", no_par = TRUE)
+
+
 # vdiffr::expect_doppelganger(
 #   "Average reward plot",
     plot(history, type = "average", disp = "ci", regret = FALSE, interval = 10,
