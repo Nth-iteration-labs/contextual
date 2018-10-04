@@ -7,9 +7,7 @@ library(Rmpi)
 library(doMPI)
 
 MPISimulator <- R6::R6Class(
-  portable = FALSE,
   inherit = Simulator,
-  class = FALSE,
   public = list(
     register_parallel_backend = function() {
       super$cl <- doMPI::startMPIcluster()

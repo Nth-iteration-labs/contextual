@@ -9,12 +9,10 @@ library(foreach)
 library(doAzureParallel)
 library(here)
 
-setwd(here::here("demo","alternative_parallel_backends","azure"))
+setwd(here::here("demo","alt_par_backend_examples","azure"))
 
 AzureSimulator <- R6::R6Class(
-  portable = FALSE,
   inherit = Simulator,
-  class = FALSE,
   public = list(
     register_parallel_backend = function() {
 

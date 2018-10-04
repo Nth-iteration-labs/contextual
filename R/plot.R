@@ -1,9 +1,6 @@
 #' @export
 Plot <- R6::R6Class(
   "Plot",
-  portable = FALSE,
-  class = FALSE,
-  cloneable = FALSE,
   public = list(
     history = NULL,
 

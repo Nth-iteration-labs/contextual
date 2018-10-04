@@ -3,10 +3,7 @@
 #' @export
 History <- R6::R6Class(
   "History",
-  portable = FALSE,
-  cloneable = FALSE,
-  class = TRUE,
-
+  portable = TRUE,
   public = list(
     n            = NULL,
     save_theta   = NULL,
@@ -24,7 +21,7 @@ History <- R6::R6Class(
       invisible(self)
     },
     update_statistics = function() {
-      calculate_cum_stats()
+      private$calculate_cum_stats()
     },
     insert = function(index,
                       t,
@@ -54,7 +51,7 @@ History <- R6::R6Class(
       }
 
       data.table::set(
-        data,
+        private$.data,
         index,
         1L:9L,
         list(
@@ -70,15 +67,14 @@ History <- R6::R6Class(
         )
       )
 
-
-      if (save_context || save_theta) {
-        if (!save_theta) {
-          data.table::set(data, index, 10L, list(list(context_value)))
+      if (self$save_context || self$save_theta) {
+        if (!self$save_theta) {
+          data.table::set(private$.data, index, 10L, list(list(context_value)))
         } else if (!self$save_context) {
-          data.table::set(data, index, 10L, list(list(theta_value)))
+          data.table::set(private$.data, index, 10L, list(list(theta_value)))
         } else {
-          data.table::set(data, index, 10L, list(list(context_value)))
-          data.table::set(data, index, 11L, list(list(theta_value)))
+          data.table::set(private$.data, index, 10L, list(list(context_value)))
+          data.table::set(private$.data, index, 11L, list(list(theta_value)))
         }
       }
       invisible(self)

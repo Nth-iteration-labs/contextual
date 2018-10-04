@@ -6,8 +6,6 @@
 #'
 #' @export
 Simulator <- R6::R6Class(
-  portable = FALSE,
-  class = FALSE,
   public = list(
     agents = NULL,
     agent_count = NULL,
@@ -117,7 +115,6 @@ Simulator <- R6::R6Class(
       # run foreach either parallel or not, create workers
       `%fun%` <- foreach::`%do%`
       workers <- 1
-      # parallel tests are problematic, therefor no test coverage for parallel section
 
       # nocov start
       if (self$do_parallel) {
@@ -143,6 +140,7 @@ Simulator <- R6::R6Class(
       log_interval <- self$log_interval
       t_over_sims <- self$t_over_sims
       set_seed <- self$set_seed
+      include_packages <- self$include_packages
       # calculate chunk size
       if (length(sims_and_agents_list) <= workers) {
         nr_of_chunks <- length(sims_and_agents_list)

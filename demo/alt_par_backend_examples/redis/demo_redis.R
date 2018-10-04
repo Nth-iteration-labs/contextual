@@ -1,9 +1,9 @@
 library(contextual)
 library(here)
 
-setwd(here::here("demo","alternative_parallel_backends","rmpi"))
+setwd(here::here("demo","alt_par_backend_examples","redis"))
 
-source("simulator_rmpi.R")
+source("simulator_redis.R")
 
 library(contextual)
 
@@ -16,7 +16,7 @@ agents        <-list(Agent$new(EpsilonGreedyPolicy$new(0.1), bandit),
                      Agent$new(ContextualLogitBTSPolicy$new(10), bandit),
                      Agent$new(LinUCBDisjointOptimizedPolicy$new(1.0), bandit))
 
-simulation     <- MPISimulator$new(agents, horizon, simulations)
+simulation     <- RedisSimulator$new(agents, horizon, simulations)
 
 history        <- simulation$run()
 

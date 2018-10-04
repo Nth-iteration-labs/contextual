@@ -6,8 +6,9 @@ bandit             <- BasicBernoulliBandit$new(weights = c(0.6, 0.1, 0.1))
 agent              <- Agent$new(policy,bandit)
 
 simulator         <- Simulator$new(agents      = agent,
-                                    horizon     = 100,
-                                    simulations = 100)
+                                   do_parallel =  FALSE,
+                                   horizon     = 100,
+                                   simulations = 100)
 
 history           <- simulator$run()
 
