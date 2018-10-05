@@ -136,13 +136,13 @@ There are many real-world situations in which we have to decide between multiple
 \item When visiting a casino, do you stay with the slot machine that just paid out, or do you try some of the other slot machines?
 \end{itemize}
 
-Although people seem to navigate such explore-exploit problems with relative ease, this type of decision problem has proven surprisingly difficult to solve analytically\footnote{As Dr. Peter Whittle famously stated "[the problem] was formulated during the [second world] war, and efforts to solve it so sapped the energies and minds of Allied analysts that the suggestion was made that the problem be dropped over Germany, as the ultimate instrument of intellectual sabotage." \citep{Whittle1979}} and has been studied extensively since the 1930s \citep{Bubeck2012} under the umbrella of the "multi-armed bandit" (MAB) problem. Just like in the above casino scenario\footnote{Though historically the problem has been defined as the multi-armed bandit problem, it might just as well have been named the "multiple one-armed bandits problem".}, the crux of a multi-armed bandit problem is that you only receive a reward for the arm you pull---you remain in the dark about what rewards the other arms might have offered. Consequently, you need some strategy or "policy" that helps you balance the exploration and exploitation of arms to optimize your rewards over repeated pulls. One option would, for instance, be to pull every available arm once and from then on exploit the arm that offered you the highest reward. This reward might, however, be nothing more than a lucky fluke. On the other hand, if you decide to keep exploring other arms, you may lose out on the winnings you might have received from the arm that had been doing so well.
+Although people seem to navigate such explore-exploit problems with relative ease, this type of decision problem has proven surprisingly difficult to solve analytically\footnote{As Dr. Peter Whittle famously stated "[the problem] was formulated during the [second world] war, and efforts to solve it so sapped the energies and minds of Allied analysts that the suggestion was made that the problem be dropped over Germany, as the ultimate instrument of intellectual sabotage." \citep{Whittle1979}} and has been studied extensively since the 1930s \citep{Robbins1952,Bubeck2012} under the umbrella of the "multi-armed bandit" (MAB) problem. The origin of the name can be traced back to the casino example: a one armed bandit is the original name for a slot machine in a casino, as they used to have one arm and tended to steal your money. A multi-armed bandit can then be understood as a set of one-armed bandit slot machines in a casino---in that respect, "many one-armed bandits problem" might have been a better fit \citep{2018a}. Just like in the casino example, the crux of a multi-armed bandit problem is that you only receive a reward for the arm you pull---you remain in the dark about what rewards the other arms might have offered. Consequently, you need some strategy or "policy" that helps you balance the exploration and exploitation of arms to optimize your rewards over repeated pulls. One option would, for instance, be to pull every available arm once and from then on exploit the arm that offered you the highest reward. This reward might, however, be nothing more than a lucky fluke. On the other hand, if you decide to keep exploring other arms, you may lose out on the winnings you might have received from the arm that had been doing so well.
 
-This active exploration of partially available information makes multi-armed bandit problems a subset of reinforcement learning type problems ---together with supervised and unsupervised learning one of three main classes of machine learning. Where supervised algorithms learn mappings from input values to fully specified class labels and unsupervised learning looks for patterns in data without any such labels, reinforcement learning policies live somewhere in between: They can make use of partial labels or "rewards"---but these have to be actively acquired \citep{Jordan2015}. Bandit policies are then that subset of reinforcement learning algorithms that either do not take contextual information into account or, otherwise, assume that their choices do not affect this context \citep{steenwinckel2018self,Sutton1998e}.
+This active exploration of information gathered one step at a time makes multi-armed bandit problems a subset of reinforcement learning type problems ---together with supervised and unsupervised learning one of three main classes of machine learning. Where supervised algorithms learn mappings from input values to fully specified class labels and unsupervised learning looks for patterns in data without any such labels, reinforcement learning policies live somewhere in between: bandit policies are able to make use of labels or "rewards" to minimize their loss---but in contast to their supervised siblings, this information has to be actively acquired \citep{Jordan2015}. Bandit policies are then that subset of reinforcement learning algorithms that either do not take further contextual information into account or, otherwise, assume that their choices do not affect this context \citep{steenwinckel2018self,Sutton1998e}.
 
 Where the latter brings us to a recent MAB generalization generally known as the \textit{contextual} multi-armed bandit (CMAB) problem. CMAB problems extend on basic "context-free" MABs by adding one crucial element: contextual information \citep{Langford2008}. Contextual multi-armed bandits are known by many different names in about as many different fields of research \citep{Tewari2017}---for example as "bandit problems with side observations" \citep{Wang2005a}, "bandit problems with side information" \citep{Lu2010}, "associative reinforcement learning" \citep{Kaelbling1996}, "reinforcement learning with immediate reward" \citep{Abe2003}, "associative bandit problems" \citep{Strehl2006}, or "bandit problems with covariates" \citep{Sarkar1991}. However, the term "contextual multi-armed bandit," as conceived by \cite{Langford2008}, is the most used---so that is the term we will use in the current paper.
 
-Nevertheless, however named, all CMAB policies differentiate themselves, by definition, from their MAB cousins in that they are able to make use of features that reflect the current state of the world---features that can then be mapped onto available arms or actions\footnote{That is, before making a choice, the learner receives information on the state of the world or "context" in the form of a d-dimensional feature vector. After making a choice the learner is then able to combine this contextual information with the reward received to make a more informed decision in the next round.}. This access to side information makes CMAB algorithms yet more relevant to many real-life decision problems than their MAB progenitors \citep{Langford2008}. To follow up on our previous examples: do you choose the same  type of restaurants in your hometown and when on vacation? Do you prescribe the same treatment to male and female patients? Do you place the same news story on the frontpage of your website for both young and old visitors? Probably not---in the real world, it appears no choice exists without at least some contextual information to be mined or mapped. So it may be no surprise that CMAB algorithms have found applications in many different areas: from recommendation engines \citep{Lai1985} to advertising \citep{Tang2013} and (personalized) medicine \citep{Tewari2017}, healthcare \citep{Rabbi2015}, and portfolio choice \citep{Shen2015}---inspiring a multitude of new, often analytically derived bandit algorithms or policies.
+Nevertheless, however named, all CMAB policies differentiate themselves, by definition, from their MAB cousins in that they are able to make use of features that reflect the current state of the world---features that can then be mapped onto available arms or actions\footnote{That is, before making a choice, the learner receives information on the state of the world or "context" in the form of a d-dimensional feature vector. After making a choice the learner is then able to combine this contextual information with the reward received to make a more informed decision in the next round.}. This access to side information makes CMAB algorithms yet more relevant to many real-life decision problems than their MAB progenitors \citep{Langford2008}. To follow up on our previous examples: do you choose the same  type of restaurants in your hometown and when on vacation? Do you prescribe the same treatment to male and female patients? Do you place the same news story on the frontpage of your website for both young and old visitors? Probably not---in the real world, it appears no choice exists without at least some contextual information to be mined or mapped. So it may be no surprise that CMAB algorithms have found applications in many different areas: from recommendation engines \citep{Lai1985} to advertising \citep{Tang2013} and (personalized) medicine \citep{Katehakis1986,Tewari2017}, healthcare \citep{Rabbi2015}, and portfolio choice \citep{Shen2015}---inspiring a multitude of new, often analytically derived bandit algorithms or policies.
 
 However, although CMAB algorithms have found more and more applications, comparisons on both synthetic, and, importantly, real-life, large-scale offline datasets \citep{Li2011} have relatively lagged behind\footnote{Here, a \textbf{synthetic} data generator (or \code{Bandit}, in \pkg{contextual} parlance) compares policies against some simulated environment, usually seeking to model or emulate some online bandit scenario---whereas an \textbf{offline} \code{Bandit} compares policies against a previous collected data set---generally logged with a completely different policy than the one(s) under evaluation \citep{Li2012}.}. To this end, the current paper introduces the \proglang{R} package \pkg{contextual}, to facilitate the development, evaluation, and comparison the of (contextual) multi-armed bandit policies by offering an easily extensible, class-based, modular architecture.
 
@@ -172,35 +172,41 @@ This organization offers the reader several ways to peruse the current paper. If
 
 \section{Formalization and implementation} \label{formalizationandimplementation}
 
-In the current section, we first introduce a more formal definition of the contextual multi-armed bandit problem. Next, we present our concise implementation, and demonstrate how to put together a minimal MAB simulation.
+In the current section, we first introduce a more formal definition of the contextual multi-armed bandit problem. Next, we present our concise implementation and demonstrate how to put together a minimal MAB simulation.
 
 \subsection{Formalization} \label{formalization}
 
-On further formalization of the contextual bandit problem, a bandit can be defined as a set of distributions, where each distribution is associated with the rewards generated by one of \(k \in \left\{ 1, \dots, K \right\}\) arms based on some $d$-dimensional contextual feature vector \(x_{t,k}\)\footnote{Some formalizations describe this vector as $x_t$ (see, for example, \cite{Slivkins2014} or \cite{May2012}). This formalization fits bandit scenario's where contextual information at each $t$ is the same for each arm. For instance, a user feature vector $x_t$ comprising the $d$ features of a visitor to a news site, with articles for arms. Yet when arm-specific features are taken into account as well, formalizations generally describe the feature vector at each $t$ as $x_{t,k}$ (e.g. \cite{Chu2009}, \cite{Li2010})---thereby summarizing, for example, information on both a user $u_t$ and article $k$. To facilitate both approaches, \pkg{contextual} expects its bandits to generate a $d \times k$ dimensional context feature matrix at each $t$.}.
+On further formalization of the contextual bandit problem, a bandit $B$ can be defined as a set of arms \(k \in \left\{ 1, \dots, K \right\}\), where, for each $t$, each of the $K$ arms generates rewards according to some reward function dependent on $d$-dimensional context feature vector \(x_{t,k}\) \citep{Auer2002,Langford2008}.
 
-We now define an algorithm or policy $\piup$, that seeks to maximize its total reward (that is, to maximize its cumulative reward $\sum_{t=1}^T r_t$ or minimize its cumulative regret---see equations \ref{eq:1}, \ref{eq:2}). This policy observes information on the current state of the world represented in $d$-dimensional contextual feature vectors \(x_{t,k}\) for each \(k_{t} \in \left\{ 1, \dots,K \right\}\). Next, the policy selects one of the bandit's $K$ arms by selecting an arm \(k_{t} \in \left\{ 1, \dots,K \right\}\), as based on the expectations of the context and the reward history of each available bandit arm. On choosing an arm, the policy then receives reward \(r_{k_{t},t}\). With observation \( (x_{t,k_t},k_{t},r_{t,k_t}) \), the policy now updates its arm-selection strategy. This cycle is then repeated \textit{T} times, where \textit{T} is referred to as a bandit's horizon.
+We now define an algorithm or policy $\piup$, that seeks to maximize its cumulative reward $\sum_{t=1}^T r_t$ (or minimize its cumulative regret---see equations \ref{eq:1}, \ref{eq:2}) by sequentually selecting one of bandit $B$'s currently available arms \cite{Bubeck2012}, here defined as taking action $a_t$ from $\mathcal{A}_t \subseteq K$ for every $t$ until a final horizon $T$. \footnote{In other words: Every $t$ a policy makes a choice $a_t$ from a set of $\mathcal{A}_t$ actions, which is often equal to---but can be a subset of---the set of $K$ arms of bandit $B$.}
 
-Additionally, for scalability reasons, policies generally use a limited set of parameters $\theta_{t}$ \citep{kruijswijk2018streamingbandit}. This set of parameters summarizes all historical interactions \( D_{t'} = (x_{t,k_t},k_{t},r_{t,k_t}) \) over \emph{t}= \{1, \ldots, t'\}, ensuring that the dimensionality of $\theta_{t'} << D_{t'}$.
+At each time step $t$ policy $\piup$ now first observes the current state of the world in relation to bandit $B$ represented by $d$-dimensional context feature vectors \(x_{t,a}\)\footnote{Some formalizations describe this vector as $x_t$ (see, for example, \cite{Slivkins2014} or \cite{May2012}). This formalization fits bandit scenario's where contextual information at each $t$ is the same for each arm. For instance, a user feature vector $x_t$ comprising the $d$ features of a visitor to a news site, with articles for arms. Yet when arm-specific features are taken into account as well, formalizations generally describe the feature vector at each $t$ as $x_{t,a}$ (e.g. \cite{Chu2009}, \cite{Li2010})---thereby summarizing, for example, information on both a user $u_t$ and article $k$. To facilitate both approaches, \pkg{contextual} expects its bandits to generate a $d \times k$ dimensional context feature matrix $X_t$ at each $t$.} for each available \(a_{t} \in \mathcal{A}\).
+
+Making use of some arm-selection strategy, policy $\piup$ then selects one of the available actions in $\mathcal{A}_t$. For scalability reasons, policies generally use a limited set of parameters $\theta_{t}$ \citep{kruijswijk2018streamingbandit} to select this action. This set of parameters summarizes all historical interactions \( D_{t'} = (x_{t'},a_{t'},r_{t'}) \) over \emph{t}= \{1, \ldots, t'\}, ensuring that the dimensionality of $\theta_{t'} << D_{t'}$.
+
+As a result of taking action $a_t$, policy $\piup$ receives reward \(r_{a_{t},t}\).
+
+With observation \( (x_{t,a_t},a_{t},r_{t,a_t}) \), the policy now updates its arm-selection strategy. This cycle is then repeated \textit{T} times.
 
 Schematically, for each round \emph{t}= \{1, \ldots, T\}:
 
 \begin{enumerate}
-         \item[1)] Policy $\piup$ observes contextual feature vectors $x_{t,k}$ for \(k \in \left\{ 1, \dots,K \right\}\)
-         \item[2)] Based on $x_{t}$ and $\theta_{t-1}$, policy $\piup$ now selects one of the bandit's arms \(k_{t} \in \left\{ 1, \dots,K \right\}\)
-         \item[3)] Policy $\piup$ receives a reward \(r_{t,k_t}\) bandit $\piup$
-         \item[4)] Policy $\piup$ updates arm-selection strategy parameters $\theta_{t}$ with \( (x_{t,k_t},k_{t},r_{t,k_t}) \)
+         \item[1)] Policy $\piup$ observes current context feature vectors $x_{t,a}$ for $\forall a \in \mathcal{A}_t$ in bandit $B$
+         \item[2)] Based on all $x_{t,a}$ and $\theta_{t-1}$, policy $\piup$ now selects an action \(a_{t} \in \mathcal{A}_t\)
+         \item[3)] Policy $\piup$ receives a reward \(r_{t,a_t,x_t}\) from bandit $B$
+         \item[4)] Policy $\piup$ updates arm-selection strategy parameters $\theta_{t}$ with \( (x_{t,a_t},a_t,r_{t,a_t}) \)
 \end{enumerate}
 
 The goal of the policy $\piup$ is to optimize its \textit{cumulative reward} over \emph{t}= \{ 1, \ldots, T \}
 
 \begin{equation} \label{eq:1}
-R_{T} = \sum^{T}_{t=1}(r_{k_t,x_t})
+R_{T} = \sum^{T}_{t=1}(r_{t,a_t,x_t})
 \end{equation}
 
-In practice, the most popular performance measure for bandit policies is \textit{cumulative regret} \citep{Kuleshov2014}---defined as the sum of rewards that would have been received by choosing optimal arm $\mathrm{k}$ at every \emph{t} subtracted by the sum of rewards awarded to the chosen actions for every \emph{t} over \emph{t}= \{ 1, \ldots, T \}:
+In practice, the most popular performance measure for bandit policies is \textit{cumulative regret} \citep{Kuleshov2014}---defined as the sum of rewards that would have been received by choosing optimal action  $a*$ at every \emph{t} subtracted by the sum of rewards awarded to the chosen action $a$ at every \emph{t} over \emph{t}= \{ 1, \ldots, T \}:
 
 \begin{equation} \label{eq:2}
-\mathbb{E}\left[R_{T} \right] = \mathbb{E}\left[  \max_{\mathrm{k} = 1, \dots, K} \sum^{T}_{t=1}(r_{\mathrm{k},x_t}) - \sum^{T}_{t=1}(r_{k_t,x_t})\right]
+\mathbb{E}\left[R_{T} \right] = \mathbb{E}\left[  \max_{a*_t = 1, \dots, \mathcal{A}_t} \sum^{T}_{t=1}(r_{t,a*_t,x_t}) - \sum^{T}_{t=1}(r_{t,a_t,x_t})\right]
 \end{equation}
 
 Where expectation $\mathbb{E}\left[ \mathord{\cdot}\right]$ is taken with respect to random draws of both rewards assigned by a bandit and arms as selected by a policy \citep{Zheng2016a}.
@@ -918,20 +924,20 @@ In other words: an $\epsilon$-first policy starts out by exploring arms at rando
 \begin{algorithmic}
 \REQUIRE \(   N \in \mathbb{Z}^{+} \) - horizon of the experiment.
 \REQUIRE \(   \epsilon  \in \left[ 0,1 \right] \) - exploration tuning parameter
-\STATE \( n_{k} \leftarrow 0 \) for all arms k \(  \in \left\{ 1, \dots, K \right\} \)  (count how many times an arm has been chosen)
-\STATE \( \hat{\mu}_{k} \leftarrow 0 \) for all arms k  \(   \in \left\{ 1, \dots, K \right\} \)  (estimate of expected reward per arm)
+\STATE \( n_{k} \leftarrow 0 \) for all actions a \(  \in \left\{ 1, \dots, \mathcal{A} \right\} \)  (count how many times an arm has been chosen)
+\STATE \( \hat{\mu}_{k} \leftarrow 0 \) for all actions a  \(   \in \left\{ 1, \dots, \mathcal{A} \right\} \)  (estimate of expected reward per arm)
 % Run through time points:
 \FOR{$t=1, \dots, T$}
 	% Run through arms. Step 1, select which one to play
 	\IF {\(t \leq \epsilon \cdot N\)}
-	       \STATE play a random arm out of all arms k \(   \in \left\{ 1, \dots, K \right\} \)
+	       \STATE play a random arm out of all actions a \(   \in \left\{ 1, \dots, \mathcal{A} \right\} \)
 	\ELSE
-	        \STATE play arm \(k_t = \argmax_k  \hat{\mu}_{t=\eta,k}  \) with ties broken arbitrarily
+	        \STATE play action \(a_t = \argmax_a  \hat{\mu}_{t=\eta,a}  \) with ties broken arbitrarily
 	\ENDIF
 	\STATE observe real-valued payoff $r_t$
 	% Update:
-	\STATE \( n_{k_{t}} \leftarrow n_{k_{t-1}} + 1  \) \COMMENT{Update count}
-  \STATE \( \hat{\mu}_{t,k_{t}} \leftarrow   \cfrac{r_t - \hat{\mu}_{t-1,k_{t}} }{n_{k_{t}}}   \) \COMMENT{Update expected reward}
+	\STATE \( n_{a_{t}} \leftarrow n_{a_{t-1}} + 1  \) \COMMENT{Update count}
+  \STATE \( \hat{\mu}_{t,a_{t}} \leftarrow   \cfrac{r_t - \hat{\mu}_{t-1,a_{t}} }{n_{a_{t}}}   \) \COMMENT{Update expected reward}
 \ENDFOR
 \end{algorithmic}
 \end{algorithm}
@@ -1025,20 +1031,20 @@ This can be formalized in pseudocode as follows:
 \label{Alg:EpsilonGreedy}
 \begin{algorithmic}
 \REQUIRE \(    \epsilon  \in \left[ 0,1 \right] \) - exploration tuning parameter
-\STATE \( n_{k} \leftarrow 0 \) for all arms k \(  \in \left\{ 1, \dots, K \right\} \)  (count how many times an arm has been chosen)
-\STATE \( \hat{\mu}_{k} \leftarrow 0 \) for all arms k  \(   \in \left\{ 1, \dots, K \right\} \)  (estimate of expected reward per arm)
+\STATE \( n_{a} \leftarrow 0 \) for all actions a \(  \in \left\{ 1, \dots, \mathcal{A} \right\} \)  (count how many times an action has been chosen)
+\STATE \( \hat{\mu}_{a} \leftarrow 0 \) for all actions a  \(   \in \left\{ 1, \dots, \mathcal{A} \right\} \)  (estimate of expected reward per action)
 % Run through time points:
 \FOR{$t=1, \dots, T$}
-	% Run through arms. Step 1, select which one to play
+	% Run through actions. Step 1, select which one to play
 	\IF {sample from $unif(0,1) > \epsilon$}
-		\STATE play arm \(k_t = \argmax_k  \hat{\mu}_{t-1,k}  \) with ties broken arbitrarily
+		\STATE play action \(a_t = \argmax_a  \hat{\mu}_{t-1,a}  \) with ties broken arbitrarily
 	\ELSE
-		\STATE play a random arm out of all arms k \(  \in \left\{ 1, \dots, K \right\} \)
+		\STATE play a random action out of all actions a \(  \in \left\{ 1, \dots, \mathcal{A} \right\} \)
 	\ENDIF
 	\STATE observe real-valued payoff $r_t$
 	% Update:
-	\STATE \( n_{k_{t}} \leftarrow n_{k_{t-1}} + 1  \) \COMMENT{Update count}
-  \STATE \( \hat{\mu}_{t,k_{t}} \leftarrow   \cfrac{r_t - \hat{\mu}_{t-1,k_{t}} }{n_{k_{t}}}   \) \COMMENT{Update expected reward}
+	\STATE \( n_{a_{t}} \leftarrow n_{a_{t-1}} + 1  \) \COMMENT{Update count}
+  \STATE \( \hat{\mu}_{t,a_{t}} \leftarrow   \cfrac{r_t - \hat{\mu}_{t-1,a_{t}} }{n_{a_{t}}}   \) \COMMENT{Update expected reward}
 \ENDFOR
 \end{algorithmic}
 \end{algorithm}
@@ -1118,21 +1124,21 @@ The LinUCBDisjoint algorithm works by running a linear regression with coefficie
 \REQUIRE $\alpha$ \(  \in \mathbb{R}^{+} \), exploration tuning parameter
 % Run through time points:
 \FOR{$t=1, \dots, T$}
-          \STATE Observe features of all arms \(  k \in K_{t}: x_{t,k} \in \mathbb{R}^{d}\)
-	% Run through arms. Step 1, select which one to play
-	\FOR{ \(  k \in K\)}
-	          \IF{\(k\) is new}
-		      \STATE \(A_{k} \leftarrow I_{d}  \)  (d-dimensional identity matrix)
-		      \STATE \(b_{k} \leftarrow 0_{d\times1}   \) (d-dimensional zero vector)
+          \STATE Observe features of all actions \(  a \in \mathcal{A}_{t}: x_{t,a} \in \mathbb{R}^{d}\)
+	% Run through actions. Step 1, select which one to play
+	\FOR{ \(  a \in \mathcal{A}\)}
+	          \IF{\(a\) is new}
+		      \STATE \(A_{a} \leftarrow I_{d}  \)  (d-dimensional identity matrix)
+		      \STATE \(b_{a} \leftarrow 0_{d\times1}   \) (d-dimensional zero vector)
 		\ENDIF
-		\STATE \( \hat{\theta}_{k} \leftarrow A_{k}^{-1}b_{k} \)
-		\STATE \( p_{t,k} \leftarrow \hat{\theta}_{k}^{T} + \alpha  \sqrt{ x_{t,k}^{T} A_{k}^{-1}x_{t,k}} \)
+		\STATE \( \hat{\theta}_{a} \leftarrow A_{a}^{-1}b_{a} \)
+		\STATE \( p_{t,a} \leftarrow \hat{\theta}_{a}^{T} + \alpha  \sqrt{ x_{t,a}^{T} A_{a}^{-1}x_{t,a}} \)
 	\ENDFOR
-	% allocate to arm
-	\STATE Play arm \(k_t = \argmax_a  p_{t,k}  \) with ties broken arbitrarily and observe real-valued payoff $r_t$
+	% allocate to action
+	\STATE Play action \(a_t = \argmax_a  p_{t,a}  \) with ties broken arbitrarily and observe real-valued payoff $r_t$
 	% Update:
-           \STATE \( A_{k_{t}} \leftarrow A_{k_{t}}+ x_{t,k_{t}}x_{t,k_{t}}^{T} \)
-           \STATE  \( b_{k_{t}} \leftarrow b_{k_{t}}+ r_{t}x_{t,k_{t}}  \)
+           \STATE \( A_{a_{t}} \leftarrow A_{a_{t}}+ x_{t,a_{t}}x_{t,a_{t}}^{T} \)
+           \STATE  \( b_{a_{t}} \leftarrow b_{a_{t}}+ r_{t}x_{t,a_{t}}  \)
 \ENDFOR
 \end{algorithmic}
 \end{algorithm}
@@ -1312,10 +1318,10 @@ The first, and most important, step in using offline data in policy evaluation i
                  $L \leftarrow 0$ {An initially zero length counter of valid events}
 % Run through time points:
 \FOR{$t=1, \dots, T$}
-	\STATE Get the $t$-th event \( (x_{t,k_t},k_{t},r_{t,k_t}) \) from  $S$
-	\IF {\(\pi \left( h_{t-1},x_{t,k_t} \right) = k_t\)}
-	       \STATE $h_{t} \leftarrow $  \(\textrm{CONCATENATE}\left( h_{t-1},(x_{t,k_t},k_{t},r_{t,k_t})  \right)\)
-	       \STATE $R_\pi = R_\pi + r_{t,k_t}$
+	\STATE Get the $t$-th event \( (x_{t,a_t},a_{t},r_{t,a_t}) \) from  $S$
+	\IF {\(\pi \left( h_{t-1},x_{t,a_t} \right) = a_t\)}
+	       \STATE $h_{t} \leftarrow $  \(\textrm{CONCATENATE}\left( h_{t-1},(x_{t,a_t},a_{t},r_{t,a_t})  \right)\)
+	       \STATE $R_\pi = R_\pi + r_{t,a_t}$
 	       \STATE $L = L + 1$
 	\ELSE
 	        \STATE $h_{t} \leftarrow  h_{t-1} $
@@ -1416,7 +1422,7 @@ Each row in the dataset describes an interaction event (click or no click) of us
          \item Whether or not a user clicked on the article at the story position.
 \end{enumerate}
 
-That is, for each event $t$ an article represents one of $k$ arms (that is, one of the 271 articles observed within the course of the 10 days covered by the dataset) with $\mathbb{R}^6$ features $X_{t,a}$ per arm, and another $\mathbb{R}^6$ features $X_{t,u}$ per unique visitor. Together, the flattened outer product of the user and article feature vector creates a $\mathbb{R}^{36}$ feature vector $X_t$ for each user and article pair with outcome value or reward $r_t$ click (1) or no click (0). For the further details on the data structure and the general setup of the experiment, we refer the reader to \cite{Chu2009} and to the original \cite{Li2010} paper.
+That is, for each event $t$ an article represents one of $A$ actions (that is, one of the 271 articles observed within the course of the 10 days covered by the dataset) with $\mathbb{R}^6$ features $X_{t,a}$ per arm, and another $\mathbb{R}^6$ features $X_{t,u}$ per unique visitor. Together, the flattened outer product of the user and article feature vector creates a $\mathbb{R}^{36}$ feature vector $X_t$ for each user and article pair with outcome value or reward $r_t$ click (1) or no click (0). For the further details on the data structure and the general setup of the experiment, we refer the reader to \cite{Chu2009} and to the original \cite{Li2010} paper.
 
 \subsection{Data import} \label{dataimp}
 
