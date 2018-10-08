@@ -1,5 +1,4 @@
 #' @export
-#' @export
 Agent <- R6::R6Class(
   "Agent",
   portable = FALSE,
@@ -28,10 +27,11 @@ Agent <- R6::R6Class(
       invisible(self)
     },
     reset = function() {
-      if(!is.null(self$bandit$d) && is.null(self$bandit$unique)) {
+      if(is.null(self$bandit$d)) self$bandit$d = 1
+      if(is.null(self$bandit$unique)) {
         self$bandit$unique <- c(1:self$bandit$d)
       }
-      if(!is.null(self$bandit$d) && is.null(self$bandit$shared)) {
+      if(is.null(self$bandit$shared)) {
         self$bandit$shared <- c(1:self$bandit$d)
       }
       context_initial_params        <- list ()
@@ -159,7 +159,7 @@ Agent <- R6::R6Class(
 #' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
-#' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflinePolicyEvaluatorBandit}}
+#' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflineReplayEvaluatorBandit}}
 #'
 #' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 #'

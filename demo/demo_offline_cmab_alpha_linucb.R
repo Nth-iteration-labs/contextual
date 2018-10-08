@@ -39,7 +39,7 @@ horizon     <- horizon
 
 log_S       <- linucb_dt
 
-bandit      <- OfflinePolicyEvaluatorBandit$new(offline_data = log_S, k = 10, d = 100)
+bandit      <- OfflineReplayEvaluatorBandit$new(offline_data = log_S, k = 10, d = 100)
 
 # define two LinUCBDisjointSmPolicy agents
 

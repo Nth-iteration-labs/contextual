@@ -20,5 +20,5 @@ Core contextual classes: \code{\link{Simulator}},
 \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 
 Bandit classes: \code{\link{Bandit}}, \code{\link{BasicBernoulliBandit}},
-\code{\link{OfflinePolicyEvaluatorBandit}}, \code{\link{ContextualLogitBandit}}
+\code{\link{OfflineReplayEvaluatorBandit}}, \code{\link{ContextualLogitBandit}}
 }

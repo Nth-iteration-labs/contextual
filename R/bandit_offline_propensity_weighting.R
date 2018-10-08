@@ -1,5 +1,5 @@
 #' @export
-OfflinePolicyEvaluatorBandit <- R6::R6Class(
+OfflinePropensityWeightingBandit <- R6::R6Class(
   inherit = Bandit,
   portable = TRUE,
   class = FALSE,
@@ -9,20 +9,20 @@ OfflinePolicyEvaluatorBandit <- R6::R6Class(
     or = NULL
   ),
   public = list(
-    class_name = "OfflinePolicyEvaluatorBandit",
+    class_name = "OfflinePropensityWeightingBandit",
     randomize = NULL,
-    initialize   = function(offline_data, k, d, unique = NULL,
-                            shared = NULL, randomize = TRUE) {
+    initialize   = function(offline_data, k, d, randomize = TRUE) {
       self$k <- k                 # Number of arms (integer)
       self$d <- d                 # Dimension of context feature vector (integer)
       self$randomize <-randomize  # Randomize logged events for every simulation? (logical)
       private$S <- offline_data   # Logged events (by default, as a data.table)
 
+      private$S[is.null(context[[1]]),`:=`(context = list(1))]
       private$oa <- "optimal_arm" %in% colnames(offline_data)
       private$or <- "optimal_reward" %in% colnames(offline_data)
     },
     post_initialization = function() {
-      if(isTRUE(self$randomize))private$S <- private$S[sample(nrow(private$S))]
+      if(isTRUE(self$randomize)) private$S <- private$S[sample(nrow(private$S))]
     },
     get_context = function(index) {
       context <- list(
@@ -33,17 +33,10 @@ OfflinePolicyEvaluatorBandit <- R6::R6Class(
       context
     },
     get_reward = function(index, context, action) {
+      p <- private$S$propensity[[index]]
       if (private$S$choice[[index]] == action$choice) {
         list(
-          reward = as.double(private$S$reward[[index]]),
-
-          optimal_reward = ifelse(private$or,
-                                  as.double(private$S$optimal_reward[[index]]),
-                                  NA),
-
-          optimal_arm    = ifelse(private$oa,
-                                  as.double(private$S$optimal_arm[[index]]),
-                                  NA)
+          reward = (as.double((private$S$reward[[index]] / self$k) * 1 / p))
         )
       } else {
         NULL
@@ -52,23 +45,16 @@ OfflinePolicyEvaluatorBandit <- R6::R6Class(
   )
 )
 
-#' Bandit: Li's Offline Policy Evaluator
+#' Bandit: Offline Propensity Evaluator
 #'
 #' Policy for the evaluation of policies with offline data.
 #'
-#' The key assumption of the method is that that the original logging policy chose
-#' i.i.d. arms uniformly at random.
-#'
-#' Take care: if the original logging policy does not change over trials, data may be
-#' used more efficiently via propensity scoring (Langford et al., 2008; Strehl et al., 2011)
-#' and related techniques like doubly robust estimation (Dudik et al., 2011).
-#'
-#' @name OfflinePolicyEvaluatorBandit
+#' @name OfflinePropensityWeightingBandit
 #'
 #'
 #' @section Usage:
 #' \preformatted{
-#'   bandit <- OfflinePolicyEvaluatorBandit(offline_data, k, d, unique = NULL, shared = NULL, randomize = TRUE)
+#'   bandit <- OfflinePropensityWeightingBandit(offline_data, k, d, randomize = TRUE)
 #' }
 #'
 #' @section Arguments:
@@ -100,7 +86,7 @@ OfflinePolicyEvaluatorBandit <- R6::R6Class(
 #' \describe{
 #'
 #'   \item{\code{new(offline_data, k, d, unique = NULL, shared = NULL, randomize = TRUE)}}{ generates
-#'    and instantializes a new \code{OfflinePolicyEvaluatorBandit} instance. }
+#'    and instantializes a new \code{OfflinePropensityWeightingBandit} instance. }
 #'
 #'   \item{\code{get_context(t)}}{
 #'      argument:
@@ -140,7 +126,7 @@ OfflinePolicyEvaluatorBandit <- R6::R6Class(
 #' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
-#' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflinePolicyEvaluatorBandit}}
+#' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflinePropensityWeightingBandit}}
 #'
 #' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 #'
@@ -149,60 +135,6 @@ OfflinePolicyEvaluatorBandit <- R6::R6Class(
 #'
 #' ## generate random policy log and save it
 #'
-#' context_weights    <- matrix(  c( 0.9, 0.1, 0.1,
-#'                                   0.1, 0.9, 0.1,
-#'                                   0.1, 0.1, 0.9), nrow = 3, ncol = 3, byrow = TRUE)
-#' horizon     <- 2000L
-#' simulations <- 1L
-#' bandit      <- ContextualBernoulliBandit$new(weights = context_weights)
-#'
-#' # For the generation of random data choose a random policy,
-#' # otherwise rejection sampling will produce biased results.
-#'
-#' policy      <- RandomPolicy$new()
-#'
-#' agent       <- Agent$new(policy, bandit)
-#'
-#' simulation  <-
-#'   Simulator$new(
-#'     agent,
-#'     horizon = horizon,
-#'     simulations = simulations,
-#'     save_context = TRUE
-#'   )
-#'
-#' random_offline_data <- simulation$run()
-#' random_offline_data$save("log.RData")
-#'
-#' ## use saved log to evaluate policies with OfflinePolicyEvaluatorBandit
-#'
-#' history <- History$new()
-#' history$load("log.RData")
-#' log_S <- history$get_data_table()
-#'
-#' bandit <- OfflinePolicyEvaluatorBandit$new(offline_data = log_S, k = 3, d = 3)
-#'
-#' agents <-
-#'   list(
-#'     Agent$new(EpsilonGreedyPolicy$new(0.01), bandit),
-#'     Agent$new(LinUCBDisjointPolicy$new(0.6), bandit)
-#'   )
-#'
-#' simulation <-
-#'   Simulator$new(
-#'     agents,
-#'     horizon = horizon,
-#'     simulations = simulations,
-#'     t_over_sims = TRUE,
-#'     do_parallel = FALSE,
-#'     reindex = TRUE
-#'   )
-#'
-#' li_bandit_history <- simulation$run()
-#'
-#' plot(after, regret = FALSE, type = "cumulative", rate = TRUE)
-#'
-#' if (file.exists("log.RData")) file.remove("log.RData")
 #'
 #' }
 NULL

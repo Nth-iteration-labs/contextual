@@ -4,7 +4,7 @@ library(here)
 
 setwd(here::here("demo","replication_package_rve_2018"))
 
-OfflinePolicyEvaluatorBandit <- R6::R6Class(
+OfflineReplayEvaluatorBandit <- R6::R6Class(
   inherit = Bandit,
   portable = TRUE,
   class = FALSE,
@@ -12,7 +12,7 @@ OfflinePolicyEvaluatorBandit <- R6::R6Class(
     S = NULL
   ),
   public = list(
-    class_name = "OfflinePolicyEvaluatorBandit",
+    class_name = "OfflineReplayEvaluatorBandit",
     randomize = NULL,
     initialize   = function(data_stream, k, d) {
       self$k <- k               # Number of arms (integer)
@@ -51,7 +51,7 @@ data     <- fread(data_url)
 
 horizon  <- nrow(data)
 sims     <- 10L
-bandit   <- OfflinePolicyEvaluatorBandit$new(data, k = 4, d = 1)
+bandit   <- OfflineReplayEvaluatorBandit$new(data, k = 4, d = 1)
 agents   <- list(Agent$new(LinUCBHybridPolicy$new(0.6), bandit))
 
 history  <- Simulator$new(agents, horizon, sims, reindex = TRUE, do_parallel = FALSE)$run()

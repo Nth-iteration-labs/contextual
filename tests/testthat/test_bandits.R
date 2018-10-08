@@ -511,7 +511,7 @@ test_that("BasicBernoulliBandit MAB policies", {
   history$load("test.RData")
   log_S <- history$get_data_table()
 
-  bandit <- OfflinePolicyEvaluatorBandit$new(offline_data = log_S, k = 3, d = 3)
+  bandit <- OfflineReplayEvaluatorBandit$new(offline_data = log_S, k = 3, d = 3)
 
   agents <-
     list(
@@ -549,7 +549,7 @@ test_that("BasicBernoulliBandit MAB policies", {
   log_S$optimal_arm <- NULL
   log_S$optimal_reward <- NULL
 
-  bandit <- OfflinePolicyEvaluatorBandit$new(offline_data = log_S, k = 3, d = 3)
+  bandit <- OfflineReplayEvaluatorBandit$new(offline_data = log_S, k = 3, d = 3)
 
   agents <-
     list(
