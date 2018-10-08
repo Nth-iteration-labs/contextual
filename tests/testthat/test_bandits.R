@@ -580,3 +580,79 @@ test_that("BasicBernoulliBandit MAB policies", {
   expect_equal(is.na(after$get_cumulative_result(t=25)$Oracle$cum_reward), TRUE)
 
 })
+
+
+test_that("PropensityWeightingBandit", {
+
+  horizon <- 1000
+  simulations <- 1
+
+  weights <- matrix( c(0.4, 0.3,
+                       0.8, 0.7),
+
+                     nrow = 2, ncol = 2, byrow = TRUE)
+
+  BiasedPolicy <- R6::R6Class(
+    portable = FALSE,
+    class = FALSE,
+    inherit = RandomPolicy,
+    public = list(
+      class_name = "BiasedPolicy",
+      get_action = function(t, context) {
+        if(context$X[1,1]==1) {           # 1: Male || 0: Female.
+
+          prob <- c(0.75,0.25)            # Editor thinks men like Sport articles more.
+        } else {
+          prob <- c(0.25,0.75)            # Editor thinks women like Movie articles more.
+        }
+        action$choice               <- sample.int(context$k, 1, replace = TRUE, prob = prob)
+        action$propensity           <- prob[action$choice]
+        action
+      }
+    )
+  )
+
+  policy             <- BiasedPolicy$new()
+  bandit             <- ContextualBasicBandit$new(weights = weights)
+  agent              <- Agent$new(policy, bandit, "Random")
+
+  simulation         <- Simulator$new(agent, horizon, simulations, save_context = TRUE, do_parallel = FALSE)
+  history            <- simulation$run()
+
+  b_dt               <- history$get_data_table()
+
+  # ---
+
+  bandit             <- OfflineReplayEvaluatorBandit$new(b_dt,2,2)
+  policy             <- UCB1Policy$new()
+  agent              <- Agent$new(policy, bandit, "rb")
+
+  simulation         <- Simulator$new(agent, horizon, simulations, reindex = TRUE, do_parallel = FALSE)
+  history            <- simulation$run()
+  rb_dt              <- history$get_data_table()
+
+  a <- sum(rb_dt[choice==1]$reward)/nrow(rb_dt[choice==1])
+  b <- sum(rb_dt[choice==2]$reward)/nrow(rb_dt[choice==2])
+
+  expect_equal(a,  0.416, tolerance = 0.02)
+  expect_equal(b,  0.594, tolerance = 0.02)
+
+  # ---
+
+  bandit                 <- OfflinePropensityWeightingBandit$new(b_dt,2,2)
+  policy                 <- UCB1Policy$new()
+  agent                  <- Agent$new(policy, bandit, "prop")
+
+  simulation             <- Simulator$new(agent, horizon, simulations, reindex = TRUE, do_parallel = FALSE)
+  history                <- simulation$run()
+  prop_dt                <- history$get_data_table()
+
+  c <- sum(prop_dt[choice==1]$reward)/nrow(prop_dt[choice==1])
+  d <- sum(prop_dt[choice==2]$reward)/nrow(prop_dt[choice==2])
+
+  expect_equal(c,  0.636, tolerance = 0.02)
+  expect_equal(d,  0.483, tolerance = 0.02)
+
+
+})
+

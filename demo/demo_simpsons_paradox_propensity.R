@@ -2,12 +2,22 @@ library(contextual)
 
 # ------------------------------------------------------------------------------------------------------------
 #
-# ### Offline bandits and Simpson's Paradox ###
+# ### Offline Bandits and Simpson's Paradox ###
 #
 # ------------------------------------------------------------------------------------------------------------
+
+# In this scenario, imagine a website with Sport and Movie related articles.
 #
-# Where randomly assigned to contexts
-# CTR reflects preferences:
+# The actual real world preference of men and women for Sport and Movie articles is the following:
+#
+#  Contexts   | Sport (arm) |  Movie (arm)
+# -----------------------------------------
+#  Male       | 0.4         |  0.3
+#  Female     | 0.8         |  0.7
+#
+# In other words, both male and female visitors actually prefer sports articles over movie articles.
+#
+# When visitors are randomly assigned to types of articles, the overall CTR rate per category reflects this:
 #
 #  Contexts   | Sport (arm) |  Movie (arm)
 # -----------------------------------------
@@ -16,14 +26,11 @@ library(contextual)
 # -----------------------------------------
 #  CTR total  | 0.6         |  0.5
 #
-# Most popular individual and overall: Sport.
-#
-# *click_probability x fraction_assigned_to_arm
-#
 # ------------------------------------------------------------------------------------------------------------
 #
-# Yet when contexts not randomly assigned, but for instance
-# biased as below:
+# Now suggest the site's editor just "knows" that men like sports, and women like movie related articles.
+# So the editor has some business logic implemented, assigning movie related articles, on average,
+# to 75% of female visitors, and sports articles, on average, to 75% of male visitors:
 #
 #  Contexts   | Sport (arm) |  Movie (arm)
 # -----------------------------------------
@@ -32,24 +39,25 @@ library(contextual)
 # -----------------------------------------
 #  CTR total  | 0.5         |  0.6
 #
-# Now, the overall most popular arm becomes Movie,
-# even though male and female groups still prefer Sport!
+# This produces a higher CTR for movies than for sports related articles - even though these CTR's do
+# not actually reflect the overall preferences of website visitors, but rather the editor's prejudices.
 #
-# This is an example of Simpson's Paradox.
+# A perfect example of Simpson's Paradox!
+#
+# Below an illustration of how Simpson's Paradox can give rise to a biased log,
+# resulting in biased offline evaluations of bandit policies. Next, we demonstrate how
+# how inverse propensity scores can sometimes help to make such logs usable for offline evaluation after all.
 
 # ------------------------------------------------------------------------------------------------------------
-
-# Lets emulate the above with Contextual.
-
+#
+# ### Emulation with contextual ###
+#
 # ------------------------------------------------------------------------------------------------------------
-
-# First, define a bandit, and pose that it realistically simulates visitor's behavior:
 
 horizon     <- 10000L
 simulations <- 1L
 
-# Bandit assigns to male and female randomly and equally to each context,
-# representing the actual preferences of males and females.
+# Bandit representing Male and Female actual preferences for sports and movies.
 #
 #                     S----M------------> Arm 1:   Sport
 #                     |    |              Arm 2:   Movie
@@ -59,13 +67,11 @@ weights <- matrix( c(0.4, 0.3,    #-----> Context: Male
 
                     nrow = 2, ncol = 2, byrow = TRUE)
 
-
 # ------------------------------------------------------------------------------------------------------------
 # ----------------------------------   Unbiased policy       -------------------------------------------------
 # ------------------------------------------------------------------------------------------------------------
 
-# Now we run a basic random policy, assigning both males and females randomly to either
-# Sport and Movie articles.
+# Run a basic random policy, assigning both males and females randomly to either Sport or Movie articles.
 
 policy             <- RandomPolicy$new()
 bandit             <- ContextualBasicBandit$new(weights = weights)
@@ -76,25 +82,17 @@ history            <- simulation$run()
 
 u_dt               <- history$get_data_table()
 
-print((nrow(u_dt)))
-
-# choice:1 is Sport choice:2 is Movie, and is_male:1 is male is_male:2 is female
-u_dt[, is_male := lapply(.SD, function(x) paste( unlist(x)[1], collapse=',') ),
-          by=1:u_dt[, .N], .SDcols = c("context")]
-
-print("-offline unbiased data generation-")
+print("1a. Unbiased data generation.")
 
 print(paste("Sport:",sum(u_dt[choice==1]$reward)/nrow(u_dt[choice==1]))) # 0.6 CTR Sport - correct.
 print(paste("Movie:",sum(u_dt[choice==2]$reward)/nrow(u_dt[choice==2]))) # 0.5 CTR Movie - correct.
 
 # ----------------------------------   Use unbiased as offline data    ---------------------------------------
 
-### now we have a data.table with *unbiased* historical data.
-### So we can run a different policy on this data and still
-### obtain the same outcome we would have obtained for the bandit directly (simulate this as well?)
+# This produces a data.table with *unbiased* historical data that reproduces the original CTR on replay.
 
 bandit             <- OfflineReplayEvaluatorBandit$new(u_dt,2,2)
-policy             <- LinUCBDisjointOptimizedPolicy$new(1.0)
+policy             <- UCB1Policy$new()
 agent              <- Agent$new(policy, bandit, "OfflineLinUCB")
 
 simulation         <- Simulator$new(agent, horizon, simulations, reindex = TRUE, do_parallel = FALSE)
@@ -102,9 +100,7 @@ history            <- simulation$run()
 
 ru_dt              <- history$get_data_table()
 
-print("-offline unbiased policy evaluation-")
-
-print((nrow(ru_dt)))
+print("1b. Offline unbiased policy evaluation.")
 
 print(paste("Sport:",sum(ru_dt[choice==1]$reward)/nrow(ru_dt[choice==1]))) # 0.6 CTR Sport - correct.
 print(paste("Movie:",sum(ru_dt[choice==2]$reward)/nrow(ru_dt[choice==2]))) # 0.5 CTR Movie - correct.
@@ -113,9 +109,8 @@ print(paste("Movie:",sum(ru_dt[choice==2]$reward)/nrow(ru_dt[choice==2]))) # 0.5
 # ----------------------------------   Biased policy       ---------------------------------------------------
 # ------------------------------------------------------------------------------------------------------------
 
-# Lets now suggest some editor just "knows' that men like Sport, and
-# women like Movie. So some business logic was added to the site
-# assigning Movie related articles, on average, to 75% of Female visitors,
+# Now suggest some editor just "knows' that men like Sport, and women like Movie. So some business logic
+# was added to the site assigning Movie related articles, on average, to 75% of Female visitors,
 # and Sport articles, on average, to 75% of Male visitors.
 #
 # This business logic might be implemented through the following policy:
@@ -141,7 +136,7 @@ BiasedPolicy <- R6::R6Class(
 
 # ------------------------------------------------------------------------------------------------------------
 
-# We create offline data once again - but this time round, it will be biased.
+# Create offline data once again - but this time round, it will be biased.
 
 policy             <- BiasedPolicy$new()
 bandit             <- ContextualBasicBandit$new(weights = weights)
@@ -152,18 +147,10 @@ history            <- simulation$run()
 
 b_dt               <- history$get_data_table()
 
-# choice:1 is Sport choice:2 is Movie, and is_male:1 is male is_male:2 is female
-#b_dt[, is_male := lapply(.SD, function(x) paste( unlist(x)[1], collapse=',') ),
-#            by=1:b_dt[, .N], .SDcols = c("context")]
-
-print("-offline biased data generation-")
-
-print((nrow(b_dt)))
+print("2a. Biased data generation.")
 
 print(paste("Sport:",sum(b_dt[choice==1]$reward)/nrow(b_dt[choice==1]))) # 0.5 CTR Sport - Simpson's..
 print(paste("Movie:",sum(b_dt[choice==2]$reward)/nrow(b_dt[choice==2]))) # 0.6 CTR Movie - Simpson's..
-
-# so here, it would make sense to choose arm 1 overall..
 
 # ----------------------------------   Use biased as offline data    -----------------------------------------
 
@@ -180,9 +167,7 @@ rb_dt              <- history$get_data_table()
 
 # which is also the case when we use this data to do offline simulation to test other policy:
 
-print("-offline biased policy evaluation-")
-
-print(nrow(rb_dt))
+print("2b. Offline biased policy evaluation.")
 
 print(paste("Sport:",sum(rb_dt[choice==1]$reward)/nrow(rb_dt[choice==1]))) # 0.5 CTR Sport - Simpson's..
 print(paste("Movie:",sum(rb_dt[choice==2]$reward)/nrow(rb_dt[choice==2]))) # 0.6 CTR Movie - Simpson's..
@@ -200,21 +185,25 @@ simulation             <- Simulator$new(agent, horizon, simulations, reindex = T
 history                <- simulation$run()
 prop_dt                <- history$get_data_table()
 
-# which is also the case when we use this data to do offline simulation to test other policy:
+# Happily, inverse propensity scoring can help remove the bias again:
 
-print("-offline biased policy evaluation with propensity scores-")
-
-print(nrow(prop_dt))
+print("2c. Offline biased policy evaluation, inverse propensity scores.")
 
 print(paste("Sport:",sum(prop_dt[choice==1]$reward)/nrow(prop_dt[choice==1]))) # 0.6 CTR Sport again, yay!
 print(paste("Movie:",sum(prop_dt[choice==2]$reward)/nrow(prop_dt[choice==2]))) # 0.5 CTR Movie again, yay!
 
-# The number of time steps (2953) that offline bandit could replay:
-#print(rb_dt$cumulative$OfflineLinUCB$t)
-# LinUCB overwhelmingly chooses Movie: 91% of all choices
-#print(nrow(rb_dt$data[choice==1])/nrow(rb_dt$data)*100)
-# And is able to attain a 0.59 CTR on that arm
-#print(rb_dt$cumulative$OfflineLinUCB$cum_reward_rate)
 
+## TODO: Below building blocks of future more extensive demo.
 
+# #choice:1 is Sport choice:2 is Movie, and is_male:1 is male is_male:2 is female
+#
+# b_dt[, is_male := lapply(.SD, function(x) paste( unlist(x)[1], collapse=',') ),
+#     by=1:b_dt[, .N], .SDcols = c("context")]
+# ...
+# #The number of time steps (2953) that offline bandit could replay:
+# print(rb_dt$cumulative$OfflineLinUCB$t)
+# # LinUCB overwhelmingly chooses Movie: 91% of all choices
+# print(nrow(rb_dt$data[choice==1])/nrow(rb_dt$data)*100)
+# # And is able to attain a 0.59 CTR on that arm
+# print(rb_dt$cumulative$OfflineLinUCB$cum_reward_rate)
 
