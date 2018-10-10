@@ -8,7 +8,7 @@ library(contextual)
 
 # In this scenario, imagine a website with Sport and Movie related articles.
 #
-# The actual real world preference of men and women for Sport and Movie articles is the following:
+# The actual preference of men and women for Sport and Movie articles is the following:
 #
 #  Contexts   | Sport (arm) |  Movie (arm)
 # -----------------------------------------
@@ -39,14 +39,14 @@ library(contextual)
 # -----------------------------------------
 #  CTR total  | 0.5         |  0.6
 #
-# This produces a higher CTR for movies than for sports related articles - even though these CTR's do
-# not actually reflect the overall preferences of website visitors, but rather the editor's prejudices.
+# This results in a higher CTR for movies than for sports related articles - even though these CTR's do
+# not actually reflect the overall preferences of website visitors, but rather the editor's prejudice.
 #
 # A perfect example of Simpson's Paradox!
 #
 # Below an illustration of how Simpson's Paradox can give rise to a biased log,
-# resulting in biased offline evaluations of bandit policies. Next, we demonstrate how
-# how inverse propensity scores can sometimes help to make such logs usable for offline evaluation after all.
+# resulting in biased offline evaluations of bandit policies. Next, we demonstrate
+# how inverse propensity scores can sometimes help make such logs usable for offline evaluation after all.
 
 # ------------------------------------------------------------------------------------------------------------
 #
@@ -54,7 +54,7 @@ library(contextual)
 #
 # ------------------------------------------------------------------------------------------------------------
 
-horizon     <- 10000L
+horizon     <- 5000L
 simulations <- 1L
 
 # Bandit representing Male and Female actual preferences for sports and movies.
@@ -92,7 +92,7 @@ print(paste("Movie:",sum(u_dt[choice==2]$reward)/nrow(u_dt[choice==2]))) # 0.5 C
 # This produces a data.table with *unbiased* historical data that reproduces the original CTR on replay.
 
 bandit             <- OfflineReplayEvaluatorBandit$new(u_dt,2,2)
-policy             <- UCB1Policy$new()
+policy             <- EpsilonGreedyPolicy$new(0.1)
 agent              <- Agent$new(policy, bandit, "OfflineLinUCB")
 
 simulation         <- Simulator$new(agent, horizon, simulations, reindex = TRUE, do_parallel = FALSE)
@@ -128,6 +128,8 @@ BiasedPolicy <- R6::R6Class(
         prob <- c(0.25,0.75)            # Editor thinks women like Movie articles more.
       }
       action$choice               <- sample.int(context$k, 1, replace = TRUE, prob = prob)
+
+      # Store the propensity score for the current action too:
       action$propensity           <- prob[action$choice]
       action
     }
@@ -158,7 +160,7 @@ print(paste("Movie:",sum(b_dt[choice==2]$reward)/nrow(b_dt[choice==2]))) # 0.6 C
 # Lets see what happens if we run the same simulation again:
 
 bandit             <- OfflineReplayEvaluatorBandit$new(b_dt,2,2)
-policy             <- UCB1Policy$new()
+policy             <- EpsilonGreedyPolicy$new(0.1)
 agent              <- Agent$new(policy, bandit, "rb")
 
 simulation         <- Simulator$new(agent, horizon, simulations, reindex = TRUE, do_parallel = FALSE)
@@ -178,7 +180,7 @@ print(paste("Movie:",sum(rb_dt[choice==2]$reward)/nrow(rb_dt[choice==2]))) # 0.6
 
 
 bandit                 <- OfflinePropensityWeightingBandit$new(b_dt,2,2)
-policy                 <- UCB1Policy$new()
+policy                 <- EpsilonGreedyPolicy$new(0.1)
 agent                  <- Agent$new(policy, bandit, "prop")
 
 simulation             <- Simulator$new(agent, horizon, simulations, reindex = TRUE, do_parallel = FALSE)

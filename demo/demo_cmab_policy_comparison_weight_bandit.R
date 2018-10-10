@@ -12,7 +12,13 @@ agents     <- list(Agent$new(EpsilonGreedyPolicy$new(0.1), bandit, "EGreedy"),
                    Agent$new(ContextualEpsilonGreedy$new(0.1), bandit, "cEGreedy"),
                    Agent$new(ContextualLogitBTSPolicy$new(10), bandit, "LogitBTS"),
                    Agent$new(LinUCBDisjointPolicy$new(0.6), bandit, "LinUCB"))
-simulation <- Simulator$new(agents, horizon, simulations)
+simulation <- Simulator$new(agents, horizon, simulations, save_context = TRUE)
 history    <- simulation$run()
 
 plot(history, type = "cumulative", no_par = TRUE, legend_border = FALSE, legend_position = "bottomright")
+
+
+
+history$context_to_columns()
+
+dt <- history$get_data_table()

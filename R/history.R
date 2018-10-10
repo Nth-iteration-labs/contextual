@@ -1,4 +1,4 @@
-#' @importFrom data.table data.table as.data.table set setorder setkeyv copy uniqueN setcolorder
+#' @importFrom data.table data.table as.data.table set setorder setkeyv copy uniqueN setcolorder tstrsplit
 #' @import checkmate
 #' @export
 History <- R6::R6Class(
@@ -202,7 +202,7 @@ History <- R6::R6Class(
         if (is.vector(one_context)) one_context <- matrix(one_context, nrow = 1L)
         dt_to_save$k <- ncol(one_context)
         dt_to_save$d <- nrow(one_context)
-        dt_to_save[, (context_cols) := tstrsplit(context_string, ",", fixed=TRUE)]
+        dt_to_save[, (context_cols) := data.table::tstrsplit(context_string, ",", fixed=TRUE)]
         dt_to_save$context <- NULL
         if ("theta" %in% names(dt_to_save)) dt_to_save$theta <- NULL
         dt_to_save$context_string <- NULL
@@ -266,6 +266,24 @@ History <- R6::R6Class(
         private$.data <- private$.data[t <= min_t_anywhere]
       }
       invisible(self)
+    },
+    context_to_columns = function(delete_original_column = FALSE) {
+      # create d and k columns
+      one_context <- private$.data[1,]$context[[1]]
+      if (is.vector(one_context)) one_context <- matrix(one_context, nrow = 1L)
+      private$.data$k <- ncol(one_context)
+      private$.data$d <- nrow(one_context)
+      # create context columns
+      context_cols <- c(paste0("X.", seq_along(unlist(private$.data[1,]$context))))
+      # create temporary context_string column
+      private$.data[, context_string := lapply(.SD, function(x) paste( unlist(x), collapse=',') ),
+                    by=1:private$.data[, .N], .SDcols = c("context")]
+      # extract context data to context columns
+      private$.data[, (context_cols) := data.table::tstrsplit(context_string, ",", fixed=TRUE)]
+      # delete temporary context_string column
+      private$.data$context_string <- NULL
+      # if not temporary, delete original context column
+      if (isTRUE(delete_original_column)) private$.data$context <- NULL
     },
     finalize = function() {
       self$clear_data_table()
