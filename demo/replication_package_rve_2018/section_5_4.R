@@ -1,23 +1,30 @@
 library(contextual)
 
-horizon <- 2000L
-simulations <- 1L
+horizon     <- 100L
+simulations <- 300L
 
-weights <- matrix(c(0.8, 0.1, 0.1,
-                    0.1, 0.8, 0.1,
-                    0.1, 0.1, 0.8), nrow = 3, ncol = 3, byrow = TRUE)
+                      # k=1  k=2  k=3             -> columns represent arms
+weights     <- matrix(c(0.6, 0.2, 0.2,     # d=1  -> rows represent
+                        0.2, 0.6, 0.2,     # d=2     context features,
+                        0.2, 0.2, 0.6),    # d=3
 
-bandit <- ContextualBasicBandit$new(weights = weights)
-agents <- list(Agent$new(EpsilonGreedyPolicy$new(0.1), bandit, "EGreedy"),
-               Agent$new(ContextualEpsilonGreedy$new(0.1), bandit, "cEGreedy"),
-               Agent$new(ContextualLogitBTSPolicy$new(10), bandit, "LogitBTS"),
-               Agent$new(LinUCBDisjointPolicy$new(0.6), bandit, "LinUCB"))
-simulation <- Simulator$new(agents, horizon, simulations)
-history <- simulation$run()
+                      nrow = 3, ncol = 3, byrow = TRUE)
 
-par(mfrow = c(1, 3), mar = c(2, 4, 0.5, 1), cex=1.5)
-plot(history, type = "cumulative", no_par = TRUE, legend_border = FALSE, legend_position = "bottomright")
+bandit      <- ContextualBasicBandit$new(weights = weights)
+
+eg_policy   <- EpsilonGreedyPolicy$new(0.1)
+lucb_policy <- LinUCBDisjointPolicy$new(0.6)
+
+agents      <- list(Agent$new(eg_policy, bandit, "EGreedy"),
+                    Agent$new(lucb_policy, bandit, "LinUCB"))
+
+simulation  <- Simulator$new(agents, horizon, simulations, save_context = TRUE)
+history     <- simulation$run()
+
+plot(history, type = "cumulative", legend_border = FALSE, no_par = TRUE )
 plot(history, type = "arms",  limit_agents = c("EGreedy"), no_par = TRUE)
 plot(history, type = "arms",  limit_agents = c("LinUCB"), no_par = TRUE)
-par(mfrow = c(1, 1))
 
+plot(history, type = "arms",  limit_agents = c("LinUCB"), limit_context = c(1), legend_title = "LinUCB X[1]", no_par = TRUE)
+plot(history, type = "arms",  limit_agents = c("LinUCB"), limit_context = c(2), legend_title = "LinUCB X[2]", no_par = TRUE)
+plot(history, type = "arms",  limit_agents = c("LinUCB"), limit_context = c(3), legend_title = "LinUCB X[3]", no_par = TRUE)

@@ -229,7 +229,7 @@ History <- R6::R6Class(
       if (isTRUE(auto_stats)) private$calculate_cum_stats()
       invisible(self)
     },
-    get_data_table = function(limit_agents = NULL, limit_cols = NULL, interval = 1, no_zero_sim = FALSE) {
+    get_data_table = function(limit_agents = NULL, limit_cols = NULL, limit_context = NULL, interval = 1, no_zero_sim = FALSE) {
       if (is.null(limit_agents)) {
         if (is.null(limit_cols)) {
           private$.data[t %% interval == 0 | t == 1][sim != 0]

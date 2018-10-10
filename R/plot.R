@@ -27,7 +27,8 @@ Plot <- R6::R6Class(
                           legend_border      = NULL,
                           legend_position    = "topleft",
                           legend_title       = NULL,
-                          limit_agents       = NULL) {
+                          limit_agents       = NULL,
+                          limit_context      = NULL) {
 
       self$history       <- history
 
@@ -73,6 +74,7 @@ Plot <- R6::R6Class(
         legend_position     = legend_position,
         legend_title        = legend_title,
         limit_agents        = limit_agents,
+        limit_context       = limit_context,
         traces              = traces,
         traces_max          = traces_max,
         traces_alpha        = traces_alpha,
@@ -104,7 +106,8 @@ Plot <- R6::R6Class(
                        legend_border      = NULL,
                        legend_position    = "topleft",
                        legend_title       = NULL,
-                       limit_agents       = NULL) {
+                       limit_agents       = NULL,
+                       limit_context      = NULL) {
       self$history <- history
 
       if (regret) {
@@ -137,6 +140,7 @@ Plot <- R6::R6Class(
         legend_position     = legend_position,
         legend_title        = legend_title,
         limit_agents        = limit_agents,
+        limit_context       = limit_context,
         traces              = traces,
         traces_max          = traces_max,
         traces_alpha        = traces_alpha,
@@ -158,6 +162,8 @@ Plot <- R6::R6Class(
                     legend_border      = NULL,
                     legend_position    = "topleft",
                     legend_title       = NULL,
+                    limit_context      = NULL,
+                    smooth             = FALSE,
                     limit_agents       = NULL) {
 
       self$history <- history
@@ -168,11 +174,28 @@ Plot <- R6::R6Class(
         par(mar = c(5, 5, 1, 1))
       }
 
+
       dt <- self$history$get_data_table(
         limit_cols   = c("agent", "t", "choice", "sim"),
         limit_agents = limit_agents,
         interval     = interval
       )
+
+
+      if(!is.null(limit_context)) {
+        dt <- self$history$get_data_table(
+          limit_cols   = c("agent", "t", "choice", "sim", "context"),
+          limit_agents = limit_agents,
+          interval     = interval
+        )
+        dt <- dt[sapply(context,function(x)all(x[limit_context]==1))]
+      } else {
+        dt <- self$history$get_data_table(
+          limit_cols   = c("agent", "t", "choice", "sim"),
+          limit_agents = limit_agents,
+          interval     = interval
+        )
+      }
 
       ylab_title        <- "Arm choice %"
       agent_levels      <- levels(as.factor(dt$agent))
@@ -188,12 +211,23 @@ Plot <- R6::R6Class(
       }
 
       dt                <- dt[agent == agent_levels[1]]
-      data              <- dt[, list(arm_count = .(rowCount = .N)), by = list(t, choice)]
+
+      dt$agent          <- NULL
+      data.table::setkey(dt, t, choice)
+      data              <- dt[data.table::CJ(t, choice, unique = TRUE), list(arm_count =  .N), by = .EACHI]
+
+      #data              <- dt[, list(arm_count =  .N), by = list(t, choice)]
+
       max_sim           <- dt[, max(sim)]
       max_t             <- dt[, max(t)]
+
       arm_levels        <- levels(as.factor(data$choice))
       max_arm           <- length(arm_levels)
-      data$arm_count    <- as.double((unlist(data$arm_count, FALSE, FALSE) / max_sim) * 100L)
+      N                 <- dt[,.N,by=c("t")]$N
+      N                 <- rep(N,each=max_arm)
+
+      data$arm_count    <- as.double((unlist(data$arm_count, FALSE, FALSE) / N) * 100L)
+
       eg                <- expand.grid(t = dt[sim == 1]$t, choice = seq(1.0, max_arm, 1))
       data              <- merge(data, eg, all = TRUE)
       data[is.na(data)] <- 0.0
@@ -201,6 +235,13 @@ Plot <- R6::R6Class(
       data$zero         <- 0.0
       min_ylim          <- 0
       max_ylim          <- 100
+
+      if (isTRUE(smooth)) {
+        for (arm in arm_levels) {
+          data[data$choice == arm, c("t", "dataum") :=
+                 supsmu(data[data$choice == arm]$t, data[data$choice == arm]$dataum, bass = 9)]
+        }
+      }
 
       data.table::setorder(data, choice, t)
       plot.new()
@@ -246,6 +287,10 @@ Plot <- R6::R6Class(
         color <- color + 1
       }
 
+      if (is.null(legend_title)) {
+        legend_title <- agent_levels[1]
+      }
+
       axis(1)
       axis(2)
       title(xlab = "Time Step")
@@ -257,7 +302,7 @@ Plot <- R6::R6Class(
           NULL,
           paste("arm", arm_levels, sep = " "),
           col = adjustcolor(cl, alpha.f = 0.6),
-          title = agent_levels[1],
+          title = legend_title,
           pch = 15,
           pt.cex = 1.2,
           bg = "white",
@@ -291,6 +336,7 @@ Plot <- R6::R6Class(
                        legend_position     = "topleft",
                        legend_title        = NULL,
                        limit_agents        = NULL,
+                       limit_context       = NULL,
                        traces              = NULL,
                        traces_max          = 100,
                        traces_alpha        = 0.3,
@@ -319,6 +365,10 @@ Plot <- R6::R6Class(
             limit_agents = limit_agents,
             interval     = interval
           )
+      }
+
+      if(!is.null(limit_context)) {
+        data <- data[sapply(dt$context,function(x)all(x[limit_context]==1))]
       }
 
       data.table::setorder(data, agent, t)

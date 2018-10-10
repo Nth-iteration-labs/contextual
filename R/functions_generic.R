@@ -94,6 +94,10 @@ plot.History <- function(x, ...) {
     limit_agents <- eval(args$limit_agents)
   else
     limit_agents <- NULL
+  if ("limit_context" %in% names(args))
+    limit_context <- eval(args$limit_context)
+  else
+    limit_context <- NULL
   if ("legend_border" %in% names(args))
     legend_border <- eval(args$legend_border)
   else
@@ -134,7 +138,8 @@ plot.History <- function(x, ...) {
       legend_position = legend_position,
       legend_title = legend_title,
       no_par = no_par,
-      limit_agents = limit_agents
+      limit_agents = limit_agents,
+      limit_context = limit_context
     )
   } else if (type == "average") {
     Plot$new()$average(
@@ -160,7 +165,8 @@ plot.History <- function(x, ...) {
       legend_position = legend_position,
       legend_title = legend_title,
       no_par = no_par,
-      limit_agents = limit_agents
+      limit_agents = limit_agents,
+      limit_context = limit_context
     )
   } else if (type == "arms") {
     Plot$new()$arms(
@@ -170,12 +176,15 @@ plot.History <- function(x, ...) {
       use_colors = use_colors,
       interval = interval,
       ylim = ylim,
+      smooth = smooth,
       legend_labels = legend_labels,
       legend_border = legend_border,
       legend_position = legend_position,
       legend_title = legend_title,
       no_par = no_par,
-      limit_agents = limit_agents
+      limit_agents = limit_agents,
+      limit_context = limit_context
+
     )
   }
 }
