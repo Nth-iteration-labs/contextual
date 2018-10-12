@@ -2,7 +2,7 @@ library(contextual)
 library(data.table)
 library(here)
 
-setwd(here::here("demo","replication_package_rve_2018"))
+setwd(here::here("demo","replication_package_jss_2018"))
 
 OfflineReplayEvaluatorBandit <- R6::R6Class(
   inherit = Bandit,

@@ -1,6 +1,6 @@
 library(contextual)
 
-# Inspired by Dai Shi's thesis
+# Baded on a section of Dai Shi's thesis
 # "Exploring Bandit Algorithms for Automatic Content Selection"
 
 horizon     <- 600L
