@@ -2,10 +2,10 @@ library(contextual)
 
 horizon            <- 100
 simulations        <- 1000
-weights            <- c(0.6, 0.3, 0.3)
+weights            <- matrix(c(0.8, 0.2, 0.2), 1, 3)
 
 policy             <- EpsilonGreedyPolicy$new(epsilon = 0.1)
-bandit             <- ContextualBernoulliPrecachingBandit$new(weights = weights)
+bandit             <- ContextualBasicBandit$new(weights = weights)
 
 agent              <- Agent$new(policy,bandit)
 
@@ -15,5 +15,7 @@ simulator          <- Simulator$new(agents = agent,
 
 history            <- simulator$run()
 
-plot(history, type = "cumulative", no_par = TRUE)
+par(mfrow = c(1, 2), mar = c(2, 4, 1, 1), cex=1.4)  #bottom, left, top, and right.
+plot(history, type = "cumulative", no_par = TRUE, legend_border = FALSE)
 plot(history, type = "arms", no_par = TRUE)
+par(mfrow = c(1, 1))

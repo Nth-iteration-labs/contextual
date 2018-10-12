@@ -1,11 +1,10 @@
 #' @export
-ContextualBernoulliPrecachingBandit <- R6::R6Class(
+ContextualPrecachingBandit <- R6::R6Class(
   inherit = Bandit,
-  portable = TRUE,
   class = FALSE,
   public = list(
     weights       = NULL,
-    class_name    = "ContextualBernoulliPrecachingBandit",
+    class_name    = "ContextualPrecachingBandit",
     initialize    = function(weights) {
       if (is.vector(weights)) {
         self$weights <- matrix(weights, nrow = 1L)
@@ -49,7 +48,7 @@ ContextualBernoulliPrecachingBandit <- R6::R6Class(
   )
 )
 
-#' Bandit: ContextualBernoulliPrecachingBandit
+#' Bandit: ContextualPrecachingBandit
 #'
 #' Illustrates precaching of contexts and rewards.
 #'
@@ -59,16 +58,16 @@ ContextualBernoulliPrecachingBandit <- R6::R6Class(
 #' matrix takes the place of \code{\link{BasicBernoulliBandit}} \code{k} dimensional probability vector. Here,
 #' each row \code{d} represents a feature with \code{k} reward probability values per arm.
 #'
-#' For every \code{t}, \code{ContextualBernoulliPrecachingBandit} randomly samples from its \code{d} features/rows at
+#' For every \code{t}, \code{ContextualPrecachingBandit} randomly samples from its \code{d} features/rows at
 #' random, yielding a binary \code{context} matrix representing sampled (all 1 rows) and unsampled (all 0)
-#' features/rows. Next, \code{ContextualBernoulliPrecachingBandit} generates \code{rewards} contingent on either sum or
+#' features/rows. Next, \code{ContextualPrecachingBandit} generates \code{rewards} contingent on either sum or
 #' mean (default) probabilities of each arm/column over all of the sampled features/rows.
 #'
-#' @name ContextualBernoulliPrecachingBandit
+#' @name ContextualPrecachingBandit
 #'
 #' @section Usage:
 #' \preformatted{
-#'   bandit <- ContextualBernoulliPrecachingBandit$new(weights)
+#'   bandit <- ContextualPrecachingBandit$new(weights)
 #' }
 #'
 #' @section Arguments:
@@ -85,7 +84,7 @@ ContextualBernoulliPrecachingBandit <- R6::R6Class(
 #' \describe{
 #'
 #'   \item{\code{new(weights)}}{ generates
-#'   and instantializes a new \code{ContextualBernoulliPrecachingBandit} instance. }
+#'   and instantializes a new \code{ContextualPrecachingBandit} instance. }
 #'
 #'   \item{\code{get_context(t)}}{
 #'      argument:
@@ -137,7 +136,7 @@ ContextualBernoulliPrecachingBandit <- R6::R6Class(
 #'                                  0.3, 0.4, 0.3,
 #'                                  0.1, 0.8, 0.1),  nrow = 3, ncol = 3, byrow = TRUE)
 #'
-#' bandit             <- ContextualBernoulliPrecachingBandit$new(weights)
+#' bandit             <- ContextualPrecachingBandit$new(weights)
 #'
 #' agents             <- list( Agent$new(EpsilonGreedyPolicy$new(0.1), bandit),
 #'                             Agent$new(LinUCBDisjointOptimizedPolicy$new(0.6), bandit))

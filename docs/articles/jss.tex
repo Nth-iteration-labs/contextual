@@ -177,17 +177,19 @@ In the current section, we first introduce a more formal definition of the conte
 
 \subsection{Formalization} \label{formalization}
 
-On further formalization of the contextual bandit problem, a bandit $B$ can be defined as a set of arms \(k \in \left\{ 1, \dots, K \right\}\), where, for each $t$, each of the $K$ arms generates rewards according to some reward function dependent on $d$-dimensional context feature vector \(x_{t,k}\) \citep{Auer2002,Langford2008}.
+\subsubsection{Bandit} \label{formalization}
 
-We now define an algorithm or policy $\piup$, that seeks to maximize its cumulative reward $\sum_{t=1}^T r_t$ (or minimize its cumulative regret---see equations \ref{eq:1}, \ref{eq:2}) by sequentually selecting one of bandit $B$'s currently available arms \cite{Bubeck2012}, here defined as taking action $a_t$ from $\mathcal{A}_t \subseteq K$ for every $t$ until a final horizon $T$. \footnote{In other words: Every $t$ a policy makes a choice $a_t$ from a set of $\mathcal{A}_t$ actions, which is often equal to---but can be a subset of---the set of $K$ arms of bandit $B$.}
+On further formalization of the contextual bandit problem, a bandit $B$ can be defined as a set of arms \(k \in \left\{ 1, \dots, K \right\}\), where each arm is described by some reward function mapping $d$ dimensional context vector $x_{t,k}$ to some reward $r_{t,k}$ \citep{Auer2002,Langford2008} for every time step $t$ until horizon $T$.
 
-At each time step $t$ policy $\piup$ now first observes the current state of the world in relation to bandit $B$ represented by $d$-dimensional context feature vectors \(x_{t,a}\)\footnote{Some formalizations describe this vector as $x_t$ (see, for example, \cite{Slivkins2014} or \cite{May2012}). This formalization fits bandit scenario's where contextual information at each $t$ is the same for each arm. For instance, a user feature vector $x_t$ comprising the $d$ features of a visitor to a news site, with articles for arms. Yet when arm-specific features are taken into account as well, formalizations generally describe the feature vector at each $t$ as $x_{t,a}$ (e.g. \cite{Chu2009}, \cite{Li2010})---thereby summarizing, for example, information on both a user $u_t$ and article $k$. To facilitate both approaches, \pkg{contextual} expects its bandits to generate a $d \times k$ dimensional context feature matrix $X_t$ at each $t$.} for each available \(a_{t} \in \mathcal{A}\).
+\subsubsection{Policy} \label{formalization}
 
-Making use of some arm-selection strategy, policy $\piup$ then selects one of the available actions in $\mathcal{A}_t$. For scalability reasons, policies generally use a limited set of parameters $\theta_{t}$ \citep{kruijswijk2018streamingbandit} to select this action. This set of parameters summarizes all historical interactions \( D_{t'} = (x_{t'},a_{t'},r_{t'}) \) over \emph{t}= \{1, \ldots, t'\}, ensuring that the dimensionality of $\theta_{t'} << D_{t'}$.
+We now define an algorithm or policy $\piup$, that seeks to maximize its cumulative reward $\sum_{t=1}^T r_t$ (or minimize its cumulative regret---see equations \ref{eq:1}, \ref{eq:2}) by sequentually selecting one of bandit $B$'s currently available arms \citep{Bubeck2012}, here defined as taking action $a_t$ in $\mathcal{A}_t \subseteq K$ for \emph{t}= \{1, \ldots, T\}.\footnote{In other words: Every $t$ a policy makes a choice $a_t$ from a set of $\mathcal{A}_t$ actions, which is often equal to---but can be a subset of---the set of $K$ arms of bandit $B$.}
 
-As a result of taking action $a_t$, policy $\piup$ receives reward \(r_{a_{t},t}\).
+\subsubsection{Arm-selection process} \label{formalization}
 
-With observation \( (x_{t,a_t},a_{t},r_{t,a_t}) \), the policy now updates its arm-selection strategy. This cycle is then repeated \textit{T} times.
+At each time step $t$ policy $\piup$ first observes the current state of the world as related to $B$, represented by $d$-dimensional context feature vectors \(x_{t,a}\)\footnote{Some formalizations describe this vector as $x_t$ (see, for example, \cite{Slivkins2014} or \cite{May2012}). This formalization fits bandit scenario's where contextual information at each $t$ is the same for each arm. For instance, a user feature vector $x_t$ comprising the $d$ features of a visitor to a news site, with articles for arms. Yet when arm-specific features are taken into account as well, formalizations generally describe the feature vector at each $t$ as $x_{t,a}$ (e.g. \cite{Chu2009}, \cite{Li2010})---thereby summarizing, for example, information on both a user $u_t$ and article $k$. To facilitate both approaches, \pkg{contextual} expects its bandits to generate a $d \times k$ dimensional context feature matrix $X_t$ at each $t$.} for \(a_{t} \in \mathcal{A_t}\). Making use of some arm-selection strategy, policy $\piup$ then selects one of the available actions in $\mathcal{A}_t$. As a result of selecting action $a_t$, policy $\piup$ then receives reward \(r_{a_{t},t}\). With observation \( (x_{t,a_t},a_{t},r_{t,a_t}) \), the policy now updates its arm-selection strategy. This cycle is then repeated \textit{T} times.
+
+Additionally, policies generally also summarize historical interactions \( D_{t'} = (x_{t'},a_{t'},r_{t'}) \) over \emph{t}= \{1, \ldots, t'\} by use of a limited set of parameters $\theta_{t}$ \citep{kruijswijk2018streamingbandit}. This ensures a policy's action-selection process remains computationally tractable in keeping the dimensionality of $\theta_{t'} << D_{t'}$,
 
 Schematically, for each round \emph{t}= \{1, \ldots, T\}:
 
@@ -198,13 +200,15 @@ Schematically, for each round \emph{t}= \{1, \ldots, T\}:
          \item[4)] Policy $\piup$ updates arm-selection strategy parameters $\theta_{t}$ with \( (x_{t,a_t},a_t,r_{t,a_t}) \)
 \end{enumerate}
 
+\clearpage\subsubsection{Goal and performance measure} \label{formalization}
+
 The goal of the policy $\piup$ is to optimize its \textit{cumulative reward} over \emph{t}= \{ 1, \ldots, T \}
 
 \begin{equation} \label{eq:1}
 R_{T} = \sum^{T}_{t=1}(r_{t,a_t,x_t})
 \end{equation}
 
-In practice, the most popular performance measure for bandit policies is \textit{cumulative regret} \citep{Kuleshov2014}---defined as the sum of rewards that would have been received by choosing optimal action  $a*$ at every \emph{t} subtracted by the sum of rewards awarded to the chosen action $a$ at every \emph{t} over \emph{t}= \{ 1, \ldots, T \}:
+The most popular performance measure for bandit policies is \textit{cumulative regret} \citep{Kuleshov2014}---defined as the sum of rewards that would have been received by choosing optimal action  $a*$ at every \emph{t} subtracted by the sum of rewards awarded to the chosen action $a$ at every \emph{t} over \emph{t}= \{ 1, \ldots, T \}:
 
 \begin{equation} \label{eq:2}
 \mathbb{E}\left[R_{T} \right] = \mathbb{E}\left[  \max_{a*_t = 1, \dots, \mathcal{A}_t} \sum^{T}_{t=1}(r_{t,a*_t,x_t}) - \sum^{T}_{t=1}(r_{t,a_t,x_t})\right]
@@ -222,7 +226,7 @@ Where expectation $\mathbb{E}\left[ \mathord{\cdot}\right]$ is taken with respec
       \label{fig:CMAB_chart}
 \end{figure}
 
-Our class structure builds on the previous formalization and offers a clean class structure with an easily programmable interface. The following six classes form the backbone of the package (see also Figure ~\ref{fig:CMAB_chart}):
+\pkg{contextual}'s, \code{Bandit} and \code{Policy} centered  class structure stays close to the previous formalization, while offering a clean, developer oriented interface. The following six classes form the backbone of the package (see also Figure ~\ref{fig:CMAB_chart}):
 
 \begin{itemize}
          \item \code{Bandit}: R6 class \code{Bandit} is the parent class of all \pkg{contextual} \code{Bandit} subclasses. It is responsible for the generation of \code{contexts} and \code{rewards}.
@@ -264,7 +268,7 @@ We then assign both our \code{bandit} and our \code{policy} to \code{Agent} inst
 
 In anticipation of Section \ref{classstructure}: For a policy to be able to initialize its parameters, during initialisation, an agent instance makes \code{bandit$k} (number of arms) and \code{bandit$d} (number of dimensions) available to its policy through calls to \code{policy$set_parameters(context_initial_params)} and \code{policy$initialize_theta(context_initial_params$k)}. On starting the simulation, the (potentially changing) number of arms and features dimension remain available for each time step \code{t} through respectively \code{context$k} and \code{context$d}.
 
-Running the \code{Simulator} then starts several (by default, the number of CPU cores minus one) worker processes, splitting simulations as efficiently as possible over each parallel worker. For each simulation, for every time step \code{t}, \code{agents} runs through each of the four function calls that constitute their main loop.
+Running the \code{Simulator} instance then starts several (by default, the number of CPU cores minus one) worker processes, splitting simulations as efficiently as possible over each parallel worker. For each simulation, for every time step \code{t}, \code{agents} runs through each of the four function calls that constitute their main loop.
 
 A main loop that relates one on one to the four steps defined in our CMAB formalization from Section \ref{formalization}:
 
@@ -277,7 +281,7 @@ A main loop that relates one on one to the four steps defined in our CMAB formal
 
 \subsubsection{Results of the simulation}
 
-On completion of all of its agents' simulation runs, \code{Simulator} returns a \code{history} object which contains a complete log of all interactions. This history log can then, for example, be summarized and plotted:
+On completion of all of its agents' simulation runs, the \code{Simulator} instance returns a \code{History} instance containing a complete log of all interactions. This history log can then, for example, be summarized and plotted:
 
 \begin{CodeChunk}
 \begin{CodeInput}
@@ -349,7 +353,7 @@ CMAB & Epoch-Greedy\parnote{\cite{Langford2008}} & \begin{tabular}[c]{@{}l@{}}Li
 \begin{tabularx}{\textwidth}{@{}lllll@{}}
 \toprule
 \textbf{MAB} & \textbf{CMAB} & \textbf{Offline} & \textbf{Continuous} \\ \midrule
-\begin{tabular}[t]{@{}l@{}}BasicBernoulliBandit\\ BasicGaussianBandit\end{tabular}  & \begin{tabular}[t]{@{}l@{}}ContextualBernoulli\\ ContextualLogit\\ ContextualHybrid\\ ContextualLinear\\ContextualWheel\parnote{\cite{Riquelme2018}}\end{tabular} & \begin{tabular}[t]{@{}l@{}}OfflinePolicyEvaluator\parnote{\cite{Li2011}}\\ DoublyRobust\parnote{\cite{Dudik2011}}\end{tabular} & ContinuumBandit \\ \bottomrule
+\begin{tabular}[t]{@{}l@{}}BasicBernoulliBandit\\ BasicGaussianBandit\end{tabular}  & \begin{tabular}[t]{@{}l@{}}ContextualBernoulli\\ ContextualLogit\\ ContextualHybrid\\ ContextualLinear\\ContextualWheel\parnote{\cite{Riquelme2018}}\end{tabular} & \begin{tabular}[t]{@{}l@{}}ReplayEvaluator\parnote{\cite{Li2011}}\\PropensityWeighting\\ DoublyRobust\parnote{\cite{Dudik2011}}\end{tabular} & ContinuumBandit \\ \bottomrule
 \end{tabularx}
 \captionsetup{singlelinecheck = false, justification=justified}
 \caption{An overview of \pkg{contextual}'s predefined synthetic and offline bandit classes.}
@@ -396,9 +400,9 @@ horizon <- 400
 # Define how many times to repeat the simulation.
 simulations <- 10000
 # Define the probability that each ad will be clicked.
-click_probabilities <- c(0.8, 0.4, 0.2)
+click_probabilities <- matrix(c(0.6, 0.4, 0.2), 1, 3)
 # Initialize a ContextualBernoulliBandit
-bandit <- ContextualBernoulliBandit$new(weights = click_probabilities)
+bandit <- ContextualBasicBandit$new(weights = click_probabilities)
 # Initialize an EpsilonGreedyPolicy with a 40% exploiration rate.
 eg_policy <- EpsilonGreedyPolicy$new(epsilon = 0.4)
 # Initialize an EpsilonFirstPolicy with a 100 step exploration period.
@@ -413,9 +417,9 @@ simulator <- Simulator$new(agents, horizon, simulations)
 # Now run the simulator.
 history <- simulator$run()
 # Finally, plot the average reward per time step t
-plot(history, type = "average", regret = FALSE, lwd = 2)
+plot(history, type = "average", regret = FALSE)
 # And the cumulative reward rate, which equals the Click Through Rate)
-plot(history, type = "cumulative", regret = FALSE, rate = TRUE, lwd = 2)
+plot(history, type = "cumulative", regret = FALSE, rate = TRUE)
 
 \end{Code}
 \begin{figure}[H]
@@ -447,7 +451,7 @@ click_probs         <- matrix(c(  0.2,  0.3, 0.1,     # --> d1: old   (p=.5)
                                   nrow = 2, ncol = 3, byrow = TRUE)
 
 # Initialize a ContextualBernoulliBandit with contextual weights
-context_bandit      <- ContextualBernoulliBandit$new(weights = click_probs)
+context_bandit      <- ContextualBasicBandit$new(weights = click_probs)
 # Initialize LinUCBDisjointPolicy
 lucb_policy         <- LinUCBDisjointPolicy$new(0.6)
 # Initialize three Agents, binding each policy to a bandit.
@@ -460,8 +464,10 @@ agents              <- list(ef_agent, eg_agent, lucb_agent)
 simulator           <- Simulator$new(agents, horizon, simulations)
 # Now run the simulator.
 history             <- simulator$run()
-# And plot the cumulative reward rate again.
-plot(history, type = "cumulative", regret = FALSE, rate = TRUE)
+# Finally, plot the average reward..
+plot(history, type = "average", regret = FALSE)
+# And the cumulative reward rate again.
+plot(history, type = "cumulative", regret = FALSE)
 \end{Code}
 \begin{figure}[H]
 \centering
@@ -548,12 +554,16 @@ The \code{Simulator} class has been designed to make it as easy as possible to r
 MPISimulator <- R6::R6Class(
   inherit = Simulator,
   public = list(
-    register_parallel_backend = function() {
+    # Register a foreach parallel backend.
+    register_parallel_backend = function(){
+      # Set Simulator's super$cl here.
       super$cl <- doMPI::startMPIcluster()
       doMPI::registerDoMPI(super$cl)
-      workers = foreach::getDoParWorkers()
-      message(paste0("MPI workers: ", workers))
+      # Also make sure to set Simulator's super$workers.
+      super$workers = foreach::getDoParWorkers()
+      message(paste0("MPI workers: ", super$workers))
     },
+    # If necessary, clean up.
     stop_parallel_backend = function() {
       doMPI::closeCluster(super$cl)
     }
@@ -891,34 +901,47 @@ plot(history, limit_agents = c("ThompsonSampling"), type = "arms",
 
 The current section illustrates how to develop custom \code{Bandit} and \code{Policy} subclasses through an exploration of \pkg{contextual}'s \code{BasicBernoulliBandit} and its \code{EpsilonFirst}, \code{EspilonGreedy}, and \code{LinUCB} policy implementations.
 
-\subsection{BasicBernoulliBandit: a minimal Bernoulli bandit} \label{BasicBernoulliBandit}
+\subsection{ContextualBasicBandit: a minimal contextual Bernoulli bandit} \label{ContextualBasicBandit}
 
-Where not otherwise noted, all \code{Bandit} implementations in the current paper refer to (or will be configured as) multi-armed \code{Bandits} with Bernoulli rewards. For Bernoulli \code{Bandits}, the reward received is either a zero or a one: on each $t$ they offer either a reward of $1$ with probability $p$ or a reward of $0$ with probability $1 - p$. In other words, a Bernoulli bandit has a finite set of arms k \(  \in \left\{ 1, \dots, K \right\} \) where the rewards for each arm $k$ is distributed Bernoulli with parameter $p_k$, the expected reward of the arm.
+Where not otherwise noted, all \code{Bandit} implementations in the current paper refer to (or will be configured as) multi-armed \code{Bandits} with Bernoulli rewards. For Bernoulli \code{Bandits}, the reward received is either a zero or a one: on each $t$ they offer either a reward of $1$ with probability $p$ or a reward of $0$ with probability $1 - p$. In other words, a Bernoulli bandit has a finite set of arms k \(  \in \left\{ 1, \dots, K \right\} \) where the rewards for each arm $k$ is distributed Bernoulli with parameter $\theta_k$ for the expected reward of the arm.
 
-One example of a very simple context-free Bernoulli bandit is \pkg{contextual}'s minimal \code{Bandit} implementation, \code{BasicBernoulliBandit}:
+One example of a very simple contextual Bernoulli bandit is \pkg{contextual}'s basic weight-based contextual \code{Bandit} implementation, \code{ContextualBasicBandit}:
 
 \begin{Code}
-BasicBernoulliBandit <- R6::R6Class(
+ContextualBasicBandit <- R6::R6Class(
   inherit = Bandit,
-  portable = TRUE,
   class = FALSE,
   public = list(
     weights = NULL,
-    class_name = "BasicBernoulliBandit",
+    class_name = "ContextualBasicBandit",
     initialize = function(weights) {
-      self$weights     <- weights
-      self$k           <- length(self$weights)
+      self$weights     <- weights        # d x k weight matrix
+      self$d           <- nrow(weights)  # d features
+      self$k           <- ncol(weights)  # k arms
     },
     get_context = function(t) {
+      # generate d dimensional feature vector, one random feature active at a time
+      Xa <- sample(c(1,rep(0,self$d-1)))
+      # convert to d x k matrix: one feature vector, recycled to every arm
+      X  <- matrix(Xa, self$d, self$k)
       context <- list(
-        k = self$k
+        X = X,
+        k = self$k,
+        d = self$d
       )
     },
     get_reward = function(t, context, action) {
-      rewards        <- as.double(runif(self$k) < self$weights)
-      optimal_arm    <- which.max(rewards)
+      # which arm was selected?
+      arm            <- action$choice
+      # d dimensional feature vector for chosen arm
+      Xa             <- context$X[,arm]
+      # weights of active context
+      weight         <- Xa %*% self$weights
+      # assign rewards for active context with weighted probs
+      rewards        <- as.double(weight > runif(self$k))
+      optimal_arm    <- which_max_tied(rewards)
       reward  <- list(
-        reward                   = rewards[action$choice],
+        reward                   = rewards[arm],
         optimal_arm              = optimal_arm,
         optimal_reward           = rewards[optimal_arm]
       )
@@ -927,7 +950,7 @@ BasicBernoulliBandit <- R6::R6Class(
 )
 \end{Code}
 
-\code{BasicBernoulliBandit} expects a \code{weight} vector of probabilities, where every element in \code{weight} represents the probability of \code{BasicBernoulliBandit} returning a reward of $1$ for one of its \code{k} arms.
+\\code{ContextualBasicBandit} expects a  $d \times k$ \code{weights} matrix, where every element in \code{weights} represents the average probability of \code{ContextualBasicBandit} returning a reward of $1$, weighted over each of its \code{k} arms.
 
 \subsection{EpsilonFirstPolicy} \label{epsfirst}
 
@@ -1010,12 +1033,12 @@ EpsilonFirstPolicy              <- R6::R6Class(
 )
 \end{Code}
 
-To evaluate this policy, instantiate both an \code{EpsilonFirstPolicy} and a \code{ContextualBernoulliBandit} \footnote{A contextual version of the \code{BasicBernoulliBandit} subclass, introduced in Section \ref{addingctx}. In contrast to the $k$ dimensional weight vector \code{BasicBernoulliBandit} uses to generate its context-free rewards, \code{ContextualBernoulliBandit} generates both contexts and rewards based on some $d \times k$ weight matrix. For implementation details, see \pkg{contextual}'s source code.}. Then add the \code{Bandit}/\code{Policy} pair to an \code{Agent}. Next, add the \code{Agent} to a \code{Simulator}. Finally, run the \code{Simulator}, and \code{plot()} the its \code{History} log:
+To evaluate this policy, instantiate both an \code{EpsilonFirstPolicy} and a \code{ContextualBernoulliBandit}. Then add the \code{Bandit}/\code{Policy} pair to an \code{Agent}. Next, add the \code{Agent} to a \code{Simulator}. Finally, run the \code{Simulator}, and \code{plot()} the its \code{History} log:
 
 \begin{Code}
 horizon            <- 100
 simulations        <- 1000
-weights            <- c(0.6, 0.3, 0.3)
+weights            <- c(0.8, 0.2, 0.2)
 
 policy             <- EpsilonFirstPolicy$new(epsilon = 0.5, N = horizon)
 bandit             <- ContextualBernoulliBandit$new(weights = weights)
@@ -1211,18 +1234,17 @@ Let us now evaluate the above \code{LinUCBDisjointPolicy} using a Bernoulli \cod
 \begin{Code}
 
 horizon     <- 100L
-simulations <- 300L
+simulations <- 1000L
 
                       # k=1  k=2  k=3             -> columns represent arms
 
-weights     <- matrix(c(0.8, 0.1, 0.1,     # d=1  -> rows represent
-                        0.1, 0.8, 0.1,     # d=2     context features,
-                        0.1, 0.1, 0.8),    # d=3
+weights     <- matrix(c(0.6, 0.2, 0.2,     # d=1  -> rows represent
+                        0.2, 0.6, 0.2,     # d=2     context features,
+                        0.2, 0.2, 0.6),    # d=3
 
                         nrow = 3, ncol = 3, byrow = TRUE)
 
-bandit      <- ContextualBernoulliBandit$new(weights    = weights,
-                                             precaching = TRUE)
+bandit      <- ContextualBasicBandit$new(weights = weights)
 
 eg_policy   <- EpsilonGreedyPolicy$new(0.1)
 lucb_policy <- LinUCBDisjointPolicy$new(0.6)
@@ -1230,17 +1252,21 @@ lucb_policy <- LinUCBDisjointPolicy$new(0.6)
 agents      <- list(Agent$new(eg_policy, bandit, "EGreedy"),
                     Agent$new(lucb_policy, bandit, "LinUCB"))
 
-simulation  <- Simulator$new(agents, horizon, simulations)
+simulation  <- Simulator$new(agents, horizon, simulations, save_context = TRUE)
 history     <- simulation$run()
 
-plot(history, type = "cumulative", no_par = TRUE, legend_border = FALSE)
-plot(history, type = "arms",  limit_agents = c("EGreedy"), no_par = TRUE)
+plot(history, type = "cumulative", legend_border = FALSE, no_par = TRUE )
 plot(history, type = "arms",  limit_agents = c("LinUCB"), no_par = TRUE)
+plot(history, type = "arms",  limit_agents = c("EGreedy"), no_par = TRUE)
+
+plot(history, type = "arms",  limit_agents = c("LinUCB"), limit_context = 1)
+plot(history, type = "arms",  limit_agents = c("LinUCB"), limit_context = 2)
+plot(history, type = "arms",  limit_agents = c("LinUCB"), limit_context = 3)
 \end{Code}
 \begin{figure}[H]
 \centering
-\includegraphics[width=.99\textwidth]{fig/section_5_4}
-\caption{To the left, both policies' cumulative regret over time. Middle and right, Epsilon Greedy and LinUCB policies' cumulative regret over time. As can be observed in both arm choice percentage plots, on average, both policies choose each of the three arms about equally often. However, the cumulative regret plot clearly shows that, in contrast to the Epsilon Greedy policy, the LinUCB policy is able to map the contextual information available to it to its rewards, suffering less and less regret over time.}
+\includegraphics[width=1.0\textwidth]{fig/section_5_4}
+\caption{Top left a plot of Epsilon Greedy versus LinUCB policies' cumulative regret over time. Top middle and right, Epsilon Greedy and LinUCB policies' average arm choice percentage per $t$, which indicate that, overall, both policies choose each arm about equally often. To see why LinUCB is able to do better than Epsilon Greedy, we need to look to the bottom row, which plots LinUCB's average arm choice percentage by context feature: LinUCB makes use of the available context to map actions to rewards. We left out the "arm choice by context feature" plots for Epsilon Greedy, as all three plots would show equal allocations to each arm over every feature.}
 \label{fig:section_5_4}
 \end{figure}
 

@@ -1,7 +1,6 @@
  #' @export
 BasicBernoulliBandit <- R6::R6Class(
   inherit = Bandit,
-  portable = TRUE,
   class = FALSE,
   public = list(
     weights = NULL,

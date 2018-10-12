@@ -89,7 +89,10 @@ plot.History <- function(x, ...) {
   if ("legend_position" %in% names(args))
     legend_position <- args$legend_position
   else
-    legend_position <- "topleft"
+    if (type == "arms")
+      legend_position <- "bottomright"
+    else
+      legend_position <- "topleft"
   if ("limit_agents" %in% names(args))
     limit_agents <- eval(args$limit_agents)
   else

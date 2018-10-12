@@ -12,15 +12,15 @@ test_that("Bandit superclass", {
 
 })
 
-test_that("ContextualBernoulliPrecachingBandit simulation", {
+test_that("ContextualPrecachingBandit simulation", {
 
-  bandit      <- ContextualBernoulliPrecachingBandit$new(weights = matrix(c(0.1, 0.9, 0.1, 0.9), 2, 2))
+  bandit      <- ContextualPrecachingBandit$new(weights = matrix(c(0.1, 0.9, 0.1, 0.9), 2, 2))
   expect_identical(typeof(bandit), "environment")
 
   expect_equal(bandit$k, 2)
   expect_equal(bandit$d, 2)
 
-  bandit      <- ContextualBernoulliPrecachingBandit$new(weights = c(0.1, 0.9))
+  bandit      <- ContextualPrecachingBandit$new(weights = c(0.1, 0.9))
   expect_identical(typeof(bandit), "environment")
 
   expect_equal(bandit$k, 2)
@@ -232,13 +232,13 @@ test_that("BasicBernoulliBandit Long", {
 
 })
 
-test_that("ContextualBernoulliPrecachingBandit MAB policies", {
+test_that("ContextualPrecachingBandit MAB policies", {
 
   weight_per_arm     <- c(0.9, 0.1, 0.1)
   horizon            <- 10
   simulations        <- 10
 
-  bandit             <- ContextualBernoulliPrecachingBandit$new(weights = weight_per_arm)
+  bandit             <- ContextualPrecachingBandit$new(weights = weight_per_arm)
 
   agents             <- list(Agent$new(RandomPolicy$new(), bandit),
                              Agent$new(OraclePolicy$new(), bandit),
@@ -268,13 +268,13 @@ test_that("ContextualBernoulliPrecachingBandit MAB policies", {
 
 })
 
-test_that("ContextualBernoulliPrecachingBandit options", {
+test_that("ContextualPrecachingBandit options", {
 
   weight_per_arm     <- c(0.9, 0.1, 0.1)
   horizon            <- 10
   simulations        <- 10
 
-  expect_error(ContextualBernoulliPrecachingBandit$new(weights = weight_per_arm, reward_family = "notgood"))
+  expect_error(ContextualPrecachingBandit$new(weights = weight_per_arm, reward_family = "notgood"))
 
 })
 
@@ -353,7 +353,7 @@ test_that("ContextualHybridBandit", {
   expect_equal(history$cumulative$ContextualEpochGreedy$cum_reward,  73, tolerance = 0.01)
 })
 
-test_that("ContextualBernoulliPrecachingBandit GlmUCB", {
+test_that("ContextualPrecachingBandit GlmUCB", {
 
 
   context_weights    <- matrix(  c( 0.8, 0.1, 0.1,
@@ -362,7 +362,7 @@ test_that("ContextualBernoulliPrecachingBandit GlmUCB", {
 
   horizon     <- 300L
   simulations <- 1L
-  bandit      <- ContextualBernoulliPrecachingBandit$new(weights = context_weights)
+  bandit      <- ContextualPrecachingBandit$new(weights = context_weights)
 
   policy      <- RandomPolicy$new()
 
@@ -445,7 +445,7 @@ test_that("BasicBernoulliBandit MAB policies", {
                                     0.1, 0.1, 0.8), nrow = 3, ncol = 3, byrow = TRUE)
   horizon     <- 40L
   simulations <- 1L
-  bandit      <- ContextualBernoulliPrecachingBandit$new(weights = context_weights)
+  bandit      <- ContextualPrecachingBandit$new(weights = context_weights)
 
   # This can only be random policy, otherwise rejection sampling will
   # produce severely biased results.
@@ -481,7 +481,7 @@ test_that("BasicBernoulliBandit MAB policies", {
                                     0.1, 0.1, 0.9), nrow = 3, ncol = 3, byrow = TRUE)
   horizon     <- 100L
   simulations <- 1L
-  bandit      <- ContextualBernoulliPrecachingBandit$new(weights = context_weights)
+  bandit      <- ContextualPrecachingBandit$new(weights = context_weights)
 
   # This can only be random policy, otherwise rejection sampling will
   # produce severely biased results.

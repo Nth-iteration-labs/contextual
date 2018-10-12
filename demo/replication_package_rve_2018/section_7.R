@@ -6,7 +6,6 @@ setwd(here::here("demo","replication_package_rve_2018"))
 
 OfflineReplayEvaluatorBandit <- R6::R6Class(
   inherit = Bandit,
-  portable = TRUE,
   class = FALSE,
   private = list(
     S = NULL
@@ -54,7 +53,7 @@ sims     <- 10L
 bandit   <- OfflineReplayEvaluatorBandit$new(data, k = 4, d = 1)
 agents   <- list(Agent$new(LinUCBHybridPolicy$new(0.6), bandit))
 
-history  <- Simulator$new(agents, horizon, sims, reindex = TRUE, do_parallel = FALSE)$run()
+history  <- Simulator$new(agents, horizon, sims, reindex = TRUE)$run()
 
 plot(history, type = "cumulative", regret = FALSE, smooth = TRUE,
      traces = TRUE, rate = TRUE, ylim = c(0.0105, 0.014), legend = FALSE)

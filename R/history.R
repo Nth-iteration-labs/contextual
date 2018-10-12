@@ -3,6 +3,7 @@
 #' @export
 History <- R6::R6Class(
   "History",
+  portable = FALSE,
   public = list(
     n            = NULL,
     save_theta   = NULL,
@@ -66,7 +67,7 @@ History <- R6::R6Class(
         )
       )
 
-      if (self$save_context || self$save_theta) {
+      if (save_context || save_theta) {
         if (!self$save_theta) {
           data.table::set(private$.data, index, 10L, list(list(context_value)))
         } else if (!self$save_context) {

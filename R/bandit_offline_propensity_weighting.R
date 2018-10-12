@@ -1,7 +1,6 @@
 #' @export
 OfflinePropensityWeightingBandit <- R6::R6Class(
   inherit = Bandit,
-  portable = TRUE,
   class = FALSE,
   private = list(
     S = NULL,

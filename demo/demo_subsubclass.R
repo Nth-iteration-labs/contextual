@@ -2,7 +2,6 @@ library(contextual)
 
 BasicPoissonBandit <- R6::R6Class(
   inherit = BasicBernoulliBandit,
-  portable = TRUE,
   class = FALSE,
   public = list(
     weights = NULL,

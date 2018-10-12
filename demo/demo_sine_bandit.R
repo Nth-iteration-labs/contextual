@@ -8,7 +8,6 @@ simulations <- 300L
 
 TwoArmedSineBandit <- R6::R6Class(
    inherit = Bandit,
-   portable = TRUE,
    class = FALSE,
    public = list(
      sigma = NULL,

@@ -1,7 +1,7 @@
 library(contextual)
 
 horizon     <- 100L
-simulations <- 300L
+simulations <- 1000L
 
                       # k=1  k=2  k=3             -> columns represent arms
 weights     <- matrix(c(0.6, 0.2, 0.2,     # d=1  -> rows represent
@@ -21,10 +21,14 @@ agents      <- list(Agent$new(eg_policy, bandit, "EGreedy"),
 simulation  <- Simulator$new(agents, horizon, simulations, save_context = TRUE)
 history     <- simulation$run()
 
-plot(history, type = "cumulative", legend_border = FALSE, no_par = TRUE )
-plot(history, type = "arms",  limit_agents = c("EGreedy"), no_par = TRUE)
-plot(history, type = "arms",  limit_agents = c("LinUCB"), no_par = TRUE)
+par(mfrow = c(2, 3), mar = c(2, 4, 1, 0.1), cex=1.3)  #bottom, left, top, and right.
 
-plot(history, type = "arms",  limit_agents = c("LinUCB"), limit_context = c(1), legend_title = "LinUCB X[1]", no_par = TRUE)
-plot(history, type = "arms",  limit_agents = c("LinUCB"), limit_context = c(2), legend_title = "LinUCB X[2]", no_par = TRUE)
-plot(history, type = "arms",  limit_agents = c("LinUCB"), limit_context = c(3), legend_title = "LinUCB X[3]", no_par = TRUE)
+plot(history, type = "cumulative", legend_border = FALSE, no_par = TRUE )
+plot(history, type = "arms",  limit_agents = c("LinUCB"), no_par = TRUE)
+plot(history, type = "arms",  limit_agents = c("EGreedy"), no_par = TRUE)
+
+plot(history, type = "arms",  limit_agents = c("LinUCB"), limit_context = 1, no_par = TRUE)
+plot(history, type = "arms",  limit_agents = c("LinUCB"), limit_context = 2, no_par = TRUE )
+plot(history, type = "arms",  limit_agents = c("LinUCB"), limit_context = 3, no_par = TRUE )
+
+par(mfrow = c(1, 1))

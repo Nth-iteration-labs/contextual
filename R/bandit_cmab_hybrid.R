@@ -2,7 +2,6 @@
 ContextualHybridBandit <- R6::R6Class(
   "ContextualHybridBandit",
   inherit = Bandit,
-  portable = TRUE,
   class = FALSE,
   public = list(
     betas_s = NULL,                                                 ## betas shared over all arms

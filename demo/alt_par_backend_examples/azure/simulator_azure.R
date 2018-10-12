@@ -32,9 +32,9 @@ AzureSimulator <- R6::R6Class(
       doAzureParallel::registerDoAzureParallel(super$cl)
 
       # 6. Check that your parallel backend has been registered
-      workers = foreach::getDoParWorkers()
+      super$workers = foreach::getDoParWorkers()
 
-      message(paste0("Azure workers: ", workers))
+      message(paste0("Azure workers: ", super$workers))
     },
     stop_parallel_backend = function() {
       try({

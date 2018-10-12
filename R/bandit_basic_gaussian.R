@@ -1,7 +1,6 @@
  #' @export
 BasicGaussianBandit <- R6::R6Class(
   inherit = Bandit,
-  portable = TRUE,
   class = FALSE,
   public = list(
     mu_per_arm = NULL,

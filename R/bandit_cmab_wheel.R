@@ -2,7 +2,6 @@
 ContextualWheelBandit <- R6::R6Class(
   "ContextualWheelBandit",
   inherit = Bandit,
-  portable = TRUE,
   class = FALSE,
   public = list(
     rewards = NULL,

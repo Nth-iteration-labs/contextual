@@ -7,13 +7,15 @@
 #' @export
 Simulator <- R6::R6Class(
   "Simulator",
+  class = FALSE,
   public = list(
     agents = NULL,
+    workers = NULL,
     agent_count = NULL,
     horizon = NULL,
     simulations = NULL,
     worker_max = NULL,
-    history = NULL,
+    history = NULL,           ############## make this directly available
     save_context = NULL,
     save_theta = NULL,
     do_parallel = NULL,
@@ -24,6 +26,7 @@ Simulator <- R6::R6Class(
     log_interval = NULL,
     include_packages = NULL,
     outfile = NULL,
+    chunk_multiplier = NULL,
     cl = NULL,
     reindex = NULL,
     initialize = function(agents,
@@ -38,6 +41,7 @@ Simulator <- R6::R6Class(
                           log_interval = 1000,
                           include_packages = NULL,
                           t_over_sims = FALSE,
+                          chunk_multiplier = 1,
                           reindex = FALSE) {
 
       if (!is.list(agents)) agents <- list(agents)
@@ -56,11 +60,13 @@ Simulator <- R6::R6Class(
       self$t_over_sims <- t_over_sims
       self$set_seed <- set_seed
       self$include_packages <- include_packages
+      self$chunk_multiplier <- chunk_multiplier
 
       self$reset()
     },
     reset = function() {
       set.seed(self$set_seed)
+      self$workers <- 1
 
       # create or clear progress.log file
       if (self$progress_file) cat(paste0(""), file = "progress.log", append = FALSE)
@@ -75,13 +81,12 @@ Simulator <- R6::R6Class(
 
       # (re)create history's data.table
       self$history <- History$new(self$horizon * self$agent_count * self$simulations)
-
       self$history$set_meta_data("horizon",self$horizon)
       self$history$set_meta_data("agents",self$agent_count)
       self$history$set_meta_data("simulations",self$simulations)
 
       self$history$set_meta_data("sim_start_time",format(Sys.time(), "%a %b %d %X %Y"))
-      self$sims_and_agents_list <- vector("list", self$simulations*self$agent_count)
+
       # unique policy names through appending sequence numbers to duplicates
       agent_name_list <- list()
 
@@ -93,46 +98,33 @@ Simulator <- R6::R6Class(
           self$agents[[agent_index]]$name <- paste0(current_agent_name,'.',current_agent_name_occurrences)
         }
       }
-
-      # clone, precache and precalculate bandits and policies where relevant
-      message("Cloning bandits and policies")
-      index <- 1
-      for (sim_index in 1L:self$simulations) {
-        for (agent_index in 1L:self$agent_count) {
-          self$sims_and_agents_list[index]  <- list(self$agents[[agent_index]]$clone(deep = FALSE))
-          self$sims_and_agents_list[[index]]$reset()
-          self$sims_and_agents_list[[index]]$bandit <-
-            self$sims_and_agents_list[[index]]$bandit$clone(deep = TRUE)
-          self$sims_and_agents_list[[index]]$policy <-
-            self$sims_and_agents_list[[index]]$policy$clone(deep = FALSE)
-          self$sims_and_agents_list[[index]]$sim_index <- sim_index
-          self$sims_and_agents_list[[index]]$agent_index <- agent_index
-          index <- index + 1
-        }
-      }
-      message("Starting main simulation")
     },
     run = function() {
       # run foreach either parallel or not, create workers
       `%fun%` <- foreach::`%do%`
-      workers <- 1
 
       # nocov start
       if (self$do_parallel) {
         self$register_parallel_backend()
         `%fun%` <- foreach::`%dopar%`
-        message("Postworkercreation")
-      }
-
-      # If Microsoft R, set MKL threads to 1
-      if ("RevoUtilsMath" %in% rownames(installed.packages())) {
-        RevoUtilsMath::setMKLthreads(1)
+        # If Microsoft R, set MKL threads to 1
+        if ("RevoUtilsMath" %in% rownames(installed.packages())) {
+          RevoUtilsMath::setMKLthreads(1)
+        }
       }
       # nocov end
 
-      # copy relevant variables to local environment
+      # create a list of all sims (sims*agents), to be divided into chunks
+      index <- 1
+      sims_and_agents_list <- vector("list", self$simulations*self$agent_count)
+      for (sim_index in 1L:self$simulations) {
+        for (agent_index in 1L:self$agent_count) {
+          sims_and_agents_list[[index]] <- list(agent_index = agent_index, sim_index   = sim_index)
+          index <- index + 1
+        }
+      }
+      # copy needed variables to local environment
       horizon <- self$horizon
-      sims_and_agents_list <- self$sims_and_agents_list
       agent_count <- self$agent_count
       save_context <- self$save_context
       save_theta <- self$save_theta
@@ -141,21 +133,26 @@ Simulator <- R6::R6Class(
       log_interval <- self$log_interval
       t_over_sims <- self$t_over_sims
       set_seed <- self$set_seed
+      agents <- self$agents
       include_packages <- self$include_packages
       # calculate chunk size
-      if (length(sims_and_agents_list) <= workers) {
-        nr_of_chunks <- length(sims_and_agents_list)
+      if (length(sims_and_agents_list) <= self$workers) {
+        chunk_divider <- length(sims_and_agents_list)
       } else {
-        nr_of_chunks <- workers
+        chunk_divider <- self$workers * self$chunk_multiplier
       }
+      message(paste("Simulation horizon:",horizon))
+      message(paste("Number of simulations:",length(sims_and_agents_list)))
+      message(paste("Number of batches:",chunk_divider))
       # split sim vector into chuncks
-      sa_iterator <- itertools::isplitVector(sims_and_agents_list, chunks = nr_of_chunks)
+      sa_iterator <- itertools::isplitVector(sims_and_agents_list, chunks = chunk_divider)
       # include packages that are used in parallel processes
       par_packages <- c(c("data.table","iterators","itertools"),include_packages)
+      message("Starting main loop.")
       # running the main simulation loop
       private$start_time <- Sys.time()
       foreach_results <- foreach::foreach(
-        sims_agents = sa_iterator,
+        sims_agent_list = sa_iterator,
         i = iterators::icount(),
         .inorder = TRUE,
         .export = c("History"),
@@ -164,9 +161,14 @@ Simulator <- R6::R6Class(
       ) %fun% {
         index <- 1L
         sim_agent_counter <- 0
-        sim_agent_total <- length(sims_agents)
+        sim_agent_total <- length(sims_agent_list)
         local_history <- History$new( horizon * sim_agent_total, save_context, save_theta)
-        for (sim_agent in sims_agents) {
+
+        for (sim_agent_index in sims_agent_list) {
+          sim_agent <- agents[[sim_agent_index$agent_index]]$clone(deep = TRUE)
+          sim_agent$sim_index <- sim_agent_index$sim_index
+          sim_agent$agent_index <- sim_agent_index$agent_index
+
           sim_agent_counter <- sim_agent_counter + 1
           if (isTRUE(progress_file)) {
             sim_agent$progress_file <- TRUE
@@ -186,7 +188,6 @@ Simulator <- R6::R6Class(
           sim_agent$bandit$generate_bandit_data(n = horizon)
           if (t_over_sims) sim_agent$set_t(as.integer((simulation_index - 1L) * horizon))
           step <- list()
-
           for (t in 1L:horizon) {
             step <- sim_agent$do_step()
             if (!is.null(step[[3]])) {                         #reward
@@ -224,9 +225,9 @@ Simulator <- R6::R6Class(
       # setup parallel backend
       message("Setting up parallel backend")
       nr_cores <- parallel::detectCores()
-      if (nr_cores >= 3) workers <- nr_cores - 1
+      if (nr_cores >= 3) self$workers <- nr_cores - 1
       if (!is.null(self$worker_max)) {
-        if (workers > self$worker_max) workers <- self$worker_max
+        if (self$workers > self$worker_max) self$workers <- self$worker_max
       }
       # clean up any leftover processes
       doParallel::stopImplicitCluster()
@@ -234,16 +235,16 @@ Simulator <- R6::R6Class(
 
         # Windows
 
-        self$cl <- parallel::makeCluster(workers, useXDR = FALSE, type = "PSOCK",
+        self$cl <- parallel::makeCluster(self$workers, useXDR = FALSE, type = "PSOCK",
                                          methods = FALSE, setup_timeout = 30, outfile = self$outfile)
       } else {
         # Linux or MacOS
-        # self$cl <- parallel::makeCluster(workers, useXDR = FALSE, type = "FORK", methods=FALSE,
+        # self$cl <- parallel::makeCluster(self$workers, useXDR = FALSE, type = "FORK", methods=FALSE,
         #                                   port=11999, outfile = self$outfile)
 
         # There are issues with FORK that pop up irregularly and have proven hard to pin down.
         # So to make sure sims work, we use PSOCK for all operating systems - for now.
-        self$cl <- parallel::makeCluster(workers, useXDR = FALSE, type = "PSOCK",
+        self$cl <- parallel::makeCluster(self$workers, useXDR = FALSE, type = "PSOCK",
                                          methods = FALSE, setup_timeout = 30, outfile = self$outfile)
         if (grepl('darwin', version$os)) {
           # macOS - potential future osx/linux specific settings go here.
@@ -252,7 +253,7 @@ Simulator <- R6::R6Class(
         }
       }
       message(paste0("Cores available: ",nr_cores))
-      message(paste0("Workers assigned: ",workers))
+      message(paste0("Workers assigned: ",self$workers))
       doParallel::registerDoParallel(self$cl)
       # nocov end
     },
@@ -366,7 +367,13 @@ Simulator <- R6::R6Class(
 #'      reindexes the \code{t} column, and truncates the resulting data to the shortest simulation
 #'      grouped by agent and simulation.
 #'   }
-#'
+#'   \item{\code{chunk_multiplier}}{
+#'      \code{integer} By default, simulations are equally divided over available workers, and every
+#'      worker saves its simulation results to a local history file which is then aggregated.
+#'      Depending on workload, network bandwith, memory size and other variables it can sometimes be useful to
+#'      break these workloads into smaller chunks. This can be done by setting the chunk_multiplier to some
+#'      integer value, where the number of chunks will total chunk_multiplier x number_of_workers.
+#'   }
 #' }
 #'
 #' @section Methods:

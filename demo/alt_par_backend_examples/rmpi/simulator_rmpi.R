@@ -12,8 +12,8 @@ MPISimulator <- R6::R6Class(
     register_parallel_backend = function() {
       super$cl <- doMPI::startMPIcluster()
       doMPI::registerDoMPI(super$cl)
-      workers = foreach::getDoParWorkers()
-      message(paste0("MPI workers: ", workers))
+      super$workers = foreach::getDoParWorkers()
+      message(paste0("MPI workers: ", super$workers))
     },
     stop_parallel_backend = function() {
       try({

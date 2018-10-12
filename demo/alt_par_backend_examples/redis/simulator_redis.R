@@ -21,7 +21,7 @@ RedisSimulator <- R6::R6Class(
     register_parallel_backend = function() {
       options('redis:num'=TRUE)
       doRedis::registerDoRedis('jobs')
-      workers = foreach::getDoParWorkers()
+      super$workers = foreach::getDoParWorkers()
     },
     stop_parallel_backend = function() {
       try({

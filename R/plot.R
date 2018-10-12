@@ -160,7 +160,7 @@ Plot <- R6::R6Class(
                     ylim               = NULL,
                     legend_labels      = NULL,
                     legend_border      = NULL,
-                    legend_position    = "topleft",
+                    legend_position    = "bottomright",
                     legend_title       = NULL,
                     limit_context      = NULL,
                     smooth             = FALSE,
@@ -289,6 +289,12 @@ Plot <- R6::R6Class(
 
       if (is.null(legend_title)) {
         legend_title <- agent_levels[1]
+        if(!is.null(limit_context))
+          legend_title <- paste(legend_title,limit_context)
+      }
+
+      if (is.null(legend_position)) {
+        legend_position <- "bottomright"
       }
 
       axis(1)
@@ -298,7 +304,7 @@ Plot <- R6::R6Class(
       box()
       if (legend) {
         legend(
-          "bottomright",
+          legend_position,
           NULL,
           paste("arm", arm_levels, sep = " "),
           col = adjustcolor(cl, alpha.f = 0.6),
@@ -677,7 +683,7 @@ Plot <- R6::R6Class(
 #' @examples
 #' \dontrun{
 #'
-#' bandit <- ContextualBernoulliPrecachingBandit$new(weights = c(0.9, 0.1, 0.1))
+#' bandit <- ContextualPrecachingBandit$new(weights = c(0.9, 0.1, 0.1))
 #'
 #' agents <- list(Agent$new(RandomPolicy$new(), bandit),
 #'                Agent$new(OraclePolicy$new(), bandit),

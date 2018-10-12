@@ -94,7 +94,13 @@ Ignored if \code{do_parallel} is \code{FALSE}.
 reindexes the \code{t} column, and truncates the resulting data to the shortest simulation
 grouped by agent and simulation.
 }
-
+\item{\code{chunk_multiplier}}{
+\code{integer} By default, simulations are equally divided over available workers, and every
+worker saves its simulation results to a local history file which is then aggregated.
+Depending on workload, network bandwith, memory size and other variables it can sometimes be useful to
+break these workloads into smaller chunks. This can be done by setting the chunk_multiplier to some
+integer value, where the number of chunks will total chunk_multiplier x number_of_workers.
+}
 }
 }
 

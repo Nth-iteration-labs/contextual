@@ -1,6 +1,6 @@
 context("history")
 
-bandit             <- ContextualBernoulliPrecachingBandit$new(weights = c(0.9, 0.1, 0.1))
+bandit             <- ContextualPrecachingBandit$new(weights = c(0.9, 0.1, 0.1))
 
 agents             <- list(Agent$new(RandomPolicy$new(), bandit),
                            Agent$new(OraclePolicy$new(), bandit),

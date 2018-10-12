@@ -1,7 +1,6 @@
 #' @importFrom R6 R6Class
 #' @export
 Bandit <- R6::R6Class(
-  portable = TRUE,
   class    = FALSE,
   public   = list(
     k           = NULL,  # Number of arms (integer, required)

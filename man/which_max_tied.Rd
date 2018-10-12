@@ -4,10 +4,10 @@
 \alias{which_max_tied}
 \title{Get maximum value}
 \usage{
-which_max_tied(vec)
+which_max_tied(x)
 }
 \arguments{
-\item{vec}{vector of values}
+\item{x}{vector of values}
 }
 \description{
 Returns the index of the maximum value in vector \code{vec}.
