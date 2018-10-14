@@ -611,6 +611,10 @@ Plot <- R6::R6Class(
 #'   \item{\code{limit_agents}}{
 #'      \code{(list , NULL)} Limit plotted agents to the agents in the list.
 #'   }
+#'   \item{\code{limit_context}}{
+#'      \code{(integer vector , NULL)} Only plots data of context(s) where vector equals 1 in
+#'      as.vector(context), excludes where 0 or unspecified.
+#'   }
 #'   \item{\code{no_par}}{
 #'      \code{(logical, FALSE)} If no_par is TRUE, Plot() does not set or adjust plotting parameters itself.
 #'      This makes it possible to set custom plotting parameters through R's par() function.
@@ -622,10 +626,15 @@ Plot <- R6::R6Class(
 #'      \code{(character , NULL)} Sets a custom legend title.
 #'   }
 #'   \item{\code{legend_labels}}{
-#'      \code{(list , NULL)} Set legend labels to custom values as specified in list.
+#'      \code{(character list , NULL)} Sets legend labels to custom values as specified in list.
 #'   }
 #'   \item{\code{legend_border}}{
 #'      \code{(logical , NULL)} When TRUE, the legend is borderless.
+#'   }
+#'   \item{\code{legend_position}}{
+#'      \code{(character , "topleft")} a single keyword from the list "bottomright", "bottom", "bottomleft",
+#'      "left", "topleft", "top", "topright", "right" and "center". This places the legend on the inside of
+#'      the plot frame at the given location.
 #'   }
 #'   \item{\code{xlim}}{
 #'      \code{(c(integer,integer), NULL)} Sets x-axis limits.

@@ -15,7 +15,7 @@ Simulator <- R6::R6Class(
     horizon = NULL,
     simulations = NULL,
     worker_max = NULL,
-    history = NULL,
+    internal_history = NULL,
     save_context = NULL,
     save_theta = NULL,
     do_parallel = NULL,
@@ -78,11 +78,11 @@ Simulator <- R6::R6Class(
       }
 
       # (re)create history data and meta data tables
-      self$history <- History$new(self$horizon * self$agent_count * self$simulations)
-      self$history$set_meta_data("horizon",self$horizon)
-      self$history$set_meta_data("agents",self$agent_count)
-      self$history$set_meta_data("simulations",self$simulations)
-      self$history$set_meta_data("sim_start_time",format(Sys.time(), "%a %b %d %X %Y"))
+      self$internal_history <- History$new(self$horizon * self$agent_count * self$simulations)
+      self$internal_history$set_meta_data("horizon",self$horizon)
+      self$internal_history$set_meta_data("agents",self$agent_count)
+      self$internal_history$set_meta_data("simulations",self$simulations)
+      self$internal_history$set_meta_data("sim_start_time",format(Sys.time(), "%a %b %d %X %Y"))
 
       # unique policy name creation
       agent_name_list <- list()
@@ -160,7 +160,7 @@ Simulator <- R6::R6Class(
         i = iterators::icount(),
         .inorder = TRUE,
         .export = c("History"),
-        .noexport = c("sims_and_agents_list","history","sa_iterator"),
+        .noexport = c("sims_and_agents_list","internal_history","sa_iterator"),
         .packages = par_packages
       ) %fun% {
         index <- 1L
@@ -214,20 +214,21 @@ Simulator <- R6::R6Class(
       }
       # bind all results
       foreach_results <- data.table::rbindlist(foreach_results)
-      self$history$set_data_table(foreach_results, auto_stats = FALSE)
+      self$internal_history$set_data_table(foreach_results, auto_stats = FALSE)
+      rm(foreach_results)
       private$end_time <- Sys.time()
-      if (reindex) self$history$reindex()
+      if (reindex) self$internal_history$reindex()
 
       # update statistics
-      self$history$update_statistics()
+      self$internal_history$update_statistics()
 
       # set meta data and messages
-      self$history$set_meta_data("sim_end_time",format(Sys.time(), "%a %b %d %X %Y"))
+      self$internal_history$set_meta_data("sim_end_time",format(Sys.time(), "%a %b %d %X %Y"))
       formatted_duration <- contextual::formatted_difftime(private$end_time - private$start_time)
-      self$history$set_meta_data("sim_total_duration", formatted_duration)
+      self$internal_history$set_meta_data("sim_total_duration", formatted_duration)
       message(paste0("Completed simulation in ",formatted_duration))
       self$stop_parallel_backend()
-      self$history
+      self$internal_history
     },
     register_parallel_backend = function() {
       # nocov start
@@ -267,6 +268,15 @@ Simulator <- R6::R6Class(
   private = list(
     start_time = NULL,
     end_time = NULL
+  ),
+  active = list(
+    history = function(value) {
+      if (missing(value)) {
+        self$internal_history
+      } else {
+        warning("## history$data is read only", call. = FALSE)
+      }
+    }
   )
 )
 
@@ -380,6 +390,9 @@ Simulator <- R6::R6Class(
 #'   \item{\code{run()}}{
 #'      Runs a \code{Simulator} instance.
 #'    }
+#'   \item{\code{history}}{
+#'      Active binding, read access to Simulator's History instance.
+#'   }
 #'
 #'  }
 #'

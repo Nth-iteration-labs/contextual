@@ -18,10 +18,11 @@
 #' @export
 plot.History <- function(x, ...) {
   args <- eval(substitute(alist(...)))
-  if ("type" %in% names(args))
+  if ("type" %in% names(args)) {
     type <- eval(args$type)
-  else
+  } else {
     type <- "cumulative"
+  }
   if ("xlim" %in% names(args))
     xlim <- eval(args$xlim)
   else
@@ -117,6 +118,7 @@ plot.History <- function(x, ...) {
     no_par <- eval(args$no_par)
   else
     no_par <- FALSE
+  checkmate::assert_choice(type, c("cumulative","average","arms"))
   if (type == "cumulative") {
     Plot$new()$cumulative(
       x,

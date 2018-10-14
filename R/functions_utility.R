@@ -59,8 +59,7 @@ sherman_morrisson <- function(inv, x) {
 #'
 #' @export
 which_max_list <- function(x, equal_is_random = TRUE) {
-  x <- unlist(x, FALSE, FALSE)
-  which_max_tied(x)
+  which_max_tied(unlist(x, FALSE, FALSE))
 }
 #' Get maximum value
 #'

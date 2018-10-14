@@ -116,6 +116,9 @@ Resets a \code{Simulator} instance to its original initialisation values.
 \item{\code{run()}}{
 Runs a \code{Simulator} instance.
 }
+\item{\code{history}}{
+Active binding, read access to Simulator's History instance.
+}
 
 }
 }

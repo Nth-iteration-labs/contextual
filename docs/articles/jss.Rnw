@@ -268,7 +268,7 @@ We then assign both our \code{bandit} and our \code{policy} to \code{Agent} inst
 
 In anticipation of Section \ref{classstructure}: For a policy to be able to initialize its parameters, during initialisation, an agent instance makes \code{bandit$k} (number of arms) and \code{bandit$d} (number of dimensions) available to its policy through calls to \code{policy$set_parameters(context_initial_params)} and \code{policy$initialize_theta(context_initial_params$k)}. On starting the simulation, the (potentially changing) number of arms and features dimension remain available for each time step \code{t} through respectively \code{context$k} and \code{context$d}.
 
-Running the \code{Simulator} instance then starts several (by default, the number of CPU cores minus one) worker processes, splitting simulations as efficiently as possible over each parallel worker. For each simulation, for every time step \code{t}, \code{agents} runs through each of the four function calls that constitute their main loop.
+Running the \code{Simulator} instance then starts several (by default, the number of CPU cores minus one) worker processes, dividing simulations over all parallel worker. For each simulation, for every time step \code{t}, \code{agents} runs through each of the four function calls that constitute their main loop.
 
 A main loop that relates one on one to the four steps defined in our CMAB formalization from Section \ref{formalization}:
 
@@ -548,7 +548,7 @@ To specify how to run a simulation and which data is to be saved to a \code{Simu
    }
 \end{itemize}
 
-The \code{Simulator} class has been designed to make it as easy as possible to replace its default parallel backend for other \pkg{foreach} type backends. In the \code{alt_par_backend_examples} subdirectory of \pkg{contextual}'s \code{demo} directory we offer examples of \pkg{doAzureParallel}, \pkg{doRedis} and \pkg{doMPI} \code{Simulator} subclasses. As a result of \pkg{contextual}'s object oriented setup, such Simulator subclasses can be implemented in just a few lines of code, for instance in the case of the \pkg{doMPI} subclass:
+The \code{Simulator} class has been designed to make it as easy as possible to replace its default parallel backend for other \pkg{foreach} type backends. In the \code{alt_par_backend_examples} subdirectory of \pkg{contextual}'s root \code{demo} directory we offer working examples of \pkg{doAzureParallel}, \pkg{doRedis} and \pkg{doMPI} \code{Simulator} subclasses. As a result of \pkg{contextual}'s object oriented structure, such Simulator subclasses can be implemented in just a few lines of code, for instance in the case of the \pkg{doMPI} subclass:
 
 \begin{Code}
 MPISimulator <- R6::R6Class(
@@ -686,10 +686,10 @@ The main \code{Bandit} functions can be futher detailed as follows:
       Set random values that remain available throughout the life of a \code{Bandit} here.
    }
 
-   \item{\code{generate_bandit_data()}}{
+   \item{\code{generate_bandit_data(n = horizon)}}{
       Called after class and seed initialisation, but before the start of a simulation.
       Only called when \code{bandit$precaching} is set to \code{TRUE} (default \code{FALSE}).
-      Pregenerate \code{contexts} and \code{rewards} here.
+      Pregenerate $n$ \code{contexts} and \code{rewards} here.
    }
 \end{itemize}
 
@@ -702,11 +702,11 @@ As already previously indicated in Table \ref{table:overview_bandits} in Section
          \item \code{ContextualLinearBandit}: Samples data from linearly parameterized arms.
          \item \code{ContextualWheelBandit}: The Wheel bandit game offers an artificial problem where the need for exploration is smoothly parameterized through an exploration parameter \citep{Riquelme2018}.
          \item \code{ContextualLogitBandit}: Samples data from a basic logistic regression model.
-         \item \code{ContinuumBandit}: A basic example of a continuum bandit.
-         \item \code{OfflineReplayEvaluatorBandit}: A basic example of a bandit that makes use of offline data as introduced by \cite{Li2010}.
+         \item \code{ContinuumBandit}: Bandit where arm(s) are chosen from a subset of the real line and mean rewards are assumed to be a continuous function of the arms.
+         \item \code{OfflineReplayEvaluatorBandit}: Replays offline data to generate its contexts and rewards.  \cite{Li2010}.
 \end{itemize}
 
-Each of these bandits can be deployed to run policies without further ado. They can, however, also be used as either examples or templates for your own custom \code{Bandit} implementation(s), or as superclasses for sub-subclass implementations.
+Each of these bandits can either be run directly or serve as templates or superclasses for custom \code{Bandit} implementation(s).
 
 \subsubsection{Policy}
 
@@ -891,7 +891,7 @@ plot(history, limit_agents = c("ThompsonSampling"), type = "arms",
 \begin{figure}[H]
 \centering
 \includegraphics[width=.99\textwidth]{fig/section_4_2_plot}
-\caption{Overview hightlighting the versatility of contextual's Plot() class. From left to right, and top to bottom: 1. Grayscale plot 2. Plotting traces 3. Cumulative reward with SD 4. Dispersion plot (here, variance) 5. Color plot with 95\% confidence interval 6. Arm choice percentage plot }
+\caption{Overview hightlighting the versatility of contextual's Plot() class. From left to right, and top to bottom: 1. Grayscale plot 2. Plotting individual simulation traces 3. Cumulative reward with standard deviation 4. Dispersion plot (here, variance) 5. Color plot with 95\% confidence interval 6. Arm choice percentage plot. }
 \label{fig:section_4_2_plot}
 \end{figure}
 
@@ -948,7 +948,7 @@ ContextualBasicBandit <- R6::R6Class(
 )
 \end{Code}
 
-\\code{ContextualBasicBandit} expects a  $d \times k$ \code{weights} matrix, where every element in \code{weights} represents the average probability of \code{ContextualBasicBandit} returning a reward of $1$, weighted over each of its \code{k} arms.
+\code{ContextualBasicBandit} expects a  $d \times k$ \code{weights} matrix, where every element in \code{weights} represents the average probability of \code{ContextualBasicBandit} returning a reward of $1$ over each of its \code{k} arms as dependent on the currently active contextual feature.
 
 \subsection{EpsilonFirstPolicy} \label{epsfirst}
 
@@ -1155,7 +1155,7 @@ As a final example of how to subclass \pkg{contextual}'s \code{Bandit} superclas
 
 Here, we show how to implement and evaluate probably one of the most cited out of all contextual policies, the LinUCB algorithm with Linear Disjoint Models \cite{Li2010}. The policy is more complicated than the previous two bandits, but when following its pseudocode description to the letter, it translates nicely to yet another \code{Bandit} subclass.
 
-The LinUCBDisjoint algorithm runs one online ridge regression model per arm, using context features to predict rewards. Importantly, the algorithm also generates a confidence interval for this predicted payoff. The policy then chooses the arm with the highest upper confidence bound. In pseudocode, following Algorithm 1 from \cite{Li2010}:
+The LinUCB algorithm employs ridge regression with feature vectors and rewards per arm to predict rewards using the trials performed so far. Importantly, the algorithm also generates a confidence interval for this predicted payoff. The policy then chooses the arm with the highest upper confidence bound. In pseudocode, following Algorithm 1 from \cite{Li2010}:
 
 \begin{algorithm}[H]
 \caption{LinUCB with linear disjoint models}
@@ -1227,7 +1227,7 @@ LinUCBDisjointPolicy <- R6::R6Class(
 )
 \end{Code}
 
-Let us now evaluate the above \code{LinUCBDisjointPolicy} using a Bernoulli \code{ContextualBernoulliBandit} with three arms and three context features. In the code below we define each of \code{ContextualBernoulliBandit}'s arms to be, on average, equally probable to return a reward. As can be confirmed in the two plots to the right below,  where \code{EpsilonGreedyPolicy} and \code{LinUCBDisjointPolicy} actually show no difference in their overall arm preference. Yet \code{LinUCBDisjointPolicy}'s awareness of the changing context allows it to learn the relationships between arms, rewards, and features, and select the right arm in the right context nevertheless.
+Let us now evaluate the above \code{LinUCBDisjointPolicy} using a Bernoulli \code{ContextualBernoulliBandit} with three arms and three context features. In the code below we define each of \code{ContextualBernoulliBandit}'s arms to be, on average, equally probable to return a reward. As can be confirmed in the two plots to the right below,  where \code{EpsilonGreedyPolicy} and \code{LinUCBDisjointPolicy} actually show no difference in their overall arm preference. Yet \code{LinUCBDisjointPolicy}'s awareness of the changing context allows it to learn the relationships between arms, rewards, and features, and select the right arm in the right context---as can be observed in the bottom row of Figure \ref{fig:section_5_4}.
 
 \begin{Code}
 
@@ -1264,7 +1264,7 @@ plot(history, type = "arms",  limit_agents = c("LinUCB"), limit_context = 3)
 \begin{figure}[H]
 \centering
 \includegraphics[width=1.0\textwidth]{fig/section_5_4}
-\caption{Top left a plot of Epsilon Greedy versus LinUCB policies' cumulative regret over time. Top middle and right, Epsilon Greedy and LinUCB policies' average arm choice percentage per $t$, which indicate that, overall, both policies choose each arm about equally often. To see why LinUCB is able to do better than Epsilon Greedy, we need to look to the bottom row, which plots LinUCB's average arm choice percentage by context feature: LinUCB makes use of the available context to map actions to rewards. We left out the "arm choice by context feature" plots for Epsilon Greedy, as all three plots would show equal allocations to each arm over every feature.}
+\caption{Top left a plot of Epsilon Greedy versus LinUCB policies' cumulative regret over time. Top middle and right, Epsilon Greedy and LinUCB policies' average arm choice percentage per $t$, which indicate that, overall, both policies choose each arm about equally often. To see why LinUCB is able to do better than Epsilon Greedy, we need to look at the bottom row, whose three plots reperesent LinUCB's average arm choice percentage by context feature. These bottom row plots show how LinUCB is able to make use of contextual features to map actions to rewards.}
 \label{fig:section_5_4}
 \end{figure}
 
@@ -1338,19 +1338,36 @@ plot(history, type = "arms",  limit_agents = c("EG"), no_par = TRUE,
 
 \section{Offline evaluation} \label{offl}
 
-Though it is, as demonstrated in the previous section, relatively easy to create basic synthetic Bandits to evaluate simple MAB and CMAB policies, the creation of more elaborate simulations that generate more complex contexts for more demanding policies can become very complicated very fast. To such an extent, that the implementation of such simulators regularly becomes more intricate than the analysis and implementation of the policies themselves \citep{Strehl2006a}. Moreover, even when succeeding in surpassing these technical challenges, it remains an open question if an evaluation based on simulated data reflects real-world applications---as modeling by definition introduces bias \citep{Li2012,Li2011}.
+Though it is, as demonstrated in the previous section, relatively easy to evaluate basic MAB and CMAB policies against basic data generating synthetic bandits, the creation of more elaborate synthetic bandits to evaluate more intricate policies can become very difficult very fast. To such an extent, that the implementation of such simulators can quickly become much more complicated than the analysis and implementation of the to be evaluated policies themselves \citep{Strehl2006a}. Moreover, even when succeeding in passing these technical hurdles, it remains an open question if evaluations based on simulated data model accurately model the real-world interactions they aim to simulate accurately---as modeling by definition introduces bias \citep{Li2012,Li2011}.
 
-It is, of course, possible to evaluate policies by running them in a live setting. Such live evaluations would deliver unbiased, realistic estimates of a policy's effectiveness. Running an evaluation on live data is, however, generally much slower than an offline evaluation, as online evaluations are dependent on active user interventions. \citep{Mandel2016, Tewari2017}. Furthermore, the testing of policies on a live target audience, such as patients or customers, with potentially suboptimal policies, could become either dangerous or very expensive \citep{Bastani2015}.
+One way to overcome some of these limitations is to evaluate policies in a live setting. Such live evaluations would deliver unbiased, realistic estimates of a policy's effectiveness. Running policy evaluations on live data is, however, generally much slower than offline evaluation, as online evaluations are dependent on active user interventions. \citep{Mandel2016, Tewari2017}. Furthermore, the testing of policies on a live target audience, such as patients or customers, with potentially suboptimal policies, could become either dangerous or very expensive \citep{Bastani2015}.
 
-Fortunately, there is also the option to evaluate bandit policies on offline interaction logs. To be of use in CMAB evaluation, such logs would, of course, need to contain observed contexts, rewards, and actions \( D = (x_{t,a_t},a_{t},r_{t,a_t}) \). As, among others, ad placement systems, web search engines, and recommendation engines habitually keep interactions logs, such data is widely available. There is a catch though; offline data only contains "bandit feedback", and as such, is "partially labeled" with respect to the bandit policies under evaluation\citep{Strehl2010}. That is, with logged data, we only know the reward values of the specific action that was chosen for each time step $t$.
+Fortunately, there exists a third option: the evaluation of policies through the use of offline interaction logs. To be of use in CMAB evaluation, such logs need to contain observed contexts, rewards, and actions \( D = (x_{t,a_t},a_{t},r_{t,a_t})\). Yet though such data is widely available \footnote{Generally, interaction logs already generated by default in many types of interactive systems, from online search to news recommendation and online advertising.}, there is a catch: With logged interaction data, we only know the rewards of actions chosen by the original policy at some previous time, while we are interested in the rewards for choices made by the policy under evaluation right now. In other words, such logs only contain partial feedback with respect to the policy under evaluation \citep{Strehl2010}.
 
-As a result, we need some type of counterfactual estimator to evaluate "off-policy" logged actions. Off-policy, as we evaluate policies against logged bandit feedback gathered by some other policy \citep{Li2012,Li2011}. And counterfactual, as we seek to estimate how these other policies perform against the logged data as if they were themselves in control of the action selection process \citep{Bottou2013,Swaminathan2015}.
+So we need some type of bandit that is able to evaluate policies on previously generated interaction logs:
+\begin{itemize}
+   \item{Off-policy: the bandit needs to be able to evaluate some new policy against logged bandit feedback that was in fact gathered by another policy at another time \citep{Li2012,Li2011}.
+   }
+   \item{Counterfactually: the bandit needs to make it seem "as if" the policy currently under evaluation is actually in control of the action selection process \citep{Bottou2013,Swaminathan2015}.}
+\end{itemize}
 
-In the next section, we introduce one example of such a counterfactual estimator by demonstrating \code{contextual}'s implementation of \cite{Li2011}'s "replay" method \citep{Nicol2014}. In a subsequent section, we demonstrate how this "replay" method is sensitive to bias---and how inverse propensity weighting can help remove this bias.
+In the next section, we introduce one example of such a counterfactual estimator or bandit by demonstrating \code{contextual}'s implementation of \cite{Li2011}'s "replay" method \citep{Nicol2014}. In a subsequent section, we demonstrate how this "replay" method can be sensitive to certain types of bias---and how inverse propensity weighting can help remove some of these biases.
 
 \subsection{The replay method} \label{offli}
 
-One approach to the use of offline data in off-policy evaluation is to recognize that we need to limit our evaluation to those rows of data where the action taken by the original logging policy equals the action suggested by the policy under evaluation \citep{Li2012,Li2011}. In pseudocode, following Algorithm 2 from \cite{Li2011}:
+One approach to the use of offline data in off-policy evaluation is to recognize that we need to limit our evaluation to those rows of data where the action taken by the original logging policy equals the action suggested by the policy under evaluation \citep{Li2012,Li2011}. Such a so-called "replay" type bandit goes over every logged row \((x_{t},a_{t},r_{t})\), and only uses those (on average) 1/K rows where the action chosen by the policy under evaluation is the same as the original, off-policy action \citep{Nicol2014}.
+
+In other words, for each $t$ in $T$, a replay bandit:
+
+\begin{itemize}
+   \item{Retrieves initially logged context $x_{t}$ from $D$ and makes it available to the policy under evaluation.}
+   \item{Tests whether the action $a_{t}$ as chosen by the policy under evaluation equals the one that was logged in $D$.}
+      \item{If both actions are the same, the bandit makes the originally logged reward available to the policy under evaluation. If not, the current row of $D$ is not taken into account. }
+\end{itemize}
+
+By use of this basic rejection mechanism, a replay bandit can now evaluate datasets initially logged by other policies counterfactually, that is, "as if" they had full control over their selection process.
+
+In pseudocode, following Algorithm 2 from \cite{Li2011}:
 
 \begin{algorithm}[H]
 \caption{Replay Policy Evaluator}
@@ -1452,7 +1469,7 @@ See Figure \ref{fig:offline_bandit} for a plot of the resulting click-through ra
 
 \subsection{Inverse propensity scoring} \label{prop}
 
-The replay method works well for unbiased logs---that is, logs where each arm is chosen at random, independent from its context, and where the original logging policy is known. In the current section, we will use Simpson's Paradox to demonstrate how replaying a biased dataset propagates this bias---and then illustrate how correct this bias through the use of inverse propensity scoring.
+The replay method works well for unbiased logs---that is, logs where each arm is chosen at random, independent from its context, and where the original logging policy is known. So the replay method works well where the original logging policy randomly explores every arm $p(a) = 1/K$. In the current section, we will use Simpson's Paradox to demonstrate how replaying a biased dataset can propagate this bias---and then illustrate how correct this bias through the use of inverse propensity scoring, which uses importance weighting to correct for biases in the proportions of logged actions.
 
 Imagine a popular website with sports and movie related articles. The unbiased click-through rate (CTR) per article category for both for male and female visitor is presented to the left in Table \ref{table:bias}.
 
@@ -1544,18 +1561,18 @@ BiasedPolicy <- R6::R6Class(
 )
 \end{Code}
 
-There is one element in this code that has not been introduced yet: next to \code{action$choice}, this policy also calculates the probability $p_t$ of selecting this action, returning it in \code{action$propensity}. This propensity can then:
+There is one element in this code that has not been introduced yet: next to \code{action$choice}, this policy also calculates the probability $p_{t,a_t}$ of selecting this action, returning it in \code{action$propensity}. This propensity can then:
 
 
 \begin{itemize}
- \item{Be used for inverse propensity matching or weighting \cite{Austin2011} to estimate the action's causal effect by accounting for contextual covariates \cite{Imbens2015,Pearl2009}. }
+ \item{Be used for inverse propensity matching or weighting \cite{Austin2011} to estimate the action's causal effect by accounting for contextual covariates \citep{Imbens2015,Pearl2009}. }
 
- \item{Stored in the log, resulting in \( D = (x_{t,a_t},a_{t},r_{t,a_t},p_a) \), and then be used to estimate average rewards using inverse propensity scoring ($ips$) by computing
+ \item{Stored in the log, resulting in \( D = (x_{t,a_t},a_{t},r_{t,a_t},p_{t,a_t}) \), and then be used to estimate average rewards using inverse propensity scoring \citep{Horvitz1952} by computing
 \begin{eqnarray}
 \texttt{ips}(\pi) & = & \frac{1}{N} \sum_{t=1}^{N} \mathbbm{1} \{ \pi(x_t) = a_t \} r_t / p_t
 \end{eqnarray}
 
-where the indicator is $1$ when $\pi$'s action matches the action in the logs \citep{kruijswijk2018streamingbandit}. See for example \citet{Agarwal2014,Dudik2011} and \citet{Swaminathan2015}for a comprehensive discussion of $ips$ and other offline evaluation methods.}
+where the indicator is $1$ when $\pi$'s action matches the action in the logs \citep{kruijswijk2018streamingbandit}.}
 
 \end{itemize}
 
@@ -1618,6 +1635,8 @@ print(paste("Movie:",sum(prop_dt[choice==2]$reward)/nrow(prop_dt[choice==2])))
 [1] "Movie: 0.519125683060109"
 \end{CodeOutput}
 \end{CodeChunk}
+
+The current sections are, of course, but a short introduction to offline policy evalution. For more information on inverse propensity scoring, doubly robust evaluation, and other techniques in this area, see for example \citet{Agarwal20141},  \citet{Dudik2011} and \citet{Swaminathan2015}.
 
 \section{Replication of Li et al 2010} \label{repl}
 
@@ -1757,11 +1776,11 @@ So we decided to run a simulation that continued to learn beyond the first day f
 \begin{figure}[H]
   \centering
     \includegraphics[width=.99\textwidth]{fig/section_8_plot}
-      \caption{A plot of the cummulative reward rate (equals click-through rate) for EGreedy, EGreedySeg, LinUCB Dis, LinUCB Hyb, UCB1 and UCB1Seg policies over eight days of events from the Yahoo dataset at 1\% sparsity. The plot's sinoidal wave pattern reflects visitors' average cyclical daily waxing and waning click-through tendendy.}
+      \caption{A plot of the cummulative reward rate (equals click-through rate) for EGreedy, EGreedySeg, LinUCB Dis, LinUCB Hyb, UCB1 and UCB1Seg policies over eight days of events from the Yahoo dataset at 1\% sparsity. The plot's sinoidal wave pattern reflects visitors' overall average cyclical daily waxing and waning click-through tendendy.}
       \label{fig:section_8_plot}
 \end{figure}
 
-On closer examiniation of the resulting plot in Figure \ref{fig:section_8_plot}, it becomes clear that the policies did not settle after one day of training. For one, on inspection of the full span of about eight days of learning, Hybrid LinUCB's advantage over Disjoint LinUCB gradually diminishes and turns into an advantage for the Disjoint version. Also, surprisingly, over the full eight days, the $\epsilon$-greedy policy goes from the worst to third best policy overall, becoming the best context-free policy---clearly outperforming both context-free UCB policies. Though we intend to further analyze these discrepancies, for now, these results seem to pose questions for two out of three conclusions drawn in the original paper---leaving only the first outcome, the superiority of the contextual LinUCB in comparison to several context-free ones.  Underlining the benefits of \pkg{contextual}, as it enabled us to replicate and confirm the original \cite{Li2010} paper, and then explore it further: extending \code{Bandit} and \code{Policy} classes, running simulations in parallel on an offline dataset and plotting and analyzing the results---within 48 hours.
+On closer examiniation of the resulting plot in Figure \ref{fig:section_8_plot}, it becomes clear that the policies did not settle after one day of training. For one, on inspection of the full span of about eight days of learning, Hybrid LinUCB's advantage over Disjoint LinUCB gradually diminishes and then reverses into an advantage for the Disjoint version. Also, surprisingly, over the full eight days, the $\epsilon$-greedy policy goes from the worst to third best policy overall, becoming the best context-free policy---clearly outperforming both context-free UCB policies. Though we intend to further analyze these discrepancies, for now, these results seem to pose questions for two out of three conclusions drawn in the original paper---leaving only the first outcome, the superiority of the contextual LinUCB in comparison to several context-free ones.  Underlining the benefits of \pkg{contextual}, as it enabled us to replicate and confirm the original \cite{Li2010} paper, and then explore it further: extending \code{Bandit} and \code{Policy} classes, running simulations in parallel on an offline dataset and plotting and analyzing the results---within 48 hours.
 
 \section{Discussion and future work} \label{future}
 
@@ -1771,7 +1790,7 @@ It is on that premise that we decided to develop the \pkg{contextual} \proglang{
 
 As the package is intended to be usable by practitioners, scientists and students alike, we started our paper with a general introduction to the (contextual) multi-armed bandit problem, followed by a compact formalization. We then demonstrated how our implementation flows naturally from this formalization, with \code{Agents} that cycle \code{Bandits} and \code{Policies} through four function calls: \code{get_context()}, \code{get_action()}, \code{get_reward()} and \code{set_reward()}. Next, we evaluated some of \pkg{contextual}'s built-in policies, delved deeper into \pkg{contextual}'s class structure, extended \pkg{contextual}'s \code{Bandit} and \code{Policy} superclasses, demonstrated how to evaluate Policies on offline datasets, and, finally replicated a frequently cited CMAB paper.
 
-Though the package is fully functional and we expect no more changes to its core architecture and API, there is ample room to further improve and extend \pkg{contextual}. We intend to expand \pkg{contextual}'s documentation and tests. We expect to include more bandit paradigms, such as dueling and combinatorial bandits. We expect to add other offline bandit types, such as a doubly robust bandit \citep{Dudik2011}. We are interested in growing our policy library---possibly by creating a separate repository where both existing and new CMAB policies are shared, evaluated and compared. Finally, we hope that the package will find an active community of users and developers, thereby introducing more and more people to the refined sequential decision strategies offered by contextual bandit policies and algorithms.
+Though the package is fully functional and we expect no more changes to its core architecture and API, there is ample room to further improve and extend \pkg{contextual}. We intend to further expand \pkg{contextual}'s documentation and tests. We expect to include more bandit paradigms, such as dueling and combinatorial bandits. We expect to add other offline bandit types, such as a doubly robust bandit \citep{Dudik2011}. We are interested in growing our policy library---possibly by creating a separate repository where both existing and new CMAB policies are shared, evaluated and compared. Finally, we hope that the package will find an active community of users and developers, thereby introducing more and more people to the refined sequential decision strategies offered by contextual bandit policies and algorithms.
 
 %\bibliographystyle{apacite}
 \bibliography{jss}
