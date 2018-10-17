@@ -13,10 +13,8 @@ ContextualBasicBandit <- R6::R6Class(
     get_context = function(t) {
       # generate d dimensional feature vector, one random feature active at a time
       Xa <- sample(c(1,rep(0,self$d-1)))
-      # convert to d x k matrix: one feature vector, recycled to every arm
-      X  <- matrix(Xa, self$d, self$k)
       context <- list(
-        X = X,
+        X = Xa,
         k = self$k,
         d = self$d
       )
@@ -25,7 +23,7 @@ ContextualBasicBandit <- R6::R6Class(
       # which arm was selected?
       arm            <- action$choice
       # d dimensional feature vector for chosen arm
-      Xa             <- context$X[,arm]
+      Xa             <- context$X
       # weights of active context
       weight         <- Xa %*% self$weights
       # assign rewards for active context with weighted probs

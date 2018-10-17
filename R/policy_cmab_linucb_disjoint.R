@@ -20,7 +20,7 @@ LinUCBDisjointPolicy <- R6::R6Class(
 
       for (arm in 1:context$k) {
 
-        Xa         <- context$X[context$unique,arm]
+        Xa         <- get_arm_context(context$X, arm, context$unique)
         A          <- self$theta$A[[arm]]
         b          <- self$theta$b[[arm]]
 
@@ -39,7 +39,7 @@ LinUCBDisjointPolicy <- R6::R6Class(
     set_reward = function(t, context, action, reward) {
       arm    <- action$choice
       reward <- reward$reward
-      Xa     <- context$X[, arm]
+      Xa     <- get_arm_context(context$X, arm, context$unique)
 
       inc(self$theta$A[[arm]]) <- outer(Xa, Xa)
       inc(self$theta$b[[arm]]) <- reward * Xa

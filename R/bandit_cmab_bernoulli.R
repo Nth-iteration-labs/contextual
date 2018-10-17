@@ -15,17 +15,15 @@ ContextualBernoulliBandit <- R6::R6Class(
       Xa <- sample(c(0,1), self$d, replace=TRUE)
       # make sure at least one feature on (1)
       Xa[sample(1:self$d,1)] <- 1
-      # to matrix - recycle vector over all arms
-      X  <- matrix(Xa, self$d, self$k)
       context <- list(
-        X = X,
+        X = Xa,
         k = self$k,
         d = self$d
       )
     },
     get_reward = function(t, context, action) {
       arm            <- action$choice
-      Xa             <- context$X[,arm]
+      Xa             <- context$X
       average_weight <- Xa %*% self$weights / sum(Xa)
       rewards        <- as.double(average_weight > runif(self$k))
       optimal_arm    <- which_max_tied(rewards)

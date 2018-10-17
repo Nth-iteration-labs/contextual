@@ -20,9 +20,9 @@ ContextualLinearBandit <- R6::R6Class(
       self$betas                                <- self$betas / norm(self$betas, type = "2")
     },
     get_context = function(t) {
+
       X                                         <- rnorm(self$d)
       reward_vector                             <- X %*% self$betas
-      X                                         <- matrix(X, self$d,self$k)
       reward_vector                             <- reward_vector + rnorm(self$k, sd = self$sigma)
 
       if (isTRUE(self$binary)) {

@@ -27,7 +27,7 @@ OfflinePropensityWeightingBandit <- R6::R6Class(
       context <- list(
         k = self$k,
         d = self$d,
-        X = matrix(private$S$context[[index]], self$d, self$k)
+        X = private$S$context[[index]]
       )
       context
     },

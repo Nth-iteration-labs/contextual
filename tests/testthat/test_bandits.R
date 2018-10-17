@@ -599,7 +599,7 @@ test_that("PropensityWeightingBandit", {
     public = list(
       class_name = "BiasedPolicy",
       get_action = function(t, context) {
-        if(context$X[1,1]==1) {           # 1: Male || 0: Female.
+        if(context$X[1]==1) {           # 1: Male || 0: Female.
 
           prob <- c(0.75,0.25)            # Editor thinks men like Sport articles more.
         } else {
@@ -652,7 +652,6 @@ test_that("PropensityWeightingBandit", {
 
   expect_equal(c,  0.636, tolerance = 0.02)
   expect_equal(d,  0.483, tolerance = 0.02)
-
 
 })
 

@@ -36,7 +36,8 @@ GlmUCBPolicy <- R6::R6Class(
 
       expected_rewards <- rep(0.0, context$k)
       for (arm in 1:context$k) {
-        expected_rewards[arm] <- self$acquisition_function(theta_hat,context$X[,arm])
+        Xa <- get_arm_context(context$X, arm)
+        expected_rewards[arm] <- self$acquisition_function(theta_hat, Xa)
       }
       action$choice  <- which_max_tied(expected_rewards)
 
@@ -45,7 +46,7 @@ GlmUCBPolicy <- R6::R6Class(
     set_reward = function(t, context, action, reward) {
       arm                      <- action$choice
       reward                   <- reward$reward
-      Xa                       <- context$X[, arm]
+      Xa                       <- get_arm_context(context$X, arm)
       self$rewards             <- append(self$rewards,reward)
       self$contexts            <- append(self$contexts,list(Xa))
 

@@ -51,8 +51,6 @@ ContextualWheelBandit <- R6::R6Class(
         }
       }
 
-      X                                         <- matrix(X, self$d,self$k)
-
       context                                   <- list(
         k = self$k,
         d = self$d,

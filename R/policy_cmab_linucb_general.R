@@ -25,9 +25,9 @@ LinUCBGeneralPolicy <- R6::R6Class(
 
       for (arm in 1:context$k) {
 
-        X          <- context$X[, arm]
-        mean       <- X %*% theta_hat
-        sd         <- sqrt(tcrossprod(X %*% A_inv, X))
+        Xa         <- get_arm_context(context$X, arm)
+        mean       <- Xa %*% theta_hat
+        sd         <- sqrt(tcrossprod(Xa %*% A_inv, Xa))
 
         expected_rewards[arm] <- mean + self$alpha * sd
       }
@@ -37,7 +37,7 @@ LinUCBGeneralPolicy <- R6::R6Class(
     set_reward = function(t, context, action, reward) {
       arm <- action$choice
       reward <- reward$reward
-      Xa <- context$X[, arm]
+      Xa <- get_arm_context(context$X, arm)
       inc(self$theta$A) <- outer(Xa, Xa)
       inc(self$theta$b) <- reward * Xa
       self$theta

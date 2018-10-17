@@ -18,7 +18,7 @@ ContextualEpsilonGreedy <- R6::R6Class(
       if (runif(1) > self$epsilon) {
         expected_rewards <- rep(0.0, context$k)
         for (arm in 1:context$k) {
-          Xa         <- context$X[,arm]
+          Xa         <- get_arm_context(context$X, arm)
           A          <- self$theta$A[[arm]]
           b          <- self$theta$b[[arm]]
           A_inv      <- inv(A)
@@ -35,7 +35,7 @@ ContextualEpsilonGreedy <- R6::R6Class(
     set_reward = function(t, context, action, reward) {
       arm    <- action$choice
       reward <- reward$reward
-      Xa     <- context$X[, arm]
+      Xa     <- get_arm_context(context$X, arm)
 
       inc(self$theta$A[[arm]]) <- outer(Xa, Xa)
       inc(self$theta$b[[arm]]) <- reward * Xa

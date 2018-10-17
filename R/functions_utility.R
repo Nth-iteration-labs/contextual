@@ -330,6 +330,47 @@ inv_logit <- function(x){
   exp(x)/(1+exp(x))
 }
 
+#' Returns context of arm
+#'
+#' Given d x k matrix or d dimensional vector X,
+#' returns a vector with arm's context.
+#'
+#' @param X d x k Matrix
+#' @param arm index of arm
+#'
+#' @return Vector that represents context related to an arm
+#'
+#' @export
+get_arm_context <- function(X, arm, select_features = NULL) {
+  if(is.null(select_features)) {
+    if(is.vector(X)) return(X) else return(X[, arm])
+  } else {
+    if(is.vector(X)) return(X[select_features])
+    else return(X[select_features, arm])
+  }
+}
+
+#' Get full context
+#'
+#' Given matrix or d dimensional vector X,
+#' number of arms k and number of features d
+#' returns a matrix with d x k context matrix
+#'
+#' @param X d x k Matrix or d dimensional context vector
+#' @param d index of arm
+#'
+#' @return A d x k context Matrix
+#'
+#' @export
+get_full_context <- function(X, d, k, select_features = NULL) {
+  if(is.null(select_features)) {
+    if(is.vector(X)) return(matrix(X,d,k)) else return(X)
+  } else {
+    if(is.vector(X)) return(X[select_features])
+    else return(X[select_features, arm])
+  }
+}
+
 #' Simulate from a Multivariate Normal Distribution
 #'
 #' Produces one or more samples from the specified

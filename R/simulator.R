@@ -216,6 +216,7 @@ Simulator <- R6::R6Class(
       foreach_results <- data.table::rbindlist(foreach_results)
       self$internal_history$set_data_table(foreach_results, auto_stats = FALSE)
       rm(foreach_results)
+
       private$end_time <- Sys.time()
       if (reindex) self$internal_history$reindex()
 

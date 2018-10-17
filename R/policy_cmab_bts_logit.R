@@ -15,12 +15,12 @@ ContextualLogitBTSPolicy <- R6::R6Class(
       self$theta_to_arms <- list( "i"        = matrix(0,self$J,context_params$d))
     },
     get_action = function(t, context) {
-      X             <- rbind(context$X,context$X)
       pred          <- matrix(0.0, self$J, context$k)
       for (arm in 1:context$k) {
         # main plus interaction
         coefs <- cbind(self$theta$M,self$theta$i[[arm]])
-        pred[,arm]  <- coefs%*%X[, arm]
+        Xa    <- get_arm_context(context$X, arm)
+        pred[,arm]  <- coefs%*%c(Xa,Xa)
       }
       wins          <- apply(pred,1,which_max_tied)
       action$choice <- sample(wins,1)
@@ -29,7 +29,7 @@ ContextualLogitBTSPolicy <- R6::R6Class(
     set_reward = function(t, context, action, reward) {
       arm    <- action$choice
       reward <- reward$reward
-      X      <- c(context$X[, arm])
+      X      <- get_arm_context(context$X, arm)
 
       update <- which(rbinom(self$J,1,.5)==1)
       # Loop through each J to be updated and update betas

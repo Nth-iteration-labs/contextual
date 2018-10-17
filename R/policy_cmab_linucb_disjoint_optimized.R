@@ -21,15 +21,15 @@ LinUCBDisjointOptimizedPolicy <- R6::R6Class(
 
       for (arm in 1:context$k) {
 
-        X          <- context$X[context$unique,arm]
+        Xa         <- get_arm_context(context$X, arm, context$unique)
         A          <- self$theta$A[[arm]]
         A_inv      <- self$theta$A_inv[[arm]]
         b          <- self$theta$b[[arm]]
 
         theta_hat  <- A_inv %*% b
 
-        mean       <- X %*% theta_hat
-        sd         <- sqrt(tcrossprod(X %*% A_inv, X))
+        mean       <- Xa %*% theta_hat
+        sd         <- sqrt(tcrossprod(Xa %*% A_inv, Xa))
 
         expected_rewards[arm] <- mean + self$alpha * sd
       }
@@ -39,7 +39,7 @@ LinUCBDisjointOptimizedPolicy <- R6::R6Class(
     set_reward = function(t, context, action, reward) {
       arm    <- action$choice
       reward <- reward$reward
-      Xa    <- context$X[context$unique,arm]
+      Xa    <- get_arm_context(context$X, arm, context$unique)
 
       self$theta$A_inv[[arm]] <- sherman_morrisson(self$theta$A_inv[[arm]],Xa)
 

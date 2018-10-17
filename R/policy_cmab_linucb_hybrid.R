@@ -33,8 +33,11 @@ LinUCBHybridPolicy <- R6::R6Class(
         A          <- self$theta$A[[arm]]
         B          <- self$theta$B[[arm]]
         b          <- self$theta$b[[arm]]
-        x          <- context$X[context$unique,arm]
-        z          <- matrix(as.vector(outer(x,context$X[context$shared,arm])))
+
+        x          <- get_arm_context(context$X, arm, context$unique)
+        s          <- get_arm_context(context$X, arm, context$shared)
+        z          <- matrix(as.vector(outer(x,s)))
+
         A_inv      <- inv(A)
 
         ################## compute expected reward per arm #############################
@@ -70,8 +73,10 @@ LinUCBHybridPolicy <- R6::R6Class(
 
       arm            <- action$choice
       reward         <- reward$reward
-      x              <- context$X[context$unique,arm]
-      z              <- matrix(as.vector(outer(x,context$X[context$shared,arm])))
+
+      x              <- get_arm_context(context$X, arm, context$unique)
+      s              <- get_arm_context(context$X, arm, context$shared)
+      z              <- matrix(as.vector(outer(x,s)))
 
       A0             <- self$theta$A0
       b0             <- self$theta$b0
