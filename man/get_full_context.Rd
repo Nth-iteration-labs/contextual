@@ -7,9 +7,13 @@
 get_full_context(X, d, k, select_features = NULL)
 }
 \arguments{
-\item{X}{d x k Matrix or d dimensional context vector}
+\item{X}{d x k Matrix or d dimensional context vector.}
 
-\item{d}{index of arm}
+\item{d}{number of features.}
+
+\item{k}{number of arms.}
+
+\item{select_features}{indices of to be returned feature rows.b}
 }
 \value{
 A d x k context Matrix

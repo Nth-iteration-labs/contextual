@@ -335,8 +335,9 @@ inv_logit <- function(x){
 #' Given d x k matrix or d dimensional vector X,
 #' returns a vector with arm's context.
 #'
-#' @param X d x k Matrix
-#' @param arm index of arm
+#' @param X d x k Matrix.
+#' @param arm index of arm.
+#' @param select_features indices of to be returned features.
 #'
 #' @return Vector that represents context related to an arm
 #'
@@ -356,8 +357,10 @@ get_arm_context <- function(X, arm, select_features = NULL) {
 #' number of arms k and number of features d
 #' returns a matrix with d x k context matrix
 #'
-#' @param X d x k Matrix or d dimensional context vector
-#' @param d index of arm
+#' @param X d x k Matrix or d dimensional context vector.
+#' @param d number of features.
+#' @param k number of arms.
+#' @param select_features indices of to be returned feature rows.b
 #'
 #' @return A d x k context Matrix
 #'
@@ -367,7 +370,7 @@ get_full_context <- function(X, d, k, select_features = NULL) {
     if(is.vector(X)) return(matrix(X,d,k)) else return(X)
   } else {
     if(is.vector(X)) return(X[select_features])
-    else return(X[select_features, arm])
+    else return(X[select_features,])
   }
 }
 

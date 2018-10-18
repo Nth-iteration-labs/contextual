@@ -50,8 +50,9 @@ Agent <- R6::R6Class(
     do_step = function() {
       agent_t  <<- agent_t + 1L
       context   <- bandit$get_context(agent_t)
-      if(!is.null(context$d) && is.null(context$unique)) context$unique <- c(1:context$d)
-      if(!is.null(context$d) && is.null(context$shared)) context$shared <- c(1:context$d)
+      if(is.null(context$d)) context$d <- self$bandit$d
+      if(is.null(context$unique)) context$unique <- c(1:context$d)
+      if(is.null(context$shared)) context$shared <- c(1:context$d)
       action    <- policy$get_action (policy_t, context)
       reward    <- bandit$get_reward (agent_t, context, action)
       if (is.null(reward)) {

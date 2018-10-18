@@ -7,9 +7,11 @@
 get_arm_context(X, arm, select_features = NULL)
 }
 \arguments{
-\item{X}{d x k Matrix}
+\item{X}{d x k Matrix.}
 
-\item{arm}{index of arm}
+\item{arm}{index of arm.}
+
+\item{select_features}{indices of to be returned features.}
 }
 \value{
 Vector that represents context related to an arm

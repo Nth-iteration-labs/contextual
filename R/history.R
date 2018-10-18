@@ -8,14 +8,18 @@ History <- R6::R6Class(
     n            = NULL,
     save_theta   = NULL,
     save_context = NULL,
-    initialize = function(n = 1, save_context = FALSE, save_theta = FALSE) {
-      self$n            <- n
-      self$save_context <- save_context
-      self$save_theta   <- save_theta
+    context_multiple_columns = NULL,
+    context_columns_initialized = NULL,
+    initialize = function(n = 1, save_context = FALSE, context_multiple_columns = FALSE, save_theta = FALSE) {
+      self$n                           <- n
+      self$context_multiple_columns    <- context_multiple_columns
+      self$save_context                <- save_context
+      self$save_theta                  <- save_theta
       self$reset()
     },
     reset = function() {
       gc()
+      self$context_columns_initialized <- FALSE
       self$clear_data_table()
       private$initialize_data_tables()
       invisible(self)
@@ -25,6 +29,8 @@ History <- R6::R6Class(
     },
     insert = function(index,
                       t,
+                      k,
+                      d,
                       action,
                       reward,
                       agent_name,
@@ -50,12 +56,33 @@ History <- R6::R6Class(
         optimal_arm <- reward[["optimal_arm"]]
       }
 
+      if (save_context || save_theta) {
+        if (!isTRUE(self$save_theta)) {
+          if(isTRUE(self$context_multiple_columns)) {
+            if(!isTRUE(self$context_columns_initialized)) {
+              private$initialize_data_tables(length(context_value))
+              self$context_columns_initialized <- TRUE
+            }
+            data.table::set(private$.data, index, (12L:(11L+length(context_value))),
+                            as.list(as.vector(context_value)))
+          } else {
+            data.table::set(private$.data, index, 12L, list(list(context_value)))
+          }
+        } else if (!isTRUE(self$save_context)) {
+          data.table::set(private$.data, index, 12L, list(list(theta_value)))
+        } else {
+          data.table::set(private$.data, index, 12L, list(list(context_value)))
+          data.table::set(private$.data, index, 13L, list(list(theta_value)))
+        }
+      }
       data.table::set(
         private$.data,
         index,
-        1L:9L,
+        1L:11L,
         list(
           t,
+          k,
+          d,
           simulation_index,
           action[["choice"]],
           reward[["reward"]],
@@ -66,17 +93,6 @@ History <- R6::R6Class(
           agent_name
         )
       )
-
-      if (save_context || save_theta) {
-        if (!self$save_theta) {
-          data.table::set(private$.data, index, 10L, list(list(context_value)))
-        } else if (!self$save_context) {
-          data.table::set(private$.data, index, 10L, list(list(theta_value)))
-        } else {
-          data.table::set(private$.data, index, 10L, list(list(context_value)))
-          data.table::set(private$.data, index, 11L, list(list(theta_value)))
-        }
-      }
       invisible(self)
     },
     get_agent_list = function() {
@@ -295,9 +311,11 @@ History <- R6::R6Class(
     .meta            = NULL,
     .cum_stats       = NULL,
 
-    initialize_data_tables = function() {
+    initialize_data_tables = function(context_cols = NULL) {
       private$.data <- data.table::data.table(
         t = rep(0L, self$n),
+        k = rep(0L, self$n),
+        d = rep(0L, self$n),
         sim = rep(0L, self$n),
         choice = rep(0.0, self$n),
         reward = rep(0.0, self$n),
@@ -307,8 +325,15 @@ History <- R6::R6Class(
         propensity = rep(0.0, self$n),
         agent = rep("", self$n)
       )
-      if (self$save_context) private$.data$context <- rep(list(), self$n)
-      if (self$save_theta) private$.data$theta <- rep(list(), self$n)
+      if (isTRUE(self$save_context)) {
+        if (isTRUE(self$context_multiple_columns && !is.null(context_cols))) {
+          context_cols <- c(paste0("X.", seq_along(1:context_cols)))
+          private$.data[, (context_cols) := 0.0]
+        } else {
+          private$.data$context <- rep(list(), self$n)
+        }
+      }
+      if (isTRUE(self$save_theta)) private$.data$theta <- rep(list(), self$n)
 
       # meta data
       private$.meta <- list()

@@ -29,11 +29,13 @@ Simulator <- R6::R6Class(
     chunk_multiplier = NULL,
     cl = NULL,
     reindex = NULL,
+    context_multiple_columns = NULL,
     initialize = function(agents,
                           horizon = 100L,
                           simulations = 100L,
                           save_context = FALSE,
                           save_theta = FALSE,
+                          context_multiple_columns = FALSE,
                           do_parallel = TRUE,
                           worker_max = NULL,
                           set_seed = 0,
@@ -61,6 +63,7 @@ Simulator <- R6::R6Class(
       self$set_seed <- set_seed
       self$include_packages <- include_packages
       self$chunk_multiplier <- chunk_multiplier
+      self$context_multiple_columns <- context_multiple_columns
 
       self$reset()
     },
@@ -124,17 +127,18 @@ Simulator <- R6::R6Class(
       }
 
       # copy variables used in parallel processing to local environment
-      horizon <- self$horizon
-      agent_count <- self$agent_count
-      save_context <- self$save_context
-      save_theta <- self$save_theta
-      reindex <- self$reindex
-      progress_file <- self$progress_file
-      log_interval <- self$log_interval
-      t_over_sims <- self$t_over_sims
-      set_seed <- self$set_seed
-      agents <- self$agents
-      include_packages <- self$include_packages
+      horizon                  <- self$horizon
+      agent_count              <- self$agent_count
+      save_context             <- self$save_context
+      context_multiple_columns <- self$context_multiple_columns
+      save_theta               <- self$save_theta
+      reindex                  <- self$reindex
+      progress_file            <- self$progress_file
+      log_interval             <- self$log_interval
+      t_over_sims              <- self$t_over_sims
+      set_seed                 <- self$set_seed
+      agents                   <- self$agents
+      include_packages         <- self$include_packages
 
       # calculate chunk size
       if (length(sims_and_agents_list) <= self$workers) {
@@ -166,7 +170,10 @@ Simulator <- R6::R6Class(
         index <- 1L
         sim_agent_counter <- 0
         sim_agent_total <- length(sims_agent_list)
-        local_history <- History$new( horizon * sim_agent_total, save_context, save_theta)
+        local_history <- History$new( horizon * sim_agent_total,
+                                      save_context,
+                                      context_multiple_columns,
+                                      save_theta)
 
         for (sim_agent_index in sims_agent_list) {
           sim_agent <- agents[[sim_agent_index$agent_index]]$clone(deep = TRUE)
@@ -198,6 +205,8 @@ Simulator <- R6::R6Class(
               local_history$insert(
                 index,                                         #index
                 t,                                             #t
+                step[[1]][["k"]],                              #k
+                step[[1]][["d"]],                              #d
                 step[[2]],                                     #action
                 step[[3]],                                     #reward
                 agent_name,                                    #agentname
