@@ -5,15 +5,13 @@ library(data.table)
 
 # import linucb data
 
-url        <- "https://raw.githubusercontent.com/Nth-iteration-labs/contextual_data/master/data_cmab_basic/"
-
-file       <- "dataset.txt"
-
-linucb_dt  <- fread(paste0(url,file))
+url         <- "https://raw.githubusercontent.com/Nth-iteration-labs/contextual_data/master/data_cmab_basic/"
+file        <- "dataset.txt"
+linucb_dt   <- fread(paste0(url,file))
 
 # retrieve number of rows  (which equals the horizon)
 
-horizon    <- nrow(linucb_dt)
+horizon     <- nrow(linucb_dt)
 
 # move all context columns to context vectors
 
@@ -43,7 +41,7 @@ bandit      <- OfflineReplayEvaluatorBandit$new(offline_data = log_S, k = 10, d 
 
 # define two LinUCBDisjointSmPolicy agents
 
-agents <-
+agents      <-
   list(Agent$new(LinUCBDisjointOptimizedPolicy$new(0.01), bandit, name = "LinUCB alpha = 0.01"),
        Agent$new(LinUCBDisjointOptimizedPolicy$new(0.05), bandit, name = "LinUCB alpha = 0.05"),
        Agent$new(LinUCBDisjointOptimizedPolicy$new(0.1),  bandit, name = "LinUCB alpha = 0.1"),
@@ -51,7 +49,7 @@ agents <-
 
 # define the simulation
 
-simulation <-
+simulation  <-
   Simulator$new(
     agents           = agents,
     simulations      = simulations,
@@ -75,6 +73,6 @@ plot(linucb_sim,
 
 linucb_sim$save_csv(NA,context_to_columns = TRUE)
 
-dt <- linucb_sim$get_data_table()
+dt          <- linucb_sim$get_data_table()
 
-df <- linucb_sim$get_data_frame(context_to_columns = TRUE)
+df          <- linucb_sim$get_data_frame(context_to_columns = TRUE)

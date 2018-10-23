@@ -17,9 +17,7 @@ agents             <- list(Agent$new(RandomPolicy$new(), bandit),
 simulation         <- Simulator$new(agents, horizon, simulations)
 history            <- simulation$run()
 
-plot(history,
-     type = "cumulative",
-     use_colors = FALSE)
+plot(history, type = "cumulative")
 
 summary(history)
 

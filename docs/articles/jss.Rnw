@@ -1,4 +1,4 @@
-%\VignetteIndexEntry{contextual: Simulating Contextual Multi-Armed Bandit Problems in R (article)}
+%\VignetteIndexEntry{contextual: Evaluating Contextual Multi-Armed Bandit Problems in R (article)}
 %\VignetteEngine{knitr::knitr}
 %\VignetteKeyword{archivsit}
 %\VignetteKeyword{package}
@@ -61,11 +61,11 @@
 \author{Robin van Emden\\JADS \And
   Maurits Kaptein\\Tilburg University}
 
-\title{\pkg{contextual}: Simulating Contextual Multi-Armed Bandit Problems in R}
+\title{\pkg{contextual}: Evaluating Contextual Multi-Armed Bandit Problems in R}
 
 %% for pretty printing and a nice hypersummary also set:
 \Plainauthor{Robin van Emden, Eric Postma, Maurits Kaptein} %% comma-separated
-\Plaintitle{contextual: Simulating Contextual Multi-Armed Bandit Problems in R} %% without formatting
+\Plaintitle{contextual: Evaluating Contextual Multi-Armed Bandit Problems in R} %% without formatting
 \Shorttitle{\pkg{contextual}} %% a short title (if necessary)
 
 \interfootnotelinepenalty=10000
@@ -167,7 +167,7 @@ Though each of these applications and services may share certain features with \
 
 All in all, though there are some alternatives, there was, as of yet, no extensible and widely applicable \proglang{R} package to analyze and compare, respectively, basic multi-armed, continuum \citep{Agrawal1995} and contextual multi-armed bandit algorithms on both simulated and offline data. In making the package publicly available, we hope to further the dissemination and evaluation of both existing and new CMAB policies---particularly where such policies were previously only available through single-use scripts or basic, isolated code packages \citep{Gandrud2016}.
 
-In the current paper, we will further introduce \pkg{contextual}. Section \ref{formalizationandimplementation} presents a formal definition of the contextual multi-armed bandit problem, shows how this formalization can be transformed into a clear and concise object-oriented architecture, and describes how to set up a minimal simulation. Section \ref{basicusage} gives an overview of \pkg{contextual}'s predefined \code{Bandit} and \code{Policy} subclasses and demonstrates how to run a very basic \code{Simulation}. Section \ref{classstructure} delves a little deeper into the implementation of each of \pkg{contextual}'s core superclasses. Section \ref{extending} shows how to extend \pkg{contextual}'s superclasses to create your own custom \code{Bandit} and \code{Policy} subclasses. Section \ref{subclpb} demonstrates how to further subclass existing \code{Bandit} and \code{Policy} implementations. Section \ref{offl} focusses on how a \code{Bandit} subclass can make use of offline datasets. Section \ref{repl} brings all of the previous sections together in a partial replication of a frequently cited contextual bandit paper. In Section \ref{future} we conclude with some comments on the current state of the package and potential future enhancements.
+In the current paper, we will further introduce \pkg{contextual} 0.9, as found at https://github.com/Nth-iteration-labs/contextual. Section \ref{formalizationandimplementation} presents a formal definition of the contextual multi-armed bandit problem, shows how this formalization can be transformed into a clear and concise object-oriented architecture, and describes how to set up a minimal simulation. Section \ref{basicusage} gives an overview of \pkg{contextual}'s predefined \code{Bandit} and \code{Policy} subclasses and demonstrates how to run a very basic \code{Simulation}. Section \ref{classstructure} delves a little deeper into the implementation of each of \pkg{contextual}'s core superclasses. Section \ref{extending} shows how to extend \pkg{contextual}'s superclasses to create your own custom \code{Bandit} and \code{Policy} subclasses. Section \ref{subclpb} demonstrates how to further subclass existing \code{Bandit} and \code{Policy} implementations. Section \ref{offl} focusses on how a \code{Bandit} subclass can make use of offline datasets. Section \ref{repl} brings all of the previous sections together in a partial replication of a frequently cited contextual bandit paper. In Section \ref{future} we conclude with some comments on the current state of the package and potential future enhancements.
 
 This organization offers the reader several ways to peruse the current paper. If you have a passing knowledge of \proglang{R} and want to run simulations based on \pkg{contextual}'s default bandits and policies, the current introduction plus Section \ref{basicusage} should be able to get you up and running. If you are looking for a more formal introduction, read Section \ref{formalizationandimplementation} as well. If you know your way around \proglang{R} and would like to extend \pkg{contextual} to run custom bandits and policies, it is probably best to read the whole paper---with a focus on Sections \ref{classstructure}, \ref{extending} and \ref{subclpb}. Finally, add Sections \ref{repl} and possibly \ref{future} if you are seeking to implement your own offline bandits.
 

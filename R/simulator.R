@@ -76,8 +76,6 @@ Simulator <- R6::R6Class(
         cat(paste0(""), file = "progress.log", append = FALSE)
         cat(paste0(""), file = "parallel.log", append = FALSE)
         self$outfile <- "parallel.log"
-      } else {
-        self$outfile <- ""
       }
 
       # (re)create history data and meta data tables
@@ -253,8 +251,14 @@ Simulator <- R6::R6Class(
       # make sure no leftover processes
       doParallel::stopImplicitCluster()
 
-      self$cl <- parallel::makeCluster(self$workers, useXDR = FALSE, type = "PSOCK",
-                           methods = FALSE, setup_timeout = 30, outfile = self$outfile)
+
+      if(!is.null(self$outfile)) {
+        self$cl <- parallel::makeCluster(self$workers, useXDR = FALSE, type = "PSOCK",
+                                         methods = FALSE, setup_timeout = 30, outfile = self$outfile)
+      } else {
+        self$cl <- parallel::makeCluster(self$workers, useXDR = FALSE, type = "PSOCK",
+                                         methods = FALSE, setup_timeout = 30)
+      }
 
       message(paste0("Cores available: ",nr_cores))
       message(paste0("Workers assigned: ",self$workers))
@@ -425,8 +429,7 @@ Simulator <- R6::R6Class(
 #'
 #'   history   <- Simulator$new(agents = agent,
 #'                              horizon = 10,
-#'                              simulations = 10,
-#'                              progress_file = TRUE)$run()
+#'                              simulations = 10)$run()
 #'
 #'   summary(history)
 #'

@@ -5,15 +5,14 @@ library(DBI)
 library(MonetDB.R)
 library(doParallel)
 library(httr)
-library(RPushbullet)
 
 # Config -----------------------------------------------------------------------------------------------------
 
 simulations             <- 1
 horizon                 <- 37450000
 buffer_size             <- 1000
-sparsity_vector         <- c(0.99,0.80,0.90,0.95,0.99) #0.00 0.70
-worker_max              <- 7
+sparsity_vector         <- c(0.00,0.70,0.80,0.90,0.95,0.99)
+worker_max              <- 8
 
 monetdb_host            <- "monetdb_ip"
 monetdb_dbname          <- "yahoo"
@@ -38,7 +37,7 @@ source("./demo_yahoo_classes/yahoo_policy_random.R", encoding="utf-8")
 # Connect to DB ----------------------------------------------------------------------------------------------
 
 con <- DBI::dbConnect(MonetDB.R(), host=monetdb_host, dbname=monetdb_dbname,
-                                   user=monetdb_user, password=monetdb_password)
+                      user=monetdb_user, password=monetdb_password)
 
 message(paste0("MonetDB: connection to '",dbListTables(con),"' database succesful!"))
 
@@ -67,14 +66,14 @@ for (sparsity in sparsity_vector) {
           Agent$new(YahooRandomPolicy$new(),                  bandit, name = "Random"))
 
   simulation <- Simulator$new(
-      agents,
-      simulations = simulations,
-      horizon = horizon,
-      do_parallel = TRUE,
-      worker_max = worker_max,
-      reindex = TRUE,
-      progress_file = TRUE,
-      include_packages = c("MonetDB.R"))
+    agents,
+    simulations = simulations,
+    horizon = horizon,
+    do_parallel = TRUE,
+    worker_max = worker_max,
+    reindex = TRUE,
+    progress_file = TRUE,
+    include_packages = c("MonetDB.R"))
 
   history  <- simulation$run()
 
@@ -87,9 +86,8 @@ for (sparsity in sparsity_vector) {
 
 # Take a look at the results ---------------------------------------------------------------------------------
 
-# print(history$meta$sim_total_duration)
+print(history$meta$sim_total_duration)
 
 plot(history, regret = FALSE, rate = TRUE, type = "cumulative", ylim = c(0.035,0.07))
 
 dbDisconnect(con)
-

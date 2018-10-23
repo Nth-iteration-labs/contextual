@@ -174,7 +174,6 @@ Agent <- R6::R6Class(
 #'
 #'   history   <- Simulator$new(agents = agent,
 #'                              horizon = 10,
-#'                              simulations = 10,
-#'                              progress_file = TRUE)$run()
+#'                              simulations = 10)$run()
 #' }
 NULL
