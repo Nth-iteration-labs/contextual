@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Policy: A Time and Space Efficient Algorithm for Contextual Linear Bandits — ContextualEpochGreedyPolicy • contextual</title>
+<title>Returns context of arm — get_arm_context • contextual</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -36,9 +36,10 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Policy: A Time and Space Efficient Algorithm for Contextual Linear Bandits — ContextualEpochGreedyPolicy" />
+<meta property="og:title" content="Returns context of arm — get_arm_context" />
 
-<meta property="og:description" content="Policy: A Time and Space Efficient Algorithm for Contextual Linear Bandits" />
+<meta property="og:description" content="Given d x k matrix or d dimensional vector X,
+returns a vector with arm's context." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -128,41 +129,49 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Policy: A Time and Space Efficient Algorithm for Contextual Linear Bandits</h1>
-    <small class="dont-index">Source: <a href='https://github.com/Nth-iteration-labs/contextual/blob/master/R/policy_cmab_epoch_greedy.R'><code>R/policy_cmab_epoch_greedy.R</code></a></small>
-    <div class="hidden name"><code>ContextualEpochGreedyPolicy.Rd</code></div>
+    <h1>Returns context of arm</h1>
+    <small class="dont-index">Source: <a href='https://github.com/Nth-iteration-labs/contextual/blob/master/R/functions_utility.R'><code>R/functions_utility.R</code></a></small>
+    <div class="hidden name"><code>get_arm_context.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Policy: A Time and Space Efficient Algorithm for Contextual Linear Bandits</p>
+    <p>Given d x k matrix or d dimensional vector X,
+returns a vector with arm's context.</p>
     
     </div>
 
-        
-    <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
-
+    <pre class="usage"><span class='fu'>get_arm_context</span>(<span class='no'>X</span>, <span class='no'>arm</span>, <span class='kw'>select_features</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
-    <pre>
-policy &lt;- EpsilonGreedyPolicy(epsilon = 0.1)
-</pre>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>X</th>
+      <td><p>d x k Matrix.</p></td>
+    </tr>
+    <tr>
+      <th>arm</th>
+      <td><p>index of arm.</p></td>
+    </tr>
+    <tr>
+      <th>select_features</th>
+      <td><p>indices of to be returned features.</p></td>
+    </tr>
+    </table>
     
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <div class='dont-index'><p>Core contextual classes: <code><a href='Bandit.html'>Bandit</a></code>, <code><a href='Policy.html'>Policy</a></code>, <code><a href='Simulator.html'>Simulator</a></code>,
-<code><a href='Agent.html'>Agent</a></code>, <code><a href='History.html'>History</a></code>, <code><a href='Plot.html'>Plot</a></code></p>
-<p>Bandit subclass examples: <code><a href='BasicBernoulliBandit.html'>BasicBernoulliBandit</a></code>, <code><a href='ContextualLogitBandit.html'>ContextualLogitBandit</a></code>,  <code><a href='OfflineReplayEvaluatorBandit.html'>OfflineReplayEvaluatorBandit</a></code></p>
-<p>Policy subclass examples: <code><a href='EpsilonGreedyPolicy.html'>EpsilonGreedyPolicy</a></code>, <code><a href='ContextualThompsonSamplingPolicy.html'>ContextualThompsonSamplingPolicy</a></code></p></div>
+    <p>Vector that represents context related to an arm</p>
     
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#usage">Usage</a></li>
-
-      <li><a href="#see-also">See also</a></li>
+      <li><a href="#value">Value</a></li>
           </ul>
 
   </div>

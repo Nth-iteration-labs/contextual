@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Policy: Contextual Thompson Sampling with Linear Payoffs — ContextualThompsonSamplingPolicy • contextual</title>
+<title>Bandit: ContextualBinaryBandit — ContextualBinaryBandit • contextual</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -36,13 +36,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Policy: Contextual Thompson Sampling with Linear Payoffs — ContextualThompsonSamplingPolicy" />
+<meta property="og:title" content="Bandit: ContextualBinaryBandit — ContextualBinaryBandit" />
 
-<meta property="og:description" content="ContextualThompsonSamplingPolicy implements Thompson Sampling with Linear
-Payoffs, following Agrawal and Goyal (2011).
-Thompson Sampling with Linear Payoffs is a contextual Thompson Sampling multi-armed bandit
-Policy which assumes the underlying relationship between rewards and contexts
-are linear. Check the reference for more details." />
+<meta property="og:description" content="Contextual Bernoulli multi-armed bandit with at least one context feature active at a time." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -132,18 +128,14 @@ are linear. Check the reference for more details." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Policy: Contextual Thompson Sampling with Linear Payoffs</h1>
-    <small class="dont-index">Source: <a href='https://github.com/Nth-iteration-labs/contextual/blob/master/R/policy_cmab_ts.R'><code>R/policy_cmab_ts.R</code></a></small>
-    <div class="hidden name"><code>ContextualThompsonSamplingPolicy.Rd</code></div>
+    <h1>Bandit: ContextualBinaryBandit</h1>
+    <small class="dont-index">Source: <a href='https://github.com/Nth-iteration-labs/contextual/blob/master/R/bandit_cmab_binary.R'><code>R/bandit_cmab_binary.R</code></a></small>
+    <div class="hidden name"><code>ContextualBinaryBandit.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p><code>ContextualThompsonSamplingPolicy</code> implements Thompson Sampling with Linear
-Payoffs, following Agrawal and Goyal (2011).
-Thompson Sampling with Linear Payoffs is a contextual Thompson Sampling multi-armed bandit
-Policy which assumes the underlying relationship between rewards and contexts
-are linear. Check the reference for more details.</p>
+    <p>Contextual Bernoulli multi-armed bandit with at least one context feature active at a time.</p>
     
     </div>
 
@@ -152,77 +144,64 @@ are linear. Check the reference for more details.</p>
 
     
     <pre>
-policy &lt;- ContextualThompsonSamplingPolicy$new(delta, R, epsilon)
+  bandit &lt;- ContextualBinaryBandit$new(weights)
 </pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
 
     
     <dl class='dl-horizontal'>
-<dt><code>delta</code></dt><dd><p>numeric; 0 &lt; <code>delta</code> &lt;= 1.
-With probability 1 - delta, ContextualThompsonSamplingPolicy satisfies the theoretical regret bound.</p></dd>
-<dt><code>R</code></dt><dd><p>numeric; <code>R</code> &gt;= 0.
-Assume that the residual  \(ri(t) - bi(t)^T \hat{\mu}\) is R-sub-gaussian.
-In this case, \(R^2\) represents the variance for residuals of the linear model \(bi(t)^T\).</p></dd>
-<dt><code>epsilon</code></dt><dd><p>numeric; 0 &lt; <code>epsilon</code> &lt; 1
-If the total trials T is known, we can choose epsilon = 1/ln(T).</p></dd>
+<dt><code>weights</code></dt><dd><p>numeric matrix; <code>d x k</code> matrix with probabilities of reward for <code>d</code> contextual features
+per <code>k</code> arms</p></dd>
 </dl>
     
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     
     <dl class='dl-horizontal'>
-<dt><code>new(...)</code></dt><dd><p>instantiates a new <code>ContextualThompsonSamplingPolicy</code> instance.
-Arguments defined in the Arguments section above.</p></dd>
+    <dt><code>new(weights)</code></dt><dd><p>generates and initializes a new <code>ContextualBinaryBandit</code>
+instance.</p></dd>
+    <dt><code><a href='Bandit.html'>get_context(t)</a></code></dt><dd><p>argument:
+<ul>
+<li><p><code>t</code>: integer, time step <code>t</code>.</p></li>
+</ul>
+returns a named <code>list</code>
+containing the current <code>d x k</code> dimensional matrix <code>context$X</code>,
+the number of arms <code>context$k</code> and the number of features <code>context$d</code>.</p></dd>
+    <dt><code>get_reward(t, context, action)</code></dt><dd><p>arguments:
+<ul>
+<li><p><code>t</code>: integer, time step <code>t</code>.</p></li>
+<li><p><code>context</code>: list, containing the current <code>context$X</code> (d x k context matrix),
+<code>context$k</code> (number of arms) and <code>context$d</code> (number of context features)
+(as set by <code>bandit</code>).</p></li>
+<li><p><code>action</code>:  list, containing <code>action$choice</code> (as set by <code>policy</code>).</p></li>
+</ul>
+returns a named <code>list</code> containing <code>reward$reward</code> and, where computable,
+<code>reward$optimal</code> (used by "oracle" policies and to calculate regret).</p></dd>
 </dl>
-    <dl class='dl-horizontal'>
-<dt><code><a href='Policy.html'>set_parameters(context_params)</a></code></dt><dd><p>initialization of policy parameters, utilising <code>context_params$k</code> (number of arms) and
-<code>context_params$d</code> (number of context features).</p></dd>
-</dl>
-    <dl class='dl-horizontal'>
-<dt><code><a href='Policy.html'>get_action(t,context)</a></code></dt><dd><p>selects an arm based on <code>self$theta</code> and <code>context</code>, returning the index of the selected arm
-in <code>action$choice</code>. The context argument consists of a list with <code>context$k</code> (number of arms),
-<code>context$d</code> (number of features), and the feature matrix <code>context$X</code> with dimensions
-\(d \times k\).</p></dd>
-</dl>
-    <dl class='dl-horizontal'>
-<dt><code><a href='Policy.html'>set_reward(t, context, action, reward)</a></code></dt><dd><p>updates parameter list <code>theta</code> in accordance with the current <code>reward$reward</code>,
-<code>action$choice</code> and the feature matrix <code>context$X</code> with dimensions
-\(d \times k\). Returns the updated <code>theta</code>.</p></dd>
-</dl>
-    
-    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
-
-    <p>Shipra Agrawal, and Navin Goyal. "Thompson Sampling for Contextual Bandits with Linear Payoffs." Advances in Neural Information Processing Systems 24. 2011.</p>
-<p>Implementation follows linthompsamp from <a href='https://github.com/ntucllab/striatum'>https://github.com/ntucllab/striatum</a></p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Core contextual classes: <code><a href='Bandit.html'>Bandit</a></code>, <code><a href='Policy.html'>Policy</a></code>, <code><a href='Simulator.html'>Simulator</a></code>,
 <code><a href='Agent.html'>Agent</a></code>, <code><a href='History.html'>History</a></code>, <code><a href='Plot.html'>Plot</a></code></p>
-<p>Bandit subclass examples: <code><a href='BasicBernoulliBandit.html'>BasicBernoulliBandit</a></code>, <code><a href='ContextualLogitBandit.html'>ContextualLogitBandit</a></code>,  <code><a href='OfflineReplayEvaluatorBandit.html'>OfflineReplayEvaluatorBandit</a></code></p>
-<p>Policy subclass examples: <code><a href='EpsilonGreedyPolicy.html'>EpsilonGreedyPolicy</a></code>, <code>ContextualThompsonSamplingPolicy</code></p></div>
+<p>Bandit subclass examples: <code>ContextualBinaryBandit</code>, <code><a href='ContextualLogitBandit.html'>ContextualLogitBandit</a></code>,  <code><a href='OfflineReplayEvaluatorBandit.html'>OfflineReplayEvaluatorBandit</a></code></p>
+<p>Policy subclass examples: <code><a href='EpsilonGreedyPolicy.html'>EpsilonGreedyPolicy</a></code>, <code><a href='ContextualThompsonSamplingPolicy.html'>ContextualThompsonSamplingPolicy</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='no'>horizon</span>            <span class='kw'>&lt;-</span> <span class='fl'>1000L</span>
-<span class='no'>simulations</span>        <span class='kw'>&lt;-</span> <span class='fl'>10L</span>
+<span class='no'>horizon</span>            <span class='kw'>&lt;-</span> <span class='fl'>100</span>
+<span class='no'>sims</span>               <span class='kw'>&lt;-</span> <span class='fl'>100</span>
 
-<span class='no'>bandit</span>             <span class='kw'>&lt;-</span> <span class='no'>ContextualLogitBandit</span>$<span class='fu'>new</span>(<span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>5</span>, <span class='kw'>d</span> <span class='kw'>=</span> <span class='fl'>5</span>)
+<span class='no'>policy</span>             <span class='kw'>&lt;-</span> <span class='no'>EpsilonGreedyPolicy</span>$<span class='fu'>new</span>(<span class='kw'>epsilon</span> <span class='kw'>=</span> <span class='fl'>0.1</span>)
 
-<span class='no'>delta</span>              <span class='kw'>&lt;-</span> <span class='fl'>0.5</span>
-<span class='no'>R</span>                  <span class='kw'>&lt;-</span> <span class='fl'>0.01</span>
-<span class='no'>epsilon</span>            <span class='kw'>&lt;-</span> <span class='fl'>0.5</span>
+<span class='no'>bandit</span>             <span class='kw'>&lt;-</span> <span class='no'>ContextualBinaryBandit</span>$<span class='fu'>new</span>(<span class='kw'>weights</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0.6</span>, <span class='fl'>0.1</span>, <span class='fl'>0.1</span>))
+<span class='no'>agent</span>              <span class='kw'>&lt;-</span> <span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>policy</span>,<span class='no'>bandit</span>)
 
-<span class='no'>policy</span>             <span class='kw'>&lt;-</span> <span class='no'>ContextualThompsonSamplingPolicy</span>$<span class='fu'>new</span>(<span class='no'>delta</span>, <span class='no'>R</span>, <span class='no'>epsilon</span>)
+<span class='no'>history</span>            <span class='kw'>&lt;-</span> <span class='no'>Simulator</span>$<span class='fu'>new</span>(<span class='no'>agent</span>, <span class='no'>horizon</span>, <span class='no'>sims</span>)$<span class='fu'><a href='Simulator.html'>run</a></span>()
 
-<span class='no'>agent</span>              <span class='kw'>&lt;-</span> <span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>policy</span>, <span class='no'>bandit</span>)
+<span class='fu'>plot</span>(<span class='no'>history</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"cumulative"</span>, <span class='kw'>regret</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-<span class='no'>simulation</span>         <span class='kw'>&lt;-</span> <span class='no'>Simulator</span>$<span class='fu'>new</span>(<span class='no'>agents</span>, <span class='no'>horizon</span>, <span class='no'>simulations</span>)
-<span class='no'>history</span>            <span class='kw'>&lt;-</span> <span class='no'>simulation</span>$<span class='fu'><a href='Simulator.html'>run</a></span>()
-
-<span class='fu'>plot</span>(<span class='no'>history</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"cumulative"</span>, <span class='kw'>regret</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>rate</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -234,8 +213,6 @@ in <code>action$choice</code>. The context argument consists of a list with <cod
       <li><a href="#arguments">Arguments</a></li>
 
       <li><a href="#methods">Methods</a></li>
-
-      <li><a href="#references">References</a></li>
 
       <li><a href="#see-also">See also</a></li>
       

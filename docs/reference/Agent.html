@@ -190,7 +190,7 @@ Returns a list of lists containing <code>context</code>, <code>action</code>, <c
 
     <div class='dont-index'><p>Core contextual classes: <code><a href='Bandit.html'>Bandit</a></code>, <code><a href='Policy.html'>Policy</a></code>, <code><a href='Simulator.html'>Simulator</a></code>,
 <code>Agent</code>, <code><a href='History.html'>History</a></code>, <code><a href='Plot.html'>Plot</a></code></p>
-<p>Bandit subclass examples: <code><a href='BasicBernoulliBandit.html'>BasicBernoulliBandit</a></code>, <code><a href='ContextualLogitBandit.html'>ContextualLogitBandit</a></code>,  <code><a href='OfflinePolicyEvaluatorBandit.html'>OfflinePolicyEvaluatorBandit</a></code></p>
+<p>Bandit subclass examples: <code><a href='BasicBernoulliBandit.html'>BasicBernoulliBandit</a></code>, <code><a href='ContextualLogitBandit.html'>ContextualLogitBandit</a></code>,  <code><a href='OfflineReplayEvaluatorBandit.html'>OfflineReplayEvaluatorBandit</a></code></p>
 <p>Policy subclass examples: <code><a href='EpsilonGreedyPolicy.html'>EpsilonGreedyPolicy</a></code>, <code><a href='ContextualThompsonSamplingPolicy.html'>ContextualThompsonSamplingPolicy</a></code></p></div>
     
 
@@ -203,8 +203,7 @@ Returns a list of lists containing <code>context</code>, <code>action</code>, <c
 
   <span class='no'>history</span>   <span class='kw'>&lt;-</span> <span class='no'>Simulator</span>$<span class='fu'>new</span>(<span class='kw'>agents</span> <span class='kw'>=</span> <span class='no'>agent</span>,
                              <span class='kw'>horizon</span> <span class='kw'>=</span> <span class='fl'>10</span>,
-                             <span class='kw'>simulations</span> <span class='kw'>=</span> <span class='fl'>10</span>,
-                             <span class='kw'>progress_file</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)$<span class='fu'><a href='Simulator.html'>run</a></span>()
+                             <span class='kw'>simulations</span> <span class='kw'>=</span> <span class='fl'>10</span>)$<span class='fu'><a href='Simulator.html'>run</a></span>()
 <span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

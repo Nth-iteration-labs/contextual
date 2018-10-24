@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Bandit: ContextualBernoulliBandit — ContextualBernoulliBandit • contextual</title>
+<title>Bandit: Naive Contextual Bernouilli Bandit — ContextualBernoulliBandit • contextual</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -36,9 +36,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Bandit: ContextualBernoulliBandit — ContextualBernoulliBandit" />
+<meta property="og:title" content="Bandit: Naive Contextual Bernouilli Bandit — ContextualBernoulliBandit" />
 
-<meta property="og:description" content="Contextual Bernoulli multi-armed bandit with at least one context feature active at a time." />
+<meta property="og:description" content="Contextual Bernoulli multi-armed bandit with one context feature active per t." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -128,14 +128,14 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Bandit: ContextualBernoulliBandit</h1>
+    <h1>Bandit: Naive Contextual Bernouilli Bandit</h1>
     <small class="dont-index">Source: <a href='https://github.com/Nth-iteration-labs/contextual/blob/master/R/bandit_cmab_bernoulli.R'><code>R/bandit_cmab_bernoulli.R</code></a></small>
     <div class="hidden name"><code>ContextualBernoulliBandit.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Contextual Bernoulli multi-armed bandit with at least one context feature active at a time.</p>
+    <p>Contextual Bernoulli multi-armed bandit with one context feature active per t.</p>
     
     </div>
 
@@ -184,7 +184,7 @@ returns a named <code>list</code> containing <code>reward$reward</code> and, whe
 
     <div class='dont-index'><p>Core contextual classes: <code><a href='Bandit.html'>Bandit</a></code>, <code><a href='Policy.html'>Policy</a></code>, <code><a href='Simulator.html'>Simulator</a></code>,
 <code><a href='Agent.html'>Agent</a></code>, <code><a href='History.html'>History</a></code>, <code><a href='Plot.html'>Plot</a></code></p>
-<p>Bandit subclass examples: <code>ContextualBernoulliBandit</code>, <code><a href='ContextualLogitBandit.html'>ContextualLogitBandit</a></code>,  <code><a href='OfflinePolicyEvaluatorBandit.html'>OfflinePolicyEvaluatorBandit</a></code></p>
+<p>Bandit subclass examples: <code>ContextualBernoulliBandit</code>, <code><a href='ContextualLogitBandit.html'>ContextualLogitBandit</a></code>,  <code><a href='OfflineReplayEvaluatorBandit.html'>OfflineReplayEvaluatorBandit</a></code></p>
 <p>Policy subclass examples: <code><a href='EpsilonGreedyPolicy.html'>EpsilonGreedyPolicy</a></code>, <code><a href='ContextualThompsonSamplingPolicy.html'>ContextualThompsonSamplingPolicy</a></code></p></div>
     
 

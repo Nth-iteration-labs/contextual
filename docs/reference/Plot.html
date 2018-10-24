@@ -172,12 +172,17 @@ Methods are descrived in the Methods section above.</p></dd>
 <dt><code>regret</code></dt><dd><p><code>(logical, TRUE)</code> Plot policy regret (default, TRUE) or reward (FALSE)?</p></dd>
 <dt><code>rate</code></dt><dd><p>(<code>logical, TRUE)</code> If rate is TRUE, the rate of regret or reward is plotted.</p></dd>
 <dt><code>limit_agents</code></dt><dd><p><code>(list , NULL)</code> Limit plotted agents to the agents in the list.</p></dd>
+<dt><code>limit_context</code></dt><dd><p><code>(integer vector , NULL)</code> Only plots data of context(s) where vector equals 1 in
+as.vector(context), excludes where 0 or unspecified.</p></dd>
 <dt><code>no_par</code></dt><dd><p><code>(logical, FALSE)</code> If no_par is TRUE, Plot() does not set or adjust plotting parameters itself.
 This makes it possible to set custom plotting parameters through R's par() function.</p></dd>
 <dt><code>legend</code></dt><dd><p><code>(logical, TRUE)</code> Shows the legend when TRUE (default).</p></dd>
 <dt><code>legend_title</code></dt><dd><p><code>(character , NULL)</code> Sets a custom legend title.</p></dd>
-<dt><code>legend_labels</code></dt><dd><p><code>(list , NULL)</code> Set legend labels to custom values as specified in list.</p></dd>
+<dt><code>legend_labels</code></dt><dd><p><code>(character list , NULL)</code> Sets legend labels to custom values as specified in list.</p></dd>
 <dt><code>legend_border</code></dt><dd><p><code>(logical , NULL)</code> When TRUE, the legend is borderless.</p></dd>
+<dt><code>legend_position</code></dt><dd><p><code>(character , "topleft")</code> a single keyword from the list "bottomright", "bottom", "bottomleft",
+"left", "topleft", "top", "topright", "right" and "center". This places the legend on the inside of
+the plot frame at the given location.</p></dd>
 <dt><code>xlim</code></dt><dd><p><code>(c(integer,integer), NULL)</code> Sets x-axis limits.</p></dd>
 <dt><code>ylim</code></dt><dd><p><code>(c(integer,integer), NULL)</code> Sets y-axis limits.</p></dd>
 <dt><code>use_colors</code></dt><dd><p><code>(logical, TRUE)</code> If use_colors is FALSE, plots will be in grayscale.
@@ -199,13 +204,13 @@ the variance, standard deviation, or 95<!-- % confidence interval will be added 
 
     <div class='dont-index'><p>Core contextual classes: <code><a href='Bandit.html'>Bandit</a></code>, <code><a href='Policy.html'>Policy</a></code>, <code><a href='Simulator.html'>Simulator</a></code>,
 <code><a href='Agent.html'>Agent</a></code>, <code><a href='History.html'>History</a></code>, <code>Plot</code></p>
-<p>Bandit subclass examples: <code><a href='BasicBernoulliBandit.html'>BasicBernoulliBandit</a></code>, <code><a href='ContextualLogitBandit.html'>ContextualLogitBandit</a></code>,  <code><a href='OfflinePolicyEvaluatorBandit.html'>OfflinePolicyEvaluatorBandit</a></code></p>
+<p>Bandit subclass examples: <code><a href='BasicBernoulliBandit.html'>BasicBernoulliBandit</a></code>, <code><a href='ContextualLogitBandit.html'>ContextualLogitBandit</a></code>,  <code><a href='OfflineReplayEvaluatorBandit.html'>OfflineReplayEvaluatorBandit</a></code></p>
 <p>Policy subclass examples: <code><a href='EpsilonGreedyPolicy.html'>EpsilonGreedyPolicy</a></code>, <code><a href='ContextualThompsonSamplingPolicy.html'>ContextualThompsonSamplingPolicy</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='no'>bandit</span> <span class='kw'>&lt;-</span> <span class='no'>ContextualBernoulliPrecachingBandit</span>$<span class='fu'>new</span>(<span class='kw'>weights</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0.9</span>, <span class='fl'>0.1</span>, <span class='fl'>0.1</span>))
+<span class='no'>bandit</span> <span class='kw'>&lt;-</span> <span class='no'>ContextualPrecachingBandit</span>$<span class='fu'>new</span>(<span class='kw'>weights</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0.9</span>, <span class='fl'>0.1</span>, <span class='fl'>0.1</span>))
 
 <span class='no'>agents</span> <span class='kw'>&lt;-</span> <span class='fu'>list</span>(<span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>RandomPolicy</span>$<span class='fu'>new</span>(), <span class='no'>bandit</span>),
                <span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>OraclePolicy</span>$<span class='fu'>new</span>(), <span class='no'>bandit</span>),

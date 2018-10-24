@@ -183,19 +183,27 @@ full data file. This can be of use with (a first) analysis of very large data fi
 <dt><code>get_data_table()</code></dt><dd><p>Returns the <code>History</code> log as a <code>data.table</code>.</p></dd>
 <dt><code>set_data_table(dt)</code></dt><dd><p>Sets the <code>History</code> log with the data in <code>data.table</code> <code>dt</code>.</p></dd>
 <dt><code>clear_data_table()</code></dt><dd><p>Clears the <code>History</code> log.</p></dd>
+<dt><code>save_csv(filename = NA, context_to_columns = FALSE)</code></dt><dd><p>Saves History data to csv file. When context_to_columns is TRUE, the "context" column will
+be split over multiple columns X1 to X...</p></dd>
 <dt><code>delete_empty_rows()</code></dt><dd><p>Deletes all empty rows in the <code>History</code> log and re-indexes the <code>t</code> column grouped
 by agent and simulation.</p></dd>
 <dt><code>reindex(truncate = TRUE)</code></dt><dd><p>Removes empty rows from the <code>History</code> log, reindexes the <code>t</code> column, and,
 if <code>truncate</code> is <code>TRUE</code>, truncates the resulting data to the shortest simulation
 grouped by agent and simulation.</p></dd>
+<dt><code>reindex(truncate = TRUE)</code></dt><dd><p>Removes empty rows from the <code>History</code> log, reindexes the <code>t</code> column, and,
+if <code>truncate</code> is <code>TRUE</code>, truncates the resulting data to the shortest simulation
+grouped by agent and simulation.</p></dd>
 <dt><code>print_data()</code></dt><dd><p>Prints a summary of the <code>History</code> log.</p></dd>
+<dt><code>data</code></dt><dd><p>Active binding, read access to History's internal data.table.</p></dd>
+<dt><code>cumulative</code></dt><dd><p>Active binding, read access to cumulative data by name through $ accessor.</p></dd>
+<dt><code>meta</code></dt><dd><p>Active binding, read access to meta data by name through $ accessor.</p></dd>
 </dl>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Core contextual classes: <code><a href='Bandit.html'>Bandit</a></code>, <code><a href='Policy.html'>Policy</a></code>, <code><a href='Simulator.html'>Simulator</a></code>,
 <code><a href='Agent.html'>Agent</a></code>, <code>History</code>, <code><a href='Plot.html'>Plot</a></code></p>
-<p>Bandit subclass examples: <code><a href='BasicBernoulliBandit.html'>BasicBernoulliBandit</a></code>, <code><a href='ContextualLogitBandit.html'>ContextualLogitBandit</a></code>,  <code><a href='OfflinePolicyEvaluatorBandit.html'>OfflinePolicyEvaluatorBandit</a></code></p>
+<p>Bandit subclass examples: <code><a href='BasicBernoulliBandit.html'>BasicBernoulliBandit</a></code>, <code><a href='ContextualLogitBandit.html'>ContextualLogitBandit</a></code>,  <code><a href='OfflineReplayEvaluatorBandit.html'>OfflineReplayEvaluatorBandit</a></code></p>
 <p>Policy subclass examples: <code><a href='EpsilonGreedyPolicy.html'>EpsilonGreedyPolicy</a></code>, <code><a href='ContextualThompsonSamplingPolicy.html'>ContextualThompsonSamplingPolicy</a></code></p></div>
     
 
@@ -208,8 +216,7 @@ grouped by agent and simulation.</p></dd>
 
   <span class='no'>history</span>   <span class='kw'>&lt;-</span> <span class='no'>Simulator</span>$<span class='fu'>new</span>(<span class='kw'>agents</span> <span class='kw'>=</span> <span class='no'>agent</span>,
                              <span class='kw'>horizon</span> <span class='kw'>=</span> <span class='fl'>10</span>,
-                             <span class='kw'>simulations</span> <span class='kw'>=</span> <span class='fl'>10</span>,
-                             <span class='kw'>progress_file</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)$<span class='fu'><a href='Simulator.html'>run</a></span>()
+                             <span class='kw'>simulations</span> <span class='kw'>=</span> <span class='fl'>10</span>)$<span class='fu'><a href='Simulator.html'>run</a></span>()
 
   <span class='fu'>summary</span>(<span class='no'>history</span>)
 
