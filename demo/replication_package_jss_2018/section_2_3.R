@@ -1,9 +1,9 @@
 library(contextual)
 
-bandit    <- BasicBernoulliBandit$new(weights = c(0.9, 0.1, 0.1))
+bandit    <- ContextualBernoulliBandit$new(weights = matrix(c(0.5, 0.2, 0.1), nrow = 1))
 policy    <- EpsilonGreedyPolicy$new(0.1)
 agent     <- Agent$new(policy,bandit)
-simulator <- Simulator$new(agents = agent, simulations = 10000, horizon = 40)
+simulator <- Simulator$new(agents = agent, simulations = 10000, horizon = 100)
 history   <- simulator$run()
 
 summary(history)

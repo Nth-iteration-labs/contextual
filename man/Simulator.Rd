@@ -133,8 +133,7 @@ Active binding, read access to Simulator's History instance.
 
   history   <- Simulator$new(agents = agent,
                              horizon = 10,
-                             simulations = 10,
-                             progress_file = TRUE)$run()
+                             simulations = 10)$run()
 
   summary(history)
 

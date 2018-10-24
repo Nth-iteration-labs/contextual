@@ -5,7 +5,7 @@ simulations        <- 1000
 weights            <- matrix(c(0.8, 0.2, 0.2), 1, 3)
 
 policy             <- EpsilonFirstPolicy$new(epsilon = 0.5, N = horizon)
-bandit             <- ContextualBasicBandit$new(weights = weights)
+bandit             <- ContextualBernoulliBandit$new(weights = weights)
 
 agent              <- Agent$new(policy,bandit)
 

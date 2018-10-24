@@ -89,8 +89,7 @@ returns current time step \code{t}.
 
   history   <- Simulator$new(agents = agent,
                              horizon = 10,
-                             simulations = 10,
-                             progress_file = TRUE)$run()
+                             simulations = 10)$run()
 }
 }
 \seealso{

@@ -2,9 +2,9 @@
 % Please edit documentation in R/bandit_cmab_bernoulli.R
 \name{ContextualBernoulliBandit}
 \alias{ContextualBernoulliBandit}
-\title{Bandit: ContextualBernoulliBandit}
+\title{Bandit: Naive Contextual Bernouilli Bandit}
 \description{
-Contextual Bernoulli multi-armed bandit with at least one context feature active at a time.
+Contextual Bernoulli multi-armed bandit with one context feature active per t.
 }
 \section{Usage}{
 

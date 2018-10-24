@@ -6,15 +6,13 @@ ContextualBernoulliBandit <- R6::R6Class(
     weights = NULL,
     class_name = "ContextualBernoulliBandit",
     initialize = function(weights) {
-      self$weights     <- weights
-      self$d           <- nrow(weights)
-      self$k           <- ncol(weights)
+      self$weights     <- weights        # d x k weight matrix
+      self$d           <- nrow(weights)  # d features
+      self$k           <- ncol(weights)  # k arms
     },
     get_context = function(t) {
-      # self$d random features on (1) or off (0)
-      Xa <- sample(c(0,1), self$d, replace=TRUE)
-      # make sure at least one feature on (1)
-      Xa[sample(1:self$d,1)] <- 1
+      # generate d dimensional feature vector, one random feature active at a time
+      Xa <- sample(c(1,rep(0,self$d-1)))
       context <- list(
         X = Xa,
         k = self$k,
@@ -22,10 +20,14 @@ ContextualBernoulliBandit <- R6::R6Class(
       )
     },
     get_reward = function(t, context, action) {
+      # which arm was selected?
       arm            <- action$choice
+      # d dimensional feature vector for chosen arm
       Xa             <- context$X
-      average_weight <- Xa %*% self$weights / sum(Xa)
-      rewards        <- as.double(average_weight > runif(self$k))
+      # weights of active context
+      weight         <- Xa %*% self$weights
+      # assign rewards for active context with weighted probs
+      rewards        <- as.double(weight > runif(self$k))
       optimal_arm    <- which_max_tied(rewards)
       reward  <- list(
         reward                   = rewards[arm],
@@ -36,9 +38,9 @@ ContextualBernoulliBandit <- R6::R6Class(
   )
 )
 
-#' Bandit: ContextualBernoulliBandit
+#' Bandit: Naive Contextual Bernouilli Bandit
 #'
-#' Contextual Bernoulli multi-armed bandit with at least one context feature active at a time.
+#' Contextual Bernoulli multi-armed bandit with one context feature active per t.
 #'
 #' @name ContextualBernoulliBandit
 #'

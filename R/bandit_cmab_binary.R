@@ -1,18 +1,20 @@
  #' @export
-ContextualBasicBandit <- R6::R6Class(
+ContextualBinaryBandit <- R6::R6Class(
   inherit = Bandit,
   class = FALSE,
   public = list(
     weights = NULL,
-    class_name = "ContextualBasicBandit",
+    class_name = "ContextualBinaryBandit",
     initialize = function(weights) {
-      self$weights     <- weights        # d x k weight matrix
-      self$d           <- nrow(weights)  # d features
-      self$k           <- ncol(weights)  # k arms
+      self$weights     <- weights
+      self$d           <- nrow(weights)
+      self$k           <- ncol(weights)
     },
     get_context = function(t) {
-      # generate d dimensional feature vector, one random feature active at a time
-      Xa <- sample(c(1,rep(0,self$d-1)))
+      # self$d random features on (1) or off (0)
+      Xa <- sample(c(0,1), self$d, replace=TRUE)
+      # make sure at least one feature on (1)
+      Xa[sample(1:self$d,1)] <- 1
       context <- list(
         X = Xa,
         k = self$k,
@@ -20,14 +22,10 @@ ContextualBasicBandit <- R6::R6Class(
       )
     },
     get_reward = function(t, context, action) {
-      # which arm was selected?
       arm            <- action$choice
-      # d dimensional feature vector for chosen arm
       Xa             <- context$X
-      # weights of active context
-      weight         <- Xa %*% self$weights
-      # assign rewards for active context with weighted probs
-      rewards        <- as.double(weight > runif(self$k))
+      average_weight <- Xa %*% self$weights / sum(Xa)
+      rewards        <- as.double(average_weight > runif(self$k))
       optimal_arm    <- which_max_tied(rewards)
       reward  <- list(
         reward                   = rewards[arm],
@@ -38,15 +36,15 @@ ContextualBasicBandit <- R6::R6Class(
   )
 )
 
-#' Bandit: Naive Contextual Bernouilli Bandit
+#' Bandit: ContextualBinaryBandit
 #'
-#' Contextual Bernoulli multi-armed bandit with one context feature active per t.
+#' Contextual Bernoulli multi-armed bandit with at least one context feature active at a time.
 #'
-#' @name ContextualBasicBandit
+#' @name ContextualBinaryBandit
 #'
 #' @section Usage:
 #' \preformatted{
-#'   bandit <- ContextualBasicBandit$new(weights)
+#'   bandit <- ContextualBinaryBandit$new(weights)
 #' }
 #'
 #' @section Arguments:
@@ -62,7 +60,7 @@ ContextualBasicBandit <- R6::R6Class(
 #'
 #' \describe{
 #'
-#'   \item{\code{new(weights)}}{ generates and initializes a new \code{ContextualBasicBandit}
+#'   \item{\code{new(weights)}}{ generates and initializes a new \code{ContextualBinaryBandit}
 #'    instance. }
 #'
 #'   \item{\code{get_context(t)}}{
@@ -95,7 +93,7 @@ ContextualBasicBandit <- R6::R6Class(
 #' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
-#' Bandit subclass examples: \code{\link{ContextualBasicBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflineReplayEvaluatorBandit}}
+#' Bandit subclass examples: \code{\link{ContextualBinaryBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflineReplayEvaluatorBandit}}
 #'
 #' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 #'
@@ -107,7 +105,7 @@ ContextualBasicBandit <- R6::R6Class(
 #'
 #' policy             <- EpsilonGreedyPolicy$new(epsilon = 0.1)
 #'
-#' bandit             <- ContextualBasicBandit$new(weights = c(0.6, 0.1, 0.1))
+#' bandit             <- ContextualBinaryBandit$new(weights = c(0.6, 0.1, 0.1))
 #' agent              <- Agent$new(policy,bandit)
 #'
 #' history            <- Simulator$new(agent, horizon, sims)$run()

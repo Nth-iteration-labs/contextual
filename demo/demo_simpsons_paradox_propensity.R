@@ -74,7 +74,7 @@ weights                           <- matrix( c(0.4, 0.3,    #-----> Context: Mal
 # Run a basic random policy, assigning both males and females randomly to either Sport or Movie articles.
 
 policy                            <- RandomPolicy$new()
-bandit                            <- ContextualBasicBandit$new(weights = weights)
+bandit                            <- ContextualBernoulliBandit$new(weights = weights)
 agent                             <- Agent$new(policy, bandit, "Random")
 
 simulation                        <- Simulator$new(agent, horizon, simulations, save_context = TRUE, do_parallel = FALSE)
@@ -141,7 +141,7 @@ BiasedPolicy                      <- R6::R6Class(
 # Create offline data once again - but this time round, it will be biased.
 
 policy                            <- BiasedPolicy$new()
-bandit                            <- ContextualBasicBandit$new(weights = weights)
+bandit                            <- ContextualBernoulliBandit$new(weights = weights)
 agent                             <- Agent$new(policy, bandit, "Random")
 
 simulation                        <- Simulator$new(agent, horizon, simulations, save_context = TRUE, do_parallel = FALSE)

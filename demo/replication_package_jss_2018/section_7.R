@@ -1,39 +1,31 @@
 library(contextual)
 library(data.table)
-library(here)
 
-setwd(here::here("demo","replication_package_jss_2018"))
-
+# Define Replay Bandit
 OfflineReplayEvaluatorBandit <- R6::R6Class(
   inherit = Bandit,
-  class = FALSE,
   private = list(
     S = NULL
   ),
   public = list(
     class_name = "OfflineReplayEvaluatorBandit",
-    randomize = NULL,
-    initialize   = function(data_stream, k, d) {
-      self$k <- k               # Number of arms (integer)
-      self$d <- d               # Dimension context features (integer)
-      private$S <- data_stream  # Data stream, as a data.table
-    },
-    post_initialization = function() {
-      private$S <- private$S[sample(nrow(private$S))]
+    initialize   = function(offline_data, k, d) {
+      self$k <- k                 # Number of arms
+      self$d <- d                 # Context feature vector dimensions
+      private$S <- offline_data   # Logged events
     },
     get_context = function(index) {
       context <- list(
         k = self$k,
         d = self$d,
-        X = matrix(private$S$daypart[[index]], self$d, self$k)
+        X = private$S$context[[index]]
       )
       context
     },
     get_reward = function(index, context, action) {
-      reward           <- as.double(private$S$reward[[index]])
       if (private$S$choice[[index]] == action$choice) {
         list(
-          reward = reward
+          reward = as.double(private$S$reward[[index]])
         )
       } else {
         NULL
@@ -42,18 +34,49 @@ OfflineReplayEvaluatorBandit <- R6::R6Class(
   )
 )
 
-data_url <- "https://raw.githubusercontent.com"
-data_url <- paste0(data_url,"/Nth-iteration-labs/contextual_data/master")
-data_url <- paste0(data_url,"/data_persuasion_api/persuasion_api_daypart.csv")
+# Import personalization data-set
+url1        <- "https://raw.githubusercontent.com/"
+url2        <- "Nth-iteration-labs/contextual_data/master/"
+url3        <- "data_cmab_basic/dataset.txt"
+datafile    <- fread(paste0(url1,url2,url3))
 
-data     <- fread(data_url)
+# Clean up datafile
+datafile[, context := as.list(as.data.frame(t(datafile[, 3:102])))]
+datafile[, (3:102) := NULL]
+datafile[, t := .I]
+datafile[, sim := 1]
+datafile[, agent := "linucb"]
+setnames(datafile, c("V1", "V2"), c("choice", "reward"))
 
-horizon  <- nrow(data)
-sims     <- 10L
-bandit   <- OfflineReplayEvaluatorBandit$new(data, k = 4, d = 1)
-agents   <- list(Agent$new(LinUCBHybridPolicy$new(0.6), bandit))
+# Set simulation parameters.
+simulations <- 1
+horizon     <- nrow(datafile)
 
-history  <- Simulator$new(agents, horizon, sims, reindex = TRUE)$run()
+# Initiate Replay bandit with 10 arms and 100 context dimensions
+log_S       <- datafile
+bandit      <- OfflineReplayEvaluatorBandit$new(log_S, k = 10, d = 100)
 
-plot(history, type = "cumulative", regret = FALSE, smooth = TRUE,
-     traces = TRUE, rate = TRUE, ylim = c(0.0105, 0.014), legend = FALSE)
+# Define agents.
+agents      <-
+  list(Agent$new(LinUCBDisjointOptimizedPolicy$new(0.01), bandit, "alpha = 0.01"),
+       Agent$new(LinUCBDisjointOptimizedPolicy$new(0.05), bandit, "alpha = 0.05"),
+       Agent$new(LinUCBDisjointOptimizedPolicy$new(0.1), bandit, "alpha = 0.1"),
+       Agent$new(LinUCBDisjointOptimizedPolicy$new(1.0), bandit, "alpha = 1.0"))
+
+# Initialize the simulation.
+simulation  <-
+  Simulator$new(
+    agents           = agents,
+    simulations      = simulations,
+    horizon          = horizon,
+    save_context     = TRUE,
+    reindex          = TRUE
+  )
+
+# Run the simulation.
+linucb_sim  <- simulation$run()
+
+# plot the results
+par(mfrow = c(1, 1), mar = c(4, 4, 0.5, 1), cex=1.3)
+plot(linucb_sim, type = "cumulative", regret = FALSE, legend_title = "LinUCB",
+     rate = TRUE, legend_position = "bottomright")

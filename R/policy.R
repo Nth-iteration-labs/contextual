@@ -43,9 +43,17 @@ Policy <- R6::R6Class(
 #'
 #' Parent or superclass of all \code{\{contextual\}} \code{Policy} subclasses.
 #'
-#' On every \emph{t} = \{1, \ldots, T\}, a policy receives a \code{d x k} dimensional matrix
+#' On every \emph{t} = \{1, \ldots, T\}, a policy receives \code{d} dimensional feature vector or
+#' \code{d x k} dimensional matrix
 #' \code{context$X}*, the current number of \code{\link{Bandit}} arms in \code{context$k}, and the current
-#' number of contextual features in \code{context$d}. It has to compute which of the \code{k}
+#' number of contextual features in \code{context$d}.
+#'
+#' To make sure a policy supports both contextual feature vectors and matrices in \code{context$X}, it is
+#' suggested any contextual policy makes use of \pkg{contextual}'s \code{get_arm_context(context$X, arm)}
+#' utility function to obtain the current context for a particular arm, \code{and get_full_context(X, d, k)}
+#' where a policy needs to obtain of the full \code{d x k} matrix.
+#'
+#' It has to compute which of the \code{k}
 #' \code{\link{Bandit}} arms to pull by taking into account this contextual information plus the policy's
 #' current parameter values stored in the named list \code{theta}. On selecting an arm, the policy then
 #' returns its index as \code{action$choice}.

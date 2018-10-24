@@ -199,7 +199,7 @@ Simulator <- R6::R6Class(
           step <- list()
           for (t in 1L:horizon) {
             step <- sim_agent$do_step()
-            if (!is.null(step[[3]])) {                         #reward?
+            if (!is.null(step[[3]])) {
               local_history$insert(
                 index,                                         #index
                 t,                                             #t

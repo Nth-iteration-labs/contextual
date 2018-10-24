@@ -7,8 +7,9 @@ bandit             <- BasicBernoulliBandit$new(weights = c(0.6, 0.1, 0.1))
 agent              <- Agent$new(policy,bandit)
 
 simulator          <- Simulator$new(agents      = agent,
-                                   horizon     = 100,
-                                   simulations = 1000)
+                                    do_parallel = TRUE,
+                                    horizon     = 100,
+                                    simulations = 1000)
 
 
 ##  Option 1: save history object, extract data.table  -------------------------------------------------------
@@ -32,5 +33,4 @@ plot(simulator$history, type = "cumulative", regret = TRUE, disp = "ci",
      traces = TRUE, smooth = FALSE, interval = 1)
 
 summary(simulator$history)
-
 simulator$history$data

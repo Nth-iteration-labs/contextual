@@ -7,7 +7,7 @@ simulations <- 10000
 # Define the probability that each ad will be clicked.
 click_probabilities <- matrix(c(0.6, 0.4, 0.2), nrow = 1, ncol = 3, byrow = TRUE)
 # Initialize a SyntheticBandit, which takes probabilites per arm for an argument.
-bandit <- ContextualBasicBandit$new(weights = click_probabilities)
+bandit <- ContextualBernoulliBandit$new(weights = click_probabilities)
 # Initialize EpsilonGreedyPolicy with a 40% exploiration rate.
 eg_policy <- EpsilonGreedyPolicy$new(epsilon = 0.4)
 # Initialize EpsilonFirstPolicy with a .25 x 400 = 100 step exploration period.

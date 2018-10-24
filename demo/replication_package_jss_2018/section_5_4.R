@@ -10,7 +10,7 @@ weights     <- matrix(c(0.6, 0.2, 0.2,     # d=1  -> rows represent
 
                       nrow = 3, ncol = 3, byrow = TRUE)
 
-bandit      <- ContextualBasicBandit$new(weights = weights)
+bandit      <- ContextualBernoulliBandit$new(weights = weights)
 
 eg_policy   <- EpsilonGreedyPolicy$new(0.1)
 lucb_policy <- LinUCBDisjointPolicy$new(0.6)

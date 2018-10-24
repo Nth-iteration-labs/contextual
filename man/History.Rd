@@ -126,8 +126,7 @@ Active binding, read access to meta data by name through $ accessor.
 
   history   <- Simulator$new(agents = agent,
                              horizon = 10,
-                             simulations = 10,
-                             progress_file = TRUE)$run()
+                             simulations = 10)$run()
 
   summary(history)
 

@@ -1,54 +1,36 @@
 library(contextual)
 library(data.table)
 
-################ Phase I - Importing and parsing linucb data #############
+# Import personalization data-set
+url1        <- "https://raw.githubusercontent.com/"
+url2        <- "Nth-iteration-labs/contextual_data/master/"
+url3        <- "data_cmab_basic/dataset.txt"
+datafile    <- fread(paste0(url1,url2,url3))
 
-# import linucb data
+# Clean up datafile
+datafile[, context := as.list(as.data.frame(t(datafile[, 3:102])))]
+datafile[, (3:102) := NULL]
+datafile[, t := .I]
+datafile[, sim := 1]
+datafile[, agent := "linucb"]
+setnames(datafile, c("V1", "V2"), c("choice", "reward"))
 
-url         <- "https://raw.githubusercontent.com/Nth-iteration-labs/contextual_data/master/data_cmab_basic/"
-file        <- "dataset.txt"
-linucb_dt   <- fread(paste0(url,file))
-
-# retrieve number of rows  (which equals the horizon)
-
-horizon     <- nrow(linucb_dt)
-
-# move all context columns to context vectors
-
-linucb_dt[, context := as.list(as.data.frame(t(linucb_dt[, 3:102])))]
-linucb_dt[, (3:102) := NULL]
-
-# add t, sim and agent columns
-
-linucb_dt[, t := .I]
-linucb_dt[, sim := 1]
-linucb_dt[, agent := "linucb"]
-
-# name choice and reward columns
-
-setnames(linucb_dt, c("V1", "V2"), c("choice", "reward"))
-
-################ Phase II - Running Li Bandit ############################
-
+# Set simulation parameters.
 simulations <- 1
-horizon     <- horizon
+horizon     <- nrow(datafile)
 
-# initiate Li bandit, with 10 arms, and 100 dimensions
+# Initiate Replay bandit with 10 arms and 100 context dimensions
+log_S       <- datafile
+bandit      <- OfflineReplayEvaluatorBandit$new(log_S, k = 10, d = 100)
 
-log_S       <- linucb_dt
-
-bandit      <- OfflineReplayEvaluatorBandit$new(offline_data = log_S, k = 10, d = 100)
-
-# define two LinUCBDisjointSmPolicy agents
-
+# Define agents.
 agents      <-
-  list(Agent$new(LinUCBDisjointOptimizedPolicy$new(0.01), bandit, name = "LinUCB alpha = 0.01"),
-       Agent$new(LinUCBDisjointOptimizedPolicy$new(0.05), bandit, name = "LinUCB alpha = 0.05"),
-       Agent$new(LinUCBDisjointOptimizedPolicy$new(0.1),  bandit, name = "LinUCB alpha = 0.1"),
-       Agent$new(LinUCBDisjointOptimizedPolicy$new(1.0),  bandit, name = "LinUCB alpha = 1.0"))
+  list(Agent$new(LinUCBDisjointOptimizedPolicy$new(0.01), bandit, "alpha = 0.01"),
+       Agent$new(LinUCBDisjointOptimizedPolicy$new(0.05), bandit, "alpha = 0.05"),
+       Agent$new(LinUCBDisjointOptimizedPolicy$new(0.1), bandit, "alpha = 0.1"),
+       Agent$new(LinUCBDisjointOptimizedPolicy$new(1.0), bandit, "alpha = 1.0"))
 
-# define the simulation
-
+# Initialize the simulation.
 simulation  <-
   Simulator$new(
     agents           = agents,
@@ -58,21 +40,9 @@ simulation  <-
     reindex          = TRUE
   )
 
-# run the simulation
+# Run the simulation.
 linucb_sim  <- simulation$run()
 
-################ Phase III - Take a look at the results ##################
-
 # plot the results
-
-plot(linucb_sim,
-     regret          = FALSE,
-     rate            = TRUE,
-     legend_position = "bottomright",
-     type            = "cumulative")
-
-linucb_sim$save_csv(NA,context_to_columns = TRUE)
-
-dt          <- linucb_sim$get_data_table()
-
-df          <- linucb_sim$get_data_frame(context_to_columns = TRUE)
+plot(linucb_sim, type = "cumulative", regret = FALSE,
+     rate = TRUE, legend_position = "bottomright")
