@@ -10,8 +10,7 @@ New submission.
   * Fedora Linux, R-devel, clang, gfortran
   * Ubuntu Linux 16.04 LTS, R-release, GCC
   * Windows Server 2008 R2 SP1, R-devel, 32/64 bit
-
-* win-builder (devel and release)
+* win-builder (devel, oldrelease and release)
 
 ## R CMD check results
 

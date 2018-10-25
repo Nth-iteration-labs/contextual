@@ -16,7 +16,6 @@ Encoding: UTF-8
 Byte-Compile: yes
 LazyData: true
 RoxygenNote: 6.1.0
-Remotes: lionel-/vdiffr
 Imports:
     R6 (>= 2.3.0),
     data.table,
@@ -30,7 +29,6 @@ Imports:
 Suggests:
     testthat,
     covr,
-    vdiffr,
     knitr,
     here,
     rmarkdown,
