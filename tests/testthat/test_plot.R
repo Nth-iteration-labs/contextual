@@ -7,7 +7,7 @@ test_that("test plots", {
   # debug using: print(gdtools::version_freetype())
   # waiting for new release before test, now:
 
-  skip()
+  skip("CRAN release versions skip all vdiffr test code.")
 
   #skip_on_cran()
   #skip_on_bioc()
