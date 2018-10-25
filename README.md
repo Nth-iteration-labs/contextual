@@ -6,7 +6,7 @@ Contextual: Multi-Armed Bandits in R
 
 * [AppVeyor: passing](https://ci.appveyor.com/project/robinvanemden/contextual)
 * [Travis CI: passing](https://travis-ci.org/Nth-iteration-labs/contextual)
-* [Codecov: 97% coverage](https://codecov.io/gh/Nth-iteration-labs/contextual)
+* [Codecov: 96% coverage](https://codecov.io/gh/Nth-iteration-labs/contextual)
 
 Overview
 --------
