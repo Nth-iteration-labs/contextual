@@ -28,6 +28,7 @@ Imports:
     checkmate
 Suggests:
     testthat,
+    vdiffr,
     covr,
     knitr,
     here,
