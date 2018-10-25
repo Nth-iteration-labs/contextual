@@ -13,7 +13,6 @@ Description: Facilitates the simulation and evaluation of context-free
     new bandit algorithms and policies.
 License: GPL-3 + file LICENSE
 Encoding: UTF-8
-Byte-Compile: yes
 LazyData: true
 RoxygenNote: 6.1.0
 Imports:
