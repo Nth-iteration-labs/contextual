@@ -7,11 +7,11 @@ test_that("test plots", {
   # debug using: print(gdtools::version_freetype())
   # waiting for new release before test, now:
 
-  skip("CRAN release versions skip all vdiffr test code.")
+  # skip("CRAN release versions skip all vdiffr test code.")
 
-  #skip_on_cran()
-  #skip_on_bioc()
-  #skip_if_not_installed("vdiffr")
+  skip_on_cran()
+  skip_on_bioc()
+  skip_if_not_installed("vdiffr")
 
   bandit             <-
     ContextualPrecachingBandit$new(weights = c(0.9, 0.1, 0.1))
