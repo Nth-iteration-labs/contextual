@@ -49,7 +49,7 @@ Documentation
 Overview of core classes
 ------------------------
 
-![Contextual's core class diagram](man/figures/cmab_all_large.jpg){width=96%}
+![Contextual's core class diagram](man/figures/cmab_all_large.jpg)
 
 Policies and Bandits
 --------------------
