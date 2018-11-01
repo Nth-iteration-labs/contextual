@@ -389,7 +389,7 @@ Since online advertising is one of the areas where bandit policies have found wi
 
 For the current example, we limit the number of advertisements we want to evaluate to three, and set ourselves the objective of finding which policy would offer us the highest total click-through rate\footnote{Click-through rate (CTR) is the ratio of users who click on a specific link or ad to the number of total users who view it \citep{Briggs1997}.} over four hundred impressions.
 
-\subsubsection{Comparing context-free policies} \label{ncp}
+\subsubsection{Evaluating context-free policies} \label{ncp}
 
 Before we are able to evaluate any policies, we first need to model our three ads---each with a different probability of generating a click---as the arms of a bandit. For our current simulation we choose to model the ads with the weight-based \code{ContextualBernoulliBandit}, as this allows us to set weights determining the average reward probability of each arm. As we are comparing context-free bandits, here, we specify only one row in \code{ContextualBernoulliBandit}'s weight-matrix, representing average reward probabilities or theta's per arm (in the following section we will add rows to the matrix, each additional row representing one context feature's weight per arm). As can be observed in the source code below, for the current simulation, we set the weights of the arms to respectively $\theta_1 = 0.8$, $\theta_2  = 0.4$ and $\theta_3 = 0.2$.
 

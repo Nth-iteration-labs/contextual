@@ -110,9 +110,9 @@
 <li>Rewards are determined by a visitor clicking (a reward of 1) or not clicking (a reward of 0) on the shown ad.</li>
 </ul>
 <p>For the current tutorial, we limit the number of advertisements we want to evaluate to three, and set ourselves the objective of finding which policy would offer the highest total click-through rate over four hundred impressions.</p>
-<div id="comparing-context-free-policies" class="section level4">
+<div id="evaluating-context-free-policies" class="section level4">
 <h4 class="hasAnchor">
-<a href="#comparing-context-free-policies" class="anchor"></a>Comparing context-free policies</h4>
+<a href="#evaluating-context-free-policies" class="anchor"></a>Evaluating context-free policies</h4>
 <p>Before we are able to evaluate any policies, we first need to model the three ads—each with a different probability of generating a click—as the arms of a bandit. For the current simulation we choose to model the ads with the weight-based ContextualBernoulliBandit, as this allows us to set weights that determine the average reward probability of each arm. As can be observed in the source code below, for the current simulation, we set the weights of the arms to respectively <span class="math inline">\(\theta_1 = 0.8\)</span>, <span class="math inline">\(\theta_2 = 0.4\)</span> and <span class="math inline">\(\theta_3 = 0.2\)</span>.</p>
 <p>We also choose two context-free policies to evaluate and compare:</p>
 <ul>

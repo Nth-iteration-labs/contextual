@@ -25,7 +25,7 @@ Though contextual has been developed to ease the implementation and comparison o
 
 For the current tutorial, we limit the number of advertisements we want to evaluate to three, and set ourselves the objective of finding which policy would offer the highest total click-through rate over four hundred impressions.
 
-#### Comparing context-free policies
+#### Evaluating context-free policies
 
 Before we are able to evaluate any policies, we first need to model the three ads---each with a different probability of generating a click---as the arms of a bandit. For the current simulation we choose to model the ads with the weight-based ContextualBernoulliBandit, as this allows us to set weights that determine the average reward probability of each arm. As can be observed in the source code below, for the current simulation, we set the weights of the arms to respectively $\theta_1 = 0.8$, $\theta_2  = 0.4$ and $\theta_3 = 0.2$.
 
