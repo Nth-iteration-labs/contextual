@@ -73,7 +73,7 @@
 %% an abstract and keywords
 \Abstract{
 
-Over the past decade, contextual bandit algorithms have been gaining in popularity due to their effectiveness and flexibility in solving sequential decision problems---from online advertising and finance to clinical trial design and personalized medicine. At the same time, there are, as of yet, surprisingly few options that enable researchers and practitioners to simulate and compare the wealth of new and existing bandit algorithms in a standardized way. To help close this gap between analytical research and empirical evaluation the current paper introduces the object-oriented \proglang{R} package \pkg{contextual}: a user-friendly and, through its object-oriented structure, easily extensible framework that facilitates parallelized comparison of contextual and context-free bandit policies through both simulation and offline analysis.
+Over the past decade, contextual bandit algorithms have been gaining in popularity due to their effectiveness and flexibility in solving sequential decision problems---from online advertising and finance to clinical trial design and personalized medicine. At the same time, there are, as of yet, surprisingly few options that enable researchers and practitioners to simulate and compare the wealth of new and existing bandit algorithms in a standardized way. To help close this gap between analytical research and empirical evaluation the current paper introduces the object-oriented \proglang{R} package \pkg{contextual}: a user-friendly and, through its object-oriented design, easily extensible framework that facilitates parallelized comparison of contextual and context-free bandit policies through both simulation and offline analysis.
 }
 
 \Keywords{contextual multi-armed bandits, simulation, sequential experimentation, R}
@@ -378,7 +378,7 @@ In the current subsection we demonstrate how to run simulations with \pkg{contex
 
 \subsubsection{The scenario} \label{scen}
 
-Since online advertising is one of the areas where bandit policies have found widespread application, we will use it as the setting for our basic bandit example Generally, the goal in online advertising is to determine which out of several ads to serve a visitor to a particular web page. Translated to a bandit setting, in online advertising:
+Since online advertising is one of the areas where bandit policies have found widespread application, we will use it as the setting for our basic bandit example. Generally, the goal in online advertising is to determine which out of several ads to serve a visitor to a particular web page. Translated to a bandit setting, in online advertising:
 
 \begin{itemize}
          \item The context is usually determined by visitor and web page characteristics.

@@ -16,16 +16,14 @@ knitr::opts_chunk$set(
 )
 ```
 
-Though contextual has been developed to ease the implementation and comparison of custom Bandits and Policies, it can also be used to evaluate policies from contextual's growing policy library. In the current vignette we will demonstrate how to run such simulations. 
-
-Since online advertising is one of the areas where bandit policies have found widespread application, we will use this field as the setting for our tutorial. Generally, the goal in online advertising is to determine which out of several ads to serve a visitor to a particular web page. Translated to a bandit setting, in online advertising:
+Though contextual has been developed to ease the implementation and comparison of custom Bandits and Policies, it can also be used to evaluate policies from contextual's growing policy library. In the current vignette we will demonstrate how to run such simulations in an online advertising related scenario. Generally, the goal in online advertising is to determine which out of several ads to serve a visitor to a particular web page. Translated to a bandit setting, in online advertising:
 
 * The context is usually determined by visitor and web page characteristics.
 * Arms are represented by the pool of available ads.
 * An action equals a shown add.
 * Rewards are determined by a visitor clicking (a reward of 1) or not clicking (a reward of 0) on the shown ad.
 
-For the current tutorial, we limit the number of advertisements we want to evaluate to three, and set ourselves the objective of finding which policy would offer us the highest total click-through rate over four hundred impressions.
+For the current tutorial, we limit the number of advertisements we want to evaluate to three, and set ourselves the objective of finding which policy would offer the highest total click-through rate over four hundred impressions.
 
 #### Comparing context-free policies
 
@@ -33,7 +31,7 @@ Before we are able to evaluate any policies, we first need to model the three ad
 
 We also choose two context-free policies to evaluate and compare:
 
-*  EpsilonFirstPolicy: explores the three ads uniformly at random for a preset period and from thereon exploits the ad with the best click-through rate (a type of policy also known as an A/B test). For the current scenario, we set the exploration period to one hundred impressions.
+* EpsilonFirstPolicy: explores the three ads uniformly at random for a preset period and from thereon exploits the ad with the best click-through rate (a type of policy also known as an A/B test). For the current scenario, we set the exploration period to one hundred impressions.
 
 * EpsilonGreedyPolicy: explores one of the ads uniformly at random $\epsilon$ of the time and exploits the ad with the best current click-through rate $1 - \epsilon$ of the time. Here, we will set $\epsilon = 0.4$. 
 
@@ -111,7 +109,7 @@ plot(history, type = "cumulative", regret = FALSE, rate = TRUE)
 
 As can be observed in the figure above, both context-free bandit's do indeed not do better than before. On the other hand, LinUCBDisjointPolicy does very well, as it is able to map its rewards to the available contextual features. 
 
-Of course, the simulations in the current section are not very realistic. One way to ameliorate this would be to write a Bandit subclass with a more complex generative model. More on that in the vignette "Creating your own Policies and Bandits". Another option would be to evaluate policies on offline datasets. Which is covered in the vignette "Evaluating policies with offline datasets".
+Of course, the simulations in the current vignette are not very realistic. One way to ameliorate this would be to write a Bandit subclass with a more complex generative model. More on that in the vignette "Creating your own Policies and Bandits". Another option would be to evaluate policies on offline datasets. Which is covered in the vignette "Evaluating policies with offline datasets".
 
 
 
