@@ -1,4 +1,9 @@
+contextual 0.9.1
+================
+
+* First CRAN release 
+
 contextual 0.9.0
 ================
 
-* First release 
+* CRAN Submission 

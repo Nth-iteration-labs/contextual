@@ -47,9 +47,6 @@
   </a>
 </li>
 <li>
-  <a href="articles/contextual.html">Get started</a>
-</li>
-<li>
   <a href="reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
@@ -60,7 +57,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/posts.html">Posts</a>
+      <a href="articles/introduction.html">Getting started: running simulations</a>
     </li>
     <li>
       <a href="articles/replication.html">Offline evaluation: Replication of Li et al 2010</a>
@@ -111,23 +108,25 @@
 <p>The package has been developed to:</p>
 <ul>
 <li>Introduce a wider audience to contextual bandit policies’ advanced sequential decision strategies.</li>
-<li>Ease the implementation, evaluation and dissemination of both existing and new contextual Multi-Armed Bandit algorithms and policies.</li>
+<li>Ease the implementation, evaluation and dissemination of both existing and new contextual Multi-Armed Bandit policies.</li>
 </ul>
 </div>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># Install development version from GitHub:</span></a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="co"># install.packages("devtools")</span></a>
-<a class="sourceLine" id="cb1-3" data-line-number="3">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">"Nth-iteration-labs/contextual"</span>)</a></code></pre></div>
+<p>To install R6 from CRAN:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">install.packages</span>(<span class="st">'contextual'</span>)</a></code></pre></div>
+<p>To install the development version (requires the devtools package):</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">devtools<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github">install_github</a></span>(<span class="st">'r-lib/contextual'</span>)</a></code></pre></div>
 </div>
 <div id="documentation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#documentation" class="anchor"></a>Documentation</h2>
 <ul>
-<li><a href="https://nth-iteration-labs.github.io/contextual/reference/index.html">Class reference</a></li>
-<li><a href="https://nth-iteration-labs.github.io/contextual/articles/contextual.html">Getting started: running simulations</a></li>
+<li><a href="https://nth-iteration-labs.github.io/contextual/articles/introduction.html">Getting started: running simulations</a></li>
 <li><a href="https://nth-iteration-labs.github.io/contextual/articles/replication.html">Offline evaluation: replication of Li et al (2010)</a></li>
+<li><a href="https://nth-iteration-labs.github.io/contextual/reference/index.html">Class reference</a></li>
+<li><a href="https://github.com/Nth-iteration-labs/contextual/blob/master/docs/articles/jss.pdf">Article</a></li>
 </ul>
 <!---
 * [Blog at Pavlov](https://pavlov.tech/category/contextual/)
@@ -136,7 +135,7 @@
 <div id="overview-of-core-classes" class="section level2">
 <h2 class="hasAnchor">
 <a href="#overview-of-core-classes" class="anchor"></a>Overview of core classes</h2>
-<p><img src="reference/figures/cmab_all_large.jpg" alt="Contextual’s core class diagram"></p>
+<p><img src="reference/figures/cmab_all_large.jpg" alt="Contextual’s core class diagram">{width=96%}</p>
 </div>
 <div id="policies-and-bandits" class="section level2">
 <h2 class="hasAnchor">

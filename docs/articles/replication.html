@@ -44,9 +44,6 @@
   </a>
 </li>
 <li>
-  <a href="../articles/contextual.html">Get started</a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
@@ -57,7 +54,7 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/posts.html">Posts</a>
+      <a href="../articles/introduction.html">Getting started: running simulations</a>
     </li>
     <li>
       <a href="../articles/replication.html">Offline evaluation: Replication of Li et al 2010</a>
@@ -110,7 +107,7 @@
 <div id="description-of-the-data" class="section level4">
 <h4 class="hasAnchor">
 <a href="#description-of-the-data" class="anchor"></a>Description of the data</h4>
-<p>The dataset used in the Li et al 2010 paper has been made available at the Yahoo! lab’s website (At <a href="https://webscope.sandbox.yahoo.com/catalog.php?datatype=r%5C&amp;did=49" class="uri">https://webscope.sandbox.yahoo.com/catalog.php?datatype=r\&amp;did=49</a>). It contains the click-through rate from the Today news module on Yahoo!’s homepage over the course of several days in May 2009, totaling 45,811,883 separate events.</p>
+<p>The dataset used in the Li et al 2010 paper has been made available at the Yahoo! lab’s website (At <a href="https://webscope.sandbox.yahoo.com/catalog.php?datatype=r&amp;did=49" class="uri">https://webscope.sandbox.yahoo.com/catalog.php?datatype=r&amp;did=49</a>). It contains the click-through rate from the Today news module on Yahoo!’s homepage over the course of several days in May 2009, totaling 45,811,883 separate events.</p>
 <p>Each row in the dataset describes an interaction event (click or no click) of users shown a randomly chosen article. Each of these events contains the following information:</p>
 <ul>
 <li>The ID’s of each of a varying subset of 19 to 25 articles selected by human editors from a pool of 217 articles.</li>
@@ -213,10 +210,12 @@
 <h4 class="hasAnchor">
 <a href="#results" class="anchor"></a>Results</h4>
 <p>We were able to complete the full <span class="math inline">\(7\times6=42\)</span> agent simulation over all of the 37,450,196 events in our database within 22 hours on a 64 core Intel Xeon Unbuntu server with 256GB of memory. We then proceeded to analyse the results of the first 4.7 million events (following the original paper, representing about a day worth of events) to reproduce Li et al 2010’s Figure 4b: “CTRs in evaluation data with varying data sizes in the learning bucket.”. Just like the original paper, the replicated figure below reports each algorithm’s relative CTR for all of the defined data sparsity levels, that is, each algorithm’s CTR divided by the random policy’s CTR.</p>
-<p><img src="replication-fig-1.png" style="width:98.0%"><em>Replication of Figure 4b “CTRs in evaluation data with varying data sizes in the learning bucket.” from Li et al 2010. The plots represent the click through rates for different policies after one day of learning for each of six different levels of sparsity.</em></p>
+<p><img src="replication-fig-1.png" style="width:98.0%"></p>
+<p><em>Replication of Figure 4b “CTRs in evaluation data with varying data sizes in the learning bucket.” from Li et al 2010. The plots represent the click through rates for different policies after one day of learning for each of six different levels of sparsity.</em></p>
 <p>As can be observed in the next figure, after one day of learning (on the Yahoo! dataset’s day three), the conclusions of the original paper still stand. First, features again prove to be of use at all levels of sparsity, as LinUCB policies outperform the others consistently. Second, UCB policies generally outperform <span class="math inline">\(\epsilon\)</span>-greedy ones. And third, Hybrid LinUCB again shows benefits when the data is small, as can be deduced from it doing better in the 1% bucket. Still, as we started our simulation on the third day instead of the first, our results are close to, but not quite the same as those reported in the original paper. Particularly the third conclusion, that of the relative advantage of Hybrid LinUCB with sparse data, seems to be slightly less convincing in our figure.</p>
 <p>So we decided to run a simulation that continued to learn beyond the first day for the sparse (1%) data condition to test whether Hybrid LinUCB’s reported relative advantage would prove stable over time.</p>
-<p><img src="replication-fig-2.png" style="width:98.0%"><em>A plot of the cumulative reward rate (equals click-through rate) for EGreedy, EGreedySeg, LinUCB Dis, LinUCB Hyb, UCB1, and UCB1Seg policies over eight days of events from the Yahoo dataset at 1% sparsity. The dotted lines represent blocks consisting of 24 hours worth of data—the lines are not equidistant as the number of data points of these 24 hours differs per block. The plot’s sinusoidal wave pattern reflects visitors’ overall average cyclical daily waxing and waning click-through tendency.</em></p>
+<p><img src="replication-fig-2.png" style="width:98.0%"></p>
+<p><em>A plot of the cumulative reward rate (equals click-through rate) for EGreedy, EGreedySeg, LinUCB Dis, LinUCB Hyb, UCB1, and UCB1Seg policies over eight days of events from the Yahoo dataset at 1% sparsity. The dotted lines represent blocks consisting of 24 hours worth of data—the lines are not equidistant as the number of data points of these 24 hours differs per block. The plot’s sinusoidal wave pattern reflects visitors’ overall average cyclical daily waxing and waning click-through tendency.</em></p>
 <p>On closer examination of the resulting plot in the latter figure, it becomes clear that the policies did not settle after one day of training. For one, on inspection of the full span of about eight days of learning, Hybrid LinUCB’s advantage over Disjoint LinUCB gradually diminishes and then reverses into an advantage for the Disjoint version. Also, surprisingly, over the full eight days, the <span class="math inline">\(\epsilon\)</span>-greedy policy goes from the worst to third best policy overall, becoming the best context-free policy—clearly outperforming both context-free UCB policies. Though we intend to further analyze these discrepancies, for now, these results seem to pose questions for two out of three conclusions drawn in the original paper—leaving only the first outcome, the superiority of the contextual LinUCB in comparison to several context-free ones. Underlining the benefits of <code>contextual</code>, as it enabled us to replicate and confirm the original Li et al 2010 paper, and then explore it further: extending <code>Bandit</code> and <code>Policy</code> classes, running simulations in parallel on an offline dataset and plotting and analyzing the results—within 48 hours.</p>
 </div>
   </div>

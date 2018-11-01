@@ -2,7 +2,6 @@ pandoc: 2.1.3
 pkgdown: 1.1.0
 pkgdown_sha: ~
 articles:
-  contextual: contextual.html
-  posts: posts.html
+  introduction: introduction.html
   replication: replication.html
 

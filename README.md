@@ -17,23 +17,30 @@ R package facilitating the simulation and evaluation of context-free and context
 The package has been developed to:
 
 * Introduce a wider audience to contextual bandit policies' advanced sequential decision strategies.
-* Ease the implementation, evaluation and dissemination of both existing and new contextual Multi-Armed Bandit algorithms and policies. 
+* Ease the implementation, evaluation and dissemination of both existing and new contextual Multi-Armed Bandit policies. 
 
 Installation
 ------------
 
-```r
-# Install development version from GitHub:
-# install.packages("devtools")
-devtools::install_github("Nth-iteration-labs/contextual")
+To install R6 from CRAN:
+
+```R
+install.packages('contextual')
+```
+
+To install the development version (requires the devtools package):
+
+```R
+devtools::install_github('r-lib/contextual')
 ```
 
 Documentation
 -------------
 
-* [Class reference](https://nth-iteration-labs.github.io/contextual/reference/index.html)
-* [Getting started: running simulations](https://nth-iteration-labs.github.io/contextual/articles/contextual.html)
+* [Getting started: running simulations](https://nth-iteration-labs.github.io/contextual/articles/introduction.html)
 * [Offline evaluation: replication of Li et al (2010)](https://nth-iteration-labs.github.io/contextual/articles/replication.html)
+* [Class reference](https://nth-iteration-labs.github.io/contextual/reference/index.html)
+* [Article](https://github.com/Nth-iteration-labs/contextual/blob/master/docs/articles/jss.pdf)
 
 <!---
 * [Blog at Pavlov](https://pavlov.tech/category/contextual/)
@@ -42,7 +49,7 @@ Documentation
 Overview of core classes
 ------------------------
 
-![Contextual's core class diagram](man/figures/cmab_all_large.jpg)
+![Contextual's core class diagram](man/figures/cmab_all_large.jpg){width=96%}
 
 Policies and Bandits
 --------------------

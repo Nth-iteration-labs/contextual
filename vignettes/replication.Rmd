@@ -22,7 +22,7 @@ All source code related to this replication can be found in the package's `demo/
 
 #### Description of the data
 
-The dataset used in the Li et al 2010 paper has been made available at the Yahoo! lab's website (At https://webscope.sandbox.yahoo.com/catalog.php?datatype=r\&did=49). It contains the click-through rate from the Today news module on Yahoo!'s homepage over the course of several days in May 2009, totaling 45,811,883 separate events.
+The dataset used in the Li et al 2010 paper has been made available at the Yahoo! lab's website (At https://webscope.sandbox.yahoo.com/catalog.php?datatype=r&did=49). It contains the click-through rate from the Today news module on Yahoo!'s homepage over the course of several days in May 2009, totaling 45,811,883 separate events.
 
 Each row in the dataset describes an interaction event (click or no click) of users shown a randomly chosen article. Each of these events contains the following information:
 
@@ -138,13 +138,15 @@ We were able to complete the full $7\times6=42$ agent simulation over all of the
 
 
 ![](replication-fig-1.png){width=98%}
+
 *Replication of Figure 4b "CTRs in evaluation data with varying data sizes in the learning bucket." from Li et al 2010. The plots represent the click through rates for different policies after one day of learning for each of six different levels of sparsity.*
 
-As can be observed in the next figure, after one day of learning (on the Yahoo! dataset's day three), the conclusions of the original paper still stand. First, features again prove to be of use at all levels of sparsity, as LinUCB policies outperform the others consistently. Second, UCB policies generally outperform $\epsilon$-greedy ones. And third, Hybrid LinUCB again shows benefits when the data is small, as can be deduced from it doing better in the 1\% bucket. Still, as we started our simulation on the third day instead of the first, our results are close to, but not quite the same as those reported in the original paper. Particularly the third conclusion, that of the relative advantage of Hybrid LinUCB with sparse data, seems to be slightly less convincing in our figure.
+As can be observed in the next figure, after one day of learning (on the Yahoo! dataset's day three), the conclusions of the original paper still stand. First, features again prove to be of use at all levels of sparsity, as LinUCB policies outperform the others consistently. Second, UCB policies generally outperform $\epsilon$-greedy ones. And third, Hybrid LinUCB again shows benefits when the data is small, as can be deduced from it doing better in the 1% bucket. Still, as we started our simulation on the third day instead of the first, our results are close to, but not quite the same as those reported in the original paper. Particularly the third conclusion, that of the relative advantage of Hybrid LinUCB with sparse data, seems to be slightly less convincing in our figure.
 
-So we decided to run a simulation that continued to learn beyond the first day for the sparse (1\%) data condition to test whether Hybrid LinUCB's reported relative advantage would prove stable over time.
+So we decided to run a simulation that continued to learn beyond the first day for the sparse (1%) data condition to test whether Hybrid LinUCB's reported relative advantage would prove stable over time.
 
 ![](replication-fig-2.png){width=98%}
-*A plot of the cumulative reward rate (equals click-through rate) for EGreedy, EGreedySeg, LinUCB Dis, LinUCB Hyb, UCB1, and UCB1Seg policies over eight days of events from the Yahoo dataset at 1\% sparsity. The dotted lines represent blocks consisting of 24 hours worth of data---the lines are not equidistant as the number of data points of these 24 hours differs per block. The plot's sinusoidal wave pattern reflects visitors' overall average cyclical daily waxing and waning click-through tendency.*
+
+*A plot of the cumulative reward rate (equals click-through rate) for EGreedy, EGreedySeg, LinUCB Dis, LinUCB Hyb, UCB1, and UCB1Seg policies over eight days of events from the Yahoo dataset at 1% sparsity. The dotted lines represent blocks consisting of 24 hours worth of data---the lines are not equidistant as the number of data points of these 24 hours differs per block. The plot's sinusoidal wave pattern reflects visitors' overall average cyclical daily waxing and waning click-through tendency.*
 
 On closer examination of the resulting plot in the latter figure, it becomes clear that the policies did not settle after one day of training. For one, on inspection of the full span of about eight days of learning, Hybrid LinUCB's advantage over Disjoint LinUCB gradually diminishes and then reverses into an advantage for the Disjoint version. Also, surprisingly, over the full eight days, the $\epsilon$-greedy policy goes from the worst to third best policy overall, becoming the best context-free policy---clearly outperforming both context-free UCB policies. Though we intend to further analyze these discrepancies, for now, these results seem to pose questions for two out of three conclusions drawn in the original paper---leaving only the first outcome, the superiority of the contextual LinUCB in comparison to several context-free ones.  Underlining the benefits of `contextual`, as it enabled us to replicate and confirm the original Li et al 2010 paper, and then explore it further: extending `Bandit` and `Policy` classes, running simulations in parallel on an offline dataset and plotting and analyzing the results---within 48 hours.
