@@ -37,11 +37,12 @@ devtools::install_github('r-lib/contextual')
 Documentation
 -------------
 
-* See the [demo directory](https://github.com/Nth-iteration-labs/contextual/tree/master/demo) for example scripts.
+
 * [Getting started: running simulations](https://nth-iteration-labs.github.io/contextual/articles/introduction.html)
 * [Offline evaluation: replication of Li et al (2010)](https://nth-iteration-labs.github.io/contextual/articles/replication.html)
 * [Class reference](https://nth-iteration-labs.github.io/contextual/reference/index.html)
-* [Article](https://github.com/Nth-iteration-labs/contextual/blob/master/docs/articles/jss.pdf)
+* See the [demo directory](https://github.com/Nth-iteration-labs/contextual/tree/master/demo) for some synthetic and offline example evaluations.
+* [Article](https://github.com/Nth-iteration-labs/contextual/blob/master/docs/articles/jss.pdf) introduces the contextual Multi-Armed Bandit problem, therein demonstrating how to evaluate cMAB policies through contextual.
 
 <!---
 * [Blog at Pavlov](https://pavlov.tech/category/contextual/)
