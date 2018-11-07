@@ -37,6 +37,7 @@ LinUCBHybridOptimizedPolicy <- R6::R6Class(
 
         x          <- get_arm_context(context$X, arm, context$unique)
         s          <- get_arm_context(context$X, arm, context$shared)
+
         z          <- matrix(as.vector(outer(x,s)))
 
         ################## compute expected reward per arm #############################
@@ -73,6 +74,7 @@ LinUCBHybridOptimizedPolicy <- R6::R6Class(
 
       x              <- get_arm_context(context$X, arm, context$unique)
       s              <- get_arm_context(context$X, arm, context$shared)
+
       z              <- matrix(as.vector(outer(x,s)))
 
       A0             <- self$theta$A0

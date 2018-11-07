@@ -28,6 +28,8 @@ Imports:
     checkmate
 Suggests:
     testthat,
+    RCurl,
+    splitstackshape,
     vdiffr,
     covr,
     knitr,
