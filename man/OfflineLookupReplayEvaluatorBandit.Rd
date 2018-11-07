@@ -2,11 +2,13 @@
 % Please edit documentation in R/bandit_offline_replay_evaluator_lookup.R
 \name{OfflineLookupReplayEvaluatorBandit}
 \alias{OfflineLookupReplayEvaluatorBandit}
-\title{Bandit: Li's Offline Policy Evaluator}
+\title{Bandit: Li's Offline Policy Evaluator with lookup tables}
 \description{
-Policy for the evaluation of policies with offline data.
+TODO: Needs to be cleaned up, refactored, and make proper use of inheritance.
 }
 \details{
+Policy for the evaluation of policies with offline data.
+
 The key assumption of the method is that that the original logging policy chose
 i.i.d. arms uniformly at random.
 

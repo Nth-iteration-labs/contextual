@@ -35,10 +35,8 @@ OfflineReplayEvaluatorBandit <- R6::R6Class(
 )
 
 # Import personalization data-set
-url1        <- "https://raw.githubusercontent.com/"
-url2        <- "Nth-iteration-labs/contextual_data/master/"
-url3        <- "data_cmab_basic/dataset.txt"
-datafile    <- fread(paste0(url1,url2,url3))
+url         <- "http://d1ie9wlkzugsxr.cloudfront.net/data_cmab_basic/dataset.txt"
+datafile    <- fread(url)
 
 # Clean up datafile
 datafile[, context := as.list(as.data.frame(t(datafile[, 3:102])))]

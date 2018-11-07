@@ -14,13 +14,22 @@ OfflineLookupReplayEvaluatorBandit <- R6::R6Class(
     class_name = "OfflineLookupReplayEvaluatorBandit",
     randomize = NULL,
     initialize   = function(offline_data, k, shared_lookup = NULL, unique_lookup = NULL, unique_col = NULL,
-                            randomize = TRUE) {
+                            unique = NULL, shared = NULL, randomize = TRUE) {
 
       self$k                 <- k
 
       self$d                 <- dim(shared_lookup)[2]-1 + dim(unique_lookup)[2]-1
-      self$unique            <- c(1:(dim(unique_lookup)[2]-1))
-      self$shared            <- c((dim(unique_lookup)[2]):(dim(unique_lookup)[2]+dim(shared_lookup)[2]-2))
+
+      if(is.null(unique))   {
+          self$unique        <- c(1:(dim(unique_lookup)[2]-1))
+      } else {
+        self$unique          <- unique
+      }
+      if(is.null(shared))   {
+        self$shared            <- c((dim(unique_lookup)[2]):(dim(unique_lookup)[2]+dim(shared_lookup)[2]-2))
+      } else {
+        self$shared          <- shared
+      }
 
       self$randomize         <- randomize
       private$S              <- offline_data
@@ -71,7 +80,9 @@ OfflineLookupReplayEvaluatorBandit <- R6::R6Class(
   )
 )
 
-#' Bandit: Li's Offline Policy Evaluator
+#' Bandit: Li's Offline Policy Evaluator with lookup tables
+#'
+#' TODO: Needs to be cleaned up, refactored, and make proper use of inheritance.
 #'
 #' Policy for the evaluation of policies with offline data.
 #'

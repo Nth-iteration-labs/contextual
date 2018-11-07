@@ -4,10 +4,10 @@ library(splitstackshape)
 
 # Movielens 100k ---------------------------------------------------------------------------------------------
 
-# Info: https://contextualdata.s3-eu-central-1.amazonaws.com/data_movielens/ml-100k/ml-100k-README.txt
+# Info: https://d1ie9wlkzugsxr.cloudfront.net/ml-100k/ml-100k-README.txt
 
-movies_dat      <- "https://contextualdata.s3-eu-central-1.amazonaws.com/data_movielens/ml-100k/u.item"
-ratings_dat     <- "https://contextualdata.s3-eu-central-1.amazonaws.com/data_movielens/ml-100k/u.data"
+movies_dat      <- "http://d1ie9wlkzugsxr.cloudfront.net/data_movielens/ml-100k/u.item"
+ratings_dat     <- "http://d1ie9wlkzugsxr.cloudfront.net/data_movielens/ml-100k/u.data"
 
 # Import and merge files
 

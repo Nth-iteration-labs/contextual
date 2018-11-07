@@ -3,11 +3,10 @@ library(data.table)
 
 # Import personalization data-set
 
-# Info: https://contextualdata.s3-eu-central-1.amazonaws.com/data_irecsys_CARSKit/Movie_DePaulMovie/README.txt
+# Info: https://d1ie9wlkzugsxr.cloudfront.net/data_irecsys_CARSKit/Movie_DePaulMovie/README.txt
 
-url1        <- "https://contextualdata.s3-eu-central-1.amazonaws.com"
-url2        <- "/data_irecsys_CARSKit/Movie_DePaulMovie/ratings.csv"
-datafile    <- fread(paste0(url1,url2), stringsAsFactors=TRUE)
+url         <- "http://d1ie9wlkzugsxr.cloudfront.net/data_irecsys_CARSKit/Movie_DePaulMovie/ratings.csv"
+datafile    <- fread(url, stringsAsFactors=TRUE)
 
 # Convert datafile
 

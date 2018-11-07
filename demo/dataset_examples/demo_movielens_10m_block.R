@@ -5,10 +5,10 @@ library(RCurl)
 
 # Import MovieLens ml-10M ------------------------------------------------------------------------------------
 
-# Info: https://contextualdata.s3-eu-central-1.amazonaws.com/data_movielens/ml-10M/README.html
+# Info: https://d1ie9wlkzugsxr.cloudfront.net/data_movielens/ml-10M/README.html
 
-movies_dat      <- "https://contextualdata.s3-eu-central-1.amazonaws.com/data_movielens/ml-10M/movies.dat"
-ratings_dat     <- "https://contextualdata.s3-eu-central-1.amazonaws.com/data_movielens/ml-10M/ratings.dat"
+movies_dat      <- "http://d1ie9wlkzugsxr.cloudfront.net/data_movielens/ml-10M/movies.dat"
+ratings_dat     <- "http://d1ie9wlkzugsxr.cloudfront.net/data_movielens/ml-10M/ratings.dat"
 
 movies_dat      <- readLines(movies_dat)
 movies_dat      <- gsub( "::", "~", movies_dat )
@@ -90,15 +90,13 @@ setorder(top_50_movies,Timestamp,Name)
 # Run simulation ---------------------------------------------------------------------------------------------
 
 simulations <- 1
-horizon     <- nrow(top_50_movies)
+horizon     <- 1000 #nrow(top_50_movies)
 
 bandit      <- OfflineLookupReplayEvaluatorBandit$new(top_50_movies,
                                                       k             = 50,
-                                                      unique_col    = "UserID",      # not needed
-                                                      shared_lookup = arm_features,  # if we make these
-                                                      unique_lookup = user_features) # id ordered
-
-agents      <-
+                                                      unique_col    = "UserID",
+                                                      shared_lookup = arm_features,
+                                                      unique_lookup = user_features)
   list(Agent$new(ThompsonSamplingPolicy$new(), bandit, "Thompson"),
        Agent$new(UCB1Policy$new(), bandit, "UCB1"),
        Agent$new(RandomPolicy$new(), bandit, "Random"),
