@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Policy: UCB1 — UCB1Policy • contextual</title>
+<title>Policy: UCB2 — UCB2Policy • contextual</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -36,9 +36,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Policy: UCB1 — UCB1Policy" />
+<meta property="og:title" content="Policy: UCB2 — UCB2Policy" />
 
-<meta property="og:description" content="UCB policy for bounded bandits with a Chernoff-Hoeffding Bound" />
+<meta property="og:description" content="UCB policy for bounded bandits with plays divided in epochs." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -127,21 +127,21 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Policy: UCB1</h1>
-    <small class="dont-index">Source: <a href='https://github.com/Nth-iteration-labs/contextual/blob/master/R/policy_mab_ucb1.R'><code>R/policy_mab_ucb1.R</code></a></small>
-    <div class="hidden name"><code>UCB1Policy.Rd</code></div>
+    <h1>Policy: UCB2</h1>
+    <small class="dont-index">Source: <a href='https://github.com/Nth-iteration-labs/contextual/blob/master/R/policy_mab_ucb2.R'><code>R/policy_mab_ucb2.R</code></a></small>
+    <div class="hidden name"><code>UCB2Policy.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>UCB policy for bounded bandits with a Chernoff-Hoeffding Bound</p>
+    <p>UCB policy for bounded bandits with plays divided in epochs.</p>
     
     </div>
 
         
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p><code>UCB1Policy</code> constructs an optimistic estimate in the form of an Upper Confidence Bound to
+    <p><code>UCB2Policy</code> constructs an optimistic estimate in the form of an Upper Confidence Bound to
 create an estimate of the expected payoff of each action, and picks the action with the highest estimate.
 If the guess is wrong, the optimistic guess quickly decreases, till another action has
 the higher estimate.</p>
@@ -150,14 +150,21 @@ the higher estimate.</p>
 
     
     <pre>
-policy &lt;- UCB1Policy()
+policy &lt;- UCB2Policy(alpha = 0.1)
 </pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+
+    
+    <dl class='dl-horizontal'>
+<dt><code>alpha</code></dt><dd><p>numeric; Tuning parameter in the interval <code>(0,1)</code></p></dd>
+</dl>
     
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     
     <dl class='dl-horizontal'>
-<dt><code>new()</code></dt><dd><p>Generates a new <code>UCB1Policy</code> object.</p></dd>
+<dt><code>new(alpha = 0.1)</code></dt><dd><p>Generates a new <code>UCB2Policy</code> object.</p></dd>
 </dl>
     <dl class='dl-horizontal'>
 <dt><code><a href='Policy.html'>set_parameters()</a></code></dt><dd><p>each policy needs to assign the parameters it wants to keep track of
@@ -176,7 +183,7 @@ based on the reward received, and, potentially, the current context.</p></dd>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Lai, T. L., &amp; Robbins, H. (1985). Asymptotically efficient adaptive allocation rules. Advances in applied mathematics, 6(1), 4-22.</p>
+    <p>Auer, P., Cesa-Bianchi, N., &amp; Fischer, P. (2002). Finite-time analysis of the multiarmed bandit problem. Machine learning, 47(2-3), 235-256.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -192,13 +199,13 @@ based on the reward received, and, potentially, the current context.</p></dd>
 <span class='no'>simulations</span>        <span class='kw'>&lt;-</span> <span class='fl'>100L</span>
 <span class='no'>weights</span>          <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='fl'>0.9</span>, <span class='fl'>0.1</span>, <span class='fl'>0.1</span>)
 
-<span class='no'>policy</span>             <span class='kw'>&lt;-</span> <span class='no'>UCB1Policy</span>$<span class='fu'>new</span>()
+<span class='no'>policy</span>             <span class='kw'>&lt;-</span> <span class='no'>UCB2Policy</span>$<span class='fu'>new</span>()
 <span class='no'>bandit</span>             <span class='kw'>&lt;-</span> <span class='no'>BasicBernoulliBandit</span>$<span class='fu'>new</span>(<span class='kw'>weights</span> <span class='kw'>=</span> <span class='no'>weights</span>)
 <span class='no'>agent</span>              <span class='kw'>&lt;-</span> <span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>policy</span>, <span class='no'>bandit</span>)
 
-<span class='no'>history</span>            <span class='kw'>&lt;-</span> <span class='no'>Simulator</span>$<span class='fu'>new</span>(<span class='no'>agent</span>, <span class='no'>horizon</span>, <span class='no'>simulations</span>, <span class='kw'>do_parallel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)$<span class='fu'><a href='Simulator.html'>run</a></span>()</div><div class='output co'>#&gt; <span class='message'>Simulation horizon: 100</span></div><div class='output co'>#&gt; <span class='message'>Number of simulations: 100</span></div><div class='output co'>#&gt; <span class='message'>Number of batches: 1</span></div><div class='output co'>#&gt; <span class='message'>Starting main loop.</span></div><div class='output co'>#&gt; <span class='message'>Completed simulation in 0:00:01.387</span></div><div class='input'>
-<span class='fu'>plot</span>(<span class='no'>history</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"cumulative"</span>)</div><div class='img'><img src='UCB1Policy-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='fu'>plot</span>(<span class='no'>history</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"arms"</span>)</div><div class='img'><img src='UCB1Policy-2.png' alt='' width='700' height='433' /></div></pre>
+<span class='no'>history</span>            <span class='kw'>&lt;-</span> <span class='no'>Simulator</span>$<span class='fu'>new</span>(<span class='no'>agent</span>, <span class='no'>horizon</span>, <span class='no'>simulations</span>, <span class='kw'>do_parallel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)$<span class='fu'><a href='Simulator.html'>run</a></span>()</div><div class='output co'>#&gt; <span class='message'>Simulation horizon: 100</span></div><div class='output co'>#&gt; <span class='message'>Number of simulations: 100</span></div><div class='output co'>#&gt; <span class='message'>Number of batches: 1</span></div><div class='output co'>#&gt; <span class='message'>Starting main loop.</span></div><div class='output co'>#&gt; <span class='message'>Completed simulation in 0:00:01.890</span></div><div class='input'>
+<span class='fu'>plot</span>(<span class='no'>history</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"cumulative"</span>)</div><div class='img'><img src='UCB2Policy-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>plot</span>(<span class='no'>history</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"arms"</span>)</div><div class='img'><img src='UCB2Policy-2.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -207,6 +214,8 @@ based on the reward received, and, potentially, the current context.</p></dd>
       <li><a href="#details">Details</a></li>
 
       <li><a href="#usage">Usage</a></li>
+
+      <li><a href="#arguments">Arguments</a></li>
 
       <li><a href="#methods">Methods</a></li>
 

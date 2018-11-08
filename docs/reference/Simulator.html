@@ -192,6 +192,7 @@ and a different subset of the data for each repeat of an agent's simulation.</p>
 <dt><code>progress_file</code></dt><dd><p><code>logical</code>. If <code>TRUE</code>, <code>Simulator</code> writes <code>progress.log</code> and <code>parallel.log</code>
 files to the current working directory, allowing you to keep track of <code>workers</code>, iterations,
 and potential errors when running a <code>Simulator</code> in parallel.</p></dd>
+<dt><code>log_interval</code></dt><dd><p><code>integer</code>. Sets the log write interval.</p></dd>
 <dt><code>include_packages</code></dt><dd><p><code>List</code>. List of packages that (one of) the policies depend on. If a <code>Policy</code> requires an
 R package to be loaded, this option can be used to load that package on each of the workers.
 Ignored if <code>do_parallel</code> is <code>FALSE</code>.</p></dd>

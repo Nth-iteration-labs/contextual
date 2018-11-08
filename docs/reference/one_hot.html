@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>The Inverse Gamma Distribution — invgamma • contextual</title>
+<title>One Hot Encode — one_hot • contextual</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -36,10 +36,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="The Inverse Gamma Distribution — invgamma" />
+<meta property="og:title" content="One Hot Encode — one_hot" />
 
-<meta property="og:description" content="Density, distribution function, quantile function and random
-generation for the inverse gamma distribution." />
+<meta property="og:description" content="One-Hot-Encode unordered factor columns of a data.table mltools. From ben519's &quot;mltools&quot; package." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -128,85 +127,85 @@ generation for the inverse gamma distribution." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>The Inverse Gamma Distribution</h1>
+    <h1>One Hot Encode</h1>
     <small class="dont-index">Source: <a href='https://github.com/Nth-iteration-labs/contextual/blob/master/R/functions_utility.R'><code>R/functions_utility.R</code></a></small>
-    <div class="hidden name"><code>invgamma.Rd</code></div>
+    <div class="hidden name"><code>one_hot.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Density, distribution function, quantile function and random
-generation for the inverse gamma distribution.</p>
+    <p>One-Hot-Encode unordered factor columns of a data.table mltools. From ben519's "mltools" package.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>dinvgamma</span>(<span class='no'>x</span>, <span class='no'>shape</span>, <span class='kw'>rate</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>1</span>/<span class='no'>rate</span>, <span class='kw'>log</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-
-<span class='fu'>pinvgamma</span>(<span class='no'>q</span>, <span class='no'>shape</span>, <span class='kw'>rate</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>1</span>/<span class='no'>rate</span>, <span class='kw'>lower.tail</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>log.p</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-
-<span class='fu'>qinvgamma</span>(<span class='no'>p</span>, <span class='no'>shape</span>, <span class='kw'>rate</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>1</span>/<span class='no'>rate</span>, <span class='kw'>lower.tail</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>log.p</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-
-<span class='fu'>rinvgamma</span>(<span class='no'>n</span>, <span class='no'>shape</span>, <span class='kw'>rate</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>1</span>/<span class='no'>rate</span>)</pre>
+    <pre class="usage"><span class='fu'>one_hot</span>(<span class='no'>dt</span>, <span class='kw'>cols</span> <span class='kw'>=</span> <span class='st'>"auto"</span>, <span class='kw'>sparsifyNAs</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>naCols</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>dropCols</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>dropUnusedLevels</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x, q</th>
-      <td><p>vector of quantiles.</p></td>
+      <th>dt</th>
+      <td><p>A data.table</p></td>
     </tr>
     <tr>
-      <th>shape</th>
-      <td><p>inverse gamma shape parameter</p></td>
+      <th>cols</th>
+      <td><p>Which column(s) should be one-hot-encoded? DEFAULT = "auto" encodes all unordered factor columns</p></td>
     </tr>
     <tr>
-      <th>rate</th>
-      <td><p>inverse gamma rate parameter</p></td>
+      <th>sparsifyNAs</th>
+      <td><p>Should NAs be converted to 0s?</p></td>
     </tr>
     <tr>
-      <th>scale</th>
-      <td><p>alternative to rate; scale = 1/rate</p></td>
+      <th>naCols</th>
+      <td><p>Should columns be generated to indicate the present of NAs? Will only apply to factor columns with at least one NA</p></td>
     </tr>
     <tr>
-      <th>log, log.p</th>
-      <td><p>logical; if TRUE, probabilities p are given as
-log(p).</p></td>
+      <th>dropCols</th>
+      <td><p>Should the resulting data.table exclude the original columns which are one-hot-encoded?</p></td>
     </tr>
     <tr>
-      <th>lower.tail</th>
-      <td><p>logical; if TRUE (default), probabilities are P(X &lt;= x) otherwise, P(X &gt; x).</p></td>
-    </tr>
-    <tr>
-      <th>p</th>
-      <td><p>vector of probabilities.</p></td>
-    </tr>
-    <tr>
-      <th>n</th>
-      <td><p>number of observations. If length(n) &gt; 1, the length is
-taken to be the number required.</p></td>
+      <th>dropUnusedLevels</th>
+      <td><p>Should columns of all 0s be generated for unused factor levels?</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The inverse gamma distribution with parameters shape and rate has
-density <em>f(x) = rate^shape/Gamma(shape) x^(-1-shape)
-e^(-rate/x)</em> it is the inverse of the standard gamma
-parameterization in R.</p>
-<p>The functions (d/p/q/r)invgamma simply wrap those of the standard
-(d/p/q/r)gamma R implementation, so look at, say,
-<code>dgamma</code> for details.</p>
+    <p>One-hot-encoding converts an unordered categorical vector (i.e. a factor) to multiple binarized vectors where each binary vector of
+1s and 0s indicates the presence of a class (i.e. level) of the of the original vector.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='no'>s</span> <span class='kw'>&lt;-</span> <span class='fu'>seq</span>(<span class='fl'>0</span>, <span class='fl'>5</span>, <span class='fl'>.01</span>)
-<span class='fu'>plot</span>(<span class='no'>s</span>, <span class='fu'>dinvgamma</span>(<span class='no'>s</span>, <span class='fl'>7</span>, <span class='fl'>10</span>), <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>'l'</span>)</div><div class='img'><img src='invgamma-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='no'>f</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span>) <span class='fu'>dinvgamma</span>(<span class='no'>x</span>, <span class='fl'>7</span>, <span class='fl'>10</span>)
-<span class='no'>q</span> <span class='kw'>&lt;-</span> <span class='fl'>2</span>
-<span class='fu'>integrate</span>(<span class='no'>f</span>, <span class='fl'>0</span>, <span class='no'>q</span>)</div><div class='output co'>#&gt; 0.7621835 with absolute error &lt; 7.3e-05</div><div class='input'>(<span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'>pinvgamma</span>(<span class='no'>q</span>, <span class='fl'>7</span>, <span class='fl'>10</span>))</div><div class='output co'>#&gt; [1] 0.7621835</div><div class='input'><span class='fu'>qinvgamma</span>(<span class='no'>p</span>, <span class='fl'>7</span>, <span class='fl'>10</span>) <span class='co'># = q</span></div><div class='output co'>#&gt; [1] 2</div><div class='input'><span class='fu'>mean</span>(<span class='fu'>rinvgamma</span>(<span class='fl'>1e5</span>, <span class='fl'>7</span>, <span class='fl'>10</span>) <span class='kw'>&lt;=</span> <span class='no'>q</span>)</div><div class='output co'>#&gt; [1] 0.76176</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>library</span>(<span class='no'>data.table</span>)
+
+<span class='no'>dt</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/data.table/topics/data.table'>data.table</a></span>(
+  <span class='kw'>ID</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>4</span>,
+  <span class='kw'>color</span> <span class='kw'>=</span> <span class='fu'>factor</span>(<span class='fu'>c</span>(<span class='st'>"red"</span>, <span class='fl'>NA</span>, <span class='st'>"blue"</span>, <span class='st'>"blue"</span>), <span class='kw'>levels</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='st'>"blue"</span>, <span class='st'>"green"</span>, <span class='st'>"red"</span>))
+)
+
+<span class='fu'>one_hot</span>(<span class='no'>dt</span>)</div><div class='output co'>#&gt;    ID color_blue color_green color_red
+#&gt; 1:  1          0           0         1
+#&gt; 2:  2         NA          NA        NA
+#&gt; 3:  3          1           0         0
+#&gt; 4:  4          1           0         0</div><div class='input'><span class='fu'>one_hot</span>(<span class='no'>dt</span>, <span class='kw'>sparsifyNAs</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt;    ID color_blue color_green color_red
+#&gt; 1:  1          0           0         1
+#&gt; 2:  2          0           0         0
+#&gt; 3:  3          1           0         0
+#&gt; 4:  4          1           0         0</div><div class='input'><span class='fu'>one_hot</span>(<span class='no'>dt</span>, <span class='kw'>naCols</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt;    ID color_NA color_blue color_green color_red
+#&gt; 1:  1        0          0           0         1
+#&gt; 2:  2        1         NA          NA        NA
+#&gt; 3:  3        0          1           0         0
+#&gt; 4:  4        0          1           0         0</div><div class='input'><span class='fu'>one_hot</span>(<span class='no'>dt</span>, <span class='kw'>dropCols</span><span class='kw'>=</span><span class='fl'>FALSE</span>)</div><div class='output co'>#&gt;    ID color color_blue color_green color_red
+#&gt; 1:  1   red          0           0         1
+#&gt; 2:  2  &lt;NA&gt;         NA          NA        NA
+#&gt; 3:  3  blue          1           0         0
+#&gt; 4:  4  blue          1           0         0</div><div class='input'><span class='fu'>one_hot</span>(<span class='no'>dt</span>, <span class='kw'>dropUnusedLevels</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt;    ID color_blue color_red
+#&gt; 1:  1          0         1
+#&gt; 2:  2         NA        NA
+#&gt; 3:  3          1         0
+#&gt; 4:  4          1         0</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

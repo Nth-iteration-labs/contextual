@@ -24,13 +24,13 @@ ContextualBinaryBandit <- R6::R6Class(
     get_reward = function(t, context, action) {
       arm            <- action$choice
       Xa             <- context$X
-      average_weight <- Xa %*% self$weights / sum(Xa)
-      rewards        <- as.double(average_weight > runif(self$k))
-      optimal_arm    <- which_max_tied(average_weight)
+      weight         <- Xa %*% self$weights / sum(Xa)
+      rewards        <- as.double(weight > runif(self$k))
+      optimal_arm    <- which_max_tied(weight)
       reward  <- list(
         reward                   = rewards[arm],
         optimal_arm              = optimal_arm,
-        optimal_reward           = rewards[optimal_arm]
+        optimal_reward           = weight[optimal_arm]
       )
     }
   )

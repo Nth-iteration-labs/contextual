@@ -10,7 +10,7 @@ agents <- list(Agent$new(RandomPolicy$new(), bandit),
                Agent$new(UCB1Policy$new(), bandit))
 history <- Simulator$new(agents, horizon = 100, simulations = 300)$run()
 
-par(mfrow = c(3, 2), mar = c(1, 4, 2, 1), cex=1.4)  #bottom, left, top, and right.
+par(mfrow = c(3, 2), mar = c(1, 4, 2, 1), cex=1.3)  #bottom, left, top, and right.
 plot(history, type = "cumulative", use_colors = FALSE, no_par = TRUE, legend_border = FALSE,
      limit_agents = c("GittinsBrezziLai", "UCB1","ThompsonSampling"))
 
@@ -18,12 +18,12 @@ plot(history, type = "cumulative", regret = FALSE, legend = FALSE,
      limit_agents = c("Exp3"), traces = TRUE, no_par = TRUE)
 
 plot(history, type = "cumulative", regret = FALSE, rate = TRUE, disp = "sd",
-     limit_agents = c("Exp3", "ThompsonSampling"),
+     limit_agents = c("Exp3", "ThompsonSampling"), legend_border = FALSE,
      legend_position = "bottomright", no_par = TRUE)
 
 plot(history, type = "cumulative", rate = TRUE, plot_only_disp = TRUE,
      disp = "var", smooth = TRUE, limit_agents = c("Exp3", "ThompsonSampling"),
-     legend_position = "topleft", no_par = TRUE)
+     legend_border = FALSE, legend_position = "bottomleft", no_par = TRUE)
 
 plot(history, type = "average", disp = "ci", regret = FALSE, interval = 10,
      smooth = TRUE, legend_position = "bottomright", no_par = TRUE, legend = FALSE)

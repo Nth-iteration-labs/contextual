@@ -2,7 +2,7 @@ library(contextual)
 
 horizon            <- 100
 simulations        <- 1000
-weights            <- matrix(c(0.8, 0.2, 0.2), 1, 3)
+weights            <- matrix(c(0.6, 0.2, 0.2), 1, 3)
 
 policy             <- EpsilonFirstPolicy$new(epsilon = 0.5, N = horizon)
 bandit             <- ContextualBernoulliBandit$new(weights = weights)
