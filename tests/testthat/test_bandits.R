@@ -399,7 +399,7 @@ test_that("ContextualBernoulliBandit", {
 
   bandit <- ContextualBernoulliBandit$new(weights = weights)
   agents <- list(Agent$new(EpsilonGreedyPolicy$new(0.1), bandit, "EGreedy"),
-                 Agent$new(ContextualEpsilonGreedy$new(0.1), bandit, "cEGreedy"),
+                 Agent$new(ContextualEpsilonGreedyPolicy$new(0.1), bandit, "cEGreedy"),
                  Agent$new(ContextualLogitBTSPolicy$new(10), bandit, "LogitBTS"),
                  Agent$new(LinUCBDisjointPolicy$new(0.6), bandit, "LinUCB"))
   simulation <- Simulator$new(agents, horizon, simulations, do_parallel = FALSE)
@@ -424,7 +424,7 @@ test_that("ContextualBernoulliBandit", {
 
   bandit <- ContextualBinaryBandit$new(weights = weights)
   agents <- list(Agent$new(EpsilonGreedyPolicy$new(0.1), bandit, "EGreedy"),
-                 Agent$new(ContextualEpsilonGreedy$new(0.1), bandit, "cEGreedy"),
+                 Agent$new(ContextualEpsilonGreedyPolicy$new(0.1), bandit, "cEGreedy"),
                  Agent$new(ContextualLogitBTSPolicy$new(10), bandit, "LogitBTS"),
                  Agent$new(LinUCBDisjointPolicy$new(0.6), bandit, "LinUCB"))
   simulation <- Simulator$new(agents, horizon, simulations, do_parallel = FALSE)

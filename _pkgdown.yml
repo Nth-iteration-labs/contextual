@@ -21,6 +21,8 @@ reference:
   - title: "Utility functions"
     desc: "Contextual utility functions."
     contents:
+      - get_arm_context
+      - get_full_context
       - dec<-
       - inc<-
       - inv
@@ -30,8 +32,15 @@ reference:
       - sample_one_of
       - is_rstudio
       - set_external
+      - formatted_difftime
+      - invgamma
+      - invlogit
+      - mvrnorm
+      - one_hot
+      - sherman_morrisson
+      - var_welford
   - title: "Generic functions"
-    desc: "Contextual generic  functions."
+    desc: "Contextual generic functions."
     contents:
       - summary.history
       - print.history

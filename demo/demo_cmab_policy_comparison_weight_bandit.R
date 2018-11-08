@@ -9,7 +9,7 @@ weights     <- matrix(c(0.8, 0.1, 0.1,
 
 bandit      <- ContextualBinaryBandit$new(weights = weights)
 agents      <- list(Agent$new(EpsilonGreedyPolicy$new(0.1), bandit, "EGreedy"),
-                    Agent$new(ContextualEpsilonGreedy$new(0.1), bandit, "cEGreedy"),
+                    Agent$new(ContextualEpsilonGreedyPolicy$new(0.1), bandit, "cEGreedy"),
                     Agent$new(ContextualLogitBTSPolicy$new(10), bandit, "LogitBTS"),
                     Agent$new(LinUCBDisjointPolicy$new(0.6), bandit, "LinUCB"))
 

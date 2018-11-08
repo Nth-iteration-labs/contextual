@@ -326,7 +326,7 @@ rinvgamma <- function(n, shape, rate = 1, scale = 1/rate) {
 #' @return An object of the same type as x containing the inverse logits of the input values.
 #'
 #' @export
-inv_logit <- function(x){
+invlogit <- function(x){
   exp(x)/(1+exp(x))
 }
 

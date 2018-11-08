@@ -1,11 +1,11 @@
 #' @export
-ContextualEpsilonGreedy <- R6::R6Class(
+ContextualEpsilonGreedyPolicy <- R6::R6Class(
   portable = FALSE,
   class = FALSE,
   inherit = Policy,
   public = list(
     epsilon = NULL,
-    class_name = "ContextualEpsilonGreedy",
+    class_name = "ContextualEpsilonGreedyPolicy",
     initialize = function(epsilon = 1.0) {
       super$initialize()
       self$epsilon <- epsilon
@@ -45,14 +45,14 @@ ContextualEpsilonGreedy <- R6::R6Class(
   )
 )
 
-#' Policy: ContextualEpsilonGreedy with unique linear models
+#' Policy: ContextualEpsilonGreedyPolicy with unique linear models
 #'
-#' @name ContextualEpsilonGreedy
+#' @name ContextualEpsilonGreedyPolicy
 #'
 #'
 #' @section Usage:
 #' \preformatted{
-#' policy <- ContextualEpsilonGreedy(epsilon = 0.1)
+#' policy <- ContextualEpsilonGreedyPolicy(epsilon = 0.1)
 #' }
 #'
 #' @section Arguments:
@@ -77,7 +77,7 @@ ContextualEpsilonGreedy <- R6::R6Class(
 #' @section Methods:
 #'
 #' \describe{
-#'   \item{\code{new(epsilon = 0.1)}}{ Generates a new \code{ContextualEpsilonGreedy} object. Arguments are defined in the Argument section above.}
+#'   \item{\code{new(epsilon = 0.1)}}{ Generates a new \code{ContextualEpsilonGreedyPolicy} object. Arguments are defined in the Argument section above.}
 #' }
 #'
 #' \describe{

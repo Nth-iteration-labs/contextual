@@ -38,7 +38,7 @@ bandit      <- OfflineReplayEvaluatorBandit$new(log_S, k = length(unique(datafil
 # Define agents.
 agents      <-
   list(Agent$new(UCB1Policy$new(), bandit, "UCB1"),
-       Agent$new(ContextualEpsilonGreedy$new(0.01), bandit, "cEG = 0.01"),
+       Agent$new(ContextualEpsilonGreedyPolicy$new(0.01), bandit, "cEG = 0.01"),
        Agent$new(LinUCBDisjointOptimizedPolicy$new(0.01), bandit, "alpha = 0.01"),
        Agent$new(LinUCBDisjointOptimizedPolicy$new(0.05), bandit, "alpha = 0.05"))
 

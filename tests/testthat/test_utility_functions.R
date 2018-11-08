@@ -36,7 +36,7 @@ test_that("Formatted difftime", {
 })
 
 test_that("Inverse Logit", {
-  expect_equal(inv_logit(10),0.9999546, tolerance = 0.002)
+  expect_equal(invlogit(10),0.9999546, tolerance = 0.002)
 })
 
 test_that("InvGamma", {
