@@ -231,13 +231,13 @@ Where expectation $\mathbb{E}\left[ \mathord{\cdot}\right]$ is taken with respec
 
 \begin{figure}[H]
   \centering
-    \includegraphics[width=.99\textwidth]{fig/CMAB_chart}
+    \includegraphics[width=.99\textwidth]{fig/cmab_chart}
 
       \caption{Diagram of \pkg{contextual}'s basic structure. The context feature matrix returned by get\_context() is only taken into account by CMAB policies, and may be ignored by MAB policies.}
-      \label{fig:CMAB_chart}
+      \label{fig:cmab_chart}
 \end{figure}
 
-The package's \code{Bandit} and \code{Policy} centered  class structure stays close to the previous formalization, while offering a clean, developer oriented interface. The following six classes form the backbone of the package (see also Figure ~\ref{fig:CMAB_chart}):
+The package's \code{Bandit} and \code{Policy} centered  class structure stays close to the previous formalization, while offering a clean, developer oriented interface. The following six classes form the backbone of the package (see also Figure ~\ref{fig:cmab_chart}):
 
 \begin{itemize}
          \item \code{Bandit}: R6 class \code{Bandit} is the parent class of all \pkg{contextual} \code{Bandit} subclasses. It is responsible for the generation of \code{contexts} and \code{rewards}.
