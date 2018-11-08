@@ -28,7 +28,7 @@ ContextualBernoulliBandit <- R6::R6Class(
       weight         <- Xa %*% self$weights
       # assign rewards for active context with weighted probs
       rewards        <- as.double(weight > runif(self$k))
-      optimal_arm    <- which_max_tied(rewards)
+      optimal_arm    <- which_max_tied(weight)
       reward  <- list(
         reward                   = rewards[arm],
         optimal_arm              = optimal_arm,

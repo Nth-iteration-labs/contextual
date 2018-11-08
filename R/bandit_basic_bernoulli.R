@@ -16,11 +16,11 @@ BasicBernoulliBandit <- R6::R6Class(
     },
     get_reward = function(t, context, action) {
       rewards        <- as.double(runif(self$k) < self$weights)
-      optimal_arm    <- which_max_tied(rewards)
+      optimal_arm    <- which_max_tied(self$weights)
       reward  <- list(
         reward                   = rewards[action$choice],
         optimal_arm              = optimal_arm,
-        optimal_reward           = rewards[optimal_arm]
+        optimal_reward           = self$weights[optimal_arm]
       )
     }
   )

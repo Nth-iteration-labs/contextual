@@ -1,7 +1,7 @@
 library(contextual)
 
 horizon     <- 3500L
-simulations <- 1L
+simulations <- 10L
 
 weights     <- matrix(c(0.8, 0.1, 0.1,
                         0.1, 0.8, 0.1,

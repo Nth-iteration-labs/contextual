@@ -4,6 +4,9 @@
 \alias{ContextualHybridBandit}
 \title{Bandit: ContextualHybridBandit}
 \description{
+TODO: optimal arm calculation
+}
+\details{
 Extension of \code{ContextualLogitBandit} modeling hybrid rewards with a combination
 of unique (or "disjoint") and shared contextual features.
 }

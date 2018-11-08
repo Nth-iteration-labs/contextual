@@ -17,8 +17,8 @@ SimpleBTSPolicy <- R6::R6Class(
       self$b  <- b
     },
     set_parameters = function(context_params) {
-      self$theta_to_arms <- list('alpha' = rep(self$b,self$J),
-                                 'beta' = rep(self$b,self$J))
+      self$theta_to_arms <- list('alpha' = rep(self$a,self$J),
+                                 'beta'  = rep(self$b,self$J))
     },
     get_action = function(t, context) {
       point_estimate_of_mean <- vector("double", context$k)
@@ -35,7 +35,9 @@ SimpleBTSPolicy <- R6::R6Class(
       arm    <- action$choice
       reward <- reward$reward
       # double_or_nothing_bootstrap
-      some_replicates <- which(rbinom(self$J, 1, .5) == 1)
+      some_replicates = NULL
+      while(length(some_replicates)==0)
+        some_replicates <- which(rbinom(self$J, 1, .5) == 1)
       inc(self$theta$alpha[[arm]][some_replicates]) <- reward
       inc(self$theta$beta[[arm]][some_replicates])  <- 1 - reward
       self$theta

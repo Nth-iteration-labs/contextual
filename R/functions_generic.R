@@ -39,6 +39,10 @@ plot.History <- function(x, ...) {
     use_colors <- eval(args$use_colors)
   else
     use_colors <- TRUE
+  if ("log" %in% names(args))
+    log <- eval(args$log)
+  else
+    log <- ""
   if ("plot_only_disp" %in% names(args))
     plot_only_disp <- eval(args$plot_only_disp)
   else
@@ -126,6 +130,7 @@ plot.History <- function(x, ...) {
       legend = legend,
       regret = regret,
       use_colors = use_colors,
+      log = log,
       disp = disp,
       plot_only_disp = plot_only_disp,
       traces = traces,
@@ -152,7 +157,7 @@ plot.History <- function(x, ...) {
       xlim = xlim,
       legend = legend,
       regret = regret,
-      use_colors = use_colors,
+      log = log,
       disp = disp,
       plot_only_disp = plot_only_disp,
       traces = traces,
@@ -179,6 +184,7 @@ plot.History <- function(x, ...) {
       xlim = xlim,
       legend = legend,
       use_colors = use_colors,
+      log = log,
       interval = interval,
       ylim = ylim,
       smooth = smooth,

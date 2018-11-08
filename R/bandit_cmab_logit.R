@@ -37,7 +37,7 @@ ContextualLogitBandit <- R6::R6Class(
       pr         <- 1/(1+exp(-z))                         # inverse logit transform of linear predictor
       rewards    <- rbinom(d,1,pr)                        # binary rewards from the Bernoulli distribution
 
-      optimal_arm    <- which_max_tied(rewards)
+      optimal_arm    <- which_max_tied(pr)
       reward  <- list(
         reward                   = rewards[action$choice],
         optimal_arm              = optimal_arm,

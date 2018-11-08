@@ -30,7 +30,6 @@ Suggests:
     testthat,
     RCurl,
     splitstackshape,
-    vdiffr,
     covr,
     knitr,
     here,

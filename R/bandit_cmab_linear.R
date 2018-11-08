@@ -8,6 +8,7 @@ ContextualLinearBandit <- R6::R6Class(
     betas   = NULL,
     sigma   = NULL,
     binary  = NULL,
+    weights = NULL,
     class_name = "ContextualLinearBandit",
     initialize  = function(k, d, sigma = 0.1, binary_rewards = FALSE) {
       self$k                                    <- k
@@ -22,8 +23,8 @@ ContextualLinearBandit <- R6::R6Class(
     get_context = function(t) {
 
       X                                         <- rnorm(self$d)
-      reward_vector                             <- X %*% self$betas
-      reward_vector                             <- reward_vector + rnorm(self$k, sd = self$sigma)
+      self$weights                              <- X %*% self$betas
+      reward_vector                             <- self$weights + rnorm(self$k, sd = self$sigma)
 
       if (isTRUE(self$binary)) {
         self$rewards                            <- rep(0,self$k)
@@ -39,7 +40,7 @@ ContextualLinearBandit <- R6::R6Class(
     },
     get_reward = function(t, context_common, action) {
       rewards        <- self$rewards
-      optimal_arm    <- which_max_tied(rewards)
+      optimal_arm    <- which_max_tied(self$weights)
       reward         <- list(
         reward                   = rewards[action$choice],
         optimal_arm              = optimal_arm,

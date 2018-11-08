@@ -7,6 +7,8 @@
 Illustrates precaching of contexts and rewards.
 }
 \details{
+TODO: Fix "attempt to select more than one element in integerOneIndex"
+
 Contextual extension of \code{\link{BasicBernoulliBandit}}.
 
 Contextual extension of \code{\link{BasicBernoulliBandit}} where a user specified \code{d x k} dimensional

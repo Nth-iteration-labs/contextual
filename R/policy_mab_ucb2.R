@@ -1,29 +1,47 @@
 #' @export
-UCB1Policy <- R6::R6Class(
+UCB2Policy <- R6::R6Class(
   portable = FALSE,
   class = FALSE,
   inherit = Policy,
   public = list(
-    class_name = "UCB1Policy",
-    initialize = function() {
+    class_name = "UCB2Policy",
+    alpha = NULL,
+    current_arm = NULL,
+    next_update = NULL,
+    initialize = function(alpha = 0.1) {
       super$initialize()
+      self$alpha       <- alpha
+      self$current_arm <- 0
+      self$next_update <- 0
     },
     set_parameters = function(context_params) {
-      self$theta_to_arms <- list('n' = 0, 'mean' = 0)
+      self$theta_to_arms <- list('n' = 0, 'mean' = 0, 'r' = 0)
     },
     get_action = function(t, context) {
       n_zero_arms <- which(self$theta$n == 0)
       if (length(n_zero_arms) > 0) {
         action$choice <- sample_one_of(n_zero_arms)
+        set_arm(action$choice)
         return(action)
       }
+
+      # make sure we aren't still playing the previous arm.
+      if (self$next_update > sum_of(self$theta$n)) {
+        action$choice <- self$current_arm
+        return(action)
+      }
+
       expected_rewards <- rep(0.0, context$k)
       total_n          <- sum_of(self$theta$n)
+
       for (arm in 1:context$k) {
-        variance <- sqrt((2*log(total_n)) / self$theta$n[[arm]])
-        expected_rewards[arm] <- self$theta$mean[[arm]] + variance
+        bonus                 <- private$bonus(total_n, self$theta$mean[[arm]])
+        expected_rewards[arm] <- self$theta$mean[[arm]] + bonus
       }
+
       action$choice <- which_max_tied(expected_rewards)
+      private$set_arm(action$choice)
+
       action
     },
     set_reward = function(t, context, action, reward) {
@@ -33,31 +51,53 @@ UCB1Policy <- R6::R6Class(
       inc(self$theta$mean[[arm]]) <- (reward - self$theta$mean[[arm]]) / self$theta$n[[arm]]
       self$theta
     }
+  ),
+  private = list(
+    bonus = function(n, r){
+      tau   <- private$tau(r)
+      bonus <- sqrt((1 + self$alpha) * log(exp(1) * n / tau) / (2 * tau))
+    },
+    tau = function(r){
+      ceiling((1 + self$alpha) ^ r)
+    },
+    set_arm = function(arm){
+      # When choosing a new arm, make sure we play that arm for tau(r+1) - tau(r) episodes.
+      self$current_arm         <- arm
+      r_arm                    <- self$theta$r[[arm]]
+      inc(self$next_update)    <- max(1, private$tau(r_arm + 1) - private$tau(r_arm))
+      inc(self$theta$r[[arm]]) <- 1
+    }
   )
 )
 
-#' Policy: UCB1
+#' Policy: UCB2
 #'
-#' UCB policy for bounded bandits with a Chernoff-Hoeffding Bound
+#' UCB policy for bounded bandits with plays divided in epochs.
 #'
-#' \code{UCB1Policy} constructs an optimistic estimate in the form of an Upper Confidence Bound to
+#' \code{UCB2Policy} constructs an optimistic estimate in the form of an Upper Confidence Bound to
 #' create an estimate of the expected payoff of each action, and picks the action with the highest estimate.
 #' If the guess is wrong, the optimistic guess quickly decreases, till another action has
 #' the higher estimate.
 #'
-#' @name UCB1Policy
+#' @name UCB2Policy
 #'
 #'
 #' @section Usage:
 #' \preformatted{
-#' policy <- UCB1Policy()
+#' policy <- UCB2Policy(alpha = 0.1)
 #' }
+#' @section Arguments:
 #'
+#' \describe{
+#'   \item{\code{alpha}}{
+#'    numeric; Tuning parameter in the interval \code{(0,1)}
+#'   }
+#' }
 #'
 #' @section Methods:
 #'
 #' \describe{
-#'   \item{\code{new()}}{ Generates a new \code{UCB1Policy} object.}
+#'   \item{\code{new(alpha = 0.1)}}{ Generates a new \code{UCB2Policy} object.}
 #' }
 #'
 #' \describe{
@@ -84,7 +124,7 @@ UCB1Policy <- R6::R6Class(
 #'
 #' @references
 #'
-#' Lai, T. L., & Robbins, H. (1985). Asymptotically efficient adaptive allocation rules. Advances in applied mathematics, 6(1), 4-22.
+#' Auer, P., Cesa-Bianchi, N., & Fischer, P. (2002). Finite-time analysis of the multiarmed bandit problem. Machine learning, 47(2-3), 235-256.
 #'
 #' @seealso
 #'
@@ -101,7 +141,7 @@ UCB1Policy <- R6::R6Class(
 #' simulations        <- 100L
 #' weights          <- c(0.9, 0.1, 0.1)
 #'
-#' policy             <- UCB1Policy$new()
+#' policy             <- UCB2Policy$new()
 #' bandit             <- BasicBernoulliBandit$new(weights = weights)
 #' agent              <- Agent$new(policy, bandit)
 #'

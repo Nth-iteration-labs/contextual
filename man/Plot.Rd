@@ -90,6 +90,10 @@ the plot frame at the given location.
 \item{\code{ylim}}{
 \code{(c(integer,integer), NULL)} Sets y-axis limits.
 }
+\item{\code{log}}{
+\code{(character , "")} A character string which contains "x" if the x axis is to be logarithmic,
+"y" if the y axis is to be logarithmic and "xy" or "yx" if both axes are to be logarithmic.
+}
 \item{\code{use_colors}}{
 \code{(logical, TRUE)} If use_colors is FALSE, plots will be in grayscale.
 Otherwise, plots will make use of a color palette (default).

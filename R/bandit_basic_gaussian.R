@@ -18,11 +18,11 @@ BasicGaussianBandit <- R6::R6Class(
     },
     get_reward = function(t, context, action) {
       rewards <- rnorm(self$k, self$mu_per_arm, self$sigma_per_arm)
-      optimal_arm    <- which_max_tied(rewards)
+      optimal_arm    <- which_max_tied(self$mu_per_arm)
       reward         <- list(
         reward                   = rewards[action$choice],
         optimal_arm              = optimal_arm,
-        optimal_reward           = rewards[optimal_arm]
+        optimal_reward           = self$mu_per_arm[optimal_arm]
       )
     }
   )

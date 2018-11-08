@@ -46,14 +46,15 @@ ContextualHybridBandit <- R6::R6Class(
       trb          <- trb + rnorm(1,0,self$sigma)
       rwrd         <- rbinom(1,1,1/(1+exp(-trb)))
       reward       <- list(
-        reward                   = rwrd,
-        optimal_reward_value     = 1
+        reward                   = rwrd
       )
     }
   )
 )
 
 #' Bandit: ContextualHybridBandit
+#'
+#' TODO: optimal arm calculation
 #'
 #' Extension of \code{ContextualLogitBandit} modeling hybrid rewards with a combination
 #' of unique (or "disjoint") and shared contextual features.

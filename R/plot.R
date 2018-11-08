@@ -19,6 +19,7 @@ Plot <- R6::R6Class(
                           xlim               = NULL,
                           ylim               = NULL,
                           legend             = TRUE,
+                          log                = "",
                           use_colors         = TRUE,
                           color_step         = 1,
                           lty_step           = 1,
@@ -59,6 +60,7 @@ Plot <- R6::R6Class(
         disp_data_name      = disp_data_name,
         ylab_title          = ylab_title,
         use_colors          = use_colors,
+        log                 = log,
         legend              = legend,
         disp                = disp,
         plot_only_disp      = plot_only_disp,
@@ -99,6 +101,7 @@ Plot <- R6::R6Class(
                        ylim               = NULL,
                        legend             = TRUE,
                        use_colors         = TRUE,
+                       log                = "",
                        color_step         = 1,
                        lty_step           = 1,
                        lwd                = 2,
@@ -125,6 +128,7 @@ Plot <- R6::R6Class(
         disp_data_name      = disp_data_name,
         ylab_title          = ylab_title,
         use_colors          = use_colors,
+        log                 = log,
         legend              = legend,
         disp                = disp,
         plot_only_disp      = plot_only_disp,
@@ -155,6 +159,7 @@ Plot <- R6::R6Class(
                     no_par             = FALSE,
                     legend             = TRUE,
                     use_colors         = TRUE,
+                    log                = "",
                     interval           = 1,
                     xlim               = NULL,
                     ylim               = NULL,
@@ -329,6 +334,7 @@ Plot <- R6::R6Class(
                        plot_only_disp      = FALSE,
                        ylab_title          = NULL,
                        use_colors          = FALSE,
+                       log                 = "",
                        legend              = TRUE,
                        no_par              = FALSE,
                        xlim                = NULL,
@@ -444,7 +450,8 @@ Plot <- R6::R6Class(
       }
       plot.window(
         xlim = c(min_xlim, max_xlim),
-        ylim = c(min_ylim, max_ylim)
+        ylim = c(min_ylim, max_ylim),
+        log = log
       )
 
       if (isTRUE(traces) && !isTRUE(plot_only_disp)) {
@@ -641,6 +648,10 @@ Plot <- R6::R6Class(
 #'   }
 #'   \item{\code{ylim}}{
 #'      \code{(c(integer,integer), NULL)} Sets y-axis limits.
+#'   }
+#'   \item{\code{log}}{
+#'      \code{(character , "")} A character string which contains "x" if the x axis is to be logarithmic,
+#'      "y" if the y axis is to be logarithmic and "xy" or "yx" if both axes are to be logarithmic.
 #'   }
 #'   \item{\code{use_colors}}{
 #'      \code{(logical, TRUE)} If use_colors is FALSE, plots will be in grayscale.

@@ -374,6 +374,9 @@ Simulator <- R6::R6Class(
 #'       files to the current working directory, allowing you to keep track of \code{workers}, iterations,
 #'       and potential errors when running a \code{Simulator} in parallel.
 #'   }
+#'   \item{\code{log_interval}}{
+#'       \code{integer}. Sets the log write interval.
+#'   }
 #'   \item{\code{include_packages}}{
 #'       \code{List}. List of packages that (one of) the policies depend on. If a \code{Policy} requires an
 #'       R package to be loaded, this option can be used to load that package on each of the workers.
