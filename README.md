@@ -12,7 +12,7 @@ Contextual: Multi-Armed Bandits in R
 Overview
 --------
 
-R package facilitating the simulation and evaluation of context-free and contextual Multi-Armed Bandit policies or algorithms.
+R package facilitating the simulation and evaluation of context-free and contextual Multi-Armed Bandit policies.
 
 The package has been developed to:
 
@@ -37,10 +37,12 @@ devtools::install_github('r-lib/contextual')
 Documentation
 -------------
 
+
 * [Getting started: running simulations](https://nth-iteration-labs.github.io/contextual/articles/introduction.html)
 * [Offline evaluation: replication of Li et al (2010)](https://nth-iteration-labs.github.io/contextual/articles/replication.html)
 * [Class reference](https://nth-iteration-labs.github.io/contextual/reference/index.html)
-* [Article](https://github.com/Nth-iteration-labs/contextual/blob/master/docs/articles/jss.pdf)
+* See the [demo directory](https://github.com/Nth-iteration-labs/contextual/tree/master/demo) for practical examples and replications of both synthetic and offline bandit policy evaluations.
+* Or read a [paper](https://arxiv.org/abs/1811.01926) offering a general introduction to (c)MAB problems and how to analyse them through contextual.
 
 <!---
 * [Blog at Pavlov](https://pavlov.tech/category/contextual/)
