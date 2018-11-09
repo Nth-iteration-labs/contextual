@@ -97,11 +97,12 @@ bandit      <- OfflineLookupReplayEvaluatorBandit$new(top_50_movies,
                                                       unique_col    = "UserID",
                                                       shared_lookup = arm_features,
                                                       unique_lookup = user_features)
+agents      <-
   list(Agent$new(ThompsonSamplingPolicy$new(), bandit, "Thompson"),
        Agent$new(UCB1Policy$new(), bandit, "UCB1"),
        Agent$new(RandomPolicy$new(), bandit, "Random"),
-       Agent$new(LinUCBHybridOptimizedPolicy$new(2.05), bandit, "LinUCB Hyb"),
-       Agent$new(LinUCBDisjointOptimizedPolicy$new(2.05), bandit, "LinUCB Dis"))
+       Agent$new(LinUCBHybridOptimizedPolicy$new(0.9), bandit, "LinUCB Hyb 0.9"),
+       Agent$new(LinUCBDisjointOptimizedPolicy$new(2.1), bandit, "LinUCB Dis 2.1"))
 
 simulation  <-
   Simulator$new(
