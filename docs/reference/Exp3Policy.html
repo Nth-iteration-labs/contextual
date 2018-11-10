@@ -184,14 +184,18 @@ based on the reward received, and, potentially, the current context.</p></dd>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Auer, P., Cesa-Bianchi, N., Freund, Y., &amp; Schapire, R. E. (2002). The nonstochastic multi-armed bandit problem. SIAM journal on computing, 32(1), 48-77. Strehl, A., &amp; Littman, M. (2004). Exploration via model based interval estimation. In International Conference on Machine Learning, number Icml.
-Strehl, A., &amp; Littman, M. (2004). Exploration via model based interval estimation. In International Conference on Machine Learning, number Icml.</p>
+    <p>Auer, P., Cesa-Bianchi, N., Freund, Y., &amp; Schapire, R. E. (2002). The nonstochastic multi-armed bandit
+problem. SIAM journal on computing, 32(1), 48-77. Strehl, A., &amp; Littman, M. (2004). Exploration via
+model based interval estimation. In International Conference on Machine Learning, number Icml.</p>
+<p>Strehl, A., &amp; Littman, M. (2004). Exploration via model based interval estimation. In International
+Conference on Machine Learning, number Icml.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Core contextual classes: <code><a href='Bandit.html'>Bandit</a></code>, <code><a href='Policy.html'>Policy</a></code>, <code><a href='Simulator.html'>Simulator</a></code>,
 <code><a href='Agent.html'>Agent</a></code>, <code><a href='History.html'>History</a></code>, <code><a href='Plot.html'>Plot</a></code></p>
-<p>Bandit subclass examples: <code><a href='BasicBernoulliBandit.html'>BasicBernoulliBandit</a></code>, <code><a href='ContextualLogitBandit.html'>ContextualLogitBandit</a></code>,  <code><a href='OfflineReplayEvaluatorBandit.html'>OfflineReplayEvaluatorBandit</a></code></p>
+<p>Bandit subclass examples: <code><a href='BasicBernoulliBandit.html'>BasicBernoulliBandit</a></code>, <code><a href='ContextualLogitBandit.html'>ContextualLogitBandit</a></code>,
+<code><a href='OfflineReplayEvaluatorBandit.html'>OfflineReplayEvaluatorBandit</a></code></p>
 <p>Policy subclass examples: <code><a href='EpsilonGreedyPolicy.html'>EpsilonGreedyPolicy</a></code>, <code><a href='ContextualThompsonSamplingPolicy.html'>ContextualThompsonSamplingPolicy</a></code></p></div>
     
 
@@ -205,7 +209,7 @@ Strehl, A., &amp; Littman, M. (2004). Exploration via model based interval estim
 <span class='no'>bandit</span>             <span class='kw'>&lt;-</span> <span class='no'>BasicBernoulliBandit</span>$<span class='fu'>new</span>(<span class='kw'>weights</span> <span class='kw'>=</span> <span class='no'>weights</span>)
 <span class='no'>agent</span>              <span class='kw'>&lt;-</span> <span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>policy</span>, <span class='no'>bandit</span>)
 
-<span class='no'>history</span>            <span class='kw'>&lt;-</span> <span class='no'>Simulator</span>$<span class='fu'>new</span>(<span class='no'>agent</span>, <span class='no'>horizon</span>, <span class='no'>simulations</span>, <span class='kw'>do_parallel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)$<span class='fu'><a href='Simulator.html'>run</a></span>()</div><div class='output co'>#&gt; <span class='message'>Simulation horizon: 100</span></div><div class='output co'>#&gt; <span class='message'>Number of simulations: 100</span></div><div class='output co'>#&gt; <span class='message'>Number of batches: 1</span></div><div class='output co'>#&gt; <span class='message'>Starting main loop.</span></div><div class='output co'>#&gt; <span class='message'>Completed simulation in 0:00:01.472</span></div><div class='input'>
+<span class='no'>history</span>            <span class='kw'>&lt;-</span> <span class='no'>Simulator</span>$<span class='fu'>new</span>(<span class='no'>agent</span>, <span class='no'>horizon</span>, <span class='no'>simulations</span>, <span class='kw'>do_parallel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)$<span class='fu'><a href='Simulator.html'>run</a></span>()</div><div class='output co'>#&gt; <span class='message'>Simulation horizon: 100</span></div><div class='output co'>#&gt; <span class='message'>Number of simulations: 100</span></div><div class='output co'>#&gt; <span class='message'>Number of batches: 1</span></div><div class='output co'>#&gt; <span class='message'>Starting main loop.</span></div><div class='output co'>#&gt; <span class='message'>Completed simulation in 0:00:01.630</span></div><div class='input'>
 <span class='fu'>plot</span>(<span class='no'>history</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"cumulative"</span>)</div><div class='img'><img src='Exp3Policy-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='fu'>plot</span>(<span class='no'>history</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"arms"</span>)</div><div class='img'><img src='Exp3Policy-2.png' alt='' width='700' height='433' /></div></pre>
   </div>

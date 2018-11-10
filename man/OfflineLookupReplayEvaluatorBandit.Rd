@@ -2,7 +2,7 @@
 % Please edit documentation in R/bandit_offline_replay_evaluator_lookup.R
 \name{OfflineLookupReplayEvaluatorBandit}
 \alias{OfflineLookupReplayEvaluatorBandit}
-\title{Bandit: Li's Offline Policy Evaluator with lookup tables}
+\title{Bandit: Offline Replay with lookup tables}
 \description{
 TODO: Needs to be cleaned up, refactored, and make proper use of inheritance.
 }

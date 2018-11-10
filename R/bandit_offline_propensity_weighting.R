@@ -118,14 +118,16 @@ OfflinePropensityWeightingBandit <- R6::R6Class(
 #'
 #' @references
 #'
-#' Agrawal, R. (1995). The continuum-armed bandit problem. SIAM journal on control and optimization, 33(6), 1926-1951.
+#' Agrawal, R. (1995). The continuum-armed bandit problem. SIAM journal on control and optimization,
+#' 33(6), 1926-1951.
 #'
 #' @seealso
 #'
 #' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
-#' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflinePropensityWeightingBandit}}
+#' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},
+#' \code{\link{OfflinePropensityWeightingBandit}}
 #'
 #' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 #'

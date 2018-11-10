@@ -123,7 +123,7 @@ is_rstudio <- function() {
 #' @title Change Default Graphing Device from RStudio
 #' @description
 #' Checks to see if the user is in RStudio. If so, then it changes the device to a popup window.
-#' @param ext A \code{logical} indicating whether the graph should be done externally or internally in RStudio.
+#' @param ext A \code{logical} indicating whether to plot in a popup or within the RStudio UI.
 #' @param width Width in pixels of the popup window
 #' @param height Height in pixels of the popup window
 #' @details
@@ -381,13 +381,16 @@ get_full_context <- function(X, d, k, select_features = NULL) {
 #' One-Hot-Encode unordered factor columns of a data.table mltools. From ben519's "mltools" package.
 #'
 #' @details
-#' One-hot-encoding converts an unordered categorical vector (i.e. a factor) to multiple binarized vectors where each binary vector of
+#' One-hot-encoding converts an unordered categorical vector (i.e. a factor) to multiple binarized vectors
+#' where each binary vector of
 #' 1s and 0s indicates the presence of a class (i.e. level) of the of the original vector.
 #'
 #' @param dt A data.table
-#' @param cols Which column(s) should be one-hot-encoded? DEFAULT = "auto" encodes all unordered factor columns
+#' @param cols Which column(s) should be one-hot-encoded? DEFAULT = "auto" encodes all unordered
+#' factor columns.
 #' @param sparsifyNAs Should NAs be converted to 0s?
-#' @param naCols Should columns be generated to indicate the present of NAs? Will only apply to factor columns with at least one NA
+#' @param naCols Should columns be generated to indicate the present of NAs? Will only apply to factor
+#' columns with at least one NA
 #' @param dropCols Should the resulting data.table exclude the original columns which are one-hot-encoded?
 #' @param dropUnusedLevels Should columns of all 0s be generated for unused factor levels?
 #'
@@ -410,7 +413,8 @@ get_full_context <- function(X, d, k, select_features = NULL) {
 
 one_hot <- function(dt, cols="auto", sparsifyNAs=FALSE, naCols=FALSE, dropCols=TRUE, dropUnusedLevels=FALSE){
   # One-Hot-Encode unordered factors in a data.table
-  # If cols = "auto", each unordered factor column in dt will be encoded. (Or specifcy a vector of column names to encode)
+  # If cols = "auto", each unordered factor column in dt will be encoded.
+  # (Or specifically a vector of column names to encode)
   # If dropCols=TRUE, the original factor columns are dropped
   # If dropUnusedLevels = TRUE, unused factor levels are dropped
 
@@ -430,7 +434,8 @@ one_hot <- function(dt, cols="auto", sparsifyNAs=FALSE, naCols=FALSE, dropCols=T
   # Build tempDT containing and ID column and 'cols' columns
   tempDT <- dt[, cols, with=FALSE]
   tempDT[, OHEID := .I]
-  for(col in cols) set(tempDT, j=col, value=factor(paste(col, tempDT[[col]], sep="_"), levels=paste(col, levels(tempDT[[col]]), sep="_")))
+  for(col in cols) set(tempDT, j=col, value=factor(paste(col, tempDT[[col]], sep="_"),
+                                                   levels=paste(col, levels(tempDT[[col]]), sep="_")))
 
   # One-hot-encode
   melted <- melt(tempDT, id = 'OHEID', value.factor = T, na.rm=TRUE)
@@ -455,7 +460,8 @@ one_hot <- function(dt, cols="auto", sparsifyNAs=FALSE, naCols=FALSE, dropCols=T
 
     # If sparsifyNAs is TRUE, find location of NAs in dt and insert them in newCols
     if(!sparsifyNAs)
-      for(col in na_cols) newCols[is.na(tempDT[[col]]), intersect(levels(tempDT[[col]]), colnames(newCols)) := NA_integer_]
+      for(col in na_cols) newCols[is.na(tempDT[[col]]), intersect(levels(tempDT[[col]]),
+                                                                  colnames(newCols)) := NA_integer_]
 
     # If naCols is TRUE, build a vector for each column with an NA value and 1s indicating the location of NAs
     if(naCols)

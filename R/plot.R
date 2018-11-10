@@ -413,7 +413,8 @@ Plot <- R6::R6Class(
       }
 
       if (isTRUE(plot_only_disp)) {
-        if(is.null(disp)) stop("Need to set disp to 'var','sd' or 'ci' when plot_only_disp is TRUE", call. = FALSE)
+        if(is.null(disp)) stop("Need to set disp to 'var','sd' or 'ci' when plot_only_disp is TRUE",
+                               call. = FALSE)
         line_data_name = disp_data_name
       }
 
@@ -696,7 +697,8 @@ Plot <- R6::R6Class(
 #' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
-#' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflineReplayEvaluatorBandit}}
+#' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},
+#' \code{\link{OfflineReplayEvaluatorBandit}}
 #'
 #' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 #'

@@ -115,15 +115,10 @@ LinUCBHybridPolicy <- R6::R6Class(
 
 #' Policy: LinUCB with hybrid linear models
 #'
-#' Algorithm 1 LinUCB with hybrid linear models
-#' A Contextual-Bandit Approach to
-#' Personalized News Article Recommendation
-#'
-#' Lihong Li et all
-#'
-#' Each time step t, \code{LinUCBHybridPolicy} runs a linear regression per arm that produces coefficients for each context feature \code{d}.
-#' It then observes the new context, and generates a predicted payoff or reward together with a confidence interval for each available arm.
-#' It then proceeds to choose the arm with the highest upper confidence bound.
+#' Each time step t, \code{LinUCBHybridOptimizedPolicy} runs a linear regression per arm that produces
+#' coefficients for each context feature \code{d}. Next, it observes the new context, and generates a
+#' predicted payoff or reward together with a confidence interval for each available arm. It then proceeds
+#' to choose the arm with the highest upper confidence bound.
 #'
 #' @name LinUCBHybridPolicy
 #'
@@ -158,7 +153,8 @@ LinUCBHybridPolicy <- R6::R6Class(
 #' @section Methods:
 #'
 #' \describe{
-#'   \item{\code{new(alpha = 1)}}{ Generates a new \code{LinUCBHybridPolicy} object. Arguments are defined in the Argument section above.}
+#'   \item{\code{new(alpha = 1)}}{ Generates a new \code{LinUCBHybridPolicy} object. Arguments are defined in
+#'   the Argument section above.}
 #' }
 #'
 #' \describe{

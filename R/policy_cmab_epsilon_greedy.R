@@ -49,7 +49,6 @@ ContextualEpsilonGreedyPolicy <- R6::R6Class(
 #'
 #' @name ContextualEpsilonGreedyPolicy
 #'
-#'
 #' @section Usage:
 #' \preformatted{
 #' policy <- ContextualEpsilonGreedyPolicy(epsilon = 0.1)
@@ -77,7 +76,8 @@ ContextualEpsilonGreedyPolicy <- R6::R6Class(
 #' @section Methods:
 #'
 #' \describe{
-#'   \item{\code{new(epsilon = 0.1)}}{ Generates a new \code{ContextualEpsilonGreedyPolicy} object. Arguments are defined in the Argument section above.}
+#'   \item{\code{new(epsilon = 0.1)}}{ Generates a new \code{ContextualEpsilonGreedyPolicy} object.
+#'   Arguments are defined in the Argument section above.}
 #' }
 #'
 #' \describe{
@@ -102,16 +102,13 @@ ContextualEpsilonGreedyPolicy <- R6::R6Class(
 #'    }
 #'   }
 #'
-#' @references
-#'
-#' refhere
-#'
 #' @seealso
 #'
 #' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
-#' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflineReplayEvaluatorBandit}}
+#' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},
+#' \code{\link{OfflineReplayEvaluatorBandit}}
 #'
 #' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 NULL

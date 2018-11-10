@@ -147,7 +147,8 @@ GittinsBrezziLaiPolicy          <- R6::R6Class(
 #'
 #' @references
 #'
-#' Brezzi, M., & Lai, T. L. (2002). Optimal learning and experimentation in bandit problems. Journal of Economic Dynamics and Control, 27(1), 87-108.
+#' Brezzi, M., & Lai, T. L. (2002). Optimal learning and experimentation in bandit problems. Journal of
+#' Economic Dynamics and Control, 27(1), 87-108.
 #'
 #' Implementation follows \url{https://github.com/elarry/bandit-algorithms-simulated}
 #'
@@ -156,7 +157,8 @@ GittinsBrezziLaiPolicy          <- R6::R6Class(
 #' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
-#' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflineReplayEvaluatorBandit}}
+#' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},
+#' \code{\link{OfflineReplayEvaluatorBandit}}
 #'
 #' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 NULL

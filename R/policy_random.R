@@ -52,7 +52,8 @@ RandomPolicy <- R6::R6Class(
 #' @section Methods:
 #'
 #' \describe{
-#'   \item{\code{new()}}{ Generates a new \code{RandomPolicy} object. Arguments are defined in the Argument section above.}
+#'   \item{\code{new()}}{ Generates a new \code{RandomPolicy} object. Arguments are defined in the Argument
+#'   section above.}
 #' }
 #'
 #' \describe{
@@ -79,14 +80,16 @@ RandomPolicy <- R6::R6Class(
 #'
 #' @references
 #'
-#' Gittins, J., Glazebrook, K., & Weber, R. (2011). Multi-armed bandit allocation indices. John Wiley & Sons. (Original work published 1989)
+#' Gittins, J., Glazebrook, K., & Weber, R. (2011). Multi-armed bandit allocation indices. John Wiley & Sons.
+#' (Original work published 1989)
 #'
 #' @seealso
 #'
 #' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
-#' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflineReplayEvaluatorBandit}}
+#' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},
+#' \code{\link{OfflineReplayEvaluatorBandit}}
 #'
 #' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 #'
@@ -94,7 +97,7 @@ RandomPolicy <- R6::R6Class(
 #'
 #' horizon            <- 100L
 #' simulations        <- 100L
-#' weights          <- c(0.9, 0.1, 0.1)
+#' weights            <- c(0.9, 0.1, 0.1)
 #'
 #' policy             <- RandomPolicy$new()
 #' bandit             <- BasicBernoulliBandit$new(weights = weights)

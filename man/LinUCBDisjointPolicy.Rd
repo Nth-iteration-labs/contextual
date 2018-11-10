@@ -4,16 +4,11 @@
 \alias{LinUCBDisjointPolicy}
 \title{Policy: LinUCB with unique linear models}
 \description{
-Algorithm 1 LinUCB with unique linear models
-A Contextual-Bandit Approach to
-Personalized News Article Recommendation
-}
-\details{
-Lihong Li et all
-
-Each time step t, \code{LinUCBDisjointPolicy} runs a linear regression per arm that produces coefficients for each context feature \code{d}.
-It then observes the new context, and generates a predicted payoff or reward together with a confidence interval for each available arm.
-It then proceeds to choose the arm with the highest upper confidence bound.
+Each time step t, \code{LinUCBDisjointPolicy} runs a linear regression per arm that produces coefficients
+for each context feature \code{d}.
+Next,  \code{LinUCBDisjointPolicy} observes the new context, and generates a predicted payoff or reward
+together with a confidence interval for each available arm. It then proceeds to choose the arm with the
+highest upper confidence bound.
 }
 \section{Usage}{
 
@@ -53,7 +48,8 @@ a zero vector of length d
 
 
 \describe{
-\item{\code{new(alpha = 1)}}{ Generates a new \code{LinUCBDisjointPolicy} object. Arguments are defined in the Argument section above.}
+\item{\code{new(alpha = 1)}}{ Generates a new \code{LinUCBDisjointPolicy} object. Arguments are defined
+in the Argument section above.}
 }
 
 \describe{
@@ -80,13 +76,16 @@ based on the reward received, and, potentially, the current context.
 }
 
 \references{
-Li, L., Chu, W., Langford, J., & Schapire, R. E. (2010, April). A contextual-bandit approach to personalized news article recommendation. In Proceedings of the 19th international conference on World wide web (pp. 661-670). ACM.
+Li, L., Chu, W., Langford, J., & Schapire, R. E. (2010, April). A contextual-bandit approach to
+personalized news article recommendation. In Proceedings of the 19th international conference
+on World wide web (pp. 661-670). ACM.
 }
 \seealso{
 Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 
-Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflineReplayEvaluatorBandit}}
+Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},
+\code{\link{OfflineReplayEvaluatorBandit}}
 
 Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 }

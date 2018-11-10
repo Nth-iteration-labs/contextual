@@ -123,16 +123,19 @@ ContextualLinearBandit <- R6::R6Class(
 #'
 #' @references
 #'
-#' Riquelme, C., Tucker, G., & Snoek, J. (2018). Deep Bayesian Bandits Showdown: An Empirical Comparison of Bayesian Deep Networks for Thompson Sampling. arXiv preprint arXiv:1802.09127.
+#' Riquelme, C., Tucker, G., & Snoek, J. (2018). Deep Bayesian Bandits Showdown: An Empirical Comparison of
+#' Bayesian Deep Networks for Thompson Sampling. arXiv preprint arXiv:1802.09127.
 #'
-#' Implementation follows \url{https://github.com/tensorflow/models/tree/master/research/deep_contextual_bandits}
+#' Implementation follows
+#' \url{https://github.com/tensorflow/models/tree/master/research/deep_contextual_bandits}
 #'
 #' @seealso
 #'
 #' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
-#' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflineReplayEvaluatorBandit}}
+#' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},
+#' \code{\link{OfflineReplayEvaluatorBandit}}
 #'
 #' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 #'

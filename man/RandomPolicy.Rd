@@ -30,7 +30,8 @@ is, among others, saved to the History log and displayed in summaries and plots.
 
 
 \describe{
-\item{\code{new()}}{ Generates a new \code{RandomPolicy} object. Arguments are defined in the Argument section above.}
+\item{\code{new()}}{ Generates a new \code{RandomPolicy} object. Arguments are defined in the Argument
+section above.}
 }
 
 \describe{
@@ -60,7 +61,7 @@ based on the reward received, and, potentially, the current context.
 
 horizon            <- 100L
 simulations        <- 100L
-weights          <- c(0.9, 0.1, 0.1)
+weights            <- c(0.9, 0.1, 0.1)
 
 policy             <- RandomPolicy$new()
 bandit             <- BasicBernoulliBandit$new(weights = weights)
@@ -71,13 +72,15 @@ history            <- Simulator$new(agent, horizon, simulations, do_parallel = F
 plot(history, type = "arms")
 }
 \references{
-Gittins, J., Glazebrook, K., & Weber, R. (2011). Multi-armed bandit allocation indices. John Wiley & Sons. (Original work published 1989)
+Gittins, J., Glazebrook, K., & Weber, R. (2011). Multi-armed bandit allocation indices. John Wiley & Sons.
+(Original work published 1989)
 }
 \seealso{
 Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 
-Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflineReplayEvaluatorBandit}}
+Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},
+\code{\link{OfflineReplayEvaluatorBandit}}
 
 Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 }

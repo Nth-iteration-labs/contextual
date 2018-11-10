@@ -38,7 +38,8 @@ is, among others, saved to the History log and displayed in summaries and plots.
 
 
 \describe{
-\item{\code{new(epsilon = 0.1)}}{ Generates a new \code{EpsilonGreedyPolicy} object. Arguments are defined in the Argument section above.}
+\item{\code{new(epsilon = 0.1)}}{ Generates a new \code{EpsilonGreedyPolicy} object. Arguments are
+defined in the Argument section above.}
 }
 
 \describe{
@@ -81,19 +82,24 @@ plot(history, type = "cumulative")
 plot(history, type = "arms")
 }
 \references{
-Gittins, J., Glazebrook, K., & Weber, R. (2011). Multi-armed bandit allocation indices. John Wiley & Sons. (Original work published 1989)
+Gittins, J., Glazebrook, K., & Weber, R. (2011). Multi-armed bandit allocation indices. John Wiley & Sons.
+(Original work published 1989)
 
-Sutton, R. S. (1996). Generalization in reinforcement learning: Successful examples using sparse coarse coding. In Advances in neural information processing systems (pp. 1038-1044).
+Sutton, R. S. (1996). Generalization in reinforcement learning: Successful examples using sparse coarse
+coding. In Advances in neural information processing systems (pp. 1038-1044).
 
-Strehl, A., & Littman, M. (2004). Exploration via model based interval estimation. In International Conference on Machine Learning, number Icml.
+Strehl, A., & Littman, M. (2004). Exploration via model based interval estimation. In International
+Conference on Machine Learning, number Icml.
 
-Yue, Y., Broder, J., Kleinberg, R., & Joachims, T. (2012). The k-armed dueling bandits problem. Journal of Computer and System Sciences, 78(5), 1538-1556.
+Yue, Y., Broder, J., Kleinberg, R., & Joachims, T. (2012). The k-armed dueling bandits problem.
+Journal of Computer and System Sciences, 78(5), 1538-1556.
 }
 \seealso{
 Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 
-Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflineReplayEvaluatorBandit}}
+Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},
+\code{\link{OfflineReplayEvaluatorBandit}}
 
 Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 }

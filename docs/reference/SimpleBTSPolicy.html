@@ -38,7 +38,7 @@
 
 <meta property="og:title" content="Policy: SimpleBTSPolicy — SimpleBTSPolicy" />
 
-<meta property="og:description" content="Each time step t, SimpleBTSPolicy runs ..." />
+<meta property="og:description" content="Bootstrap Thompson Sampling" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -134,23 +134,63 @@
 
     <div class="ref-description">
     
-    <p>Each time step t, <code>SimpleBTSPolicy</code> runs ...</p>
+    <p>Bootstrap Thompson Sampling</p>
     
     </div>
 
         
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Bootstrap Thompson Sampling (BTS) is a heuristic method
+for solving bandit problems which modifies Thompson Sampling
+(see <a href='ThompsonSamplingPolicy.html'>ThompsonSamplingPolicy</a>) by replacing the posterior distribution
+used in Thompson sampling by a bootstrap distribution.</p>
+    
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 
     
     <pre>
-policy &lt;- SimpleBTSPolicy(alpha = 1.0)
+policy &lt;- SimpleBTSPolicy(J = 100, a= 1, b = 1)
 </pre>
+    <pre>
+policy &lt;- SimpleBTSPolicy(1000)
+</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+
+    
+    <dl class='dl-horizontal'>
+<dt><code>new(J = 100, a= 1, b = 1)</code></dt><dd><p>Generates a new <code>SimpleBTSPolicy</code> object.
+Arguments are defined in the Argument section above.</p></dd>
+</dl>
+    <dl class='dl-horizontal'>
+<dt><code><a href='Policy.html'>set_parameters()</a></code></dt><dd><p>each policy needs to assign the parameters it wants to keep track of
+to list <code>self$theta_to_arms</code> that has to be defined in <code><a href='Policy.html'>set_parameters()</a></code>'s body.
+The parameters defined here can later be accessed by arm index in the following way:
+<code>theta[[index_of_arm]]$parameter_name</code></p></dd>
+</dl>
+    <dl class='dl-horizontal'>
+<dt><code><a href='Policy.html'>get_action(context)</a></code></dt><dd><p>here, a policy decides which arm to choose, based on the current values
+of its parameters and, potentially, the current context.</p></dd>
+</dl>
+    <dl class='dl-horizontal'>
+<dt><code><a href='Policy.html'>set_reward(reward, context)</a></code></dt><dd><p>in <code><a href='Policy.html'>set_reward(reward, context)</a></code>, a policy updates its parameter values
+based on the reward received, and, potentially, the current context.</p></dd>
+</dl>
+    
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>Eckles, D., &amp; Kaptein, M. (2014). Thompson sampling with the online bootstrap.
+arXiv preprint arXiv:1410.4009.</p>
+<p>Thompson, W. R. (1933). On the likelihood that one unknown probability exceeds another in
+view of the evidence of two samples. Biometrika, 25(3/4), 285-294.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Core contextual classes: <code><a href='Bandit.html'>Bandit</a></code>, <code><a href='Policy.html'>Policy</a></code>, <code><a href='Simulator.html'>Simulator</a></code>,
 <code><a href='Agent.html'>Agent</a></code>, <code><a href='History.html'>History</a></code>, <code><a href='Plot.html'>Plot</a></code></p>
-<p>Bandit subclass examples: <code><a href='BasicBernoulliBandit.html'>BasicBernoulliBandit</a></code>, <code><a href='ContextualLogitBandit.html'>ContextualLogitBandit</a></code>,  <code><a href='OfflineReplayEvaluatorBandit.html'>OfflineReplayEvaluatorBandit</a></code></p>
+<p>Bandit subclass examples: <code><a href='BasicBernoulliBandit.html'>BasicBernoulliBandit</a></code>, <code><a href='ContextualLogitBandit.html'>ContextualLogitBandit</a></code>,
+<code><a href='OfflineReplayEvaluatorBandit.html'>OfflineReplayEvaluatorBandit</a></code></p>
 <p>Policy subclass examples: <code><a href='EpsilonGreedyPolicy.html'>EpsilonGreedyPolicy</a></code>, <code><a href='ContextualThompsonSamplingPolicy.html'>ContextualThompsonSamplingPolicy</a></code></p></div>
     
 
@@ -159,7 +199,13 @@ policy &lt;- SimpleBTSPolicy(alpha = 1.0)
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       
+      <li><a href="#details">Details</a></li>
+
       <li><a href="#usage">Usage</a></li>
+
+      <li><a href="#arguments">Arguments</a></li>
+
+      <li><a href="#references">References</a></li>
 
       <li><a href="#see-also">See also</a></li>
           </ul>

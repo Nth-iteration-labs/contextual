@@ -31,7 +31,8 @@ is, among others, saved to the History log and displayed in summaries and plots.
 
 
 \describe{
-\item{\code{new()}}{ Generates a new \code{OraclePolicy} object. Arguments are defined in the Argument section above.}
+\item{\code{new()}}{ Generates a new \code{OraclePolicy} object. Arguments are defined in the Argument
+section above.}
 }
 
 \describe{
@@ -58,13 +59,15 @@ based on the reward received, and, potentially, the current context.
 }
 
 \references{
-Gittins, J., Glazebrook, K., & Weber, R. (2011). Multi-armed bandit allocation indices. John Wiley & Sons. (Original work published 1989)
+Gittins, J., Glazebrook, K., & Weber, R. (2011). Multi-armed bandit allocation indices. John Wiley & Sons.
+(Original work published 1989)
 }
 \seealso{
 Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 
-Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflineReplayEvaluatorBandit}}
+Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},
+\code{\link{OfflineReplayEvaluatorBandit}}
 
 Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 }

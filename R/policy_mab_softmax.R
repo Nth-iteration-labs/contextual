@@ -42,7 +42,7 @@ SoftmaxPolicy <- R6::R6Class(
 
 #' Policy: Softmax
 #'
-#' \code{SoftmaxPolicy} is very similar to Exp3Policy, but selects an arm based on the probability from
+#' \code{SoftmaxPolicy} is very similar to \link{Exp3Policy}, but selects an arm based on the probability from
 #' the Boltmann distribution. It makes use of a temperature parameter tau,
 #' which specifies how many arms we can explore. When tau is high, all arms are explored equally,
 #' when tau is low, arms offering higher rewards will be chosen.
@@ -67,7 +67,8 @@ SoftmaxPolicy <- R6::R6Class(
 #' @section Methods:
 #'
 #' \describe{
-#'   \item{\code{new(epsilon = 0.1)}}{ Generates a new \code{SoftmaxPolicy} object. Arguments are defined in the Argument section above.}
+#'   \item{\code{new(epsilon = 0.1)}}{ Generates a new \code{SoftmaxPolicy} object. Arguments are defined in
+#'   the Argument section above.}
 #' }
 #'
 #' \describe{
@@ -94,16 +95,19 @@ SoftmaxPolicy <- R6::R6Class(
 #'
 #' @references
 #'
-#' Kuleshov, V., & Precup, D. (2014). Algorithms for multi-armed bandit problems. arXiv preprint arXiv:1402.6028.
+#' Kuleshov, V., & Precup, D. (2014). Algorithms for multi-armed bandit problems.
+#' arXiv preprint arXiv:1402.6028.
 #'
-#' Cesa-Bianchi, N., Gentile, C., Lugosi, G., & Neu, G. (2017). Boltzmann exploration done right. In Advances in Neural Information Processing Systems (pp. 6284-6293).
+#' Cesa-Bianchi, N., Gentile, C., Lugosi, G., & Neu, G. (2017). Boltzmann exploration done right.
+#' In Advances in Neural Information Processing Systems (pp. 6284-6293).
 #'
 #' @seealso
 #'
 #' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
-#' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflineReplayEvaluatorBandit}}
+#' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},
+#' \code{\link{OfflineReplayEvaluatorBandit}}
 #'
 #' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 #'

@@ -31,7 +31,8 @@ Policy <- R6::R6Class(
       # Copies theta_to_arms k times, makes the copies available through theta.
       if (!is.null(self$theta_to_arms)) {
         for (param_index in seq_along(self$theta_to_arms)) {
-          self$theta[[ names(self$theta_to_arms)[param_index] ]] <- rep(list(self$theta_to_arms[[param_index]]),k)
+          self$theta[[ names(self$theta_to_arms)[param_index] ]] <-
+            rep(list(self$theta_to_arms[[param_index]]),k)
         }
       }
       self$theta
@@ -123,7 +124,8 @@ Policy <- R6::R6Class(
 #' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
-#' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflineReplayEvaluatorBandit}}
+#' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},
+#' \code{\link{OfflineReplayEvaluatorBandit}}
 #'
 #' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 NULL

@@ -38,9 +38,10 @@
 
 <meta property="og:title" content="Policy: LinUCB with hybrid linear models — LinUCBHybridPolicy" />
 
-<meta property="og:description" content="Algorithm 1 LinUCB with hybrid linear models
-A Contextual-Bandit Approach to
-Personalized News Article Recommendation" />
+<meta property="og:description" content="Each time step t, LinUCBHybridOptimizedPolicy runs a linear regression per arm that produces
+coefficients for each context feature d. Next, it observes the new context, and generates a
+predicted payoff or reward together with a confidence interval for each available arm. It then proceeds
+to choose the arm with the highest upper confidence bound." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -136,20 +137,14 @@ Personalized News Article Recommendation" />
 
     <div class="ref-description">
     
-    <p>Algorithm 1 LinUCB with hybrid linear models
-A Contextual-Bandit Approach to
-Personalized News Article Recommendation</p>
+    <p>Each time step t, <code>LinUCBHybridOptimizedPolicy</code> runs a linear regression per arm that produces
+coefficients for each context feature <code>d</code>. Next, it observes the new context, and generates a
+predicted payoff or reward together with a confidence interval for each available arm. It then proceeds
+to choose the arm with the highest upper confidence bound.</p>
     
     </div>
 
         
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>Lihong Li et all</p>
-<p>Each time step t, <code>LinUCBHybridPolicy</code> runs a linear regression per arm that produces coefficients for each context feature <code>d</code>.
-It then observes the new context, and generates a predicted payoff or reward together with a confidence interval for each available arm.
-It then proceeds to choose the arm with the highest upper confidence bound.</p>
-    
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 
     
@@ -178,7 +173,8 @@ is, among others, saved to the History log and displayed in summaries and plots.
 
     
     <dl class='dl-horizontal'>
-<dt><code>new(alpha = 1)</code></dt><dd><p>Generates a new <code>LinUCBHybridPolicy</code> object. Arguments are defined in the Argument section above.</p></dd>
+<dt><code>new(alpha = 1)</code></dt><dd><p>Generates a new <code>LinUCBHybridPolicy</code> object. Arguments are defined in
+the Argument section above.</p></dd>
 </dl>
     <dl class='dl-horizontal'>
 <dt><code><a href='Policy.html'>set_parameters()</a></code></dt><dd><p>each policy needs to assign the parameters it wants to keep track of
@@ -212,8 +208,6 @@ based on the reward received, and, potentially, the current context.</p></dd>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       
-      <li><a href="#details">Details</a></li>
-
       <li><a href="#usage">Usage</a></li>
 
       <li><a href="#arguments">Arguments</a></li>

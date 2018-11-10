@@ -123,15 +123,10 @@ LinUCBHybridOptimizedPolicy <- R6::R6Class(
 
 #' Policy: LinUCB with hybrid linear models
 #'
-#' Algorithm 1 LinUCB with hybrid linear models
-#' A Contextual-Bandit Approach to
-#' Personalized News Article Recommendation
-#'
-#' Lihong Li et all
-#'
-#' Each time step t, \code{LinUCBHybridOptimizedPolicy} runs a linear regression per arm that produces coefficients for each context feature \code{d}.
-#' It then observes the new context, and generates a predicted payoff or reward together with a confidence interval for each available arm.
-#' It then proceeds to choose the arm with the highest upper confidence bound.
+#' Each time step t, \code{LinUCBHybridOptimizedPolicy} runs a linear regression per arm that produces
+#' coefficients for each context feature \code{d}. Next, it observes the new context, and generates a
+#' predicted payoff or reward together with a confidence interval for each available arm. It then proceeds
+#' to choose the arm with the highest upper confidence bound.
 #'
 #' @name LinUCBHybridOptimizedPolicy
 #'
@@ -167,7 +162,8 @@ LinUCBHybridOptimizedPolicy <- R6::R6Class(
 #' @section Methods:
 #'
 #' \describe{
-#'   \item{\code{new(alpha = 1)}}{ Generates a new \code{LinUCBHybridOptimizedPolicy} object. Arguments are defined in the Argument section above.}
+#'   \item{\code{new(alpha = 1)}}{ Generates a new \code{LinUCBHybridOptimizedPolicy} object. Arguments are
+#'   defined in the Argument section above.}
 #' }
 #'
 #' \describe{
@@ -194,14 +190,17 @@ LinUCBHybridOptimizedPolicy <- R6::R6Class(
 #'
 #' @references
 #'
-#' Li, L., Chu, W., Langford, J., & Schapire, R. E. (2010, April). A contextual-bandit approach to personalized news article recommendation. In Proceedings of the 19th international conference on World wide web (pp. 661-670). ACM.
+#' Li, L., Chu, W., Langford, J., & Schapire, R. E. (2010, April). A contextual-bandit approach to
+#' personalized news article recommendation. In Proceedings of the 19th international conference on
+#' World wide web (pp. 661-670). ACM.
 #'
 #' @seealso
 #'
 #' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
-#' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflineReplayEvaluatorBandit}}
+#' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},
+#' \code{\link{OfflineReplayEvaluatorBandit}}
 #'
 #' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 NULL

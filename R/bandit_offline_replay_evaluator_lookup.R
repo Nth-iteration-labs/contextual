@@ -80,7 +80,7 @@ OfflineLookupReplayEvaluatorBandit <- R6::R6Class(
   )
 )
 
-#' Bandit: Li's Offline Policy Evaluator with lookup tables
+#' Bandit: Offline Replay with lookup tables
 #'
 #' TODO: Needs to be cleaned up, refactored, and make proper use of inheritance.
 #'

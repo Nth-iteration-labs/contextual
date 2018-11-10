@@ -4,20 +4,70 @@
 \alias{SimpleBTSPolicy}
 \title{Policy: SimpleBTSPolicy}
 \description{
-Each time step t, \code{SimpleBTSPolicy} runs ...
+Bootstrap Thompson Sampling
+}
+\details{
+Bootstrap Thompson Sampling (BTS) is a heuristic method
+for solving bandit problems which modifies Thompson Sampling
+(see \link{ThompsonSamplingPolicy}) by replacing the posterior distribution
+used in Thompson sampling by a bootstrap distribution.
 }
 \section{Usage}{
 
 \preformatted{
-policy <- SimpleBTSPolicy(alpha = 1.0)
+policy <- SimpleBTSPolicy(J = 100, a= 1, b = 1)
+}
+
+
+\preformatted{
+policy <- SimpleBTSPolicy(1000)
 }
 }
 
+\section{Arguments}{
+
+
+\describe{
+\item{\code{new(J = 100, a= 1, b = 1)}}{ Generates a new \code{SimpleBTSPolicy} object.
+Arguments are defined in the Argument section above.}
+}
+
+\describe{
+\item{\code{set_parameters()}}{each policy needs to assign the parameters it wants to keep track of
+to list \code{self$theta_to_arms} that has to be defined in \code{set_parameters()}'s body.
+The parameters defined here can later be accessed by arm index in the following way:
+\code{theta[[index_of_arm]]$parameter_name}
+}
+}
+
+\describe{
+\item{\code{get_action(context)}}{
+here, a policy decides which arm to choose, based on the current values
+of its parameters and, potentially, the current context.
+}
+}
+
+\describe{
+\item{\code{set_reward(reward, context)}}{
+in \code{set_reward(reward, context)}, a policy updates its parameter values
+based on the reward received, and, potentially, the current context.
+}
+}
+}
+
+\references{
+Eckles, D., & Kaptein, M. (2014). Thompson sampling with the online bootstrap.
+arXiv preprint arXiv:1410.4009.
+
+Thompson, W. R. (1933). On the likelihood that one unknown probability exceeds another in
+view of the evidence of two samples. Biometrika, 25(3/4), 285-294.
+}
 \seealso{
 Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 
-Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflineReplayEvaluatorBandit}}
+Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},
+\code{\link{OfflineReplayEvaluatorBandit}}
 
 Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 }

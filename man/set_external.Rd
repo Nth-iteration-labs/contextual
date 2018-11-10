@@ -7,7 +7,7 @@
 set_external(ext = TRUE, width = 10, height = 6)
 }
 \arguments{
-\item{ext}{A \code{logical} indicating whether the graph should be done externally or internally in RStudio.}
+\item{ext}{A \code{logical} indicating whether to plot in a popup or within the RStudio UI.}
 
 \item{width}{Width in pixels of the popup window}
 

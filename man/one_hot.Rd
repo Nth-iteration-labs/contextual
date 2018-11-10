@@ -10,11 +10,13 @@ one_hot(dt, cols = "auto", sparsifyNAs = FALSE, naCols = FALSE,
 \arguments{
 \item{dt}{A data.table}
 
-\item{cols}{Which column(s) should be one-hot-encoded? DEFAULT = "auto" encodes all unordered factor columns}
+\item{cols}{Which column(s) should be one-hot-encoded? DEFAULT = "auto" encodes all unordered
+factor columns.}
 
 \item{sparsifyNAs}{Should NAs be converted to 0s?}
 
-\item{naCols}{Should columns be generated to indicate the present of NAs? Will only apply to factor columns with at least one NA}
+\item{naCols}{Should columns be generated to indicate the present of NAs? Will only apply to factor
+columns with at least one NA}
 
 \item{dropCols}{Should the resulting data.table exclude the original columns which are one-hot-encoded?}
 
@@ -24,7 +26,8 @@ one_hot(dt, cols = "auto", sparsifyNAs = FALSE, naCols = FALSE,
 One-Hot-Encode unordered factor columns of a data.table mltools. From ben519's "mltools" package.
 }
 \details{
-One-hot-encoding converts an unordered categorical vector (i.e. a factor) to multiple binarized vectors where each binary vector of
+One-hot-encoding converts an unordered categorical vector (i.e. a factor) to multiple binarized vectors
+where each binary vector of
 1s and 0s indicates the presence of a class (i.e. level) of the of the original vector.
 }
 \examples{

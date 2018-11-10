@@ -137,7 +137,7 @@ when tau is low, arms offering higher rewards will be chosen." />
 
     <div class="ref-description">
     
-    <p><code>SoftmaxPolicy</code> is very similar to Exp3Policy, but selects an arm based on the probability from
+    <p><code>SoftmaxPolicy</code> is very similar to <a href='Exp3Policy.html'>Exp3Policy</a>, but selects an arm based on the probability from
 the Boltmann distribution. It makes use of a temperature parameter tau,
 which specifies how many arms we can explore. When tau is high, all arms are explored equally,
 when tau is low, arms offering higher rewards will be chosen.</p>
@@ -165,7 +165,8 @@ rewards will be chosen.</p></dd>
 
     
     <dl class='dl-horizontal'>
-<dt><code>new(epsilon = 0.1)</code></dt><dd><p>Generates a new <code>SoftmaxPolicy</code> object. Arguments are defined in the Argument section above.</p></dd>
+<dt><code>new(epsilon = 0.1)</code></dt><dd><p>Generates a new <code>SoftmaxPolicy</code> object. Arguments are defined in
+the Argument section above.</p></dd>
 </dl>
     <dl class='dl-horizontal'>
 <dt><code><a href='Policy.html'>set_parameters()</a></code></dt><dd><p>each policy needs to assign the parameters it wants to keep track of
@@ -184,14 +185,17 @@ based on the reward received, and, potentially, the current context.</p></dd>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Kuleshov, V., &amp; Precup, D. (2014). Algorithms for multi-armed bandit problems. arXiv preprint arXiv:1402.6028.</p>
-<p>Cesa-Bianchi, N., Gentile, C., Lugosi, G., &amp; Neu, G. (2017). Boltzmann exploration done right. In Advances in Neural Information Processing Systems (pp. 6284-6293).</p>
+    <p>Kuleshov, V., &amp; Precup, D. (2014). Algorithms for multi-armed bandit problems.
+arXiv preprint arXiv:1402.6028.</p>
+<p>Cesa-Bianchi, N., Gentile, C., Lugosi, G., &amp; Neu, G. (2017). Boltzmann exploration done right.
+In Advances in Neural Information Processing Systems (pp. 6284-6293).</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Core contextual classes: <code><a href='Bandit.html'>Bandit</a></code>, <code><a href='Policy.html'>Policy</a></code>, <code><a href='Simulator.html'>Simulator</a></code>,
 <code><a href='Agent.html'>Agent</a></code>, <code><a href='History.html'>History</a></code>, <code><a href='Plot.html'>Plot</a></code></p>
-<p>Bandit subclass examples: <code><a href='BasicBernoulliBandit.html'>BasicBernoulliBandit</a></code>, <code><a href='ContextualLogitBandit.html'>ContextualLogitBandit</a></code>,  <code><a href='OfflineReplayEvaluatorBandit.html'>OfflineReplayEvaluatorBandit</a></code></p>
+<p>Bandit subclass examples: <code><a href='BasicBernoulliBandit.html'>BasicBernoulliBandit</a></code>, <code><a href='ContextualLogitBandit.html'>ContextualLogitBandit</a></code>,
+<code><a href='OfflineReplayEvaluatorBandit.html'>OfflineReplayEvaluatorBandit</a></code></p>
 <p>Policy subclass examples: <code><a href='EpsilonGreedyPolicy.html'>EpsilonGreedyPolicy</a></code>, <code><a href='ContextualThompsonSamplingPolicy.html'>ContextualThompsonSamplingPolicy</a></code></p></div>
     
 
@@ -205,7 +209,7 @@ based on the reward received, and, potentially, the current context.</p></dd>
 <span class='no'>bandit</span>             <span class='kw'>&lt;-</span> <span class='no'>BasicBernoulliBandit</span>$<span class='fu'>new</span>(<span class='kw'>weights</span> <span class='kw'>=</span> <span class='no'>weights</span>)
 <span class='no'>agent</span>              <span class='kw'>&lt;-</span> <span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>policy</span>, <span class='no'>bandit</span>)
 
-<span class='no'>history</span>            <span class='kw'>&lt;-</span> <span class='no'>Simulator</span>$<span class='fu'>new</span>(<span class='no'>agent</span>, <span class='no'>horizon</span>, <span class='no'>simulations</span>, <span class='kw'>do_parallel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)$<span class='fu'><a href='Simulator.html'>run</a></span>()</div><div class='output co'>#&gt; <span class='message'>Simulation horizon: 100</span></div><div class='output co'>#&gt; <span class='message'>Number of simulations: 100</span></div><div class='output co'>#&gt; <span class='message'>Number of batches: 1</span></div><div class='output co'>#&gt; <span class='message'>Starting main loop.</span></div><div class='output co'>#&gt; <span class='message'>Completed simulation in 0:00:01.473</span></div><div class='input'>
+<span class='no'>history</span>            <span class='kw'>&lt;-</span> <span class='no'>Simulator</span>$<span class='fu'>new</span>(<span class='no'>agent</span>, <span class='no'>horizon</span>, <span class='no'>simulations</span>, <span class='kw'>do_parallel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)$<span class='fu'><a href='Simulator.html'>run</a></span>()</div><div class='output co'>#&gt; <span class='message'>Simulation horizon: 100</span></div><div class='output co'>#&gt; <span class='message'>Number of simulations: 100</span></div><div class='output co'>#&gt; <span class='message'>Number of batches: 1</span></div><div class='output co'>#&gt; <span class='message'>Starting main loop.</span></div><div class='output co'>#&gt; <span class='message'>Completed simulation in 0:00:01.608</span></div><div class='input'>
 <span class='fu'>plot</span>(<span class='no'>history</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"cumulative"</span>)</div><div class='img'><img src='SoftmaxPolicy-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='fu'>plot</span>(<span class='no'>history</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"arms"</span>)</div><div class='img'><img src='SoftmaxPolicy-2.png' alt='' width='700' height='433' /></div></pre>
   </div>

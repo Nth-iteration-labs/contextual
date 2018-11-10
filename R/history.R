@@ -246,7 +246,8 @@ History <- R6::R6Class(
       if (isTRUE(auto_stats)) private$calculate_cum_stats()
       invisible(self)
     },
-    get_data_table = function(limit_agents = NULL, limit_cols = NULL, limit_context = NULL, interval = 1, no_zero_sim = FALSE) {
+    get_data_table = function(limit_agents = NULL, limit_cols = NULL, limit_context = NULL,
+                              interval = 1, no_zero_sim = FALSE) {
       if (is.null(limit_agents)) {
         if (is.null(limit_cols)) {
           private$.data[t %% interval == 0 | t == 1][sim != 0]
@@ -279,7 +280,8 @@ History <- R6::R6Class(
     reindex = function(truncate = TRUE) {
       private$.data <- private$.data[, t := seq_len(.N), by = c("agent", "sim")]
       if (truncate) {
-        min_t_anywhere <- min(private$.data[, .(count = data.table::uniqueN(t)), by = c("agent", "sim")]$count)
+        min_t_anywhere <- min(private$.data[, .(count = data.table::uniqueN(t)),
+                                            by = c("agent", "sim")]$count)
         private$.data <- private$.data[t <= min_t_anywhere]
       }
       invisible(self)
@@ -345,8 +347,10 @@ History <- R6::R6Class(
     calculate_cum_stats = function() {
 
 
-      self$set_meta_data("min_t",min(private$.data[, .(count = data.table::uniqueN(t)), by = c("agent", "sim")]$count))
-      self$set_meta_data("max_t",max(private$.data[, .(count = data.table::uniqueN(t)), by = c("agent", "sim")]$count))
+      self$set_meta_data("min_t",min(private$.data[, .(count = data.table::uniqueN(t)),
+                                                   by = c("agent", "sim")]$count))
+      self$set_meta_data("max_t",max(private$.data[, .(count = data.table::uniqueN(t)),
+                                                   by = c("agent", "sim")]$count))
 
       self$set_meta_data("agents",min(private$.data[, .(count = data.table::uniqueN(agent))]$count))
       self$set_meta_data("simulations",min(private$.data[, .(count = data.table::uniqueN(sim))]$count))
@@ -448,7 +452,8 @@ History <- R6::R6Class(
 #' and can save or load simulation log data files.
 #'
 #' @name History
-#' @aliases print_data reindex delete_empty_rows clear_data_table set_data_table get_data_table set_data_frame get_data_frame load cumulative save
+#' @aliases print_data reindex delete_empty_rows clear_data_table set_data_table get_data_table
+#' set_data_frame get_data_frame load cumulative save
 #'
 #' @section Usage:
 #' \preformatted{
@@ -546,7 +551,8 @@ History <- R6::R6Class(
 #' Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
-#' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflineReplayEvaluatorBandit}}
+#' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},
+#' \code{\link{OfflineReplayEvaluatorBandit}}
 #'
 #' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 #'

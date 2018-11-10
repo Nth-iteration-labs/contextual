@@ -13,7 +13,7 @@ This procedure is repeated for the next arm pull.
 \section{Usage}{
 
 \preformatted{
-policy <- ThompsonSamplingPolicy(alpha = 1, beta = 1, name = "TSampling")
+policy <- ThompsonSamplingPolicy(alpha = 1, beta = 1)
 }
 }
 
@@ -27,10 +27,6 @@ integer, a natural number N>0 - first parameter of the Beta distribution
 \item{\code{beta}}{
 integer, a natural number N>0 - second parameter of the Beta distribution
 }
-\item{\code{name}}{
-character string specifying this policy. \code{name}
-is, among others, saved to the History log and displayed in summaries and plots.
-}
 }
 }
 
@@ -38,7 +34,8 @@ is, among others, saved to the History log and displayed in summaries and plots.
 
 
 \describe{
-\item{\code{new(alpha = 1, beta = 1)}}{ Generates a new \code{ThompsonSamplingPolicy} object. Arguments are defined in the Argument section above.}
+\item{\code{new(alpha = 1, beta = 1)}}{ Generates a new \code{ThompsonSamplingPolicy} object.
+Arguments are defined in the Argument section above.}
 }
 
 \describe{
@@ -68,7 +65,7 @@ based on the reward received, and, potentially, the current context.
 
 horizon            <- 100L
 simulations        <- 100L
-weights          <- c(0.9, 0.1, 0.1)
+weights            <- c(0.9, 0.1, 0.1)
 
 policy             <- ThompsonSamplingPolicy$new(alpha = 1, beta = 1)
 bandit             <- BasicBernoulliBandit$new(weights = weights)
@@ -79,17 +76,21 @@ history            <- Simulator$new(agent, horizon, simulations, do_parallel = F
 plot(history, type = "cumulative")
 }
 \references{
-Thompson, W. R. (1933). On the likelihood that one unknown probability exceeds another in view of the evidence of two samples. Biometrika, 25(3/4), 285-294.
+Thompson, W. R. (1933). On the likelihood that one unknown probability exceeds another in view of
+the evidence of two samples. Biometrika, 25(3/4), 285-294.
 
-Chapelle, O., & Li, L. (2011). An empirical evaluation of thompson sampling. In Advances in neural information processing systems (pp. 2249-2257).
+Chapelle, O., & Li, L. (2011). An empirical evaluation of thompson sampling. In Advances in neural
+information processing systems (pp. 2249-2257).
 
-Agrawal, S., & Goyal, N. (2013, February). Thompson sampling for contextual bandits with linear payoffs. In International Conference on Machine Learning (pp. 127-135).b
+Agrawal, S., & Goyal, N. (2013, February). Thompson sampling for contextual bandits with linear payoffs.
+In International Conference on Machine Learning (pp. 127-135).b
 }
 \seealso{
 Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 
-Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflineReplayEvaluatorBandit}}
+Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},
+\code{\link{OfflineReplayEvaluatorBandit}}
 
 Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/bandit_offline_replay_evaluator.R
 \name{OfflineReplayEvaluatorBandit}
 \alias{OfflineReplayEvaluatorBandit}
-\title{Bandit: Li's Offline Policy Evaluator}
+\title{Bandit: Offline Replay}
 \description{
 Policy for the evaluation of policies with offline data.
 }
@@ -148,13 +148,15 @@ if (file.exists("log.RData")) file.remove("log.RData")
 }
 }
 \references{
-Agrawal, R. (1995). The continuum-armed bandit problem. SIAM journal on control and optimization, 33(6), 1926-1951.
+Agrawal, R. (1995). The continuum-armed bandit problem. SIAM journal on control and optimization,
+33(6), 1926-1951.
 }
 \seealso{
 Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 
-Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflineReplayEvaluatorBandit}}
+Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},
+\code{\link{OfflineReplayEvaluatorBandit}}
 
 Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 }
