@@ -2,34 +2,46 @@
 % Please edit documentation in R/policy_continuum_lif.R
 \name{LifPolicy}
 \alias{LifPolicy}
-\title{Policy: LiF}
+\title{Policy: Continuum Bandit Policy with Lock-in Feedback}
 \description{
-LifPolicy intro
+The continuum type Lock-in Feedback (LiF) policy is based on an approach used in physics and engineering,
+where, if a physical variable y depends on the value of a well controllable physical variable x,
+the search for argmax x f(x) can be solved via what is nowadays considered as standard electronics.
+This approach relies on the possibility of making the variable x oscillate at a fixed frequency and to
+look at the response of the dependent variable y at the very same frequency by means of a lock-in
+amplifier. The method is particularly suitable when y is immersed in a high noise level,
+where other more direct methods would fail. Furthermore, should the entire curve
+shift (or, in other words, if argmax x f(x) changes in time, also known as concept drift), the circuit
+will automatically adjust to the new situation and quickly reveal the new maximum position.
+This approach is widely used in a very large number of applications, both in industry and research,
+and is the basis for the Lock-in Feedback (LiF) method.
+}
+\details{
+In this, Lock in feedback goes through the following steps, again and again:
+\itemize{
+\item Oscillate a controllable independent variable X around a set value at a fixed pace.
+\item Apply the Lock-in amplifier algorithm.to obtain values of the amplitude if the outcome variable Y at
+the pace you set at step 1.
+\item Is the amplitude of this variable zero? Congratulations, you have reached lock-in!
+That is, you have found the optimal value of Y at the current value of X.
+Still, this optimal value might shift over time, so move to step 1 and repeat the process to make sure we
+maintain lock-in.
+\item Is the amplitude less than, or greater than zero?
+Then move the set value around which we are oscillating our independent variable X up or down on the basis
+of the outcome.
+}
+
+Now move to step 1 and repeat..
 }
 \section{Usage}{
 
-\preformatted{b <- LifPolicy$new()
-
-b$reset()
-
-print(b)
-}
+\preformatted{b <- LifPolicy$new(inttime,amplitude,learnrate,omega,x0_start)}
 }
 
-\section{Arguments}{
-
-\describe{
-\item{b}{A \code{LifPolicy} object.}
+\references{
+Kaptein, M. C., Van Emden, R., & Iannuzzi, D. (2016). Tracking the decoy: maximizing the decoy effect
+through sequential experimentation. Palgrave Communications, 2, 16082.
 }
-}
-
-\section{Details}{
-
-\code{$new()} starts a new LifPolicy, it uses \code{\link[base]{pipe}}.
-R does \emph{not} wait for the process to finish, but returns
-immediately.
-}
-
 \seealso{
 Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},
 \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}

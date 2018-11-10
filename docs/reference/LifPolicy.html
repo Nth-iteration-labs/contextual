@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Policy: LiF — LifPolicy • contextual</title>
+<title>Policy: Continuum Bandit Policy with Lock-in Feedback — LifPolicy • contextual</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -36,9 +36,19 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Policy: LiF — LifPolicy" />
+<meta property="og:title" content="Policy: Continuum Bandit Policy with Lock-in Feedback — LifPolicy" />
 
-<meta property="og:description" content="LifPolicy intro" />
+<meta property="og:description" content="The continuum type Lock-in Feedback (LiF) policy is based on an approach used in physics and engineering,
+where, if a physical variable y depends on the value of a well controllable physical variable x,
+the search for argmax x f(x) can be solved via what is nowadays considered as standard electronics.
+This approach relies on the possibility of making the variable x oscillate at a fixed frequency and to
+look at the response of the dependent variable y at the very same frequency by means of a lock-in
+amplifier. The method is particularly suitable when y is immersed in a high noise level,
+where other more direct methods would fail. Furthermore, should the entire curve
+shift (or, in other words, if argmax x f(x) changes in time, also known as concept drift), the circuit
+will automatically adjust to the new situation and quickly reveal the new maximum position.
+This approach is widely used in a very large number of applications, both in industry and research,
+and is the basis for the Lock-in Feedback (LiF) method." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -127,39 +137,53 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Policy: LiF</h1>
+    <h1>Policy: Continuum Bandit Policy with Lock-in Feedback</h1>
     <small class="dont-index">Source: <a href='https://github.com/Nth-iteration-labs/contextual/blob/master/R/policy_continuum_lif.R'><code>R/policy_continuum_lif.R</code></a></small>
     <div class="hidden name"><code>LifPolicy.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>LifPolicy intro</p>
+    <p>The continuum type Lock-in Feedback (LiF) policy is based on an approach used in physics and engineering,
+where, if a physical variable y depends on the value of a well controllable physical variable x,
+the search for argmax x f(x) can be solved via what is nowadays considered as standard electronics.
+This approach relies on the possibility of making the variable x oscillate at a fixed frequency and to
+look at the response of the dependent variable y at the very same frequency by means of a lock-in
+amplifier. The method is particularly suitable when y is immersed in a high noise level,
+where other more direct methods would fail. Furthermore, should the entire curve
+shift (or, in other words, if argmax x f(x) changes in time, also known as concept drift), the circuit
+will automatically adjust to the new situation and quickly reveal the new maximum position.
+This approach is widely used in a very large number of applications, both in industry and research,
+and is the basis for the Lock-in Feedback (LiF) method.</p>
     
     </div>
 
         
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>In this, Lock in feedback goes through the following steps, again and again:</p><ul>
+<li><p>Oscillate a controllable independent variable X around a set value at a fixed pace.</p></li>
+<li><p>Apply the Lock-in amplifier algorithm.to obtain values of the amplitude if the outcome variable Y at
+the pace you set at step 1.</p></li>
+<li><p>Is the amplitude of this variable zero? Congratulations, you have reached lock-in!
+That is, you have found the optimal value of Y at the current value of X.
+Still, this optimal value might shift over time, so move to step 1 and repeat the process to make sure we
+maintain lock-in.</p></li>
+<li><p>Is the amplitude less than, or greater than zero?
+Then move the set value around which we are oscillating our independent variable X up or down on the basis
+of the outcome.</p></li>
+</ul>
+    <p>Now move to step 1 and repeat..</p>
+    
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 
     
-    <pre>b &lt;- LifPolicy$new()
-    b$reset()
-    print(b)
-</pre>
+    <pre>b &lt;- LifPolicy$new(inttime,amplitude,learnrate,omega,x0_start)</pre>
     
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    
-    <dl class='dl-horizontal'>
-<dt>b</dt><dd><p>A <code>LifPolicy</code> object.</p></dd>
-</dl>
-    
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    
-    <p><code>$new()</code> starts a new LifPolicy, it uses <code><a href='http://www.rdocumentation.org/packages/base/topics/connections'>pipe</a></code>.
-R does <em>not</em> wait for the process to finish, but returns
-immediately.</p>
+    <p>Kaptein, M. C., Van Emden, R., &amp; Iannuzzi, D. (2016). Tracking the decoy: maximizing the decoy effect
+through sequential experimentation. Palgrave Communications, 2, 16082.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -175,11 +199,11 @@ immediately.</p>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       
+      <li><a href="#details">Details</a></li>
+
       <li><a href="#usage">Usage</a></li>
 
-      <li><a href="#arguments">Arguments</a></li>
-
-      <li><a href="#details">Details</a></li>
+      <li><a href="#references">References</a></li>
 
       <li><a href="#see-also">See also</a></li>
           </ul>

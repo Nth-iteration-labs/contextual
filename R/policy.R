@@ -40,7 +40,7 @@ Policy <- R6::R6Class(
   )
 )
 
-#' Policy
+#' Policy: Superclass
 #'
 #' Parent or superclass of all \code{\{contextual\}} \code{Policy} subclasses.
 #'

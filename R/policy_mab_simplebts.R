@@ -46,7 +46,7 @@ SimpleBTSPolicy <- R6::R6Class(
 )
 
 
-#' Policy: SimpleBTSPolicy
+#' Policy: Thompson sampling with the online bootstrap
 #'
 #' Bootstrap Thompson Sampling
 #'

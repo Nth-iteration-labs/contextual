@@ -2,7 +2,7 @@
 % Please edit documentation in R/functions_utility.R
 \name{one_hot}
 \alias{one_hot}
-\title{One Hot Encode}
+\title{One Hot Encoding of data.table columns}
 \usage{
 one_hot(dt, cols = "auto", sparsifyNAs = FALSE, naCols = FALSE,
   dropCols = TRUE, dropUnusedLevels = FALSE)

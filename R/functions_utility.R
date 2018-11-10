@@ -39,7 +39,7 @@ sherman_morrisson <- function(inv, x) {
 "dec<-" <- function(x, value) {
   x - value
 }
-#' Get maximum value
+#' Get maximum value in list
 #'
 #' Returns the index of the maximum value in list \code{x}.
 #'
@@ -61,7 +61,7 @@ sherman_morrisson <- function(inv, x) {
 which_max_list <- function(x, equal_is_random = TRUE) {
   which_max_tied(unlist(x, FALSE, FALSE))
 }
-#' Get maximum value
+#' Get maximum value randomly breaking ties
 #'
 #' Returns the index of the maximum value in vector \code{vec}.
 #'
@@ -331,7 +331,7 @@ invlogit <- function(x){
   exp(x)/(1+exp(x))
 }
 
-#' Returns context of arm
+#' Return context vector of an arm
 #'
 #' Given d x k matrix or d dimensional vector X,
 #' returns a vector with arm's context.
@@ -352,7 +352,7 @@ get_arm_context <- function(X, arm, select_features = NULL) {
   }
 }
 
-#' Get full context
+#' Get full context matrix over all arms
 #'
 #' Given matrix or d dimensional vector X,
 #' number of arms k and number of features d
@@ -376,7 +376,7 @@ get_full_context <- function(X, d, k, select_features = NULL) {
 }
 
 #' @title
-#' One Hot Encode
+#' One Hot Encoding of data.table columns
 #'
 #' @description
 #' One-Hot-Encode unordered factor columns of a data.table mltools. From ben519's "mltools" package.

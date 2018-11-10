@@ -2,7 +2,7 @@
 % Please edit documentation in R/functions_utility.R
 \name{which_max_list}
 \alias{which_max_list}
-\title{Get maximum value}
+\title{Get maximum value in list}
 \usage{
 which_max_list(x, equal_is_random = TRUE)
 }

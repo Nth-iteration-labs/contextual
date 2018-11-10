@@ -2,7 +2,7 @@
 % Please edit documentation in R/functions_utility.R
 \name{which_max_tied}
 \alias{which_max_tied}
-\title{Get maximum value}
+\title{Get maximum value randomly breaking ties}
 \usage{
 which_max_tied(x)
 }

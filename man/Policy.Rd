@@ -8,7 +8,7 @@
 \alias{initialize_theta}
 \alias{policy}
 \alias{theta}
-\title{Policy}
+\title{Policy: Superclass}
 \description{
 Parent or superclass of all \code{\{contextual\}} \code{Policy} subclasses.
 }

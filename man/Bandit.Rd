@@ -6,7 +6,7 @@
 \alias{get_context}
 \alias{generate_bandit_data}
 \alias{bandit}
-\title{Bandit}
+\title{Bandit: Superclass}
 \description{
 Parent or superclass of all \code{\{contextual\}} \code{Bandit} subclasses.
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/functions_utility.R
 \name{get_full_context}
 \alias{get_full_context}
-\title{Get full context}
+\title{Get full context matrix over all arms}
 \usage{
 get_full_context(X, d, k, select_features = NULL)
 }

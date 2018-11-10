@@ -2,7 +2,7 @@
 % Please edit documentation in R/policy_mab_simplebts.R
 \name{SimpleBTSPolicy}
 \alias{SimpleBTSPolicy}
-\title{Policy: SimpleBTSPolicy}
+\title{Policy: Thompson sampling with the online bootstrap}
 \description{
 Bootstrap Thompson Sampling
 }

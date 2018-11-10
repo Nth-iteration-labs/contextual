@@ -34,7 +34,7 @@ Bandit <- R6::R6Class(
   )
 )
 
-#' Bandit
+#' Bandit: Superclass
 #'
 #' Parent or superclass of all \code{\{contextual\}} \code{Bandit} subclasses.
 #'

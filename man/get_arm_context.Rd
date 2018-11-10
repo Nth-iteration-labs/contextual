@@ -2,7 +2,7 @@
 % Please edit documentation in R/functions_utility.R
 \name{get_arm_context}
 \alias{get_arm_context}
-\title{Returns context of arm}
+\title{Return context vector of an arm}
 \usage{
 get_arm_context(X, arm, select_features = NULL)
 }
