@@ -2,7 +2,7 @@
 % Please edit documentation in R/functions_utility.R
 \name{sample_one_of}
 \alias{sample_one_of}
-\title{Sample one of}
+\title{Sample one element from vector or list}
 \usage{
 sample_one_of(x)
 }
@@ -13,5 +13,5 @@ sample_one_of(x)
 One value, drawn from x.
 }
 \description{
-Sample one of the values in a vector.
+Takes one sample from a vector or list. Does not throw an error for zero length lists.
 }

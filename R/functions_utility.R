@@ -179,9 +179,10 @@ set_external <- function(ext = TRUE,
 
   }
 } # nocov end
-#' Sample one of
+
+#' Sample one element from vector or list
 #'
-#' Sample one of the values in a vector.
+#' Takes one sample from a vector or list. Does not throw an error for zero length lists.
 #'
 #' @param x A vector of one or more elements from which to choose
 #'
