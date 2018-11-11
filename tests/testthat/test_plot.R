@@ -42,12 +42,6 @@ test_that("test plots", {
     "Need to set disp to"
   )
 
-
-  # wait for next version available on cran - works on most test platforms,
-  # bot not on all
-
-
-
   vdiffr::expect_doppelganger(
     "Basic cumulative plot",
     plot(
