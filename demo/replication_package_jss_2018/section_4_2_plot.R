@@ -8,6 +8,7 @@ agents <- list(Agent$new(RandomPolicy$new(), bandit),
                Agent$new(Exp3Policy$new(0.1), bandit),
                Agent$new(GittinsBrezziLaiPolicy$new(), bandit),
                Agent$new(UCB1Policy$new(), bandit))
+
 history <- Simulator$new(agents, horizon = 100, simulations = 300)$run()
 
 par(mfrow = c(3, 2), mar = c(1, 4, 2, 1), cex=1.3)  #bottom, left, top, and right.

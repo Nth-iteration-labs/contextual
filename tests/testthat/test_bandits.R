@@ -256,7 +256,7 @@ test_that("ContextualPrecachingBandit MAB policies", {
   history            <- simulation$run()
 
   expect_equal(history$cumulative$Random$cum_regret,3.1, tolerance = 0.01)
-  expect_equal(history$cumulative$Oracle$cum_regret,0, tolerance = 0.01)
+  expect_equal(history$cumulative$Oracle$cum_regret,0.3, tolerance = 0.01)
   expect_equal(history$cumulative$GittinsBrezziLai$cum_regret,1.5, tolerance = 0.01)
   expect_equal(history$cumulative$Exp3$cum_regret,2.9, tolerance = 0.01)
   expect_equal(history$cumulative$UCB1$cum_regret,2.8, tolerance = 0.01)
@@ -472,7 +472,7 @@ test_that("BasicBernoulliBandit MAB policies", {
 
   expect_equal(direct$get_cumulative_result(t=20)$LinUCBDisjoint$cum_reward,7)
   expect_equal(direct$get_cumulative_result(t=20)$EpsilonGreedy$cum_reward,6)
-  expect_equal(direct$get_cumulative_result(t=20)$Oracle$cum_reward,13)
+  expect_equal(direct$get_cumulative_result(t=20)$Oracle$cum_reward,4)
 
   ########################### create random log data ################################
 
@@ -534,11 +534,11 @@ test_that("BasicBernoulliBandit MAB policies", {
 
   expect_equal(after$get_cumulative_result(t=20)$LinUCBDisjoint$cum_reward,8)
   expect_equal(after$get_cumulative_result(t=20)$EpsilonGreedy$cum_reward,5)
-  expect_equal(after$get_cumulative_result(t=20)$Oracle$cum_reward,14)
+  expect_equal(after$get_cumulative_result(t=20)$Oracle$cum_reward,9)
 
   expect_equal(after$get_cumulative_result(t=25)$LinUCBDisjoint$cum_reward,10)
   expect_equal(after$get_cumulative_result(t=25)$EpsilonGreedy$cum_reward,6)
-  expect_equal(after$get_cumulative_result(t=25)$Oracle$cum_reward,17)
+  expect_equal(after$get_cumulative_result(t=25)$Oracle$cum_reward,11)
 
   ######################## remove optimal values from log and try again ##########################
 
@@ -573,11 +573,11 @@ test_that("BasicBernoulliBandit MAB policies", {
 
   expect_equal(after$get_cumulative_result(t=20)$LinUCBDisjoint$cum_reward,8)
   expect_equal(after$get_cumulative_result(t=20)$EpsilonGreedy$cum_reward,5)
-  expect_equal(is.na(after$get_cumulative_result(t=20)$Oracle$cum_reward), TRUE)
+  expect_equal(after$get_cumulative_result(t=20)$Oracle$cum_reward, 9)
 
   expect_equal(after$get_cumulative_result(t=25)$LinUCBDisjoint$cum_reward,10)
   expect_equal(after$get_cumulative_result(t=25)$EpsilonGreedy$cum_reward,6)
-  expect_equal(is.na(after$get_cumulative_result(t=25)$Oracle$cum_reward), TRUE)
+  expect_equal(after$get_cumulative_result(t=25)$Oracle$cum_reward, 11)
 
 })
 

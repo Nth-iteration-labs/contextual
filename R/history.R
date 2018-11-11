@@ -63,22 +63,23 @@ History <- R6::R6Class(
               private$initialize_data_tables(length(context_value))
               self$context_columns_initialized <- TRUE
             }
-            data.table::set(private$.data, index, (12L:(11L+length(context_value))),
+            data.table::set(private$.data, index, (14L:(13L+length(context_value))),
                             as.list(as.vector(context_value)))
           } else {
-            data.table::set(private$.data, index, 12L, list(list(context_value)))
+            data.table::set(private$.data, index, 14L, list(list(context_value)))
           }
         } else if (!isTRUE(self$save_context)) {
-          data.table::set(private$.data, index, 12L, list(list(theta_value)))
+          data.table::set(private$.data, index, 14L, list(list(theta_value)))
         } else {
-          data.table::set(private$.data, index, 12L, list(list(context_value)))
-          data.table::set(private$.data, index, 13L, list(list(theta_value)))
+          data.table::set(private$.data, index, 14L, list(list(context_value)))
+          data.table::set(private$.data, index, 15L, list(list(theta_value)))
         }
       }
+
       data.table::set(
         private$.data,
         index,
-        1L:11L,
+        1L:13L,
         list(
           t,
           k,
@@ -86,17 +87,19 @@ History <- R6::R6Class(
           simulation_index,
           action[["choice"]],
           reward[["reward"]],
-          as.integer(reward$reward == optimal_reward),
           as.integer(optimal_arm),
           optimal_reward,
           propensity,
-          agent_name
+          agent_name,
+          reward[["regret"]],
+          reward[["cum_reward"]],
+          reward[["cum_regret"]]
         )
       )
       invisible(self)
     },
     get_agent_list = function() {
-      levels(as.factor(private$.data$agent))
+      levels(private$.data$agent)
     },
     get_agent_count = function() {
       length(self$get_agent_list())
@@ -321,11 +324,14 @@ History <- R6::R6Class(
         sim = rep(0L, self$n),
         choice = rep(0.0, self$n),
         reward = rep(0.0, self$n),
-        choice_is_optimal = rep(0L, self$n),
         optimal_arm = rep(0L, self$n),
         optimal_reward = rep(0.0, self$n),
         propensity = rep(0.0, self$n),
-        agent = rep("", self$n)
+        agent = rep("", self$n),
+        regret = rep(0.0, self$n),
+        cum_reward = rep(0.0, self$n),
+        cum_regret = rep(0.0, self$n),
+        stringsAsFactors = TRUE
       )
       if (isTRUE(self$save_context)) {
         if (isTRUE(self$context_multiple_columns && !is.null(context_cols))) {
@@ -355,15 +361,10 @@ History <- R6::R6Class(
       self$set_meta_data("agents",min(private$.data[, .(count = data.table::uniqueN(agent))]$count))
       self$set_meta_data("simulations",min(private$.data[, .(count = data.table::uniqueN(sim))]$count))
 
-      if ("optimal_reward" %in% colnames(private$.data))
-        private$.data[, regret:= optimal_reward - reward]
-      else
+      if (!"optimal_reward" %in% colnames(private$.data)) #### TODO: why is this? backward compat?
         private$.data[, optimal_reward:= NA]
 
-      private$.data[, cum_reward:= cumsum(reward), by = list(agent, sim)]
       private$.data[, cum_reward_rate := cum_reward / t]
-
-      private$.data[, cum_regret := cumsum(regret), by = list(agent, sim)]
       private$.data[, cum_regret_rate := cum_regret / t]
 
       data.table::setkeyv(private$.data,c("t","agent"))

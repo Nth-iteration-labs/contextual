@@ -1,6 +1,6 @@
 library(contextual)
 
-# Baded on a section of Dai Shi's thesis
+# Based on a section of Dai Shi's thesis
 # "Exploring Bandit Algorithms for Automatic Content Selection"
 
 horizon            <- 600L
@@ -25,7 +25,8 @@ TwoArmedSineBandit <- R6::R6Class(
       reward      <- sine + rnorm(1, sd = self$sigma)
       reward      <- list(
         reward                   = reward[action$choice],
-        optimal_reward           = sine[which_max_tied(sine)]
+        optimal_reward           = sine[which_max_tied(sine)],
+        optimal_arm              = which_max_tied(sine)
       )
     },
     sine = function(phi, t) {
@@ -40,7 +41,7 @@ bandit             <- TwoArmedSineBandit$new()
 agents             <- list(Agent$new(Exp3Policy$new(0.1), bandit),
                            Agent$new(UCB1Policy$new(), bandit))
 
-simulation         <- Simulator$new(agents, horizon = horizon, simulations = simulations)
+simulation         <- Simulator$new(agents, horizon = horizon, simulations = simulations, do_parallel = FALSE)
 
 history            <- simulation$run()
 

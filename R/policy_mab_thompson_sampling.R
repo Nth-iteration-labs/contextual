@@ -13,25 +13,23 @@ ThompsonSamplingPolicy <- R6::R6Class(
       self$beta   <- beta
     },
     set_parameters = function(context_params) {
-      self$theta_to_arms <- list('n' = 0, 'p' = 0.0, 'succes' = 0, 'mean' = 0.0)
+      self$theta_to_arms <- list('n' = 0, 'succes' = 0)
     },
     get_action = function(t, context) {
+      point_estimate_of_mean <- vector("double", context$k)
       for (arm in 1:context$k) {
-        self$theta$mean[arm] <- rbeta(
+        point_estimate_of_mean[arm] <- rbeta(
           1, alpha + self$theta$succes[[arm]], beta + self$theta$n[[arm]] - self$theta$succes[[arm]]
         )
       }
-      action$choice <- which_max_list(self$theta$mean)
+      action$choice <- which_max_tied(point_estimate_of_mean)
       action
     },
     set_reward = function(t, context, action, reward) {
       arm    <- action$choice
       reward <- reward$reward
-
       inc(self$theta$n[[arm]]) <- 1
-      if (reward == 1) inc(self$theta$succes[[arm]]) <- 1
-      inc(self$theta$p[[arm]]) <- (reward - self$theta$p[[arm]]) / self$theta$n[[arm]]
-
+      inc(self$theta$succes[[arm]]) <- reward
       self$theta
     }
   )

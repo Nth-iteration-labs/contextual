@@ -11,6 +11,8 @@ Agent <- R6::R6Class(
     name = NULL,
     agent_t = NULL,
     policy_t = NULL,
+    cum_regret = NULL,
+    cum_reward = NULL,
     progress_file = NULL,
     log_interval = NULL,
     sparse = NULL,
@@ -43,11 +45,14 @@ Agent <- R6::R6Class(
       self$policy$initialize_theta(context_initial_params$k)
       self$progress_file <- FALSE
       self$log_interval <- 1000L
+      cum_reward <<- 0.0
+      cum_regret <<- 0.0
       agent_t <<- 0L
       policy_t <<- 1L
       invisible(self)
     },
     do_step = function() {
+
       agent_t  <<- agent_t + 1L
       context   <- bandit$get_context(agent_t)
       if(is.null(context$d)) context$d <- self$bandit$d
@@ -55,11 +60,23 @@ Agent <- R6::R6Class(
       if(is.null(context$shared)) context$shared <- c(1:context$d)
       action    <- policy$get_action (policy_t, context)
       reward    <- bandit$get_reward (agent_t, context, action)
+
       if (is.null(reward)) {
         theta   <- NULL
       } else {
+        if (!is.null(reward[["optimal_reward"]])) {
+          reward[["regret"]]      <- reward[["optimal_reward"]] - reward[["reward"]]
+          cum_regret              <<- cum_regret + reward[["regret"]]
+          reward[["cum_regret"]]  <- cum_regret
+        } else {
+          reward[["regret"]]      <- 0.0
+          reward[["cum_regret"]]  <- 0.0
+        }
+        cum_reward                <<- cum_reward + reward[["reward"]]
+        reward[["cum_reward"]]    <- cum_reward
+
         if (self$sparse == 0.0 || runif(1) > self$sparse) {
-          theta   <- policy$set_reward (policy_t, context, action, reward)
+          theta   <- policy$set_reward(policy_t, context, action, reward)
         } else {
           theta   <- policy$theta
         }

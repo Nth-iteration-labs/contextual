@@ -24,6 +24,7 @@ Simulator <- R6::R6Class(
     set_seed = NULL,
     progress_file = NULL,
     log_interval = NULL,
+    save_interval = NULL,
     include_packages = NULL,
     outfile = NULL,
     chunk_multiplier = NULL,
@@ -39,6 +40,7 @@ Simulator <- R6::R6Class(
                           do_parallel = TRUE,
                           worker_max = NULL,
                           set_seed = 0,
+                          save_interval = 1,
                           progress_file = FALSE,
                           log_interval = 1000,
                           include_packages = NULL,
@@ -61,6 +63,7 @@ Simulator <- R6::R6Class(
       self$do_parallel <- do_parallel
       self$t_over_sims <- t_over_sims
       self$set_seed <- set_seed
+      self$save_interval <- save_interval
       self$include_packages <- include_packages
       self$chunk_multiplier <- chunk_multiplier
       self$context_multiple_columns <- context_multiple_columns
@@ -79,7 +82,7 @@ Simulator <- R6::R6Class(
       }
 
       # (re)create history data and meta data tables
-      self$internal_history <- History$new(self$horizon * self$agent_count * self$simulations)
+      self$internal_history <- History$new()
       self$internal_history$set_meta_data("horizon",self$horizon)
       self$internal_history$set_meta_data("agents",self$agent_count)
       self$internal_history$set_meta_data("simulations",self$simulations)
@@ -132,6 +135,7 @@ Simulator <- R6::R6Class(
       save_theta               <- self$save_theta
       reindex                  <- self$reindex
       progress_file            <- self$progress_file
+      save_interval            <- self$save_interval
       log_interval             <- self$log_interval
       t_over_sims              <- self$t_over_sims
       set_seed                 <- self$set_seed
@@ -168,10 +172,16 @@ Simulator <- R6::R6Class(
         index <- 1L
         sim_agent_counter <- 0
         sim_agent_total <- length(sims_agent_list)
-        local_history <- History$new( horizon * sim_agent_total,
+
+        history_length <- floor((horizon * sim_agent_total)/save_interval)
+        if(save_interval>1) history_length <- history_length + sim_agent_total
+
+        local_history <- History$new( history_length,
                                       save_context,
                                       context_multiple_columns,
                                       save_theta)
+
+
 
         for (sim_agent_index in sims_agent_list) {
           sim_agent <- agents[[sim_agent_index$agent_index]]$clone(deep = TRUE)
@@ -196,10 +206,11 @@ Simulator <- R6::R6Class(
           sim_agent$bandit$post_initialization()
           sim_agent$bandit$generate_bandit_data(n = horizon)
           if (t_over_sims) sim_agent$set_t(as.integer((simulation_index - 1L) * horizon))
+
           step <- list()
           for (t in 1L:horizon) {
             step <- sim_agent$do_step()
-            if (!is.null(step[[3]])) {
+            if (!is.null(step[[3]]) && ((t == 1) || (t %% save_interval == 0))) {
               local_history$insert(
                 index,                                         #index
                 t,                                             #t
@@ -216,18 +227,24 @@ Simulator <- R6::R6Class(
             }
           }
         }
+
+
         sim_agent$bandit$final()
         local_history$get_data_table()
       }
       # bind all results
       foreach_results <- data.table::rbindlist(foreach_results)
+      foreach_results[, agent := factor(agent)]
       self$internal_history$set_data_table(foreach_results, auto_stats = FALSE)
       rm(foreach_results)
 
       private$end_time <- Sys.time()
+
+      gc()
+
       if (reindex) self$internal_history$reindex()
 
-      # update statistics
+      # update statistics TODO: not always necessary
       self$internal_history$update_statistics()
 
       # set meta data and messages

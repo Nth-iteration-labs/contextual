@@ -203,7 +203,7 @@ Plot <- R6::R6Class(
       }
 
       ylab_title        <- "Arm choice %"
-      agent_levels      <- levels(as.factor(dt$agent))
+      agent_levels      <- levels(droplevels(dt$agent))
 
       if (length(agent_levels) > 1) {
         warning(strwrap(
@@ -358,7 +358,6 @@ Plot <- R6::R6Class(
         interval <- ceiling(as.integer(self$history$meta$sim$max_t)/1850) # nocov
       }
 
-
       if (!is.null(disp) && disp %in% c("sd", "var", "ci")) {
 
         disp_data_name <- gsub("none", disp, disp_data_name)
@@ -385,7 +384,7 @@ Plot <- R6::R6Class(
 
       data.table::setorder(data, agent, t)
 
-      agent_levels <- levels(as.factor(data$agent))
+      agent_levels <- levels(droplevels(data$agent))
       n_agents <- length(agent_levels)
 
       if (isTRUE(smooth)) {
