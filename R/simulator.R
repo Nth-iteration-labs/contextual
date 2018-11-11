@@ -181,8 +181,6 @@ Simulator <- R6::R6Class(
                                       context_multiple_columns,
                                       save_theta)
 
-
-
         for (sim_agent_index in sims_agent_list) {
           sim_agent <- agents[[sim_agent_index$agent_index]]$clone(deep = TRUE)
           sim_agent$sim_index <- sim_agent_index$sim_index
@@ -361,6 +359,9 @@ Simulator <- R6::R6Class(
 #'   \item{\code{simulations}}{
 #'     \code{integer}. How many times to repeat each agent's simulation over \emph{t} = \{1, \ldots, T\},
 #'     with a new seed on each repeat (itself deterministically derived from set\_seed).
+#'   }
+#'   \item{\code{save_interval}}{
+#'     \code{integer}. Save only every\ code{save_interval} time steps.
 #'   }
 #'   \item{\code{save_context}}{
 #'     \code{logical}. Save the context matrices \code{X} to the History log during a simulation?

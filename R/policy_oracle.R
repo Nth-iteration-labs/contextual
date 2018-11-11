@@ -18,8 +18,8 @@ OraclePolicy <- R6::R6Class(
       action
     },
     set_reward = function(t, context, action, reward) {
-      self$theta$optimal_arm      <- reward$optimal_arm
       self$theta$optimal_reward   <- reward$optimal_reward
+      self$theta$optimal_arm      <- reward$optimal_arm
       self$theta
     }
   )
