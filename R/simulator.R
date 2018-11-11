@@ -375,7 +375,6 @@ Simulator <- R6::R6Class(
 #'   \item{\code{worker_max}}{
 #'      \code{integer}. Specifies how many parallel workers are to be used.
 #'      If unspecified, the amount of workers defaults to \code{max(workers_available)-1}.
-#'
 #'   }
 #'   \item{\code{t_over_sims}}{
 #'      \code{logical}. Of use to, among others, offline Bandits.
@@ -402,8 +401,8 @@ Simulator <- R6::R6Class(
 #'   }
 #'   \item{\code{reindex}}{
 #'      \code{logical}. If \code{TRUE}, removes empty rows from the \code{History} log,
-#'      reindexes the \code{t} column, and truncates the resulting data to the shortest simulation
-#'      grouped by agent and simulation.
+#'      reindexes the \code{t} column, and truncates the resulting data to the simulation with the least
+#'      number of time steps left over, as grouped by agent and simulation.
 #'   }
 #'   \item{\code{chunk_multiplier}}{
 #'      \code{integer} By default, simulations are equally divided over available workers, and every

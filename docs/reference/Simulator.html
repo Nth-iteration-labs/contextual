@@ -198,8 +198,8 @@ and potential errors when running a <code>Simulator</code> in parallel.</p></dd>
 R package to be loaded, this option can be used to load that package on each of the workers.
 Ignored if <code>do_parallel</code> is <code>FALSE</code>.</p></dd>
 <dt><code>reindex</code></dt><dd><p><code>logical</code>. If <code>TRUE</code>, removes empty rows from the <code>History</code> log,
-reindexes the <code>t</code> column, and truncates the resulting data to the shortest simulation
-grouped by agent and simulation.</p></dd>
+reindexes the <code>t</code> column, and truncates the resulting data to the simulation with the least
+number of time steps left over, as grouped by agent and simulation.</p></dd>
 <dt><code>chunk_multiplier</code></dt><dd><p><code>integer</code> By default, simulations are equally divided over available workers, and every
 worker saves its simulation results to a local history file which is then aggregated.
 Depending on workload, network bandwith, memory size and other variables it can sometimes be useful to

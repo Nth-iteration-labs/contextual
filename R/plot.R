@@ -430,7 +430,8 @@ Plot <- R6::R6Class(
         lty_step <- n_agents
         lt <- rep(1:round(lty_step), each = round(n_agents / lty_step))
       }
-      if (!is.null(disp) && !isTRUE(plot_only_disp)) {
+
+      if (!is.null(disp) && !isTRUE(plot_only_disp) && exists("disp_lower") && exists("disp_upper")) {
         min_ylim <- data[, min(disp_lower)]
         max_ylim <- data[, max(disp_upper)]
       } else {
