@@ -361,7 +361,7 @@ Simulator <- R6::R6Class(
 #'     with a new seed on each repeat (itself deterministically derived from set\_seed).
 #'   }
 #'   \item{\code{save_interval}}{
-#'     \code{integer}. Save only every\ code{save_interval} time steps.
+#'     \code{integer}. Save only every \code{save_interval} time steps.
 #'   }
 #'   \item{\code{save_context}}{
 #'     \code{logical}. Save the context matrices \code{X} to the History log during a simulation?

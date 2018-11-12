@@ -24,7 +24,7 @@ plot(history, type = "cumulative", regret = FALSE, rate = TRUE, disp = "sd",
 
 plot(history, type = "cumulative", rate = TRUE, plot_only_disp = TRUE,
      disp = "var", smooth = TRUE, limit_agents = c("Exp3", "ThompsonSampling"),
-     legend_border = FALSE, legend_position = "bottomleft", no_par = TRUE)
+     legend_border = FALSE, legend_position = "bottomright", no_par = TRUE)
 
 plot(history, type = "average", disp = "ci", regret = FALSE, interval = 10,
      smooth = TRUE, legend_position = "bottomright", no_par = TRUE, legend = FALSE)

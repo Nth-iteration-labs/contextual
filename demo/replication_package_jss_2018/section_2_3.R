@@ -1,10 +1,10 @@
 library(contextual)
 
-bandit    <- ContextualBernoulliBandit$new(weights = matrix(c(0.5, 0.2, 0.1), nrow = 1))
-policy    <- EpsilonGreedyPolicy$new(0.1)
-agent     <- Agent$new(policy,bandit)
-simulator <- Simulator$new(agents = agent, simulations = 10000, horizon = 100)
-history   <- simulator$run()
+bandit  <- ContextualBernoulliBandit$new(matrix(c(0.5, 0.2, 0.1), 1))
+policy  <- EpsilonGreedyPolicy$new(0.1)
+agent   <- Agent$new(policy,bandit)
+sim     <- Simulator$new(agent, simulations = 10000, horizon = 100)
+history <- sim$run()
 
 summary(history)
 

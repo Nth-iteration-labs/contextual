@@ -263,11 +263,11 @@ Building on the introduction of \pkg{contextual}'s core classes in the previous 
 \begin{CodeInput}
 > library(contextual)
 >
-> bandit  <- ContextualBernoulliBandit$new(weights = matrix(c(0.5, 0.2, 0.1), 1))
+> bandit  <- ContextualBernoulliBandit$new(matrix(c(0.5, 0.2, 0.1), 1))
 > policy  <- EpsilonGreedyPolicy$new(0.1)
 > agent   <- Agent$new(policy,bandit)
 > sim     <- Simulator$new(agent, simulations = 10000, horizon = 100)
-> history <- simulator$run()
+> history <- sim$run()
 \end{CodeInput}
 \end{CodeChunk}
 
@@ -306,19 +306,19 @@ Agents:
 Cumulative regret:
 
          agent   t  sims cum_regret cum_regret_var cum_regret_sd
- EpsilonGreedy 100 10000      23.04       109.0889      10.44456
+ EpsilonGreedy 100 10000     9.4154       125.3598      11.19642
 
 
 Cumulative reward:
 
          agent   t  sims cum_reward cum_reward_var cum_reward_sd
- EpsilonGreedy 100 10000    41.0017        119.329      10.92378
+ EpsilonGreedy 100 10000    40.5846       125.3598      11.19642
 
 
 Cumulative reward rate:
 
          agent   t  sims cur_reward cur_reward_var cur_reward_sd
- EpsilonGreedy 100 10000   0.410017        1.19329     0.1092378
+ EpsilonGreedy 100 10000   0.405846       1.253598     0.1119642
 \end{CodeOutput}
 \end{CodeChunk}
 
@@ -526,6 +526,9 @@ To specify how to run a simulation and which data is to be saved to a \code{Simu
    }
    \item{\code{simulations}}{
       \code{[100]} How many times to repeat each agent's simulation with a new seed on each repeat (itself deterministically derived from set\_seed).
+   }
+  \item{\code{save_interval}}{
+      \code{[1]} Save only every \code{save_interval} time steps.
    }
    \item{\code{save_context}}{
       \code{[FALSE]} Save context matrices \code{X} to the \code{History} log during a simulation?
@@ -883,7 +886,7 @@ plot(history, type = "cumulative", use_colors = FALSE, legend_border = FALSE,
      limit_agents = c("GittinsBrezziLai", "UCB1","ThompsonSampling"))
 
 plot(history, type = "cumulative", regret = FALSE, legend = FALSE,
-     limit_agents = c("Exp3"), traces = TRUE, no_par = TRUE)
+     limit_agents = c("Exp3"), traces = TRUE)
 
 plot(history, type = "cumulative", regret = FALSE, rate = TRUE,
      limit_agents = c("Exp3", "ThompsonSampling"), disp = "sd",
@@ -1060,8 +1063,9 @@ simulator          <- Simulator$new(agents = agent,
 
 history            <- simulator$run()
 
-plot(history, type = "cumulative", no_par = TRUE, legend_border = FALSE)
-plot(history, type = "arms", no_par = TRUE)
+plot(history, type = "cumulative", legend_position = "bottomright",
+                                   legend_border = FALSE)
+plot(history, type = "arms")
 \end{Code}
 \begin{figure}[H]
 \centering
@@ -1156,8 +1160,8 @@ simulator          <- Simulator$new(agents = agent,
 
 history            <- simulator$run()
 
-plot(history, type = "cumulative", no_par = TRUE)
-plot(history, type = "arms", no_par = TRUE)
+plot(history, type = "cumulative")
+plot(history, type = "arms")
 \end{Code}
 
 \subsection{Contextual Bandit: LinUCB with linear disjoint models} \label{linucbc}
@@ -1265,9 +1269,9 @@ agents      <- list(Agent$new(eg_policy, bandit, "EGreedy"),
 simulation  <- Simulator$new(agents, horizon, simulations, save_context = TRUE)
 history     <- simulation$run()
 
-plot(history, type = "cumulative", legend_border = FALSE, no_par = TRUE )
-plot(history, type = "arms",  limit_agents = c("LinUCB"), no_par = TRUE)
-plot(history, type = "arms",  limit_agents = c("EGreedy"), no_par = TRUE)
+plot(history, type = "cumulative", legend_border = FALSE)
+plot(history, type = "arms",  limit_agents = c("LinUCB"))
+plot(history, type = "arms",  limit_agents = c("EGreedy"))
 
 plot(history, type = "arms",  limit_agents = c("LinUCB"), limit_context = 1)
 plot(history, type = "arms",  limit_agents = c("LinUCB"), limit_context = 2)
@@ -1333,12 +1337,10 @@ agents      <- list(Agent$new(ega_policy, bandit, "EG Annealing"),
 simulation  <- Simulator$new(agents, horizon, simulations, do_parallel = FALSE)
 history     <- simulation$run()
 
-plot(history, type = "cumulative", no_par = TRUE, legend_border = FALSE,
+plot(history, type = "cumulative", legend_border = FALSE,
               legend_position = "bottomright")
-plot(history, type = "arms",  limit_agents = c("EG Annealing"), no_par = TRUE,
-              interval = 25)
-plot(history, type = "arms",  limit_agents = c("EG"), no_par = TRUE,
-              interval = 25)
+plot(history, type = "arms",  limit_agents = c("EG Annealing"), interval = 25)
+plot(history, type = "arms",  limit_agents = c("EG"), interval = 25)
 \end{Code}
 \begin{figure}[H]
 \centering
@@ -1484,7 +1486,6 @@ simulation  <-
 # Run the simulation.
 linucb_sim  <- simulation$run()
 
-# Plot the results.
 # plot the results
 plot(linucb_sim, type = "cumulative", legend_title = "LinUCB",
      rate = TRUE, regret = FALSE, legend_position = "bottomright")
@@ -1652,31 +1653,27 @@ history  <- simulation$run()
 ...
 \end{Code}
 
-
-
 \subsection{Results} \label{rslts}
 
 We were able to complete the full $7\times6=42$ agent simulation over all of the 37,450,196 events in our database within 22 hours on a 64 core Intel Xeon Unbuntu server with 256GB of memory. We then proceeded to analyse the results of the first 4.7 million events (following the original paper, representing about a day worth of events) to reproduce \cite{Li2010}'s Figure 4b: "CTRs in evaluation data with varying data sizes in the learning bucket.". Just like the original paper, the replicated Figure \ref{fig:section_8_bar} reports each algorithm’s relative CTR for all of the defined data sparsity levels, that is, each algorithm’s CTR divided by the random policy’s CTR.
 
 \begin{figure}[H]
   \centering
-    \includegraphics[width=.99\textwidth]{fig/section_8_bar}
+    \includegraphics[width=.95\textwidth]{fig/section_8_bar}
       \caption{Replication of Figure 4b "CTRs in evaluation data with varying data sizes in the learning bucket." from \cite{Li2010}. The plots represent the click through rates for different policies after one day of learning for each of six different levels of sparsity.}
       \label{fig:section_8_bar}
 \end{figure}
 
 As can be observed in Figure \ref{fig:section_8_bar}, after one day of learning (on the Yahoo! dataset's day three), the conclusions of the original paper still stand. First, features again prove to be of use at all levels of sparsity, as LinUCB policies outperform the others consistently. Second, UCB policies generally outperform $\epsilon$-greedy ones. And third, Hybrid LinUCB again shows benefits when the data is small, as can be deduced from it doing better in the 1\% bucket. Still, as we started our simulation on the third day instead of the first, our results are close to, but not quite the same as those reported in the original paper. Particularly the third conclusion, that of the relative advantage of Hybrid LinUCB with sparse data, seems to be slightly less convincing in our Figure \ref{fig:section_8_bar}.
 
-So we decided to run a simulation that continued to learn beyond the first day for the sparse (1\%) data condition to test whether Hybrid LinUCB's reported relative advantage would prove stable over time.
+We therefor decided to run a simulation that continued to learn beyond the first day for the sparse (1\%) data condition to test whether Hybrid LinUCB's reported relative advantage would prove stable over time. On closer examination of the resulting plot in Figure \ref{fig:section_8_plot}, it becomes clear that the policies did not settle after one day of training. For one, on inspection of the full span of about eight days of learning, Hybrid LinUCB's advantage over Disjoint LinUCB gradually diminishes and then reverses into an advantage for the Disjoint version. Also, surprisingly, over the full eight days, the $\epsilon$-greedy policy goes from the worst to third best policy overall, becoming the best context-free policy---clearly outperforming both context-free UCB policies. Though we intend to further analyze these discrepancies, for now, these results seem to pose questions for two out of three conclusions drawn in the original paper---leaving only the first outcome, the superiority of the contextual LinUCB in comparison to several context-free ones.  Underlining the benefits of \pkg{contextual}, as it enabled us to replicate and confirm the original \cite{Li2010} paper, and then explore it further: extending \code{Bandit} and \code{Policy} classes, running simulations in parallel on an offline dataset and plotting and analyzing the results---within 48 hours.
 
 \begin{figure}[H]
   \centering
-    \includegraphics[width=.99\textwidth]{fig/section_8_plot}
-      \caption{A plot of the cumulative reward rate (equals click-through rate) for EGreedy, EGreedySeg, LinUCB Dis, LinUCB Hyb, UCB1, and UCB1Seg policies over eight days of events from the Yahoo dataset at 1\% sparsity. The dotted lines represent blocks consisting of 24 hours worth of data---the lines are not equidistant as the number of data points of these 24 hours differs per block. The plot's sinusoidal wave pattern reflects visitors' overall average cyclical daily waxing and waning click-through tendency.}
+    \includegraphics[width=.95\textwidth]{fig/section_8_plot}
+      \caption{A plot of the cumulative reward rate (equals click-through rate) on the Yahoo dataset for EGreedy, EGreedySeg, LinUCB Dis, LinUCB Hyb, UCB1, and UCB1Seg policies over eight days of events at 1\% sparsity. The dotted lines represent blocks consisting of 24 hours worth of data---these lines are not equidistant as the number of data points differ per block. The plot's sinusoidal wave pattern reflects visitors' overall average cyclical daily waxing and waning click-through tendency.}
       \label{fig:section_8_plot}
 \end{figure}
-
-On closer examination of the resulting plot in Figure \ref{fig:section_8_plot}, it becomes clear that the policies did not settle after one day of training. For one, on inspection of the full span of about eight days of learning, Hybrid LinUCB's advantage over Disjoint LinUCB gradually diminishes and then reverses into an advantage for the Disjoint version. Also, surprisingly, over the full eight days, the $\epsilon$-greedy policy goes from the worst to third best policy overall, becoming the best context-free policy---clearly outperforming both context-free UCB policies. Though we intend to further analyze these discrepancies, for now, these results seem to pose questions for two out of three conclusions drawn in the original paper---leaving only the first outcome, the superiority of the contextual LinUCB in comparison to several context-free ones.  Underlining the benefits of \pkg{contextual}, as it enabled us to replicate and confirm the original \cite{Li2010} paper, and then explore it further: extending \code{Bandit} and \code{Policy} classes, running simulations in parallel on an offline dataset and plotting and analyzing the results---within 48 hours.
 
 \section{Discussion and future work} \label{future}
 
