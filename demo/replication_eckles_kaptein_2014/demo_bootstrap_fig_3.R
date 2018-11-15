@@ -6,7 +6,7 @@ library(contextual)
 
 # Fig 3: Comparison of empirical regret for BTS with varied number of bootstrap replicates.
 
-# Takes time. Helped by massively parallel architecture - replication runs well on our 256 core server.
+# Sim completes within an hour on a 12 core / 24 threads server.
 
 policy             <- ThompsonSamplingPolicy$new()
 
