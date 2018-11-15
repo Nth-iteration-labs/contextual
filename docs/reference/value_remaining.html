@@ -155,7 +155,7 @@ currently best in binomial bandits</p>
     </tr>
     <tr>
       <th>alpha</th>
-      <td><p>a positive-definite symmetric matrix specifying the covariance matrix of the variables.</p></td>
+      <td><p>Shape parameter alpha for the prior beta distribution.</p></td>
     </tr>
     <tr>
       <th>beta</th>
@@ -164,10 +164,6 @@ currently best in binomial bandits</p>
     <tr>
       <th>ndraws</th>
       <td><p>Number of random draws from the posterior.</p></td>
-    </tr>
-    <tr>
-      <th>alpha</th>
-      <td><p>Shape parameter alpha for the prior beta distribution.</p></td>
     </tr>
     </table>
     
@@ -182,12 +178,9 @@ improvement amounts that another arm might have over the current best arm.</p>
 <span class='no'>x</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>10</span>,<span class='fl'>20</span>,<span class='fl'>30</span>,<span class='fl'>80</span>)
 <span class='no'>n</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>100</span>,<span class='fl'>102</span>,<span class='fl'>120</span>,<span class='fl'>240</span>)
 <span class='no'>vr</span> <span class='kw'>=</span> <span class='fu'>value_remaining</span>(<span class='no'>x</span>, <span class='no'>n</span>)
-<span class='fu'>hist</span>(<span class='no'>vr</span>)</div><div class='img'><img src='value_remaining-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='no'>best_arm</span> <span class='kw'>=</span> <span class='fu'>which.max</span>(<span class='fu'>best_binomial_bandit</span>(<span class='no'>x</span>, <span class='no'>n</span>))</div><div class='output co'>#&gt; <span class='error'>Error in best_binomial_bandit(x, n): could not find function "best_binomial_bandit"</span></div><div class='input'><span class='co'># "potential value" remaining in the experiment</span>
-<span class='no'>potential_value</span> <span class='kw'>=</span> <span class='fu'>quantile</span>(<span class='no'>vr</span>, <span class='fl'>0.95</span>)
-<span class='fu'>paste</span>(<span class='st'>"Were still unsure about the CvR for the best arm (arm "</span>, <span class='no'>best_arm</span>,
-      <span class='st'>"), but whatever it is, one of the other arms might beat it by as much as "</span>,
-      <span class='fu'>round</span>(<span class='no'>potential_value</span>*<span class='fl'>100</span>, <span class='fl'>4</span>), <span class='st'>" percent."</span>, <span class='kw'>sep</span><span class='kw'>=</span><span class='st'>""</span>)</div><div class='output co'>#&gt; <span class='error'>Error in paste("Were still unsure about the CvR for the best arm (arm ",     best_arm, "), but whatever it is, one of the other arms might beat it by as much as ",     round(potential_value * 100, 4), " percent.", sep = ""): object 'best_arm' not found</span></div><div class='input'>
-</div></pre>
+<span class='fu'>hist</span>(<span class='no'>vr</span>)</div><div class='img'><img src='value_remaining-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># "potential value" remaining in the experiment</span>
+<span class='no'>potential_value</span> <span class='kw'>=</span> <span class='fu'>quantile</span>(<span class='no'>vr</span>, <span class='fl'>0.95</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

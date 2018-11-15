@@ -18,7 +18,7 @@ ThompsonSamplingPolicy <- R6::R6Class(
     get_action = function(t, context) {
       point_estimate_of_mean <- vector("double", context$k)
       for (arm in 1:context$k) {
-        point_estimate_of_mean[arm] <- rbeta(
+        point_estimate_of_mean[arm] <- stats::rbeta(
           1, alpha + self$theta$succes[[arm]], beta + self$theta$n[[arm]] - self$theta$succes[[arm]]
         )
       }

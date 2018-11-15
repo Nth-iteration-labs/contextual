@@ -11,13 +11,11 @@ sim_post(x, n, alpha = 1, beta = 1, ndraws = 5000)
 
 \item{n}{Vector of the number of trials per arm.}
 
-\item{alpha}{a positive-definite symmetric matrix specifying the covariance matrix of the variables.}
+\item{alpha}{Shape parameter alpha for the prior beta distribution.}
 
 \item{beta}{Shape parameter beta for the prior beta distribution.}
 
 \item{ndraws}{Number of random draws from the posterior.}
-
-\item{alpha}{Shape parameter alpha for the prior beta distribution.}
 }
 \value{
 Matrix of bayesian probabilities for each arm being the best binomial bandit
@@ -29,6 +27,7 @@ best binomial bandit.
 }
 \examples{
 
+x=c(10,20,30,50)
 n=c(100,102,120,130)
 sim_post(x,n)
 

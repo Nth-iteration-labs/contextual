@@ -364,10 +364,9 @@ Plot <- R6::R6Class(
         interval <- ceiling(as.integer(self$history$meta$sim$max_t)/1850) # nocov
       }
 
-      if (log != "") {
-        message("When plotting log, no subsampling to optimize plot size.")
-        interval <- 1
-      }
+      # message("When plotting log, no subsampling to optimize plot size.")
+      #  interval <- 1
+      #}
 
       if (!is.null(disp) && disp %in% c("sd", "var", "ci")) {
 

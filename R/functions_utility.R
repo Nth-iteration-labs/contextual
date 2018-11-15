@@ -515,29 +515,6 @@ mvrnorm = function(n, mu, sigma)
   mu + matrix(stats::rnorm(n * ncols), ncol = ncols) %*% chol(sigma)
 }
 
-
-
-
-#' Simulate from a Multivariate Normal Distribution
-#'
-#' Produces one or more samples from the specified
-#' multivariate normal distribution.
-#'
-#' @param n the number of samples required.
-#' @param mu a vector giving the means of the variables.
-#' @param sigma a positive-definite symmetric matrix specifying the covariance matrix of the variables.
-#'
-#' @return If \code{n = 1} a vector of the same length as \code{mu}, otherwise an \code{n} by
-#' \code{length(mu)} matrix with one sample in each row.
-#'
-#' @export
-mvrnorm = function(n, mu, sigma)
-{
-  ncols <- ncol(sigma)
-  mu <- rep(mu, each = n)
-  mu + matrix(stats::rnorm(n * ncols), ncol = ncols) %*% chol(sigma)
-}
-
 #' Potential Value Remaining
 #'
 #' Compute "value_remaining" in arms not
@@ -547,7 +524,6 @@ mvrnorm = function(n, mu, sigma)
 #'
 #' @param x Vector of the number of successes per arm.
 #' @param n Vector of the number of trials per arm.
-#' @param alpha a positive-definite symmetric matrix specifying the covariance matrix of the variables.
 #' @param alpha Shape parameter alpha for the prior beta distribution.
 #' @param beta Shape parameter beta for the prior beta distribution.
 #' @param ndraws Number of random draws from the posterior.
@@ -561,12 +537,9 @@ mvrnorm = function(n, mu, sigma)
 #' n=c(100,102,120,240)
 #' vr = value_remaining(x, n)
 #' hist(vr)
-#' best_arm = which.max(best_binomial_bandit(x, n))
+#'
 #' # "potential value" remaining in the experiment
 #' potential_value = quantile(vr, 0.95)
-#' paste("Were still unsure about the CvR for the best arm (arm ", best_arm,
-#'       "), but whatever it is, one of the other arms might beat it by as much as ",
-#'       round(potential_value*100, 4), " percent.", sep="")
 #'
 #' @export
 value_remaining <- function(x, n, alpha = 1, beta = 1, ndraws = 10000)
@@ -590,7 +563,6 @@ value_remaining <- function(x, n, alpha = 1, beta = 1, ndraws = 10000)
 #'
 #' @param x Vector of the number of successes per arm.
 #' @param n Vector of the number of trials per arm.
-#' @param alpha a positive-definite symmetric matrix specifying the covariance matrix of the variables.
 #' @param alpha Shape parameter alpha for the prior beta distribution.
 #' @param beta Shape parameter beta for the prior beta distribution.
 #' @param ndraws Number of random draws from the posterior.
@@ -599,6 +571,7 @@ value_remaining <- function(x, n, alpha = 1, beta = 1, ndraws = 10000)
 #'
 #' @examples
 #'
+#' x=c(10,20,30,50)
 #' n=c(100,102,120,130)
 #' sim_post(x,n)
 #'
@@ -608,7 +581,7 @@ sim_post <- function(x, n, alpha = 1, beta = 1, ndraws = 5000) {
   ans <- matrix(nrow=ndraws, ncol=k)
   no = n-x
   for (i in (1:k))
-    ans[,i] = rbeta(ndraws, x[i] + alpha, no[i] + beta)
+    ans[,i] = stats::rbeta(ndraws, x[i] + alpha, no[i] + beta)
   return(ans)
 }
 
@@ -619,7 +592,7 @@ sim_post <- function(x, n, alpha = 1, beta = 1, ndraws = 5000) {
 #'
 #' @author Thomas Lotze and Markus Loecher
 #'
-#' @param x Simulated results from the posterior, as provided by sim_post()
+#' @param post Simulated results from the posterior, as provided by sim_post()
 #'
 #' @return Probabilities each arm is the winner.
 #'

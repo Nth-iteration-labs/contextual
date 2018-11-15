@@ -7,7 +7,7 @@
 prob_winner(post)
 }
 \arguments{
-\item{x}{Simulated results from the posterior, as provided by sim_post()}
+\item{post}{Simulated results from the posterior, as provided by sim_post()}
 }
 \value{
 Probabilities each arm is the winner.
