@@ -22,7 +22,7 @@ BasicGaussianBandit <- R6::R6Class(
       reward         <- list(
         reward                   = rewards[action$choice],
         optimal_arm              = optimal_arm,
-        optimal_reward           = self$mu_per_arm[optimal_arm]
+        optimal_reward           = rewards[optimal_arm]
       )
     }
   )

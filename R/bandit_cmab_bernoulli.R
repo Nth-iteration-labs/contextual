@@ -32,7 +32,7 @@ ContextualBernoulliBandit <- R6::R6Class(
       reward  <- list(
         reward                   = rewards[arm],
         optimal_arm              = optimal_arm,
-        optimal_reward           = weight[optimal_arm]
+        optimal_reward           = rewards[optimal_arm]
       )
     }
   )
