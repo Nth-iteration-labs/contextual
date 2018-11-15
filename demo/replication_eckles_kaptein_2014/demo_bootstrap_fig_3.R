@@ -4,7 +4,7 @@ library(contextual)
 
 # Fig 3: Comparison of empirical regret for BTS with varied number of bootstrap replicates.
 
-# Well suited for testing massively parallel architecture - replication ran on 256 core system.
+# Runs well on massively parallel architecture - replication tested on 256 core system.
 
 policy             <- ThompsonSamplingPolicy$new()
 
