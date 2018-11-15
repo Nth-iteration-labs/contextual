@@ -2,9 +2,9 @@ library(contextual)
 
 # Replication of THOMPSON SAMPLING WITH THE ONLINE BOOTSTRAP By Dean Eckles and Maurits Kaptein
 
-# Fig 3: Comparison of empirical regret for BTS with varied number of bootstrap replicates
+# Fig 3: Comparison of empirical regret for BTS with varied number of bootstrap replicates.
 
-# Well suited for massively parallel architecture. Has been tested on 128 core system.
+# Well suited for testing massively parallel architecture - replication ran on 256 core system.
 
 policy             <- ThompsonSamplingPolicy$new()
 
@@ -18,16 +18,9 @@ agents             <- list(Agent$new(SimpleBTSPolicy$new(10), bandit, "BTS 10"),
 simulator          <- Simulator$new(agents        = agents,
                                     do_parallel   = TRUE,
                                     save_interval = 100,
-                                    horizon       = 1000,
+                                    horizon       = 1e+05,
                                     simulations   = 1000)
 
 simulator$run()
 
 plot(simulator$history, type = "cumulative", regret = TRUE, log = "x")
-
-
-
-
-
-
-
