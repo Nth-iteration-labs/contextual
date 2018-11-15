@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Simulate from a Multivariate Normal Distribution — mvrnorm • contextual</title>
+<title>Potential Value Remaining — value_remaining • contextual</title>
 
 <!-- jquery -->
 <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script>
@@ -36,12 +36,10 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Simulate from a Multivariate Normal Distribution — mvrnorm" />
+<meta property="og:title" content="Potential Value Remaining — value_remaining" />
 
-<meta property="og:description" content="Produces one or more samples from the specified
-multivariate normal distribution.
-Produces one or more samples from the specified
-multivariate normal distribution." />
+<meta property="og:description" content="Compute &quot;value_remaining&quot; in arms not
+currently best in binomial bandits" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -130,61 +128,66 @@ multivariate normal distribution." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Simulate from a Multivariate Normal Distribution</h1>
+    <h1>Potential Value Remaining</h1>
     <small class="dont-index">Source: <a href='https://github.com/Nth-iteration-labs/contextual/blob/master/R/functions_utility.R'><code>R/functions_utility.R</code></a></small>
-    <div class="hidden name"><code>mvrnorm.Rd</code></div>
+    <div class="hidden name"><code>value_remaining.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Produces one or more samples from the specified
-multivariate normal distribution.</p>
-<p>Produces one or more samples from the specified
-multivariate normal distribution.</p>
+    <p>Compute "value_remaining" in arms not
+currently best in binomial bandits</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>mvrnorm</span>(<span class='no'>n</span>, <span class='no'>mu</span>, <span class='no'>sigma</span>)
-
-<span class='fu'>mvrnorm</span>(<span class='no'>n</span>, <span class='no'>mu</span>, <span class='no'>sigma</span>)</pre>
+    <pre class="usage"><span class='fu'>value_remaining</span>(<span class='no'>x</span>, <span class='no'>n</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>beta</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>ndraws</span> <span class='kw'>=</span> <span class='fl'>10000</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>n</th>
-      <td><p>the number of samples required.</p></td>
-    </tr>
-    <tr>
-      <th>mu</th>
-      <td><p>a vector giving the means of the variables.</p></td>
-    </tr>
-    <tr>
-      <th>sigma</th>
-      <td><p>a positive-definite symmetric matrix specifying the covariance matrix of the variables.</p></td>
+      <th>x</th>
+      <td><p>Vector of the number of successes per arm.</p></td>
     </tr>
     <tr>
       <th>n</th>
-      <td><p>the number of samples required.</p></td>
+      <td><p>Vector of the number of trials per arm.</p></td>
     </tr>
     <tr>
-      <th>mu</th>
-      <td><p>a vector giving the means of the variables.</p></td>
-    </tr>
-    <tr>
-      <th>sigma</th>
+      <th>alpha</th>
       <td><p>a positive-definite symmetric matrix specifying the covariance matrix of the variables.</p></td>
+    </tr>
+    <tr>
+      <th>beta</th>
+      <td><p>Shape parameter beta for the prior beta distribution.</p></td>
+    </tr>
+    <tr>
+      <th>ndraws</th>
+      <td><p>Number of random draws from the posterior.</p></td>
+    </tr>
+    <tr>
+      <th>alpha</th>
+      <td><p>Shape parameter alpha for the prior beta distribution.</p></td>
     </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>If <code>n = 1</code> a vector of the same length as <code>mu</code>, otherwise an <code>n</code> by
-<code>length(mu)</code> matrix with one sample in each row.</p>
-<p>If <code>n = 1</code> a vector of the same length as <code>mu</code>, otherwise an <code>n</code> by
-<code>length(mu)</code> matrix with one sample in each row.</p>
+    <p>Value_remaining distribution; the distribution of
+improvement amounts that another arm might have over the current best arm.</p>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'>
+<span class='no'>x</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>10</span>,<span class='fl'>20</span>,<span class='fl'>30</span>,<span class='fl'>80</span>)
+<span class='no'>n</span><span class='kw'>=</span><span class='fu'>c</span>(<span class='fl'>100</span>,<span class='fl'>102</span>,<span class='fl'>120</span>,<span class='fl'>240</span>)
+<span class='no'>vr</span> <span class='kw'>=</span> <span class='fu'>value_remaining</span>(<span class='no'>x</span>, <span class='no'>n</span>)
+<span class='fu'>hist</span>(<span class='no'>vr</span>)</div><div class='img'><img src='value_remaining-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='no'>best_arm</span> <span class='kw'>=</span> <span class='fu'>which.max</span>(<span class='fu'>best_binomial_bandit</span>(<span class='no'>x</span>, <span class='no'>n</span>))</div><div class='output co'>#&gt; <span class='error'>Error in best_binomial_bandit(x, n): could not find function "best_binomial_bandit"</span></div><div class='input'><span class='co'># "potential value" remaining in the experiment</span>
+<span class='no'>potential_value</span> <span class='kw'>=</span> <span class='fu'>quantile</span>(<span class='no'>vr</span>, <span class='fl'>0.95</span>)
+<span class='fu'>paste</span>(<span class='st'>"Were still unsure about the CvR for the best arm (arm "</span>, <span class='no'>best_arm</span>,
+      <span class='st'>"), but whatever it is, one of the other arms might beat it by as much as "</span>,
+      <span class='fu'>round</span>(<span class='no'>potential_value</span>*<span class='fl'>100</span>, <span class='fl'>4</span>), <span class='st'>" percent."</span>, <span class='kw'>sep</span><span class='kw'>=</span><span class='st'>""</span>)</div><div class='output co'>#&gt; <span class='error'>Error in paste("Were still unsure about the CvR for the best arm (arm ",     best_arm, "), but whatever it is, one of the other arms might beat it by as much as ",     round(potential_value * 100, 4), " percent.", sep = ""): object 'best_arm' not found</span></div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -192,7 +195,13 @@ multivariate normal distribution.</p>
       <li><a href="#arguments">Arguments</a></li>
       
       <li><a href="#value">Value</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
+
+    <h2>Author</h2>
+    
+Thomas Lotze and Markus Loecher
 
   </div>
 </div>

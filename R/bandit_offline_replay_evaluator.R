@@ -19,7 +19,7 @@ OfflineReplayEvaluatorBandit <- R6::R6Class(
 
       self$unique    <- unique
       self$shared    <- shared
-
+      if(!"context" %in% colnames(private$S)) private$S$context = list(1)
       private$S[is.null(context[[1]]),`:=`(context = list(1))]
       private$oa     <- "optimal_arm" %in% colnames(offline_data)
       private$or     <- "optimal_reward" %in% colnames(offline_data)

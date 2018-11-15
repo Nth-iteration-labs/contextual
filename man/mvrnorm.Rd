@@ -5,8 +5,16 @@
 \title{Simulate from a Multivariate Normal Distribution}
 \usage{
 mvrnorm(n, mu, sigma)
+
+mvrnorm(n, mu, sigma)
 }
 \arguments{
+\item{n}{the number of samples required.}
+
+\item{mu}{a vector giving the means of the variables.}
+
+\item{sigma}{a positive-definite symmetric matrix specifying the covariance matrix of the variables.}
+
 \item{n}{the number of samples required.}
 
 \item{mu}{a vector giving the means of the variables.}
@@ -16,8 +24,14 @@ mvrnorm(n, mu, sigma)
 \value{
 If \code{n = 1} a vector of the same length as \code{mu}, otherwise an \code{n} by
 \code{length(mu)} matrix with one sample in each row.
+
+If \code{n = 1} a vector of the same length as \code{mu}, otherwise an \code{n} by
+\code{length(mu)} matrix with one sample in each row.
 }
 \description{
+Produces one or more samples from the specified
+multivariate normal distribution.
+
 Produces one or more samples from the specified
 multivariate normal distribution.
 }

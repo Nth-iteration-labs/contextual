@@ -302,6 +302,12 @@ Plot <- R6::R6Class(
         legend_position <- "bottomright"
       }
 
+      if (!is.null(legend_labels)) {
+        legend_labels <- legend_labels
+      } else {
+        legend_labels <- paste("arm", arm_levels, sep = " ")
+      }
+
       axis(1)
       axis(2)
       title(xlab = "Time Step")
@@ -311,7 +317,7 @@ Plot <- R6::R6Class(
         legend(
           legend_position,
           NULL,
-          paste("arm", arm_levels, sep = " "),
+          legend_labels,
           col = adjustcolor(cl, alpha.f = 0.6),
           title = legend_title,
           pch = 15,
@@ -356,6 +362,11 @@ Plot <- R6::R6Class(
 
       if (interval==1 && as.integer(self$history$meta$sim$max_t) > 1850) {
         interval <- ceiling(as.integer(self$history$meta$sim$max_t)/1850) # nocov
+      }
+
+      if (log != "") {
+        message("When plotting log, no subsampling to optimize plot size.")
+        interval <- 1
       }
 
       if (!is.null(disp) && disp %in% c("sd", "var", "ci")) {

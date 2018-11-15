@@ -39,6 +39,9 @@ reference:
       - one_hot
       - sherman_morrisson
       - var_welford
+      - prob_winner
+      - sim_post
+      - value_remaining
   - title: "Generic functions"
     desc: "Contextual generic functions."
     contents:
