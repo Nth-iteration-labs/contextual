@@ -175,7 +175,7 @@ test_that("BasicGaussianBandit", {
 
   history            <- Simulator$new(agent, horizon, sims, do_parallel = FALSE)$run()
 
-  expect_equal(history$cumulative$EpsilonGreedy$cum_regret, 3.78, tolerance = 0.01)
+  expect_equal(history$cumulative$EpsilonGreedy$cum_regret, 5.1, tolerance = 0.01)
 
 })
 
@@ -201,15 +201,15 @@ test_that("BasicBernoulliBandit MAB policies", {
   simulation         <- Simulator$new(agents, horizon, simulations, do_parallel = FALSE)
   history            <- simulation$run()
 
-  expect_equal(history$cumulative$Random$cum_regret,5.5, tolerance = 0.01)
-  expect_equal(history$cumulative$GittinsBrezziLai$cum_regret,0.9, tolerance = 0.01)
-  expect_equal(history$cumulative$Exp3$cum_regret, 5.4, tolerance = 0.01)
-  expect_equal(history$cumulative$UCB1$cum_regret, 3.6 , tolerance = 0.01)
-  expect_equal(history$cumulative$ThompsonSampling$cum_regret, 2.6 , tolerance = 0.01)
-  expect_equal(history$cumulative$EpsilonGreedy$cum_regret,3.2, tolerance = 0.01)
-  expect_equal(history$cumulative$EpsilonFirst$cum_regret,3.3, tolerance = 0.01)
-  expect_equal(history$cumulative$Softmax$cum_regret,1.7 , tolerance = 0.01)
-  expect_equal(history$cumulative$SimpleBTS$cum_regret,1.6, tolerance = 0.01)
+  expect_equal(history$cumulative$Random$cum_regret,5, tolerance = 0.01)
+  expect_equal(history$cumulative$GittinsBrezziLai$cum_regret,0.8, tolerance = 0.01)
+  expect_equal(history$cumulative$Exp3$cum_regret, 5.3, tolerance = 0.01)
+  expect_equal(history$cumulative$UCB1$cum_regret, 3.4 , tolerance = 0.01)
+  expect_equal(history$cumulative$ThompsonSampling$cum_regret, 2.4 , tolerance = 0.01)
+  expect_equal(history$cumulative$EpsilonGreedy$cum_regret,3, tolerance = 0.01)
+  expect_equal(history$cumulative$EpsilonFirst$cum_regret,3.1, tolerance = 0.01)
+  expect_equal(history$cumulative$Softmax$cum_regret,1.3 , tolerance = 0.01)
+  expect_equal(history$cumulative$SimpleBTS$cum_regret,1.7, tolerance = 0.01)
 
 })
 
@@ -228,7 +228,7 @@ test_that("BasicBernoulliBandit Long", {
   simulation         <- Simulator$new(agents, horizon, simulations, do_parallel = FALSE)
   history            <- simulation$run()
 
-  expect_equal(history$cumulative$GittinsBrezziLai$cum_regret, -24, tolerance = 0.01)
+  expect_equal(history$cumulative$GittinsBrezziLai$cum_regret, 2, tolerance = 0.01)
 
 })
 
