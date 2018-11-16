@@ -4,20 +4,18 @@ library(contextual)
 
 # https://arxiv.org/abs/1410.4009
 
-# Fig 3: Comparison of empirical regret for BTS with varied number of bootstrap replicates.
-
-# Sim completes within an hour on a 12 core server.
+# Fig 2. Empirical regret for Thompson sampling and BTS in a K-armed binomial bandit problem with
+# varied differences between the optimal arm and all others.
 
 bandit             <- BasicBernoulliBandit$new(weights = c(0.5, rep(0.4,9)))
 
-agents             <- list(Agent$new(SimpleBTSPolicy$new(10), bandit, "BTS 10"),
-                           Agent$new(SimpleBTSPolicy$new(100), bandit, "BTS 100"),
-                           Agent$new(SimpleBTSPolicy$new(1000), bandit, "BTS 1000"),
-                           Agent$new(SimpleBTSPolicy$new(10000), bandit, "BTS 10000"))
+agents             <- list(Agent$new(SimpleBTSPolicy$new(1000), bandit, "BTS 1000"),
+                           Agent$new(ThompsonSamplingPolicy$new(), bandit, "TS"))
 
 simulator          <- Simulator$new(agents        = agents,
                                     do_parallel   = TRUE,
                                     save_interval = 50,
+                                    set_seed      = 999,
                                     horizon       = 1e+05,
                                     simulations   = 1000)
 
