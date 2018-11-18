@@ -307,6 +307,15 @@ History <- R6::R6Class(
       # if not temporary, delete original context column
       if (isTRUE(delete_original_column)) private$.data$context <- NULL
     },
+    extract_theta = function(limit_agents, parameter, arm, tail = NULL){
+      if(!is.null(tail)){
+        unlist(sapply(sapply(tail(private$.data[agent %in% limit_agents],tail)$theta,
+                             `[`, parameter), `[[`, arm), FALSE, FALSE)
+      } else {
+        unlist(sapply(sapply(private$.data[agent %in% limit_agents]$theta,
+                             `[`, parameter), `[[`, arm), FALSE, FALSE)
+      }
+    },
     finalize = function() {
       self$clear_data_table()
     }
@@ -410,6 +419,7 @@ History <- R6::R6Class(
       data.table::setcolorder(private$.cum_stats, c("agent", setdiff(names(private$.cum_stats), "agent")))
 
     },
+
     data_table_to_named_nested_list = function(dt, transpose = FALSE) {
       df_m <- as.data.frame(dt)
       rownames(df_m) <- df_m[, 1]
@@ -518,6 +528,13 @@ History <- R6::R6Class(
 #'   \item{\code{save_csv(filename = NA, context_to_columns = FALSE)}}{
 #'      Saves History data to csv file. When context_to_columns is TRUE, the "context" column will
 #'      be split over multiple columns X1 to X...
+#'   }
+#'   \item{\code{extract_theta(limit_agents, parameter, arm, tail = NULL)}}{
+#'      Extract theta parameter from internal theta list for \code{limit_agents},
+#'      where \code{parameter} sets the to be retrieved parameter or vector of parameters in theta,
+#'      \code{arm} is the relevant integer index of the arm or vector of arms of interest, and the
+#'      optional \code{tail} selects the last elements in the list.
+#'      Returns a vector, matrix or array with the selected theta values.
 #'   }
 #'   \item{\code{delete_empty_rows()}}{
 #'      Deletes all empty rows in the \code{History} log and re-indexes the \code{t} column grouped
