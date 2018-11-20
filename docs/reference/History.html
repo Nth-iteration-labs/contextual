@@ -92,7 +92,19 @@ and can save or load simulation log data files." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/cmabs.html">Demo: Basic Synthetic cMAB Policies</a>
+    </li>
+    <li>
+      <a href="../articles/cmabsoffline.html">Demo: Offline cMAB LinUCB evaluation</a>
+    </li>
+    <li>
+      <a href="../articles/epsilongreedy.html">Demo: Basic Epsilon Greedy</a>
+    </li>
+    <li>
       <a href="../articles/introduction.html">Getting started: running simulations</a>
+    </li>
+    <li>
+      <a href="../articles/mabs.html">Demo: MAB Policies Comparison</a>
     </li>
     <li>
       <a href="../articles/replication.html">Offline evaluation: Replication of Li et al 2010</a>
@@ -184,6 +196,11 @@ full data file. This can be of use with (a first) analysis of very large data fi
 <dt><code>clear_data_table()</code></dt><dd><p>Clears the <code>History</code> log.</p></dd>
 <dt><code>save_csv(filename = NA, context_to_columns = FALSE)</code></dt><dd><p>Saves History data to csv file. When context_to_columns is TRUE, the "context" column will
 be split over multiple columns X1 to X...</p></dd>
+<dt><code>extract_theta(limit_agents, parameter, arm, tail = NULL)</code></dt><dd><p>Extract theta parameter from internal theta list for <code>limit_agents</code>,
+where <code>parameter</code> sets the to be retrieved parameter or vector of parameters in theta,
+<code>arm</code> is the relevant integer index of the arm or vector of arms of interest, and the
+optional <code>tail</code> selects the last elements in the list.
+Returns a vector, matrix or array with the selected theta values.</p></dd>
 <dt><code>delete_empty_rows()</code></dt><dd><p>Deletes all empty rows in the <code>History</code> log and re-indexes the <code>t</code> column grouped
 by agent and simulation.</p></dd>
 <dt><code>reindex(truncate = TRUE)</code></dt><dd><p>Removes empty rows from the <code>History</code> log, reindexes the <code>t</code> column, and,

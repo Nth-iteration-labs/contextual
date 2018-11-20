@@ -1,0 +1,42 @@
+---
+title: "Demo: MAB Policies Comparison"
+author: "Robin van Emden"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Demo: MAB Policies Comparison}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE, cache = TRUE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```r
+library(contextual)
+
+prob_per_arm       <- c(0.9, 0.1, 0.1)
+horizon            <- 100
+simulations        <- 1000
+
+bandit             <- BasicBernoulliBandit$new(prob_per_arm)
+
+agents             <- list(Agent$new(OraclePolicy$new(), bandit),
+                           Agent$new(EpsilonGreedyPolicy$new(0.1), bandit),
+                           Agent$new(ThompsonSamplingPolicy$new(1.0, 1.0), bandit),
+                           Agent$new(Exp3Policy$new(0.1), bandit),
+                           Agent$new(GittinsBrezziLaiPolicy$new(), bandit),
+                           Agent$new(UCB1Policy$new(), bandit),
+                           Agent$new(UCB2Policy$new(0.1), bandit))
+
+simulation         <- Simulator$new(agents, horizon, simulations)
+history            <- simulation$run()
+
+plot(history, type = "cumulative")
+```
+
+![](mabs.jpeg)

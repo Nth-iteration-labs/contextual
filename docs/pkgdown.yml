@@ -2,6 +2,10 @@ pandoc: 2.1.3
 pkgdown: 1.1.0
 pkgdown_sha: ~
 articles:
+  cmabs: cmabs.html
+  cmabsoffline: cmabsoffline.html
+  epsilongreedy: epsilongreedy.html
   introduction: introduction.html
+  mabs: mabs.html
   replication: replication.html
 

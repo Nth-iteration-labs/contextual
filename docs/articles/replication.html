@@ -54,7 +54,19 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="../articles/cmabs.html">Demo: Basic Synthetic cMAB Policies</a>
+    </li>
+    <li>
+      <a href="../articles/cmabsoffline.html">Demo: Offline cMAB LinUCB evaluation</a>
+    </li>
+    <li>
+      <a href="../articles/epsilongreedy.html">Demo: Basic Epsilon Greedy</a>
+    </li>
+    <li>
       <a href="../articles/introduction.html">Getting started: running simulations</a>
+    </li>
+    <li>
+      <a href="../articles/mabs.html">Demo: MAB Policies Comparison</a>
     </li>
     <li>
       <a href="../articles/replication.html">Offline evaluation: Replication of Li et al 2010</a>
@@ -93,7 +105,7 @@
       <h1>Offline evaluation: Replication of Li et al 2010</h1>
                         <h4 class="author">Robin van Emden</h4>
             
-            <h4 class="date">2018-11-15</h4>
+            <h4 class="date">2018-11-20</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Nth-iteration-labs/contextual/blob/master/vignettes/replication.Rmd"><code>vignettes/replication.Rmd</code></a></small>
       <div class="hidden name"><code>replication.Rmd</code></div>
@@ -121,7 +133,7 @@
 <div id="data-import" class="section level4">
 <h4 class="hasAnchor">
 <a href="#data-import" class="anchor"></a>Data import</h4>
-<p>As the Yahoo data is too large to fit into memory, we imported most (The first two CSV files representing the first two days of the Yahoo! dataset are somewhat irregular, as they contain articles with more than six features. We, therefore, decided to leave these two CSV files out of our import, resulting in 37,450,196 imported events, instead of the 45,811,883 events used in the original paper) of the dataset’s CSV files into a <code>MonetDB</code> instance—a fast, open source column-oriented database management system with excellent R support (MonetDB can be downloaded at <a href="https://www.monetdb.org/" class="uri">https://www.monetdb.org/</a>). The import script, example import scripts for several other databases (<code>MySQL</code>, <code>SQLite</code>, <code>Postgresql</code>) and all other source code related to this replication can be found in the package’s <code>demo/replication_li_2010</code> directory.</p>
+<p>As the Yahoo data is too large to fit into memory, we imported the dataset’s CSV files into a <code>MonetDB</code> instance—a fast, open source column-oriented database management system with excellent R support (MonetDB can be downloaded at <a href="https://www.monetdb.org/" class="uri">https://www.monetdb.org/</a>). The import script, example import scripts for several other databases (<code>MySQL</code>, <code>SQLite</code>, <code>Postgresql</code>) and all other source code related to this replication can be found in the package’s <code>demo/replication_li_2010</code> directory.</p>
 </div>
 <div id="custom-bandit-and-policies" class="section level4">
 <h4 class="hasAnchor">
@@ -212,11 +224,10 @@
 <p>We were able to complete the full <span class="math inline">\(7\times6=42\)</span> agent simulation over all of the 37,450,196 events in our database within 22 hours on a 64 core Intel Xeon Unbuntu server with 256GB of memory. We then proceeded to analyse the results of the first 4.7 million events (following the original paper, representing about a day worth of events) to reproduce Li et al 2010’s Figure 4b: “CTRs in evaluation data with varying data sizes in the learning bucket.”. Just like the original paper, the replicated figure below reports each algorithm’s relative CTR for all of the defined data sparsity levels, that is, each algorithm’s CTR divided by the random policy’s CTR.</p>
 <p><img src="replication-fig-1.png" style="width:98.0%"></p>
 <p><em>Replication of Figure 4b “CTRs in evaluation data with varying data sizes in the learning bucket.” from Li et al 2010. The plots represent the click through rates for different policies after one day of learning for each of six different levels of sparsity.</em></p>
-<p>As can be observed in the next figure, after one day of learning (on the Yahoo! dataset’s day three), the conclusions of the original paper still stand. First, features again prove to be of use at all levels of sparsity, as LinUCB policies outperform the others consistently. Second, UCB policies generally outperform <span class="math inline">\(\epsilon\)</span>-greedy ones. And third, Hybrid LinUCB again shows benefits when the data is small, as can be deduced from it doing better in the 1% bucket. Still, as we started our simulation on the third day instead of the first, our results are close to, but not quite the same as those reported in the original paper. Particularly the third conclusion, that of the relative advantage of Hybrid LinUCB with sparse data, seems to be slightly less convincing in our figure.</p>
-<p>So we decided to run a simulation that continued to learn beyond the first day for the sparse (1%) data condition to test whether Hybrid LinUCB’s reported relative advantage would prove stable over time.</p>
+<p>As can be observed in the next figure, after one day of learning (on the Yahoo! dataset’s day three), the conclusions of the original paper still stand. First, features again prove to be of use at all levels of sparsity, as LinUCB policies outperform the others consistently. Second, UCB policies generally outperform <span class="math inline">\(\epsilon\)</span>-greedy ones. And third, Hybrid LinUCB shows benefits when the data is small, as it does even better relative to Disjoint LinuCB in the 1% bucket.</p>
+<p>To explore a little further, we also run a simulation that continued to learn beyond the first day for the sparse (1%) data condition to test—for the results, see the final figure.</p>
 <p><img src="replication-fig-2.png" style="width:98.0%"></p>
 <p><em>A plot of the cumulative reward rate (equals click-through rate) for EGreedy, EGreedySeg, LinUCB Dis, LinUCB Hyb, UCB1, and UCB1Seg policies over eight days of events from the Yahoo dataset at 1% sparsity. The dotted lines represent blocks consisting of 24 hours worth of data—the lines are not equidistant as the number of data points of these 24 hours differs per block. The plot’s sinusoidal wave pattern reflects visitors’ overall average cyclical daily waxing and waning click-through tendency.</em></p>
-<p>On closer examination of the resulting plot in the latter figure, it becomes clear that the policies did not settle after one day of training. For one, on inspection of the full span of about eight days of learning, Hybrid LinUCB’s advantage over Disjoint LinUCB gradually diminishes and then reverses into an advantage for the Disjoint version. Also, surprisingly, over the full eight days, the <span class="math inline">\(\epsilon\)</span>-greedy policy goes from the worst to third best policy overall, becoming the best context-free policy—clearly outperforming both context-free UCB policies. Though we intend to further analyze these discrepancies, for now, these results seem to pose questions for two out of three conclusions drawn in the original paper—leaving only the first outcome, the superiority of the contextual LinUCB in comparison to several context-free ones. Underlining the benefits of <code>contextual</code>, as it enabled us to replicate and confirm the original Li et al 2010 paper, and then explore it further: extending <code>Bandit</code> and <code>Policy</code> classes, running simulations in parallel on an offline dataset and plotting and analyzing the results—within 48 hours.</p>
 </div>
   </div>
 

@@ -12,7 +12,7 @@ simulator          <- Simulator$new(agents      = agent,
                                     horizon     = 100,
                                     simulations = 1000)
 
-##  Option 1: save history object to external data.table  ----------------------------------------------------
+##  Option 1: assign History object --------------------------------------------------------------------------
 
 if(external_dt) {
 
@@ -23,7 +23,6 @@ if(external_dt) {
        traces = TRUE, smooth = FALSE, interval = 1)
 
   summary(history)
-
   data               <- history$get_data_table()
 
 }
