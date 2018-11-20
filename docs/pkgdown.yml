@@ -4,6 +4,7 @@ pkgdown_sha: ~
 articles:
   cmabs: cmabs.html
   cmabsoffline: cmabsoffline.html
+  eckles_kaptein: eckles_kaptein.html
   epsilongreedy: epsilongreedy.html
   introduction: introduction.html
   mabs: mabs.html
