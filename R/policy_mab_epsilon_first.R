@@ -6,9 +6,10 @@ EpsilonFirstPolicy              <- R6::R6Class(
   public = list(
     first = NULL,
     class_name = "EpsilonFirstPolicy",
-    initialize = function(epsilon = 0.1, N = 1000) {
+    initialize = function(epsilon = 0.1, N = 1000, time_steps = NULL) {
       super$initialize()
       self$first                <- ceiling(epsilon*N)
+      if (!is.null(time_steps)) self$first <- time_steps
     },
     set_parameters = function(context_params) {
       self$theta_to_arms        <- list('n' = 0, 'mean' = 0)
@@ -82,6 +83,10 @@ EpsilonFirstPolicy              <- R6::R6Class(
 #'   }
 #'   \item{\code{N}}{
 #'    integer; positive integer which sets the number of time steps to explore through \code{epsilon * N}.
+#'   }
+#'   \item{\code{time_steps}}{
+#'    integer; positive integer which sets the number of time steps to explore - can be used instead of
+#'    epsilon and N.
 #'   }
 #' }
 #'

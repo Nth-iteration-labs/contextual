@@ -40,6 +40,10 @@ through \code{epsilon * N}.
 \item{\code{N}}{
 integer; positive integer which sets the number of time steps to explore through \code{epsilon * N}.
 }
+\item{\code{time_steps}}{
+integer; positive integer which sets the number of time steps to explore - can be used instead of
+epsilon and N.
+}
 }
 }
 
