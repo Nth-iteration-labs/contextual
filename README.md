@@ -31,7 +31,7 @@ install.packages('contextual')
 To install the development version (requires the devtools package):
 
 ```R
-devtools::install_github('r-lib/contextual')
+devtools::install_github('Nth-iteration-labs/contextual')
 ```
 
 Documentation
