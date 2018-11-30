@@ -5,9 +5,11 @@ ContextualLogitBTSPolicy <- R6::R6Class(
   inherit = Policy,
   public = list(
     J = NULL,
+    ips = NULL,
     class_name = "ContextualLogitBTSPolicy",
-    initialize = function(J = 100) {
-      self$J  <- J
+    initialize = function(J = 1000, ips = FALSE) {
+      self$J   <- J
+      self$ips <- ips
     },
     set_parameters = function(context_params) {
       # data, represents main + interactions
@@ -24,14 +26,25 @@ ContextualLogitBTSPolicy <- R6::R6Class(
       }
       wins          <- apply(pred,1,which_max_tied)
       action$choice <- sample(wins,1)
+
+      # propensity score
+      tab <- table(factor(wins, level=c(1:context$k)))
+      action$propensity <- as.numeric((tab/sum(tab))[action$choice])
+
       action
     },
     set_reward = function(t, context, action, reward) {
-      arm    <- action$choice
-      reward <- reward$reward
-      X      <- get_arm_context(context$X, arm)
+      arm                       <- action$choice
+      reward                    <- reward$reward
 
-      update <- which(rbinom(self$J,1,.5)==1)
+      if(self$ips) {
+        reward                  <- reward * 1/action$propensity
+      }
+
+      X                         <- get_arm_context(context$X, arm)
+
+      update                    <- which(rbinom(self$J,1,.5)==1)
+
       # Loop through each J to be updated and update betas
       for (i in update) {
         # update each replicate using sgd

@@ -13,18 +13,6 @@ EpsilonFirstPolicy              <- R6::R6Class(
     },
     set_parameters = function(context_params) {
       self$theta_to_arms        <- list('n' = 0, 'mean' = 0)
-
-      # Above, we define a list with 'n' and 'mean' theta parameters to each
-      # arm through helper variable self$theta_to_arms. That is, when the
-      # number of arms is 'k', the above would equal:
-
-      # self$theta <- list(n = rep(list(0,k)), 'mean' = rep(list(0,k)))
-
-      # ... which would also work just fine, but is much less concise.
-
-      # When assigning both to self$theta directly & via self$theta_to_arms,
-      # make sure to do it in that particular order.
-
     },
     get_action = function(t, context) {
       if (sum_of(self$theta$n) < self$first) {
@@ -62,16 +50,12 @@ EpsilonFirstPolicy              <- R6::R6Class(
 #'
 #' In case of a tie in the exploitation phase, \code{EpsilonFirstPolicy} randomly selects and arm.
 #'
-#' @section Algorithm:
-#'
-#' ![](algoepsilonfirst.jpg "epsilon epsilon algorithm")
-#'
 #' @name EpsilonFirstPolicy
 #'
 #'
 #' @section Usage:
 #' \preformatted{
-#' policy <- EpsilonFirstPolicy(epsilon = 0.1, N = 100)
+#' policy <- EpsilonFirstPolicy(epsilon = 0.1, N = 1000, time_steps = NULL)
 #' }
 #'
 #' @section Arguments:
@@ -93,7 +77,8 @@ EpsilonFirstPolicy              <- R6::R6Class(
 #' @section Methods:
 #'
 #' \describe{
-#'   \item{\code{new(epsilon = 0.1, N = 100)}}{ Generates a new \code{EpsilonFirstPolicy} object. Arguments are defined in the Argument section above.}
+#'   \item{\code{new(epsilon = 0.1, N = 1000, time_steps = NULL)}}{ Generates a new \code{EpsilonFirstPolicy}
+#'   object. Arguments are defined in the Argument section above.}
 #' }
 #'
 #' \describe{
@@ -143,9 +128,9 @@ EpsilonFirstPolicy              <- R6::R6Class(
 #'
 #' horizon            <- 100L
 #' simulations        <- 100L
-#' weights          <- c(0.9, 0.1, 0.1)
+#' weights            <- c(0.9, 0.1, 0.1)
 #'
-#' policy             <- EpsilonFirstPolicy$new(epsilon = 0.5)
+#' policy             <- EpsilonFirstPolicy$new(time_steps = 50)
 #' bandit             <- BasicBernoulliBandit$new(weights = weights)
 #' agent              <- Agent$new(policy, bandit)
 #'

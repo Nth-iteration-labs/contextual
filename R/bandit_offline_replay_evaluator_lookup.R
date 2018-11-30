@@ -16,39 +16,47 @@ OfflineLookupReplayEvaluatorBandit <- R6::R6Class(
     initialize   = function(offline_data, k, shared_lookup = NULL, unique_lookup = NULL, unique_col = NULL,
                             unique = NULL, shared = NULL, randomize = TRUE) {
 
-      self$k                 <- k
+      self$k                   <- k
+      self$randomize           <- randomize
+      private$S                <- offline_data
 
-      self$d                 <- dim(shared_lookup)[2]-1 + dim(unique_lookup)[2]-1
-
-      if(is.null(unique))   {
-          self$unique        <- c(1:(dim(unique_lookup)[2]-1))
+      if(!is.null(unique_lookup)) {
+        dim_u                  <- dim(unique_lookup)[2]-1
+        self$unique            <- c(1:dim_u)
+        private$unique_lookup  <- as.matrix(unique_lookup[,-1])
+        private$unique_col     <- unique_col
       } else {
-        self$unique          <- unique
+        dim_u                  <- 0
+        self$unique            <- 0
+        private$shared_lookup  <- NULL
       }
-      if(is.null(shared))   {
-        self$shared            <- c((dim(unique_lookup)[2]):(dim(unique_lookup)[2]+dim(shared_lookup)[2]-2))
+
+      if(!is.null(shared_lookup)) {
+        dim_s                  <- dim(shared_lookup)[2]-1
+        self$shared            <- c((dim_u+1):(dim_s + dim_u))
+        private$shared_lookup  <- t(as.matrix(shared_lookup[,-1]))
       } else {
-        self$shared          <- shared
+        dim_s                  <- 0
+        self$shared            <- 0
+        private$shared_lookup  <- NULL
       }
 
-      self$randomize         <- randomize
-      private$S              <- offline_data
-      private$shared_lookup  <- t(as.matrix(shared_lookup[,-1]))
+      self$d                   <- dim_s + dim_u
 
-      private$unique_lookup  <- as.matrix(unique_lookup[,-1])
-      private$unique_col     <- unique_col
-
-      private$oa             <- "optimal_arm" %in% colnames(offline_data)
-      private$or             <- "optimal_reward" %in% colnames(offline_data)
+      private$oa               <- "optimal_arm" %in% colnames(offline_data)
+      private$or               <- "optimal_reward" %in% colnames(offline_data)
 
     },
     post_initialization = function() {
       if(isTRUE(self$randomize)) private$S <- private$S[sample(nrow(private$S))]
     },
     get_context = function(index) {
-
-      lookup             <- private$unique_lookup[private$S[[private$unique_col]][[index]],]
-      unique_matrix      <- matrix(lookup, ncol = self$k, nrow = length(lookup))
+      if (self$unique!=0) {
+        ulookup            <- private$unique_lookup[private$S[[private$unique_col]][[index]],]
+        unique_matrix      <- matrix(ulookup, ncol = self$k, nrow = length(ulookup))
+      } else {
+        unique_matrix      <- NULL
+      }
       all_matrix         <- rbind(unique_matrix, private$shared_lookup)
 
       context <- list(

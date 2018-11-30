@@ -91,7 +91,7 @@ setorder(top_50_movies,Timestamp,Name)
 # Run simulation ---------------------------------------------------------------------------------------------
 
 simulations <- 1
-horizon     <- 1000 #nrow(top_50_movies)
+horizon     <- nrow(top_50_movies)
 
 bandit      <- OfflineLookupReplayEvaluatorBandit$new(top_50_movies,
                                                       k             = 50,
