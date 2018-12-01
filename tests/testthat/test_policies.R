@@ -1,6 +1,5 @@
 context("Policies")
 
-
 test_that("ContextualLogitBTSPolicy simulation", {
 
   horizon       <- 20L
