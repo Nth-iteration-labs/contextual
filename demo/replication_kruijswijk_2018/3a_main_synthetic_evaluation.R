@@ -8,8 +8,12 @@ source("./policy_pooled_thompson.R")
 
 ##################### Settings ###################
 
-horizon        <- 100
-simulations    <- 1
+horizon        <- 10000
+simulations    <- 100
+
+#horizon        <- 100
+#simulations    <- 1
+
 worker_max     <- 3
 #worker_max     <- 66 # Setting for Amazon EC2 c5.18xlarge instance
 # 72 vCPU, 144 GiB of memory and 25 Gbps network
@@ -33,7 +37,7 @@ model  <- rstan::stan_model(file = "beta_binom_hier_model.stan",
 
 ##################### Simulate ###################
 
-# total number of simulations: 9 x 6 x 2 x 2 = 216
+# total number of evaluations: 9 x 6 x 2 x 2 = 216
 
 ptm         <- proc.time()
 

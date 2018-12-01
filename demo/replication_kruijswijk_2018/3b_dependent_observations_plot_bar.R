@@ -8,6 +8,7 @@ setwd(here("demo","replication_kruijswijk_2018"))
 
 horizon         <- 10000
 simulations     <- 100
+
 subjects        <- list(50,100,500,1000)
 betas           <- list(c(1.5, 1.5),c(5, 5))
 do_poisson      <- list(FALSE) #, TRUE)
@@ -33,9 +34,9 @@ for (dp in do_poisson) {
           sim_str <- paste0(subpol,pol,"_b",beta[1],"_s",sn,"_p",as.numeric(dp),"_r",simulations,".RData")
           message(paste0("Plotting: ",sim_str))
           history$load(paste0(data_dir,sim_str))
-          cum_regret <- history$cumulative(final = TRUE, rate = FALSE, regret = TRUE)
+          cum_regret <- history$get_cumulative_result()
           regret_df[(nrow(regret_df) + 1), ] <- c(horizon, simulations, sn, beta[1], dp, pol, subpol,
-                                                  cum_regret[[1]]$cum, cum_regret[[1]]$cum_ci)
+                                                  cum_regret[[1]]$cum_reward, cum_regret[[1]]$cum_regret_ci)
         }
       }
     }
@@ -50,17 +51,16 @@ regret_df_plot[c(1, 2, 3, 8, 9)] <- lapply(regret_df_plot[c(1, 2, 3, 8, 9)], as.
 regret_df_plot$poisson = ifelse(isTRUE(regret_df_plot$poisson), "Poisson", "Uniform")
 regret_df_plot$betas = ifelse(regret_df_plot$betas == "1.5", "Beta(1.5,1.5)", "Beta(5,5)")
 regret_df_plot[c(1:7)] <- lapply(regret_df_plot[c(1:7)], as.factor)
-regret_df_plot$subpolicies <- factor(regret_df_plot$subpolicies,
-                                     levels = list("Partial","Unpooled", "Pooled"))
+regret_df_plot$subpolicies <- as.factor(regret_df_plot$subpolicies)
 
-p <- ggplot(regret_df_plot, aes(subjects, regret, fill = as.factor(subpolicies))) +
+p <- ggplot(regret_df_plot, aes(subjects, regret, fill = subpolicies)) +
   geom_bar(position = "dodge", stat = "identity") +
   theme_minimal() +
   geom_errorbar(aes(ymin=(regret-ci), ymax=(regret+ci)), width=.4, size =0.3,
                 position=position_dodge(.9)) +
   facet_grid(betas ~ policies) +
-  # when poisson too,
-  # facet_grid(poisson + betas ~ policies) +
+  # when poisson too,  #######################################
+  # facet_grid(poisson + betas ~ policies) +  ################
   theme(legend.title = element_blank()) +
   theme(legend.position = "bottom") +
   xlab("Users") +
