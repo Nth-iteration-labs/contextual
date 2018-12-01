@@ -400,10 +400,10 @@ Plot <- R6::R6Class(
       if (isTRUE(smooth)) {
         for (agent_name in agent_levels) {
           data[data$agent == agent_name, c("t", line_data_name) :=
-            supsmu(data[data$agent == agent_name]$t, data[data$agent == agent_name][[line_data_name]])]
+                 supsmu(data[data$agent == agent_name]$t, data[data$agent == agent_name][[line_data_name]])]
           if (!is.null(disp)) {
             data[data$agent == agent_name, c("t", disp_data_name) :=
-              supsmu(data[data$agent == agent_name]$t, data[data$agent == agent_name][[disp_data_name]])]
+                   supsmu(data[data$agent == agent_name]$t, data[data$agent == agent_name][[disp_data_name]])]
           }
         }
       }
@@ -483,10 +483,10 @@ Plot <- R6::R6Class(
               )
             } else {
               lines(dt[dt$agent == agent_name & dt$sim == as]$t,
-                dt[dt$agent == agent_name &
-                  dt$sim == as][[line_data_name]],
-                lwd = lwd,
-                col = rgb(0.8, 0.8, 0.8, traces_alpha)
+                    dt[dt$agent == agent_name &
+                         dt$sim == as][[line_data_name]],
+                    lwd = lwd,
+                    col = rgb(0.8, 0.8, 0.8, traces_alpha)
               )
             }
           }

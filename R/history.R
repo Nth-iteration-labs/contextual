@@ -107,8 +107,13 @@ History <- R6::R6Class(
     get_simulation_count = function() {
       length(levels(as.factor(private$.data$sim)))
     },
+    get_arm_choice_percentage = function(limit_agents) {
+      private$.data[agent %in% limit_agents][sim != 0][order(choice),
+                                                       .(choice = unique(choice),
+                                                         percentage = tabulate(choice)/.N)]
+    },
     get_meta_data = function() {
-        private$.meta
+      private$.meta
     },
     set_meta_data = function(key, value, group = "sim", agent_name = NULL) {
       upsert <- list()
@@ -170,7 +175,7 @@ History <- R6::R6Class(
         } else {
           if (as_list) {
             private$data_table_to_named_nested_list(cum_results[, mget(limit_cols)]
-                                            [agent %in% limit_agents], transpose = FALSE)
+                                                    [agent %in% limit_agents], transpose = FALSE)
           } else {
             cum_results[, mget(limit_cols)][agent %in% limit_agents]
           }
@@ -180,9 +185,9 @@ History <- R6::R6Class(
     save = function(filename = NA) {
       if (is.na(filename)) {
         filename <- paste("contextual_data_",
-          format(Sys.time(), "%y%m%d_%H%M%S"),
-          ".RData",
-          sep = ""
+                          format(Sys.time(), "%y%m%d_%H%M%S"),
+                          ".RData",
+                          sep = ""
         )
       }
       attr(private$.data, "meta") <- private$.meta
@@ -217,7 +222,7 @@ History <- R6::R6Class(
         context_cols <- c(paste0("X.", seq_along(unlist(private$.data[1,]$context))))
         dt_to_save <- data.table::copy(private$.data)
         dt_to_save[, context_string := lapply(.SD, function(x) paste( unlist(x), collapse=',') ),
-                                    by=1:private$.data[, .N], .SDcols = c("context")]
+                   by=1:private$.data[, .N], .SDcols = c("context")]
         one_context <- private$.data[1,]$context[[1]]
         if (is.vector(one_context)) one_context <- matrix(one_context, nrow = 1L)
         dt_to_save$k <- ncol(one_context)
@@ -233,7 +238,7 @@ History <- R6::R6Class(
       } else {
         if ("theta" %in% names(private$.data)) {
           fwrite(private$.data[,which(private$.data[,colSums(is.na(private$.data))<nrow(private$.data)]),
-                             with =FALSE][, !"theta", with=FALSE], file = filename)
+                               with =FALSE][, !"theta", with=FALSE], file = filename)
         } else {
           fwrite(private$.data[,which(private$.data[,colSums(is.na(private$.data))<nrow(private$.data)]),
                                with =FALSE], file = filename)
@@ -242,7 +247,7 @@ History <- R6::R6Class(
       invisible(self)
     },
     get_data_frame = function(context_to_columns = FALSE) {
-        as.data.frame(private$.data)
+      as.data.frame(private$.data)
     },
     set_data_frame = function(df, auto_stats = TRUE) {
       private$.data <- data.table::as.data.table(df)

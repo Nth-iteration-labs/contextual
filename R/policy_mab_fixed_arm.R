@@ -84,18 +84,4 @@ FixedPolicy <- R6::R6Class(
 #'
 #' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
 #'
-#' @examples
-#'
-#' horizon            <- 100L
-#' simulations        <- 100L
-#' weights            <- c(0.9, 0.1, 0.1)
-#'
-#' policy             <- FixedPolicy$new(fixed_arm = 2)
-#' bandit             <- BasicBernoulliBandit$new(weights = weights)
-#' agent              <- Agent$new(policy, bandit)
-#'
-#' history            <- Simulator$new(agent, horizon, simulations, do_parallel = FALSE)$run()
-#'
-#' plot(history, type = "cumulative")
-#' plot(history, type = "arms")
 NULL
