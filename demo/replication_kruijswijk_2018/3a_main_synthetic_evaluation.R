@@ -11,9 +11,6 @@ source("./policy_pooled_thompson.R")
 horizon        <- 10000
 simulations    <- 100
 
-#horizon        <- 100
-#simulations    <- 1
-
 worker_max     <- 3
 #worker_max     <- 66 # Setting for Amazon EC2 c5.18xlarge instance
 # 72 vCPU, 144 GiB of memory and 25 Gbps network

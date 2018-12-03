@@ -93,7 +93,7 @@ Agent <- R6::R6Class(
                      " and ",policy$class_name,"\n"),file = "progress.log", append = TRUE)
         }
       }
-      list(context = context, action = action, reward = reward, theta = theta)
+      list(context = context, action = action, reward = reward, theta = theta, policy_t = (policy_t-1))
     },
     set_t = function(t) {
       agent_t <<- t

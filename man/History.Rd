@@ -3,8 +3,6 @@
 \name{History}
 \alias{History}
 \alias{print_data}
-\alias{reindex}
-\alias{delete_empty_rows}
 \alias{clear_data_table}
 \alias{set_data_table}
 \alias{get_data_table}
@@ -88,25 +86,11 @@ Saves History data to csv file. When context_to_columns is TRUE, the "context" c
 be split over multiple columns X1 to X...
 }
 \item{\code{extract_theta(limit_agents, parameter, arm, tail = NULL)}}{
-Extract theta parameter from internal theta list for \code{limit_agents},
+Extract theta parameter from theta list for \code{limit_agents},
 where \code{parameter} sets the to be retrieved parameter or vector of parameters in theta,
 \code{arm} is the relevant integer index of the arm or vector of arms of interest, and the
 optional \code{tail} selects the last elements in the list.
 Returns a vector, matrix or array with the selected theta values.
-}
-\item{\code{delete_empty_rows()}}{
-Deletes all empty rows in the \code{History} log and re-indexes the \code{t} column grouped
-by agent and simulation.
-}
-\item{\code{reindex(truncate = TRUE)}}{
-Removes empty rows from the \code{History} log, reindexes the \code{t} column, and,
-if \code{truncate} is \code{TRUE}, truncates the resulting data to the shortest simulation
-grouped by agent and simulation.
-}
-\item{\code{reindex(truncate = TRUE)}}{
-Removes empty rows from the \code{History} log, reindexes the \code{t} column, and,
-if \code{truncate} is \code{TRUE}, truncates the resulting data to the shortest simulation
-grouped by agent and simulation.
 }
 \item{\code{print_data()}}{
 Prints a summary of the \code{History} log.

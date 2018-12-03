@@ -43,7 +43,7 @@ ega_policy <- EpsilonGreedyAnnealingPolicy$new()
 eg_policy  <- EpsilonGreedyPolicy$new(0.2)
 agents <- list(Agent$new(ega_policy, bandit, "EG Annealing"),
                Agent$new(eg_policy, bandit, "EG"))
-simulation <- Simulator$new(agents, horizon, simulations, do_parallel = FALSE)
+simulation <- Simulator$new(agents, horizon, simulations, do_parallel = TRUE)
 history <- simulation$run()
 
 plot(history, type = "cumulative", no_par = TRUE, legend_border = FALSE,

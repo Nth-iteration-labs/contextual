@@ -71,7 +71,6 @@ for (sparsity in sparsity_vector) {
     horizon = horizon,
     do_parallel = TRUE,
     worker_max = worker_max,
-    reindex = TRUE,
     progress_file = TRUE,
     include_packages = c("MonetDB.R"))
 

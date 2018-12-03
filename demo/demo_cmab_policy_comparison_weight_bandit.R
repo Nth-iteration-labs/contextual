@@ -16,4 +16,5 @@ agents      <- list(Agent$new(EpsilonGreedyPolicy$new(0.1), bandit, "EGreedy"),
 simulation  <- Simulator$new(agents, horizon, simulations)
 history     <- simulation$run()
 
-plot(history, type = "cumulative", no_par = TRUE, legend_border = FALSE, legend_position = "topleft")
+plot(history, type = "cumulative", no_par = TRUE, legend_border = FALSE,
+     legend_position = "topleft")

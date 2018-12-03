@@ -26,7 +26,7 @@ TwoArmedSineBandit <- R6::R6Class(
       reward      <- list(
         reward                   = reward[action$choice],
         optimal_reward           = sine[which_max_tied(sine)],
-        optimal_arm              = which_max_tied(sine)
+        optimal_arm              = contextual::which_max_tied(sine)
       )
     },
     sine = function(phi, t) {
@@ -41,7 +41,7 @@ bandit             <- TwoArmedSineBandit$new()
 agents             <- list(Agent$new(Exp3Policy$new(0.1), bandit),
                            Agent$new(UCB1Policy$new(), bandit))
 
-simulation         <- Simulator$new(agents, horizon = horizon, simulations = simulations, do_parallel = FALSE)
+simulation         <- Simulator$new(agents, horizon = horizon, simulations = simulations, do_parallel = TRUE)
 
 history            <- simulation$run()
 

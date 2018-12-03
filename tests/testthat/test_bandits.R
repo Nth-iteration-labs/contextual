@@ -526,8 +526,7 @@ test_that("BasicBernoulliBandit MAB policies", {
       horizon = horizon,
       simulations = simulations,
       t_over_sims = TRUE,
-      do_parallel = FALSE,
-      reindex = TRUE
+      do_parallel = FALSE
     )
 
   after <- simulation$run()
@@ -564,8 +563,7 @@ test_that("BasicBernoulliBandit MAB policies", {
       horizon = horizon,
       simulations = simulations,
       t_over_sims = TRUE,
-      do_parallel = FALSE,
-      reindex = TRUE
+      do_parallel = FALSE
     )
 
   after <- simulation$run()
@@ -627,7 +625,7 @@ test_that("PropensityWeightingBandit", {
   policy             <- UCB1Policy$new()
   agent              <- Agent$new(policy, bandit, "rb")
 
-  simulation         <- Simulator$new(agent, horizon, simulations, reindex = TRUE, do_parallel = FALSE)
+  simulation         <- Simulator$new(agent, horizon, simulations, do_parallel = FALSE)
   history            <- simulation$run()
   rb_dt              <- history$get_data_table()
 
@@ -643,7 +641,7 @@ test_that("PropensityWeightingBandit", {
   policy                 <- UCB1Policy$new()
   agent                  <- Agent$new(policy, bandit, "prop")
 
-  simulation             <- Simulator$new(agent, horizon, simulations, reindex = TRUE, do_parallel = FALSE)
+  simulation             <- Simulator$new(agent, horizon, simulations, do_parallel = FALSE)
   history                <- simulation$run()
   prop_dt                <- history$get_data_table()
 

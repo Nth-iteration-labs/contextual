@@ -33,7 +33,6 @@ test_that("History save_csv without filename", {
 test_that("History save_csv without filename", {
 
   csv_comparison_file <- read.csv("history_test.ref")
-  history$delete_empty_rows()
   history$save_csv("history_test.csv")
   import_file <- read.csv("history_test.csv")
   expect_equal(csv_comparison_file,  import_file)

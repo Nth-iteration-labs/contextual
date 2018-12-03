@@ -279,20 +279,9 @@ History <- R6::R6Class(
       private$.data <- private$.data[0, ]
       invisible(self)
     },
-    delete_empty_rows = function() {
-      private$.data <- private$.data[sim > 0 & t > 0]
-      private$.data <- private$.data[, t := seq_len(.N), by = c("agent", "sim")]
-      # private$.data[ , max(t), by = c("agent","sim")][,min(V1), by = c("agent")][,V1]
-      invisible(self)
-    },
-    reindex = function(truncate = TRUE) {
-      private$.data <- private$.data[, t := seq_len(.N), by = c("agent", "sim")]
-      if (truncate) {
-        min_t_anywhere <- min(private$.data[, .(count = data.table::uniqueN(t)),
-                                            by = c("agent", "sim")]$count)
-        private$.data <- private$.data[t <= min_t_anywhere]
-      }
-      invisible(self)
+    truncate = function() {
+      min_t_sim <- min(private$.data[,max(t), by = c("agent","sim")]$V1)
+      private$.data <- private$.data[t<=min_t_sim]
     },
     context_to_columns = function(delete_original_column = FALSE) {
       # create d and k columns
@@ -378,9 +367,6 @@ History <- R6::R6Class(
       if (!"optimal_reward" %in% colnames(private$.data)) #### TODO: why is this? backward compat?
         private$.data[, optimal_reward:= NA]
 
-      private$.data[, cum_reward_rate := cum_reward / t]
-      private$.data[, cum_regret_rate := cum_regret / t]
-
       data.table::setkeyv(private$.data,c("t","agent"))
 
       private$.cum_stats <- private$.data[, list(
@@ -419,6 +405,9 @@ History <- R6::R6Class(
       private$.cum_stats[, cum_reward_rate_ci := cum_reward_rate_sd / sqrt_sim * qn]
       private$.cum_stats[, regret_ci          := regret_sd / sqrt_sim * qn]
       private$.cum_stats[, reward_ci          := reward_sd / sqrt_sim * qn]
+
+      private$.data[, cum_reward_rate := cum_reward / t]
+      private$.data[, cum_regret_rate := cum_regret / t]
 
       # move agent column to front
       data.table::setcolorder(private$.cum_stats, c("agent", setdiff(names(private$.cum_stats), "agent")))
@@ -468,7 +457,7 @@ History <- R6::R6Class(
 #' and can save or load simulation log data files.
 #'
 #' @name History
-#' @aliases print_data reindex delete_empty_rows clear_data_table set_data_table get_data_table
+#' @aliases print_data clear_data_table set_data_table get_data_table
 #' set_data_frame get_data_frame load cumulative save
 #'
 #' @section Usage:
@@ -535,25 +524,11 @@ History <- R6::R6Class(
 #'      be split over multiple columns X1 to X...
 #'   }
 #'   \item{\code{extract_theta(limit_agents, parameter, arm, tail = NULL)}}{
-#'      Extract theta parameter from internal theta list for \code{limit_agents},
+#'      Extract theta parameter from theta list for \code{limit_agents},
 #'      where \code{parameter} sets the to be retrieved parameter or vector of parameters in theta,
 #'      \code{arm} is the relevant integer index of the arm or vector of arms of interest, and the
 #'      optional \code{tail} selects the last elements in the list.
 #'      Returns a vector, matrix or array with the selected theta values.
-#'   }
-#'   \item{\code{delete_empty_rows()}}{
-#'      Deletes all empty rows in the \code{History} log and re-indexes the \code{t} column grouped
-#'      by agent and simulation.
-#'   }
-#'   \item{\code{reindex(truncate = TRUE)}}{
-#'      Removes empty rows from the \code{History} log, reindexes the \code{t} column, and,
-#'      if \code{truncate} is \code{TRUE}, truncates the resulting data to the shortest simulation
-#'      grouped by agent and simulation.
-#'   }
-#'   \item{\code{reindex(truncate = TRUE)}}{
-#'      Removes empty rows from the \code{History} log, reindexes the \code{t} column, and,
-#'      if \code{truncate} is \code{TRUE}, truncates the resulting data to the shortest simulation
-#'      grouped by agent and simulation.
 #'   }
 #'   \item{\code{print_data()}}{
 #'      Prints a summary of the \code{History} log.

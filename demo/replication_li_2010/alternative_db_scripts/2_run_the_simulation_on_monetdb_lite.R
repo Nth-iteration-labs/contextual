@@ -54,7 +54,6 @@ simulation <-
     simulations = simulations,
     horizon = horizon,
     do_parallel = FALSE,
-    reindex = TRUE,
     write_progress_file = TRUE,
     include_packages = c("DBI","MonetDBLite")
   )

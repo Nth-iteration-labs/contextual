@@ -80,7 +80,8 @@ Plot <- R6::R6Class(
         traces              = traces,
         traces_max          = traces_max,
         traces_alpha        = traces_alpha,
-        smooth              = smooth
+        smooth              = smooth,
+        rate                = rate
       )
 
       invisible(recordPlot())
@@ -148,7 +149,8 @@ Plot <- R6::R6Class(
         traces              = traces,
         traces_max          = traces_max,
         traces_alpha        = traces_alpha,
-        smooth              = smooth
+        smooth              = smooth,
+        rate                = rate
       )
 
       invisible(recordPlot())
@@ -358,15 +360,13 @@ Plot <- R6::R6Class(
                        traces              = NULL,
                        traces_max          = 100,
                        traces_alpha        = 0.3,
-                       smooth              = FALSE) {
+                       smooth              = FALSE,
+                       rate                = FALSE) {
 
       if (interval==1 && as.integer(self$history$meta$sim$max_t) > 1850) {
         interval <- ceiling(as.integer(self$history$meta$sim$max_t)/1850) # nocov
       }
 
-      # message("When plotting log, no subsampling to optimize plot size.")
-      #  interval <- 1
-      #}
 
       if (!is.null(disp) && disp %in% c("sd", "var", "ci")) {
 
@@ -396,6 +396,7 @@ Plot <- R6::R6Class(
 
       agent_levels <- levels(droplevels(data$agent))
       n_agents <- length(agent_levels)
+
 
       if (isTRUE(smooth)) {
         for (agent_name in agent_levels) {

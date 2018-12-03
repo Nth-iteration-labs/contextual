@@ -82,8 +82,7 @@ simulation  <-
   Simulator$new(
     agents           = agents,
     simulations      = simulations,
-    horizon          = horizon,
-    reindex          = TRUE
+    horizon          = horizon
   )
 
 linucb_sim  <- simulation$run()

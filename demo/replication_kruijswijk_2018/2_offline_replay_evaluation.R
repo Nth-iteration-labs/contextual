@@ -59,7 +59,7 @@ armcount  <- length(unique(all_movies$choice))
 # Run simulation ---------------------------------------------------------------------------------------------
 
 horizon     <- nrow(all_movies)
-simulations <- 100
+simulations <- 5
 bandit      <- DependentObservationsReplayBandit$new(all_movies , armcount)
 
 agents      <- list(Agent$new(UnpooledEgreedyPolicy$new(epsilon = 0.1, n_subjects = usercount), bandit),
@@ -68,8 +68,7 @@ agents      <- list(Agent$new(UnpooledEgreedyPolicy$new(epsilon = 0.1, n_subject
                     Agent$new(PartiallyPooledBBEgreedyPolicy$new(epsilon = 0.1, n_subjects = usercount), bandit),
                     Agent$new(PartiallyPooledEgreedyPolicy$new(epsilon = 0.1, n_subjects = usercount), bandit))
 
-history     <- Simulator$new(agents, horizon, simulations, include_packages = "rstan",
-                             reindex = TRUE, do_parallel = TRUE)$run()
+history     <- Simulator$new(agents, horizon, simulations, save_interval = 50)$run()
 
 plot(history,type = "cumulative", regret = FALSE, legend_border = FALSE,
      rate = TRUE, legend_position = "bottomright", ylim = c(0.55,0.72))

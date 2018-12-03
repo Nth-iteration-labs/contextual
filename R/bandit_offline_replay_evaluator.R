@@ -201,8 +201,7 @@ OfflineReplayEvaluatorBandit <- R6::R6Class(
 #'     horizon = horizon,
 #'     simulations = simulations,
 #'     t_over_sims = TRUE,
-#'     do_parallel = FALSE,
-#'     reindex = TRUE
+#'     do_parallel = FALSE
 #'   )
 #'
 #' li_bandit_history <- simulation$run()

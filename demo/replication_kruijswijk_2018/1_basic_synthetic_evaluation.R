@@ -5,7 +5,7 @@ setwd(here("demo","replication_kruijswijk_2018"))
 
 source("./bandit_bernoulli.R")
 
-##################### Settings ##################
+##################### Settings ###############################################################################
 
 horizon     <- 3000
 simulations <- 10
@@ -13,7 +13,7 @@ n_subjects  <- 50
 
 bandit      <- BernoulliBandit$new(n_users = n_subjects, arm_one_shape = c(2, 1.5), arm_two_shape = c(1.5, 2))
 
-##################### eGreedy ###################
+##################### eGreedy ################################################################################
 
 # import PartiallyPooledEgreedy, UnpooledEgreedy and PooledEgreedy policies
 source("policy_pooled_egreedy.R")
@@ -26,13 +26,14 @@ agents      <- list(Agent$new(RandomPolicy$new(), bandit),
 
 history     <- Simulator$new(agents = agents,
                              horizon = horizon,
-                             simulations = simulations, do_parallel = TRUE)$run()
+                             simulations = simulations)$run()
 
 plot(history, type = "cumulative", rate = FALSE)
 
 ##################### Thompson ###################
 
 # import UnpooledThompson and PooledThompson policies
+
 source("policy_pooled_thompson.R")
 
 message("Stan Modeling phase")
@@ -55,7 +56,7 @@ history     <- Simulator$new(agents = agents,
 
 plot(history, type = "cumulative", rate = FALSE)
 
-##################### UCB ########################
+##################### UCB ####################################################################################
 
 # import PartiallyPooledUCB, UnpooledUCB and PooledUCB policies
 source("policy_pooled_ucb.R")
@@ -72,9 +73,10 @@ history     <- Simulator$new(agents = agents,
 
 plot(history, type = "cumulative", rate = FALSE)
 
-##################### UCBPlus ########################
+##################### UCBPlus ################################################################################
 
 # import PartiallyPooledUCB, UnpooledUCB and PooledUCB policies
+
 source("policy_pooled_ucb_plus.R")
 
 agents      <- list(Agent$new(PooledUCBPlusPolicy$new(), bandit),
@@ -88,5 +90,5 @@ history     <- Simulator$new(agents = agents,
 
 plot(history, type = "cumulative", rate = FALSE)
 
-
+##############################################################################################################
 

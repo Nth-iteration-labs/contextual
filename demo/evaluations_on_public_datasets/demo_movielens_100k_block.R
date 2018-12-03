@@ -94,8 +94,7 @@ simulation  <-
   Simulator$new(
     agents           = agents,
     simulations      = simulations,
-    horizon          = horizon,
-    reindex          = TRUE
+    horizon          = horizon
   )
 
 history  <- simulation$run()

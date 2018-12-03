@@ -48,8 +48,7 @@ simulation  <-
     agents           = agents,
     simulations      = simulations,
     horizon          = horizon,
-    save_context     = TRUE,
-    reindex          = TRUE
+    save_context     = TRUE
   )
 
 # Run the simulation.

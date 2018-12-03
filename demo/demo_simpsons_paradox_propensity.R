@@ -95,7 +95,7 @@ bandit                            <- OfflineReplayEvaluatorBandit$new(u_dt,2,2)
 policy                            <- EpsilonGreedyPolicy$new(0.1)
 agent                             <- Agent$new(policy, bandit, "OfflineLinUCB")
 
-simulation                        <- Simulator$new(agent, horizon, simulations, reindex = TRUE, do_parallel = FALSE)
+simulation                        <- Simulator$new(agent, horizon, simulations, do_parallel = FALSE)
 history                           <- simulation$run()
 
 ru_dt                             <- history$get_data_table()
@@ -163,7 +163,7 @@ bandit                            <- OfflineReplayEvaluatorBandit$new(b_dt,2,2)
 policy                            <- EpsilonGreedyPolicy$new(0.1)
 agent                             <- Agent$new(policy, bandit, "rb")
 
-simulation                        <- Simulator$new(agent, horizon, simulations, reindex = TRUE, do_parallel = FALSE)
+simulation                        <- Simulator$new(agent, horizon, simulations, do_parallel = FALSE)
 history                           <- simulation$run()
 rb_dt                             <- history$get_data_table()
 
@@ -183,7 +183,7 @@ bandit                            <- OfflinePropensityWeightingBandit$new(b_dt,2
 policy                            <- EpsilonGreedyPolicy$new(0.1)
 agent                             <- Agent$new(policy, bandit, "prop")
 
-simulation                        <- Simulator$new(agent, horizon, simulations, reindex = TRUE, do_parallel = FALSE)
+simulation                        <- Simulator$new(agent, horizon, simulations, do_parallel = FALSE)
 history                           <- simulation$run()
 prop_dt                           <- history$get_data_table()
 

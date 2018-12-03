@@ -29,7 +29,6 @@ Simulator <- R6::R6Class(
     outfile = NULL,
     chunk_multiplier = NULL,
     cl = NULL,
-    reindex = NULL,
     context_multiple_columns = NULL,
     initialize = function(agents,
                           horizon = 100L,
@@ -45,12 +44,10 @@ Simulator <- R6::R6Class(
                           log_interval = 1000,
                           include_packages = NULL,
                           t_over_sims = FALSE,
-                          chunk_multiplier = 1,
-                          reindex = FALSE) {
+                          chunk_multiplier = 1) {
 
       if (!is.list(agents)) agents <- list(agents)
 
-      self$reindex <- reindex
       self$progress_file <- progress_file
       self$log_interval <- log_interval
       self$horizon <- horizon
@@ -133,7 +130,6 @@ Simulator <- R6::R6Class(
       save_context             <- self$save_context
       context_multiple_columns <- self$context_multiple_columns
       save_theta               <- self$save_theta
-      reindex                  <- self$reindex
       progress_file            <- self$progress_file
       save_interval            <- self$save_interval
       log_interval             <- self$log_interval
@@ -208,10 +204,10 @@ Simulator <- R6::R6Class(
           step <- list()
           for (t in 1L:horizon) {
             step <- sim_agent$do_step()
-            if (!is.null(step[[3]]) && ((t == 1) || (t %% save_interval == 0))) {
+            if (!is.null(step[[3]]) && ((step[[5]] == 1) || (step[[5]] %% save_interval == 0))) {
               local_history$insert(
                 index,                                         #index
-                t,                                             #t
+                step[[5]],                                     #policy_t
                 step[[1]][["k"]],                              #k
                 step[[1]][["d"]],                              #d
                 step[[2]],                                     #action
@@ -225,22 +221,19 @@ Simulator <- R6::R6Class(
             }
           }
         }
-
-
         sim_agent$bandit$final()
-        local_history$get_data_table()
+        local_history$data[t!=0]
       }
       # bind all results
       foreach_results <- data.table::rbindlist(foreach_results)
       foreach_results[, agent := factor(agent)]
-      self$internal_history$set_data_table(foreach_results, auto_stats = FALSE)
+      self$internal_history$set_data_table(foreach_results[sim > 0 & t > 0], auto_stats = FALSE)
       rm(foreach_results)
-
       private$end_time <- Sys.time()
-
       gc()
 
-      if (reindex) self$internal_history$reindex()
+      # truncate: TODO: this should be optional, and maybe done at plotside?
+      self$internal_history$truncate()
 
       # update statistics TODO: not always necessary
       self$internal_history$update_statistics()
@@ -343,8 +336,7 @@ Simulator <- R6::R6Class(
 #'                            t_over_sims = FALSE,
 #'                            set_seed = 0,
 #'                            progress_file = FALSE,
-#'                            include_packages = NULL,
-#'                            reindex = FALSE)
+#'                            include_packages = NULL)
 #' }
 #'
 #' @section Arguments:
@@ -398,11 +390,6 @@ Simulator <- R6::R6Class(
 #'       \code{List}. List of packages that (one of) the policies depend on. If a \code{Policy} requires an
 #'       R package to be loaded, this option can be used to load that package on each of the workers.
 #'       Ignored if \code{do_parallel} is \code{FALSE}.
-#'   }
-#'   \item{\code{reindex}}{
-#'      \code{logical}. If \code{TRUE}, removes empty rows from the \code{History} log,
-#'      reindexes the \code{t} column, and truncates the resulting data to the simulation with the least
-#'      number of time steps left over, as grouped by agent and simulation.
 #'   }
 #'   \item{\code{chunk_multiplier}}{
 #'      \code{integer} By default, simulations are equally divided over available workers, and every

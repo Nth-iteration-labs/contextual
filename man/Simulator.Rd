@@ -36,8 +36,7 @@ simulator <- Simulator$new(agents,
                            t_over_sims = FALSE,
                            set_seed = 0,
                            progress_file = FALSE,
-                           include_packages = NULL,
-                           reindex = FALSE)
+                           include_packages = NULL)
 }
 }
 
@@ -93,11 +92,6 @@ and potential errors when running a \code{Simulator} in parallel.
 \code{List}. List of packages that (one of) the policies depend on. If a \code{Policy} requires an
 R package to be loaded, this option can be used to load that package on each of the workers.
 Ignored if \code{do_parallel} is \code{FALSE}.
-}
-\item{\code{reindex}}{
-\code{logical}. If \code{TRUE}, removes empty rows from the \code{History} log,
-reindexes the \code{t} column, and truncates the resulting data to the simulation with the least
-number of time steps left over, as grouped by agent and simulation.
 }
 \item{\code{chunk_multiplier}}{
 \code{integer} By default, simulations are equally divided over available workers, and every
