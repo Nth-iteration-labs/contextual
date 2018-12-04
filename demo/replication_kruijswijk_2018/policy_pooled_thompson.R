@@ -77,6 +77,7 @@ PooledThompsonPolicy <- R6::R6Class(
     }
   )
 )
+
 PartiallyPooledThompsonPolicy <- R6::R6Class(
   portable = FALSE,
   class = FALSE,

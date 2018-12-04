@@ -122,7 +122,7 @@ plot.History <- function(x, ...) {
     no_par <- eval(args$no_par)
   else
     no_par <- FALSE
-  checkmate::assert_choice(type, c("cumulative","average","arms"))
+  ### checkmate::assert_choice(type, c("cumulative","average","arms")) TODO: fix checkmate
   if (type == "cumulative") {
     Plot$new()$cumulative(
       x,

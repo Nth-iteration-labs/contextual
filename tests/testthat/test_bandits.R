@@ -322,7 +322,6 @@ test_that("ContextualHybridBandit", {
                         Agent$new(LinUCBHybridPolicy$new(0.6), bandit),
                         Agent$new(LinUCBHybridPolicy$new(0.6), bandit),
                         Agent$new(LinUCBHybridOptimizedPolicy$new(0.6), bandit),
-                        Agent$new(GlmUCBPolicy$new(), bandit),
                         Agent$new(LinUCBDisjointOptimizedPolicy$new(0.6), bandit))
 
   simulation     <- Simulator$new(agents, horizon, simulations, do_parallel = FALSE)
@@ -333,7 +332,6 @@ test_that("ContextualHybridBandit", {
   expect_equal(history$cumulative$LinUCBGeneral$reward,  0.8, tolerance = 0.01)
   expect_equal(history$cumulative$ContextualEpochGreedy$reward,  0.6, tolerance = 0.01)
   expect_equal(history$cumulative$LinUCBDisjointOptimized$reward,  0.7, tolerance = 0.01)
-  expect_equal(history$cumulative$GlmUCB$cum_reward,  7.2, tolerance = 0.01)
 
 
   expect_equal(history$cumulative$LinUCBHybridOptimized$cum_reward, 7.7, tolerance = 0.01)
@@ -351,40 +349,6 @@ test_that("ContextualHybridBandit", {
   history        <- simulation$run()
 
   expect_equal(history$cumulative$ContextualEpochGreedy$cum_reward,  73, tolerance = 0.01)
-})
-
-test_that("ContextualPrecachingBandit GlmUCB", {
-
-
-  context_weights    <- matrix(  c( 0.8, 0.1, 0.1,
-                                    0.1, 0.8, 0.1,
-                                    0.1, 0.1, 0.8), nrow = 3, ncol = 3, byrow = TRUE)
-
-  horizon     <- 300L
-  simulations <- 1L
-  bandit      <- ContextualPrecachingBandit$new(weights = context_weights)
-
-  policy      <- RandomPolicy$new()
-
-  agents <-
-    list(
-      Agent$new(GlmUCBPolicy$new(), bandit)
-    )
-
-  simulation  <-
-    Simulator$new(
-      agents,
-      horizon = horizon,
-      simulations = simulations,
-      do_parallel = FALSE
-    )
-
-  history        <- simulation$run()
-
-  # have to delve into this: why glmucb not always stable, 167, 169...
-
-  expect_equal(history$cumulative$GlmUCB$cum_reward,  99, tolerance = 0.2)
-
 })
 
 test_that("ContextualBernoulliBandit", {

@@ -13,10 +13,6 @@ ContextualHybridBandit <- R6::R6Class(
     class_name = "ContextualHybridBandit",
     initialize  = function(k, shared_features, unique_features, sigma = 1.0) {
 
-      assert_count(shared_features, positive = TRUE)
-      assert_count(unique_features, positive = TRUE)
-      assert_number(sigma, lower = 0)
-
       self$sigma   <- sigma
       self$k       <- k                                             ## nr of arms
       self$s       <- shared_features                               ## nr shared features/betas

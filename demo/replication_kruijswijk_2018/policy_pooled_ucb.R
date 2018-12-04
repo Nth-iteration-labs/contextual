@@ -114,7 +114,8 @@ PartiallyPooledUCBPolicy <- R6::R6Class(
       beta = 1/sqrt(self$theta$n_total[[user]])
       for (arm in 1:context$k) {
         p_mean <- self$theta$P[[arm]] + sqrt(2*log(self$theta$N_total)/self$theta$N[[arm]])
-        p_choice <- self$theta$p[[user]][[arm]] + sqrt(2*log(self$theta$n_total[[user]])/self$theta$n[[user]][[arm]])
+        p_choice <- self$theta$p[[user]][[arm]] +
+          sqrt(2*log(self$theta$n_total[[user]])/self$theta$n[[user]][[arm]])/self$theta$N[[arm]]
         p_hat = (beta * p_mean + (1-beta) * p_choice)
         expected_rewards[arm] = p_hat
       }
@@ -136,7 +137,7 @@ PartiallyPooledUCBPolicy <- R6::R6Class(
   )
 )
 
-PartiallyPooledBBUCBPolicy <- R6::R6Class(
+PartiallyBBPooledUCBPolicy <- R6::R6Class(
   portable = FALSE,
   class = FALSE,
   inherit = Policy,
@@ -180,9 +181,10 @@ PartiallyPooledBBUCBPolicy <- R6::R6Class(
       betas = M / (M + n)
 
       p_mean   <- P + sqrt(2*log(self$theta$N_total)/N)
-      p_choice <- p + sqrt(2*log(self$theta$n_total[[user]])/n)
+      p_choice <-
+        p + sqrt(2*log(self$theta$n_total[[user]])/n)/self$theta$N[[arm]]
       p_hat  <- betas * P + (1 - betas) * p
-      p_hat[is.nan(p_hat)] <- 1
+      p_hat[is.nan(p_hat)] <- P
       action$choice <- which_max_tied(p_hat)
       action
     },

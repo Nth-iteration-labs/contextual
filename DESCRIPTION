@@ -23,9 +23,7 @@ Imports:
     foreach,
     doParallel,
     itertools,
-    iterators,
-    nleqslv,
-    checkmate
+    iterators
 Suggests:
     testthat,
     RCurl,

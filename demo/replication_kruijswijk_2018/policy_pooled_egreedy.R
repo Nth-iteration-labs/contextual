@@ -112,7 +112,7 @@ PartiallyPooledEgreedyPolicy <- R6::R6Class(
 )
 
 
-PartiallyPooledBBEgreedyPolicy <- R6::R6Class(
+PartiallyBBPooledEgreedyPolicy <- R6::R6Class(
   portable = FALSE,
   class = FALSE,
   inherit = Policy,
@@ -150,7 +150,7 @@ PartiallyPooledBBEgreedyPolicy <- R6::R6Class(
         M = max((P * (1 - P) - sigmasq) / (sigmasq - ((P * (1 - P)) / ns) * C), 0)
         betas = M / (M + n)
         p_hat  <- betas * P + (1 - betas) * p
-        p_hat[is.nan(p_hat)] <- 1
+        p_hat[is.nan(p_hat)] <- P
 
         action$choice <- which_max_tied(p_hat)
 

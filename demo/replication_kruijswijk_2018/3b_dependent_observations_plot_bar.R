@@ -6,14 +6,17 @@ setwd(here("demo","replication_kruijswijk_2018"))
 
 ### Settings
 
-horizon         <- 10000
-simulations     <- 100
+#horizon         <- 10000
+#simulations     <- 100
+
+horizon         <- 1000
+simulations     <- 10
 
 subjects        <- list(50,100,500,1000)
 betas           <- list(c(1.5, 1.5),c(5, 5))
 do_poisson      <- list(FALSE) #, TRUE)
-policies        <- list("EG","UCB","Thompson")
-subpolicies     <- list("Partial", "Pooled", "Unpooled" )
+policies        <- list("EG","UCB") #,"Thompson")
+subpolicies     <- list("PartialBB","Partial", "Pooled", "Unpooled" )
 
 data_dir        <- "./data/"
 
@@ -36,7 +39,7 @@ for (dp in do_poisson) {
           history$load(paste0(data_dir,sim_str))
           cum_regret <- history$get_cumulative_result()
           regret_df[(nrow(regret_df) + 1), ] <- c(horizon, simulations, sn, beta[1], dp, pol, subpol,
-                                                  cum_regret[[1]]$cum_reward, cum_regret[[1]]$cum_regret_ci)
+                                                  cum_regret[[1]]$cum_regret, cum_regret[[1]]$cum_regret_ci)
         }
       }
     }
@@ -74,6 +77,4 @@ write.table(regret_df_plot,
             file = "end_regret_table.csv",
             sep = ",",
             row.names = FALSE)
-
-history$cumulative(final = TRUE, rate = FALSE, regret = TRUE)
 
