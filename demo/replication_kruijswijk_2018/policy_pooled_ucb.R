@@ -60,8 +60,8 @@ PooledUCBPolicy <- R6::R6Class(
       if (self$theta$N_total < context$k) {
         for (arm in 1:context$k) {
           if (self$theta$N[[arm]] == 0) {
-             action$choice <- arm
-             return(action)
+            action$choice <- arm
+            return(action)
           }
         }
       }
@@ -114,8 +114,7 @@ PartiallyPooledUCBPolicy <- R6::R6Class(
       beta = 1/sqrt(self$theta$n_total[[user]])
       for (arm in 1:context$k) {
         p_mean <- self$theta$P[[arm]] + sqrt(2*log(self$theta$N_total)/self$theta$N[[arm]])
-        p_choice <- self$theta$p[[user]][[arm]] +
-          sqrt(2*log(self$theta$n_total[[user]])/self$theta$n[[user]][[arm]])/self$theta$N[[arm]]
+        p_choice <- self$theta$p[[user]][[arm]] + sqrt(2*log(self$theta$n_total[[user]])/self$theta$n[[user]][[arm]])/self$theta$N[[arm]]
         p_hat = (beta * p_mean + (1-beta) * p_choice)
         expected_rewards[arm] = p_hat
       }
@@ -154,18 +153,27 @@ PartiallyBBPooledUCBPolicy <- R6::R6Class(
                          p  = rep(list(as.list(rep(0, context_params$k))),self$n_subjects),
                          ss = rep(list(as.list(rep(0, context_params$k))),self$n_subjects),
                          c  = rep(list(as.list(rep(0, context_params$k))),self$n_subjects))
-      self$theta_to_arms <- list("P" = 0, "N" = 0, "SS" = 0, "C" = 0)
+      self$theta_to_arms <- list("N"  = 1, "P" = 0, "SS" = 0, "C" = 0)
     },
     get_action = function(t, context) {
       user <- context$user_context
-      if (self$theta$n_total[[user]] < context$k) {
+      if (self$theta$N_total < context$k) {
         for (arm in 1:context$k) {
-          if (self$theta$n[[user]][[arm]] == 0) {
+          if (self$theta$N[[arm]]-1 == 0) {
             action$choice <- arm
             return(action)
           }
         }
       }
+      if (self$theta$n_total[[user]] < context$k) {
+        for (arm in 1:context$k) {
+          if (self$theta$n[[user]][[arm]]-1 == 0) {
+            action$choice <- arm
+            return(action)
+          }
+        }
+      }
+
       expected_rewards <- rep(0.0, context$k)
 
       ns     <- self$n_subjects
@@ -176,16 +184,18 @@ PartiallyBBPooledUCBPolicy <- R6::R6Class(
       p      <- unlist(self$theta$p[[user]])
       n      <- unlist(self$theta$n[[user]])
 
-      sigmasq <- (ns * SS) / (ns - 1) * N
-      M = max((P * (1 - P) - sigmasq) / (sigmasq - ((P * (1 - P)) / ns) * C), 0)
-      betas = M / (M + n)
+      sigmasq <- (ns * SS) / ((ns - 1) * N)
+      M <- pmax((P * (1 - P) - sigmasq) / (sigmasq - ((P * (1 - P)) / ns) * C), 0)
+      betas <- M / (M + n)
+      betas[(M==0 | sigmasq==0)] <- 1
 
       p_mean   <- P + sqrt(2*log(self$theta$N_total)/N)
-      p_choice <-
-        p + sqrt(2*log(self$theta$n_total[[user]])/n)/self$theta$N[[arm]]
+      p_choice <- p + sqrt(2*log(self$theta$n_total[[user]])/n)
+
       p_hat  <- betas * P + (1 - betas) * p
-      p_hat[is.nan(p_hat)] <- P
+
       action$choice <- which_max_tied(p_hat)
+
       action
     },
     set_reward = function(t, context, action, reward) {
@@ -195,17 +205,18 @@ PartiallyBBPooledUCBPolicy <- R6::R6Class(
 
       inc(self$theta$N_total)           <- 1
       inc(self$theta$n_total[[user]])   <- 1
+
       inc(self$theta$n[[user]][[arm]])  <- 1
-      inc(self$theta$p[[user]][[arm]])  <- (reward - self$theta$p[[user]][[arm]]) /
-                                             self$theta$n[[user]][[arm]]
+      inc(self$theta$p[[user]][[arm]])  <- (reward - self$theta$p[[user]][[arm]]) / self$theta$n[[user]][[arm]]
+
       inc(self$theta$N[[arm]])          <- 1
       inc(self$theta$P[[arm]])          <- (reward - self$theta$P[[arm]]) / self$theta$N[[arm]]
-      dec(self$theta$SS[[arm]])         <- self$theta$ss[[user]][[arm]] + self$theta$n[[user]][[arm]] *
-                                             (self$theta$p[[user]][[arm]] - self$theta$P[[arm]]) ^ 2
-      dec(self$theta$C[[arm]])          <- self$theta$c[[user]][[arm]] + 1/self$theta$n[[user]][[arm]]
+      self$theta$SS[[arm]]              <- self$theta$SS[[arm]]  - self$theta$ss[[user]][[arm]] + self$theta$n[[user]][[arm]] *
+        (self$theta$p[[user]][[arm]] - self$theta$P[[arm]]) ^ 2
+      self$theta$C[[arm]]               <- self$theta$C[[arm]] - self$theta$c[[user]][[arm]] +
+        1/self$theta$n[[user]][[arm]]
       self$theta$c[[user]][[arm]]       <- 1 / self$theta$n[[user]][[arm]]
-      self$theta$ss[[user]][[arm]]      <- self$theta$n[[user]][[arm]] * self$theta$n[[user]][[arm]] *
-                                             (self$theta$p[[user]][[arm]] - self$theta$P[[arm]]) ^ 2
+      self$theta$ss[[user]][[arm]]      <- self$theta$n[[user]][[arm]] * (self$theta$p[[user]][[arm]] - self$theta$P[[arm]]) ^ 2
       self$theta
     }
   )
