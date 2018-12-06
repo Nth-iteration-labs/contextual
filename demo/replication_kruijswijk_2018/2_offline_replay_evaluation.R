@@ -41,7 +41,7 @@ all_movies <- all_movies[!is.na(choice)]
 
 # Remove top voters that vote on most types of movies
 count_users     <- all_movies[,.(UserCount = .N), by = UserID]
-top_users       <- as.vector(count_users[order(-UserCount)][300:nrow(count_users)]$UserID)
+top_users       <- as.vector(count_users[order(-UserCount)][1:nrow(count_users)]$UserID)
 all_movies      <- all_movies[UserID %in% top_users]
 
 all_movies[, t := .I]
@@ -58,15 +58,19 @@ armcount  <- length(unique(all_movies$choice))
 
 # Run simulation ---------------------------------------------------------------------------------------------
 
+source("./policy_pooled_egreedy.R")
+source("./policy_pooled_thompson.R")
+source("./policy_pooled_ucb.R")
+
 horizon     <- nrow(all_movies)
-simulations <- 5
+simulations <- 3
 bandit      <- DependentObservationsReplayBandit$new(all_movies , armcount)
 
-agents      <- list(Agent$new(UnpooledEgreedyPolicy$new(epsilon = 0.1, n_subjects = usercount), bandit),
-                    Agent$new(PooledEgreedyPolicy$new(epsilon = 0.1), bandit),
+agents      <- list(Agent$new(UnpooledUCBPolicy$new( n_subjects = usercount), bandit),
+                    Agent$new(PooledUCBPolicy$new(), bandit),
                     Agent$new(RandomPolicy$new(), bandit),
-                    Agent$new(PartiallyPooledBBEgreedyPolicy$new(epsilon = 0.1, n_subjects = usercount), bandit),
-                    Agent$new(PartiallyPooledEgreedyPolicy$new(epsilon = 0.1, n_subjects = usercount), bandit))
+                    Agent$new(PartiallyBBPooledUCBPolicy$new( n_subjects = usercount), bandit),
+                    Agent$new(PartiallyPooledUCBPolicy$new(n_subjects = usercount), bandit))
 
 history     <- Simulator$new(agents, horizon, simulations, save_interval = 50)$run()
 

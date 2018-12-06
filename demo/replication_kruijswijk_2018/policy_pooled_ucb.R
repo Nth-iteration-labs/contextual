@@ -9,8 +9,9 @@ UnpooledUCBPolicy <- R6::R6Class(
       self$n_subjects <- n_subjects
     },
     set_parameters = function(context_params) {
-      self$theta <- list("n_total" = rep(0,self$n_subjects), n = rep(list(list(0,0)),self$n_subjects),
-                         p = rep(list(list(0,0)), self$n_subjects))
+      self$theta <- list("n_total" = rep(0,self$n_subjects),
+                         n = rep(list(as.list(rep(0, context_params$k))), self$n_subjects),
+                         p = rep(list(as.list(rep(0, context_params$k))), self$n_subjects))
     },
     get_action = function(t, context) {
       user <- context$user_context
@@ -97,7 +98,8 @@ PartiallyPooledUCBPolicy <- R6::R6Class(
     },
     set_parameters = function(context_params) {
       self$theta <- list("N_total" = 0, "n_total" = rep(0,self$n_subjects),
-                         n = rep(list(list(0,0)),self$n_subjects), p = rep(list(list(0,0)), self$n_subjects))
+                         n = rep(list(as.list(rep(0, context_params$k))), self$n_subjects),
+                         p = rep(list(as.list(rep(0, context_params$k))), self$n_subjects))
       self$theta_to_arms <- list("P" = 0, "N" = 0)
     },
     get_action = function(t, context) {
@@ -113,7 +115,7 @@ PartiallyPooledUCBPolicy <- R6::R6Class(
       expected_rewards <- rep(0.0, context$k)
       beta = 1/sqrt(self$theta$n_total[[user]])
       for (arm in 1:context$k) {
-        p_mean <- self$theta$P[[arm]] + sqrt(2*log(self$theta$N_total)/self$theta$N[[arm]])
+        p_mean <- self$theta$P[[arm]] + sqrt(2*log(self$theta$N_total)/self$theta$N[[arm]])/self$theta$n[[user]][[arm]]
         p_choice <- self$theta$p[[user]][[arm]] + sqrt(2*log(self$theta$n_total[[user]])/self$theta$n[[user]][[arm]])/self$theta$N[[arm]]
         p_hat = (beta * p_mean + (1-beta) * p_choice)
         expected_rewards[arm] = p_hat

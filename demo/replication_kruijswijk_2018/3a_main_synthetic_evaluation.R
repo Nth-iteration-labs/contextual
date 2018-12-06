@@ -8,19 +8,16 @@ source("./policy_pooled_thompson.R")
 
 ##################### Settings ###################
 
-#horizon        <- 10000
-#simulations    <- 100
-
-horizon        <- 1000
-simulations    <- 10
+horizon         <- 10000
+simulations     <- 100
 
 worker_max     <- 3
 
 #worker_max     <- 66 # Setting for Amazon EC2 c5.18xlarge instance
 # 72 vCPU, 144 GiB of memory and 25 Gbps network
 
-subjects       <- list(5,10,50,100,500,1000)
-betas          <- list(c(1.5, 1.5),c(5, 5))
+subjects       <- list(50,100,500,1000)
+betas          <- list(c(1.5, 1.5),c(5, 5),c(2.5, 1.5))
 
 
 do_poisson     <- list(TRUE,FALSE)
@@ -55,7 +52,7 @@ for (sn in subjects)   {
 
       bandit      <- BernoulliBandit$new( n_users = sn,
                                           arm_one_shape = beta,
-                                          arm_two_shape = beta,
+                                          arm_two_shape = rev(beta),
                                           do_poisson = dp,
                                           lambda = poisson_lambda  )
 

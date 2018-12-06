@@ -6,14 +6,11 @@ setwd(here("demo","replication_kruijswijk_2018"))
 
 ### Settings
 
-#horizon         <- 10000
-#simulations     <- 100
-
-horizon         <- 1000
-simulations     <- 10
+horizon         <- 10000
+simulations     <- 100
 
 subjects        <- list(50,100,500,1000)
-betas           <- list(c(1.5, 1.5),c(5, 5))
+betas           <- list(c(1.5, 1.5),c(5, 5),c(2.5, 1.5))
 do_poisson      <- list(FALSE) #, TRUE)
 policies        <- list("EG","UCB") #,"Thompson")
 subpolicies     <- list("PartialBB","Partial", "Pooled", "Unpooled" )
@@ -52,7 +49,11 @@ regret_df_plot <- regret_df
 
 regret_df_plot[c(1, 2, 3, 8, 9)] <- lapply(regret_df_plot[c(1, 2, 3, 8, 9)], as.numeric)
 regret_df_plot$poisson = ifelse(isTRUE(regret_df_plot$poisson), "Poisson", "Uniform")
-regret_df_plot$betas = ifelse(regret_df_plot$betas == "1.5", "Beta(1.5,1.5)", "Beta(5,5)")
+
+regret_df_plot$betas[regret_df_plot$betas == "1.5"] = "Beta(1.5,1.5)"
+regret_df_plot$betas[regret_df_plot$betas == "2.5"] = "Beta(2.5,1.5)/Beta(1.5,2.5)"
+regret_df_plot$betas[regret_df_plot$betas == "5"] = "Beta(5,5)"
+
 regret_df_plot[c(1:7)] <- lapply(regret_df_plot[c(1:7)], as.factor)
 regret_df_plot$subpolicies <- as.factor(regret_df_plot$subpolicies)
 

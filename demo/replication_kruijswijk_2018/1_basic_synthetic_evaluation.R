@@ -8,10 +8,10 @@ source("./bandit_bernoulli.R")
 ##################### Settings ###############################################################################
 
 horizon     <- 3000
-simulations <- 100
+simulations <- 10
 n_subjects  <- 50
 
-bandit      <- BernoulliBandit$new(n_users = n_subjects, arm_one_shape = c(2.5, 1.5), arm_two_shape = c(1.5, 2.5))
+bandit      <- BernoulliBandit$new(n_users = n_subjects, arm_one_shape = c(5, 5), arm_two_shape = c(5, 5))
 
 ##################### eGreedy ################################################################################
 
@@ -61,8 +61,8 @@ source("policy_pooled_ucb.R")
 
 agents      <- list(Agent$new(PooledUCBPolicy$new(), bandit),
                     Agent$new(UnpooledUCBPolicy$new(n_subjects = n_subjects), bandit),
-                    Agent$new(PartiallyPooledUCBPolicy$new(n_subjects = n_subjects), bandit))
-                    #Agent$new(PartiallyBBPooledUCBPolicy$new(n_subjects = n_subjects), bandit))
+                    Agent$new(PartiallyPooledUCBPolicy$new(n_subjects = n_subjects), bandit),
+                    Agent$new(PartiallyBBPooledUCBPolicy$new(n_subjects = n_subjects), bandit))
 
 history     <- Simulator$new(agents = agents,
                              horizon = horizon,
