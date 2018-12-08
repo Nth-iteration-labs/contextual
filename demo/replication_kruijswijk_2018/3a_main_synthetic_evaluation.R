@@ -57,30 +57,30 @@ for (sn in subjects)   {
                                           lambda = poisson_lambda  )
 
       ##################### Thompson Sampling Policies ########
-#
-#       agent       <- Agent$new(PartiallyPooledThompsonPolicy$new(n_subjects = sn, stan_model = model, warm_up = 10, iter = 20), bandit, name = paste0("PartialThompson",sim_str))
-#       history     <- Simulator$new(agents = agent, horizon = horizon, simulations = simulations, include_packages = "rstan", worker_max = worker_max)$run()
-#       history$save(paste0(data_dir,"PartialThompson",sim_str,".RData"))
-#       history$clear_data_table()
-#       rm(history,agent)
-#       gc()
-#       Sys.sleep(1) # additional cleanup time, helps some edge cases.
-#
-#       agent       <- Agent$new(PooledThompsonPolicy$new(), bandit, name = paste0("PooledThompson",sim_str))
-#       history     <- Simulator$new(agents = agent, horizon = horizon, simulations = simulations, worker_max = worker_max)$run()
-#       history$save(paste0(data_dir,"PooledThompson",sim_str,".RData"))
-#       history$clear_data_table()
-#       rm(history,agent)
-#       gc()
-#       Sys.sleep(1)
-#
-#       agent       <- Agent$new(UnpooledThompsonPolicy$new(n_subjects = sn), bandit, name = paste0("UnpooledThompson",sim_str))
-#       history     <- Simulator$new(agents = agent, horizon = horizon, simulations = simulations, worker_max = worker_max)$run()
-#       history$save(paste0(data_dir,"UnpooledThompson",sim_str,".RData"))
-#       history$clear_data_table()
-#       rm(history,agent)
-#       gc()
-#       Sys.sleep(1)
+
+      agent       <- Agent$new(PartiallyPooledThompsonPolicy$new(n_subjects = sn, stan_model = model, warm_up = 10, iter = 20), bandit, name = paste0("PartialThompson",sim_str))
+      history     <- Simulator$new(agents = agent, horizon = horizon, simulations = simulations, include_packages = "rstan", worker_max = worker_max)$run()
+      history$save(paste0(data_dir,"PartialThompson",sim_str,".RData"))
+      history$clear_data_table()
+      rm(history,agent)
+      gc()
+      Sys.sleep(1) # additional cleanup time, helps some edge cases.
+
+      agent       <- Agent$new(PooledThompsonPolicy$new(), bandit, name = paste0("PooledThompson",sim_str))
+      history     <- Simulator$new(agents = agent, horizon = horizon, simulations = simulations, worker_max = worker_max)$run()
+      history$save(paste0(data_dir,"PooledThompson",sim_str,".RData"))
+      history$clear_data_table()
+      rm(history,agent)
+      gc()
+      Sys.sleep(1)
+
+      agent       <- Agent$new(UnpooledThompsonPolicy$new(n_subjects = sn), bandit, name = paste0("UnpooledThompson",sim_str))
+      history     <- Simulator$new(agents = agent, horizon = horizon, simulations = simulations, worker_max = worker_max)$run()
+      history$save(paste0(data_dir,"UnpooledThompson",sim_str,".RData"))
+      history$clear_data_table()
+      rm(history,agent)
+      gc()
+      Sys.sleep(1)
 
       ##################### Egreedy Policies #################
 

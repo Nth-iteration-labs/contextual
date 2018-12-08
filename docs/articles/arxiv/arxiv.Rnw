@@ -4,8 +4,8 @@
 %\VignetteKeyword{package}
 %\VignetteKeyword{vignette}
 %\VignetteKeyword{LaTeX}
-%\documentclass[nojss]{jss}
-\documentclass{jss}
+\documentclass[nojss]{jss}
+%\documentclass{jss}
 
 \usepackage[utf8]{inputenc}
 \usepackage{color}
@@ -1246,8 +1246,10 @@ LinUCBDisjointPolicy <- R6::R6Class(
 Let us now evaluate the above \code{LinUCBDisjointPolicy} using a Bernoulli \code{ContextualBernoulliBandit} with three arms and three context features. In the code below we define each of \code{ContextualBernoulliBandit}'s arms to be, on average, equally probable to return a reward. As can be confirmed in the two plots to the right below,  where \code{EpsilonGreedyPolicy} and \code{LinUCBDisjointPolicy} actually show no difference in their overall arm preference. Yet \code{LinUCBDisjointPolicy}'s awareness of the changing context allows it to learn the relationships between arms, rewards, and features, and select the right arm in the right context---as can be observed in the bottom row of Figure \ref{fig:section_5_4}.
 
 \begin{Code}
-horizon     <- 100
-simulations <- 1000
+
+horizon     <- 100L
+simulations <- 1000L
+
                       # k=1  k=2  k=3             -> columns represent arms
 
 weights     <- matrix(c(0.6, 0.2, 0.2,     # d=1  -> rows represent
@@ -1278,7 +1280,7 @@ plot(history, type = "arms",  limit_agents = c("LinUCB"), limit_context = 3)
 \begin{figure}[H]
 \centering
 \includegraphics[width=1.0\textwidth]{fig/section_5_4}
-\caption{Top left a plot of Epsilon Greedy versus LinUCB policies' cumulative regret over time. Top middle and right, Epsilon Greedy and LinUCB policies' average arm choice percentage per $t$, which indicate that, overall, both policies choose each arm about equally often. To see why LinUCB does better than Epsilon Greedy, we need to look at the bottom row, whose three plots reperesent LinUCB's average arm choice percentage by context feature. These plots show that LinUCB is able to make use of contextual features to map actions to rewards.}
+\caption{Top left a plot of Epsilon Greedy versus LinUCB policies' cumulative regret over time. Top middle and right, Epsilon Greedy and LinUCB policies' average arm choice percentage per $t$, which indicate that, overall, both policies choose each arm about equally often. To see why LinUCB is able to do better than Epsilon Greedy, we need to look at the bottom row, whose three plots reperesent LinUCB's average arm choice percentage by context feature. These bottom row plots show how LinUCB is able to make use of contextual features to map actions to rewards.}
 \label{fig:section_5_4}
 \end{figure}
 
@@ -1684,7 +1686,7 @@ As the package is intended to be usable by practitioners, scientists and student
 Though the package is fully functional and we expect no more changes to its core architecture and API, there is ample room to further improve and extend \pkg{contextual}. We intend to further expand \pkg{contextual}'s documentation and tests. We expect to include more bandit paradigms, such as dueling and combinatorial bandits. We expect to add other offline bandit types, such as a doubly robust bandit \citep{Dudik2011}. We are interested in growing our policy library---possibly by creating a separate repository where both existing and new CMAB policies are shared, evaluated and compared. Finally, we hope that the package will find an active community of users and developers, thereby introducing more and more people to the refined sequential decision strategies offered by contextual bandit policies and algorithms.
 
 %\bibliographystyle{apacite}
-\bibliography{jss}
+\bibliography{arxiv}
 
 \newpage
 
