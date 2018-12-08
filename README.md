@@ -48,7 +48,7 @@ Documentation
 * [Getting started: running simulations](https://nth-iteration-labs.github.io/contextual/articles/introduction.html)
 * [Offline evaluation: replication of Li et al (2010)](https://nth-iteration-labs.github.io/contextual/articles/replication.html)
 * [Class reference](https://nth-iteration-labs.github.io/contextual/reference/index.html)
-* [Or see this 2018 paper](https://arxiv.org/abs/1811.01926) which offers a basic introduction to multi-armed bandit problems in general, and the use of the R package contextual in specific.
+* A basic introduction to multi-armed bandit problems in general, and the use of the R package contextual in specific can be found in the [this](https://arxiv.org/abs/1811.01926) 2018 paper.
 
 <!---
 * [Blog at Pavlov](https://pavlov.tech/category/contextual/)
