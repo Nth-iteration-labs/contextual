@@ -5,11 +5,11 @@ ContextualLogitBTSPolicy <- R6::R6Class(
   inherit = Policy,
   public = list(
     J = NULL,
-    ips = NULL,
+    use_prop = NULL,
     class_name = "ContextualLogitBTSPolicy",
-    initialize = function(J = 1000, ips = FALSE) {
-      self$J   <- J
-      self$ips <- ips
+    initialize = function(draws = 1000, use_prop = FALSE) {
+      self$J   <- draws
+      self$use_prop <- use_prop
     },
     set_parameters = function(context_params) {
       # data, represents main + interactions
@@ -37,9 +37,7 @@ ContextualLogitBTSPolicy <- R6::R6Class(
       arm                       <- action$choice
       reward                    <- reward$reward
 
-      if(self$ips) {
-        reward                  <- reward * 1/action$propensity
-      }
+      if(self$use_prop)         reward <- reward * 1/action$propensity
 
       X                         <- get_arm_context(context$X, arm)
 
