@@ -59,7 +59,7 @@ ContextualTSProbitPolicy <- R6::R6Class(
       mus                            <- c(self$theta$main_mu,self$theta$arm_mu[[arm]])
       sigmas                         <- c(self$theta$main_sigma,self$theta$arm_sigma[[arm]])
 
-      bopr_result                    <- bopr(c(Xa,Xa), y, mus, sigmas)
+      bopr_result                    <- bopr(c(Xa,Xa), y, mus, sigmas, beta=.05)
 
       self$theta$main_mu             <- bopr_result[1,1:context$d]
       self$theta$arm_mu[[arm]]       <- bopr_result[1,(context$d+1):(context$d*2)]
@@ -93,6 +93,8 @@ ContextualTSProbitPolicy <- R6::R6Class(
 )
 
 #' Policy: ContextualTSProbitPolicy
+#'
+#' Makes use of BOPR, ergo only use binary indepependent variables.
 #'
 #' @name ContextualTSProbitPolicy
 #'

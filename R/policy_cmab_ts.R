@@ -8,7 +8,6 @@ ContextualThompsonSamplingPolicy <- R6::R6Class(
     delta = NULL,
     R = NULL,
     epsilon = NULL,
-
     class_name = "ContextualThompsonSamplingPolicy",
     initialize = function(delta=0.5, R=0.5, epsilon=0.2) {
       super$initialize()
@@ -19,15 +18,13 @@ ContextualThompsonSamplingPolicy <- R6::R6Class(
     },
     set_parameters = function(context_params) {
       d <- context_params$d
-      if(is.null(self$v)) {
-          self$v     <- self$R * sqrt(24 / self$epsilon * d * log(1 /self$delta))
-      }
+      self$v         <- self$R * sqrt(24 / self$epsilon * d * log(1 /self$delta))
       self$theta     <- list( 'B'  = diag(1, d, d), 'f'  = rep(0, d), 'mu_hat' = rep(0, d))
     },
     get_action = function(t, context) {
       X <- get_full_context(context$X, context$d, context$k)
-      mu_tilde <- contextual::mvrnorm(1, self$theta$mu_hat, self$v^2 * solve(self$theta$B))
-      expected_rewards <- mu_tilde %*% X
+      mu_tilde <- as.vector(contextual::mvrnorm(1, self$theta$mu_hat, self$v^2 * solve(self$theta$B)))
+      expected_rewards <- t(X) %*% mu_tilde
       action$choice <- which_max_tied(expected_rewards)
       action
     },
@@ -36,8 +33,8 @@ ContextualThompsonSamplingPolicy <- R6::R6Class(
       arm    <- action$choice
       Xa     <- get_arm_context(context$X, arm)
       inc(self$theta$B)    <- Xa %*% t(Xa)
-      inc(self$theta$f)    <- reward * Xa
-      self$theta$mu_hat    <- inv(self$theta$B ) %*% self$theta$f
+      inc(self$theta$f)    <- as.vector(reward * Xa)
+      self$theta$mu_hat    <- as.vector(solve(self$theta$B) %*% self$theta$f)
       self$theta
     }
   )
