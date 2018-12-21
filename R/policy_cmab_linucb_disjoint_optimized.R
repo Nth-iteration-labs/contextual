@@ -12,8 +12,8 @@ LinUCBDisjointOptimizedPolicy <- R6::R6Class(
     },
     set_parameters = function(context_params) {
       ul <- length(context_params$unique)
-      self$theta_to_arms <- list( 'A' = diag(1, ul, ul), 'b' = rep(0, ul),
-                                  'A_inv' = solve(diag(1, ul, ul)))
+      self$theta_to_arms <- list( 'A'     = diag(1, ul, ul), 'b' = rep(0, ul),
+                                  'A_inv' = diag(1, ul, ul))
     },
     get_action = function(t, context) {
 
@@ -41,7 +41,7 @@ LinUCBDisjointOptimizedPolicy <- R6::R6Class(
       reward <- reward$reward
       Xa    <- get_arm_context(context$X, arm, context$unique)
 
-      self$theta$A_inv[[arm]] <- sherman_morrisson(self$theta$A_inv[[arm]],Xa)
+      self$theta$A_inv[[arm]]  <- sherman_morrisson(self$theta$A_inv[[arm]],Xa)
 
       self$theta$A[[arm]]      <- self$theta$A[[arm]] + outer(Xa, Xa)
       self$theta$b[[arm]]      <- self$theta$b[[arm]] + reward * Xa

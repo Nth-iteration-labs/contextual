@@ -110,6 +110,10 @@ plot.History <- function(x, ...) {
     legend_border <- eval(args$legend_border)
   else
     legend_border <- NULL
+  if ("cum_average" %in% names(args))
+    cum_average <- eval(args$cum_average)
+  else
+    cum_average <- FALSE
   if ("legend_title" %in% names(args))
     legend_title <- eval(args$legend_title)
   else
@@ -175,6 +179,7 @@ plot.History <- function(x, ...) {
       legend_position = legend_position,
       legend_title = legend_title,
       no_par = no_par,
+      cum_average = cum_average,
       limit_agents = limit_agents,
       limit_context = limit_context
     )

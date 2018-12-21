@@ -27,7 +27,7 @@ if(external_dt) {
 
 }
 
-##  Option 2: for big history logs, don't copy around --------------------------------------------------------
+##  Option 2: for big history logs, don't copy data around ---------------------------------------------------
 
 if(!external_dt) {
 

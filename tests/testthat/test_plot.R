@@ -2,7 +2,7 @@ context("Plot")
 
 test_that("test plots", {
 
-  # run vdiffr::validate_cases() at commandline to generate test svg'
+  # run vdiffr::validate_cases() at commandline to generate test svg
 
   # debug using: print(gdtools::version_freetype())
   # waiting for new release before test, now:

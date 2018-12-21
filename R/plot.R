@@ -106,6 +106,7 @@ Plot <- R6::R6Class(
                        color_step         = 1,
                        lty_step           = 1,
                        lwd                = 2,
+                       cum_average        = FALSE,
                        legend_labels      = NULL,
                        legend_border      = NULL,
                        legend_position    = "topleft",
@@ -144,6 +145,7 @@ Plot <- R6::R6Class(
         legend_border       = legend_border,
         legend_position     = legend_position,
         legend_title        = legend_title,
+        cum_average         = cum_average,
         limit_agents        = limit_agents,
         limit_context       = limit_context,
         traces              = traces,
@@ -336,6 +338,10 @@ Plot <- R6::R6Class(
     }
   ),
   private = list(
+    cum_average = function(cx) {
+      cx <- c(0,cx)
+      cx[(2):length(cx)] - cx[1:(length(cx) - 1)]
+    },
     do_plot = function(line_data_name      = line_data_name,
                        disp_data_name      = disp_data_name,
                        disp                = NULL,
@@ -360,13 +366,29 @@ Plot <- R6::R6Class(
                        traces              = NULL,
                        traces_max          = 100,
                        traces_alpha        = 0.3,
+                       cum_average         = FALSE,
                        smooth              = FALSE,
                        rate                = FALSE) {
 
-      if (interval==1 && as.integer(self$history$meta$sim$max_t) > 1850) {
-        interval <- ceiling(as.integer(self$history$meta$sim$max_t)/1850) # nocov
+      cum_flip <- FALSE
+      if((line_data_name=="reward" || line_data_name=="regret") && isTRUE(cum_average)) {
+        line_data_name <- paste0("cum_",line_data_name)
+        cum_flip = TRUE
       }
 
+      if (interval==1 && as.integer(self$history$meta$sim$max_t) > 1850) {
+        interval <- ceiling(as.integer(self$history$meta$sim$max_t)/1850) # nocov
+        if(isTRUE(cum_average) && isTRUE(cum_flip))  {
+           warning(strwrap(
+            prefix = " ", initial = "",
+            paste0("## As cum_reward was set to TRUE while plotting more than 1850 time steps,
+            the reward plot has been smoothed automatically using a window length of ",interval,
+            " timesteps.")
+          ),
+          call. = FALSE
+          )
+        }
+      }
 
       if (!is.null(disp) && disp %in% c("sd", "var", "ci")) {
 
@@ -388,14 +410,42 @@ Plot <- R6::R6Class(
           )
       }
 
+      if (!is.null(xlim)) {
+        min_xlim <- xlim[1]
+        max_xlim <- xlim[2]
+      } else {
+        min_xlim <- 1
+        max_xlim <- data[, max(t)]
+      }
+
+      agent_levels <- levels(droplevels(data$agent))
+      n_agents <- length(agent_levels)
+
+      data.table::setorder(data, agent, t)
+
+      if(cum_flip==TRUE) {
+        if (line_data_name == "cum_reward") {
+          line_data_name <- "reward"
+          for (agent_name in agent_levels) {
+            data[data$agent == agent_name,
+                 reward := private$cum_average(data[data$agent == agent_name]$cum_reward)/interval]
+          }
+        } else {
+          line_data_name <- "cum_regret"
+          for (agent_name in agent_levels) {
+            data[data$agent == agent_name,
+                 regret := private$cum_average(data[data$agent == agent_name]$cum_regret)/interval]
+          }
+        }
+      }
+
+      if(!is.null(xlim)) data <- data[t>=xlim[1] & t<=xlim[2]]
+
       if(!is.null(limit_context)) {
         data <- data[sapply(dt$context,function(x)all(x[limit_context]==1))]
       }
 
       data.table::setorder(data, agent, t)
-
-      agent_levels <- levels(droplevels(data$agent))
-      n_agents <- length(agent_levels)
 
 
       if (isTRUE(smooth)) {
@@ -450,13 +500,8 @@ Plot <- R6::R6Class(
         min_ylim <- data[, min(data[[line_data_name]])]
         max_ylim <- data[, max(data[[line_data_name]])]
       }
-      if (!is.null(xlim)) {
-        min_xlim <- xlim[1]
-        max_xlim <- xlim[2]
-      } else {
-        min_xlim <- 1
-        max_xlim <- data[, max(t)]
-      }
+
+
       if (!is.null(ylim)) {
         min_ylim <- ylim[1]
         max_ylim <- ylim[2]
@@ -691,6 +736,10 @@ Plot <- R6::R6Class(
 #'   }
 #'   \item{\code{interval}}{
 #'      \code{(integer, NULL)} Plot only every t%%interval==0 data point.
+#'   }
+#'   \item{\code{cum_average}}{
+#'      \code{(logical , FALSE)} Calculates moving average from cum_reward or cum_regret with step
+#'      size \code{interval}.
 #'   }
 #'   \item{\code{color_step}}{
 #'      \code{(integer, 1)} When > 1, the plot cycles through \code{nr_agents/color_step} colors.

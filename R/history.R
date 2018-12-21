@@ -127,7 +127,8 @@ History <- R6::R6Class(
         private$.meta[[group]] <- append(private$.meta[[group]],upsert)
       }
     },
-    get_cumulative_data = function(limit_agents = NULL, limit_cols = NULL, interval = 1) {
+    get_cumulative_data = function(limit_agents = NULL, limit_cols = NULL, interval = 1,
+                                   cum_average = FALSE) {
       if (is.null(limit_agents)) {
         if (is.null(limit_cols)) {
           private$.cum_stats[t %% interval == 0 | t == 1]
@@ -317,7 +318,6 @@ History <- R6::R6Class(
     .data            = NULL,
     .meta            = NULL,
     .cum_stats       = NULL,
-
     initialize_data_tables = function(context_cols = NULL) {
       private$.data <- data.table::data.table(
         t = rep(0L, self$n),
@@ -394,12 +394,6 @@ History <- R6::R6Class(
       private$.cum_stats[, cum_regret_rate_var := cum_regret_var / t]
       private$.cum_stats[, cum_regret_rate_sd := cum_regret_sd / t]
       private$.cum_stats[, cum_regret_rate := cum_regret / t]
-
-      #num = 100
-      #private$.cum_stats[, ma_reward := filter(reward,rep(1/num,num), sides=1), by = list(agent)]
-      #private$.cum_stats[, ma_regret := filter(regret,rep(1/num,num), sides=1), by = list(agent)]
-      #private$.cum_stats[is.na(ma_regret), ma_regret := regret]
-      #private$.cum_stats[is.na(ma_reward), ma_reward := reward]
 
       qn       <- qnorm(0.975)
       sqrt_sim <- sqrt(self$get_simulation_count())
