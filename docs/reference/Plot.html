@@ -216,6 +216,8 @@ the variance, standard deviation, or 95<!-- % confidence interval will be added 
 <dt><code>traces_alpha</code></dt><dd><p><code>(numeric , 0.3)</code> Opacity of the trace lines. Default is 0.3 - that is, an opacity of 30<!-- %. --></p></dd>
 <dt><code>smooth</code></dt><dd><p><code>(logical , FALSE)</code> Smooth the plot (default is FALSE)</p></dd>
 <dt><code>interval</code></dt><dd><p><code>(integer, NULL)</code> Plot only every t<!-- %%interval==0 data point. --></p></dd>
+<dt><code>cum_average</code></dt><dd><p><code>(logical , FALSE)</code> Calculates moving average from cum_reward or cum_regret with step
+size <code>interval</code>.</p></dd>
 <dt><code>color_step</code></dt><dd><p><code>(integer, 1)</code> When &gt; 1, the plot cycles through <code>nr_agents/color_step</code> colors.</p></dd>
 <dt><code>lty_step</code></dt><dd><p><code>(integer, 1)</code> When &gt; 1, the plot cycles through <code>nr_agents/lty_step</code> line types.</p></dd>
 <dt><code>lwd</code></dt><dd><p><code>(integer, 1)</code> Line width.</p></dd>
@@ -227,7 +229,7 @@ the variance, standard deviation, or 95<!-- % confidence interval will be added 
 <code><a href='Agent.html'>Agent</a></code>, <code><a href='History.html'>History</a></code>, <code>Plot</code></p>
 <p>Bandit subclass examples: <code><a href='BasicBernoulliBandit.html'>BasicBernoulliBandit</a></code>, <code><a href='ContextualLogitBandit.html'>ContextualLogitBandit</a></code>,
 <code><a href='OfflineReplayEvaluatorBandit.html'>OfflineReplayEvaluatorBandit</a></code></p>
-<p>Policy subclass examples: <code><a href='EpsilonGreedyPolicy.html'>EpsilonGreedyPolicy</a></code>, <code><a href='ContextualThompsonSamplingPolicy.html'>ContextualThompsonSamplingPolicy</a></code></p></div>
+<p>Policy subclass examples: <code><a href='EpsilonGreedyPolicy.html'>EpsilonGreedyPolicy</a></code>, <code><a href='ContextualLinTSPolicy.html'>ContextualLinTSPolicy</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>

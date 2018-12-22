@@ -123,7 +123,7 @@ ContextualLogitBandit <- R6::R6Class(
 #' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},
 #' \code{\link{OfflineReplayEvaluatorBandit}}
 #'
-#' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
+#' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualLinTSPolicy}}
 #'
 #' @examples
 #' \dontrun{
@@ -133,8 +133,7 @@ ContextualLogitBandit <- R6::R6Class(
 #'
 #' bandit        <- ContextualLogitBandit$new(k = 5, d = 5, intercept = TRUE)
 #'
-#' agents        <- list(Agent$new(ContextualThompsonSamplingPolicy$new(delta=0.5,
-#'                                                        R=0.01, epsilon=0.5), bandit),
+#' agents        <- list(Agent$new(ContextualLinTSPolicy$new(0.1), bandit),
 #'                       Agent$new(EpsilonGreedyPolicy$new(0.1), bandit),
 #'                       Agent$new(LinUCBGeneralPolicy$new(0.6), bandit),
 #'                       Agent$new(ContextualEpochGreedyPolicy$new(8), bandit),

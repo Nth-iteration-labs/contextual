@@ -120,6 +120,10 @@ the variance, standard deviation, or 95% confidence interval will be added to th
 \item{\code{interval}}{
 \code{(integer, NULL)} Plot only every t%%interval==0 data point.
 }
+\item{\code{cum_average}}{
+\code{(logical , FALSE)} Calculates moving average from cum_reward or cum_regret with step
+size \code{interval}.
+}
 \item{\code{color_step}}{
 \code{(integer, 1)} When > 1, the plot cycles through \code{nr_agents/color_step} colors.
 }
@@ -179,5 +183,5 @@ Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link
 Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},
 \code{\link{OfflineReplayEvaluatorBandit}}
 
-Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
+Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualLinTSPolicy}}
 }

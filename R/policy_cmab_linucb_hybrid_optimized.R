@@ -15,7 +15,7 @@ LinUCBHybridOptimizedPolicy <- R6::R6Class(
       sl                 <- length(context_params$unique) * length(context_params$shared)
       self$theta         <- list( 'A0' = diag(1,sl,sl), 'A0_inv' = diag(1,sl,sl),
                                   'b0' = rep(0,sl),'z' = matrix(0,ul,ul), 'x' = rep(0,ul))
-      self$theta_to_arms <- list( 'A' = diag(1,ul,ul), 'A_inv' = diag(1,ul,ul),
+      self$theta_to_arms <- list( 'A_inv' = diag(1,ul,ul),
                                   'B' = matrix(0,ul,sl), 'b' = rep(0,ul))
     },
     get_action = function(t, context) {
@@ -30,7 +30,6 @@ LinUCBHybridOptimizedPolicy <- R6::R6Class(
 
         ################## unpack thetas ##############################################
 
-        A          <- self$theta$A[[arm]]
         A_inv      <- self$theta$A_inv[[arm]]
         B          <- self$theta$B[[arm]]
         b          <- self$theta$b[[arm]]
@@ -48,14 +47,14 @@ LinUCBHybridOptimizedPolicy <- R6::R6Class(
         txAinv  <- crossprod(x, A_inv)
         tzA0inv  <-crossprod(z, A0_inv)
 
-        sd <- sqrt(
+        sigma_hat <- sqrt(
           (tzA0inv %*% z) - 2*(tzA0inv %*% tBAinvx) +
             txAinv %*% x + (txAinv %*% B) %*% (A0_inv %*% tBAinvx)
         )
 
-        mean <- crossprod(z, beta_hat)  +  crossprod(x, theta_hat)
+        mu_hat <- crossprod(z, beta_hat)  +  crossprod(x, theta_hat)
 
-        expected_rewards[arm] <- mean + self$alpha * sd
+        expected_rewards[arm] <- mu_hat + self$alpha * sigma_hat
       }
 
 
@@ -80,7 +79,6 @@ LinUCBHybridOptimizedPolicy <- R6::R6Class(
       A0             <- self$theta$A0
       A0_inv         <- self$theta$A0_inv
       b0             <- self$theta$b0
-      A              <- self$theta$A[[arm]]
       A_inv          <- self$theta$A_inv[[arm]]
       B              <- self$theta$B[[arm]]
       b              <- self$theta$b[[arm]]
@@ -92,7 +90,6 @@ LinUCBHybridOptimizedPolicy <- R6::R6Class(
       A0             <- A0 + (BAinv %*% B)
       b0             <- b0 + (BAinv %*% b)
 
-      A              <- A + x %*% t(x)
       B              <- B + x %*% t(z)
       b              <- b + reward * x
 
@@ -111,7 +108,6 @@ LinUCBHybridOptimizedPolicy <- R6::R6Class(
 
       self$theta$A0           <- A0
       self$theta$b0           <- b0
-      self$theta$A[[arm]]     <- A
       self$theta$A_inv[[arm]] <- A_inv
       self$theta$B[[arm]]     <- B
       self$theta$b[[arm]]     <- b
@@ -202,5 +198,5 @@ LinUCBHybridOptimizedPolicy <- R6::R6Class(
 #' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},
 #' \code{\link{OfflineReplayEvaluatorBandit}}
 #'
-#' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
+#' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualLinTSPolicy}}
 NULL

@@ -125,7 +125,7 @@ ContextualPrecachingBandit <- R6::R6Class(
 #' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},
 #' \code{\link{OfflineReplayEvaluatorBandit}}
 #'
-#' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
+#' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualLinTSPolicy}}
 #'
 #' @examples
 #' \dontrun{

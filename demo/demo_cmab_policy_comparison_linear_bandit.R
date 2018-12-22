@@ -1,14 +1,14 @@
-
 library(contextual)
 
 horizon       <- 100L
 simulations   <- 100L
 
-bandit        <- ContextualLinearBandit$new(k = 10, d = 10, sigma = 0.1)
+bandit        <- ContextualLinearBandit$new(k = 4, d = 3, sigma = 0.3)
 
 agents <- list(Agent$new(EpsilonGreedyPolicy$new(0.1), bandit, "EGreedy"),
                Agent$new(ContextualEpsilonGreedyPolicy$new(0.1), bandit, "cEGreedy"),
-               Agent$new(LinUCBDisjointPolicy$new(0.6), bandit, "LinUCB"))
+               Agent$new(LinTSPolicy$new(0.1), bandit, "LinTS"),
+               Agent$new(LinUCBDisjointOptimizedPolicy$new(0.6), bandit, "LinUCB"))
 
 simulation     <- Simulator$new(agents, horizon, simulations, do_parallel = TRUE)
 

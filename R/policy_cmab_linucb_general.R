@@ -26,10 +26,10 @@ LinUCBGeneralPolicy <- R6::R6Class(
       for (arm in 1:context$k) {
 
         Xa         <- get_arm_context(context$X, arm)
-        mean       <- Xa %*% theta_hat
-        sd         <- sqrt(tcrossprod(Xa %*% A_inv, Xa))
+        mu_hat     <- Xa %*% theta_hat
+        sigma_hat  <- sqrt(tcrossprod(Xa %*% A_inv, Xa))
 
-        expected_rewards[arm] <- mean + self$alpha * sd
+        expected_rewards[arm] <- mu_hat + self$alpha * sigma_hat
       }
       action$choice  <- which_max_tied(expected_rewards)
       action
@@ -127,5 +127,5 @@ LinUCBGeneralPolicy <- R6::R6Class(
 #'
 #' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflineReplayEvaluatorBandit}}
 #'
-#' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
+#' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualLinTSPolicy}}
 NULL

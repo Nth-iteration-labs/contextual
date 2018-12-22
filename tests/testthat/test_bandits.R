@@ -45,7 +45,7 @@ test_that("ContextualLogitBandit intercept TRUE", {
 
   LinUCBGeneralPolicy
 
-  policy        <- ContextualThompsonSamplingPolicy$new(delta=0.5, R=0.01, epsilon=0.5)
+  policy        <- ContextualLinTSPolicy$new(0.1)
   expect_identical(typeof(policy), "environment")
 
   agent         <- Agent$new(policy, bandit)
@@ -54,7 +54,7 @@ test_that("ContextualLogitBandit intercept TRUE", {
   simulation    <- Simulator$new(agent, horizon, simulations, do_parallel = FALSE)
   history       <- simulation$run()
 
-  expect_equal(history$cumulative$ContextualThompsonSampling$cum_regret,0.7,tolerance = 0.00001)
+  expect_equal(history$cumulative$ContextualLinTS$cum_regret,1.3,tolerance = 0.00001)
 
 
   ###############
@@ -83,7 +83,7 @@ test_that("ContextualLogitBandit - intercept FALSE", {
   horizon       <- 10L
   simulations   <- 10L
 
-  policy        <- ContextualThompsonSamplingPolicy$new(delta=0.5, R=0.01, epsilon=0.5)
+  policy        <- ContextualLinTSPolicy$new(0.1)
   expect_identical(typeof(policy), "environment")
 
   agent         <- Agent$new(policy, bandit)
@@ -92,7 +92,7 @@ test_that("ContextualLogitBandit - intercept FALSE", {
   simulation    <- Simulator$new(agent, horizon, simulations, do_parallel = FALSE)
   history       <- simulation$run()
 
-  expect_equal(history$cumulative$ContextualThompsonSampling$cum_regret,1.1,tolerance = 0.00001)
+  expect_equal(history$cumulative$ContextualLinTS$cum_regret,1.0,tolerance = 0.00001)
 
 })
 
@@ -315,7 +315,7 @@ test_that("ContextualHybridBandit", {
 
   bandit        <- ContextualHybridBandit$new(k = 100, shared_features = 10, unique_features = 2)
 
-  agents        <- list(Agent$new(ContextualThompsonSamplingPolicy$new(delta=0.5, R=0.01, epsilon=0.5), bandit),
+  agents        <- list(Agent$new(ContextualLinTSPolicy$new(0.1), bandit),
                         Agent$new(EpsilonGreedyPolicy$new(0.1), bandit),
                         Agent$new(LinUCBGeneralPolicy$new(0.6), bandit),
                         Agent$new(ContextualEpochGreedyPolicy$new(8), bandit),
@@ -327,7 +327,7 @@ test_that("ContextualHybridBandit", {
   simulation     <- Simulator$new(agents, horizon, simulations, do_parallel = FALSE)
   history        <- simulation$run()
 
-  expect_equal(history$cumulative$ContextualThompsonSampling$reward,  0.9, tolerance = 0.01)
+  expect_equal(history$cumulative$ContextualLinTS$reward,  0.6, tolerance = 0.01)
   expect_equal(history$cumulative$EpsilonGreedy$reward,  0.7, tolerance = 0.01)
   expect_equal(history$cumulative$LinUCBGeneral$reward,  0.8, tolerance = 0.01)
   expect_equal(history$cumulative$ContextualEpochGreedy$reward,  0.6, tolerance = 0.01)

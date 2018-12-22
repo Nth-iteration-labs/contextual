@@ -29,8 +29,7 @@ EpsilonFirstPolicy              <- R6::R6Class(
       reward                    <- reward$reward
       inc(self$theta$n[[arm]])  <- 1
       if (sum_of(self$theta$n) < self$first - 1) {
-        inc(self$theta$mean[[arm]]) <-
-          (reward - self$theta$mean[[arm]]) / self$theta$n[[arm]]
+        inc(self$theta$mean[[arm]]) <- (reward - self$theta$mean[[arm]]) / self$theta$n[[arm]]
       }
       self$theta
     }
@@ -122,7 +121,7 @@ EpsilonFirstPolicy              <- R6::R6Class(
 #' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},
 #' \code{\link{OfflineReplayEvaluatorBandit}}
 #'
-#' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
+#' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualLinTSPolicy}}
 #'
 #' @examples
 #'

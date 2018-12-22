@@ -35,8 +35,8 @@ ContextualEpochGreedyPolicy <- R6::R6Class(
         expected_rewards <- rep(0.0, context$k)
         for (arm in 1:context$k) {
           Xa                    <- get_arm_context(context$X, arm)
-          mean                  <- Xa %*% theta_hat
-          expected_rewards[arm] <- mean
+          mu_hat                <- Xa %*% theta_hat
+          expected_rewards[arm] <- mu_hat
         }
         self$action$choice  <- which_max_tied(expected_rewards)
         return(self$action)
@@ -74,5 +74,5 @@ ContextualEpochGreedyPolicy <- R6::R6Class(
 #' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},
 #' \code{\link{OfflineReplayEvaluatorBandit}}
 #'
-#' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
+#' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualLinTSPolicy}}
 NULL

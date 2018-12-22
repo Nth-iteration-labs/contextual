@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Policy: LinUCB with unique linear models — LinUCBDisjointOptimizedPolicy • contextual</title>
+<title>Policy: Linear Thompson Sampling with unique linear models — ContextualLinTSPolicy • contextual</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -36,13 +36,13 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Policy: LinUCB with unique linear models — LinUCBDisjointOptimizedPolicy" />
+<meta property="og:title" content="Policy: Linear Thompson Sampling with unique linear models — ContextualLinTSPolicy" />
 
-<meta property="og:description" content="Each time step t, LinUCBDisjointPolicy runs a linear regression per arm that produces coefficients
-for each context feature d.
-Next,  LinUCBDisjointPolicy observes the new context, and generates a predicted payoff or reward
-together with a confidence interval for each available arm. It then proceeds to choose the arm with the
-highest upper confidence bound." />
+<meta property="og:description" content="ContextualLinTSPolicy implements Thompson Sampling with Linear
+Payoffs, following Agrawal and Goyal (2011).
+Thompson Sampling with Linear Payoffs is a contextual Thompson Sampling multi-armed bandit
+Policy which assumes the underlying relationship between rewards and contexts
+are linear. Check the reference for more details." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -151,18 +151,18 @@ highest upper confidence bound." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Policy: LinUCB with unique linear models</h1>
-    <small class="dont-index">Source: <a href='https://github.com/Nth-iteration-labs/contextual/blob/master/R/policy_cmab_linucb_disjoint_optimized.R'><code>R/policy_cmab_linucb_disjoint_optimized.R</code></a></small>
-    <div class="hidden name"><code>LinUCBDisjointOptimizedPolicy.Rd</code></div>
+    <h1>Policy: Linear Thompson Sampling with unique linear models</h1>
+    <small class="dont-index">Source: <a href='https://github.com/Nth-iteration-labs/contextual/blob/master/R/policy_cmab_lints_disjoint.R'><code>R/policy_cmab_lints_disjoint.R</code></a></small>
+    <div class="hidden name"><code>ContextualLinTSPolicy.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Each time step t, <code>LinUCBDisjointPolicy</code> runs a linear regression per arm that produces coefficients
-for each context feature <code>d</code>.
-Next,  <code>LinUCBDisjointPolicy</code> observes the new context, and generates a predicted payoff or reward
-together with a confidence interval for each available arm. It then proceeds to choose the arm with the
-highest upper confidence bound.</p>
+    <p><code>ContextualLinTSPolicy</code> implements Thompson Sampling with Linear
+Payoffs, following Agrawal and Goyal (2011).
+Thompson Sampling with Linear Payoffs is a contextual Thompson Sampling multi-armed bandit
+Policy which assumes the underlying relationship between rewards and contexts
+are linear. Check the reference for more details.</p>
     
     </div>
 
@@ -171,53 +171,44 @@ highest upper confidence bound.</p>
 
     
     <pre>
-policy &lt;- LinUCBDisjointOptimizedPolicy(alpha = 1.0)
+policy &lt;- ContextualLinTSPolicy$new(delta, R, epsilon)
 </pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
 
     
     <dl class='dl-horizontal'>
-<dt><code>alpha</code></dt><dd><p>double, a positive real value R+</p></dd>
-<dt><code>name</code></dt><dd><p>character string specifying this policy. <code>name</code>
-is, among others, saved to the History log and displayed in summaries and plots.</p></dd>
-</dl>
-    
-    <h2 class="hasAnchor" id="parameters"><a class="anchor" href="#parameters"></a>Parameters</h2>
-
-    
-    <dl class='dl-horizontal'>
-<dt><code>A</code></dt><dd><p>d*d identity matrix</p></dd>
-<dt><code>b</code></dt><dd><p>a zero vector of length d</p></dd>
+<dt><code>sigma</code></dt><dd><p>numeric;
+Hyper-parameter for adjusting the variance of posterior gaussian distribution.</p></dd>
 </dl>
     
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     
     <dl class='dl-horizontal'>
-<dt><code>new(alpha = 1)</code></dt><dd><p>Generates a new <code>LinUCBDisjointOptimizedPolicy</code> object. Arguments are
-defined in the Argument section above.</p></dd>
+<dt><code>new(sigma)</code></dt><dd><p>instantiates a new <code>ContextualLinTSPolicy</code> instance.
+Arguments defined in the Arguments section above.</p></dd>
 </dl>
     <dl class='dl-horizontal'>
-<dt><code><a href='Policy.html'>set_parameters()</a></code></dt><dd><p>each policy needs to assign the parameters it wants to keep track of
-to list <code>self$theta_to_arms</code> that has to be defined in <code><a href='Policy.html'>set_parameters()</a></code>'s body.
-The parameters defined here can later be accessed by arm index in the following way:
-<code>theta[[index_of_arm]]$parameter_name</code></p></dd>
+<dt><code><a href='Policy.html'>set_parameters(context_params)</a></code></dt><dd><p>initialization of policy parameters, utilising <code>context_params$k</code> (number of arms) and
+<code>context_params$d</code> (number of context features).</p></dd>
 </dl>
     <dl class='dl-horizontal'>
-<dt><code><a href='Policy.html'>get_action(context)</a></code></dt><dd><p>here, a policy decides which arm to choose, based on the current values
-of its parameters and, potentially, the current context.</p></dd>
+<dt><code><a href='Policy.html'>get_action(t,context)</a></code></dt><dd><p>selects an arm based on <code>self$theta</code> and <code>context</code>, returning the index of the selected arm
+in <code>action$choice</code>. The context argument consists of a list with <code>context$k</code> (number of arms),
+<code>context$d</code> (number of features), and the feature matrix <code>context$X</code> with dimensions
+\(d \times k\).</p></dd>
 </dl>
     <dl class='dl-horizontal'>
-<dt><code><a href='Policy.html'>set_reward(reward, context)</a></code></dt><dd><p>in <code><a href='Policy.html'>set_reward(reward, context)</a></code>, a policy updates its parameter values
-based on the reward received, and, potentially, the current context.</p></dd>
+<dt><code><a href='Policy.html'>set_reward(t, context, action, reward)</a></code></dt><dd><p>updates parameter list <code>theta</code> in accordance with the current <code>reward$reward</code>,
+<code>action$choice</code> and the feature matrix <code>context$X</code> with dimensions
+\(d \times k\). Returns the updated <code>theta</code>.</p></dd>
 </dl>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Li, L., Chu, W., Langford, J., &amp; Schapire, R. E. (2010, April). A contextual-bandit approach to
-personalized news article recommendation. In Proceedings of the 19th international conference on
-World wide web (pp. 661-670). ACM.</p>
+    <p>Shipra Agrawal, and Navin Goyal. "Thompson Sampling for Contextual Bandits with Linear Payoffs." Advances
+in Neural Information Processing Systems 24. 2011.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -225,9 +216,26 @@ World wide web (pp. 661-670). ACM.</p>
 <code><a href='Agent.html'>Agent</a></code>, <code><a href='History.html'>History</a></code>, <code><a href='Plot.html'>Plot</a></code></p>
 <p>Bandit subclass examples: <code><a href='BasicBernoulliBandit.html'>BasicBernoulliBandit</a></code>, <code><a href='ContextualLogitBandit.html'>ContextualLogitBandit</a></code>,
 <code><a href='OfflineReplayEvaluatorBandit.html'>OfflineReplayEvaluatorBandit</a></code></p>
-<p>Policy subclass examples: <code><a href='EpsilonGreedyPolicy.html'>EpsilonGreedyPolicy</a></code>, <code><a href='ContextualLinTSPolicy.html'>ContextualLinTSPolicy</a></code></p></div>
+<p>Policy subclass examples: <code><a href='EpsilonGreedyPolicy.html'>EpsilonGreedyPolicy</a></code>, <code>ContextualLinTSPolicy</code></p></div>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='no'>horizon</span>       <span class='kw'>&lt;-</span> <span class='fl'>100L</span>
+<span class='no'>simulations</span>   <span class='kw'>&lt;-</span> <span class='fl'>100L</span>
+
+<span class='no'>bandit</span>        <span class='kw'>&lt;-</span> <span class='no'>ContextualLinearBandit</span>$<span class='fu'>new</span>(<span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='kw'>d</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>sigma</span> <span class='kw'>=</span> <span class='fl'>0.3</span>)
+
+<span class='no'>agents</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>EpsilonGreedyPolicy</span>$<span class='fu'>new</span>(<span class='fl'>0.1</span>), <span class='no'>bandit</span>, <span class='st'>"EGreedy"</span>),
+               <span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>ContextualLinTSPolicyPolicy</span>$<span class='fu'>new</span>(<span class='fl'>0.1</span>), <span class='no'>bandit</span>, <span class='st'>"ContextualLinTSPolicy"</span>))
+
+<span class='no'>simulation</span>     <span class='kw'>&lt;-</span> <span class='no'>Simulator</span>$<span class='fu'>new</span>(<span class='no'>agents</span>, <span class='no'>horizon</span>, <span class='no'>simulations</span>, <span class='kw'>do_parallel</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
+<span class='no'>history</span>        <span class='kw'>&lt;-</span> <span class='no'>simulation</span>$<span class='fu'><a href='Simulator.html'>run</a></span>()
+
+<span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='no'>history</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"cumulative"</span>, <span class='kw'>rate</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>legend_position</span> <span class='kw'>=</span> <span class='st'>"topleft"</span>)
+
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -237,14 +245,14 @@ World wide web (pp. 661-670). ACM.</p>
 
       <li><a href="#arguments">Arguments</a></li>
 
-      <li><a href="#parameters">Parameters</a></li>
-
       <li><a href="#methods">Methods</a></li>
 
       <li><a href="#references">References</a></li>
 
       <li><a href="#see-also">See also</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

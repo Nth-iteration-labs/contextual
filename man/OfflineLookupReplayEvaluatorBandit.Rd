@@ -157,5 +157,5 @@ Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link
 
 Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflineLookupReplayEvaluatorBandit}}
 
-Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
+Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualLinTSPolicy}}
 }

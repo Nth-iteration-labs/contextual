@@ -46,18 +46,18 @@ LinUCBHybridPolicy <- R6::R6Class(
 
 
 
-        sd <- sqrt(  (t(z) %*% A0_inv %*% z) -
+        sigma_hat <- sqrt(  (t(z) %*% A0_inv %*% z) -
                        2*(t(z) %*% A0_inv %*% t(B) %*% A_inv %*% x) +
                        (t(x) %*% A_inv %*% x) +
                        (t(x) %*% A_inv %*% B %*% A0_inv %*% t(B) %*% A_inv %*% x))
 
 
 
-        mean <- (t(z) %*% beta_hat)  +  (t(x) %*% theta_hat)
+        mu_hat <- (t(z) %*% beta_hat)  +  (t(x) %*% theta_hat)
 
 
 
-        expected_rewards[arm] <- mean + self$alpha * sd
+        expected_rewards[arm] <- mu_hat + self$alpha * sigma_hat
       }
 
 
@@ -190,6 +190,6 @@ LinUCBHybridPolicy <- R6::R6Class(
 #'
 #' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},  \code{\link{OfflineReplayEvaluatorBandit}}
 #'
-#' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
+#' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualLinTSPolicy}}
 #'
 NULL

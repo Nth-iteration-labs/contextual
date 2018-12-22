@@ -12,8 +12,7 @@ LinUCBDisjointOptimizedPolicy <- R6::R6Class(
     },
     set_parameters = function(context_params) {
       ul <- length(context_params$unique)
-      self$theta_to_arms <- list( 'A'     = diag(1, ul, ul), 'b' = rep(0, ul),
-                                  'A_inv' = diag(1, ul, ul))
+      self$theta_to_arms <- list( 'A_inv' = diag(1, ul, ul), 'b' = rep(0, ul))
     },
     get_action = function(t, context) {
 
@@ -22,16 +21,15 @@ LinUCBDisjointOptimizedPolicy <- R6::R6Class(
       for (arm in 1:context$k) {
 
         Xa         <- get_arm_context(context$X, arm, context$unique)
-        A          <- self$theta$A[[arm]]
         A_inv      <- self$theta$A_inv[[arm]]
         b          <- self$theta$b[[arm]]
 
         theta_hat  <- A_inv %*% b
 
-        mean       <- Xa %*% theta_hat
-        sd         <- sqrt(tcrossprod(Xa %*% A_inv, Xa))
+        mu_hat     <- Xa %*% theta_hat
+        sigma_hat  <- sqrt(tcrossprod(Xa %*% A_inv, Xa))
 
-        expected_rewards[arm] <- mean + self$alpha * sd
+        expected_rewards[arm] <- mu_hat + self$alpha * sigma_hat
       }
       action$choice  <- which_max_tied(expected_rewards)
       action
@@ -42,8 +40,6 @@ LinUCBDisjointOptimizedPolicy <- R6::R6Class(
       Xa    <- get_arm_context(context$X, arm, context$unique)
 
       self$theta$A_inv[[arm]]  <- sherman_morrisson(self$theta$A_inv[[arm]],Xa)
-
-      self$theta$A[[arm]]      <- self$theta$A[[arm]] + outer(Xa, Xa)
       self$theta$b[[arm]]      <- self$theta$b[[arm]] + reward * Xa
 
       self$theta
@@ -133,5 +129,5 @@ LinUCBDisjointOptimizedPolicy <- R6::R6Class(
 #' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},
 #' \code{\link{OfflineReplayEvaluatorBandit}}
 #'
-#' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualThompsonSamplingPolicy}}
+#' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualLinTSPolicy}}
 NULL
