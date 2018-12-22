@@ -58,14 +58,14 @@ ContextualLinTSPolicy <- R6::R6Class(
 #'
 #' @section Usage:
 #' \preformatted{
-#' policy <- ContextualLinTSPolicy$new(delta, R, epsilon)
+#' policy <- ContextualLinTSPolicy$new(sigma = 0.2)
 #' }
 #'
 #' @section Arguments:
 #'
 #' \describe{
 #'   \item{\code{sigma}}{
-#'    numeric;
+#'    double, a positive real value R+;
 #'    Hyper-parameter for adjusting the variance of posterior gaussian distribution.
 #'   }
 #' }

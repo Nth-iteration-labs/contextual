@@ -19,23 +19,24 @@ knitr::opts_chunk$set(
 ```r
 library(contextual)
 
-horizon     <- 1000L
-simulations <- 50L
+horizon       <- 100L
+simulations   <- 100L
 
-weights     <- matrix(c(0.8, 0.1, 0.1,
-                        0.1, 0.8, 0.1,
-                        0.1, 0.1, 0.8), nrow = 3, ncol = 3, byrow = TRUE)
+bandit        <- ContextualLinearBandit$new(k = 4, d = 3, sigma = 0.3)
 
-bandit      <- ContextualBinaryBandit$new(weights = weights)
-agents      <- list(Agent$new(EpsilonGreedyPolicy$new(0.1), bandit, "EGreedy"),
-                    Agent$new(ContextualEpsilonGreedyPolicy$new(0.1), bandit, "cEGreedy"),
-                    Agent$new(ContextualLogitBTSPolicy$new(10), bandit, "LogitBTS"),
-                    Agent$new(LinUCBDisjointPolicy$new(0.6), bandit, "LinUCB"))
+# Linear CMAB policies comparison
 
-simulation  <- Simulator$new(agents, horizon, simulations, save_context = TRUE)
-history     <- simulation$run()
+agents <- list(Agent$new(EpsilonGreedyPolicy$new(0.1), bandit, "EGreedy"),
+               Agent$new(ContextualEpsilonGreedyPolicy$new(0.1), bandit, "cEGreedy"),
+               Agent$new(LinTSPolicy$new(0.1), bandit, "LinTS"),
+               Agent$new(LinUCBDisjointOptimizedPolicy$new(0.6), bandit, "LinUCB"))
 
-plot(history, type = "cumulative", no_par = TRUE, legend_border = FALSE, legend_position = "topleft")
+simulation     <- Simulator$new(agents, horizon, simulations, do_parallel = TRUE)
+
+history        <- simulation$run()
+
+plot(history, type = "cumulative", rate = FALSE, legend_position = "topleft")
+
 ```
 
 ![](cmabs.jpeg)

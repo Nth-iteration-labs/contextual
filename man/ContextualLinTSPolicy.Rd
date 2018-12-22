@@ -13,7 +13,7 @@ are linear. Check the reference for more details.
 \section{Usage}{
 
 \preformatted{
-policy <- ContextualLinTSPolicy$new(delta, R, epsilon)
+policy <- ContextualLinTSPolicy$new(sigma = 0.2)
 }
 }
 
@@ -22,7 +22,7 @@ policy <- ContextualLinTSPolicy$new(delta, R, epsilon)
 
 \describe{
 \item{\code{sigma}}{
-numeric;
+double, a positive real value R+;
 Hyper-parameter for adjusting the variance of posterior gaussian distribution.
 }
 }

@@ -21,7 +21,8 @@ policy <- LinUCBHybridPolicy(alpha = 1.0)
 
 \describe{
 \item{\code{alpha}}{
-double, a positive real value R+
+double, a positive real value R+;
+Hyper-parameter adjusting the balance between exploration and exploitation.
 }
 \item{\code{name}}{
 character string specifying this policy. \code{name}

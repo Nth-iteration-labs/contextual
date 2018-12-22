@@ -171,14 +171,14 @@ are linear. Check the reference for more details.</p>
 
     
     <pre>
-policy &lt;- ContextualLinTSPolicy$new(delta, R, epsilon)
+policy &lt;- ContextualLinTSPolicy$new(sigma = 0.2)
 </pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
 
     
     <dl class='dl-horizontal'>
-<dt><code>sigma</code></dt><dd><p>numeric;
+<dt><code>sigma</code></dt><dd><p>double, a positive real value R+;
 Hyper-parameter for adjusting the variance of posterior gaussian distribution.</p></dd>
 </dl>
     
