@@ -10,10 +10,10 @@ library(contextual)
 
 bandit             <- BasicBernoulliBandit$new(weights = c(0.5, rep(0.4,9)))
 
-agents             <- list(Agent$new(SimpleBTSPolicy$new(10), bandit, "BTS 10"),
-                           Agent$new(SimpleBTSPolicy$new(100), bandit, "BTS 100"),
-                           Agent$new(SimpleBTSPolicy$new(1000), bandit, "BTS 1000"),
-                           Agent$new(SimpleBTSPolicy$new(10000), bandit, "BTS 10000"))
+agents             <- list(Agent$new(BootstrapTSPolicy$new(10), bandit, "BTS 10"),
+                           Agent$new(BootstrapTSPolicy$new(100), bandit, "BTS 100"),
+                           Agent$new(BootstrapTSPolicy$new(1000), bandit, "BTS 1000"),
+                           Agent$new(BootstrapTSPolicy$new(10000), bandit, "BTS 10000"))
 
 simulator          <- Simulator$new(agents        = agents,
                                     do_parallel   = TRUE,

@@ -1,17 +1,18 @@
 library(contextual)
 
 horizon       <- 100L
-simulations   <- 100L
+simulations   <- 1L
 
-bandit        <- ContextualLinearBandit$new(k = 4, d = 3, sigma = 0.3)
+bandit        <- ContextualLinearBandit$new(k = 5, d = 10, sigma = 1.0)
 
 agents <- list(Agent$new(EpsilonGreedyPolicy$new(0.1), bandit, "EGreedy"),
-               Agent$new(ContextualEpsilonGreedyPolicy$new(0.1), bandit, "cEGreedy"),
-               Agent$new(LinTSPolicy$new(0.1), bandit, "LinTS"),
-               Agent$new(LinUCBDisjointOptimizedPolicy$new(0.6), bandit, "LinUCB"))
+               #Agent$new(ContextualEpsilonGreedyPolicy$new(0.1), bandit, "cEGreedy"),
+               Agent$new(ContextualLinTSPolicy$new(0.01), bandit, "LinTS"),
+               Agent$new(LinUCBDisjointOptimizedPolicy$new(1), bandit, "LinUCB"),
+               Agent$new(ContextualLinACTSPolicy$new(0.1, 0.1, 0.9), bandit, "ACTS"))
 
-simulation     <- Simulator$new(agents, horizon, simulations, do_parallel = TRUE)
+simulation     <- Simulator$new(agents, horizon, simulations, do_parallel = FALSE)
 
 history        <- simulation$run()
 
-plot(history, type = "cumulative", rate = FALSE, legend_position = "topleft")
+plot(history, type = "cumulative", regret = FALSE, legend_position = "topleft")

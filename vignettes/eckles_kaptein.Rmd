@@ -32,7 +32,7 @@ library(contextual)
 
 bandit             <- BasicBernoulliBandit$new(weights = c(0.5, rep(0.4,9)))
 
-agents             <- list(Agent$new(SimpleBTSPolicy$new(1000), bandit, "BTS 1000"),
+agents             <- list(Agent$new(BootstrapTSPolicy$new(1000), bandit, "BTS 1000"),
                            Agent$new(ThompsonSamplingPolicy$new(), bandit, "TS"))
 
 simulator          <- Simulator$new(agents        = agents,

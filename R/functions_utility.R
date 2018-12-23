@@ -23,6 +23,19 @@
 sherman_morrisson <- function(inv, x) {
   inv - c((inv %*% (outer(x, x) %*% inv))) / c(1.0 + (crossprod(x,inv) %*% x))
 }
+#' Clip vectors
+#'
+#' Clip values to a mininum and maximum value. That is, all values below the lower clamp
+#' value and the upper clamp value become the lower/upper value specified
+#'
+#' @param x to be clipped vector
+#' @param min numeric. lowest value
+#' @param max numeric. highest value
+#'
+#' @export
+clip <- function(x, min, max) {
+  pmax( min, pmin( x, max))
+}
 #' Decrement
 #'
 #' \code{dec<-} decrements \code{x} by value. Equivalent to \code{x <- x - value.}

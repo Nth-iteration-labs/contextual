@@ -112,7 +112,7 @@
       <h1>Demo: MAB Replication Eckles &amp; Kaptein (Bootstrap Thompson Sampling)</h1>
                         <h4 class="author">Robin van Emden</h4>
             
-            <h4 class="date">2018-12-22</h4>
+            <h4 class="date">2018-12-23</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Nth-iteration-labs/contextual/blob/master/vignettes/eckles_kaptein.Rmd"><code>vignettes/eckles_kaptein.Rmd</code></a></small>
       <div class="hidden name"><code>eckles_kaptein.Rmd</code></div>
@@ -136,7 +136,7 @@
 <a class="sourceLine" id="cb1-13" data-line-number="13"></a>
 <a class="sourceLine" id="cb1-14" data-line-number="14">bandit             &lt;-<span class="st"> </span>BasicBernoulliBandit<span class="op">$</span><span class="kw">new</span>(<span class="dt">weights =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="fl">0.5</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="fl">0.4</span>,<span class="dv">9</span>)))</a>
 <a class="sourceLine" id="cb1-15" data-line-number="15"></a>
-<a class="sourceLine" id="cb1-16" data-line-number="16">agents             &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(Agent<span class="op">$</span><span class="kw">new</span>(SimpleBTSPolicy<span class="op">$</span><span class="kw">new</span>(<span class="dv">1000</span>), bandit, <span class="st">"BTS 1000"</span>),</a>
+<a class="sourceLine" id="cb1-16" data-line-number="16">agents             &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(Agent<span class="op">$</span><span class="kw">new</span>(BootstrapTSPolicy<span class="op">$</span><span class="kw">new</span>(<span class="dv">1000</span>), bandit, <span class="st">"BTS 1000"</span>),</a>
 <a class="sourceLine" id="cb1-17" data-line-number="17">                           Agent<span class="op">$</span><span class="kw">new</span>(ThompsonSamplingPolicy<span class="op">$</span><span class="kw">new</span>(), bandit, <span class="st">"TS"</span>))</a>
 <a class="sourceLine" id="cb1-18" data-line-number="18"></a>
 <a class="sourceLine" id="cb1-19" data-line-number="19">simulator          &lt;-<span class="st"> </span>Simulator<span class="op">$</span><span class="kw">new</span>(<span class="dt">agents        =</span> agents,</a>

@@ -112,7 +112,7 @@
       <h1>Demo: Basic Synthetic cMAB Policies</h1>
                         <h4 class="author">Robin van Emden</h4>
             
-            <h4 class="date">2018-12-22</h4>
+            <h4 class="date">2018-12-23</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Nth-iteration-labs/contextual/blob/master/vignettes/cmabs.Rmd"><code>vignettes/cmabs.Rmd</code></a></small>
       <div class="hidden name"><code>cmabs.Rmd</code></div>
@@ -132,7 +132,7 @@
 <a class="sourceLine" id="cb1-9" data-line-number="9"></a>
 <a class="sourceLine" id="cb1-10" data-line-number="10">agents &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(Agent<span class="op">$</span><span class="kw">new</span>(EpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.1</span>), bandit, <span class="st">"EGreedy"</span>),</a>
 <a class="sourceLine" id="cb1-11" data-line-number="11">               Agent<span class="op">$</span><span class="kw">new</span>(ContextualEpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.1</span>), bandit, <span class="st">"cEGreedy"</span>),</a>
-<a class="sourceLine" id="cb1-12" data-line-number="12">               Agent<span class="op">$</span><span class="kw">new</span>(LinTSPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.1</span>), bandit, <span class="st">"LinTS"</span>),</a>
+<a class="sourceLine" id="cb1-12" data-line-number="12">               Agent<span class="op">$</span><span class="kw">new</span>(ContextualLinTSPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.1</span>), bandit, <span class="st">"LinTS"</span>),</a>
 <a class="sourceLine" id="cb1-13" data-line-number="13">               Agent<span class="op">$</span><span class="kw">new</span>(LinUCBDisjointOptimizedPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.6</span>), bandit, <span class="st">"LinUCB"</span>))</a>
 <a class="sourceLine" id="cb1-14" data-line-number="14"></a>
 <a class="sourceLine" id="cb1-15" data-line-number="15">simulation     &lt;-<span class="st"> </span>Simulator<span class="op">$</span><span class="kw">new</span>(agents, horizon, simulations, <span class="dt">do_parallel =</span> <span class="ot">TRUE</span>)</a>

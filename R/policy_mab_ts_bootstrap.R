@@ -1,5 +1,5 @@
 #' @export
-SimpleBTSPolicy <- R6::R6Class(
+BootstrapTSPolicy <- R6::R6Class(
   portable = FALSE,
   class = FALSE,
   inherit = Policy,
@@ -7,7 +7,7 @@ SimpleBTSPolicy <- R6::R6Class(
     J = NULL,
     a = NULL,
     b = NULL,
-    class_name = "SimpleBTSPolicy",
+    class_name = "BootstrapTSPolicy",
     initialize = function(J = 100,
                           a = 1,
                           b = 1) {
@@ -56,17 +56,17 @@ SimpleBTSPolicy <- R6::R6Class(
 #' (see \link{ThompsonSamplingPolicy}) by replacing the posterior distribution
 #' used in Thompson sampling by a bootstrap distribution.
 #'
-#' @name SimpleBTSPolicy
+#' @name BootstrapTSPolicy
 #'
 #' @section Usage:
 #' \preformatted{
-#' policy <- SimpleBTSPolicy(J = 100, a= 1, b = 1)
+#' policy <- BootstrapTSPolicy(J = 100, a= 1, b = 1)
 #' }
 #'
 #' @section Arguments:
 #'
 #' \describe{
-#'   \item{\code{new(J = 100, a= 1, b = 1)}}{ Generates a new \code{SimpleBTSPolicy} object.
+#'   \item{\code{new(J = 100, a= 1, b = 1)}}{ Generates a new \code{BootstrapTSPolicy} object.
 #'   Arguments are defined in the Argument section above.}
 #' }
 #'
@@ -112,6 +112,6 @@ SimpleBTSPolicy <- R6::R6Class(
 #'
 #' @section Usage:
 #' \preformatted{
-#' policy <- SimpleBTSPolicy(1000)
+#' policy <- BootstrapTSPolicy(1000)
 #' }
 NULL

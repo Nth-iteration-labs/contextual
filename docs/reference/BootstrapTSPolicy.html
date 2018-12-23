@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Policy: Linear Thompson Sampling with unique linear models — ContextualLinTSPolicy • contextual</title>
+<title>Policy: Thompson sampling with the online bootstrap — BootstrapTSPolicy • contextual</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -36,13 +36,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Policy: Linear Thompson Sampling with unique linear models — ContextualLinTSPolicy" />
+<meta property="og:title" content="Policy: Thompson sampling with the online bootstrap — BootstrapTSPolicy" />
 
-<meta property="og:description" content="ContextualLinTSPolicy implements Thompson Sampling with Linear
-Payoffs, following Agrawal and Goyal (2011).
-Thompson Sampling with Linear Payoffs is a contextual Thompson Sampling multi-armed bandit
-Policy which assumes the underlying relationship between rewards and contexts
-are linear. Check the reference for more details." />
+<meta property="og:description" content="Bootstrap Thompson Sampling" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -151,64 +147,63 @@ are linear. Check the reference for more details." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Policy: Linear Thompson Sampling with unique linear models</h1>
-    <small class="dont-index">Source: <a href='https://github.com/Nth-iteration-labs/contextual/blob/master/R/policy_cmab_lin_ts_disjoint.R'><code>R/policy_cmab_lin_ts_disjoint.R</code></a></small>
-    <div class="hidden name"><code>ContextualLinTSPolicy.Rd</code></div>
+    <h1>Policy: Thompson sampling with the online bootstrap</h1>
+    <small class="dont-index">Source: <a href='https://github.com/Nth-iteration-labs/contextual/blob/master/R/policy_mab_ts_bootstrap.R'><code>R/policy_mab_ts_bootstrap.R</code></a></small>
+    <div class="hidden name"><code>BootstrapTSPolicy.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p><code>ContextualLinTSPolicy</code> implements Thompson Sampling with Linear
-Payoffs, following Agrawal and Goyal (2011).
-Thompson Sampling with Linear Payoffs is a contextual Thompson Sampling multi-armed bandit
-Policy which assumes the underlying relationship between rewards and contexts
-are linear. Check the reference for more details.</p>
+    <p>Bootstrap Thompson Sampling</p>
     
     </div>
 
         
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>Bootstrap Thompson Sampling (BTS) is a heuristic method
+for solving bandit problems which modifies Thompson Sampling
+(see <a href='ThompsonSamplingPolicy.html'>ThompsonSamplingPolicy</a>) by replacing the posterior distribution
+used in Thompson sampling by a bootstrap distribution.</p>
+    
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 
     
     <pre>
-policy &lt;- ContextualLinTSPolicy$new(v = 0.2)
+policy &lt;- BootstrapTSPolicy(J = 100, a= 1, b = 1)
+</pre>
+    <pre>
+policy &lt;- BootstrapTSPolicy(1000)
 </pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
 
     
     <dl class='dl-horizontal'>
-<dt><code>v</code></dt><dd><p>double, a positive real value R+;
-Hyper-parameter for adjusting the variance of posterior gaussian distribution.</p></dd>
-</dl>
-    
-    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
-
-    
-    <dl class='dl-horizontal'>
-<dt><code>new(v)</code></dt><dd><p>instantiates a new <code>ContextualLinTSPolicy</code> instance.
-Arguments defined in the Arguments section above.</p></dd>
+<dt><code>new(J = 100, a= 1, b = 1)</code></dt><dd><p>Generates a new <code>BootstrapTSPolicy</code> object.
+Arguments are defined in the Argument section above.</p></dd>
 </dl>
     <dl class='dl-horizontal'>
-<dt><code><a href='Policy.html'>set_parameters(context_params)</a></code></dt><dd><p>initialization of policy parameters, utilising <code>context_params$k</code> (number of arms) and
-<code>context_params$d</code> (number of context features).</p></dd>
+<dt><code><a href='Policy.html'>set_parameters()</a></code></dt><dd><p>each policy needs to assign the parameters it wants to keep track of
+to list <code>self$theta_to_arms</code> that has to be defined in <code><a href='Policy.html'>set_parameters()</a></code>'s body.
+The parameters defined here can later be accessed by arm index in the following way:
+<code>theta[[index_of_arm]]$parameter_name</code></p></dd>
 </dl>
     <dl class='dl-horizontal'>
-<dt><code><a href='Policy.html'>get_action(t,context)</a></code></dt><dd><p>selects an arm based on <code>self$theta</code> and <code>context</code>, returning the index of the selected arm
-in <code>action$choice</code>. The context argument consists of a list with <code>context$k</code> (number of arms),
-<code>context$d</code> (number of features), and the feature matrix <code>context$X</code> with dimensions
-\(d \times k\).</p></dd>
+<dt><code><a href='Policy.html'>get_action(context)</a></code></dt><dd><p>here, a policy decides which arm to choose, based on the current values
+of its parameters and, potentially, the current context.</p></dd>
 </dl>
     <dl class='dl-horizontal'>
-<dt><code><a href='Policy.html'>set_reward(t, context, action, reward)</a></code></dt><dd><p>updates parameter list <code>theta</code> in accordance with the current <code>reward$reward</code>,
-<code>action$choice</code> and the feature matrix <code>context$X</code> with dimensions
-\(d \times k\). Returns the updated <code>theta</code>.</p></dd>
+<dt><code><a href='Policy.html'>set_reward(reward, context)</a></code></dt><dd><p>in <code><a href='Policy.html'>set_reward(reward, context)</a></code>, a policy updates its parameter values
+based on the reward received, and, potentially, the current context.</p></dd>
 </dl>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Shipra Agrawal, and Navin Goyal. "Thompson Sampling for Contextual Bandits with Linear Payoffs." Advances
-in Neural Information Processing Systems 24. 2011.</p>
+    <p>Eckles, D., &amp; Kaptein, M. (2014). Thompson sampling with the online bootstrap.
+arXiv preprint arXiv:1410.4009.</p>
+<p>Thompson, W. R. (1933). On the likelihood that one unknown probability exceeds another in
+view of the evidence of two samples. Biometrika, 25(3/4), 285-294.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -216,43 +211,24 @@ in Neural Information Processing Systems 24. 2011.</p>
 <code><a href='Agent.html'>Agent</a></code>, <code><a href='History.html'>History</a></code>, <code><a href='Plot.html'>Plot</a></code></p>
 <p>Bandit subclass examples: <code><a href='BasicBernoulliBandit.html'>BasicBernoulliBandit</a></code>, <code><a href='ContextualLogitBandit.html'>ContextualLogitBandit</a></code>,
 <code><a href='OfflineReplayEvaluatorBandit.html'>OfflineReplayEvaluatorBandit</a></code></p>
-<p>Policy subclass examples: <code><a href='EpsilonGreedyPolicy.html'>EpsilonGreedyPolicy</a></code>, <code>ContextualLinTSPolicy</code></p></div>
+<p>Policy subclass examples: <code><a href='EpsilonGreedyPolicy.html'>EpsilonGreedyPolicy</a></code>, <code><a href='ContextualLinTSPolicy.html'>ContextualLinTSPolicy</a></code></p></div>
     
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='no'>horizon</span>       <span class='kw'>&lt;-</span> <span class='fl'>100L</span>
-<span class='no'>simulations</span>   <span class='kw'>&lt;-</span> <span class='fl'>100L</span>
-
-<span class='no'>bandit</span>        <span class='kw'>&lt;-</span> <span class='no'>ContextualLinearBandit</span>$<span class='fu'>new</span>(<span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='kw'>d</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>sigma</span> <span class='kw'>=</span> <span class='fl'>0.3</span>)
-
-<span class='no'>agents</span>        <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>EpsilonGreedyPolicy</span>$<span class='fu'>new</span>(<span class='fl'>0.1</span>), <span class='no'>bandit</span>, <span class='st'>"EGreedy"</span>),
-                      <span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>ContextualLinTSPolicyPolicy</span>$<span class='fu'>new</span>(<span class='fl'>0.1</span>), <span class='no'>bandit</span>, <span class='st'>"ContextualLinTSPolicy"</span>))
-
-<span class='no'>simulation</span>     <span class='kw'>&lt;-</span> <span class='no'>Simulator</span>$<span class='fu'>new</span>(<span class='no'>agents</span>, <span class='no'>horizon</span>, <span class='no'>simulations</span>, <span class='kw'>do_parallel</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-
-<span class='no'>history</span>        <span class='kw'>&lt;-</span> <span class='no'>simulation</span>$<span class='fu'><a href='Simulator.html'>run</a></span>()
-
-<span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='no'>history</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"cumulative"</span>, <span class='kw'>rate</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>legend_position</span> <span class='kw'>=</span> <span class='st'>"topleft"</span>)
-
-<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       
+      <li><a href="#details">Details</a></li>
+
       <li><a href="#usage">Usage</a></li>
 
       <li><a href="#arguments">Arguments</a></li>
 
-      <li><a href="#methods">Methods</a></li>
-
       <li><a href="#references">References</a></li>
 
       <li><a href="#see-also">See also</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+          </ul>
 
   </div>
 </div>

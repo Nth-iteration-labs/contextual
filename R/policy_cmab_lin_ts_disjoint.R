@@ -5,12 +5,10 @@ ContextualLinTSPolicy <- R6::R6Class(
   inherit = Policy,
   public = list(
     sigma = NULL,
-    samples = NULL,
     class_name = "ContextualLinTSPolicy",
-    initialize = function(sigma = 0.2) {
+    initialize = function(v = 0.2) {
       super$initialize()
-      self$sigma   <- sigma
-      self$samples <- samples
+      self$sigma   <- v^2
     },
     set_parameters = function(context_params) {
       ul                 <- length(context_params$unique)
@@ -24,7 +22,7 @@ ContextualLinTSPolicy <- R6::R6Class(
         b                        <- self$theta$b[[arm]]
 
         theta_hat                <- A_inv %*% b
-        sigma_hat                <- self$sigma^2 * A_inv
+        sigma_hat                <- self$sigma * A_inv
         theta_tilde              <- as.vector(contextual::mvrnorm(1, theta_hat, sigma_hat))
         expected_rewards[arm]    <- Xa %*% theta_tilde
       }
@@ -58,13 +56,13 @@ ContextualLinTSPolicy <- R6::R6Class(
 #'
 #' @section Usage:
 #' \preformatted{
-#' policy <- ContextualLinTSPolicy$new(sigma = 0.2)
+#' policy <- ContextualLinTSPolicy$new(v = 0.2)
 #' }
 #'
 #' @section Arguments:
 #'
 #' \describe{
-#'   \item{\code{sigma}}{
+#'   \item{\code{v}}{
 #'    double, a positive real value R+;
 #'    Hyper-parameter for adjusting the variance of posterior gaussian distribution.
 #'   }
@@ -73,7 +71,7 @@ ContextualLinTSPolicy <- R6::R6Class(
 #' @section Methods:
 #'
 #' \describe{
-#'   \item{\code{new(sigma)}}{ instantiates a new \code{ContextualLinTSPolicy} instance.
+#'   \item{\code{new(v)}}{ instantiates a new \code{ContextualLinTSPolicy} instance.
 #'      Arguments defined in the Arguments section above.}
 #' }
 #'
@@ -124,8 +122,8 @@ ContextualLinTSPolicy <- R6::R6Class(
 #'
 #' bandit        <- ContextualLinearBandit$new(k = 4, d = 3, sigma = 0.3)
 #'
-#' agents <- list(Agent$new(EpsilonGreedyPolicy$new(0.1), bandit, "EGreedy"),
-#'                Agent$new(ContextualLinTSPolicyPolicy$new(0.1), bandit, "ContextualLinTSPolicy"))
+#' agents        <- list(Agent$new(EpsilonGreedyPolicy$new(0.1), bandit, "EGreedy"),
+#'                       Agent$new(ContextualLinTSPolicyPolicy$new(0.1), bandit, "ContextualLinTSPolicy"))
 #'
 #' simulation     <- Simulator$new(agents, horizon, simulations, do_parallel = TRUE)
 #'
