@@ -73,7 +73,7 @@ Overview of contextual's bandit library:
 
 | Context-free  | Contextual | Offline | Continuous |
 |------------------------------------------|---------------------------------------------------------------------------------------|------------------------------------------------------------|------------|
-| BasicBernoulliBandit<br>  BasicGaussianBandit<br><br> <br> <br>    | ContextualBernoulli<br>  ContextualLogit<br>  ContextualHybrid<br>  ContextualLinear<br>  ContextualWheel | OfflinePolicyEvaluator<br>  PropensityEvaluator<br>   DoublyRobust*<br> <br> <br>   | Continuum <br> <br> <br> <br> <br> |
+| BasicBernoulliBandit<br>  BasicGaussianBandit<br><br> <br> <br>    | ContextualBernoulli<br>  ContextualLogit<br>  ContextualHybrid<br>  ContextualLinear<br>  ContextualWheel | ReplayEvaluator<br>  DirectMethod <br>PropensityWeighting<br>   DoublyRobust<br> <br> <br>   | Continuum <br> <br> <br> <br> <br> |
 
 
 Maintainers
