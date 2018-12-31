@@ -21,6 +21,7 @@ LinUCBDisjointOptimizedPolicy <- R6::R6Class(
       for (arm in 1:context$k) {
 
         Xa         <- get_arm_context(context$X, arm, context$unique)
+
         A_inv      <- self$theta$A_inv[[arm]]
         b          <- self$theta$b[[arm]]
 

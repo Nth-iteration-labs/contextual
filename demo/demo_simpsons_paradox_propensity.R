@@ -54,7 +54,7 @@ library(contextual)
 #
 # ------------------------------------------------------------------------------------------------------------
 
-horizon                           <- 5000L
+horizon                           <- 10000L
 simulations                       <- 1L
 
 # Bandit representing Male and Female actual preferences for sports and movies.
@@ -123,14 +123,14 @@ BiasedPolicy                      <- R6::R6Class(
     class_name = "BiasedPolicy",
     get_action = function(t, context) {
       if(context$X[1]==1) {           # 1: Male || 0: Female.
-        prob                      <- c(0.75,0.25)            # Editor thinks men like Sport articles more.
+        prob                      <- c(0.75,0.25)    # Editor thinks men like Sport articles more.
       } else {
-        prob                      <- c(0.25,0.75)            # Editor thinks women like Movie articles more.
+        prob                      <- c(0.25,0.75)    # Editor thinks women like Movie articles more.
       }
       action$choice               <- sample.int(context$k, 1, replace = TRUE, prob = prob)
 
       # Store the propensity score for the current action too:
-      action$propensity           <- prob[action$choice]
+      action$propensity           <- prob[action$choice] * context$k
       action
     }
   )

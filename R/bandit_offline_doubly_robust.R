@@ -1,5 +1,5 @@
 #' @export
-OfflinePropensityWeightingBandit <- R6::R6Class(
+OfflineDoublyRobustBandit <- R6::R6Class(
   inherit = Bandit,
   class = FALSE,
   private = list(
@@ -8,16 +8,21 @@ OfflinePropensityWeightingBandit <- R6::R6Class(
     or = NULL
   ),
   public = list(
-    class_name = "OfflinePropensityWeightingBandit",
+    class_name = "OfflineDoublyRobustBandit",
     randomize = NULL,
+    arm_regression_models = NULL,
     weight_based = NULL,
-    initialize   = function(offline_data, k, d, randomize = TRUE, weight_based = FALSE) {
+    initialize   = function(offline_data, k, d, arm_regression_models, randomize = TRUE, weight_based = FALSE) {
+
       self$k <- k                 # Number of arms (integer)
       self$d <- d                 # Dimension of context feature vector (integer)
       self$randomize <-randomize  # Randomize logged events for every simulation? (logical)
       private$S <- offline_data   # Logged events (by default, as a data.table)
 
-      self$weight_based <- weight_based
+      self$arm_regression_models <- arm_regression_models
+      self$weight_based     <- weight_based
+
+      private$S
 
       private$S[is.null(context[[1]]),`:=`(context = list(1))]
       private$oa <- "optimal_arm" %in% colnames(offline_data)
@@ -35,32 +40,38 @@ OfflinePropensityWeightingBandit <- R6::R6Class(
       context
     },
     get_reward = function(index, context, action) {
-      if (private$S$choice[[index]] == action$choice) {
+
+        choice                    <- action$choice
+        equal_choice              <- as.numeric(private$S$choice[[index]] == choice)
+        data_reward               <- as.double(private$S$reward[[index]])
+
+        regression_reward <- predict(self$arm_regression_models[[choice]], private$S[index,], type="response")
+
         if (self$weight_based) {
           p <- private$S$propensity[[index]]
         } else {
           p <- 1 / private$S$propensity[[index]]
         }
+
+        robust_reward <- equal_choice * ((data_reward - regression_reward) * p) + regression_reward
+
         list(
-          reward = as.double(private$S$reward[[index]] * p)
+          reward = as.double(robust_reward)
         )
-      } else {
-        NULL
-      }
     }
   )
 )
 
-#' Bandit: Offline Propensity Evaluator
+#' Bandit: Offline Doubly Robust Evaluator
 #'
 #' Policy for the evaluation of policies with offline data.
 #'
-#' @name OfflinePropensityWeightingBandit
+#' @name OfflineDoublyRobustBandit
 #'
 #'
 #' @section Usage:
 #' \preformatted{
-#'   bandit <- OfflinePropensityWeightingBandit(offline_data, k, d, randomize = TRUE)
+#'   bandit <- OfflineDoublyRobustBandit(offline_data, k, d, randomize = TRUE)
 #' }
 #'
 #' @section Arguments:
@@ -92,7 +103,7 @@ OfflinePropensityWeightingBandit <- R6::R6Class(
 #' \describe{
 #'
 #'   \item{\code{new(offline_data, k, d, unique = NULL, shared = NULL, randomize = TRUE)}}{ generates
-#'    and instantializes a new \code{OfflinePropensityWeightingBandit} instance. }
+#'    and instantializes a new \code{OfflineDoublyRobustBandit} instance. }
 #'
 #'   \item{\code{get_context(t)}}{
 #'      argument:
@@ -134,7 +145,7 @@ OfflinePropensityWeightingBandit <- R6::R6Class(
 #' \code{\link{Agent}}, \code{\link{History}}, \code{\link{Plot}}
 #'
 #' Bandit subclass examples: \code{\link{BasicBernoulliBandit}}, \code{\link{ContextualLogitBandit}},
-#' \code{\link{OfflinePropensityWeightingBandit}}
+#' \code{\link{OfflineDoublyRobustBandit}}
 #'
 #' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualLinTSPolicy}}
 #'

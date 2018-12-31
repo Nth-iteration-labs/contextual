@@ -612,8 +612,8 @@ test_that("PropensityWeightingBandit", {
   c <- sum(prop_dt[choice==1]$reward)/nrow(prop_dt[choice==1])
   d <- sum(prop_dt[choice==2]$reward)/nrow(prop_dt[choice==2])
 
-  expect_equal(c,  0.636, tolerance = 0.02)
-  expect_equal(d,  0.549, tolerance = 0.02)
+  expect_equal(c,  1.21, tolerance = 0.02)
+  expect_equal(d,  1.02, tolerance = 0.02)
 
 })
 

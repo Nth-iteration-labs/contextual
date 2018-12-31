@@ -357,6 +357,7 @@ invlogit <- function(x){
 #'
 #' @export
 get_arm_context <- function(X, arm, select_features = NULL) {
+  # X <- as.numeric(levels(X))[X]
   if(is.null(select_features)) {
     if(is.vector(X)) return(X) else return(X[, arm])
   } else {
