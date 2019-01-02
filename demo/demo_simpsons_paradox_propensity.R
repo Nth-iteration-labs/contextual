@@ -62,7 +62,7 @@ simulations                       <- 1L
 #                     S----M------------> Arm 1:   Sport
 #                     |    |              Arm 2:   Movie
 #                     |    |
-weights                           <- matrix( c(0.4, 0.3,    #-----> Context: Male
+weights <- matrix( c(0.4, 0.3,    #-----> Context: Male
                      0.8, 0.7),   #-----> Context: Female
 
                     nrow = 2, ncol = 2, byrow = TRUE)
@@ -130,7 +130,7 @@ BiasedPolicy                      <- R6::R6Class(
       action$choice               <- sample.int(context$k, 1, replace = TRUE, prob = prob)
 
       # Store the propensity score for the current action too:
-      action$propensity           <- prob[action$choice] * context$k
+      action$propensity           <- prob[action$choice]
       action
     }
   )
@@ -179,7 +179,7 @@ print(paste("Movie:",sum(rb_dt[choice==2]$reward)/nrow(rb_dt[choice==2]))) # 0.6
 # ------------------------------------------------------------------------------------------------------------
 
 
-bandit                            <- OfflinePropensityWeightingBandit$new(b_dt,2,2)
+bandit                            <- OfflinePropensityWeightingBandit$new(b_dt,2,2, stabilize = TRUE)
 policy                            <- EpsilonGreedyPolicy$new(0.1)
 agent                             <- Agent$new(policy, bandit, "prop")
 
@@ -187,7 +187,7 @@ simulation                        <- Simulator$new(agent, horizon, simulations, 
 history                           <- simulation$run()
 prop_dt                           <- history$get_data_table()
 
-# Happily, inverse propensity scoring can help remove the bias again:
+# Happily, (stabilized) inverse propensity scoring can help remove the bias again:
 
 print("2c. Offline biased policy evaluation, inverse propensity scores.")
 

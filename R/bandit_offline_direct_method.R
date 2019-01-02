@@ -40,6 +40,9 @@ OfflineDirectMethodBandit <- R6::R6Class(
 
       choice            <- action$choice
       regression_reward <- predict(self$arm_regression_models[[choice]], private$S[index,], type="response")
+
+      regression_reward <- rbinom(1,1,regression_reward)
+
       list(
         reward = as.double(regression_reward)
       )

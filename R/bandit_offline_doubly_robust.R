@@ -5,24 +5,32 @@ OfflineDoublyRobustBandit <- R6::R6Class(
   private = list(
     S = NULL,
     oa = NULL,
-    or = NULL
+    or = NULL,
+    marginal_prob = NULL
   ),
   public = list(
     class_name = "OfflineDoublyRobustBandit",
     randomize = NULL,
     arm_regression_models = NULL,
-    weight_based = NULL,
-    initialize   = function(offline_data, k, d, arm_regression_models, randomize = TRUE, weight_based = FALSE) {
+    preweighted = NULL,
+    stabilize = NULL,
+    initialize   = function(offline_data, k, d, arm_regression_models, randomize = TRUE,
+                            stabilize = TRUE, preweighted = FALSE) {
 
-      self$k <- k                 # Number of arms (integer)
-      self$d <- d                 # Dimension of context feature vector (integer)
-      self$randomize <-randomize  # Randomize logged events for every simulation? (logical)
-      private$S <- offline_data   # Logged events (by default, as a data.table)
+      self$k <- k                     # Number of arms (integer)
+      self$d <- d                     # Dimension of context feature vector (integer)
+      self$randomize <-randomize      # Randomize logged events for every simulation? (logical)
+      self$preweighted <- preweighted # Has the propensity column been preweighted?
+      self$stabilize <- stabilize     # Whether or not to stabilize the weights.
+      private$S <- offline_data       # Logged events (by default, as a data.table)
 
       self$arm_regression_models <- arm_regression_models
-      self$weight_based     <- weight_based
 
-      private$S
+      if (stabilize) {
+        private$marginal_prob <- table(private$S$choice)/length(private$S$choice)
+      } else {
+        private$marginal_prob <- rep(1,self$k)
+      }
 
       private$S[is.null(context[[1]]),`:=`(context = list(1))]
       private$oa <- "optimal_arm" %in% colnames(offline_data)
@@ -41,16 +49,16 @@ OfflineDoublyRobustBandit <- R6::R6Class(
     },
     get_reward = function(index, context, action) {
 
-        choice                    <- action$choice
-        equal_choice              <- as.numeric(private$S$choice[[index]] == choice)
-        data_reward               <- as.double(private$S$reward[[index]])
-
+        choice            <- action$choice
+        equal_choice      <- as.numeric(private$S$choice[[index]] == choice)
+        data_reward       <- as.double(private$S$reward[[index]])
         regression_reward <- predict(self$arm_regression_models[[choice]], private$S[index,], type="response")
+        s                 <- ifelse(self$stabilize,mean(private$S$propensity),  1)
 
-        if (self$weight_based) {
-          p <- private$S$propensity[[index]]
+        if (self$preweighted) {
+          p <- private$S$propensity[[index]] * private$marginal_prob[[action$choice]]
         } else {
-          p <- 1 / private$S$propensity[[index]]
+          p <- (1 / private$S$propensity[[index]]) * private$marginal_prob[[action$choice]]
         }
 
         robust_reward <- equal_choice * ((data_reward - regression_reward) * p) + regression_reward
