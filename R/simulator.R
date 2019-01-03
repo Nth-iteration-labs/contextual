@@ -96,6 +96,11 @@ Simulator <- R6::R6Class(
           self$agents[[agent_index]]$name <-
             paste0(current_agent_name,'.',current_agent_name_occurrences)
         }
+        agent_name <-  self$agents[[agent_index]]$name
+        bandit_name <- self$agents[[agent_index]]$bandit$class_name
+        policy_name <- self$agents[[agent_index]]$policy$class_name
+        self$internal_history$set_meta_data("bandit", bandit_name , group = "sim", agent_name = agent_name)
+        self$internal_history$set_meta_data("policy", policy_name , group = "sim", agent_name = agent_name)
       }
     },
     run = function() {

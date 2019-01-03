@@ -11,13 +11,16 @@ OfflineDirectMethodBandit <- R6::R6Class(
     class_name = "OfflineDirectMethodBandit",
     randomize = NULL,
     arm_regression_models = NULL,
-    initialize   = function(offline_data, k, d, arm_regression_models, randomize = TRUE) {
+    single_regression_model = NULL,
+    initialize   = function(offline_data, k, d, arm_regression_models = NULL, single_regression_model = NULL, randomize = TRUE) {
+
       self$k <- k                 # Number of arms (integer)
       self$d <- d                 # Dimension of context feature vector (integer)
       self$randomize <-randomize  # Randomize logged events for every simulation? (logical)
       private$S <- offline_data   # Logged events (by default, as a data.table)
 
-      self$arm_regression_models <- arm_regression_models
+      self$arm_regression_models   <- arm_regression_models
+      self$single_regression_model <- single_regression_model
 
       private$S
 
@@ -39,9 +42,14 @@ OfflineDirectMethodBandit <- R6::R6Class(
     get_reward = function(index, context, action) {
 
       choice            <- action$choice
-      regression_reward <- predict(self$arm_regression_models[[choice]], private$S[index,], type="response")
 
-      regression_reward <- rbinom(1,1,regression_reward)
+      if(!is.null(self$arm_regression_models)) {
+        regression_reward <- predict(self$arm_regression_models[[choice]], private$S[index,], type="response")
+      }
+
+      if(!is.null(self$single_regression_model)) {
+        regression_reward <- predict(self$single_regression_model, private$S[index,], type="response")
+      }
 
       list(
         reward = as.double(regression_reward)

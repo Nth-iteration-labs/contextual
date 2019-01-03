@@ -599,6 +599,14 @@ sim_post <- function(x, n, alpha = 1, beta = 1, ndraws = 5000) {
   return(ans)
 }
 
+
+#' On-the-fly indicator function for use in formulae
+#'
+#' @param cond a logical condition to be evaluated
+#' @return a binary (0/1) coded variable indicating whether the condition is true
+#'
+ind <- function(cond) ifelse(cond, 1L, 0L)
+
 #' Binomial Win Probability
 #'
 #' Function to compute probability that each arm is the winner,

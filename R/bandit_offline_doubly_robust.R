@@ -53,6 +53,9 @@ OfflineDoublyRobustBandit <- R6::R6Class(
         equal_choice      <- as.numeric(private$S$choice[[index]] == choice)
         data_reward       <- as.double(private$S$reward[[index]])
         regression_reward <- predict(self$arm_regression_models[[choice]], private$S[index,], type="response")
+
+        # regression_reward <- rbinom(1,1,regression_reward)
+
         s                 <- ifelse(self$stabilize,mean(private$S$propensity),  1)
 
         if (self$preweighted) {
