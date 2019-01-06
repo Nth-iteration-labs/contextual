@@ -146,9 +146,9 @@
 <p>This results in a higher CTR for movies than for Sports related articles - even though these CTR’s do not actually reflect the overall preferences of website visitors, but rather the editor’s prejudice.</p>
 <p>A clear example of <a href="https://en.wikipedia.org/wiki/Simpson%27s_paradox">Simpson’s Paradox</a>!</p>
 <p>Below an R code based illustration (making use of our “<a href="https://github.com/Nth-iteration-labs/contextual">contextual</a>” bandit package) of how Simpson’s Paradox could give rise to biased logged data, resulting in biased offline evaluations of bandit policies. Next, we demonstrate how <a href="https://en.wikipedia.org/wiki/Inverse_probability_weighting">inverse propensity weighting</a> can help make such data usable for offline evaluation after all.</p>
-<div id="actual-bandit-weights" class="section level2">
+<div id="original-bandit-weights" class="section level2">
 <h2 class="hasAnchor">
-<a href="#actual-bandit-weights" class="anchor"></a>Actual bandit weights</h2>
+<a href="#original-bandit-weights" class="anchor"></a>Original bandit weights</h2>
 <p>Set up simulation bandit weights representing Male and Female actual preferences for Sports and Movies:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"> </a>
 <a class="sourceLine" id="cb4-2" data-line-number="2">horizon                           &lt;-<span class="st"> </span>10000L</a>
@@ -308,7 +308,7 @@
 <div id="repairing-the-biased-policys-logged-data-with-inverse-probability-weights" class="section level2">
 <h2 class="hasAnchor">
 <a href="#repairing-the-biased-policys-logged-data-with-inverse-probability-weights" class="anchor"></a>Repairing the biased policy’s logged data with inverse probability weights</h2>
-<p>Luckily, inverse probability of treatment weighting (IPTW) enable us to use propensity scores to obtain unbiased estimates of the original preferences of Male and Female visitors. That is, since our biased policy actually saved the propensity (“the probability of a unit being assigned to a particular treatment or category”) with which a certain category was chosen, we can correct for this bias while “replaying” the data. In “contextual”, there are several types of offline bandits that are able to use either such presaved propensities, or estimate propensities based on certain properties of the dataset. Here, we use its basic “<a href="https://github.com/Nth-iteration-labs/contextual/blob/master/R/bandit_offline_propensity_weighting.R">OfflinePropensityWeightingBandit</a>”:</p>
+<p>Luckily, <a href="https://stats.stackexchange.com/questions/273367/intuitive-explanation-for-inverse-probability-of-treatment-weights-iptws-in-pr">inverse probability of treatment weighting</a> (IPTW) enables us to use propensity scores to obtain unbiased estimates of the original preferences of Male and Female visitors. That is, since our biased policy actually saved the propensity (“the probability of a unit being assigned to a particular treatment or category”) with which a certain category was chosen, we can correct for this bias while “replaying” the data. In “contextual”, there are several types of offline bandits that are able to use either such presaved propensities, or estimate propensities based on certain properties of the dataset. Here, we use its basic “<a href="https://github.com/Nth-iteration-labs/contextual/blob/master/R/bandit_offline_propensity_weighting.R">OfflinePropensityWeightingBandit</a>”:</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">bandit                            &lt;-<span class="st"> </span>OfflinePropensityWeightingBandit<span class="op">$</span><span class="kw">new</span>(b_dt,<span class="dv">2</span>,<span class="dv">2</span>, <span class="dt">stabilize =</span> T)</a>
 <a class="sourceLine" id="cb10-2" data-line-number="2">policy                            &lt;-<span class="st"> </span>EpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.1</span>)</a>
 <a class="sourceLine" id="cb10-3" data-line-number="3">agent                             &lt;-<span class="st"> </span>Agent<span class="op">$</span><span class="kw">new</span>(policy, bandit, <span class="st">"prop"</span>)</a>
@@ -341,7 +341,7 @@
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-<li><a href="#actual-bandit-weights">Actual bandit weights</a></li>
+<li><a href="#original-bandit-weights">Original bandit weights</a></li>
       <li><a href="#generate-data-by-running-a-fully-random-online-policy">Generate data by running a fully random online policy</a></li>
       <li><a href="#using-the-random-policys-offline-logged-data-to-evaluate-another-policy">Using the random policy’s offline logged data to evaluate another policy</a></li>
       <li><a href="#generate-data-by-running-a-biased-online-policy">Generate data by running a biased online policy</a></li>

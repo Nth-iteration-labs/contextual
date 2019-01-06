@@ -13,7 +13,7 @@ OfflinePropensityWeightingBandit <- R6::R6Class(
     randomize = NULL,
     preweighted = NULL,
     stabilize = NULL,
-    initialize   = function(offline_data, k, d, randomize = TRUE,  stabilize = TRUE, preweighted = FALSE) {
+    initialize   = function(offline_data, k, d = 0, randomize = TRUE,  stabilize = TRUE, preweighted = FALSE) {
       self$k <- k                     # Number of arms (integer)
       self$d <- d                     # Dimension of context feature vector (integer)
       self$randomize <-randomize      # Randomize logged events for every simulation? (logical)
@@ -82,7 +82,7 @@ OfflinePropensityWeightingBandit <- R6::R6Class(
 #'     integer; number of arms (required)
 #'   }
 #'   \item{\code{d}}{
-#'     integer; number of contextual features (required)
+#'     integer; number of contextual features (optional, default: 0)
 #'   }
 #'   \item{\code{randomize}}{
 #'     logical; randomize rows of data stream per simulation (optional, default: TRUE)

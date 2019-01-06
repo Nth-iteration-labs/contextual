@@ -10,10 +10,11 @@ OfflineReplayEvaluatorBandit <- R6::R6Class(
   public = list(
     class_name = "OfflineReplayEvaluatorBandit",
     randomize = NULL,
-    initialize   = function(offline_data, k, d, unique = NULL, shared = NULL, randomize = TRUE) {
+    initialize   = function(offline_data, k, d = 0, unique = NULL, shared = NULL, randomize = TRUE) {
 
       self$k         <- k              # Number of arms (integer)
       self$d         <- d              # Dimension of context feature vector (integer)
+
       self$randomize <- randomize      # Randomize logged events for every simulation? (logical)
       private$S      <- offline_data   # Logged events (by default, as a data.table)
 
@@ -86,7 +87,7 @@ OfflineReplayEvaluatorBandit <- R6::R6Class(
 #'     integer; number of arms (required)
 #'   }
 #'   \item{\code{d}}{
-#'     integer; number of contextual features (required)
+#'     integer; number of contextual features (optional, default: 0)
 #'   }
 #'   \item{\code{randomize}}{
 #'     logical; randomize rows of data stream per simulation (optional, default: TRUE)

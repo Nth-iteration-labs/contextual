@@ -72,7 +72,7 @@ ContextualTSProbitPolicy <- R6::R6Class(
       total_mean <- sum(mu)
       total_variance <- sum(sigma2)
       t <- y * total_mean / sqrt(total_variance)
-      t <- bopr_clip(t,-5,5)
+      t <- contextual::clipr(t,-5,5)
       v <- dnorm(t) / pnorm(t)
       w <- v * (v + t)
       for(j in c(1:length(x))){
@@ -85,9 +85,6 @@ ContextualTSProbitPolicy <- R6::R6Class(
         sigma2[j] <- sigma2[j] * variance_multiplier
       }
       rbind(mu,sigma2)
-    },
-    bopr_clip = function(x, a, b) {
-      a + (x - a > 0) * (x - a) - (x - b > 0) * (x - b)
     }
   )
 )

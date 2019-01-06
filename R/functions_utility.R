@@ -25,7 +25,7 @@ sherman_morrisson <- function(inv, x) {
 }
 #' Clip vectors
 #'
-#' Clip values to a mininum and maximum value. That is, all values below the lower clamp
+#' Clips values to a mininum and maximum value. That is, all values below the lower clamp
 #' value and the upper clamp value become the lower/upper value specified
 #'
 #' @param x to be clipped vector
@@ -33,7 +33,7 @@ sherman_morrisson <- function(inv, x) {
 #' @param max numeric. highest value
 #'
 #' @export
-clip <- function(x, min, max) {
+clipr <- function(x, min, max) {
   pmax( min, pmin( x, max))
 }
 #' Decrement

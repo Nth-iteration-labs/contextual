@@ -32,7 +32,7 @@ data.table; offline data source (required)
 integer; number of arms (required)
 }
 \item{\code{d}}{
-integer; number of contextual features (required)
+integer; number of contextual features (optional, default: 0)
 }
 \item{\code{randomize}}{
 logical; randomize rows of data stream per simulation (optional, default: TRUE)

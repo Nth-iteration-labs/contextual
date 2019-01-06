@@ -54,7 +54,7 @@ A clear example of [Simpson's Paradox](https://en.wikipedia.org/wiki/Simpson%27s
 
 Below an R code based illustration (making use of our "[contextual](https://github.com/Nth-iteration-labs/contextual)" bandit package) of how Simpson's Paradox could give rise to biased logged data, resulting in biased offline evaluations of bandit policies. Next, we demonstrate how [inverse propensity weighting](https://en.wikipedia.org/wiki/Inverse_probability_weighting) can help make such data usable for offline evaluation after all.
 
-##  Actual bandit weights 
+##  Original bandit weights 
 
 Set up simulation bandit weights representing Male and Female actual preferences for Sports and Movies:
 
@@ -236,7 +236,7 @@ The bias has propagated itself! So, does that mean it is not possible to use the
  
 ## Repairing the biased policy's logged data with inverse probability weights
 
-Luckily, inverse probability of treatment weighting (IPTW) enable us to use propensity scores to obtain unbiased estimates of the original preferences of Male and Female visitors. That is, since our biased policy actually saved the propensity ("the probability of a unit being assigned to a particular treatment or category") with which a certain category was chosen, we can correct for this bias while "replaying" the data. In "contextual", there are several types of offline bandits that are able to use either such presaved propensities, or estimate propensities based on certain properties of the dataset. Here, we use its basic "[OfflinePropensityWeightingBandit](https://github.com/Nth-iteration-labs/contextual/blob/master/R/bandit_offline_propensity_weighting.R)":
+Luckily, [inverse probability of treatment weighting](https://stats.stackexchange.com/questions/273367/intuitive-explanation-for-inverse-probability-of-treatment-weights-iptws-in-pr) (IPTW) enables us to use propensity scores to obtain unbiased estimates of the original preferences of Male and Female visitors. That is, since our biased policy actually saved the propensity ("the probability of a unit being assigned to a particular treatment or category") with which a certain category was chosen, we can correct for this bias while "replaying" the data. In "contextual", there are several types of offline bandits that are able to use either such presaved propensities, or estimate propensities based on certain properties of the dataset. Here, we use its basic "[OfflinePropensityWeightingBandit](https://github.com/Nth-iteration-labs/contextual/blob/master/R/bandit_offline_propensity_weighting.R)":
 
 ```r
 bandit                            <- OfflinePropensityWeightingBandit$new(b_dt,2,2, stabilize = T)

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Policy: UCB1 — UCB1Policy • contextual</title>
+<title>Clip vectors — clipr • contextual</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -36,9 +36,10 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Policy: UCB1 — UCB1Policy" />
+<meta property="og:title" content="Clip vectors — clipr" />
 
-<meta property="og:description" content="UCB policy for bounded bandits with a Chernoff-Hoeffding Bound" />
+<meta property="og:description" content="Clips values to a mininum and maximum value. That is, all values below the lower clamp
+value and the upper clamp value become the lower/upper value specified" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -150,97 +151,44 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Policy: UCB1</h1>
-    <small class="dont-index">Source: <a href='https://github.com/Nth-iteration-labs/contextual/blob/master/R/policy_mab_ucb1.R'><code>R/policy_mab_ucb1.R</code></a></small>
-    <div class="hidden name"><code>UCB1Policy.Rd</code></div>
+    <h1>Clip vectors</h1>
+    <small class="dont-index">Source: <a href='https://github.com/Nth-iteration-labs/contextual/blob/master/R/functions_utility.R'><code>R/functions_utility.R</code></a></small>
+    <div class="hidden name"><code>clipr.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>UCB policy for bounded bandits with a Chernoff-Hoeffding Bound</p>
+    <p>Clips values to a mininum and maximum value. That is, all values below the lower clamp
+value and the upper clamp value become the lower/upper value specified</p>
     
     </div>
 
-        
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p><code>UCB1Policy</code> constructs an optimistic estimate in the form of an Upper Confidence Bound to
-create an estimate of the expected payoff of each action, and picks the action with the highest estimate.
-If the guess is wrong, the optimistic guess quickly decreases, till another action has
-the higher estimate.</p>
+    <pre class="usage"><span class='fu'>clipr</span>(<span class='no'>x</span>, <span class='no'>min</span>, <span class='no'>max</span>)</pre>
     
-    <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
-
-    
-    <pre>
-policy &lt;- UCB1Policy()
-</pre>
-    
-    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
-
-    
-    <dl class='dl-horizontal'>
-<dt><code>new()</code></dt><dd><p>Generates a new <code>UCB1Policy</code> object.</p></dd>
-</dl>
-    <dl class='dl-horizontal'>
-<dt><code><a href='Policy.html'>set_parameters()</a></code></dt><dd><p>each policy needs to assign the parameters it wants to keep track of
-to list <code>self$theta_to_arms</code> that has to be defined in <code><a href='Policy.html'>set_parameters()</a></code>'s body.
-The parameters defined here can later be accessed by arm index in the following way:
-<code>theta[[index_of_arm]]$parameter_name</code></p></dd>
-</dl>
-    <dl class='dl-horizontal'>
-<dt><code><a href='Policy.html'>get_action(context)</a></code></dt><dd><p>here, a policy decides which arm to choose, based on the current values
-of its parameters and, potentially, the current context.</p></dd>
-</dl>
-    <dl class='dl-horizontal'>
-<dt><code><a href='Policy.html'>set_reward(reward, context)</a></code></dt><dd><p>in <code><a href='Policy.html'>set_reward(reward, context)</a></code>, a policy updates its parameter values
-based on the reward received, and, potentially, the current context.</p></dd>
-</dl>
-    
-    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
-
-    <p>Lai, T. L., &amp; Robbins, H. (1985). Asymptotically efficient adaptive allocation rules. Advances in applied
-mathematics, 6(1), 4-22.</p>
-    
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p>Core contextual classes: <code><a href='Bandit.html'>Bandit</a></code>, <code><a href='Policy.html'>Policy</a></code>, <code><a href='Simulator.html'>Simulator</a></code>,
-<code><a href='Agent.html'>Agent</a></code>, <code><a href='History.html'>History</a></code>, <code><a href='Plot.html'>Plot</a></code></p>
-<p>Bandit subclass examples: <code><a href='BasicBernoulliBandit.html'>BasicBernoulliBandit</a></code>, <code><a href='ContextualLogitBandit.html'>ContextualLogitBandit</a></code>,
-<code><a href='OfflineReplayEvaluatorBandit.html'>OfflineReplayEvaluatorBandit</a></code></p>
-<p>Policy subclass examples: <code><a href='EpsilonGreedyPolicy.html'>EpsilonGreedyPolicy</a></code>, <code><a href='ContextualLinTSPolicy.html'>ContextualLinTSPolicy</a></code></p></div>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>to be clipped vector</p></td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td><p>numeric. lowest value</p></td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td><p>numeric. highest value</p></td>
+    </tr>
+    </table>
     
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='no'>horizon</span>            <span class='kw'>&lt;-</span> <span class='fl'>100L</span>
-<span class='no'>simulations</span>        <span class='kw'>&lt;-</span> <span class='fl'>100L</span>
-<span class='no'>weights</span>          <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>0.9</span>, <span class='fl'>0.1</span>, <span class='fl'>0.1</span>)
-
-<span class='no'>policy</span>             <span class='kw'>&lt;-</span> <span class='no'>UCB1Policy</span>$<span class='fu'>new</span>()
-<span class='no'>bandit</span>             <span class='kw'>&lt;-</span> <span class='no'>BasicBernoulliBandit</span>$<span class='fu'>new</span>(<span class='kw'>weights</span> <span class='kw'>=</span> <span class='no'>weights</span>)
-<span class='no'>agent</span>              <span class='kw'>&lt;-</span> <span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>policy</span>, <span class='no'>bandit</span>)
-
-<span class='no'>history</span>            <span class='kw'>&lt;-</span> <span class='no'>Simulator</span>$<span class='fu'>new</span>(<span class='no'>agent</span>, <span class='no'>horizon</span>, <span class='no'>simulations</span>, <span class='kw'>do_parallel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)$<span class='fu'><a href='Simulator.html'>run</a></span>()</div><div class='output co'>#&gt; <span class='message'>Simulation horizon: 100</span></div><div class='output co'>#&gt; <span class='message'>Number of simulations: 100</span></div><div class='output co'>#&gt; <span class='message'>Number of batches: 1</span></div><div class='output co'>#&gt; <span class='message'>Starting main loop.</span></div><div class='output co'>#&gt; <span class='message'>Completed simulation in 0:00:01.518</span></div><div class='input'>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='no'>history</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"cumulative"</span>)</div><div class='img'><img src='UCB1Policy-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='no'>history</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"arms"</span>)</div><div class='img'><img src='UCB1Policy-2.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      
-      <li><a href="#details">Details</a></li>
-
-      <li><a href="#usage">Usage</a></li>
-
-      <li><a href="#methods">Methods</a></li>
-
-      <li><a href="#references">References</a></li>
-
-      <li><a href="#see-also">See also</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+      <li><a href="#arguments">Arguments</a></li>
+                </ul>
 
   </div>
 </div>

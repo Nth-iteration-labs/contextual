@@ -42,6 +42,8 @@ reference:
       - prob_winner
       - sim_post
       - value_remaining
+      - clipr
+      - ind
   - title: "Generic functions"
     desc: "Contextual generic functions."
     contents:

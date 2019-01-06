@@ -14,7 +14,7 @@ OfflineDoublyRobustBandit <- R6::R6Class(
     arm_regression_models = NULL,
     preweighted = NULL,
     stabilize = NULL,
-    initialize   = function(offline_data, k, d, arm_regression_models, randomize = TRUE,
+    initialize   = function(offline_data, k, d = 0, arm_regression_models, randomize = TRUE,
                             stabilize = TRUE, preweighted = FALSE) {
 
       self$k <- k                     # Number of arms (integer)
@@ -95,7 +95,7 @@ OfflineDoublyRobustBandit <- R6::R6Class(
 #'     integer; number of arms (required)
 #'   }
 #'   \item{\code{d}}{
-#'     integer; number of contextual features (required)
+#'     integer; number of contextual features (optional, default: 0)
 #'   }
 #'   \item{\code{randomize}}{
 #'     logical; randomize rows of data stream per simulation (optional, default: TRUE)
