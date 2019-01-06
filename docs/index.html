@@ -81,6 +81,9 @@
     <li>
       <a href="articles/replication.html">Offline evaluation: Replication of Li et al 2010</a>
     </li>
+    <li>
+      <a href="articles/simpsons.html">Demo: Bandits, Propensity Weighting &amp; Simpson's Paradox in R</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -149,6 +152,7 @@
 <li><a href="https://nth-iteration-labs.github.io/contextual/articles/cmabs.html">Synthetic cMAB policy comparison</a></li>
 <li><a href="https://nth-iteration-labs.github.io/contextual/articles/eckles_kaptein.html">Replication Eckles &amp; Kaptein (Bootstrap Thompson Sampling)</a></li>
 <li><a href="https://nth-iteration-labs.github.io/contextual/articles/cmabsoffline.html">Offline Bandit: Basic cMAB policy evaluation</a></li>
+<li><a href="https://nth-iteration-labs.github.io/contextual/articles/simpsons.html">Offline Bandits and Simpson’s Paradox</a></li>
 <li><a href="https://nth-iteration-labs.github.io/contextual/articles/ml10m.html">Offline Bandit: MovieLens 10M dataset</a></li>
 </ul>
 </li>
@@ -172,20 +176,24 @@
 <p>Overview of contextual’s growing library of contextual and context-free bandit policies:</p>
 <table class="table">
 <colgroup>
-<col width="8%">
-<col width="49%">
+<col width="6%">
 <col width="42%">
+<col width="36%">
+<col width="13%">
 </colgroup>
 <thead><tr class="header">
 <th>General</th>
 <th>Context-free</th>
 <th>Contextual</th>
+<th>Other</th>
 </tr></thead>
 <tbody><tr class="odd">
 <td>Random<br> Oracle<br><br><br><br><br><br>
 </td>
 <td>Epsilon-Greedy<br> Epsilon-First<br> UCB-tuned<br> Thompson Sampling<br> BootstrapTS<br> Softmax<br> Gittins</td>
-<td>CMAB Epoch-Greedy<br> LinUCB (General, Disjoint, Hybrid)<br> LinTS<br> ProbitTS<br> LogitBTS<br>GLMUCB<br><br>
+<td>CMAB Naive Epsilon-Greedy <br> Epoch-Greedy<br> LinUCB (General, Disjoint, Hybrid)<br> LinTS<br> ProbitTS<br> LogitBTS<br>GLMUCB<br>
+</td>
+<td>Lock-in Feedback (LiF) <br><br><br><br><br><br><br>
 </td>
 </tr></tbody>
 </table>
@@ -207,7 +215,7 @@
 <td>BasicBernoulliBandit<br> BasicGaussianBandit<br><br><br><br>
 </td>
 <td>ContextualBernoulli<br> ContextualLogit<br> ContextualHybrid<br> ContextualLinear<br> ContextualWheel</td>
-<td>OfflinePolicyEvaluator<br> PropensityEvaluator<br> DoublyRobust*<br><br><br>
+<td>ReplayEvaluator<br> DirectMethod <br>PropensityWeighting<br> DoublyRobust<br><br>
 </td>
 <td>Continuum <br><br><br><br><br>
 </td>

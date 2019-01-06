@@ -195,17 +195,3 @@ print(paste("Sport:",sum(prop_dt[choice==1]$reward)/nrow(prop_dt[choice==1]))) #
 print(paste("Movie:",sum(prop_dt[choice==2]$reward)/nrow(prop_dt[choice==2]))) # 0.5 CTR Movie again, yay!
 
 
-## TODO: Below building blocks of future more extensive demo.
-
-# #choice:1 is Sport choice:2 is Movie, and is_male:1 is male is_male:2 is female
-#
-# b_dt[, is_male := lapply(.SD, function(x) paste( unlist(x)[1], collapse=',') ),
-#     by=1:b_dt[, .N], .SDcols = c("context")]
-# ...
-# #The number of time steps (2953) that offline bandit could replay:
-# print(rb_dt$cumulative$OfflineLinUCB$t)
-# # LinUCB overwhelmingly chooses Movie: 91% of all choices
-# print(nrow(rb_dt$data[choice==1])/nrow(rb_dt$data)*100)
-# # And is able to attain a 0.59 CTR on that arm
-# print(rb_dt$cumulative$OfflineLinUCB$cum_reward_rate)
-

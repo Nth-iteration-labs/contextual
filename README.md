@@ -43,6 +43,7 @@ Documentation
   * [Synthetic cMAB policy comparison](https://nth-iteration-labs.github.io/contextual/articles/cmabs.html)
   * [Replication Eckles & Kaptein (Bootstrap Thompson Sampling)](https://nth-iteration-labs.github.io/contextual/articles/eckles_kaptein.html)
   * [Offline Bandit: Basic cMAB policy evaluation](https://nth-iteration-labs.github.io/contextual/articles/cmabsoffline.html)
+  * [Offline Bandits and Simpson's Paradox](https://nth-iteration-labs.github.io/contextual/articles/simpsons.html)
   * [Offline Bandit: MovieLens 10M dataset](https://nth-iteration-labs.github.io/contextual/articles/ml10m.html)
   
 * [Getting started: running simulations](https://nth-iteration-labs.github.io/contextual/articles/introduction.html)
