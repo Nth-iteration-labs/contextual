@@ -115,8 +115,8 @@ PartiallyPooledUCBPolicy <- R6::R6Class(
       expected_rewards <- rep(0.0, context$k)
       beta = 1/sqrt(self$theta$n_total[[user]])
       for (arm in 1:context$k) {
-        p_mean <- self$theta$P[[arm]] + sqrt(2*log(self$theta$N_total)/self$theta$N[[arm]])/self$theta$n[[user]][[arm]]
-        p_choice <- self$theta$p[[user]][[arm]] + sqrt(2*log(self$theta$n_total[[user]])/self$theta$n[[user]][[arm]])/self$theta$N[[arm]]
+        p_mean <- self$theta$P[[arm]] + sqrt(2*log(self$theta$N_total)/self$theta$N[[arm]])/sqrt(self$theta$n[[user]][[arm]])
+        p_choice <- self$theta$p[[user]][[arm]] + sqrt(2*log(self$theta$n_total[[user]])/self$theta$n[[user]][[arm]])/sqrt(self$theta$N[[arm]])
         p_hat = (beta * p_mean + (1-beta) * p_choice)
         expected_rewards[arm] = p_hat
       }

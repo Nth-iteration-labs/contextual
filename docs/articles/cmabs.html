@@ -115,7 +115,7 @@
       <h1>Demo: Basic Synthetic cMAB Policies</h1>
                         <h4 class="author">Robin van Emden</h4>
             
-            <h4 class="date">2019-01-06</h4>
+            <h4 class="date">2019-01-14</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Nth-iteration-labs/contextual/blob/master/vignettes/cmabs.Rmd"><code>vignettes/cmabs.Rmd</code></a></small>
       <div class="hidden name"><code>cmabs.Rmd</code></div>
@@ -124,26 +124,28 @@
 
     
     
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(contextual)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb1-3" data-line-number="3">horizon       &lt;-<span class="st"> </span>100L</a>
-<a class="sourceLine" id="cb1-4" data-line-number="4">simulations   &lt;-<span class="st"> </span>100L</a>
-<a class="sourceLine" id="cb1-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb1-6" data-line-number="6">bandit        &lt;-<span class="st"> </span>ContextualLinearBandit<span class="op">$</span><span class="kw">new</span>(<span class="dt">k =</span> <span class="dv">4</span>, <span class="dt">d =</span> <span class="dv">3</span>, <span class="dt">sigma =</span> <span class="fl">0.3</span>)</a>
-<a class="sourceLine" id="cb1-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="co"># Linear CMAB policies comparison</span></a>
-<a class="sourceLine" id="cb1-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb1-10" data-line-number="10">agents &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(Agent<span class="op">$</span><span class="kw">new</span>(EpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.1</span>), bandit, <span class="st">"EGreedy"</span>),</a>
-<a class="sourceLine" id="cb1-11" data-line-number="11">               Agent<span class="op">$</span><span class="kw">new</span>(ContextualEpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.1</span>), bandit, <span class="st">"cEGreedy"</span>),</a>
-<a class="sourceLine" id="cb1-12" data-line-number="12">               Agent<span class="op">$</span><span class="kw">new</span>(ContextualLinTSPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.1</span>), bandit, <span class="st">"LinTS"</span>),</a>
-<a class="sourceLine" id="cb1-13" data-line-number="13">               Agent<span class="op">$</span><span class="kw">new</span>(LinUCBDisjointOptimizedPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.6</span>), bandit, <span class="st">"LinUCB"</span>))</a>
-<a class="sourceLine" id="cb1-14" data-line-number="14"></a>
-<a class="sourceLine" id="cb1-15" data-line-number="15">simulation     &lt;-<span class="st"> </span>Simulator<span class="op">$</span><span class="kw">new</span>(agents, horizon, simulations, <span class="dt">do_parallel =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb1-16" data-line-number="16"></a>
-<a class="sourceLine" id="cb1-17" data-line-number="17">history        &lt;-<span class="st"> </span>simulation<span class="op">$</span><span class="kw"><a href="../reference/Simulator.html">run</a></span>()</a>
-<a class="sourceLine" id="cb1-18" data-line-number="18"></a>
-<a class="sourceLine" id="cb1-19" data-line-number="19"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"cumulative"</span>, <span class="dt">rate =</span> <span class="ot">FALSE</span>, <span class="dt">legend_position =</span> <span class="st">"topleft"</span>)</a></code></pre></div>
-<p><img src="cmabs.jpeg"></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(contextual)
+
+horizon       &lt;-<span class="st"> </span>100L
+simulations   &lt;-<span class="st"> </span>100L
+
+bandit        &lt;-<span class="st"> </span>ContextualLinearBandit<span class="op">$</span><span class="kw">new</span>(<span class="dt">k =</span> <span class="dv">4</span>, <span class="dt">d =</span> <span class="dv">3</span>, <span class="dt">sigma =</span> <span class="fl">0.3</span>)
+
+<span class="co"># Linear CMAB policies comparison</span>
+
+agents &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(Agent<span class="op">$</span><span class="kw">new</span>(EpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.1</span>), bandit, <span class="st">"EGreedy"</span>),
+               Agent<span class="op">$</span><span class="kw">new</span>(ContextualEpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.1</span>), bandit, <span class="st">"cEGreedy"</span>),
+               Agent<span class="op">$</span><span class="kw">new</span>(ContextualLinTSPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.1</span>), bandit, <span class="st">"LinTS"</span>),
+               Agent<span class="op">$</span><span class="kw">new</span>(LinUCBDisjointOptimizedPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.6</span>), bandit, <span class="st">"LinUCB"</span>))
+
+simulation     &lt;-<span class="st"> </span>Simulator<span class="op">$</span><span class="kw">new</span>(agents, horizon, simulations, <span class="dt">do_parallel =</span> <span class="ot">TRUE</span>)
+
+history        &lt;-<span class="st"> </span>simulation<span class="op">$</span><span class="kw"><a href="../reference/Simulator.html">run</a></span>()
+
+<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"cumulative"</span>, <span class="dt">rate =</span> <span class="ot">FALSE</span>, <span class="dt">legend_position =</span> <span class="st">"topleft"</span>)</code></pre></div>
+<div class="figure">
+<img src="cmabs.jpeg">
+</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -157,7 +159,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
 </div>
       </footer>
 </div>

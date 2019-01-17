@@ -1,0 +1,37 @@
+library(contextual)
+library(here)
+
+setwd(here("demo","replication_kruijswijk_2018")) # devtools::install_github("seasmith/AlignAssign")
+
+source("./policy_pooled_egreedy.R")
+source("./bandit_replay.R")
+
+horizon     <- 570000
+simulations <- 100
+
+csv_url     <- "http://d1ie9wlkzugsxr.cloudfront.net/data_persuasion_api/persuasion_api_simple.csv"
+data        <- fread(csv_url, nrows = horizon)
+
+data$user   <- as.numeric(factor(data$user, levels = unique(data$user)))
+data$choice <- data$choice + 1
+users       <- data[, .N, keyby = user]
+
+max_repeat  <- max(users$N)
+n_users     <- length(users$user)
+
+print(max_repeat)
+print(n_users)
+
+##################### Bandit ###########################
+
+bandit      <- DependentObservationsReplayBandit$new(data, 4)
+
+##################### Policies #########################
+
+agents      <- list(Agent$new(UnpooledEgreedyPolicy$new(epsilon = 0.1, n_subjects = n_users), bandit),
+                    Agent$new(PooledEgreedyPolicy$new(epsilon = 0.1), bandit),
+                    Agent$new(PartiallyPooledEgreedyPolicy$new(epsilon = 0.1, n_subjects = n_users), bandit))
+
+history     <- Simulator$new(agents = agents, horizon = horizon, simulations = simulations)$run()
+
+plot(history, type = "cumulative", regret = FALSE, rate = TRUE, ylim = c(0.01,0.016))

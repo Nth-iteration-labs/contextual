@@ -115,7 +115,7 @@
       <h1>Offline evaluation: Replication of Li et al 2010</h1>
                         <h4 class="author">Robin van Emden</h4>
             
-            <h4 class="date">2019-01-06</h4>
+            <h4 class="date">2019-01-14</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Nth-iteration-labs/contextual/blob/master/vignettes/replication.Rmd"><code>vignettes/replication.Rmd</code></a></small>
       <div class="hidden name"><code>replication.Rmd</code></div>
@@ -150,93 +150,97 @@
 <a href="#custom-bandit-and-policies" class="anchor"></a>Custom bandit and policies</h4>
 <p>With the Yahoo! data imported into the MonetDB server, the next step was to create a custom offline <code>YahooBandit</code> plus seven <code>Policy</code> subclasses implementing the policies described in the Li et al 2010 paper. Though most of these policies were already implemented in <code>contextual</code>, the fact that only a subset of all 271 articles or arms are shown to a visitor at a time meant we needed to make some minor changes to <code>contextual</code>’s exisiting classes to make the policies run smoothly on a continually shifting pool of active arms.</p>
 <p>To facilitate these shifting arms, <code>YahooBandit</code> makes use of an <code>self$arm_lookup</code> table listing all 271 arms. This table enables the bandit to look up the currently active arms’ indexes from the shifting set of article ID’s as specified in the dataset for each time step <span class="math inline">\(t\)</span>, and return these indexes to the policies under evaluation:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">    get_context =<span class="st"> </span><span class="cf">function</span>(index) {</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2">      ...</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3">      <span class="co"># Retrieve the index of all arms this row/event.</span></a>
-<a class="sourceLine" id="cb1-4" data-line-number="4">      arm_indices_this_event  &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq</a></span>(<span class="dv">10</span>, <span class="dv">184</span>, <span class="dt">by =</span> <span class="dv">7</span>)</a>
-<a class="sourceLine" id="cb1-5" data-line-number="5">      article_ids             &lt;-<span class="st"> </span>row[arm_indices_this_event]</a>
-<a class="sourceLine" id="cb1-6" data-line-number="6">      article_ids             &lt;-<span class="st"> </span>article_ids[<span class="op">!</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/NA">is.na</a></span>(article_ids)]</a>
-<a class="sourceLine" id="cb1-7" data-line-number="7">      article_ids             &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/match">match</a></span>(article_ids,self<span class="op">$</span>arm_lookup)</a>
-<a class="sourceLine" id="cb1-8" data-line-number="8">      ...</a>
-<a class="sourceLine" id="cb1-9" data-line-number="9">      context &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(</a>
-<a class="sourceLine" id="cb1-10" data-line-number="10">        <span class="dt">k =</span> self<span class="op">$</span>k,</a>
-<a class="sourceLine" id="cb1-11" data-line-number="11">        <span class="dt">d =</span> self<span class="op">$</span>d,</a>
-<a class="sourceLine" id="cb1-12" data-line-number="12">        <span class="dt">unique =</span> self<span class="op">$</span>unique, <span class="co"># Indexes of disjoint arms (user features)</span></a>
-<a class="sourceLine" id="cb1-13" data-line-number="13">        <span class="dt">shared =</span> self<span class="op">$</span>shared, <span class="co"># Indexes of shared arms (article features)</span></a>
-<a class="sourceLine" id="cb1-14" data-line-number="14">        <span class="dt">arms =</span> article_ids,   <span class="co"># Indexes of arms this event.</span></a>
-<a class="sourceLine" id="cb1-15" data-line-number="15">        <span class="dt">X =</span> X</a>
-<a class="sourceLine" id="cb1-16" data-line-number="16">      )</a>
-<a class="sourceLine" id="cb1-17" data-line-number="17">    }</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">    get_context =<span class="st"> </span><span class="cf">function</span>(index) {
+      ...
+      <span class="co"># Retrieve the index of all arms this row/event.</span>
+      arm_indices_this_event  &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/seq">seq</a></span>(<span class="dv">10</span>, <span class="dv">184</span>, <span class="dt">by =</span> <span class="dv">7</span>)
+      article_ids             &lt;-<span class="st"> </span>row[arm_indices_this_event]
+      article_ids             &lt;-<span class="st"> </span>article_ids[<span class="op">!</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/NA">is.na</a></span>(article_ids)]
+      article_ids             &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/match">match</a></span>(article_ids,self<span class="op">$</span>arm_lookup)
+      ...
+      context &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(
+        <span class="dt">k =</span> self<span class="op">$</span>k,
+        <span class="dt">d =</span> self<span class="op">$</span>d,
+        <span class="dt">unique =</span> self<span class="op">$</span>unique, <span class="co"># Indexes of disjoint arms (user features)</span>
+        <span class="dt">shared =</span> self<span class="op">$</span>shared, <span class="co"># Indexes of shared arms (article features)</span>
+        <span class="dt">arms =</span> article_ids,   <span class="co"># Indexes of arms this event.</span>
+        <span class="dt">X =</span> X
+      )
+    }</code></pre></div>
 <p>The policy classes then use this information to select and update only the currently active subset of arms. For instance, in <code>YahooEpsilonGreedyPolicy</code>’s <code><a href="../reference/Policy.html">get_action()</a></code>:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">    get_action =<span class="st"> </span><span class="cf">function</span>(t, context) {</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">      <span class="cf">if</span> (<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Uniform">runif</a></span>(<span class="dv">1</span>) <span class="op">&gt;</span><span class="st"> </span>self<span class="op">$</span>epsilon) {</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">        <span class="co"># get the max of context$arms *currently in play*</span></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4">        max_index          &lt;-<span class="st"> </span>context<span class="op">$</span>arms[<span class="kw">max_in</span>(theta<span class="op">$</span>mean[context<span class="op">$</span>arms])]</a>
-<a class="sourceLine" id="cb2-5" data-line-number="5">        self<span class="op">$</span>action<span class="op">$</span>choice &lt;-<span class="st"> </span>max_index</a>
-<a class="sourceLine" id="cb2-6" data-line-number="6">      } <span class="cf">else</span> {</a>
-<a class="sourceLine" id="cb2-7" data-line-number="7">        <span class="co"># sample from the arms *currently in play*</span></a>
-<a class="sourceLine" id="cb2-8" data-line-number="8">        self<span class="op">$</span>action<span class="op">$</span>choice &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sample">sample</a></span>(context<span class="op">$</span>arms, <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb2-9" data-line-number="9">      }</a>
-<a class="sourceLine" id="cb2-10" data-line-number="10">      self<span class="op">$</span>action</a>
-<a class="sourceLine" id="cb2-11" data-line-number="11">    }</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">    get_action =<span class="st"> </span><span class="cf">function</span>(t, context) {
+      <span class="cf">if</span> (<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Uniform">runif</a></span>(<span class="dv">1</span>) <span class="op">&gt;</span><span class="st"> </span>self<span class="op">$</span>epsilon) {
+        <span class="co"># get the max of context$arms *currently in play*</span>
+        max_index          &lt;-<span class="st"> </span>context<span class="op">$</span>arms[<span class="kw">max_in</span>(theta<span class="op">$</span>mean[context<span class="op">$</span>arms])]
+        self<span class="op">$</span>action<span class="op">$</span>choice &lt;-<span class="st"> </span>max_index
+      } <span class="cf">else</span> {
+        <span class="co"># sample from the arms *currently in play*</span>
+        self<span class="op">$</span>action<span class="op">$</span>choice &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sample">sample</a></span>(context<span class="op">$</span>arms, <span class="dv">1</span>)
+      }
+      self<span class="op">$</span>action
+    }</code></pre></div>
 <p>On completing the implementation of the aforementioned seven custom policy subclasses (<code>Random</code>, <code>EGreedy</code>, <code>EGreedySeg</code>, <code>LinUCBDis</code>, <code>LinUCBHyb</code>, <code>UCB1</code> and <code>UCB1Seg</code>) we then assigned them to six simulations—one for each of the six (0, 30, 20, 10, 5 and 1 percent) levels of sparsity defined in the original paper. This resulted in <span class="math inline">\(7\times6=42\)</span> Agents, which were then run on the offline dataset as follows:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">simulations             &lt;-<span class="st"> </span><span class="dv">1</span></a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">horizon                 &lt;-<span class="st"> </span><span class="fl">37.45e6</span></a>
-<a class="sourceLine" id="cb3-3" data-line-number="3">...</a>
-<a class="sourceLine" id="cb3-4" data-line-number="4">con &lt;-<span class="st"> </span>DBI<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/DBI/topics/dbConnect">dbConnect</a></span>(<span class="kw">MonetDB.R</span>(), <span class="dt">host=</span>monetdb_host, <span class="dt">dbname=</span>monetdb_dbname,</a>
-<a class="sourceLine" id="cb3-5" data-line-number="5">                                   <span class="dt">user=</span>monetdb_user, <span class="dt">password=</span>monetdb_pass)</a>
-<a class="sourceLine" id="cb3-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/message">message</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="st">"MonetDB: connection to '"</span>,<span class="kw">dbListTables</span>(con),<span class="st">"' succesful!"</span>))</a>
-<a class="sourceLine" id="cb3-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb3-9" data-line-number="9">arm_lookup_table &lt;-</a>
-<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/matrix">as.matrix</a></span>(DBI<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/DBI/topics/dbGetQuery">dbGetQuery</a></span>(con, <span class="st">"SELECT DISTINCT article_id FROM yahoo"</span>))</a>
-<a class="sourceLine" id="cb3-11" data-line-number="11"></a>
-<a class="sourceLine" id="cb3-12" data-line-number="12">arm_lookup_table &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rev">rev</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/vector">as.vector</a></span>(arm_lookup_table))</a>
-<a class="sourceLine" id="cb3-13" data-line-number="13"></a>
-<a class="sourceLine" id="cb3-14" data-line-number="14">bandit &lt;-<span class="st"> </span>YahooBandit<span class="op">$</span><span class="kw">new</span>(<span class="dt">k =</span> 217L, <span class="dt">unique =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span><span class="op">:</span><span class="dv">6</span>), <span class="dt">shared =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">7</span><span class="op">:</span><span class="dv">12</span>),</a>
-<a class="sourceLine" id="cb3-15" data-line-number="15">                          <span class="dt">arm_lookup =</span> arm_lookup_table, <span class="dt">host =</span> monetdb_host,</a>
-<a class="sourceLine" id="cb3-16" data-line-number="16">                          <span class="dt">dbname =</span> monetdb_dbname, <span class="dt">user =</span> monetdb_user,</a>
-<a class="sourceLine" id="cb3-17" data-line-number="17">                          <span class="dt">password =</span> monetdb_pass, <span class="dt">buffer_size =</span> buffer_size)</a>
-<a class="sourceLine" id="cb3-18" data-line-number="18"></a>
-<a class="sourceLine" id="cb3-19" data-line-number="19">agents &lt;-</a>
-<a class="sourceLine" id="cb3-20" data-line-number="20"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span> (Agent<span class="op">$</span><span class="kw">new</span>(YahooLinUCBDisjointPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.2</span>),</a>
-<a class="sourceLine" id="cb3-21" data-line-number="21">                  bandit, <span class="dt">name =</span> <span class="st">"LinUCB Dis"</span>,  <span class="dt">sparse =</span> <span class="fl">0.99</span>),</a>
-<a class="sourceLine" id="cb3-22" data-line-number="22">        Agent<span class="op">$</span><span class="kw">new</span>(YahooLinUCBHybridPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.2</span>),</a>
-<a class="sourceLine" id="cb3-23" data-line-number="23">                  bandit, <span class="dt">name =</span> <span class="st">"LinUCB Hyb"</span>,  <span class="dt">sparse =</span> <span class="fl">0.99</span>),</a>
-<a class="sourceLine" id="cb3-24" data-line-number="24">        Agent<span class="op">$</span><span class="kw">new</span>(YahooEpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.3</span>),</a>
-<a class="sourceLine" id="cb3-25" data-line-number="25">                  bandit, <span class="dt">name =</span> <span class="st">"EGreedy"</span>,     <span class="dt">sparse =</span> <span class="fl">0.99</span>),</a>
-<a class="sourceLine" id="cb3-26" data-line-number="26">        Agent<span class="op">$</span><span class="kw">new</span>(YahooEpsilonGreedySegPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.3</span>),</a>
-<a class="sourceLine" id="cb3-27" data-line-number="27">                  bandit, <span class="dt">name =</span> <span class="st">"EGreedySeg"</span>,  <span class="dt">sparse =</span> <span class="fl">0.99</span>),</a>
-<a class="sourceLine" id="cb3-28" data-line-number="28">        Agent<span class="op">$</span><span class="kw">new</span>(YahooUCB1AlphaPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.4</span>),</a>
-<a class="sourceLine" id="cb3-29" data-line-number="29">                  bandit, <span class="dt">name =</span> <span class="st">"UCB1"</span>,        <span class="dt">sparse =</span> <span class="fl">0.99</span>),</a>
-<a class="sourceLine" id="cb3-30" data-line-number="30">        Agent<span class="op">$</span><span class="kw">new</span>(YahooUCB1AlphaSegPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.4</span>),</a>
-<a class="sourceLine" id="cb3-31" data-line-number="31">                  bandit, <span class="dt">name =</span> <span class="st">"UCB1Seg"</span>,     <span class="dt">sparse =</span> <span class="fl">0.99</span>),</a>
-<a class="sourceLine" id="cb3-32" data-line-number="32">        ...</a>
-<a class="sourceLine" id="cb3-33" data-line-number="33">        Agent<span class="op">$</span><span class="kw">new</span>(YahooRandomPolicy<span class="op">$</span><span class="kw">new</span>(),</a>
-<a class="sourceLine" id="cb3-34" data-line-number="34">                  bandit, <span class="dt">name =</span> <span class="st">"Random"</span>))</a>
-<a class="sourceLine" id="cb3-35" data-line-number="35"></a>
-<a class="sourceLine" id="cb3-36" data-line-number="36">simulation &lt;-<span class="st"> </span>Simulator<span class="op">$</span><span class="kw">new</span>(</a>
-<a class="sourceLine" id="cb3-37" data-line-number="37">    agents,</a>
-<a class="sourceLine" id="cb3-38" data-line-number="38">    <span class="dt">simulations =</span> simulations,</a>
-<a class="sourceLine" id="cb3-39" data-line-number="39">    <span class="dt">horizon =</span> horizon,</a>
-<a class="sourceLine" id="cb3-40" data-line-number="40">    <span class="dt">do_parallel =</span> <span class="ot">TRUE</span>,</a>
-<a class="sourceLine" id="cb3-41" data-line-number="41">    <span class="dt">worker_max =</span> worker_max,</a>
-<a class="sourceLine" id="cb3-42" data-line-number="42">    <span class="dt">reindex =</span> <span class="ot">TRUE</span>,</a>
-<a class="sourceLine" id="cb3-43" data-line-number="43">    <span class="dt">progress_file =</span> <span class="ot">TRUE</span>,</a>
-<a class="sourceLine" id="cb3-44" data-line-number="44">    <span class="dt">include_packages =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"MonetDB.R"</span>))</a>
-<a class="sourceLine" id="cb3-45" data-line-number="45"></a>
-<a class="sourceLine" id="cb3-46" data-line-number="46">history  &lt;-<span class="st"> </span>simulation<span class="op">$</span><span class="kw"><a href="../reference/Simulator.html">run</a></span>()</a>
-<a class="sourceLine" id="cb3-47" data-line-number="47">...</a></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">simulations             &lt;-<span class="st"> </span><span class="dv">1</span>
+horizon                 &lt;-<span class="st"> </span><span class="fl">37.45e6</span>
+...
+con &lt;-<span class="st"> </span>DBI<span class="op">::</span><span class="kw">dbConnect</span>(<span class="kw">MonetDB.R</span>(), <span class="dt">host=</span>monetdb_host, <span class="dt">dbname=</span>monetdb_dbname,
+                                   <span class="dt">user=</span>monetdb_user, <span class="dt">password=</span>monetdb_pass)
+
+<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/message">message</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="st">"MonetDB: connection to '"</span>,<span class="kw">dbListTables</span>(con),<span class="st">"' succesful!"</span>))
+
+arm_lookup_table &lt;-
+<span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/matrix">as.matrix</a></span>(DBI<span class="op">::</span><span class="kw">dbGetQuery</span>(con, <span class="st">"SELECT DISTINCT article_id FROM yahoo"</span>))
+
+arm_lookup_table &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rev">rev</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/vector">as.vector</a></span>(arm_lookup_table))
+
+bandit &lt;-<span class="st"> </span>YahooBandit<span class="op">$</span><span class="kw">new</span>(<span class="dt">k =</span> 217L, <span class="dt">unique =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span><span class="op">:</span><span class="dv">6</span>), <span class="dt">shared =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">7</span><span class="op">:</span><span class="dv">12</span>),
+                          <span class="dt">arm_lookup =</span> arm_lookup_table, <span class="dt">host =</span> monetdb_host,
+                          <span class="dt">dbname =</span> monetdb_dbname, <span class="dt">user =</span> monetdb_user,
+                          <span class="dt">password =</span> monetdb_pass, <span class="dt">buffer_size =</span> buffer_size)
+
+agents &lt;-
+<span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span> (Agent<span class="op">$</span><span class="kw">new</span>(YahooLinUCBDisjointPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.2</span>),
+                  bandit, <span class="dt">name =</span> <span class="st">"LinUCB Dis"</span>,  <span class="dt">sparse =</span> <span class="fl">0.99</span>),
+        Agent<span class="op">$</span><span class="kw">new</span>(YahooLinUCBHybridPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.2</span>),
+                  bandit, <span class="dt">name =</span> <span class="st">"LinUCB Hyb"</span>,  <span class="dt">sparse =</span> <span class="fl">0.99</span>),
+        Agent<span class="op">$</span><span class="kw">new</span>(YahooEpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.3</span>),
+                  bandit, <span class="dt">name =</span> <span class="st">"EGreedy"</span>,     <span class="dt">sparse =</span> <span class="fl">0.99</span>),
+        Agent<span class="op">$</span><span class="kw">new</span>(YahooEpsilonGreedySegPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.3</span>),
+                  bandit, <span class="dt">name =</span> <span class="st">"EGreedySeg"</span>,  <span class="dt">sparse =</span> <span class="fl">0.99</span>),
+        Agent<span class="op">$</span><span class="kw">new</span>(YahooUCB1AlphaPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.4</span>),
+                  bandit, <span class="dt">name =</span> <span class="st">"UCB1"</span>,        <span class="dt">sparse =</span> <span class="fl">0.99</span>),
+        Agent<span class="op">$</span><span class="kw">new</span>(YahooUCB1AlphaSegPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.4</span>),
+                  bandit, <span class="dt">name =</span> <span class="st">"UCB1Seg"</span>,     <span class="dt">sparse =</span> <span class="fl">0.99</span>),
+        ...
+        Agent<span class="op">$</span><span class="kw">new</span>(YahooRandomPolicy<span class="op">$</span><span class="kw">new</span>(),
+                  bandit, <span class="dt">name =</span> <span class="st">"Random"</span>))
+
+simulation &lt;-<span class="st"> </span>Simulator<span class="op">$</span><span class="kw">new</span>(
+    agents,
+    <span class="dt">simulations =</span> simulations,
+    <span class="dt">horizon =</span> horizon,
+    <span class="dt">do_parallel =</span> <span class="ot">TRUE</span>,
+    <span class="dt">worker_max =</span> worker_max,
+    <span class="dt">reindex =</span> <span class="ot">TRUE</span>,
+    <span class="dt">progress_file =</span> <span class="ot">TRUE</span>,
+    <span class="dt">include_packages =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"MonetDB.R"</span>))
+
+history  &lt;-<span class="st"> </span>simulation<span class="op">$</span><span class="kw"><a href="../reference/Simulator.html">run</a></span>()
+...</code></pre></div>
 </div>
 <div id="results" class="section level4">
 <h4 class="hasAnchor">
 <a href="#results" class="anchor"></a>Results</h4>
 <p>We were able to complete the full <span class="math inline">\(7\times6=42\)</span> agent simulation over all of the 37,450,196 events in our database within 22 hours on a 64 core Intel Xeon Unbuntu server with 256GB of memory. We then proceeded to analyse the results of the first 4.7 million events (following the original paper, representing about a day worth of events) to reproduce Li et al 2010’s Figure 4b: “CTRs in evaluation data with varying data sizes in the learning bucket.”. Just like the original paper, the replicated figure below reports each algorithm’s relative CTR for all of the defined data sparsity levels, that is, each algorithm’s CTR divided by the random policy’s CTR.</p>
-<p><img src="replication-fig-1.png" style="width:98.0%"></p>
+<div class="figure">
+<img src="replication-fig-1.png" style="width:98.0%">
+</div>
 <p><em>Replication of Figure 4b “CTRs in evaluation data with varying data sizes in the learning bucket.” from Li et al 2010. The plots represent the click through rates for different policies after one day of learning for each of six different levels of sparsity.</em></p>
 <p>As can be observed in the next figure, after one day of learning (on the Yahoo! dataset’s day three), the conclusions of the original paper still stand. First, features again prove to be of use at all levels of sparsity, as LinUCB policies outperform the others consistently. Second, UCB policies generally outperform <span class="math inline">\(\epsilon\)</span>-greedy ones. And third, Hybrid LinUCB shows benefits when the data is small, as it does even better relative to Disjoint LinuCB in the 1% bucket.</p>
 <p>To explore a little further, we also run a simulation that continued to learn beyond the first day for the sparse (1%) data condition to test—for the results, see the final figure.</p>
-<p><img src="replication-fig-2.png" style="width:98.0%"></p>
+<div class="figure">
+<img src="replication-fig-2.png" style="width:98.0%">
+</div>
 <p><em>A plot of the cumulative reward rate (equals click-through rate) for EGreedy, EGreedySeg, LinUCB Dis, LinUCB Hyb, UCB1, and UCB1Seg policies over eight days of events from the Yahoo dataset at 1% sparsity. The dotted lines represent blocks consisting of 24 hours worth of data—the lines are not equidistant as the number of data points of these 24 hours differs per block. The plot’s sinusoidal wave pattern reflects visitors’ overall average cyclical daily waxing and waning click-through tendency.</em></p>
 </div>
   </div>
@@ -252,7 +256,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
 </div>
       </footer>
 </div>
