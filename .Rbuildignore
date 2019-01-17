@@ -1,3 +1,5 @@
+^demo/working_directory$
+^demo/working_directory.*
 contextual.Rproj
 ^.*\.Rproj$
 ^\.Rproj\.user$
@@ -16,3 +18,4 @@ contextual.Rproj
 ^credentials\.json$
 cran-comments.md
 ^revdep$
+
