@@ -1,7 +1,7 @@
 library(contextual)
 library(here)
 
-setwd(here("demo","replication_kruijswijk_2018")) # devtools::install_github("seasmith/AlignAssign")
+setwd(here("demo","replication_kruijswijk_2018"))
 
 source("./policy_pooled_egreedy.R")
 source("./bandit_replay.R")
