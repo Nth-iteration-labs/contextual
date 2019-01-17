@@ -13,7 +13,9 @@ bandit             <- BasicGaussianBandit$new(mu_per_arm = mus, sigma_per_arm = 
 
 # violin plot ------------------------------------------------------------------------------------------------
 
-library(ggplot2); library(ggnormalviolin)
+library(ggplot2)
+#devtools::install_github("wjschne/ggnormalviolin")
+library(ggnormalviolin)
 print(ggplot(data = data.frame(dist_mean = mus, dist_sd = sigmas, dist = factor((1:10))), aes(x = dist,
              mu = dist_mean, sigma = dist_sd)) + ylab("Reward distribution") + geom_normalviolin() +
              theme(legend.position = "none") + xlab("Action") + geom_hline(aes(yintercept = 0)))
