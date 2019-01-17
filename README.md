@@ -22,7 +22,7 @@ The package has been developed to:
 Installation
 ------------
 
-To install R6 from CRAN:
+To install contextual from CRAN:
 
 ```R
 install.packages('contextual')
@@ -31,8 +31,20 @@ install.packages('contextual')
 To install the development version (requires the devtools package):
 
 ```R
+install.packages("devtools")
 devtools::install_github('Nth-iteration-labs/contextual')
 ```
+
+When working on or extending the package, clone its [GitHub repository](https://github.com/Nth-iteration-labs/contextual), then do:
+
+```R
+install.packages("devtools")
+devtools::install_deps(dependencies = TRUE)
+devtools::build()
+devtools::reload()
+```
+
+clean and rebuild...
 
 Documentation
 -------------

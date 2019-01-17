@@ -605,6 +605,7 @@ sim_post <- function(x, n, alpha = 1, beta = 1, ndraws = 5000) {
 #' @param cond a logical condition to be evaluated
 #' @return a binary (0/1) coded variable indicating whether the condition is true
 #'
+#' @export
 ind <- function(cond) ifelse(cond, 1L, 0L)
 
 #' Binomial Win Probability
@@ -630,4 +631,45 @@ prob_winner <- function(post){
   k = ncol(post)
   w = table(factor(max.col(post), levels = 1:k))
   return(w/sum(w))
+}
+
+#' Bootstrapped confidence interval
+#'
+#' From HMisc. A very fast implementation of the basic nonparametric bootstrap for
+#' obtaining confidence limits for the population mean without assuming normality.
+#'
+#' @author Frank Harrell
+#'
+#' @param x a numeric vector from which NAs will be removed automatically
+#' @param conf_int specifies the confidence level (0-1) for interval estimation of
+#' the population mean.
+#' @param B number of bootstrap resamples
+#' @param na_rm defaults to \code{TRUE} unlike built-in functions, so that by default
+#' \code{NA}s are automatically removed.
+#' @param reps set to \code{TRUE} to have \code{smean.cl.boot} return the vector of
+#' bootstrapped means as the \code{reps} attribute of the returned object.
+#'
+#' @return A vector of summary statistics.
+#'
+#' @export
+ci_boot <- function(x, conf_int=0.95, B=1000, na_rm=TRUE, reps=FALSE) {
+
+  if(na_rm) x <- x[!is.na(x)]
+
+  n <- length(x)
+  xbar <- mean(x)
+
+  if(n < 2L) return(c(Mean=xbar, Lower=NA, Upper=NA))
+
+  z <- unlist(lapply(seq_len(B), function(i, x, N) sum(x[sample.int(N, N, TRUE, NULL)]), x=x, N=n)) / n
+
+  quant <- stats::quantile(z, c((1 - conf_int)/2, (1 + conf_int)/2))
+
+  names(quant) <- NULL
+
+  res <- c(Mean=xbar, Lower=quant[1L], Upper=quant[2L])
+
+  if(reps) attr(res, "reps") <- z
+
+  res
 }

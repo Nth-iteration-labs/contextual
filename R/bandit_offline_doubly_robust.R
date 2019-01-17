@@ -12,9 +12,10 @@ OfflineDoublyRobustBandit <- R6::R6Class(
     class_name = "OfflineDoublyRobustBandit",
     randomize = NULL,
     arm_regression_models = NULL,
+    arm_regression_data = NULL,
     preweighted = NULL,
     stabilize = NULL,
-    initialize   = function(offline_data, k, d = 0, arm_regression_models, randomize = TRUE,
+    initialize   = function(offline_data, k, d, arm_regression_models, arm_regression_data, randomize = TRUE,
                             stabilize = TRUE, preweighted = FALSE) {
 
       self$k <- k                     # Number of arms (integer)
@@ -25,6 +26,7 @@ OfflineDoublyRobustBandit <- R6::R6Class(
       private$S <- offline_data       # Logged events (by default, as a data.table)
 
       self$arm_regression_models <- arm_regression_models
+      self$arm_regression_data   <- arm_regression_data
 
       if (stabilize) {
         private$marginal_prob <- table(private$S$choice)/length(private$S$choice)
@@ -49,26 +51,27 @@ OfflineDoublyRobustBandit <- R6::R6Class(
     },
     get_reward = function(index, context, action) {
 
-        choice            <- action$choice
-        equal_choice      <- as.numeric(private$S$choice[[index]] == choice)
-        data_reward       <- as.double(private$S$reward[[index]])
+      choice            <- action$choice
+      indicator         <- ind(private$S$choice[[index]] == choice)
+      data_reward       <- as.double(private$S$reward[[index]])
+
+      if (is.null(self$arm_regression_data)) {
         regression_reward <- predict(self$arm_regression_models[[choice]], private$S[index,], type="response")
+      } else {
+        regression_reward <- self$arm_regression_data[[choice]][[private$S$t[[index]]]]
+      }
 
-        # regression_reward <- rbinom(1,1,regression_reward)
+      if (self$preweighted) {
+        p <- private$S$propensity[[index]] * private$marginal_prob[[action$choice]]
+      } else {
+        p <- (1 / private$S$propensity[[index]]) * private$marginal_prob[[action$choice]]
+      }
 
-        s                 <- ifelse(self$stabilize,mean(private$S$propensity),  1)
+      robust_reward <- indicator * ((data_reward - regression_reward) * p) + regression_reward
 
-        if (self$preweighted) {
-          p <- private$S$propensity[[index]] * private$marginal_prob[[action$choice]]
-        } else {
-          p <- (1 / private$S$propensity[[index]]) * private$marginal_prob[[action$choice]]
-        }
-
-        robust_reward <- equal_choice * ((data_reward - regression_reward) * p) + regression_reward
-
-        list(
-          reward = as.double(robust_reward)
-        )
+      list(
+        reward = as.double(robust_reward)
+      )
     }
   )
 )
@@ -95,7 +98,7 @@ OfflineDoublyRobustBandit <- R6::R6Class(
 #'     integer; number of arms (required)
 #'   }
 #'   \item{\code{d}}{
-#'     integer; number of contextual features (optional, default: 0)
+#'     integer; number of contextual features (required)
 #'   }
 #'   \item{\code{randomize}}{
 #'     logical; randomize rows of data stream per simulation (optional, default: TRUE)

@@ -378,6 +378,7 @@ History <- R6::R6Class(
         reward_sd           = sd(reward),
         reward              = mean(reward),
 
+
         cum_regret_var      = var(cum_regret),
         cum_regret_sd       = sd(cum_regret),
         cum_regret          = mean(cum_regret),

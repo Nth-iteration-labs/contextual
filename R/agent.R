@@ -90,7 +90,7 @@ Agent <- R6::R6Class(
         if (agent_t %% self$log_interval == 0) {
           cat(paste0("[",format(Sys.time(), format = "%H:%M:%OS6"),"] ",sprintf("%9s", agent_t)," > step - ",
                      sprintf("%-20s", self$name)," running ",bandit$class_name,
-                     " and ",policy$class_name,"\n"),file = "progress.log", append = TRUE)
+                     " and ",policy$class_name,"\n"),file = "agents_progress.log", append = TRUE)
         }
       }
       list(context = context, action = action, reward = reward, theta = theta, policy_t = (policy_t-1))

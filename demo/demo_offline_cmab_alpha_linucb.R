@@ -40,7 +40,8 @@ simulation  <-
     agents           = agents,
     simulations      = simulations,
     horizon          = horizon,
-    save_interval    = 1
+    progress_file    = TRUE
+
   )
 
 # Run the simulation.

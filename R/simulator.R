@@ -73,7 +73,8 @@ Simulator <- R6::R6Class(
 
       # create or clear log files
       if (self$progress_file) {
-        cat(paste0(""), file = "progress.log", append = FALSE)
+        cat(paste0(""), file = "workers_progress.log", append = FALSE)
+        cat(paste0(""), file = "agents_progress.log", append = FALSE)
         cat(paste0(""), file = "parallel.log", append = FALSE)
         self$outfile <- "parallel.log"
       }
@@ -196,7 +197,7 @@ Simulator <- R6::R6Class(
                        " worker ", i,
                        " at sim ", sim_agent_counter,
                        " of ", sim_agent_total,"\n"),
-                file = "progress.log", append = TRUE)
+                file = "workers_progress.log", append = TRUE)
           }
           simulation_index <- sim_agent$sim_index
           agent_name <- sim_agent$name
@@ -384,9 +385,10 @@ Simulator <- R6::R6Class(
 #'      \code{integer}. Sets the seed of R's random number generator for the current \code{Simulator}.
 #'   }
 #'   \item{\code{progress_file}}{
-#'       \code{logical}. If \code{TRUE}, \code{Simulator} writes \code{progress.log} and \code{parallel.log}
-#'       files to the current working directory, allowing you to keep track of \code{workers}, iterations,
-#'       and potential errors when running a \code{Simulator} in parallel.
+#'       \code{logical}. If \code{TRUE}, \code{Simulator} writes \code{workers_progress.log},
+#'       \code{agents_progress.log} and \code{parallel.log} files to the current working directory,
+#'       allowing you to keep track of respectively \code{workers}, \code{agents},
+#'       and potential errors when running a \code{Simulator} in parallel mode.
 #'   }
 #'   \item{\code{log_interval}}{
 #'       \code{integer}. Sets the log write interval.

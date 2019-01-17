@@ -81,9 +81,10 @@ and a different subset of the data for each repeat of an agent's simulation.
 \code{integer}. Sets the seed of R's random number generator for the current \code{Simulator}.
 }
 \item{\code{progress_file}}{
-\code{logical}. If \code{TRUE}, \code{Simulator} writes \code{progress.log} and \code{parallel.log}
-files to the current working directory, allowing you to keep track of \code{workers}, iterations,
-and potential errors when running a \code{Simulator} in parallel.
+\code{logical}. If \code{TRUE}, \code{Simulator} writes \code{workers_progress.log},
+\code{agents_progress.log} and \code{parallel.log} files to the current working directory,
+allowing you to keep track of respectively \code{workers}, \code{agents},
+and potential errors when running a \code{Simulator} in parallel mode.
 }
 \item{\code{log_interval}}{
 \code{integer}. Sets the log write interval.

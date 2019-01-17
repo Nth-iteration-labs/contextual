@@ -70,7 +70,7 @@ simulations   <- 100L
 bandit        <- ContextualLinearBandit$new(k = 4, d = 3, sigma = 0.3)
 
 agents        <- list(Agent$new(EpsilonGreedyPolicy$new(0.1), bandit, "EGreedy"),
-                      Agent$new(ContextualLinTSPolicyPolicy$new(0.1), bandit, "ContextualLinTSPolicy"))
+                      Agent$new(ContextualLinTSPolicyPolicy$new(0.1), bandit, "LinTSPolicy"))
 
 simulation     <- Simulator$new(agents, horizon, simulations, do_parallel = TRUE)
 
