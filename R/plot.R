@@ -87,6 +87,69 @@ Plot <- R6::R6Class(
       invisible(recordPlot())
     },
 
+    optimal = function(history,
+                       disp               = NULL,
+                       plot_only_disp     = FALSE,
+                       rate               = FALSE,
+                       interval           = 1,
+                       traces             = FALSE,
+                       traces_max         = 100,
+                       traces_alpha       = 0.3,
+                       smooth             = FALSE,
+                       no_par             = FALSE,
+                       xlim               = NULL,
+                       ylim               = NULL,
+                       legend             = TRUE,
+                       use_colors         = TRUE,
+                       log                = "",
+                       color_step         = 1,
+                       lty_step           = 1,
+                       lwd                = 2,
+                       legend_labels      = NULL,
+                       legend_border      = NULL,
+                       legend_position    = "topleft",
+                       legend_title       = NULL,
+                       limit_agents       = NULL,
+                       limit_context      = NULL) {
+
+      self$history <- history
+
+      ylab_title     <- "Optimal action"
+      line_data_name <- "optimal"
+      disp_data_name   <- "optimal_none"
+
+      private$do_plot(
+        line_data_name      = line_data_name,
+        disp_data_name      = disp_data_name,
+        ylab_title          = ylab_title,
+        use_colors          = use_colors,
+        log                 = log,
+        legend              = legend,
+        disp                = disp,
+        plot_only_disp      = plot_only_disp,
+        no_par              = no_par,
+        interval            = interval,
+        color_step          = color_step,
+        lty_step            = lty_step,
+        lwd                 = lwd,
+        xlim                = xlim,
+        ylim                = ylim,
+        legend_labels       = legend_labels,
+        legend_border       = legend_border,
+        legend_position     = legend_position,
+        legend_title        = legend_title,
+        limit_agents        = limit_agents,
+        limit_context       = limit_context,
+        traces              = traces,
+        traces_max          = traces_max,
+        traces_alpha        = traces_alpha,
+        smooth              = smooth
+      )
+
+      invisible(recordPlot())
+    },
+
+
     average = function(history,
                        regret             = TRUE,
                        disp               = NULL,

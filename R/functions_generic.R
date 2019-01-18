@@ -183,6 +183,31 @@ plot.History <- function(x, ...) {
       limit_agents = limit_agents,
       limit_context = limit_context
     )
+  } else if (type == "optimal") {
+    Plot$new()$optimal(
+      x,
+      xlim = xlim,
+      legend = legend,
+      log = log,
+      disp = disp,
+      plot_only_disp = plot_only_disp,
+      traces = traces,
+      traces_max = traces_max,
+      traces_alpha = traces_alpha,
+      smooth = smooth,
+      interval = interval,
+      color_step = color_step,
+      lty_step = lty_step,
+      lwd = lwd,
+      ylim = ylim,
+      legend_labels = legend_labels,
+      legend_border = legend_border,
+      legend_position = legend_position,
+      legend_title = legend_title,
+      no_par = no_par,
+      limit_agents = limit_agents,
+      limit_context = limit_context
+    )
   } else if (type == "arms") {
     Plot$new()$arms(
       x,

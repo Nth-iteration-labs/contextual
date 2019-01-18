@@ -378,6 +378,9 @@ History <- R6::R6Class(
         reward_sd           = sd(reward),
         reward              = mean(reward),
 
+        optimal_var         = var(as.numeric(optimal_arm == choice)),
+        optimal_sd          = sd(as.numeric(optimal_arm == choice)),
+        optimal             = mean(as.numeric(optimal_arm == choice)),
 
         cum_regret_var      = var(cum_regret),
         cum_regret_sd       = sd(cum_regret),
