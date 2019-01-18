@@ -1,11 +1,14 @@
 library(contextual)
 
+# Reinforcement Learning: An Introduction --------------------------------------------------------------------
+
 ## Multi-armed Bandit examples taken from "Reinforcement Learning: An Introduction"
 ## by Sutton and Barto, 2nd ed. (Version: 2018)
 
+
 # 2.3 The 10-armed Testbed -----------------------------------------------------------------------------------
 
-set.seed(1)
+set.seed(2)
 mus                <- rnorm(10, 0, 1)
 sigmas             <- rep(1, 10)
 bandit             <- BasicGaussianBandit$new(mu_per_arm = mus, sigma_per_arm = sigmas)
@@ -20,6 +23,7 @@ print(ggplot(data = data.frame(dist_mean = mus, dist_sd = sigmas, dist = factor(
              mu = dist_mean, sigma = dist_sd)) + ylab("Reward distribution") + geom_normalviolin() +
              theme(legend.position = "none") + xlab("Action") + geom_hline(aes(yintercept = 0)))
 
+
 # epsilon greedy plot ----------------------------------------------------------------------------------------
 
 agents             <- list(Agent$new(EpsilonGreedyPolicy$new(0),    bandit, "e = 0, greedy"),
@@ -27,10 +31,25 @@ agents             <- list(Agent$new(EpsilonGreedyPolicy$new(0),    bandit, "e =
                            Agent$new(EpsilonGreedyPolicy$new(0.01), bandit, "e = 0.01"))
 
 simulator          <- Simulator$new(agents = agents, horizon = 1000, simulations = 2000)
-
 history            <- simulator$run()
 
 plot(history, type = "average", regret = FALSE, lwd = 1, legend_position = "bottomright")
+plot(history, type = "optimal", lwd = 1, legend_position = "bottomright")
+
+
+# 2.6 - Optimistic values --------------------- --------------------------------------------------------------
+
+agents             <- list(Agent$new(EpsilonGreedyPolicy$new(0), bandit, "optimistic greedy Q0 = 5, e = 0"),
+                           Agent$new(EpsilonGreedyPolicy$new(0.1), bandit, "realistic greedy Q0 = 0, e = 0.1"))
+
+agents[[1]]$policy$theta$mean <- as.list(rep(5,10))
+agents[[1]]$policy$theta$n    <- as.list(rep(5,10))
+
+simulator          <- Simulator$new(agents = agents, horizon = 1000, simulations = 2000)
+history            <- simulator$run()
+
+plot(history, type = "optimal", lwd = 1, legend_position = "bottomright")
+
 
 # 2.7 - Upper-Confidence-Bound Action Selection --------------------------------------------------------------
 
@@ -38,7 +57,12 @@ agents             <- list(Agent$new(EpsilonGreedyPolicy$new(0.1),  bandit, "EGr
                            Agent$new(UCB1Policy$new(),   bandit,            "UCB1"))
 
 simulator          <- Simulator$new(agents = agents, horizon = 1000, simulations = 2000)
-
 history            <- simulator$run()
 
 plot(history, type = "average", regret = FALSE, lwd = 1, legend_position = "bottomright")
+
+
+
+
+
+

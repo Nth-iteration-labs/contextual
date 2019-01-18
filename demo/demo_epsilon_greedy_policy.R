@@ -3,13 +3,13 @@ library(contextual)
 policy             <- EpsilonGreedyPolicy$new(epsilon = 0.1)
 
 bandit             <- BasicBernoulliBandit$new(weights = c(0.6, 0.1, 0.1))
+
 agent              <- Agent$new(policy,bandit)
 
 simulator          <- Simulator$new(agents      = agent,
                                     do_parallel = TRUE,
                                     horizon     = 100,
                                     simulations = 1000)
-
 simulator$run()
 
 plot(simulator$history, type = "cumulative", regret = TRUE, disp = "ci",
