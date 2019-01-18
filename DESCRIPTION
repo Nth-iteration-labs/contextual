@@ -26,6 +26,7 @@ Imports:
     iterators
 Suggests:
     testthat,
+    RCurl,
     splitstackshape,
     covr,
     knitr,
