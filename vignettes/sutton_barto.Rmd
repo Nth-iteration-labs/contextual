@@ -19,7 +19,7 @@ knitr::opts_chunk$set(
 
 Simulation of the multi-armed Bandit examples in chapter 2 of "Reinforcement Learning: An Introduction" by Sutton and Barto, 2nd ed. (Version: 2018)
 
-This book is available here: [Sutton&Barto](http://incompleteideas.net/book/the-book-2nd.htmll)
+This book is available here: [Sutton&Barto](http://incompleteideas.net/book/the-book-2nd.html)
 
 # 2.3 The 10-armed Testbed
 
