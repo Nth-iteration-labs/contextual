@@ -122,6 +122,9 @@ are linear. Check the reference for more details." />
     <li>
       <a href="../articles/simpsons.html">Demo: Bandits, Propensity Weighting &amp; Simpson's Paradox in R</a>
     </li>
+    <li>
+      <a href="../articles/sutton_barto.html">Demo: Replication Sutton &amp; Barto, Reinforcement Learning: An Introduction, Chapter 2</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -230,7 +233,7 @@ in Neural Information Processing Systems 24. 2011.</p>
 <span class='no'>bandit</span>        <span class='kw'>&lt;-</span> <span class='no'>ContextualLinearBandit</span>$<span class='fu'>new</span>(<span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='kw'>d</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>sigma</span> <span class='kw'>=</span> <span class='fl'>0.3</span>)
 
 <span class='no'>agents</span>        <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>EpsilonGreedyPolicy</span>$<span class='fu'>new</span>(<span class='fl'>0.1</span>), <span class='no'>bandit</span>, <span class='st'>"EGreedy"</span>),
-                      <span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>ContextualLinTSPolicyPolicy</span>$<span class='fu'>new</span>(<span class='fl'>0.1</span>), <span class='no'>bandit</span>, <span class='st'>"ContextualLinTSPolicy"</span>))
+                      <span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>ContextualLinTSPolicyPolicy</span>$<span class='fu'>new</span>(<span class='fl'>0.1</span>), <span class='no'>bandit</span>, <span class='st'>"LinTSPolicy"</span>))
 
 <span class='no'>simulation</span>     <span class='kw'>&lt;-</span> <span class='no'>Simulator</span>$<span class='fu'>new</span>(<span class='no'>agents</span>, <span class='no'>horizon</span>, <span class='no'>simulations</span>, <span class='kw'>do_parallel</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
@@ -266,7 +269,7 @@ in Neural Information Processing Systems 24. 2011.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
 </div>
       </footer>
    </div>

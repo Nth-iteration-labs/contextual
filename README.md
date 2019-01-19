@@ -49,15 +49,19 @@ clean and rebuild...
 Documentation
 -------------
 
-* See the [demo directory](https://github.com/Nth-iteration-labs/contextual/tree/master/demo) for practical examples and replications of both synthetic and offline (contextual) bandit policy evaluations, such as for instance:
-  * [Basic MAB Epsilon Greedy evaluation](https://nth-iteration-labs.github.io/contextual/articles/epsilongreedy.html)
-  * [Synthetic MAB policy comparison](https://nth-iteration-labs.github.io/contextual/articles/mabs.html)
-  * [Synthetic cMAB policy comparison](https://nth-iteration-labs.github.io/contextual/articles/cmabs.html)
-  * [Replication Eckles & Kaptein (Bootstrap Thompson Sampling)](https://nth-iteration-labs.github.io/contextual/articles/eckles_kaptein.html)
-  * [Offline Bandit: Basic cMAB policy evaluation](https://nth-iteration-labs.github.io/contextual/articles/cmabsoffline.html)
-  * [Offline Bandits and Simpson's Paradox](https://nth-iteration-labs.github.io/contextual/articles/simpsons.html)
-  * [Offline Bandit: MovieLens 10M dataset](https://nth-iteration-labs.github.io/contextual/articles/ml10m.html)
-  
+See the [demo directory](https://github.com/Nth-iteration-labs/contextual/tree/master/demo) for practical examples and replications of both synthetic and offline (contextual) bandit policy evaluations, such as for instance:
+
+* [Basic MAB Epsilon Greedy evaluation](https://nth-iteration-labs.github.io/contextual/articles/epsilongreedy.html)
+* [Synthetic MAB policy comparison](https://nth-iteration-labs.github.io/contextual/articles/mabs.html)
+* [Replication Sutton and Barto, Reinforcement Learning: An Introduction, Chapter 2](https://nth-iteration-labs.github.io/contextual/articles/sutton_barto.html)
+* [Synthetic cMAB policy comparison](https://nth-iteration-labs.github.io/contextual/articles/cmabs.html)
+* [Replication Eckles & Kaptein (Bootstrap Thompson Sampling)](https://nth-iteration-labs.github.io/contextual/articles/eckles_kaptein.html)
+* [Offline Bandit: Basic cMAB policy evaluation](https://nth-iteration-labs.github.io/contextual/articles/cmabsoffline.html)
+* [Offline Bandits and Simpson's Paradox](https://nth-iteration-labs.github.io/contextual/articles/simpsons.html)
+* [Offline Bandit: MovieLens 10M dataset](https://nth-iteration-labs.github.io/contextual/articles/ml10m.html)
+
+Some vignettes to get you started:
+
 * [Getting started: running simulations](https://nth-iteration-labs.github.io/contextual/articles/introduction.html)
 * [Offline evaluation: replication of Li et al (2010)](https://nth-iteration-labs.github.io/contextual/articles/replication.html)
 * [Class reference](https://nth-iteration-labs.github.io/contextual/reference/index.html)
