@@ -1,65 +1,64 @@
 #' @export
-SoftmaxPolicy <- R6::R6Class(
+GradientPolicy <- R6::R6Class(
   portable = FALSE,
   class = FALSE,
   inherit = Policy,
   public = list(
-    tau = NULL,
-    class_name = "SoftmaxPolicy",
-    initialize = function(tau = 0.1) {
+    alpha = NULL,
+    baseline = NULL,
+    class_name = "GradientPolicy",
+
+    initialize = function(alpha = 0.1, baseline = TRUE) {
       super$initialize()
-      self$tau <- tau
+      self$alpha <- alpha
+      self$baseline <- baseline
     },
     set_parameters = function(context_params) {
-      self$theta_to_arms <- list('n' = 0, 'mean' = 0)
+      k <- context_params$k
+      self$theta <- list('n' = 0, 'mean' = 0, 'pref' = rep(0,k), 'prob' = rep(0,k))
     },
     get_action = function(t, context) {
-      exp_est_tau <- exp(unlist(self$theta$mean)/tau)
-      p <- exp_est_tau/sum(exp_est_tau)
-      action$choice <- categorical_draw(p)
+      exp_est <- exp(self$theta$pref)
+      self$theta$prob <- exp_est/sum(exp_est)
+      action$choice   <- sample(context$k, 1, prob = self$theta$prob)
       return(action)
     },
     set_reward = function(t, context, action, reward) {
-      arm <- action$choice
-      reward <- reward$reward
-      inc(self$theta$n[[arm]]) <- 1
-      inc(self$theta$mean[[arm]]) <- (reward - self$theta$mean[[arm]]) / self$theta$n[[arm]]
-      self$theta
-    },
-    categorical_draw = function(probs) {
-      arms <- length(probs)
-      cumulative_probability <- 0.0
-      z <- runif(1)
-      for (i in 1:arms) {
-        inc(cumulative_probability) <- probs[i]
-        if ( cumulative_probability > z ) return(i)
-      }
-      return(arms)
-    }
+      arm                  <- action$choice
+      reward               <- reward$reward
 
+      inc(self$theta$n)    <- 1
+      inc(self$theta$mean) <- (reward - self$theta$mean) / self$theta$n
+
+      one_hot              <- rep(0,context$k)
+      one_hot[arm]         <- 1
+
+      baseline             <- ifelse(self$baseline,self$theta$mean,0)
+
+      self$theta$pref      <- self$theta$pref + self$alpha * (reward - baseline) * (one_hot-self$theta$prob)
+
+      self$theta
+    }
   )
 )
 
-#' Policy: Softmax
+#' Policy: Gradient
 #'
-#' \code{SoftmaxPolicy} is very similar to \link{Exp3Policy}, but selects an arm based on the probability from
-#' the Boltmann distribution. It makes use of a temperature parameter tau,
-#' which specifies how many arms we can explore. When tau is high, all arms are explored equally,
-#' when tau is low, arms offering higher rewards will be chosen.
+#' \code{GradientPolicy} is a SoftMax type algorithm, based on Sutton & Barton (2018).
 #'
-#' @name SoftmaxPolicy
+#' @name GradientPolicy
 #'
 #' @section Usage:
 #' \preformatted{
-#' policy <- SoftmaxPolicy(tau = 0.1)
+#' policy <- GradientPolicy(alpha = 0.1)
 #' }
 #'
 #' @section Arguments:
 #'
 #' \describe{
-#'   \item{\code{tau = 0.1}}{
-#'   double, temperature parameter tau specifies how many arms we can explore.
-#'   When tau is high, all arms are explored equally, when tau is low, arms offering higher
+#'   \item{\code{alpha = 0.1}}{
+#'   double, temperature parameter alpha specifies how many arms we can explore.
+#'   When alpha is high, all arms are explored equally, when alpha is low, arms offering higher
 #'   rewards will be chosen.
 #'   }
 #' }
@@ -67,7 +66,7 @@ SoftmaxPolicy <- R6::R6Class(
 #' @section Methods:
 #'
 #' \describe{
-#'   \item{\code{new(epsilon = 0.1)}}{ Generates a new \code{SoftmaxPolicy} object. Arguments are defined in
+#'   \item{\code{new(epsilon = 0.1)}}{ Generates a new \code{GradientPolicy} object. Arguments are defined in
 #'   the Argument section above.}
 #' }
 #'
@@ -115,9 +114,9 @@ SoftmaxPolicy <- R6::R6Class(
 #'
 #' horizon            <- 100L
 #' simulations        <- 100L
-#' weights          <- c(0.9, 0.1, 0.1)
+#' weights            <- c(0.9, 0.1, 0.1)
 #'
-#' policy             <- SoftmaxPolicy$new(tau = 0.1)
+#' policy             <- GradientPolicy$new(alpha = 0.1)
 #' bandit             <- BasicBernoulliBandit$new(weights = weights)
 #' agent              <- Agent$new(policy, bandit)
 #'

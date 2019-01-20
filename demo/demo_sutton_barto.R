@@ -62,6 +62,27 @@ history         <- simulator$run()
 
 plot(history, type = "average", regret = FALSE, lwd = 1, legend_position = "bottomright")
 
+# 2.8 - Gradient Bandit Algorithms ---------------------------------------------------------------------------
 
+set.seed(2)
+mus             <- rnorm(10, 0, 1)
+sigmas          <- rep(1, 10)
+bandit          <- BasicGaussianBandit$new(mu_per_arm = mus, sigma_per_arm = sigmas,
+                                           mu_offset = 4)
+
+agents          <- list(Agent$new(GradientPolicy$new(0.1, TRUE),  bandit,
+                                  "alpha = 0.1, with baseline"),
+                        Agent$new(GradientPolicy$new(0.1, FALSE), bandit,
+                                  "alpha = 0.1, without baseline"),
+                        Agent$new(GradientPolicy$new(0.4, TRUE),  bandit,
+                                  "alpha = 0.4, with baseline"),
+                        Agent$new(GradientPolicy$new(0.4, FALSE), bandit,
+                                  "alpha = 0.4, without baseline"))
+
+simulator       <- Simulator$new(agents = agents, horizon = 1000, simulations = 2000)
+history         <- simulator$run()
+
+plot(history, type = "optimal", lwd = 1, legend_position = "bottomright",
+     color_step = 2, lty_step = 2)
 
 

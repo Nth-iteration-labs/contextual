@@ -208,7 +208,7 @@ test_that("BasicBernoulliBandit MAB policies", {
   expect_equal(history$cumulative$ThompsonSampling$cum_regret, 2.4 , tolerance = 0.01)
   expect_equal(history$cumulative$EpsilonGreedy$cum_regret,3, tolerance = 0.01)
   expect_equal(history$cumulative$EpsilonFirst$cum_regret,3.1, tolerance = 0.01)
-  expect_equal(history$cumulative$Softmax$cum_regret,1.3 , tolerance = 0.01)
+  expect_equal(history$cumulative$Softmax$cum_regret,1.9 , tolerance = 0.01)
   expect_equal(history$cumulative$BootstrapTS$cum_regret,1.7, tolerance = 0.01)
 
 })
@@ -263,7 +263,7 @@ test_that("ContextualPrecachingBandit MAB policies", {
   expect_equal(history$cumulative$ThompsonSampling$cum_regret,2.8, tolerance = 0.01)
   expect_equal(history$cumulative$EpsilonGreedy$cum_regret,2.3, tolerance = 0.01)
   expect_equal(history$cumulative$EpsilonFirst$cum_regret, 3.5, tolerance = 0.01)
-  expect_equal(history$cumulative$Softmax$cum_regret,1.9, tolerance = 0.01)
+  expect_equal(history$cumulative$Softmax$cum_regret,3.3, tolerance = 0.01)
   expect_equal(history$cumulative$BootstrapTS$cum_regret,2.1, tolerance = 0.01)
 
 })
