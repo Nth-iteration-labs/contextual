@@ -75,7 +75,7 @@ plot(history, type = "cumulative", regret = FALSE)
 
 ![](eg_cumulative_reward.jpeg)
 
-# Chapter 5 - Softmax ----------------------------------------------------------------------------------------
+# Chapter 5 - Softmax
 
 ```r
 agents             <- list(Agent$new(SoftmaxPolicy$new(0.1), bandit, "Tau = 0.1"),
@@ -110,7 +110,7 @@ plot(history, type = "cumulative", regret = FALSE)
 ![](softmax_cumulative_reward.jpeg)
 
 
-# Chapter 6 - UCB ----------------------------------------------------------------------------------------
+# Chapter 6 - UCB
 
 ```r
 agents             <- list(Agent$new(SoftmaxPolicy$new(0.1), bandit, "Softmax"),
