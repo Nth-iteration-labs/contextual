@@ -118,7 +118,7 @@
       <h1>Demo: Replication Sutton &amp; Barto, Reinforcement Learning: An Introduction, Chapter 2</h1>
                         <h4 class="author">Robin van Emden</h4>
             
-            <h4 class="date">2019-01-19</h4>
+            <h4 class="date">2019-01-20</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Nth-iteration-labs/contextual/blob/master/vignettes/sutton_barto.Rmd"><code>vignettes/sutton_barto.Rmd</code></a></small>
       <div class="hidden name"><code>sutton_barto.Rmd</code></div>
@@ -128,7 +128,7 @@
     
     
 <p>Simulation of the multi-armed Bandit examples in chapter 2 of “Reinforcement Learning: An Introduction” by Sutton and Barto, 2nd ed. (Version: 2018)</p>
-<p>This book is available here: <a href="http://incompleteideas.net/book/the-book-2nd.htmll">Sutton&amp;Barto</a></p>
+<p>This book is available here: <a href="http://incompleteideas.net/book/the-book-2nd.html">Sutton&amp;Barto</a></p>
 <div id="the-10-armed-testbed" class="section level1">
 <h1 class="hasAnchor">
 <a href="#the-10-armed-testbed" class="anchor"></a>2.3 The 10-armed Testbed</h1>
@@ -211,6 +211,33 @@ history         &lt;-<span class="st"> </span>simulator<span class="op">$</span>
 <img src="sutton_ucb.jpeg">
 </div>
 </div>
+<div id="gradient-bandit-algorithms" class="section level1">
+<h1 class="hasAnchor">
+<a href="#gradient-bandit-algorithms" class="anchor"></a>2.8 - Gradient Bandit Algorithms</h1>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Random">set.seed</a></span>(<span class="dv">2</span>)
+mus             &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">1</span>)
+sigmas          &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="dv">1</span>, <span class="dv">10</span>)
+bandit          &lt;-<span class="st"> </span>BasicGaussianBandit<span class="op">$</span><span class="kw">new</span>(<span class="dt">mu_per_arm =</span> mus, <span class="dt">sigma_per_arm =</span> sigmas,
+                                           <span class="dt">mu_offset =</span> <span class="dv">4</span>)
+
+agents          &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(Agent<span class="op">$</span><span class="kw">new</span>(GradientPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.1</span>, <span class="ot">TRUE</span>),  bandit,
+                                  <span class="st">"alpha = 0.1, with baseline"</span>),
+                        Agent<span class="op">$</span><span class="kw">new</span>(GradientPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.1</span>, <span class="ot">FALSE</span>), bandit,
+                                  <span class="st">"alpha = 0.1, without baseline"</span>),
+                        Agent<span class="op">$</span><span class="kw">new</span>(GradientPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.4</span>, <span class="ot">TRUE</span>),  bandit,
+                                  <span class="st">"alpha = 0.4, with baseline"</span>),
+                        Agent<span class="op">$</span><span class="kw">new</span>(GradientPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.4</span>, <span class="ot">FALSE</span>), bandit,
+                                  <span class="st">"alpha = 0.4, without baseline"</span>))
+
+simulator       &lt;-<span class="st"> </span>Simulator<span class="op">$</span><span class="kw">new</span>(<span class="dt">agents =</span> agents, <span class="dt">horizon =</span> <span class="dv">1000</span>, <span class="dt">simulations =</span> <span class="dv">2000</span>)
+history         &lt;-<span class="st"> </span>simulator<span class="op">$</span><span class="kw"><a href="../reference/Simulator.html">run</a></span>()
+
+<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"optimal"</span>, <span class="dt">lwd =</span> <span class="dv">1</span>, <span class="dt">legend_position =</span> <span class="st">"bottomright"</span>,
+     <span class="dt">color_step =</span> <span class="dv">2</span>, <span class="dt">lty_step =</span> <span class="dv">2</span>)</code></pre></div>
+<div class="figure">
+<img src="sutton_gradient.jpeg">
+</div>
+</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
@@ -226,6 +253,7 @@ history         &lt;-<span class="st"> </span>simulator<span class="op">$</span>
 </li>
       <li><a href="#optimistic-values">2.6 - Optimistic values</a></li>
       <li><a href="#upper-confidence-bound-action-selection">2.7 - Upper-Confidence-Bound Action Selection</a></li>
+      <li><a href="#gradient-bandit-algorithms">2.8 - Gradient Bandit Algorithms</a></li>
       </ul>
 </div>
       </div>

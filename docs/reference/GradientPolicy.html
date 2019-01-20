@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>The Inverse Gamma Distribution — invgamma • contextual</title>
+<title>Policy: Gradient — GradientPolicy • contextual</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -36,10 +36,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="The Inverse Gamma Distribution — invgamma" />
+<meta property="og:title" content="Policy: Gradient — GradientPolicy" />
 
-<meta property="og:description" content="Density, distribution function, quantile function and random
-generation for the inverse gamma distribution." />
+<meta property="og:description" content="GradientPolicy is a SoftMax type algorithm, based on Sutton &amp;amp; Barton (2018)." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -154,92 +153,99 @@ generation for the inverse gamma distribution." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>The Inverse Gamma Distribution</h1>
-    <small class="dont-index">Source: <a href='https://github.com/Nth-iteration-labs/contextual/blob/master/R/functions_utility.R'><code>R/functions_utility.R</code></a></small>
-    <div class="hidden name"><code>invgamma.Rd</code></div>
+    <h1>Policy: Gradient</h1>
+    <small class="dont-index">Source: <a href='https://github.com/Nth-iteration-labs/contextual/blob/master/R/policy_mab_gradient.R'><code>R/policy_mab_gradient.R</code></a></small>
+    <div class="hidden name"><code>GradientPolicy.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Density, distribution function, quantile function and random
-generation for the inverse gamma distribution.</p>
+    <p><code>GradientPolicy</code> is a SoftMax type algorithm, based on Sutton &amp; Barton (2018).</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>dinvgamma</span>(<span class='no'>x</span>, <span class='no'>shape</span>, <span class='kw'>rate</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>1</span>/<span class='no'>rate</span>, <span class='kw'>log</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+        
+    <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 
-<span class='fu'>pinvgamma</span>(<span class='no'>q</span>, <span class='no'>shape</span>, <span class='kw'>rate</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>1</span>/<span class='no'>rate</span>, <span class='kw'>lower.tail</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>log.p</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-
-<span class='fu'>qinvgamma</span>(<span class='no'>p</span>, <span class='no'>shape</span>, <span class='kw'>rate</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>1</span>/<span class='no'>rate</span>, <span class='kw'>lower.tail</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>log.p</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-
-<span class='fu'>rinvgamma</span>(<span class='no'>n</span>, <span class='no'>shape</span>, <span class='kw'>rate</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>1</span>/<span class='no'>rate</span>)</pre>
+    
+    <pre>
+policy &lt;- GradientPolicy(alpha = 0.1)
+</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>x, q</th>
-      <td><p>vector of quantiles.</p></td>
-    </tr>
-    <tr>
-      <th>shape</th>
-      <td><p>inverse gamma shape parameter</p></td>
-    </tr>
-    <tr>
-      <th>rate</th>
-      <td><p>inverse gamma rate parameter</p></td>
-    </tr>
-    <tr>
-      <th>scale</th>
-      <td><p>alternative to rate; scale = 1/rate</p></td>
-    </tr>
-    <tr>
-      <th>log, log.p</th>
-      <td><p>logical; if TRUE, probabilities p are given as
-log(p).</p></td>
-    </tr>
-    <tr>
-      <th>lower.tail</th>
-      <td><p>logical; if TRUE (default), probabilities are P(X &lt;= x) otherwise, P(X &gt; x).</p></td>
-    </tr>
-    <tr>
-      <th>p</th>
-      <td><p>vector of probabilities.</p></td>
-    </tr>
-    <tr>
-      <th>n</th>
-      <td><p>number of observations. If length(n) &gt; 1, the length is
-taken to be the number required.</p></td>
-    </tr>
-    </table>
-    
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>The inverse gamma distribution with parameters shape and rate has
-density <em>f(x) = rate^shape/Gamma(shape) x^(-1-shape)
-e^(-rate/x)</em> it is the inverse of the standard gamma
-parameterization in R.</p>
-<p>The functions (d/p/q/r)invgamma simply wrap those of the standard
-(d/p/q/r)gamma R implementation, so look at, say,
-<code><a href='https://www.rdocumentation.org/packages/stats/topics/GammaDist'>dgamma</a></code> for details.</p>
+    
+    <dl class='dl-horizontal'>
+<dt><code>alpha = 0.1</code></dt><dd><p>double, temperature parameter alpha specifies how many arms we can explore.
+When alpha is high, all arms are explored equally, when alpha is low, arms offering higher
+rewards will be chosen.</p></dd>
+</dl>
+    
+    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
+
+    
+    <dl class='dl-horizontal'>
+<dt><code>new(epsilon = 0.1)</code></dt><dd><p>Generates a new <code>GradientPolicy</code> object. Arguments are defined in
+the Argument section above.</p></dd>
+</dl>
+    <dl class='dl-horizontal'>
+<dt><code><a href='Policy.html'>set_parameters()</a></code></dt><dd><p>each policy needs to assign the parameters it wants to keep track of
+to list <code>self$theta_to_arms</code> that has to be defined in <code><a href='Policy.html'>set_parameters()</a></code>'s body.
+The parameters defined here can later be accessed by arm index in the following way:
+<code>theta[[index_of_arm]]$parameter_name</code></p></dd>
+</dl>
+    <dl class='dl-horizontal'>
+<dt><code><a href='Policy.html'>get_action(context)</a></code></dt><dd><p>here, a policy decides which arm to choose, based on the current values
+of its parameters and, potentially, the current context.</p></dd>
+</dl>
+    <dl class='dl-horizontal'>
+<dt><code><a href='Policy.html'>set_reward(reward, context)</a></code></dt><dd><p>in <code><a href='Policy.html'>set_reward(reward, context)</a></code>, a policy updates its parameter values
+based on the reward received, and, potentially, the current context.</p></dd>
+</dl>
+    
+    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+
+    <p>Kuleshov, V., &amp; Precup, D. (2014). Algorithms for multi-armed bandit problems.
+arXiv preprint arXiv:1402.6028.</p>
+<p>Cesa-Bianchi, N., Gentile, C., Lugosi, G., &amp; Neu, G. (2017). Boltzmann exploration done right.
+In Advances in Neural Information Processing Systems (pp. 6284-6293).</p>
+    
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>Core contextual classes: <code><a href='Bandit.html'>Bandit</a></code>, <code><a href='Policy.html'>Policy</a></code>, <code><a href='Simulator.html'>Simulator</a></code>,
+<code><a href='Agent.html'>Agent</a></code>, <code><a href='History.html'>History</a></code>, <code><a href='Plot.html'>Plot</a></code></p>
+<p>Bandit subclass examples: <code><a href='BasicBernoulliBandit.html'>BasicBernoulliBandit</a></code>, <code><a href='ContextualLogitBandit.html'>ContextualLogitBandit</a></code>,
+<code><a href='OfflineReplayEvaluatorBandit.html'>OfflineReplayEvaluatorBandit</a></code></p>
+<p>Policy subclass examples: <code><a href='EpsilonGreedyPolicy.html'>EpsilonGreedyPolicy</a></code>, <code><a href='ContextualLinTSPolicy.html'>ContextualLinTSPolicy</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='no'>s</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/seq'>seq</a></span>(<span class='fl'>0</span>, <span class='fl'>5</span>, <span class='fl'>.01</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='no'>s</span>, <span class='fu'>dinvgamma</span>(<span class='no'>s</span>, <span class='fl'>7</span>, <span class='fl'>10</span>), <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>'l'</span>)</div><div class='img'><img src='invgamma-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='no'>f</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span>) <span class='fu'>dinvgamma</span>(<span class='no'>x</span>, <span class='fl'>7</span>, <span class='fl'>10</span>)
-<span class='no'>q</span> <span class='kw'>&lt;-</span> <span class='fl'>2</span>
-<span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/integrate'>integrate</a></span>(<span class='no'>f</span>, <span class='fl'>0</span>, <span class='no'>q</span>)</div><div class='output co'>#&gt; 0.7621835 with absolute error &lt; 7.3e-05</div><div class='input'>(<span class='no'>p</span> <span class='kw'>&lt;-</span> <span class='fu'>pinvgamma</span>(<span class='no'>q</span>, <span class='fl'>7</span>, <span class='fl'>10</span>))</div><div class='output co'>#&gt; [1] 0.7621835</div><div class='input'><span class='fu'>qinvgamma</span>(<span class='no'>p</span>, <span class='fl'>7</span>, <span class='fl'>10</span>) <span class='co'># = q</span></div><div class='output co'>#&gt; [1] 2</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/mean'>mean</a></span>(<span class='fu'>rinvgamma</span>(<span class='fl'>1e5</span>, <span class='fl'>7</span>, <span class='fl'>10</span>) <span class='kw'>&lt;=</span> <span class='no'>q</span>)</div><div class='output co'>#&gt; [1] 0.76173</div></pre>
+<span class='no'>horizon</span>            <span class='kw'>&lt;-</span> <span class='fl'>100L</span>
+<span class='no'>simulations</span>        <span class='kw'>&lt;-</span> <span class='fl'>100L</span>
+<span class='no'>weights</span>            <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>0.9</span>, <span class='fl'>0.1</span>, <span class='fl'>0.1</span>)
+
+<span class='no'>policy</span>             <span class='kw'>&lt;-</span> <span class='no'>GradientPolicy</span>$<span class='fu'>new</span>(<span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.1</span>)
+<span class='no'>bandit</span>             <span class='kw'>&lt;-</span> <span class='no'>BasicBernoulliBandit</span>$<span class='fu'>new</span>(<span class='kw'>weights</span> <span class='kw'>=</span> <span class='no'>weights</span>)
+<span class='no'>agent</span>              <span class='kw'>&lt;-</span> <span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>policy</span>, <span class='no'>bandit</span>)
+
+<span class='no'>history</span>            <span class='kw'>&lt;-</span> <span class='no'>Simulator</span>$<span class='fu'>new</span>(<span class='no'>agent</span>, <span class='no'>horizon</span>, <span class='no'>simulations</span>, <span class='kw'>do_parallel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)$<span class='fu'><a href='Simulator.html'>run</a></span>()</div><div class='output co'>#&gt; <span class='message'>Simulation horizon: 100</span></div><div class='output co'>#&gt; <span class='message'>Number of simulations: 100</span></div><div class='output co'>#&gt; <span class='message'>Number of batches: 1</span></div><div class='output co'>#&gt; <span class='message'>Starting main loop.</span></div><div class='output co'>#&gt; <span class='message'>Completed simulation in 0:00:00.888</span></div><div class='input'>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='no'>history</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"cumulative"</span>)</div><div class='img'><img src='GradientPolicy-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='no'>history</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"arms"</span>)</div><div class='img'><img src='GradientPolicy-2.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
       
-      <li><a href="#details">Details</a></li>
+      <li><a href="#usage">Usage</a></li>
+
+      <li><a href="#arguments">Arguments</a></li>
+
+      <li><a href="#methods">Methods</a></li>
+
+      <li><a href="#references">References</a></li>
+
+      <li><a href="#see-also">See also</a></li>
       
       <li><a href="#examples">Examples</a></li>
     </ul>
