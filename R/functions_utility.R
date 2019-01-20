@@ -72,7 +72,7 @@ clipr <- function(x, min, max) {
 #'
 #' @export
 which_max_list <- function(x, equal_is_random = TRUE) {
-  which_max_tied(unlist(x, FALSE, FALSE))
+  which_max_tied(unlist(x, FALSE, FALSE), equal_is_random)
 }
 #' Get maximum value randomly breaking ties
 #'
@@ -82,14 +82,15 @@ which_max_list <- function(x, equal_is_random = TRUE) {
 #' the index of one of the tied maxima is returned at random.
 #'
 #' @param x vector of values
+#' @param equal_is_random boolean
 #'
 #' @export
-which_max_tied <- function(x) {
+which_max_tied <- function(x, equal_is_random = TRUE) {
   x <- seq_along(x)[x == max(x)]
-  if (length(x) > 1L)  {
+  if (length(x) > 1L && equal_is_random)  {
       return(sample(x, 1L, replace = TRUE))
   } else {
-    return(x)
+    return(x[1])
   }
 }
 #' Sum of list

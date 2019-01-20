@@ -4,10 +4,12 @@
 \alias{which_max_tied}
 \title{Get maximum value randomly breaking ties}
 \usage{
-which_max_tied(x)
+which_max_tied(x, equal_is_random = TRUE)
 }
 \arguments{
 \item{x}{vector of values}
+
+\item{equal_is_random}{boolean}
 }
 \description{
 Returns the index of the maximum value in vector \code{vec}.

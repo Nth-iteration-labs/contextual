@@ -49,23 +49,36 @@ clean and rebuild...
 Documentation
 -------------
 
-See the [demo directory](https://github.com/Nth-iteration-labs/contextual/tree/master/demo) for practical examples and replications of both synthetic and offline (contextual) bandit policy evaluations, such as for instance:
+See the [demo directory](https://github.com/Nth-iteration-labs/contextual/tree/master/demo) for practical examples and replications of both synthetic and offline (contextual) bandit policy evaluations. 
+
+How to replicate figures from two books, both offering a first introduction to context-free Multi-Armed Bandits:
+
+* [Replication of figures from Sutton and Barto, "Reinforcement Learning: An Introduction", Chapter 2](https://nth-iteration-labs.github.io/contextual/articles/sutton_barto.html)
+* [Replication of figures from "Bandit algorithms for website optimization" by John Miles White](https://nth-iteration-labs.github.io/contextual/articles/bandit_algorithms_for_website_optimization.html)
+
+Basic, context-free multi-armed bandit examples:
 
 * [Basic MAB Epsilon Greedy evaluation](https://nth-iteration-labs.github.io/contextual/articles/epsilongreedy.html)
 * [Synthetic MAB policy comparison](https://nth-iteration-labs.github.io/contextual/articles/mabs.html)
-* [Replication Sutton and Barto, Reinforcement Learning: An Introduction, Chapter 2](https://nth-iteration-labs.github.io/contextual/articles/sutton_barto.html)
-* [Synthetic cMAB policy comparison](https://nth-iteration-labs.github.io/contextual/articles/cmabs.html)
 * [Replication Eckles & Kaptein (Bootstrap Thompson Sampling)](https://nth-iteration-labs.github.io/contextual/articles/eckles_kaptein.html)
+
+Examples of both synthetic and offline *contextual* multi-armed bandit evaluations:
+
+* [Synthetic cMAB policy comparison](https://nth-iteration-labs.github.io/contextual/articles/cmabs.html)
 * [Offline Bandit: Basic cMAB policy evaluation](https://nth-iteration-labs.github.io/contextual/articles/cmabsoffline.html)
 * [Offline Bandits and Simpson's Paradox](https://nth-iteration-labs.github.io/contextual/articles/simpsons.html)
 * [Offline Bandit: MovieLens 10M dataset](https://nth-iteration-labs.github.io/contextual/articles/ml10m.html)
 
-Some vignettes to get you started:
+Some more extensive vignettes to get you started with the package:
 
 * [Getting started: running simulations](https://nth-iteration-labs.github.io/contextual/articles/introduction.html)
 * [Offline evaluation: replication of Li et al (2010)](https://nth-iteration-labs.github.io/contextual/articles/replication.html)
 * [Class reference](https://nth-iteration-labs.github.io/contextual/reference/index.html)
-* A basic introduction to multi-armed bandit problems in general, and the use of the R package contextual in specific can be found in the [this](https://arxiv.org/abs/1811.01926) paper.
+
+Paper offering a general overview of the package's structure & API:
+
+* [An introduction to multi-armed bandit problems and the use of the R package contextual](https://arxiv.org/abs/1811.01926) paper.
+
 
 <!---
 * [Blog at Pavlov](https://pavlov.tech/category/contextual/)
