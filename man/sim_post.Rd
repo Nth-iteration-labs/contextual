@@ -27,9 +27,9 @@ best binomial bandit.
 }
 \examples{
 
-x=c(10,20,30,50)
-n=c(100,102,120,130)
-sim_post(x,n)
+x <- c(10,20,30,50)
+n <- c(100,102,120,130)
+sp <- sim_post(x,n)
 
 }
 \author{

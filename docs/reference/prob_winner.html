@@ -93,9 +93,6 @@ given simulated posterior results." />
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="../articles/bandit_algorithms_for_website_optimization.html">Demo: Replication of John Myles White, Bandit Algorithms for Website Optimization</a>
-    </li>
-    <li>
       <a href="../articles/cmabs.html">Demo: Basic Synthetic cMAB Policies</a>
     </li>
     <li>
@@ -124,6 +121,9 @@ given simulated posterior results." />
     </li>
     <li>
       <a href="../articles/sutton_barto.html">Demo: Replication Sutton &amp; Barto, Reinforcement Learning: An Introduction, Chapter 2</a>
+    </li>
+    <li>
+      <a href="../articles/website_optimization.html">Demo: Replication of John Myles White, Bandit Algorithms for Website Optimization</a>
     </li>
   </ul>
 </li>
@@ -187,13 +187,10 @@ given simulated posterior results.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='no'>x</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>10</span>,<span class='fl'>20</span>,<span class='fl'>30</span>,<span class='fl'>50</span>)
-<span class='no'>n</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>100</span>,<span class='fl'>102</span>,<span class='fl'>120</span>,<span class='fl'>130</span>)
-<span class='no'>betaPost</span> <span class='kw'>=</span> <span class='fu'><a href='sim_post.html'>sim_post</a></span>(<span class='no'>x</span>,<span class='no'>n</span>)
-<span class='fu'>prob_winner</span>(<span class='no'>betaPost</span>)</div><div class='output co'>#&gt; 
-#&gt;      1      2      3      4 
-#&gt; 0.0000 0.0006 0.0118 0.9876 </div><div class='input'>
-</div></pre>
+<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>10</span>,<span class='fl'>20</span>,<span class='fl'>30</span>,<span class='fl'>50</span>)
+<span class='no'>n</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>100</span>,<span class='fl'>102</span>,<span class='fl'>120</span>,<span class='fl'>130</span>)
+<span class='no'>betaPost</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='sim_post.html'>sim_post</a></span>(<span class='no'>x</span>,<span class='no'>n</span>)
+<span class='no'>pw</span> <span class='kw'>&lt;-</span> <span class='fu'>prob_winner</span>(<span class='no'>betaPost</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

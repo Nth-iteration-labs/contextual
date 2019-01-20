@@ -8,3 +8,4 @@ demo_cmab_policy_comparison_linear_bandit         Comparison of a contextual pol
 demo_cmab_policy_comparison_weight_bandit         Comparison of a contextual policies with weight bandit.
 demo_simpsons_paradox_propensity                  Simpson's Paradox to demonstrate propensity weighting.
 demo_sutton_barto                                 Contextual code reproducing Sutton & Barto (2018) plots.
+demo_bandit_algorithms_for_website_optimization   Contextual code reproducing John Myles White (2012) plots.

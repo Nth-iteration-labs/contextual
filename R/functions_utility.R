@@ -548,23 +548,23 @@ mvrnorm = function(n, mu, sigma)
 #'
 #' @examples
 #'
-#' x=c(10,20,30,80)
-#' n=c(100,102,120,240)
-#' vr = value_remaining(x, n)
+#' x <- c(10,20,30,80)
+#' n <- c(100,102,120,240)
+#' vr <- value_remaining(x, n)
 #' hist(vr)
 #'
 #' # "potential value" remaining in the experiment
-#' potential_value = quantile(vr, 0.95)
+#' potential_value <- quantile(vr, 0.95)
 #'
 #' @export
 value_remaining <- function(x, n, alpha = 1, beta = 1, ndraws = 10000)
 {
-  post = sim_post(x,n,alpha,beta,ndraws)
-  postWin = prob_winner(post)
-  iMax = which.max(postWin)
-  thetaMax = apply(post,1,max)
+  post <- sim_post(x,n,alpha,beta,ndraws)
+  postWin <- prob_winner(post)
+  iMax <- which.max(postWin)
+  thetaMax <- apply(post,1,max)
   #value_remaining:
-  vR = (thetaMax-post[,iMax])/post[,iMax]
+  vR <- (thetaMax-post[,iMax])/post[,iMax]
   return(vR)
 }
 
@@ -586,28 +586,19 @@ value_remaining <- function(x, n, alpha = 1, beta = 1, ndraws = 10000)
 #'
 #' @examples
 #'
-#' x=c(10,20,30,50)
-#' n=c(100,102,120,130)
-#' sim_post(x,n)
+#' x <- c(10,20,30,50)
+#' n <- c(100,102,120,130)
+#' sp <- sim_post(x,n)
 #'
 #' @export
 sim_post <- function(x, n, alpha = 1, beta = 1, ndraws = 5000) {
   k <- length(x)
   ans <- matrix(nrow=ndraws, ncol=k)
-  no = n-x
+  no <- n-x
   for (i in (1:k))
-    ans[,i] = stats::rbeta(ndraws, x[i] + alpha, no[i] + beta)
+    ans[,i] <- stats::rbeta(ndraws, x[i] + alpha, no[i] + beta)
   return(ans)
 }
-
-
-#' On-the-fly indicator function for use in formulae
-#'
-#' @param cond a logical condition to be evaluated
-#' @return a binary (0/1) coded variable indicating whether the condition is true
-#'
-#' @export
-ind <- function(cond) ifelse(cond, 1L, 0L)
 
 #' Binomial Win Probability
 #'
@@ -622,15 +613,15 @@ ind <- function(cond) ifelse(cond, 1L, 0L)
 #'
 #' @examples
 #'
-#' x=c(10,20,30,50)
-#' n=c(100,102,120,130)
-#' betaPost = sim_post(x,n)
-#' prob_winner(betaPost)
+#' x <- c(10,20,30,50)
+#' n <- c(100,102,120,130)
+#' betaPost <- sim_post(x,n)
+#' pw <- prob_winner(betaPost)
 #'
 #' @export
 prob_winner <- function(post){
-  k = ncol(post)
-  w = table(factor(max.col(post), levels = 1:k))
+  k <- ncol(post)
+  w <- table(factor(max.col(post), levels = 1:k))
   return(w/sum(w))
 }
 
@@ -674,3 +665,11 @@ ci_boot <- function(x, conf_int=0.95, B=1000, na_rm=TRUE, reps=FALSE) {
 
   res
 }
+
+#' On-the-fly indicator function for use in formulae
+#'
+#' @param cond a logical condition to be evaluated
+#' @return a binary (0/1) coded variable indicating whether the condition is true
+#'
+#' @export
+ind <- function(cond) ifelse(cond, 1L, 0L)

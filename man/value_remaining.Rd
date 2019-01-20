@@ -27,13 +27,13 @@ currently best in binomial bandits
 }
 \examples{
 
-x=c(10,20,30,80)
-n=c(100,102,120,240)
-vr = value_remaining(x, n)
+x <- c(10,20,30,80)
+n <- c(100,102,120,240)
+vr <- value_remaining(x, n)
 hist(vr)
 
 # "potential value" remaining in the experiment
-potential_value = quantile(vr, 0.95)
+potential_value <- quantile(vr, 0.95)
 
 }
 \author{

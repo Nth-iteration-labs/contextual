@@ -54,7 +54,7 @@ See the [demo directory](https://github.com/Nth-iteration-labs/contextual/tree/m
 How to replicate figures from two books, both offering a first introduction to context-free Multi-Armed Bandits:
 
 * [Replication of figures from Sutton and Barto, "Reinforcement Learning: An Introduction", Chapter 2](https://nth-iteration-labs.github.io/contextual/articles/sutton_barto.html)
-* [Replication of figures from "Bandit algorithms for website optimization" by John Miles White](https://nth-iteration-labs.github.io/contextual/articles/bandit_algorithms_for_website_optimization.html)
+* [Replication of figures from "Bandit algorithms for website optimization" by John Miles White](https://nth-iteration-labs.github.io/contextual/articles/website_optimization.html)
 
 Basic, context-free multi-armed bandit examples:
 
