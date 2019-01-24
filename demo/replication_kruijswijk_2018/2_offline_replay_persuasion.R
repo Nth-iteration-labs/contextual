@@ -14,7 +14,7 @@ csv_url     <- "http://d1ie9wlkzugsxr.cloudfront.net/data_persuasion_api/persuas
 data        <- fread(csv_url, nrows = horizon)
 
 data$user   <- as.numeric(factor(data$user, levels = unique(data$user)))
-data$choice <- data$choice + 1
+data$choice <- data$choice
 users       <- data[, .N, keyby = user]
 
 max_repeat  <- max(users$N)
@@ -22,6 +22,10 @@ n_users     <- length(users$user)
 
 print(max_repeat)
 print(n_users)
+
+table(data$choice)
+#1      2      3      4
+#142628 142860 142439 142073
 
 ##################### Bandit ###########################
 

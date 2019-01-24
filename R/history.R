@@ -301,12 +301,12 @@ History <- R6::R6Class(
       # if not temporary, delete original context column
       if (isTRUE(delete_original_column)) private$.data$context <- NULL
     },
-    extract_theta = function(limit_agents, parameter, arm, tail = NULL){
+    extract_theta = function(limit_agents, parameter, arm, tail = NULL, sims = 1){
       if(!is.null(tail)){
-        unlist(sapply(sapply(tail(private$.data[agent %in% limit_agents],tail)$theta,
+        unlist(sapply(sapply(tail(private$.data[agent %in% limit_agents & sim %in% sims],tail)$theta,
                              `[`, parameter), `[[`, arm), FALSE, FALSE)
       } else {
-        unlist(sapply(sapply(private$.data[agent %in% limit_agents]$theta,
+        unlist(sapply(sapply(private$.data[agent %in% limit_agents & sim %in% sims]$theta,
                              `[`, parameter), `[[`, arm), FALSE, FALSE)
       }
     },
