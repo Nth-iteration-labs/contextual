@@ -76,6 +76,9 @@
       <a href="../articles/ml10m.html">Demo: MovieLens 10M Dataset</a>
     </li>
     <li>
+      <a href="../articles/offline_depaul_movies.html">Demo: Offline cMAB: CarsKit DePaul Movie Dataset</a>
+    </li>
+    <li>
       <a href="../articles/replication.html">Offline evaluation: Replication of Li et al 2010</a>
     </li>
     <li>
@@ -121,7 +124,7 @@
       <h1>Demo: MAB Replication Eckles &amp; Kaptein (Bootstrap Thompson Sampling)</h1>
                         <h4 class="author">Robin van Emden</h4>
             
-            <h4 class="date">2019-01-20</h4>
+            <h4 class="date">2019-02-05</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Nth-iteration-labs/contextual/blob/master/vignettes/eckles_kaptein.Rmd"><code>vignettes/eckles_kaptein.Rmd</code></a></small>
       <div class="hidden name"><code>eckles_kaptein.Rmd</code></div>
@@ -130,37 +133,35 @@
 
     
     
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(contextual)
-
-<span class="co"># Replication of THOMPSON SAMPLING WITH THE ONLINE BOOTSTRAP By Dean Eckles and Maurits Kaptein</span>
-
-<span class="co"># This evaluations takes time - up to a few hours when run single core.</span>
-
-<span class="co"># Running the script in parallel (for example, on 8 cores) </span>
-<span class="co"># shortens the evaluation time substantially.</span>
-
-<span class="co"># https://arxiv.org/abs/1410.4009</span>
-
-<span class="co"># Fig 2. Empirical regret for Thompson sampling and BTS in a K-armed binomial bandit problem.</span>
-
-bandit             &lt;-<span class="st"> </span>BasicBernoulliBandit<span class="op">$</span><span class="kw">new</span>(<span class="dt">weights =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="fl">0.5</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="fl">0.4</span>,<span class="dv">9</span>)))
-
-agents             &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(Agent<span class="op">$</span><span class="kw">new</span>(BootstrapTSPolicy<span class="op">$</span><span class="kw">new</span>(<span class="dv">1000</span>), bandit, <span class="st">"BTS 1000"</span>),
-                           Agent<span class="op">$</span><span class="kw">new</span>(ThompsonSamplingPolicy<span class="op">$</span><span class="kw">new</span>(), bandit, <span class="st">"TS"</span>))
-
-simulator          &lt;-<span class="st"> </span>Simulator<span class="op">$</span><span class="kw">new</span>(<span class="dt">agents        =</span> agents,
-                                    <span class="dt">do_parallel   =</span> <span class="ot">TRUE</span>,
-                                    <span class="dt">save_interval =</span> <span class="dv">50</span>,
-                                    <span class="dt">set_seed      =</span> <span class="dv">999</span>,
-                                    <span class="dt">horizon       =</span> <span class="fl">1e+05</span>,
-                                    <span class="dt">simulations   =</span> <span class="dv">1000</span>)
-
-simulator<span class="op">$</span><span class="kw"><a href="../reference/Simulator.html">run</a></span>()
-
-<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(simulator<span class="op">$</span>history, <span class="dt">log =</span> <span class="st">"x"</span>)</code></pre></div>
-<div class="figure">
-<img src="eckles_kaptein_1.png">
-</div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(contextual)</a>
+<a class="sourceLine" id="cb1-2" title="2"></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="co"># Replication of THOMPSON SAMPLING WITH THE ONLINE BOOTSTRAP By Dean Eckles and Maurits Kaptein</span></a>
+<a class="sourceLine" id="cb1-4" title="4"></a>
+<a class="sourceLine" id="cb1-5" title="5"><span class="co"># This evaluations takes time - up to a few hours when run single core.</span></a>
+<a class="sourceLine" id="cb1-6" title="6"></a>
+<a class="sourceLine" id="cb1-7" title="7"><span class="co"># Running the script in parallel (for example, on 8 cores) </span></a>
+<a class="sourceLine" id="cb1-8" title="8"><span class="co"># shortens the evaluation time substantially.</span></a>
+<a class="sourceLine" id="cb1-9" title="9"></a>
+<a class="sourceLine" id="cb1-10" title="10"><span class="co"># https://arxiv.org/abs/1410.4009</span></a>
+<a class="sourceLine" id="cb1-11" title="11"></a>
+<a class="sourceLine" id="cb1-12" title="12"><span class="co"># Fig 2. Empirical regret for Thompson sampling and BTS in a K-armed binomial bandit problem.</span></a>
+<a class="sourceLine" id="cb1-13" title="13"></a>
+<a class="sourceLine" id="cb1-14" title="14">bandit             &lt;-<span class="st"> </span>BasicBernoulliBandit<span class="op">$</span><span class="kw">new</span>(<span class="dt">weights =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="fl">0.5</span>, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="fl">0.4</span>,<span class="dv">9</span>)))</a>
+<a class="sourceLine" id="cb1-15" title="15"></a>
+<a class="sourceLine" id="cb1-16" title="16">agents             &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(Agent<span class="op">$</span><span class="kw">new</span>(BootstrapTSPolicy<span class="op">$</span><span class="kw">new</span>(<span class="dv">1000</span>), bandit, <span class="st">"BTS 1000"</span>),</a>
+<a class="sourceLine" id="cb1-17" title="17">                           Agent<span class="op">$</span><span class="kw">new</span>(ThompsonSamplingPolicy<span class="op">$</span><span class="kw">new</span>(), bandit, <span class="st">"TS"</span>))</a>
+<a class="sourceLine" id="cb1-18" title="18"></a>
+<a class="sourceLine" id="cb1-19" title="19">simulator          &lt;-<span class="st"> </span>Simulator<span class="op">$</span><span class="kw">new</span>(<span class="dt">agents        =</span> agents,</a>
+<a class="sourceLine" id="cb1-20" title="20">                                    <span class="dt">do_parallel   =</span> <span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb1-21" title="21">                                    <span class="dt">save_interval =</span> <span class="dv">50</span>,</a>
+<a class="sourceLine" id="cb1-22" title="22">                                    <span class="dt">set_seed      =</span> <span class="dv">999</span>,</a>
+<a class="sourceLine" id="cb1-23" title="23">                                    <span class="dt">horizon       =</span> <span class="fl">1e+05</span>,</a>
+<a class="sourceLine" id="cb1-24" title="24">                                    <span class="dt">simulations   =</span> <span class="dv">1000</span>)</a>
+<a class="sourceLine" id="cb1-25" title="25"></a>
+<a class="sourceLine" id="cb1-26" title="26">simulator<span class="op">$</span><span class="kw"><a href="../reference/Simulator.html">run</a></span>()</a>
+<a class="sourceLine" id="cb1-27" title="27"></a>
+<a class="sourceLine" id="cb1-28" title="28"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(simulator<span class="op">$</span>history, <span class="dt">log =</span> <span class="st">"x"</span>)</a></code></pre></div>
+<p><img src="eckles_kaptein_1.png"></p>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

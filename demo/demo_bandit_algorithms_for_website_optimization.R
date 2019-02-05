@@ -4,13 +4,11 @@ library(contextual)
 
 ## Simulation of the multi-armed Bandit examples in
 ## of "Bandit algorithms for website optimization"
-## by John Miles White
+## by John Miles White.
 
 # The code from the book chooses the arm with the first index when all arms are equal.
 # Contextuals policies correctly picks one of the max arms.
 # That's why the plots below are slightly different from the book - they are correct, though.
-
-# An example of Figure 4-3 when ran with an uncorrected policy. Compare to the (corrected) plot below.
 
 # Chapter 4 - Debugging and epsilon greedy -------------------------------------------------------------------
 

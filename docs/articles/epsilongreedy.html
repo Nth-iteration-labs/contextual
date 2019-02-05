@@ -76,6 +76,9 @@
       <a href="../articles/ml10m.html">Demo: MovieLens 10M Dataset</a>
     </li>
     <li>
+      <a href="../articles/offline_depaul_movies.html">Demo: Offline cMAB: CarsKit DePaul Movie Dataset</a>
+    </li>
+    <li>
       <a href="../articles/replication.html">Offline evaluation: Replication of Li et al 2010</a>
     </li>
     <li>
@@ -121,7 +124,7 @@
       <h1>Demo: Basic Epsilon Greedy</h1>
                         <h4 class="author">Robin van Emden</h4>
             
-            <h4 class="date">2019-01-20</h4>
+            <h4 class="date">2019-02-05</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Nth-iteration-labs/contextual/blob/master/vignettes/epsilongreedy.Rmd"><code>vignettes/epsilongreedy.Rmd</code></a></small>
       <div class="hidden name"><code>epsilongreedy.Rmd</code></div>
@@ -130,48 +133,46 @@
 
     
     
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(contextual)
-
-policy             &lt;-<span class="st"> </span>EpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="dt">epsilon =</span> <span class="fl">0.1</span>)
-
-bandit             &lt;-<span class="st"> </span>BasicBernoulliBandit<span class="op">$</span><span class="kw">new</span>(<span class="dt">weights =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="fl">0.6</span>, <span class="fl">0.1</span>, <span class="fl">0.1</span>))
-agent              &lt;-<span class="st"> </span>Agent<span class="op">$</span><span class="kw">new</span>(policy,bandit)
-
-simulator          &lt;-<span class="st"> </span>Simulator<span class="op">$</span><span class="kw">new</span>(<span class="dt">agents      =</span> agent,
-                                    <span class="dt">do_parallel =</span> <span class="ot">TRUE</span>,
-                                    <span class="dt">horizon     =</span> <span class="dv">100</span>,
-                                    <span class="dt">simulations =</span> <span class="dv">1000</span>)
-                                    
-history            &lt;-<span class="st"> </span>simulator<span class="op">$</span><span class="kw"><a href="../reference/Simulator.html">run</a></span>()
-
-<span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"cumulative"</span>, <span class="dt">regret =</span> <span class="ot">TRUE</span>, <span class="dt">disp =</span> <span class="st">"ci"</span>,
-     <span class="dt">traces_max =</span> <span class="dv">100</span>, <span class="dt">traces_alpha =</span> <span class="fl">0.1</span>,
-     <span class="dt">traces =</span> <span class="ot">TRUE</span>, <span class="dt">smooth =</span> <span class="ot">FALSE</span>, <span class="dt">interval =</span> <span class="dv">1</span>)</code></pre></div>
-<div class="figure">
-<img src="basic_epsilon_greedy.jpeg">
-</div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary</a></span>(history)
-                                  </code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">Agents<span class="op">:</span>
-
-<span class="st">  </span>EpsilonGreedy
-
-Cumulative regret<span class="op">:</span>
-
-<span class="st">         </span>agent   t sims cum_regret cum_regret_var cum_regret_sd
- EpsilonGreedy <span class="dv">100</span> <span class="dv">1000</span>      <span class="fl">8.951</span>       <span class="fl">116.7133</span>      <span class="fl">10.80339</span>
-
-
-Cumulative reward<span class="op">:</span>
-
-<span class="st">         </span>agent   t sims cum_reward cum_reward_var cum_reward_sd
- EpsilonGreedy <span class="dv">100</span> <span class="dv">1000</span>      <span class="fl">51.09</span>       <span class="fl">141.6215</span>      <span class="fl">11.90048</span>
-
-
-Cumulative reward rate<span class="op">:</span>
-
-<span class="st">         </span>agent   t sims cur_reward cur_reward_var cur_reward_sd
- EpsilonGreedy <span class="dv">100</span> <span class="dv">1000</span>     <span class="fl">0.5109</span>       <span class="fl">1.416215</span>     <span class="fl">0.1190048</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(contextual)</a>
+<a class="sourceLine" id="cb1-2" title="2"></a>
+<a class="sourceLine" id="cb1-3" title="3">policy             &lt;-<span class="st"> </span>EpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="dt">epsilon =</span> <span class="fl">0.1</span>)</a>
+<a class="sourceLine" id="cb1-4" title="4"></a>
+<a class="sourceLine" id="cb1-5" title="5">bandit             &lt;-<span class="st"> </span>BasicBernoulliBandit<span class="op">$</span><span class="kw">new</span>(<span class="dt">weights =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="fl">0.6</span>, <span class="fl">0.1</span>, <span class="fl">0.1</span>))</a>
+<a class="sourceLine" id="cb1-6" title="6">agent              &lt;-<span class="st"> </span>Agent<span class="op">$</span><span class="kw">new</span>(policy,bandit)</a>
+<a class="sourceLine" id="cb1-7" title="7"></a>
+<a class="sourceLine" id="cb1-8" title="8">simulator          &lt;-<span class="st"> </span>Simulator<span class="op">$</span><span class="kw">new</span>(<span class="dt">agents      =</span> agent,</a>
+<a class="sourceLine" id="cb1-9" title="9">                                    <span class="dt">do_parallel =</span> <span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb1-10" title="10">                                    <span class="dt">horizon     =</span> <span class="dv">100</span>,</a>
+<a class="sourceLine" id="cb1-11" title="11">                                    <span class="dt">simulations =</span> <span class="dv">1000</span>)</a>
+<a class="sourceLine" id="cb1-12" title="12">                                    </a>
+<a class="sourceLine" id="cb1-13" title="13">history            &lt;-<span class="st"> </span>simulator<span class="op">$</span><span class="kw"><a href="../reference/Simulator.html">run</a></span>()</a>
+<a class="sourceLine" id="cb1-14" title="14"></a>
+<a class="sourceLine" id="cb1-15" title="15"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"cumulative"</span>, <span class="dt">regret =</span> <span class="ot">TRUE</span>, <span class="dt">disp =</span> <span class="st">"ci"</span>,</a>
+<a class="sourceLine" id="cb1-16" title="16">     <span class="dt">traces_max =</span> <span class="dv">100</span>, <span class="dt">traces_alpha =</span> <span class="fl">0.1</span>,</a>
+<a class="sourceLine" id="cb1-17" title="17">     <span class="dt">traces =</span> <span class="ot">TRUE</span>, <span class="dt">smooth =</span> <span class="ot">FALSE</span>, <span class="dt">interval =</span> <span class="dv">1</span>)</a></code></pre></div>
+<p><img src="basic_epsilon_greedy.jpeg"></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/summary">summary</a></span>(history)</a>
+<a class="sourceLine" id="cb2-2" title="2">                                  </a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">Agents<span class="op">:</span></a>
+<a class="sourceLine" id="cb3-2" title="2"></a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="st">  </span>EpsilonGreedy</a>
+<a class="sourceLine" id="cb3-4" title="4"></a>
+<a class="sourceLine" id="cb3-5" title="5">Cumulative regret<span class="op">:</span></a>
+<a class="sourceLine" id="cb3-6" title="6"></a>
+<a class="sourceLine" id="cb3-7" title="7"><span class="st">         </span>agent   t sims cum_regret cum_regret_var cum_regret_sd</a>
+<a class="sourceLine" id="cb3-8" title="8"> EpsilonGreedy <span class="dv">100</span> <span class="dv">1000</span>      <span class="fl">8.951</span>       <span class="fl">116.7133</span>      <span class="fl">10.80339</span></a>
+<a class="sourceLine" id="cb3-9" title="9"></a>
+<a class="sourceLine" id="cb3-10" title="10"></a>
+<a class="sourceLine" id="cb3-11" title="11">Cumulative reward<span class="op">:</span></a>
+<a class="sourceLine" id="cb3-12" title="12"></a>
+<a class="sourceLine" id="cb3-13" title="13"><span class="st">         </span>agent   t sims cum_reward cum_reward_var cum_reward_sd</a>
+<a class="sourceLine" id="cb3-14" title="14"> EpsilonGreedy <span class="dv">100</span> <span class="dv">1000</span>      <span class="fl">51.09</span>       <span class="fl">141.6215</span>      <span class="fl">11.90048</span></a>
+<a class="sourceLine" id="cb3-15" title="15"></a>
+<a class="sourceLine" id="cb3-16" title="16"></a>
+<a class="sourceLine" id="cb3-17" title="17">Cumulative reward rate<span class="op">:</span></a>
+<a class="sourceLine" id="cb3-18" title="18"></a>
+<a class="sourceLine" id="cb3-19" title="19"><span class="st">         </span>agent   t sims cur_reward cur_reward_var cur_reward_sd</a>
+<a class="sourceLine" id="cb3-20" title="20"> EpsilonGreedy <span class="dv">100</span> <span class="dv">1000</span>     <span class="fl">0.5109</span>       <span class="fl">1.416215</span>     <span class="fl">0.1190048</span></a></code></pre></div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

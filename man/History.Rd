@@ -81,9 +81,8 @@ Sets the \code{History} log with the data in \code{data.table} \code{dt}.
 \item{\code{clear_data_table()}}{
 Clears the \code{History} log.
 }
-\item{\code{save_csv(filename = NA, context_to_columns = FALSE)}}{
-Saves History data to csv file. When context_to_columns is TRUE, the "context" column will
-be split over multiple columns X1 to X...
+\item{\code{save_csv(filename = NA)}}{
+Saves History data to csv file.
 }
 \item{\code{extract_theta(limit_agents, parameter, arm, tail = NULL)}}{
 Extract theta parameter from theta list for \code{limit_agents},

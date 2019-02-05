@@ -114,7 +114,11 @@ The previous simulation produced a data.table with fully randomised historical d
 
 ```r
 
-bandit                            <- OfflineReplayEvaluatorBandit$new(u_dt,2,2)
+f                                 <- formula("reward ~ choice | X.1 + X.2")
+bandit                            <- OfflineReplayEvaluatorBandit$new(formula = f,
+                                                                      data = u_dt, 
+                                                                      k = 2 , d = 2)
+
 policy                            <- EpsilonGreedyPolicy$new(0.1)
 agent                             <- Agent$new(policy, bandit, "OfflineLinUCB")
  
@@ -207,7 +211,10 @@ This time, the simulation generated a data.table with biased data. Let's see wha
 
 
 ```r
-bandit                            <- OfflineReplayEvaluatorBandit$new(b_dt,2,2)
+f                                 <- formula("reward ~ choice | X.1 + X.2")
+bandit                            <- OfflineReplayEvaluatorBandit$new(formula = f, 
+                                                                      data = b_dt, 
+                                                                      k = 2 , d = 2)
 policy                            <- EpsilonGreedyPolicy$new(0.1)
 agent                             <- Agent$new(policy, bandit, "rb")
  
@@ -239,7 +246,10 @@ The bias has propagated itself! So, does that mean it is not possible to use the
 Luckily, [inverse probability of treatment weighting](https://stats.stackexchange.com/questions/273367/intuitive-explanation-for-inverse-probability-of-treatment-weights-iptws-in-pr) (IPTW) enables us to use propensity scores to obtain unbiased estimates of the original preferences of Male and Female visitors. That is, since our biased policy actually saved the propensity ("the probability of a unit being assigned to a particular treatment or category") with which a certain category was chosen, we can correct for this bias while "replaying" the data. In "contextual", there are several types of offline bandits that are able to use either such presaved propensities, or estimate propensities based on certain properties of the dataset. Here, we use its basic "[OfflinePropensityWeightingBandit](https://github.com/Nth-iteration-labs/contextual/blob/master/R/bandit_offline_propensity_weighting.R)":
 
 ```r
-bandit                            <- OfflinePropensityWeightingBandit$new(b_dt,2,2, stabilize = T)
+f                                 <- formula("reward ~ choice | X.1 + X.2 | propensity")
+bandit                            <- OfflinePropensityWeightingBandit$new(formula = f, data = b_dt,
+                                                                          k = 2 , d = 2,
+                                                                          stabilize = TRUE)
 policy                            <- EpsilonGreedyPolicy$new(0.1)
 agent                             <- Agent$new(policy, bandit, "prop")
  

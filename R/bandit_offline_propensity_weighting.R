@@ -1,57 +1,65 @@
 #' @export
+#' @import Formula
 OfflinePropensityWeightingBandit <- R6::R6Class(
-  inherit = Bandit,
+  inherit = OfflineBootstrappedReplayBandit,
   class = FALSE,
   private = list(
-    S = NULL,
-    oa = NULL,
-    or = NULL,
+    p = NULL,
     marginal_prob = NULL
   ),
   public = list(
     class_name = "OfflinePropensityWeightingBandit",
-    randomize = NULL,
-    preweighted = NULL,
     stabilize = NULL,
-    initialize   = function(offline_data, k, d = 0, randomize = TRUE,  stabilize = TRUE, preweighted = FALSE) {
-      self$k <- k                     # Number of arms (integer)
-      self$d <- d                     # Dimension of context feature vector (integer)
-      self$randomize <-randomize      # Randomize logged events for every simulation? (logical)
-      self$preweighted <- preweighted # Has the propensity column been preweighted?
-      self$stabilize <- stabilize     # Whether or not to stabilize the weights.
-      private$S <- offline_data       # Logged events (by default, as a data.table)
+    preweighted = NULL,
+    initialize   = function(formula,
+                            data, k = NULL, d = NULL,
+                            unique = NULL, shared = NULL,
+                            randomize = TRUE, replacement = FALSE,
+                            jitter = TRUE, arm_multiply = TRUE,
+                            stabilize = TRUE, preweighted = FALSE) {
 
-      if (stabilize) {
-        private$marginal_prob <- table(private$S$choice)/length(private$S$choice)
+      self$preweighted <- preweighted # Has the propensity column been preweighted?
+      self$stabilize   <- stabilize   # Whether or not to stabilize the weights.
+      super$initialize(formula,
+                       data, k, d,
+                       unique, shared,
+                       randomize, replacement,
+                       jitter, arm_multiply)
+
+
+    },
+    post_initialization = function() {
+      super$post_initialization()
+      private$p <-  Formula::model.part(private$formula, data = private$S, lhs = 0, rhs = 3, drop = TRUE)
+      if (self$stabilize) {
+        private$marginal_prob <- table(private$z)/length(private$z)
       } else {
         private$marginal_prob <- rep(1,self$k)
       }
 
-      private$S[is.null(context[[1]]),`:=`(context = list(1))]
-      private$oa <- "optimal_arm" %in% colnames(offline_data)
-      private$or <- "optimal_reward" %in% colnames(offline_data)
-    },
-    post_initialization = function() {
-      if(isTRUE(self$randomize)) private$S <- private$S[sample(nrow(private$S))]
     },
     get_context = function(index) {
       context <- list(
-        k = self$k,
-        d = self$d,
-        X = private$S$context[[index]]
+        k      = self$k,
+        d      = self$d,
+        unique = self$unique,
+        shared = self$shared,
+        X      = if(isTRUE(self$flat_context)) private$x[index,] else matrix(private$x[index,],self$d,self$k)
       )
       context
     },
     get_reward = function(index, context, action) {
-
-      if (private$S$choice[[index]] == action$choice) {
-        if (self$preweighted) {
-          p <- private$S$propensity[[index]] * private$marginal_prob[[action$choice]]
-        } else {
-          p <- (1 / private$S$propensity[[index]]) * private$marginal_prob[[action$choice]]
-        }
+      p <- private$p[index]
+      if (self$preweighted) {
+        p <- p * private$marginal_prob[action$choice]
+      } else {
+        p <- (1 / p) * private$marginal_prob[action$choice]
+      }
+      if (private$z[[index]] == action$choice) {
         list(
-          reward = as.double(private$S$reward[[index]] * p)
+          reward         = as.double(private$y[index]*p),
+          optimal_reward = ifelse(private$or, as.double(private$S$optimal_reward[[index]]), NA),
+          optimal_arm    = ifelse(private$oa, as.double(private$S$optimal_arm[[index]]), NA)
         )
       } else {
         NULL
@@ -60,16 +68,23 @@ OfflinePropensityWeightingBandit <- R6::R6Class(
   )
 )
 
-#' Bandit: Offline Propensity Evaluator
+#' Bandit: Offline Bootstrapped Replay
 #'
 #' Policy for the evaluation of policies with offline data.
+#'
+#' The key assumption of the method is that that the original logging policy chose
+#' i.i.d. arms uniformly at random.
+#'
+#' Take care: if the original logging policy does not change over trials, data may be
+#' used more efficiently via propensity scoring (Langford et al., 2008; Strehl et al., 2011)
+#' and related techniques like doubly robust estimation (Dudik et al., 2011).
 #'
 #' @name OfflinePropensityWeightingBandit
 #'
 #'
 #' @section Usage:
 #' \preformatted{
-#'   bandit <- OfflinePropensityWeightingBandit(offline_data, k, d, randomize = TRUE)
+#'   bandit <- OfflinePropensityWeightingBandit(offline_data, k, d, unique = NULL, shared = NULL, randomize = TRUE)
 #' }
 #'
 #' @section Arguments:
@@ -152,6 +167,59 @@ OfflinePropensityWeightingBandit <- R6::R6Class(
 #'
 #' ## generate random policy log and save it
 #'
+#' context_weights    <- matrix(  c( 0.9, 0.1, 0.1,
+#'                                   0.1, 0.9, 0.1,
+#'                                   0.1, 0.1, 0.9 ), nrow = 3, ncol = 3, byrow = TRUE)
+#' horizon     <- 2000L
+#' simulations <- 1L
+#' bandit      <- ContextualBinaryBandit$new(weights = context_weights)
+#'
+#' # For the generation of random data choose a random policy,
+#' # otherwise rejection sampling will produce biased results.
+#'
+#' policy      <- RandomPolicy$new()
+#'
+#' agent       <- Agent$new(policy, bandit)
+#'
+#' simulation  <-
+#'   Simulator$new(
+#'     agent,
+#'     horizon = horizon,
+#'     simulations = simulations,
+#'     save_context = TRUE
+#'   )
+#'
+#' random_offline_data <- simulation$run()
+#' random_offline_data$save("log.RData")
+#'
+#' ## use saved log to evaluate policies with OfflinePropensityWeightingBandit
+#'
+#' history <- History$new()
+#' history$load("log.RData")
+#' log_S <- history$get_data_table()
+#'
+#' bandit <- OfflinePropensityWeightingBandit$new(offline_data = log_S, k = 3, d = 3)
+#'
+#' agents <-
+#'   list(
+#'     Agent$new(EpsilonGreedyPolicy$new(0.01), bandit),
+#'     Agent$new(LinUCBDisjointPolicy$new(0.6), bandit)
+#'   )
+#'
+#' simulation <-
+#'   Simulator$new(
+#'     agents,
+#'     horizon = horizon,
+#'     simulations = simulations,
+#'     t_over_sims = TRUE,
+#'     do_parallel = FALSE
+#'   )
+#'
+#' li_bandit_history <- simulation$run()
+#'
+#' plot(after, regret = FALSE, type = "cumulative", rate = TRUE)
+#'
+#' if (file.exists("log.RData")) file.remove("log.RData")
 #'
 #' }
 NULL

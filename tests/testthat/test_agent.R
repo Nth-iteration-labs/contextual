@@ -25,7 +25,7 @@ test_that("Agent", {
                                       log_interval = 1,
                                       progress_file = TRUE)$run()
 
-  expect_identical(history$cumulative$testme$reward,0.3)
+  expect_identical(history$cumulative$testme$reward,0.4)
 
   t                  <- agent$get_t()
   agent$set_t(t+1)

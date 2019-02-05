@@ -2,14 +2,22 @@
 % Please edit documentation in R/bandit_offline_propensity_weighting.R
 \name{OfflinePropensityWeightingBandit}
 \alias{OfflinePropensityWeightingBandit}
-\title{Bandit: Offline Propensity Evaluator}
+\title{Bandit: Offline Bootstrapped Replay}
 \description{
 Policy for the evaluation of policies with offline data.
+}
+\details{
+The key assumption of the method is that that the original logging policy chose
+i.i.d. arms uniformly at random.
+
+Take care: if the original logging policy does not change over trials, data may be
+used more efficiently via propensity scoring (Langford et al., 2008; Strehl et al., 2011)
+and related techniques like doubly robust estimation (Dudik et al., 2011).
 }
 \section{Usage}{
 
 \preformatted{
-  bandit <- OfflinePropensityWeightingBandit(offline_data, k, d, randomize = TRUE)
+  bandit <- OfflinePropensityWeightingBandit(offline_data, k, d, unique = NULL, shared = NULL, randomize = TRUE)
 }
 }
 
@@ -82,6 +90,59 @@ individual simulation when self$randomize is TRUE (default)
 
 ## generate random policy log and save it
 
+context_weights    <- matrix(  c( 0.9, 0.1, 0.1,
+                                  0.1, 0.9, 0.1,
+                                  0.1, 0.1, 0.9 ), nrow = 3, ncol = 3, byrow = TRUE)
+horizon     <- 2000L
+simulations <- 1L
+bandit      <- ContextualBinaryBandit$new(weights = context_weights)
+
+# For the generation of random data choose a random policy,
+# otherwise rejection sampling will produce biased results.
+
+policy      <- RandomPolicy$new()
+
+agent       <- Agent$new(policy, bandit)
+
+simulation  <-
+  Simulator$new(
+    agent,
+    horizon = horizon,
+    simulations = simulations,
+    save_context = TRUE
+  )
+
+random_offline_data <- simulation$run()
+random_offline_data$save("log.RData")
+
+## use saved log to evaluate policies with OfflinePropensityWeightingBandit
+
+history <- History$new()
+history$load("log.RData")
+log_S <- history$get_data_table()
+
+bandit <- OfflinePropensityWeightingBandit$new(offline_data = log_S, k = 3, d = 3)
+
+agents <-
+  list(
+    Agent$new(EpsilonGreedyPolicy$new(0.01), bandit),
+    Agent$new(LinUCBDisjointPolicy$new(0.6), bandit)
+  )
+
+simulation <-
+  Simulator$new(
+    agents,
+    horizon = horizon,
+    simulations = simulations,
+    t_over_sims = TRUE,
+    do_parallel = FALSE
+  )
+
+li_bandit_history <- simulation$run()
+
+plot(after, regret = FALSE, type = "cumulative", rate = TRUE)
+
+if (file.exists("log.RData")) file.remove("log.RData")
 
 }
 }

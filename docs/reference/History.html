@@ -115,6 +115,9 @@ and can save or load simulation log data files." />
       <a href="../articles/ml10m.html">Demo: MovieLens 10M Dataset</a>
     </li>
     <li>
+      <a href="../articles/offline_depaul_movies.html">Demo: Offline cMAB: CarsKit DePaul Movie Dataset</a>
+    </li>
+    <li>
       <a href="../articles/replication.html">Offline evaluation: Replication of Li et al 2010</a>
     </li>
     <li>
@@ -211,8 +214,7 @@ full data file. This can be of use with (a first) analysis of very large data fi
 <dt><code>get_data_table()</code></dt><dd><p>Returns the <code>History</code> log as a <code>data.table</code>.</p></dd>
 <dt><code>set_data_table(dt)</code></dt><dd><p>Sets the <code>History</code> log with the data in <code>data.table</code> <code>dt</code>.</p></dd>
 <dt><code>clear_data_table()</code></dt><dd><p>Clears the <code>History</code> log.</p></dd>
-<dt><code>save_csv(filename = NA, context_to_columns = FALSE)</code></dt><dd><p>Saves History data to csv file. When context_to_columns is TRUE, the "context" column will
-be split over multiple columns X1 to X...</p></dd>
+<dt><code>save_csv(filename = NA)</code></dt><dd><p>Saves History data to csv file.</p></dd>
 <dt><code>extract_theta(limit_agents, parameter, arm, tail = NULL)</code></dt><dd><p>Extract theta parameter from theta list for <code>limit_agents</code>,
 where <code>parameter</code> sets the to be retrieved parameter or vector of parameters in theta,
 <code>arm</code> is the relevant integer index of the arm or vector of arms of interest, and the

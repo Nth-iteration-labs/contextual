@@ -76,6 +76,9 @@
       <a href="../articles/ml10m.html">Demo: MovieLens 10M Dataset</a>
     </li>
     <li>
+      <a href="../articles/offline_depaul_movies.html">Demo: Offline cMAB: CarsKit DePaul Movie Dataset</a>
+    </li>
+    <li>
       <a href="../articles/replication.html">Offline evaluation: Replication of Li et al 2010</a>
     </li>
     <li>
@@ -121,7 +124,7 @@
       <h1>Demo: Replication of John Myles White, Bandit Algorithms for Website Optimization</h1>
                         <h4 class="author">Robin van Emden</h4>
             
-            <h4 class="date">2019-01-20</h4>
+            <h4 class="date">2019-02-05</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Nth-iteration-labs/contextual/blob/master/vignettes/website_optimization.Rmd"><code>vignettes/website_optimization.Rmd</code></a></small>
       <div class="hidden name"><code>website_optimization.Rmd</code></div>
@@ -137,121 +140,101 @@
 <a href="#discrepancies-with-the-book" class="anchor"></a>Discrepancies with the book</h1>
 <p>The code used in the book always chooses the arm with the first index when all arms are equal. Contextual’s policies correctly pick one of the max arms. That’s why the plots below are slightly different from the book - they are correct, though.</p>
 <p>An example of Figure 4-3 when running a simulation with an uncorrected policy (conform to the book):</p>
-<div class="figure">
-<img src="eg_incorrect.jpeg">
-</div>
+<p><img src="eg_incorrect.jpeg"></p>
 <p>Compare to the (corrected) plot below.</p>
 </div>
 <div id="chapter-4---debugging-and-epsilon-greedy" class="section level1">
 <h1 class="hasAnchor">
 <a href="#chapter-4---debugging-and-epsilon-greedy" class="anchor"></a>Chapter 4 - Debugging and epsilon greedy</h1>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prob_per_arm       &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="fl">0.1</span>, <span class="fl">0.1</span>, <span class="fl">0.1</span>, <span class="fl">0.1</span>, <span class="fl">0.9</span>)
-horizon            &lt;-<span class="st"> </span><span class="dv">250</span>
-simulations        &lt;-<span class="st"> </span><span class="dv">5000</span>
-
-bandit             &lt;-<span class="st"> </span>BasicBernoulliBandit<span class="op">$</span><span class="kw">new</span>(prob_per_arm)
-
-agents             &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(Agent<span class="op">$</span><span class="kw">new</span>(EpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.1</span>), bandit, <span class="st">"Epsilon = 0.1"</span>),
-                           Agent<span class="op">$</span><span class="kw">new</span>(EpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.2</span>), bandit, <span class="st">"Epsilon = 0.2"</span>),
-                           Agent<span class="op">$</span><span class="kw">new</span>(EpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.3</span>), bandit, <span class="st">"Epsilon = 0.3"</span>),
-                           Agent<span class="op">$</span><span class="kw">new</span>(EpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.4</span>), bandit, <span class="st">"Epsilon = 0.4"</span>),
-                           Agent<span class="op">$</span><span class="kw">new</span>(EpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.5</span>), bandit, <span class="st">"Epsilon = 0.5"</span>))
-
-simulation         &lt;-<span class="st"> </span>Simulator<span class="op">$</span><span class="kw">new</span>(agents, horizon, simulations)
-history            &lt;-<span class="st"> </span>simulation<span class="op">$</span><span class="kw"><a href="../reference/Simulator.html">run</a></span>()</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1">prob_per_arm       &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="fl">0.1</span>, <span class="fl">0.1</span>, <span class="fl">0.1</span>, <span class="fl">0.1</span>, <span class="fl">0.9</span>)</a>
+<a class="sourceLine" id="cb1-2" title="2">horizon            &lt;-<span class="st"> </span><span class="dv">250</span></a>
+<a class="sourceLine" id="cb1-3" title="3">simulations        &lt;-<span class="st"> </span><span class="dv">5000</span></a>
+<a class="sourceLine" id="cb1-4" title="4"></a>
+<a class="sourceLine" id="cb1-5" title="5">bandit             &lt;-<span class="st"> </span>BasicBernoulliBandit<span class="op">$</span><span class="kw">new</span>(prob_per_arm)</a>
+<a class="sourceLine" id="cb1-6" title="6"></a>
+<a class="sourceLine" id="cb1-7" title="7">agents             &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(Agent<span class="op">$</span><span class="kw">new</span>(EpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.1</span>), bandit, <span class="st">"Epsilon = 0.1"</span>),</a>
+<a class="sourceLine" id="cb1-8" title="8">                           Agent<span class="op">$</span><span class="kw">new</span>(EpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.2</span>), bandit, <span class="st">"Epsilon = 0.2"</span>),</a>
+<a class="sourceLine" id="cb1-9" title="9">                           Agent<span class="op">$</span><span class="kw">new</span>(EpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.3</span>), bandit, <span class="st">"Epsilon = 0.3"</span>),</a>
+<a class="sourceLine" id="cb1-10" title="10">                           Agent<span class="op">$</span><span class="kw">new</span>(EpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.4</span>), bandit, <span class="st">"Epsilon = 0.4"</span>),</a>
+<a class="sourceLine" id="cb1-11" title="11">                           Agent<span class="op">$</span><span class="kw">new</span>(EpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.5</span>), bandit, <span class="st">"Epsilon = 0.5"</span>))</a>
+<a class="sourceLine" id="cb1-12" title="12"></a>
+<a class="sourceLine" id="cb1-13" title="13">simulation         &lt;-<span class="st"> </span>Simulator<span class="op">$</span><span class="kw">new</span>(agents, horizon, simulations)</a>
+<a class="sourceLine" id="cb1-14" title="14">history            &lt;-<span class="st"> </span>simulation<span class="op">$</span><span class="kw"><a href="../reference/Simulator.html">run</a></span>()</a></code></pre></div>
 <div id="figure-4-2--how-often-does-the-epsilon-greedy-algorithm-select-the-best-arm" class="section level2">
 <h2 class="hasAnchor">
 <a href="#figure-4-2--how-often-does-the-epsilon-greedy-algorithm-select-the-best-arm" class="anchor"></a>Figure 4-2. How often does the epsilon greedy algorithm select the best arm?</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"optimal"</span>, <span class="dt">legend_position =</span> <span class="st">"bottomright"</span>, <span class="dt">ylim =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>,<span class="dv">1</span>))</code></pre></div>
-<div class="figure">
-<img src="eg_optimal_action.jpeg">
-</div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"optimal"</span>, <span class="dt">legend_position =</span> <span class="st">"bottomright"</span>, <span class="dt">ylim =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>,<span class="dv">1</span>))</a></code></pre></div>
+<p><img src="eg_optimal_action.jpeg"></p>
 </div>
 <div id="figure-4-3--how-much-reward-does-the-epsilon-greedy-algorithm-earn-on-average" class="section level2">
 <h2 class="hasAnchor">
 <a href="#figure-4-3--how-much-reward-does-the-epsilon-greedy-algorithm-earn-on-average" class="anchor"></a>Figure 4-3. How much reward does the epsilon greedy algorithm earn on average?</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"average"</span>, <span class="dt">regret =</span> <span class="ot">FALSE</span>, <span class="dt">legend_position =</span> <span class="st">"bottomright"</span>, <span class="dt">ylim =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>,<span class="dv">1</span>))</code></pre></div>
-<div class="figure">
-<img src="eg_average_reward.jpeg">
-</div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"average"</span>, <span class="dt">regret =</span> <span class="ot">FALSE</span>, <span class="dt">legend_position =</span> <span class="st">"bottomright"</span>, <span class="dt">ylim =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>,<span class="dv">1</span>))</a></code></pre></div>
+<p><img src="eg_average_reward.jpeg"></p>
 </div>
 <div id="figure-4-4--how-much-reward-has-the-epsilon-greedy-algorithm-earned-by-trial-t" class="section level2">
 <h2 class="hasAnchor">
 <a href="#figure-4-4--how-much-reward-has-the-epsilon-greedy-algorithm-earned-by-trial-t" class="anchor"></a>Figure 4-4. How much reward has the epsilon greedy algorithm earned by trial t?</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"cumulative"</span>, <span class="dt">regret =</span> <span class="ot">FALSE</span>)</code></pre></div>
-<div class="figure">
-<img src="eg_cumulative_reward.jpeg">
-</div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"cumulative"</span>, <span class="dt">regret =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<p><img src="eg_cumulative_reward.jpeg"></p>
 </div>
 </div>
 <div id="chapter-5---softmax" class="section level1">
 <h1 class="hasAnchor">
 <a href="#chapter-5---softmax" class="anchor"></a>Chapter 5 - Softmax</h1>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">agents             &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(Agent<span class="op">$</span><span class="kw">new</span>(SoftmaxPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.1</span>), bandit, <span class="st">"Tau = 0.1"</span>),
-                           Agent<span class="op">$</span><span class="kw">new</span>(SoftmaxPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.2</span>), bandit, <span class="st">"Tau = 0.2"</span>),
-                           Agent<span class="op">$</span><span class="kw">new</span>(SoftmaxPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.3</span>), bandit, <span class="st">"Tau = 0.3"</span>),
-                           Agent<span class="op">$</span><span class="kw">new</span>(SoftmaxPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.4</span>), bandit, <span class="st">"Tau = 0.4"</span>),
-                           Agent<span class="op">$</span><span class="kw">new</span>(SoftmaxPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.5</span>), bandit, <span class="st">"Tau = 0.5"</span>))
-
-simulation         &lt;-<span class="st"> </span>Simulator<span class="op">$</span><span class="kw">new</span>(agents, horizon, simulations)
-history            &lt;-<span class="st"> </span>simulation<span class="op">$</span><span class="kw"><a href="../reference/Simulator.html">run</a></span>()</code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1">agents             &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(Agent<span class="op">$</span><span class="kw">new</span>(SoftmaxPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.1</span>), bandit, <span class="st">"Tau = 0.1"</span>),</a>
+<a class="sourceLine" id="cb5-2" title="2">                           Agent<span class="op">$</span><span class="kw">new</span>(SoftmaxPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.2</span>), bandit, <span class="st">"Tau = 0.2"</span>),</a>
+<a class="sourceLine" id="cb5-3" title="3">                           Agent<span class="op">$</span><span class="kw">new</span>(SoftmaxPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.3</span>), bandit, <span class="st">"Tau = 0.3"</span>),</a>
+<a class="sourceLine" id="cb5-4" title="4">                           Agent<span class="op">$</span><span class="kw">new</span>(SoftmaxPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.4</span>), bandit, <span class="st">"Tau = 0.4"</span>),</a>
+<a class="sourceLine" id="cb5-5" title="5">                           Agent<span class="op">$</span><span class="kw">new</span>(SoftmaxPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.5</span>), bandit, <span class="st">"Tau = 0.5"</span>))</a>
+<a class="sourceLine" id="cb5-6" title="6"></a>
+<a class="sourceLine" id="cb5-7" title="7">simulation         &lt;-<span class="st"> </span>Simulator<span class="op">$</span><span class="kw">new</span>(agents, horizon, simulations)</a>
+<a class="sourceLine" id="cb5-8" title="8">history            &lt;-<span class="st"> </span>simulation<span class="op">$</span><span class="kw"><a href="../reference/Simulator.html">run</a></span>()</a></code></pre></div>
 <div id="figure-5-2--how-often-does-the-softmax-algorithm-select-the-best-arm" class="section level2">
 <h2 class="hasAnchor">
 <a href="#figure-5-2--how-often-does-the-softmax-algorithm-select-the-best-arm" class="anchor"></a>Figure 5-2. How often does the softmax algorithm select the best arm?</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"optimal"</span>, <span class="dt">legend_position =</span> <span class="st">"bottomright"</span>, <span class="dt">ylim =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>,<span class="dv">1</span>))</code></pre></div>
-<div class="figure">
-<img src="softmax_optimal_action.jpeg">
-</div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"optimal"</span>, <span class="dt">legend_position =</span> <span class="st">"bottomright"</span>, <span class="dt">ylim =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>,<span class="dv">1</span>))</a></code></pre></div>
+<p><img src="softmax_optimal_action.jpeg"></p>
 </div>
 <div id="figure-5-3--how-much-reward-does-the-softmax-algorithm-earn-on-average" class="section level2">
 <h2 class="hasAnchor">
 <a href="#figure-5-3--how-much-reward-does-the-softmax-algorithm-earn-on-average" class="anchor"></a>Figure 5-3. How much reward does the softmax algorithm earn on average?</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"average"</span>, <span class="dt">regret =</span> <span class="ot">FALSE</span>, <span class="dt">legend_position =</span> <span class="st">"bottomright"</span>, <span class="dt">ylim =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>,<span class="dv">1</span>))</code></pre></div>
-<div class="figure">
-<img src="softmax_average_reward.jpeg">
-</div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"average"</span>, <span class="dt">regret =</span> <span class="ot">FALSE</span>, <span class="dt">legend_position =</span> <span class="st">"bottomright"</span>, <span class="dt">ylim =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>,<span class="dv">1</span>))</a></code></pre></div>
+<p><img src="softmax_average_reward.jpeg"></p>
 </div>
 <div id="figure-5-4--how-much-reward-has-the-softmax-algorithm-earned-by-trial-t" class="section level2">
 <h2 class="hasAnchor">
 <a href="#figure-5-4--how-much-reward-has-the-softmax-algorithm-earned-by-trial-t" class="anchor"></a>Figure 5-4. How much reward has the softmax algorithm earned by trial t?</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"cumulative"</span>, <span class="dt">regret =</span> <span class="ot">FALSE</span>)</code></pre></div>
-<div class="figure">
-<img src="softmax_cumulative_reward.jpeg">
-</div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"cumulative"</span>, <span class="dt">regret =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<p><img src="softmax_cumulative_reward.jpeg"></p>
 </div>
 </div>
 <div id="chapter-6---ucb" class="section level1">
 <h1 class="hasAnchor">
 <a href="#chapter-6---ucb" class="anchor"></a>Chapter 6 - UCB</h1>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">agents             &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(Agent<span class="op">$</span><span class="kw">new</span>(SoftmaxPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.1</span>), bandit, <span class="st">"Softmax"</span>),
-                           Agent<span class="op">$</span><span class="kw">new</span>(EpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.1</span>), bandit, <span class="st">"EpsilonGreedy"</span>),
-                           Agent<span class="op">$</span><span class="kw">new</span>(UCB1Policy<span class="op">$</span><span class="kw">new</span>(), bandit, <span class="st">"UCB1"</span>))
-
-simulation         &lt;-<span class="st"> </span>Simulator<span class="op">$</span><span class="kw">new</span>(agents, horizon, simulations)
-history            &lt;-<span class="st"> </span>simulation<span class="op">$</span><span class="kw"><a href="../reference/Simulator.html">run</a></span>()</code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1">agents             &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(Agent<span class="op">$</span><span class="kw">new</span>(SoftmaxPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.1</span>), bandit, <span class="st">"Softmax"</span>),</a>
+<a class="sourceLine" id="cb9-2" title="2">                           Agent<span class="op">$</span><span class="kw">new</span>(EpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.1</span>), bandit, <span class="st">"EpsilonGreedy"</span>),</a>
+<a class="sourceLine" id="cb9-3" title="3">                           Agent<span class="op">$</span><span class="kw">new</span>(UCB1Policy<span class="op">$</span><span class="kw">new</span>(), bandit, <span class="st">"UCB1"</span>))</a>
+<a class="sourceLine" id="cb9-4" title="4"></a>
+<a class="sourceLine" id="cb9-5" title="5">simulation         &lt;-<span class="st"> </span>Simulator<span class="op">$</span><span class="kw">new</span>(agents, horizon, simulations)</a>
+<a class="sourceLine" id="cb9-6" title="6">history            &lt;-<span class="st"> </span>simulation<span class="op">$</span><span class="kw"><a href="../reference/Simulator.html">run</a></span>()</a></code></pre></div>
 <div id="figure-6-3--how-often-does-the-ucb-algorithm-select-the-best-arm" class="section level2">
 <h2 class="hasAnchor">
 <a href="#figure-6-3--how-often-does-the-ucb-algorithm-select-the-best-arm" class="anchor"></a>Figure 6-3. How often does the UCB algorithm select the best arm?</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"optimal"</span>, <span class="dt">legend_position =</span> <span class="st">"bottomright"</span>, <span class="dt">ylim =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>,<span class="dv">1</span>))</code></pre></div>
-<div class="figure">
-<img src="ucb_optimal_action.jpeg">
-</div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"optimal"</span>, <span class="dt">legend_position =</span> <span class="st">"bottomright"</span>, <span class="dt">ylim =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>,<span class="dv">1</span>))</a></code></pre></div>
+<p><img src="ucb_optimal_action.jpeg"></p>
 </div>
 <div id="figure-6-4--how-much-reward-does-the-ucb-algorithm-earn-on-average" class="section level2">
 <h2 class="hasAnchor">
 <a href="#figure-6-4--how-much-reward-does-the-ucb-algorithm-earn-on-average" class="anchor"></a>Figure 6-4. How much reward does the UCB algorithm earn on average?</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"average"</span>, <span class="dt">regret =</span> <span class="ot">FALSE</span>, <span class="dt">legend_position =</span> <span class="st">"bottomright"</span>, <span class="dt">ylim =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>,<span class="dv">1</span>))</code></pre></div>
-<div class="figure">
-<img src="ucb_average_reward.jpeg">
-</div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"average"</span>, <span class="dt">regret =</span> <span class="ot">FALSE</span>, <span class="dt">legend_position =</span> <span class="st">"bottomright"</span>, <span class="dt">ylim =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>,<span class="dv">1</span>))</a></code></pre></div>
+<p><img src="ucb_average_reward.jpeg"></p>
 </div>
 <div id="figure-6-5--how-much-reward-has-the-ucb-algorithm-earned-by-trial-t" class="section level2">
 <h2 class="hasAnchor">
 <a href="#figure-6-5--how-much-reward-has-the-ucb-algorithm-earned-by-trial-t" class="anchor"></a>Figure 6-5. How much reward has the UCB algorithm earned by trial t?</h2>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"cumulative"</span>, <span class="dt">regret =</span> <span class="ot">FALSE</span>)</code></pre></div>
-<div class="figure">
-<img src="ucb_cumulative_reward.jpeg">
-</div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"cumulative"</span>, <span class="dt">regret =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<p><img src="ucb_cumulative_reward.jpeg"></p>
 </div>
 </div>
   </div>

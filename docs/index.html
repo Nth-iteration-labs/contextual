@@ -79,6 +79,9 @@
       <a href="articles/ml10m.html">Demo: MovieLens 10M Dataset</a>
     </li>
     <li>
+      <a href="articles/offline_depaul_movies.html">Demo: Offline cMAB: CarsKit DePaul Movie Dataset</a>
+    </li>
+    <li>
       <a href="articles/replication.html">Offline evaluation: Replication of Li et al 2010</a>
     </li>
     <li>
@@ -143,15 +146,15 @@
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>To install contextual from CRAN:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">'contextual'</span>)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">'contextual'</span>)</a></code></pre></div>
 <p>To install the development version (requires the devtools package):</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"devtools"</span>)
-devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">'Nth-iteration-labs/contextual'</span>)</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"devtools"</span>)</a>
+<a class="sourceLine" id="cb2-2" title="2">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">'Nth-iteration-labs/contextual'</span>)</a></code></pre></div>
 <p>When working on or extending the package, clone its <a href="https://github.com/Nth-iteration-labs/contextual">GitHub repository</a>, then do:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"devtools"</span>)
-devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/install_deps">install_deps</a></span>(<span class="dt">dependencies =</span> <span class="ot">TRUE</span>)
-devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/build">build</a></span>()
-devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reload">reload</a></span>()</code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"devtools"</span>)</a>
+<a class="sourceLine" id="cb3-2" title="2">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/install_deps">install_deps</a></span>(<span class="dt">dependencies =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb3-3" title="3">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/build">build</a></span>()</a>
+<a class="sourceLine" id="cb3-4" title="4">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reload">reload</a></span>()</a></code></pre></div>
 <p>clean and rebuild…</p>
 </div>
 <div id="documentation" class="section level2">
@@ -202,10 +205,10 @@ devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumen
 <p>Overview of contextual’s growing library of contextual and context-free bandit policies:</p>
 <table class="table">
 <colgroup>
-<col width="7%">
+<col width="6%">
 <col width="42%">
 <col width="36%">
-<col width="14%">
+<col width="13%">
 </colgroup>
 <thead><tr class="header">
 <th>General</th>
@@ -214,12 +217,12 @@ devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumen
 <th>Other</th>
 </tr></thead>
 <tbody><tr class="odd">
-<td>Random<br> Oracle<br><br><br><br><br><br>
+<td>Random<br> Oracle<br><br><br><br><br><br><br>
 </td>
-<td>Epsilon-Greedy<br> Epsilon-First<br> UCB-tuned<br> Thompson Sampling<br> BootstrapTS<br> Softmax<br> Gittins</td>
-<td>CMAB Naive Epsilon-Greedy <br> Epoch-Greedy<br> LinUCB (General, Disjoint, Hybrid)<br> LinTS<br> ProbitTS<br> LogitBTS<br>GLMUCB<br>
+<td>Epsilon-Greedy<br> Epsilon-First<br> UCB-tuned<br> Thompson Sampling<br> BootstrapTS<br> Softmax<br> Gradient<br> Gittins</td>
+<td>CMAB Naive Epsilon-Greedy <br> Epoch-Greedy<br> LinUCB (General, Disjoint, Hybrid)<br> LinTS<br> ProbitTS<br> LogitBTS<br>GLMUCB<br><br>
 </td>
-<td>Lock-in Feedback (LiF) <br><br><br><br><br><br><br>
+<td>Lock-in Feedback (LiF) <br><br><br><br><br><br><br><br>
 </td>
 </tr></tbody>
 </table>
@@ -227,9 +230,9 @@ devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumen
 <table class="table">
 <colgroup>
 <col width="20%">
-<col width="42%">
+<col width="43%">
 <col width="29%">
-<col width="6%">
+<col width="5%">
 </colgroup>
 <thead><tr class="header">
 <th>Context-free</th>

@@ -15,7 +15,7 @@ bandit          <- BasicGaussianBandit$new(mu_per_arm = mus, sigma_per_arm = sig
 
 # violin plot ------------------------------------------------------------------------------------------------
 
-# Install ggplot2 and ggnormalviolin libraries and the uncomment the following to generate Figure 2.1
+# Install ggplot2 and ggnormalviolin libraries to generate Figure 2.1
 
 install.packages("ggplot2")
 devtools::install_github("wjschne/ggnormalviolin")

@@ -6,54 +6,43 @@ library(data.table)
 # Info: https://d1ie9wlkzugsxr.cloudfront.net/data_irecsys_CARSKit/Movie_DePaulMovie/README.txt
 
 url         <- "http://d1ie9wlkzugsxr.cloudfront.net/data_irecsys_CARSKit/Movie_DePaulMovie/ratings.csv"
-datafile    <- fread(url, stringsAsFactors=TRUE)
+data        <- fread(url, stringsAsFactors=TRUE)
 
-# Convert datafile
+# Convert data
 
-datafile    <- one_hot(datafile, cols = c("Time","Location","Companion"), sparsifyNAs = TRUE)
-
-datafile[, userid := as.numeric(as.factor(userid))]
-datafile[, itemid := as.numeric(itemid)]
-
-datafile[, context := as.list(as.data.frame(t(datafile[, c(4:10,1)])))]
-datafile[, (4:10) := NULL]
-
-datafile[, rating := ifelse(rating <= 3, 0, 1)]
-
-datafile[, t := .I]
-datafile[, sim := 1]
-datafile[, agent := "linucb"]
-
-setnames(datafile, c("itemid", "rating"), c("choice", "reward"))
+data        <- contextual::one_hot(data, cols = c("Time","Location","Companion"), sparsifyNAs = TRUE)
+data[, itemid := as.numeric(itemid)]
+data[, rating := ifelse(rating <= 3, 0, 1)]
 
 # Set simulation parameters.
-simulations <- 1
-horizon     <- nrow(datafile)
+simulations <- 10  # here, "simulations" represents the number of boostrap samples
+horizon     <- nrow(data)
 
 # Initiate Replay bandit with 10 arms and 100 context dimensions
-log_S       <- datafile
-bandit      <- OfflineReplayEvaluatorBandit$new(log_S, k = length(unique(datafile$choice)),
-                                                       d = length(datafile$context[[1]]))
+log_S       <- data
+formula     <- formula("rating ~ itemid | Time_Weekday + Time_Weekend + Location_Cinema + Location_Home +
+                                          Companion_Alone + Companion_Family + Companion_Partner")
+bandit      <- OfflineBootstrappedReplayBandit$new(formula = formula, data = data)
 
 # Define agents.
 agents      <-
-  list(Agent$new(UCB1Policy$new(), bandit, "UCB1"),
-       Agent$new(ContextualEpsilonGreedyPolicy$new(0.01), bandit, "cEG = 0.01"),
-       Agent$new(LinUCBDisjointOptimizedPolicy$new(0.01), bandit, "alpha = 0.01"),
-       Agent$new(LinUCBDisjointOptimizedPolicy$new(0.05), bandit, "alpha = 0.05"))
+  list(Agent$new(RandomPolicy$new(), bandit, "Random"),
+       Agent$new(EpsilonGreedyPolicy$new(0.03), bandit, "EGreedy 0.05"),
+       Agent$new(ThompsonSamplingPolicy$new(), bandit, "ThompsonSampling"),
+       Agent$new(LinUCBDisjointOptimizedPolicy$new(0.37), bandit, "LinUCB 0.37"))
 
 # Initialize the simulation.
 simulation  <-
   Simulator$new(
     agents           = agents,
     simulations      = simulations,
-    horizon          = horizon,
-    save_context     = TRUE
+    horizon          = horizon
   )
 
 # Run the simulation.
-linucb_sim  <- simulation$run()
+# Takes about 5 minutes: bootstrapbandit loops for arms x horizon x simulations (times nr of agents).
+sim  <- simulation$run()
 
 # plot the results
-plot(linucb_sim, type = "cumulative", regret = FALSE,
-     rate = TRUE, legend_position = "bottomright")
+plot(sim, type = "cumulative", regret = FALSE, rate = TRUE,
+         legend_position = "topleft", ylim=c(0.48,0.87))

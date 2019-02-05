@@ -7,11 +7,9 @@ History <- R6::R6Class(
     n            = NULL,
     save_theta   = NULL,
     save_context = NULL,
-    context_multiple_columns = NULL,
     context_columns_initialized = NULL,
-    initialize = function(n = 1, save_context = FALSE, context_multiple_columns = FALSE, save_theta = FALSE) {
+    initialize = function(n = 1, save_context = FALSE, save_theta = FALSE) {
       self$n                           <- n
-      self$context_multiple_columns    <- context_multiple_columns
       self$save_context                <- save_context
       self$save_theta                  <- save_theta
       self$reset()
@@ -54,19 +52,18 @@ History <- R6::R6Class(
       } else {
         optimal_arm <- reward[["optimal_arm"]]
       }
-
+      if (!is.vector(context_value)) context_value <- as.vector(context_value)
+      if (save_context && !is.null(colnames(context_value))) {
+        context_value <- context_value[,!colnames(context_value) %in% "(Intercept)"]
+      }
       if (save_context || save_theta) {
         if (!isTRUE(self$save_theta)) {
-          if(isTRUE(self$context_multiple_columns)) {
-            if(!isTRUE(self$context_columns_initialized)) {
-              private$initialize_data_tables(length(context_value))
-              self$context_columns_initialized <- TRUE
-            }
-            data.table::set(private$.data, index, (14L:(13L+length(context_value))),
-                            as.list(as.vector(context_value)))
-          } else {
-            data.table::set(private$.data, index, 14L, list(list(context_value)))
+          if(!isTRUE(self$context_columns_initialized)) {
+            private$initialize_data_tables(length(context_value))
+            self$context_columns_initialized <- TRUE
           }
+          data.table::set(private$.data, index, (14L:(13L+length(context_value))),
+                          as.list(as.vector(context_value)))
         } else if (!isTRUE(self$save_context)) {
           data.table::set(private$.data, index, 14L, list(list(theta_value)))
         } else {
@@ -74,7 +71,6 @@ History <- R6::R6Class(
           data.table::set(private$.data, index, 15L, list(list(theta_value)))
         }
       }
-
       data.table::set(
         private$.data,
         index,
@@ -210,7 +206,7 @@ History <- R6::R6Class(
       if (isTRUE(auto_stats)) private$calculate_cum_stats()
       invisible(self)
     },
-    save_csv = function(filename = NA, context_to_columns = FALSE) {
+    save_csv = function(filename = NA) {
       if (is.na(filename)) {
         filename <- paste("contextual_data_",
                           format(Sys.time(), "%y%m%d_%H%M%S"),
@@ -218,35 +214,16 @@ History <- R6::R6Class(
                           sep = ""
         )
       }
-      if (context_to_columns) {
-        context_cols <- c(paste0("X.", seq_along(unlist(private$.data[1,]$context))))
-        dt_to_save <- data.table::copy(private$.data)
-        dt_to_save[, context_string := lapply(.SD, function(x) paste( unlist(x), collapse=',') ),
-                   by=1:private$.data[, .N], .SDcols = c("context")]
-        one_context <- private$.data[1,]$context[[1]]
-        if (is.vector(one_context)) one_context <- matrix(one_context, nrow = 1L)
-        dt_to_save$k <- ncol(one_context)
-        dt_to_save$d <- nrow(one_context)
-        dt_to_save[, (context_cols) := data.table::tstrsplit(context_string, ",", fixed=TRUE)]
-        dt_to_save$context <- NULL
-        if ("theta" %in% names(dt_to_save)) dt_to_save$theta <- NULL
-        dt_to_save$context_string <- NULL
-        fwrite(dt_to_save[,which(dt_to_save[,colSums(is.na(dt_to_save))<nrow(dt_to_save)]), with = FALSE],
-               file = filename)
-        rm(dt_to_save)
-        gc()
+      if ("theta" %in% names(private$.data)) {
+        fwrite(private$.data[,which(private$.data[,colSums(is.na(private$.data))<nrow(private$.data)]),
+                             with =FALSE][, !"theta", with=FALSE], file = filename)
       } else {
-        if ("theta" %in% names(private$.data)) {
-          fwrite(private$.data[,which(private$.data[,colSums(is.na(private$.data))<nrow(private$.data)]),
-                               with =FALSE][, !"theta", with=FALSE], file = filename)
-        } else {
-          fwrite(private$.data[,which(private$.data[,colSums(is.na(private$.data))<nrow(private$.data)]),
-                               with =FALSE], file = filename)
-        }
+        fwrite(private$.data[,which(private$.data[,colSums(is.na(private$.data))<nrow(private$.data)]),
+                             with =FALSE], file = filename)
       }
       invisible(self)
     },
-    get_data_frame = function(context_to_columns = FALSE) {
+    get_data_frame = function() {
       as.data.frame(private$.data)
     },
     set_data_frame = function(df, auto_stats = TRUE) {
@@ -283,24 +260,6 @@ History <- R6::R6Class(
       min_t_sim <- min(private$.data[,max(t), by = c("agent","sim")]$V1)
       private$.data <- private$.data[t<=min_t_sim]
     },
-    context_to_columns = function(delete_original_column = FALSE) {
-      # create d and k columns
-      one_context <- private$.data[1,]$context[[1]]
-      if (is.vector(one_context)) one_context <- matrix(one_context, nrow = 1L)
-      private$.data$k <- ncol(one_context)
-      private$.data$d <- nrow(one_context)
-      # create context columns
-      context_cols <- c(paste0("X.", seq_along(unlist(private$.data[1,]$context))))
-      # create temporary context_string column
-      private$.data[, context_string := lapply(.SD, function(x) paste( unlist(x), collapse=',') ),
-                    by=1:private$.data[, .N], .SDcols = c("context")]
-      # extract context data to context columns
-      private$.data[, (context_cols) := data.table::tstrsplit(context_string, ",", fixed=TRUE)]
-      # delete temporary context_string column
-      private$.data$context_string <- NULL
-      # if not temporary, delete original context column
-      if (isTRUE(delete_original_column)) private$.data$context <- NULL
-    },
     extract_theta = function(limit_agents, parameter, arm, tail = NULL, sims = 1){
       if(!is.null(tail)){
         unlist(sapply(sapply(tail(private$.data[agent %in% limit_agents & sim %in% sims],tail)$theta,
@@ -336,7 +295,7 @@ History <- R6::R6Class(
         stringsAsFactors = TRUE
       )
       if (isTRUE(self$save_context)) {
-        if (isTRUE(self$context_multiple_columns && !is.null(context_cols))) {
+        if (!is.null(context_cols)) {
           context_cols <- c(paste0("X.", seq_along(1:context_cols)))
           private$.data[, (context_cols) := 0.0]
         } else {
@@ -355,10 +314,8 @@ History <- R6::R6Class(
     calculate_cum_stats = function() {
 
 
-      self$set_meta_data("min_t",min(private$.data[, .(count = data.table::uniqueN(t)),
-                                                   by = c("agent", "sim")]$count))
-      self$set_meta_data("max_t",max(private$.data[, .(count = data.table::uniqueN(t)),
-                                                   by = c("agent", "sim")]$count))
+      self$set_meta_data("min_t",min(private$.data[,max(t), by = c("agent","sim")]$V1))
+      self$set_meta_data("max_t",max(private$.data[,max(t), by = c("agent","sim")]$V1))
 
       self$set_meta_data("agents",min(private$.data[, .(count = data.table::uniqueN(agent))]$count))
       self$set_meta_data("simulations",min(private$.data[, .(count = data.table::uniqueN(sim))]$count))
@@ -522,9 +479,8 @@ History <- R6::R6Class(
 #'   \item{\code{clear_data_table()}}{
 #'      Clears the \code{History} log.
 #'   }
-#'   \item{\code{save_csv(filename = NA, context_to_columns = FALSE)}}{
-#'      Saves History data to csv file. When context_to_columns is TRUE, the "context" column will
-#'      be split over multiple columns X1 to X...
+#'   \item{\code{save_csv(filename = NA)}}{
+#'      Saves History data to csv file.
 #'   }
 #'   \item{\code{extract_theta(limit_agents, parameter, arm, tail = NULL)}}{
 #'      Extract theta parameter from theta list for \code{limit_agents},

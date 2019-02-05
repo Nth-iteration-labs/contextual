@@ -14,7 +14,7 @@ test_that("ContextualLogitBTSPolicy simulation", {
   simulation     <- Simulator$new(agents, horizon, simulations, do_parallel = FALSE)
   history        <- simulation$run()
 
-  expect_equal(history$cumulative$ContextualLogitBTS$cum_reward,  5.9,  tolerance = 0.01)
-  expect_equal(history$cumulative$ContextualLogitBTS$cum_regret,  12, tolerance = 0.01)
+  expect_equal(history$cumulative$ContextualLogitBTS$cum_reward,  6.2,  tolerance = 0.01)
+  expect_equal(history$cumulative$ContextualLogitBTS$cum_regret,  11.6, tolerance = 0.01)
 
 })

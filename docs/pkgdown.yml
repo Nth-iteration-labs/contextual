@@ -1,4 +1,4 @@
-pandoc: 1.19.2.1
+pandoc: '2.5'
 pkgdown: 1.3.0
 pkgdown_sha: ~
 articles:
@@ -9,6 +9,7 @@ articles:
   introduction: introduction.html
   mabs: mabs.html
   ml10m: ml10m.html
+  offline_depaul_movies: offline_depaul_movies.html
   replication: replication.html
   simpsons: simpsons.html
   sutton_barto: sutton_barto.html

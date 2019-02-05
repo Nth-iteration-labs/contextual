@@ -65,9 +65,12 @@ Basic, context-free multi-armed bandit examples:
 Examples of both synthetic and offline *contextual* multi-armed bandit evaluations:
 
 * [Synthetic cMAB policy comparison](https://nth-iteration-labs.github.io/contextual/articles/cmabs.html)
-* [Offline Bandit: Basic cMAB policy evaluation](https://nth-iteration-labs.github.io/contextual/articles/cmabsoffline.html)
+
+* [Offline Evaluation Data Set - Basic Replay Bandit: Ratings](https://nth-iteration-labs.github.io/contextual/articles/cmabsoffline.html)
+* [Offline Evaluation Data Set - Bootstrapped Replay Bandit: Carskit DePaul Movies](https://nth-iteration-labs.github.io/contextual/articles/offline_depaul_movies.html)
+* [Offline Evaluation Data Set - Lookup Table Replay Bandit: MovieLens 10M](https://nth-iteration-labs.github.io/contextual/articles/ml10m.html) 
+
 * [Offline Bandits and Simpson's Paradox](https://nth-iteration-labs.github.io/contextual/articles/simpsons.html)
-* [Offline Bandit: MovieLens 10M dataset](https://nth-iteration-labs.github.io/contextual/articles/ml10m.html)
 
 Some more extensive vignettes to get you started with the package:
 
@@ -103,8 +106,16 @@ Overview of contextual's bandit library:
 
 | Context-free  | Contextual | Offline | Continuous |
 |------------------------------------------|---------------------------------------------------------------------------------------|------------------------------------------------------------|------------|
-| BasicBernoulliBandit<br>  BasicGaussianBandit<br><br> <br> <br>    | ContextualBernoulli<br>  ContextualLogit<br>  ContextualHybrid<br>  ContextualLinear<br>  ContextualWheel | ReplayEvaluator<br>  DirectMethod <br>PropensityWeighting<br>   DoublyRobust<br> <br>   | Continuum <br> <br> <br> <br> <br> |
+| BasicBernoulliBandit<br>  BasicGaussianBandit<br><br> <br> <br>    | ContextualBernoulli<br>  ContextualLogit<br>  ContextualHybrid<br>  ContextualLinear<br>  ContextualWheel | ReplayEvaluator <br> BootstrapReplay<br>PropensityWeighting<br>DirectMethod<br>DoublyRobust<br>   | Continuum <br> <br> <br> <br> <br> |
 
+Alternative parallel backends
+-----------------------------
+
+By default, "contextual" uses R's built-in parallel package to facilitate parallel evaluation of multiple agents over repeated simulation. See the demo/alternative_parallel_backends directory for several alternative parallel backends:
+
+* [Microsoft Azure VM's using doAzureParallel.](https://github.com/Nth-iteration-labs/contextual/tree/master/demo/alternative_parallel_backends/azure)
+* [Redis using doRedis.](https://github.com/Nth-iteration-labs/contextual/tree/master/demo/alternative_parallel_backends/redis)
+* [MPI (Message-Passing Interface) using Rmpi and doMPI.](https://github.com/Nth-iteration-labs/contextual/tree/master/demo/alternative_parallel_backends/rmpi)
 
 Maintainers
 -----------

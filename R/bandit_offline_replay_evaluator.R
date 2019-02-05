@@ -1,59 +1,21 @@
 #' @export
+#' @import Formula
 OfflineReplayEvaluatorBandit <- R6::R6Class(
-  inherit = Bandit,
+  inherit = OfflineBootstrappedReplayBandit,
   class = FALSE,
-  private = list(
-    S = NULL,
-    oa = NULL,
-    or = NULL
-  ),
   public = list(
     class_name = "OfflineReplayEvaluatorBandit",
-    randomize = NULL,
-    initialize   = function(offline_data, k, d = 0, unique = NULL, shared = NULL, randomize = TRUE) {
+    initialize   = function(formula,
+                            data, k = NULL, d = NULL,
+                            unique = NULL, shared = NULL,
+                            randomize = TRUE, replacement = FALSE,
+                            jitter = FALSE) {
 
-      self$k         <- k              # Number of arms (integer)
-      self$d         <- d              # Dimension of context feature vector (integer)
-
-      self$randomize <- randomize      # Randomize logged events for every simulation? (logical)
-      private$S      <- offline_data   # Logged events (by default, as a data.table)
-
-      self$unique    <- unique
-      self$shared    <- shared
-      if(!"context" %in% colnames(private$S)) private$S$context = list(1)
-      private$S[is.null(context[[1]]),`:=`(context = list(1))]
-      private$oa     <- "optimal_arm" %in% colnames(offline_data)
-      private$or     <- "optimal_reward" %in% colnames(offline_data)
-    },
-    post_initialization = function() {
-      if(isTRUE(self$randomize)) private$S <- private$S[sample(nrow(private$S))]
-    },
-    get_context = function(index) {
-      context <- list(
-        k      = self$k,
-        d      = self$d,
-        unique = self$unique,
-        shared = self$shared,
-        X      = private$S$context[[index]]
-      )
-      context
-    },
-    get_reward = function(index, context, action) {
-      if (private$S$choice[[index]] == action$choice) {
-        list(
-          reward = as.double(private$S$reward[[index]]),
-
-          optimal_reward = ifelse(private$or,
-                                  as.double(private$S$optimal_reward[[index]]),
-                                  NA),
-
-          optimal_arm    = ifelse(private$oa,
-                                  as.double(private$S$optimal_arm[[index]]),
-                                  NA)
-        )
-      } else {
-        NULL
-      }
+        super$initialize(formula,
+                         data, k, d,
+                         unique, shared = shared,
+                         randomize, replacement,
+                         jitter, arm_multiply = FALSE)
     }
   )
 )

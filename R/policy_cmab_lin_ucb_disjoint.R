@@ -28,8 +28,8 @@ LinUCBDisjointPolicy <- R6::R6Class(
 
         theta_hat  <- A_inv %*% b
 
-        mu_hat       <- Xa %*% theta_hat
-        sigma_hat         <- sqrt(tcrossprod(Xa %*% A_inv, Xa))
+        mu_hat     <- Xa %*% theta_hat
+        sigma_hat  <- sqrt(tcrossprod(Xa %*% A_inv, Xa))
 
         expected_rewards[arm] <- mu_hat + self$alpha * sigma_hat
       }

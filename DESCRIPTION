@@ -23,7 +23,8 @@ Imports:
     foreach,
     doParallel,
     itertools,
-    iterators
+    iterators,
+    Formula
 Suggests:
     testthat,
     RCurl,

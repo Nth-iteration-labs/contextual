@@ -3,7 +3,7 @@
 #' @importFrom itertools isplitVector
 #' @importFrom data.table rbindlist
 #' @importFrom iterators icount
-#'
+#' @import Formula
 #' @export
 Simulator <- R6::R6Class(
   "Simulator",
@@ -29,13 +29,11 @@ Simulator <- R6::R6Class(
     outfile = NULL,
     chunk_multiplier = NULL,
     cl = NULL,
-    context_multiple_columns = NULL,
     initialize = function(agents,
                           horizon = 100L,
                           simulations = 100L,
                           save_context = FALSE,
                           save_theta = FALSE,
-                          context_multiple_columns = FALSE,
                           do_parallel = TRUE,
                           worker_max = NULL,
                           set_seed = 0,
@@ -49,9 +47,9 @@ Simulator <- R6::R6Class(
       if (!is.list(agents)) agents <- list(agents)
 
       self$progress_file <- progress_file
-      self$log_interval <- log_interval
-      self$horizon <- horizon
-      self$simulations <- simulations
+      self$log_interval <- as.integer(log_interval)
+      self$horizon <- as.integer(horizon)
+      self$simulations <- as.integer(simulations)
       self$save_theta <- save_theta
       self$save_context <- save_context
       self$agents <- agents
@@ -60,10 +58,9 @@ Simulator <- R6::R6Class(
       self$do_parallel <- do_parallel
       self$t_over_sims <- t_over_sims
       self$set_seed <- set_seed
-      self$save_interval <- save_interval
+      self$save_interval <- as.integer(save_interval)
       self$include_packages <- include_packages
-      self$chunk_multiplier <- chunk_multiplier
-      self$context_multiple_columns <- context_multiple_columns
+      self$chunk_multiplier <- as.integer(chunk_multiplier)
 
       self$reset()
     },
@@ -134,7 +131,6 @@ Simulator <- R6::R6Class(
       horizon                  <- self$horizon
       agent_count              <- self$agent_count
       save_context             <- self$save_context
-      context_multiple_columns <- self$context_multiple_columns
       save_theta               <- self$save_theta
       progress_file            <- self$progress_file
       save_interval            <- self$save_interval
@@ -167,7 +163,7 @@ Simulator <- R6::R6Class(
         sims_agent_list = sa_iterator,
         i = iterators::icount(),
         .inorder = TRUE,
-        .export = c("History"),
+        .export = c("History","Formula"),
         .noexport = c("sims_and_agents_list","internal_history","sa_iterator"),
         .packages = par_packages
       ) %fun% {
@@ -175,12 +171,18 @@ Simulator <- R6::R6Class(
         sim_agent_counter <- 0
         sim_agent_total <- length(sims_agent_list)
 
-        history_length <- floor((horizon * sim_agent_total)/save_interval)
-        if(save_interval>1) history_length <- history_length + sim_agent_total
+        # TODO: Can this be done smarter? So not for all sims multiplier when one arm multiply?
+        multiplier <- 1
+        for (sim_agent_index in sims_agent_list) {
+          sim_agent <- agents[[sim_agent_index$agent_index]]
+          if(isTRUE(sim_agent$bandit$arm_multiply))
+            if(multiplier < sim_agent$bandit$k)
+              multiplier <- sim_agent$bandit$k
+        }
+        allocate_space <- floor((horizon * sim_agent_total * multiplier) / save_interval) + sim_agent_total
 
-        local_history <- History$new( history_length,
+        local_history <- History$new( allocate_space,
                                       save_context,
-                                      context_multiple_columns,
                                       save_theta)
 
         for (sim_agent_index in sims_agent_list) {
@@ -201,14 +203,18 @@ Simulator <- R6::R6Class(
           }
           simulation_index <- sim_agent$sim_index
           agent_name <- sim_agent$name
-          local_curent_seed <- simulation_index + set_seed*42
+          local_curent_seed <- simulation_index + set_seed * 42
           set.seed(local_curent_seed)
           sim_agent$bandit$post_initialization()
-          sim_agent$bandit$generate_bandit_data(n = horizon)
-          if (t_over_sims) sim_agent$set_t(as.integer((simulation_index - 1L) * horizon))
-
+          if(isTRUE(sim_agent$bandit$arm_multiply))
+            horizon_loop <- horizon * sim_agent$bandit$k
+          else
+            horizon_loop <- horizon
+          set.seed(local_curent_seed + 1e+06)
+          sim_agent$bandit$generate_bandit_data(n = horizon_loop)
+          if (isTRUE(t_over_sims)) sim_agent$set_t(as.integer((simulation_index - 1L) * horizon_loop))
           step <- list()
-          for (t in 1L:horizon) {
+          for (t in 1L:horizon_loop) {
             step <- sim_agent$do_step()
             if (!is.null(step[[3]]) && ((step[[5]] == 1) || (step[[5]] %% save_interval == 0))) {
               local_history$insert(
@@ -230,6 +236,7 @@ Simulator <- R6::R6Class(
         sim_agent$bandit$final()
         local_history$data[t!=0]
       }
+
       # bind all results
       foreach_results <- data.table::rbindlist(foreach_results)
       foreach_results[, agent := factor(agent)]
@@ -237,25 +244,29 @@ Simulator <- R6::R6Class(
       rm(foreach_results)
       private$end_time <- Sys.time()
       gc()
+      message("Finished main loop.")
 
-      # truncate: TODO: this should be optional, and maybe done at plotside?
-      self$internal_history$truncate()
-
-      # update statistics TODO: not always necessary
-      self$internal_history$update_statistics()
-
-      # set meta data and messages
       self$internal_history$set_meta_data("sim_end_time",format(Sys.time(), "%a %b %d %X %Y"))
       formatted_duration <- contextual::formatted_difftime(private$end_time - private$start_time)
       self$internal_history$set_meta_data("sim_total_duration", formatted_duration)
       message(paste0("Completed simulation in ",formatted_duration))
+
+      # TODO: this should be optional, and maybe done at plotside?
+      self$internal_history$truncate()
+
+      start_time_stats <- Sys.time()
+      message("Computing statistics.")
+      # update statistics TODO: not always necessary, add option arg to class?
+      self$internal_history$update_statistics()
+
+      # set meta data and messages
       self$stop_parallel_backend()
       self$internal_history
     },
     register_parallel_backend = function() {
       # nocov start
       # setup parallel backend
-      message("Setting up parallel backend")
+      message("Setting up parallel backend.")
       nr_cores <- parallel::detectCores()
       if (nr_cores >= 3) self$workers <- nr_cores - 1
       if (!is.null(self$worker_max)) {
