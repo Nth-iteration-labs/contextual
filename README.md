@@ -100,13 +100,13 @@ Overview of contextual's growing library of contextual and context-free bandit p
 
 | General | Context-free | Contextual | Other |
 |---------------|-------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------|------------------------------|
-| Random<br>  Oracle<br> Fixed <br> <br> <br><br><br>  | Epsilon-Greedy<br>  Epsilon-First<br>  UCB-tuned<br>   Thompson Sampling<br>   BootstrapTS<br>   Softmax<br> Gradient<br>  Gittins | CMAB Naive Epsilon-Greedy <br> Epoch-Greedy<br>   LinUCB (General, Disjoint, Hybrid)<br>    LinTS<br> ProbitTS<br> LogitBTS<br>GLMUCB<br>  <br>  | Lock-in Feedback (LiF)  <br> <br> <br> <br><br> <br><br> <br>  |
+| Random<br>  Oracle<br> Fixed <br> <br> <br><br><br>  | Epsilon-Greedy<br>  Epsilon-First<br>  UCB1, UCB2<br>   Thompson Sampling<br>   BootstrapTS<br>   Softmax<br> Gradient<br>  Gittins | CMAB Naive Epsilon-Greedy <br> Epoch-Greedy<br>   LinUCB (General, Disjoint, Hybrid)<br>Linear Thompson Sampling<br> ProbitTS<br> LogitBTS<br>GLMUCB<br>  <br>  | Lock-in Feedback (LiF)  <br> <br> <br> <br><br> <br><br> <br>  |
 
 Overview of contextual's bandit library:
 
-| Context-free  | Contextual | Offline | Continuous |
+| Basic Synthetic | Contextual Synthetic | Offline | Continuous |
 |------------------------------------------|---------------------------------------------------------------------------------------|------------------------------------------------------------|------------|
-| BasicBernoulliBandit<br>  BasicGaussianBandit<br><br> <br> <br>    | ContextualBernoulli<br>  ContextualLogit<br>  ContextualHybrid<br>  ContextualLinear<br>  ContextualWheel | ReplayEvaluator <br> BootstrapReplay<br>PropensityWeighting<br>DirectMethod<br>DoublyRobust<br>   | Continuum <br> <br> <br> <br> <br> |
+| Basic Bernoulli Bandit<br>  Basic Gaussian Bandit<br><br> <br> <br>    | Contextual Bernoulli<br>  Contextual Logit<br>  Contextual Hybrid<br>  Contextual Linear<br>  Contextual Wheel | Replay Evaluator <br> Bootstrap Replay<br>Propensity Weighting<br>Direct Method<br>Doubly Robust<br>   | Continuum <br> <br> <br> <br> <br> |
 
 Alternative parallel backends
 -----------------------------
