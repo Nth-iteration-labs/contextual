@@ -100,7 +100,7 @@ Overview of contextual's growing library of contextual and context-free bandit p
 
 | General | Context-free | Contextual | Other |
 |---------------|-------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------|------------------------------|
-| Random<br>  Oracle<br> <br> <br> <br> <br><br><br>  | Epsilon-Greedy<br>  Epsilon-First<br>  UCB-tuned<br>   Thompson Sampling<br>   BootstrapTS<br>   Softmax<br> Gradient<br>  Gittins | CMAB Naive Epsilon-Greedy <br> Epoch-Greedy<br>   LinUCB (General, Disjoint, Hybrid)<br>    LinTS<br> ProbitTS<br> LogitBTS<br>GLMUCB<br>  <br>  | Lock-in Feedback (LiF)  <br> <br> <br> <br><br> <br><br> <br>  |
+| Random<br>  Oracle<br> Fixed <br> <br> <br><br><br>  | Epsilon-Greedy<br>  Epsilon-First<br>  UCB-tuned<br>   Thompson Sampling<br>   BootstrapTS<br>   Softmax<br> Gradient<br>  Gittins | CMAB Naive Epsilon-Greedy <br> Epoch-Greedy<br>   LinUCB (General, Disjoint, Hybrid)<br>    LinTS<br> ProbitTS<br> LogitBTS<br>GLMUCB<br>  <br>  | Lock-in Feedback (LiF)  <br> <br> <br> <br><br> <br><br> <br>  |
 
 Overview of contextual's bandit library:
 
