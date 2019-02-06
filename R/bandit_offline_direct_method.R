@@ -60,14 +60,15 @@ OfflineDirectMethodBandit <- R6::R6Class(
 
 #' Bandit: Offline Direct Method Evaluator
 #'
-#' Policy for the evaluation of policies with offline data.
+#' TODO: Interface needs to be updated, and needs to be documented more fully.
 #'
 #' @name OfflineDirectMethodBandit
 #'
 #'
 #' @section Usage:
 #' \preformatted{
-#'   bandit <- OfflineDirectMethodBandit(offline_data, k, d, randomize = TRUE)
+#'   bandit <- OfflineDirectMethodBandit(offline_data, k, d = 0, arm_regression_models = NULL,
+#'                                       single_regression_model = NULL, randomize = TRUE)
 #' }
 #'
 #' @section Arguments:
@@ -98,8 +99,8 @@ OfflineDirectMethodBandit <- R6::R6Class(
 #'
 #' \describe{
 #'
-#'   \item{\code{new(offline_data, k, d, unique = NULL, shared = NULL, randomize = TRUE)}}{ generates
-#'    and instantializes a new \code{OfflineDirectMethodBandit} instance. }
+#'   \item{\code{new(offline_data, k, d = 0, arm_regression_models = NULL, single_regression_model = NULL,
+#'   randomize = TRUE)}}{ generates and instantializes a new \code{OfflineDirectMethodBandit} instance. }
 #'
 #'   \item{\code{get_context(t)}}{
 #'      argument:
@@ -132,8 +133,8 @@ OfflineDirectMethodBandit <- R6::R6Class(
 #'
 #' @references
 #'
-#' Agrawal, R. (1995). The continuum-armed bandit problem. SIAM journal on control and optimization,
-#' 33(6), 1926-1951.
+#' Agarwal, Alekh, et al. "Taming the monster: A fast and simple algorithm for contextual bandits."
+#' International Conference on Machine Learning. 2014.
 #'
 #' @seealso
 #'
@@ -145,11 +146,4 @@ OfflineDirectMethodBandit <- R6::R6Class(
 #'
 #' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualLinTSPolicy}}
 #'
-#' @examples
-#' \dontrun{
-#'
-#' ## generate random policy log and save it
-#'
-#'
-#' }
 NULL

@@ -1,7 +1,7 @@
 #' @export
 #' @import Formula
 OfflineReplayEvaluatorBandit <- R6::R6Class(
-  inherit = OfflineBootstrappedReplayBandit,
+  inherit = OfflineReplayEvaluatorBandit,
   class = FALSE,
   public = list(
     class_name = "OfflineReplayEvaluatorBandit",
@@ -22,7 +22,7 @@ OfflineReplayEvaluatorBandit <- R6::R6Class(
 
 #' Bandit: Offline Replay
 #'
-#' Policy for the evaluation of policies with offline data.
+#' Policy for the evaluation of policies with offline data through replay.
 #'
 #' The key assumption of the method is that that the original logging policy chose
 #' i.i.d. arms uniformly at random.
@@ -36,23 +36,42 @@ OfflineReplayEvaluatorBandit <- R6::R6Class(
 #'
 #' @section Usage:
 #' \preformatted{
-#'   bandit <- OfflineReplayEvaluatorBandit(offline_data, k, d, unique = NULL, shared = NULL, randomize = TRUE)
+#'   bandit <- OfflineReplayEvaluatorBandit(formula,
+#'                                             data, k = NULL, d = NULL,
+#'                                             unique = NULL, shared = NULL,
+#'                                             randomize = TRUE, replacement = FALSE,
+#'                                             jitter = FALSE)
 #' }
 #'
 #' @section Arguments:
 #'
 #' \describe{
-#'   \item{\code{offline_data}}{
-#'     data.table; offline data source (required)
+#'   \item{\code{formula}}{
+#'     formula (required). Format: \code{y.context ~ z.choice | x1.context + x2.xontext + ...}
+#'     By default,  adds an intercept to the context model. Exclude the intercept, by adding "0" or "-1" to
+#'     the list of contextual features, as in: \code{y.context ~ z.choice | x1.context + x2.xontext -1}
+#'   }
+#'   \item{\code{data}}{
+#'     data.table or data.frame; offline data source (required)
 #'   }
 #'   \item{\code{k}}{
-#'     integer; number of arms (required)
+#'     integer; number of arms (optional). Optionally used to reformat the formula defined x.context vector
+#'     as a \code{k x d} matrix. When making use of such matrix formatted contexts, you need to define custom
+#'     intercept(s) when and where needed in data.table or data.frame.
 #'   }
 #'   \item{\code{d}}{
-#'     integer; number of contextual features (optional, default: 0)
+#'     integer; number of contextual features (optional) Optionally used to reformat the formula defined
+#'     x.context vector as a \code{k x d} matrix. When making use of such matrix formatted contexts, you need
+#'     to define custom intercept(s) when and where needed in data.table or data.frame.
 #'   }
 #'   \item{\code{randomize}}{
 #'     logical; randomize rows of data stream per simulation (optional, default: TRUE)
+#'   }
+#'   \item{\code{replacement}}{
+#'     logical; sample with replacement (optional, default: FALSE)
+#'   }
+#'   \item{\code{replacement}}{
+#'     logical; add jitter to contextual features (optional, default: FALSE)
 #'   }
 #'   \item{\code{unique}}{
 #'     integer vector; index of disjoint features (optional)
@@ -67,7 +86,8 @@ OfflineReplayEvaluatorBandit <- R6::R6Class(
 #'
 #' \describe{
 #'
-#'   \item{\code{new(offline_data, k, d, unique = NULL, shared = NULL, randomize = TRUE)}}{ generates
+#'   \item{\code{new(formula, data, k = NULL, d = NULL, unique = NULL, shared = NULL, randomize = TRUE,
+#'                   replacement = TRUE, jitter = TRUE, arm_multiply = TRUE)}}{ generates
 #'    and instantializes a new \code{OfflineReplayEvaluatorBandit} instance. }
 #'
 #'   \item{\code{get_context(t)}}{
@@ -101,8 +121,9 @@ OfflineReplayEvaluatorBandit <- R6::R6Class(
 #'
 #' @references
 #'
-#' Agrawal, R. (1995). The continuum-armed bandit problem. SIAM journal on control and optimization,
-#' 33(6), 1926-1951.
+#' Li, Lihong, Chu, Wei, Langford, John, and Wang, Xuanhui. Unbiased offline evaluation of
+#' contextual-bandit-based news article recommendation algorithms. In King, Irwin, Nejdl, Wolfgang, and Li,
+#' Hang (eds.), Proc. Web Search and Data Mining (WSDM), pp. 297–306. ACM, 2011. ISBN 978-1-4503-0493-1.
 #'
 #' @seealso
 #'
@@ -117,61 +138,46 @@ OfflineReplayEvaluatorBandit <- R6::R6Class(
 #' @examples
 #' \dontrun{
 #'
-#' ## generate random policy log and save it
+#' url         <- "http://d1ie9wlkzugsxr.cloudfront.net/data_irecsys_CARSKit/Movie_DePaulMovie/ratings.csv"
+#' data        <- fread(url, stringsAsFactors=TRUE)
 #'
-#' context_weights    <- matrix(  c( 0.9, 0.1, 0.1,
-#'                                   0.1, 0.9, 0.1,
-#'                                   0.1, 0.1, 0.9), nrow = 3, ncol = 3, byrow = TRUE)
-#' horizon     <- 2000L
-#' simulations <- 1L
-#' bandit      <- ContextualBinaryBandit$new(weights = context_weights)
+#' # Convert data
 #'
-#' # For the generation of random data choose a random policy,
-#' # otherwise rejection sampling will produce biased results.
+#' data        <- contextual::one_hot(data, cols = c("Time","Location","Companion"), sparsifyNAs = TRUE)
+#' data[, itemid := as.numeric(itemid)]
+#' data[, rating := ifelse(rating <= 3, 0, 1)]
 #'
-#' policy      <- RandomPolicy$new()
+#' # Set simulation parameters.
+#' simulations <- 10  # here, "simulations" represents the number of boostrap samples
+#' horizon     <- nrow(data)
 #'
-#' agent       <- Agent$new(policy, bandit)
+#' # Initiate Replay bandit with 10 arms and 100 context dimensions
+#' log_S       <- data
+#' formula     <- formula("rating ~ itemid | Time_Weekday + Time_Weekend + Location_Cinema + Location_Home +
+#'                                           Companion_Alone + Companion_Family + Companion_Partner")
+#' bandit      <- OfflineReplayEvaluatorBandit$new(formula = formula, data = data)
 #'
+#' # Define agents.
+#' agents      <-
+#'   list(Agent$new(RandomPolicy$new(), bandit, "Random"),
+#'        Agent$new(EpsilonGreedyPolicy$new(0.03), bandit, "EGreedy 0.05"),
+#'        Agent$new(ThompsonSamplingPolicy$new(), bandit, "ThompsonSampling"),
+#'        Agent$new(LinUCBDisjointOptimizedPolicy$new(0.37), bandit, "LinUCB 0.37"))
+#'
+#' # Initialize the simulation.
 #' simulation  <-
 #'   Simulator$new(
-#'     agent,
-#'     horizon = horizon,
-#'     simulations = simulations,
-#'     save_context = TRUE
+#'     agents           = agents,
+#'     simulations      = simulations,
+#'     horizon          = horizon
 #'   )
 #'
-#' random_offline_data <- simulation$run()
-#' random_offline_data$save("log.RData")
+#' # Run the simulation.
+#' # Takes about 5 minutes: bootstrapbandit loops for arms x horizon x simulations (times nr of agents).
+#' sim  <- simulation$run()
 #'
-#' ## use saved log to evaluate policies with OfflineReplayEvaluatorBandit
-#'
-#' history <- History$new()
-#' history$load("log.RData")
-#' log_S <- history$get_data_table()
-#'
-#' bandit <- OfflineReplayEvaluatorBandit$new(offline_data = log_S, k = 3, d = 3)
-#'
-#' agents <-
-#'   list(
-#'     Agent$new(EpsilonGreedyPolicy$new(0.01), bandit),
-#'     Agent$new(LinUCBDisjointPolicy$new(0.6), bandit)
-#'   )
-#'
-#' simulation <-
-#'   Simulator$new(
-#'     agents,
-#'     horizon = horizon,
-#'     simulations = simulations,
-#'     t_over_sims = TRUE,
-#'     do_parallel = FALSE
-#'   )
-#'
-#' li_bandit_history <- simulation$run()
-#'
-#' plot(after, regret = FALSE, type = "cumulative", rate = TRUE)
-#'
-#' if (file.exists("log.RData")) file.remove("log.RData")
+#' # plot the results
+#' plot(sim, type = "cumulative", regret = FALSE, rate = TRUE,
+#'      legend_position = "topleft", ylim=c(0.48,0.87))
 #'
 #' }
-NULL

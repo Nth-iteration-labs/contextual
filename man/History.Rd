@@ -72,14 +72,19 @@ full data file. This can be of use with (a first) analysis of very large data fi
 \item{\code{get_data_frame()}}{
 Returns the \code{History} log as a \code{data.frame}.
 }
+\item{\code{set_data_frame(df, auto_stats = TRUE)}}{
+Sets the \code{History} log with the data in \code{data.frame} \code{dt}.
+Recalculates cumulative statistics when auto_stats is TRUE.
+}
 \item{\code{get_data_table()}}{
 Returns the \code{History} log as a \code{data.table}.
 }
-\item{\code{set_data_table(dt)}}{
+\item{\code{set_data_table(dt, auto_stats = TRUE)}}{
 Sets the \code{History} log with the data in \code{data.table} \code{dt}.
+Recalculates cumulative statistics when auto_stats is TRUE.
 }
 \item{\code{clear_data_table()}}{
-Clears the \code{History} log.
+Clear \code{History}'s internal \code{data.table} log.
 }
 \item{\code{save_csv(filename = NA)}}{
 Saves History data to csv file.
@@ -93,6 +98,35 @@ Returns a vector, matrix or array with the selected theta values.
 }
 \item{\code{print_data()}}{
 Prints a summary of the \code{History} log.
+}
+\item{\code{update_statistics()}}{
+Updates cumulative statistics.
+}
+\item{\code{get_agent_list()}}{
+Retrieve list of agents in History.
+}
+\item{\code{get_agent_count()}}{
+Retrieve number of agents in History.
+}
+\item{\code{get_simulation_count()}}{
+Retrieve number of simulations in History.
+}
+\item{\code{get_arm_choice_percentage(limit_agents)}}{
+Retrieve list of percentage arms chosen per agent for \code{limit_agents}.
+}
+\item{\code{get_meta_data()}}{
+Retrieve History meta data.
+}
+\item{\code{set_meta_data = function(key, value, group = "sim", agent_name = NULL)}}{
+Set History meta data.
+}
+\item{\code{get_cumulative_data = function(limit_agents = NULL, limit_cols = NULL, interval = 1,
+  cum_average = FALSE))}}{
+Retrieve cumulative statistics data.
+}
+\item{\code{get_cumulative_result = function(limit_agents = NULL, limit_cols = NULL, interval = 1,
+  cum_average = FALSE))}}{
+Retrieve cumulative statistics data point.
 }
 \item{\code{data}}{
 Active binding, read access to History's internal data.table.

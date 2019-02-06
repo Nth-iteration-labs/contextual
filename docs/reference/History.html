@@ -211,9 +211,12 @@ with <code>filename</code> as the name of the file which the data are to be read
 If <code>interval</code> is larger than 0, every <code>interval</code> of data is read instead of the
 full data file. This can be of use with (a first) analysis of very large data files.</p></dd>
 <dt><code>get_data_frame()</code></dt><dd><p>Returns the <code>History</code> log as a <code>data.frame</code>.</p></dd>
+<dt><code>set_data_frame(df, auto_stats = TRUE)</code></dt><dd><p>Sets the <code>History</code> log with the data in <code>data.frame</code> <code>dt</code>.
+Recalculates cumulative statistics when auto_stats is TRUE.</p></dd>
 <dt><code>get_data_table()</code></dt><dd><p>Returns the <code>History</code> log as a <code>data.table</code>.</p></dd>
-<dt><code>set_data_table(dt)</code></dt><dd><p>Sets the <code>History</code> log with the data in <code>data.table</code> <code>dt</code>.</p></dd>
-<dt><code>clear_data_table()</code></dt><dd><p>Clears the <code>History</code> log.</p></dd>
+<dt><code>set_data_table(dt, auto_stats = TRUE)</code></dt><dd><p>Sets the <code>History</code> log with the data in <code>data.table</code> <code>dt</code>.
+Recalculates cumulative statistics when auto_stats is TRUE.</p></dd>
+<dt><code>clear_data_table()</code></dt><dd><p>Clear <code>History</code>'s internal <code>data.table</code> log.</p></dd>
 <dt><code>save_csv(filename = NA)</code></dt><dd><p>Saves History data to csv file.</p></dd>
 <dt><code>extract_theta(limit_agents, parameter, arm, tail = NULL)</code></dt><dd><p>Extract theta parameter from theta list for <code>limit_agents</code>,
 where <code>parameter</code> sets the to be retrieved parameter or vector of parameters in theta,
@@ -221,6 +224,17 @@ where <code>parameter</code> sets the to be retrieved parameter or vector of par
 optional <code>tail</code> selects the last elements in the list.
 Returns a vector, matrix or array with the selected theta values.</p></dd>
 <dt><code>print_data()</code></dt><dd><p>Prints a summary of the <code>History</code> log.</p></dd>
+<dt><code>update_statistics()</code></dt><dd><p>Updates cumulative statistics.</p></dd>
+<dt><code>get_agent_list()</code></dt><dd><p>Retrieve list of agents in History.</p></dd>
+<dt><code>get_agent_count()</code></dt><dd><p>Retrieve number of agents in History.</p></dd>
+<dt><code>get_simulation_count()</code></dt><dd><p>Retrieve number of simulations in History.</p></dd>
+<dt><code>get_arm_choice_percentage(limit_agents)</code></dt><dd><p>Retrieve list of percentage arms chosen per agent for <code>limit_agents</code>.</p></dd>
+<dt><code>get_meta_data()</code></dt><dd><p>Retrieve History meta data.</p></dd>
+<dt><code>set_meta_data = function(key, value, group = "sim", agent_name = NULL)</code></dt><dd><p>Set History meta data.</p></dd>
+<dt><code>get_cumulative_data = function(limit_agents = NULL, limit_cols = NULL, interval = 1,
+  cum_average = FALSE))</code></dt><dd><p>Retrieve cumulative statistics data.</p></dd>
+<dt><code>get_cumulative_result = function(limit_agents = NULL, limit_cols = NULL, interval = 1,
+  cum_average = FALSE))</code></dt><dd><p>Retrieve cumulative statistics data point.</p></dd>
 <dt><code>data</code></dt><dd><p>Active binding, read access to History's internal data.table.</p></dd>
 <dt><code>cumulative</code></dt><dd><p>Active binding, read access to cumulative data by name through $ accessor.</p></dd>
 <dt><code>meta</code></dt><dd><p>Active binding, read access to meta data by name through $ accessor.</p></dd>
@@ -231,7 +245,7 @@ Returns a vector, matrix or array with the selected theta values.</p></dd>
     <div class='dont-index'><p>Core contextual classes: <code><a href='Bandit.html'>Bandit</a></code>, <code><a href='Policy.html'>Policy</a></code>, <code><a href='Simulator.html'>Simulator</a></code>,
 <code><a href='Agent.html'>Agent</a></code>, <code>History</code>, <code><a href='Plot.html'>Plot</a></code></p>
 <p>Bandit subclass examples: <code><a href='BasicBernoulliBandit.html'>BasicBernoulliBandit</a></code>, <code><a href='ContextualLogitBandit.html'>ContextualLogitBandit</a></code>,
-<code><a href='OfflineReplayEvaluatorBandit.html'>OfflineReplayEvaluatorBandit</a></code></p>
+<code>OfflineReplayEvaluatorBandit</code></p>
 <p>Policy subclass examples: <code><a href='EpsilonGreedyPolicy.html'>EpsilonGreedyPolicy</a></code>, <code><a href='ContextualLinTSPolicy.html'>ContextualLinTSPolicy</a></code></p></div>
     
 

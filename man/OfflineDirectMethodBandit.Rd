@@ -4,12 +4,13 @@
 \alias{OfflineDirectMethodBandit}
 \title{Bandit: Offline Direct Method Evaluator}
 \description{
-Policy for the evaluation of policies with offline data.
+TODO: Interface needs to be updated, and needs to be documented more fully.
 }
 \section{Usage}{
 
 \preformatted{
-  bandit <- OfflineDirectMethodBandit(offline_data, k, d, randomize = TRUE)
+  bandit <- OfflineDirectMethodBandit(offline_data, k, d = 0, arm_regression_models = NULL,
+                                      single_regression_model = NULL, randomize = TRUE)
 }
 }
 
@@ -44,8 +45,8 @@ integer vector; index of shared features (optional)
 
 \describe{
 
-\item{\code{new(offline_data, k, d, unique = NULL, shared = NULL, randomize = TRUE)}}{ generates
-and instantializes a new \code{OfflineDirectMethodBandit} instance. }
+\item{\code{new(offline_data, k, d = 0, arm_regression_models = NULL, single_regression_model = NULL,
+  randomize = TRUE)}}{ generates and instantializes a new \code{OfflineDirectMethodBandit} instance. }
 
 \item{\code{get_context(t)}}{
 argument:
@@ -77,17 +78,9 @@ individual simulation when self$randomize is TRUE (default)
 }
 }
 
-\examples{
-\dontrun{
-
-## generate random policy log and save it
-
-
-}
-}
 \references{
-Agrawal, R. (1995). The continuum-armed bandit problem. SIAM journal on control and optimization,
-33(6), 1926-1951.
+Agarwal, Alekh, et al. "Taming the monster: A fast and simple algorithm for contextual bandits."
+International Conference on Machine Learning. 2014.
 }
 \seealso{
 Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},

@@ -4,7 +4,7 @@
 \alias{OfflineBootstrappedReplayBandit}
 \title{Bandit: Offline Bootstrapped Replay}
 \description{
-Policy for the evaluation of policies with offline data.
+Policy for the evaluation of policies with offline data through replay with bootstrapping.
 }
 \details{
 The key assumption of the method is that that the original logging policy chose
@@ -17,7 +17,11 @@ and related techniques like doubly robust estimation (Dudik et al., 2011).
 \section{Usage}{
 
 \preformatted{
-  bandit <- OfflineBootstrappedReplayBandit(offline_data, k, d, unique = NULL, shared = NULL, randomize = TRUE)
+  bandit <- OfflineBootstrappedReplayBandit(formula,
+                                            data, k = NULL, d = NULL,
+                                            unique = NULL, shared = NULL,
+                                            randomize = TRUE, replacement = TRUE,
+                                            jitter = TRUE, arm_multiply = TRUE)
 }
 }
 
@@ -25,17 +29,35 @@ and related techniques like doubly robust estimation (Dudik et al., 2011).
 
 
 \describe{
-\item{\code{offline_data}}{
-data.table; offline data source (required)
+\item{\code{formula}}{
+formula (required). Format: \code{y.context ~ z.choice | x1.context + x2.xontext + ...}
+By default,  adds an intercept to the context model. Exclude the intercept, by adding "0" or "-1" to
+the list of contextual features, as in: \code{y.context ~ z.choice | x1.context + x2.xontext -1}
+}
+\item{\code{data}}{
+data.table or data.frame; offline data source (required)
 }
 \item{\code{k}}{
-integer; number of arms (required)
+integer; number of arms (optional). Optionally used to reformat the formula defined x.context vector
+as a \code{k x d} matrix. When making use of such matrix formatted contexts, you need to define custom
+intercept(s) when and where needed in data.table or data.frame.
 }
 \item{\code{d}}{
-integer; number of contextual features (optional, default: 0)
+integer; number of contextual features (optional) Optionally used to reformat the formula defined
+x.context vector as a \code{k x d} matrix. When making use of such matrix formatted contexts, you need
+to define custom intercept(s) when and where needed in data.table or data.frame.
 }
 \item{\code{randomize}}{
 logical; randomize rows of data stream per simulation (optional, default: TRUE)
+}
+\item{\code{replacement}}{
+logical; sample with replacement (optional, default: TRUE)
+}
+\item{\code{replacement}}{
+logical; add jitter to contextual features (optional, default: TRUE)
+}
+\item{\code{arm_multiply}}{
+logical; multiply the horizon by the number of arms (optional, default: TRUE)
 }
 \item{\code{unique}}{
 integer vector; index of disjoint features (optional)
@@ -52,7 +74,8 @@ integer vector; index of shared features (optional)
 
 \describe{
 
-\item{\code{new(offline_data, k, d, unique = NULL, shared = NULL, randomize = TRUE)}}{ generates
+\item{\code{new(formula, data, k = NULL, d = NULL, unique = NULL, shared = NULL, randomize = TRUE,
+                  replacement = TRUE, jitter = TRUE, arm_multiply = TRUE)}}{ generates
 and instantializes a new \code{OfflineBootstrappedReplayBandit} instance. }
 
 \item{\code{get_context(t)}}{
@@ -88,67 +111,42 @@ individual simulation when self$randomize is TRUE (default)
 \examples{
 \dontrun{
 
-## generate random policy log and save it
+library(contextual)
+library(data.table)
 
-context_weights    <- matrix(  c( 0.9, 0.1, 0.1,
-                                  0.1, 0.9, 0.1,
-                                  0.1, 0.1, 0.9 ), nrow = 3, ncol = 3, byrow = TRUE)
-horizon     <- 2000L
-simulations <- 1L
-bandit      <- ContextualBinaryBandit$new(weights = context_weights)
+# Import personalization data-set
 
-# For the generation of random data choose a random policy,
-# otherwise rejection sampling will produce biased results.
+url         <- "http://d1ie9wlkzugsxr.cloudfront.net/data_cmab_basic/dataset.txt"
+datafile    <- fread(url)
 
-policy      <- RandomPolicy$new()
+simulations <- 1
+horizon     <- nrow(datafile)
 
-agent       <- Agent$new(policy, bandit)
+bandit      <- OfflineReplayEvaluatorBandit$new(formula = V2 ~ V1 | . - V1, data = datafile)
 
-simulation  <-
-  Simulator$new(
-    agent,
-    horizon = horizon,
-    simulations = simulations,
-    save_context = TRUE
-  )
+# Define agents.
+agents      <- list(Agent$new(LinUCBDisjointOptimizedPolicy$new(0.01), bandit, "alpha = 0.01"),
+                    Agent$new(LinUCBDisjointOptimizedPolicy$new(0.05), bandit, "alpha = 0.05"),
+                    Agent$new(LinUCBDisjointOptimizedPolicy$new(0.1),  bandit, "alpha = 0.1"),
+                    Agent$new(LinUCBDisjointOptimizedPolicy$new(1.0),  bandit, "alpha = 1.0"))
 
-random_offline_data <- simulation$run()
-random_offline_data$save("log.RData")
+# Initialize the simulation.
 
-## use saved log to evaluate policies with OfflineBootstrappedReplayBandit
+simulation  <- Simulator$new(agents = agents, simulations = simulations, horizon = horizon,
+                             do_parallel = FALSE, save_context = TRUE)
 
-history <- History$new()
-history$load("log.RData")
-log_S <- history$get_data_table()
+# Run the simulation.
+sim  <- simulation$run()
 
-bandit <- OfflineBootstrappedReplayBandit$new(offline_data = log_S, k = 3, d = 3)
+# plot the results
+plot(sim, type = "cumulative", regret = FALSE, rate = TRUE, legend_position = "bottomright", ylim = c(0,1))
 
-agents <-
-  list(
-    Agent$new(EpsilonGreedyPolicy$new(0.01), bandit),
-    Agent$new(LinUCBDisjointPolicy$new(0.6), bandit)
-  )
-
-simulation <-
-  Simulator$new(
-    agents,
-    horizon = horizon,
-    simulations = simulations,
-    t_over_sims = TRUE,
-    do_parallel = FALSE
-  )
-
-li_bandit_history <- simulation$run()
-
-plot(after, regret = FALSE, type = "cumulative", rate = TRUE)
-
-if (file.exists("log.RData")) file.remove("log.RData")
 
 }
 }
 \references{
-Agrawal, R. (1995). The continuum-armed bandit problem. SIAM journal on control and optimization,
-33(6), 1926-1951.
+Mary, J., Preux, P., & Nicol, O. (2014, January). Improving offline evaluation of contextual bandit
+algorithms via bootstrapping techniques. In International Conference on Machine Learning (pp. 172-180).
 }
 \seealso{
 Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},

@@ -40,7 +40,7 @@ ContextualBernoulliBandit <- R6::R6Class(
 
 #' Bandit: Naive Contextual Bernouilli Bandit
 #'
-#' Contextual Bernoulli multi-armed bandit with one context feature active per t.
+#' Contextual Bernoulli multi-armed bandit where at least one context feature is active at a time.
 #'
 #' @name ContextualBernoulliBandit
 #'

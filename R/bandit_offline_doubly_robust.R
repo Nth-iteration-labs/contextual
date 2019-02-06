@@ -78,6 +78,8 @@ OfflineDoublyRobustBandit <- R6::R6Class(
 
 #' Bandit: Offline Doubly Robust Evaluator
 #'
+#' TODO: Interface needs to be updated, and needs to be documented more fully.
+#'
 #' Policy for the evaluation of policies with offline data.
 #'
 #' @name OfflineDoublyRobustBandit
@@ -85,7 +87,8 @@ OfflineDoublyRobustBandit <- R6::R6Class(
 #'
 #' @section Usage:
 #' \preformatted{
-#'   bandit <- OfflineDoublyRobustBandit(offline_data, k, d, randomize = TRUE)
+#'   bandit <- OfflineDoublyRobustBandit(offline_data, k, d, arm_regression_models,
+#'   arm_regression_data, randomize = TRUE, stabilize = TRUE, preweighted = FALSE)
 #' }
 #'
 #' @section Arguments:
@@ -116,7 +119,8 @@ OfflineDoublyRobustBandit <- R6::R6Class(
 #'
 #' \describe{
 #'
-#'   \item{\code{new(offline_data, k, d, unique = NULL, shared = NULL, randomize = TRUE)}}{ generates
+#'   \item{\code{new(offline_data, k, d, arm_regression_models, arm_regression_data, randomize = TRUE,
+#'                   stabilize = TRUE, preweighted = FALSE)}}{ generates
 #'    and instantializes a new \code{OfflineDoublyRobustBandit} instance. }
 #'
 #'   \item{\code{get_context(t)}}{
@@ -150,8 +154,8 @@ OfflineDoublyRobustBandit <- R6::R6Class(
 #'
 #' @references
 #'
-#' Agrawal, R. (1995). The continuum-armed bandit problem. SIAM journal on control and optimization,
-#' 33(6), 1926-1951.
+#' Agarwal, Alekh, et al. "Taming the monster: A fast and simple algorithm for contextual bandits."
+#' International Conference on Machine Learning. 2014.
 #'
 #' @seealso
 #'
@@ -165,8 +169,6 @@ OfflineDoublyRobustBandit <- R6::R6Class(
 #'
 #' @examples
 #' \dontrun{
-#'
-#' ## generate random policy log and save it
 #'
 #'
 #' }

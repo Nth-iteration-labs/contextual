@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Bandit: Offline Bootstrapped Replay — OfflinePropensityWeightingBandit • contextual</title>
+<title>Bandit: Offline Propensity Weighted Replay — OfflinePropensityWeightingBandit • contextual</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -36,9 +36,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Bandit: Offline Bootstrapped Replay — OfflinePropensityWeightingBandit" />
+<meta property="og:title" content="Bandit: Offline Propensity Weighted Replay — OfflinePropensityWeightingBandit" />
 
-<meta property="og:description" content="Policy for the evaluation of policies with offline data." />
+<meta property="og:description" content="Policy for the evaluation of policies with offline data through replay with propensity weighting." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -159,41 +159,51 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Bandit: Offline Bootstrapped Replay</h1>
+    <h1>Bandit: Offline Propensity Weighted Replay</h1>
     <small class="dont-index">Source: <a href='https://github.com/Nth-iteration-labs/contextual/blob/master/R/bandit_offline_propensity_weighting.R'><code>R/bandit_offline_propensity_weighting.R</code></a></small>
     <div class="hidden name"><code>OfflinePropensityWeightingBandit.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>Policy for the evaluation of policies with offline data.</p>
+    <p>Policy for the evaluation of policies with offline data through replay with propensity weighting.</p>
     
     </div>
 
         
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>The key assumption of the method is that that the original logging policy chose
-i.i.d. arms uniformly at random.</p>
-<p>Take care: if the original logging policy does not change over trials, data may be
-used more efficiently via propensity scoring (Langford et al., 2008; Strehl et al., 2011)
-and related techniques like doubly robust estimation (Dudik et al., 2011).</p>
-    
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 
     
     <pre>
-  bandit &lt;- OfflinePropensityWeightingBandit(offline_data, k, d, unique = NULL, shared = NULL, randomize = TRUE)
+  bandit &lt;- OfflinePropensityWeightingBandit(formula,
+                                             data, k = NULL, d = NULL,
+                                             unique = NULL, shared = NULL,
+                                             randomize = TRUE, replacement = TRUE,
+                                             jitter = TRUE, arm_multiply = TRUE,
+                                             stabilize = TRUE, preweighted = FALSE)
 </pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
 
     
     <dl class='dl-horizontal'>
-<dt><code>offline_data</code></dt><dd><p>data.table; offline data source (required)</p></dd>
-<dt><code>k</code></dt><dd><p>integer; number of arms (required)</p></dd>
-<dt><code>d</code></dt><dd><p>integer; number of contextual features (optional, default: 0)</p></dd>
+<dt><code>formula</code></dt><dd><p>formula (required). Format: <code>y.context ~ z.choice | x1.context + x2.xontext + ... | p.propensity </code>
+By default,  adds an intercept to the context model. Exclude the intercept, by adding "0" or "-1" to
+the list of contextual features, as in:
+<code>y.context ~ z.choice | x1.context + x2.xontext -1 | p.propensity </code></p></dd>
+<dt><code>data</code></dt><dd><p>data.table or data.frame; offline data source (required)</p></dd>
+<dt><code>k</code></dt><dd><p>integer; number of arms (optional). Optionally used to reformat the formula defined x.context vector
+as a <code>k x d</code> matrix. When making use of such matrix formatted contexts, you need to define custom
+intercept(s) when and where needed in data.table or data.frame.</p></dd>
+<dt><code>d</code></dt><dd><p>integer; number of contextual features (optional) Optionally used to reformat the formula defined
+x.context vector as a <code>k x d</code> matrix. When making use of such matrix formatted contexts, you need
+to define custom intercept(s) when and where needed in data.table or data.frame.</p></dd>
 <dt><code>randomize</code></dt><dd><p>logical; randomize rows of data stream per simulation (optional, default: TRUE)</p></dd>
+<dt><code>replacement</code></dt><dd><p>logical; sample with replacement (optional, default: TRUE)</p></dd>
+<dt><code>replacement</code></dt><dd><p>logical; add jitter to contextual features (optional, default: TRUE)</p></dd>
+<dt><code>arm_multiply</code></dt><dd><p>logical; multiply the horizon by the number of arms (optional, default: TRUE)</p></dd>
+<dt><code>stabilize</code></dt><dd><p>logical; stabilize the propensity scores (optional, default: TRUE)</p></dd>
+<dt><code>preweighted</code></dt><dd><p>logical; have the propensity scores been weighted (optional, default: FALSE)</p></dd>
 <dt><code>unique</code></dt><dd><p>integer vector; index of disjoint features (optional)</p></dd>
 <dt><code>shared</code></dt><dd><p>integer vector; index of shared features (optional)</p></dd>
     </dl>
@@ -202,7 +212,9 @@ and related techniques like doubly robust estimation (Dudik et al., 2011).</p>
 
     
     <dl class='dl-horizontal'>
-    <dt><code>new(offline_data, k, d, unique = NULL, shared = NULL, randomize = TRUE)</code></dt><dd><p>generates
+    <dt><code>new(formula, data, k = NULL, d = NULL, unique = NULL, shared = NULL, randomize = TRUE,
+                  replacement = TRUE, jitter = TRUE, arm_multiply = TRUE, stabilize = TRUE,
+                  preweighted = FALSE)</code></dt><dd><p>generates
 and instantializes a new <code>OfflinePropensityWeightingBandit</code> instance.</p></dd>
     <dt><code><a href='Bandit.html'>get_context(t)</a></code></dt><dd><p>argument:
 <ul>
@@ -227,8 +239,8 @@ individual simulation when self$randomize is TRUE (default)</p></dd>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Agrawal, R. (1995). The continuum-armed bandit problem. SIAM journal on control and optimization,
-33(6), 1926-1951.</p>
+    <p>Agarwal, Alekh, et al. "Taming the monster: A fast and simple algorithm for contextual bandits."
+International Conference on Machine Learning. 2014.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -239,72 +251,11 @@ individual simulation when self$randomize is TRUE (default)</p></dd>
 <p>Policy subclass examples: <code><a href='EpsilonGreedyPolicy.html'>EpsilonGreedyPolicy</a></code>, <code><a href='ContextualLinTSPolicy.html'>ContextualLinTSPolicy</a></code></p></div>
     
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='co'>## generate random policy log and save it</span>
-
-<span class='no'>context_weights</span>    <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/matrix'>matrix</a></span>(  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>( <span class='fl'>0.9</span>, <span class='fl'>0.1</span>, <span class='fl'>0.1</span>,
-                                  <span class='fl'>0.1</span>, <span class='fl'>0.9</span>, <span class='fl'>0.1</span>,
-                                  <span class='fl'>0.1</span>, <span class='fl'>0.1</span>, <span class='fl'>0.9</span> ), <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>byrow</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='no'>horizon</span>     <span class='kw'>&lt;-</span> <span class='fl'>2000L</span>
-<span class='no'>simulations</span> <span class='kw'>&lt;-</span> <span class='fl'>1L</span>
-<span class='no'>bandit</span>      <span class='kw'>&lt;-</span> <span class='no'>ContextualBinaryBandit</span>$<span class='fu'>new</span>(<span class='kw'>weights</span> <span class='kw'>=</span> <span class='no'>context_weights</span>)
-
-<span class='co'># For the generation of random data choose a random policy,</span>
-<span class='co'># otherwise rejection sampling will produce biased results.</span>
-
-<span class='no'>policy</span>      <span class='kw'>&lt;-</span> <span class='no'>RandomPolicy</span>$<span class='fu'>new</span>()
-
-<span class='no'>agent</span>       <span class='kw'>&lt;-</span> <span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>policy</span>, <span class='no'>bandit</span>)
-
-<span class='no'>simulation</span>  <span class='kw'>&lt;-</span>
-  <span class='no'>Simulator</span>$<span class='fu'>new</span>(
-    <span class='no'>agent</span>,
-    <span class='kw'>horizon</span> <span class='kw'>=</span> <span class='no'>horizon</span>,
-    <span class='kw'>simulations</span> <span class='kw'>=</span> <span class='no'>simulations</span>,
-    <span class='kw'>save_context</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-  )
-
-<span class='no'>random_offline_data</span> <span class='kw'>&lt;-</span> <span class='no'>simulation</span>$<span class='fu'><a href='Simulator.html'>run</a></span>()
-<span class='no'>random_offline_data</span>$<span class='fu'><a href='History.html'>save</a></span>(<span class='st'>"log.RData"</span>)
-
-<span class='co'>## use saved log to evaluate policies with OfflinePropensityWeightingBandit</span>
-
-<span class='no'>history</span> <span class='kw'>&lt;-</span> <span class='no'>History</span>$<span class='fu'>new</span>()
-<span class='no'>history</span>$<span class='fu'><a href='History.html'>load</a></span>(<span class='st'>"log.RData"</span>)
-<span class='no'>log_S</span> <span class='kw'>&lt;-</span> <span class='no'>history</span>$<span class='fu'><a href='History.html'>get_data_table</a></span>()
-
-<span class='no'>bandit</span> <span class='kw'>&lt;-</span> <span class='no'>OfflinePropensityWeightingBandit</span>$<span class='fu'>new</span>(<span class='kw'>offline_data</span> <span class='kw'>=</span> <span class='no'>log_S</span>, <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>d</span> <span class='kw'>=</span> <span class='fl'>3</span>)
-
-<span class='no'>agents</span> <span class='kw'>&lt;-</span>
-  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(
-    <span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>EpsilonGreedyPolicy</span>$<span class='fu'>new</span>(<span class='fl'>0.01</span>), <span class='no'>bandit</span>),
-    <span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>LinUCBDisjointPolicy</span>$<span class='fu'>new</span>(<span class='fl'>0.6</span>), <span class='no'>bandit</span>)
-  )
-
-<span class='no'>simulation</span> <span class='kw'>&lt;-</span>
-  <span class='no'>Simulator</span>$<span class='fu'>new</span>(
-    <span class='no'>agents</span>,
-    <span class='kw'>horizon</span> <span class='kw'>=</span> <span class='no'>horizon</span>,
-    <span class='kw'>simulations</span> <span class='kw'>=</span> <span class='no'>simulations</span>,
-    <span class='kw'>t_over_sims</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-    <span class='kw'>do_parallel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
-  )
-
-<span class='no'>li_bandit_history</span> <span class='kw'>&lt;-</span> <span class='no'>simulation</span>$<span class='fu'><a href='Simulator.html'>run</a></span>()
-
-<span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='no'>after</span>, <span class='kw'>regret</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"cumulative"</span>, <span class='kw'>rate</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-
-<span class='kw'>if</span> (<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/files'>file.exists</a></span>(<span class='st'>"log.RData"</span>)) <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/files'>file.remove</a></span>(<span class='st'>"log.RData"</span>)
-
-<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       
-      <li><a href="#details">Details</a></li>
-
       <li><a href="#usage">Usage</a></li>
 
       <li><a href="#arguments">Arguments</a></li>
@@ -314,9 +265,7 @@ individual simulation when self$randomize is TRUE (default)</p></dd>
       <li><a href="#references">References</a></li>
 
       <li><a href="#see-also">See also</a></li>
-      
-      <li><a href="#examples">Examples</a></li>
-    </ul>
+          </ul>
 
   </div>
 </div>

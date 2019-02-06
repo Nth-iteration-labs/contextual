@@ -1,7 +1,7 @@
 #' @export
 #' @import Formula
 OfflinePropensityWeightingBandit <- R6::R6Class(
-  inherit = OfflineBootstrappedReplayBandit,
+  inherit = OfflinePropensityWeightingBandit,
   class = FALSE,
   private = list(
     p = NULL,
@@ -68,39 +68,62 @@ OfflinePropensityWeightingBandit <- R6::R6Class(
   )
 )
 
-#' Bandit: Offline Bootstrapped Replay
+#' Bandit: Offline Propensity Weighted Replay
 #'
-#' Policy for the evaluation of policies with offline data.
-#'
-#' The key assumption of the method is that that the original logging policy chose
-#' i.i.d. arms uniformly at random.
-#'
-#' Take care: if the original logging policy does not change over trials, data may be
-#' used more efficiently via propensity scoring (Langford et al., 2008; Strehl et al., 2011)
-#' and related techniques like doubly robust estimation (Dudik et al., 2011).
+#' Policy for the evaluation of policies with offline data through replay with propensity weighting.
 #'
 #' @name OfflinePropensityWeightingBandit
 #'
 #'
 #' @section Usage:
 #' \preformatted{
-#'   bandit <- OfflinePropensityWeightingBandit(offline_data, k, d, unique = NULL, shared = NULL, randomize = TRUE)
+#'   bandit <- OfflinePropensityWeightingBandit(formula,
+#'                                              data, k = NULL, d = NULL,
+#'                                              unique = NULL, shared = NULL,
+#'                                              randomize = TRUE, replacement = TRUE,
+#'                                              jitter = TRUE, arm_multiply = TRUE,
+#'                                              stabilize = TRUE, preweighted = FALSE)
 #' }
 #'
 #' @section Arguments:
 #'
 #' \describe{
-#'   \item{\code{offline_data}}{
-#'     data.table; offline data source (required)
+#'   \item{\code{formula}}{
+#'     formula (required). Format: \code{y.context ~ z.choice | x1.context + x2.xontext + ... | p.propensity }
+#'     By default,  adds an intercept to the context model. Exclude the intercept, by adding "0" or "-1" to
+#'     the list of contextual features, as in:
+#'     \code{y.context ~ z.choice | x1.context + x2.xontext -1 | p.propensity }
+#'   }
+#'   \item{\code{data}}{
+#'     data.table or data.frame; offline data source (required)
 #'   }
 #'   \item{\code{k}}{
-#'     integer; number of arms (required)
+#'     integer; number of arms (optional). Optionally used to reformat the formula defined x.context vector
+#'     as a \code{k x d} matrix. When making use of such matrix formatted contexts, you need to define custom
+#'     intercept(s) when and where needed in data.table or data.frame.
 #'   }
 #'   \item{\code{d}}{
-#'     integer; number of contextual features (optional, default: 0)
+#'     integer; number of contextual features (optional) Optionally used to reformat the formula defined
+#'     x.context vector as a \code{k x d} matrix. When making use of such matrix formatted contexts, you need
+#'     to define custom intercept(s) when and where needed in data.table or data.frame.
 #'   }
 #'   \item{\code{randomize}}{
 #'     logical; randomize rows of data stream per simulation (optional, default: TRUE)
+#'   }
+#'   \item{\code{replacement}}{
+#'     logical; sample with replacement (optional, default: TRUE)
+#'   }
+#'   \item{\code{replacement}}{
+#'     logical; add jitter to contextual features (optional, default: TRUE)
+#'   }
+#'   \item{\code{arm_multiply}}{
+#'     logical; multiply the horizon by the number of arms (optional, default: TRUE)
+#'   }
+#'   \item{\code{stabilize}}{
+#'     logical; stabilize the propensity scores (optional, default: TRUE)
+#'   }
+#'   \item{\code{preweighted}}{
+#'     logical; have the propensity scores been weighted (optional, default: FALSE)
 #'   }
 #'   \item{\code{unique}}{
 #'     integer vector; index of disjoint features (optional)
@@ -115,7 +138,9 @@ OfflinePropensityWeightingBandit <- R6::R6Class(
 #'
 #' \describe{
 #'
-#'   \item{\code{new(offline_data, k, d, unique = NULL, shared = NULL, randomize = TRUE)}}{ generates
+#'   \item{\code{new(formula, data, k = NULL, d = NULL, unique = NULL, shared = NULL, randomize = TRUE,
+#'                   replacement = TRUE, jitter = TRUE, arm_multiply = TRUE, stabilize = TRUE,
+#'                   preweighted = FALSE)}}{ generates
 #'    and instantializes a new \code{OfflinePropensityWeightingBandit} instance. }
 #'
 #'   \item{\code{get_context(t)}}{
@@ -149,8 +174,8 @@ OfflinePropensityWeightingBandit <- R6::R6Class(
 #'
 #' @references
 #'
-#' Agrawal, R. (1995). The continuum-armed bandit problem. SIAM journal on control and optimization,
-#' 33(6), 1926-1951.
+#' Agarwal, Alekh, et al. "Taming the monster: A fast and simple algorithm for contextual bandits."
+#' International Conference on Machine Learning. 2014.
 #'
 #' @seealso
 #'
@@ -162,64 +187,4 @@ OfflinePropensityWeightingBandit <- R6::R6Class(
 #'
 #' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualLinTSPolicy}}
 #'
-#' @examples
-#' \dontrun{
-#'
-#' ## generate random policy log and save it
-#'
-#' context_weights    <- matrix(  c( 0.9, 0.1, 0.1,
-#'                                   0.1, 0.9, 0.1,
-#'                                   0.1, 0.1, 0.9 ), nrow = 3, ncol = 3, byrow = TRUE)
-#' horizon     <- 2000L
-#' simulations <- 1L
-#' bandit      <- ContextualBinaryBandit$new(weights = context_weights)
-#'
-#' # For the generation of random data choose a random policy,
-#' # otherwise rejection sampling will produce biased results.
-#'
-#' policy      <- RandomPolicy$new()
-#'
-#' agent       <- Agent$new(policy, bandit)
-#'
-#' simulation  <-
-#'   Simulator$new(
-#'     agent,
-#'     horizon = horizon,
-#'     simulations = simulations,
-#'     save_context = TRUE
-#'   )
-#'
-#' random_offline_data <- simulation$run()
-#' random_offline_data$save("log.RData")
-#'
-#' ## use saved log to evaluate policies with OfflinePropensityWeightingBandit
-#'
-#' history <- History$new()
-#' history$load("log.RData")
-#' log_S <- history$get_data_table()
-#'
-#' bandit <- OfflinePropensityWeightingBandit$new(offline_data = log_S, k = 3, d = 3)
-#'
-#' agents <-
-#'   list(
-#'     Agent$new(EpsilonGreedyPolicy$new(0.01), bandit),
-#'     Agent$new(LinUCBDisjointPolicy$new(0.6), bandit)
-#'   )
-#'
-#' simulation <-
-#'   Simulator$new(
-#'     agents,
-#'     horizon = horizon,
-#'     simulations = simulations,
-#'     t_over_sims = TRUE,
-#'     do_parallel = FALSE
-#'   )
-#'
-#' li_bandit_history <- simulation$run()
-#'
-#' plot(after, regret = FALSE, type = "cumulative", rate = TRUE)
-#'
-#' if (file.exists("log.RData")) file.remove("log.RData")
-#'
-#' }
 NULL
