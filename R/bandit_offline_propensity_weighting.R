@@ -1,7 +1,7 @@
 #' @export
 #' @import Formula
 OfflinePropensityWeightingBandit <- R6::R6Class(
-  inherit = OfflinePropensityWeightingBandit,
+  inherit = OfflineBootstrappedReplayBandit,
   class = FALSE,
   private = list(
     p = NULL,

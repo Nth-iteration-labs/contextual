@@ -139,7 +139,8 @@ simulation  <- Simulator$new(agents = agents, simulations = simulations, horizon
 sim  <- simulation$run()
 
 # plot the results
-plot(sim, type = "cumulative", regret = FALSE, rate = TRUE, legend_position = "bottomright", ylim = c(0,1))
+plot(sim, type = "cumulative", regret = FALSE, rate = TRUE,
+     legend_position = "bottomright", ylim = c(0,1))
 
 
 }

@@ -167,9 +167,4 @@ OfflineDoublyRobustBandit <- R6::R6Class(
 #'
 #' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualLinTSPolicy}}
 #'
-#' @examples
-#' \dontrun{
-#'
-#'
-#' }
 NULL

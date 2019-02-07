@@ -108,12 +108,13 @@ individual simulation when self$randomize is TRUE (default)
 \examples{
 \dontrun{
 
-url         <- "http://d1ie9wlkzugsxr.cloudfront.net/data_irecsys_CARSKit/Movie_DePaulMovie/ratings.csv"
-data        <- fread(url, stringsAsFactors=TRUE)
+url  <- "http://d1ie9wlkzugsxr.cloudfront.net/data_irecsys_CARSKit/Movie_DePaulMovie/ratings.csv"
+data <- fread(url, stringsAsFactors=TRUE)
 
 # Convert data
 
-data        <- contextual::one_hot(data, cols = c("Time","Location","Companion"), sparsifyNAs = TRUE)
+data        <- contextual::one_hot(data, cols = c("Time","Location","Companion"),
+                                         sparsifyNAs = TRUE)
 data[, itemid := as.numeric(itemid)]
 data[, rating := ifelse(rating <= 3, 0, 1)]
 
@@ -123,8 +124,8 @@ horizon     <- nrow(data)
 
 # Initiate Replay bandit with 10 arms and 100 context dimensions
 log_S       <- data
-formula     <- formula("rating ~ itemid | Time_Weekday + Time_Weekend + Location_Cinema + Location_Home +
-                                          Companion_Alone + Companion_Family + Companion_Partner")
+formula     <- formula("rating ~ itemid | Time_Weekday + Time_Weekend + Location_Cinema +
+                       Location_Home + Companion_Alone + Companion_Family + Companion_Partner")
 bandit      <- OfflineReplayEvaluatorBandit$new(formula = formula, data = data)
 
 # Define agents.
@@ -143,7 +144,9 @@ simulation  <-
   )
 
 # Run the simulation.
-# Takes about 5 minutes: bootstrapbandit loops for arms x horizon x simulations (times nr of agents).
+# Takes about 5 minutes: bootstrapbandit loops
+# for arms x horizon x simulations (times nr of agents).
+
 sim  <- simulation$run()
 
 # plot the results
