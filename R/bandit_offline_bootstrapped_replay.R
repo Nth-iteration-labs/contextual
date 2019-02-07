@@ -103,7 +103,6 @@ OfflineBootstrappedReplayBandit <- R6::R6Class(
 #'
 #' @name OfflineBootstrappedReplayBandit
 #'
-#'
 #' @section Usage:
 #' \preformatted{
 #'   bandit <- OfflineBootstrappedReplayBandit(formula,

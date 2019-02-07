@@ -1,7 +1,7 @@
 #' @export
 #' @import Formula
 OfflineReplayEvaluatorBandit <- R6::R6Class(
-  inherit = OfflineReplayEvaluatorBandit,
+  inherit = OfflineBootstrappedReplayBandit,
   class = FALSE,
   public = list(
     class_name = "OfflineReplayEvaluatorBandit",
@@ -32,7 +32,6 @@ OfflineReplayEvaluatorBandit <- R6::R6Class(
 #' and related techniques like doubly robust estimation (Dudik et al., 2011).
 #'
 #' @name OfflineReplayEvaluatorBandit
-#'
 #'
 #' @section Usage:
 #' \preformatted{
@@ -181,3 +180,4 @@ OfflineReplayEvaluatorBandit <- R6::R6Class(
 #'      legend_position = "topleft", ylim=c(0.48,0.87))
 #'
 #' }
+NULL

@@ -185,7 +185,7 @@ OfflineLookupReplayEvaluatorBandit <- R6::R6Class(
 #' library(splitstackshape)
 #' library(RCurl)
 #'
-#' # Import MovieLens ml-10M ------------------------------------------------------------------------------------
+#' # Import MovieLens ml-10M
 #'
 #' # Info: https://d1ie9wlkzugsxr.cloudfront.net/data_movielens/ml-10M/README.html
 #'
@@ -214,8 +214,6 @@ OfflineLookupReplayEvaluatorBandit <- R6::R6Class(
 #'
 #' rm(movies_dat,ratings_dat)
 #'
-#' # Data wrangling ---------------------------------------------------------------------------------------------
-#'
 #' all_movies[, UserID   := as.numeric(as.factor(UserID))]
 #'
 #' count_movies    <- all_movies[,.(MovieCount = .N), by = MovieID]
@@ -223,8 +221,6 @@ OfflineLookupReplayEvaluatorBandit <- R6::R6Class(
 #' not_50          <- as.vector(count_movies[order(-MovieCount)][51:nrow(count_movies)]$MovieID)
 #'
 #' top_50_movies   <- all_movies[MovieID %in% top_50]
-#'
-#' # ------------------------------------------------------------------------------------------------------------
 #'
 #' # Create feature lookup tables - to speed up, MovieID and UserID are
 #' # ordered and lined up with the (dt/matrix) default index.
@@ -253,11 +249,7 @@ OfflineLookupReplayEvaluatorBandit <- R6::R6Class(
 #'
 #' setorder(user_features,UserID)
 #'
-#' # ------------------------------------------------------------------------------------------------------------
-#'
 #' rm(all_movies, not_50, top_50, count_movies)
-#'
-#' # ------------------------------------------------------------------------------------------------------------
 #'
 #' # Contextual format
 #'
@@ -270,7 +262,7 @@ OfflineLookupReplayEvaluatorBandit <- R6::R6Class(
 #' setorder(top_50_movies,Timestamp,Name)
 #'
 #'
-#' # Run simulation ---------------------------------------------------------------------------------------------
+#' # Run simulation
 #'
 #' simulations <- 1
 #' horizon     <- nrow(top_50_movies)
