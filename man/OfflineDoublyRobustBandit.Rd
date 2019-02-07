@@ -82,12 +82,6 @@ individual simulation when self$randomize is TRUE (default)
 }
 }
 
-\examples{
-\dontrun{
-
-
-}
-}
 \references{
 Agarwal, Alekh, et al. "Taming the monster: A fast and simple algorithm for contextual bandits."
 International Conference on Machine Learning. 2014.

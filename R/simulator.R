@@ -171,7 +171,7 @@ Simulator <- R6::R6Class(
         sim_agent_counter <- 0
         sim_agent_total <- length(sims_agent_list)
 
-        # TODO: Can this be done smarter? So not for all sims multiplier when one arm multiply?
+        # TODO: Can be done smarter and cleaner?
         multiplier <- 1
         for (sim_agent_index in sims_agent_list) {
           sim_agent <- agents[[sim_agent_index$agent_index]]

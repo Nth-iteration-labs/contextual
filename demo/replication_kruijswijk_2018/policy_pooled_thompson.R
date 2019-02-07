@@ -103,8 +103,8 @@ PartiallyPooledThompsonPolicy <- R6::R6Class(
       self$iter = iter
     },
     set_parameters = function(context_params) {
-      self$theta <- list(n = list(rep(0,self$n_subjects),rep(0,self$n_subjects)),  # TODO: make this into k-arms 0, not 0,0
-                         l = list(rep(0,self$n_subjects),rep(0,self$n_subjects)))  # TODO: make this into k-arms 0, not 0,0
+      self$theta <- list(n = list(rep(0,self$n_subjects),rep(0,self$n_subjects)),
+                         l = list(rep(0,self$n_subjects),rep(0,self$n_subjects)))
       self$theta_to_arms <- list('N' = 0)
       n_subjects <- self$n_subjects
       n <- self$theta$n[[1]]

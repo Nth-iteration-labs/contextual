@@ -38,7 +38,7 @@
 
 <meta property="og:title" content="Bandit: Offline Replay — OfflineReplayEvaluatorBandit" />
 
-<meta property="og:description" content="Policy for the evaluation of policies with offline data." />
+<meta property="og:description" content="Policy for the evaluation of policies with offline data through replay." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -166,7 +166,7 @@
 
     <div class="ref-description">
     
-    <p>Policy for the evaluation of policies with offline data.</p>
+    <p>Policy for the evaluation of policies with offline data through replay.</p>
     
     </div>
 
@@ -183,17 +183,30 @@ and related techniques like doubly robust estimation (Dudik et al., 2011).</p>
 
     
     <pre>
-  bandit &lt;- OfflineReplayEvaluatorBandit(offline_data, k, d, unique = NULL, shared = NULL, randomize = TRUE)
+  bandit &lt;- OfflineReplayEvaluatorBandit(formula,
+                                            data, k = NULL, d = NULL,
+                                            unique = NULL, shared = NULL,
+                                            randomize = TRUE, replacement = FALSE,
+                                            jitter = FALSE)
 </pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
 
     
     <dl class='dl-horizontal'>
-<dt><code>offline_data</code></dt><dd><p>data.table; offline data source (required)</p></dd>
-<dt><code>k</code></dt><dd><p>integer; number of arms (required)</p></dd>
-<dt><code>d</code></dt><dd><p>integer; number of contextual features (optional, default: 0)</p></dd>
+<dt><code>formula</code></dt><dd><p>formula (required). Format: <code>y.context ~ z.choice | x1.context + x2.xontext + ...</code>
+By default,  adds an intercept to the context model. Exclude the intercept, by adding "0" or "-1" to
+the list of contextual features, as in: <code>y.context ~ z.choice | x1.context + x2.xontext -1</code></p></dd>
+<dt><code>data</code></dt><dd><p>data.table or data.frame; offline data source (required)</p></dd>
+<dt><code>k</code></dt><dd><p>integer; number of arms (optional). Optionally used to reformat the formula defined x.context vector
+as a <code>k x d</code> matrix. When making use of such matrix formatted contexts, you need to define custom
+intercept(s) when and where needed in data.table or data.frame.</p></dd>
+<dt><code>d</code></dt><dd><p>integer; number of contextual features (optional) Optionally used to reformat the formula defined
+x.context vector as a <code>k x d</code> matrix. When making use of such matrix formatted contexts, you need
+to define custom intercept(s) when and where needed in data.table or data.frame.</p></dd>
 <dt><code>randomize</code></dt><dd><p>logical; randomize rows of data stream per simulation (optional, default: TRUE)</p></dd>
+<dt><code>replacement</code></dt><dd><p>logical; sample with replacement (optional, default: FALSE)</p></dd>
+<dt><code>replacement</code></dt><dd><p>logical; add jitter to contextual features (optional, default: FALSE)</p></dd>
 <dt><code>unique</code></dt><dd><p>integer vector; index of disjoint features (optional)</p></dd>
 <dt><code>shared</code></dt><dd><p>integer vector; index of shared features (optional)</p></dd>
     </dl>
@@ -202,7 +215,8 @@ and related techniques like doubly robust estimation (Dudik et al., 2011).</p>
 
     
     <dl class='dl-horizontal'>
-    <dt><code>new(offline_data, k, d, unique = NULL, shared = NULL, randomize = TRUE)</code></dt><dd><p>generates
+    <dt><code>new(formula, data, k = NULL, d = NULL, unique = NULL, shared = NULL, randomize = TRUE,
+                  replacement = TRUE, jitter = TRUE, arm_multiply = TRUE)</code></dt><dd><p>generates
 and instantializes a new <code>OfflineReplayEvaluatorBandit</code> instance.</p></dd>
     <dt><code><a href='Bandit.html'>get_context(t)</a></code></dt><dd><p>argument:
 <ul>
@@ -227,8 +241,9 @@ individual simulation when self$randomize is TRUE (default)</p></dd>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Agrawal, R. (1995). The continuum-armed bandit problem. SIAM journal on control and optimization,
-33(6), 1926-1951.</p>
+    <p>Li, Lihong, Chu, Wei, Langford, John, and Wang, Xuanhui. Unbiased offline evaluation of
+contextual-bandit-based news article recommendation algorithms. In King, Irwin, Nejdl, Wolfgang, and Li,
+Hang (eds.), Proc. Web Search and Data Mining (WSDM), pp. 297–306. ACM, 2011. ISBN 978-1-4503-0493-1.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -241,61 +256,50 @@ individual simulation when self$randomize is TRUE (default)</p></dd>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
-<span class='co'>## generate random policy log and save it</span>
+<span class='no'>url</span>  <span class='kw'>&lt;-</span> <span class='st'>"http://d1ie9wlkzugsxr.cloudfront.net/data_irecsys_CARSKit/Movie_DePaulMovie/ratings.csv"</span>
+<span class='no'>data</span> <span class='kw'>&lt;-</span> <span class='fu'>fread</span>(<span class='no'>url</span>, <span class='kw'>stringsAsFactors</span><span class='kw'>=</span><span class='fl'>TRUE</span>)
 
-<span class='no'>context_weights</span>    <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/matrix'>matrix</a></span>(  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>( <span class='fl'>0.9</span>, <span class='fl'>0.1</span>, <span class='fl'>0.1</span>,
-                                  <span class='fl'>0.1</span>, <span class='fl'>0.9</span>, <span class='fl'>0.1</span>,
-                                  <span class='fl'>0.1</span>, <span class='fl'>0.1</span>, <span class='fl'>0.9</span>), <span class='kw'>nrow</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>ncol</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>byrow</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-<span class='no'>horizon</span>     <span class='kw'>&lt;-</span> <span class='fl'>2000L</span>
-<span class='no'>simulations</span> <span class='kw'>&lt;-</span> <span class='fl'>1L</span>
-<span class='no'>bandit</span>      <span class='kw'>&lt;-</span> <span class='no'>ContextualBinaryBandit</span>$<span class='fu'>new</span>(<span class='kw'>weights</span> <span class='kw'>=</span> <span class='no'>context_weights</span>)
+<span class='co'># Convert data</span>
 
-<span class='co'># For the generation of random data choose a random policy,</span>
-<span class='co'># otherwise rejection sampling will produce biased results.</span>
+<span class='no'>data</span>        <span class='kw'>&lt;-</span> <span class='kw pkg'>contextual</span><span class='kw ns'>::</span><span class='fu'><a href='https://www.rdocumentation.org/packages/contextual/topics/one_hot'>one_hot</a></span>(<span class='no'>data</span>, <span class='kw'>cols</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"Time"</span>,<span class='st'>"Location"</span>,<span class='st'>"Companion"</span>),
+                                         <span class='kw'>sparsifyNAs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='no'>data</span>[, <span class='no'>itemid</span> <span class='kw'>:=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/numeric'>as.numeric</a></span>(<span class='no'>itemid</span>)]
+<span class='no'>data</span>[, <span class='no'>rating</span> <span class='kw'>:=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/ifelse'>ifelse</a></span>(<span class='no'>rating</span> <span class='kw'>&lt;=</span> <span class='fl'>3</span>, <span class='fl'>0</span>, <span class='fl'>1</span>)]
 
-<span class='no'>policy</span>      <span class='kw'>&lt;-</span> <span class='no'>RandomPolicy</span>$<span class='fu'>new</span>()
+<span class='co'># Set simulation parameters.</span>
+<span class='no'>simulations</span> <span class='kw'>&lt;-</span> <span class='fl'>10</span>  <span class='co'># here, "simulations" represents the number of boostrap samples</span>
+<span class='no'>horizon</span>     <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/nrow'>nrow</a></span>(<span class='no'>data</span>)
 
-<span class='no'>agent</span>       <span class='kw'>&lt;-</span> <span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>policy</span>, <span class='no'>bandit</span>)
+<span class='co'># Initiate Replay bandit with 10 arms and 100 context dimensions</span>
+<span class='no'>log_S</span>       <span class='kw'>&lt;-</span> <span class='no'>data</span>
+<span class='no'>formula</span>     <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/formula'>formula</a></span>(<span class='st'>"rating ~ itemid | Time_Weekday + Time_Weekend + Location_Cinema +
+                       Location_Home + Companion_Alone + Companion_Family + Companion_Partner"</span>)
+<span class='no'>bandit</span>      <span class='kw'>&lt;-</span> <span class='no'>OfflineReplayEvaluatorBandit</span>$<span class='fu'>new</span>(<span class='kw'>formula</span> <span class='kw'>=</span> <span class='no'>formula</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>data</span>)
 
+<span class='co'># Define agents.</span>
+<span class='no'>agents</span>      <span class='kw'>&lt;-</span>
+  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>RandomPolicy</span>$<span class='fu'>new</span>(), <span class='no'>bandit</span>, <span class='st'>"Random"</span>),
+       <span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>EpsilonGreedyPolicy</span>$<span class='fu'>new</span>(<span class='fl'>0.03</span>), <span class='no'>bandit</span>, <span class='st'>"EGreedy 0.05"</span>),
+       <span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>ThompsonSamplingPolicy</span>$<span class='fu'>new</span>(), <span class='no'>bandit</span>, <span class='st'>"ThompsonSampling"</span>),
+       <span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>LinUCBDisjointOptimizedPolicy</span>$<span class='fu'>new</span>(<span class='fl'>0.37</span>), <span class='no'>bandit</span>, <span class='st'>"LinUCB 0.37"</span>))
+
+<span class='co'># Initialize the simulation.</span>
 <span class='no'>simulation</span>  <span class='kw'>&lt;-</span>
   <span class='no'>Simulator</span>$<span class='fu'>new</span>(
-    <span class='no'>agent</span>,
-    <span class='kw'>horizon</span> <span class='kw'>=</span> <span class='no'>horizon</span>,
-    <span class='kw'>simulations</span> <span class='kw'>=</span> <span class='no'>simulations</span>,
-    <span class='kw'>save_context</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+    <span class='kw'>agents</span>           <span class='kw'>=</span> <span class='no'>agents</span>,
+    <span class='kw'>simulations</span>      <span class='kw'>=</span> <span class='no'>simulations</span>,
+    <span class='kw'>horizon</span>          <span class='kw'>=</span> <span class='no'>horizon</span>
   )
 
-<span class='no'>random_offline_data</span> <span class='kw'>&lt;-</span> <span class='no'>simulation</span>$<span class='fu'><a href='Simulator.html'>run</a></span>()
-<span class='no'>random_offline_data</span>$<span class='fu'><a href='History.html'>save</a></span>(<span class='st'>"log.RData"</span>)
+<span class='co'># Run the simulation.</span>
+<span class='co'># Takes about 5 minutes: bootstrapbandit loops</span>
+<span class='co'># for arms x horizon x simulations (times nr of agents).</span>
 
-<span class='co'>## use saved log to evaluate policies with OfflineReplayEvaluatorBandit</span>
+<span class='no'>sim</span>  <span class='kw'>&lt;-</span> <span class='no'>simulation</span>$<span class='fu'><a href='Simulator.html'>run</a></span>()
 
-<span class='no'>history</span> <span class='kw'>&lt;-</span> <span class='no'>History</span>$<span class='fu'>new</span>()
-<span class='no'>history</span>$<span class='fu'><a href='History.html'>load</a></span>(<span class='st'>"log.RData"</span>)
-<span class='no'>log_S</span> <span class='kw'>&lt;-</span> <span class='no'>history</span>$<span class='fu'><a href='History.html'>get_data_table</a></span>()
-
-<span class='no'>bandit</span> <span class='kw'>&lt;-</span> <span class='no'>OfflineReplayEvaluatorBandit</span>$<span class='fu'>new</span>(<span class='kw'>offline_data</span> <span class='kw'>=</span> <span class='no'>log_S</span>, <span class='kw'>k</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>d</span> <span class='kw'>=</span> <span class='fl'>3</span>)
-
-<span class='no'>agents</span> <span class='kw'>&lt;-</span>
-  <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(
-    <span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>EpsilonGreedyPolicy</span>$<span class='fu'>new</span>(<span class='fl'>0.01</span>), <span class='no'>bandit</span>),
-    <span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>LinUCBDisjointPolicy</span>$<span class='fu'>new</span>(<span class='fl'>0.6</span>), <span class='no'>bandit</span>)
-  )
-
-<span class='no'>simulation</span> <span class='kw'>&lt;-</span>
-  <span class='no'>Simulator</span>$<span class='fu'>new</span>(
-    <span class='no'>agents</span>,
-    <span class='kw'>horizon</span> <span class='kw'>=</span> <span class='no'>horizon</span>,
-    <span class='kw'>simulations</span> <span class='kw'>=</span> <span class='no'>simulations</span>,
-    <span class='kw'>t_over_sims</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-    <span class='kw'>do_parallel</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
-  )
-
-<span class='no'>li_bandit_history</span> <span class='kw'>&lt;-</span> <span class='no'>simulation</span>$<span class='fu'><a href='Simulator.html'>run</a></span>()
-
-<span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='no'>after</span>, <span class='kw'>regret</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"cumulative"</span>, <span class='kw'>rate</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
-
-<span class='kw'>if</span> (<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/files'>file.exists</a></span>(<span class='st'>"log.RData"</span>)) <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/files'>file.remove</a></span>(<span class='st'>"log.RData"</span>)
+<span class='co'># plot the results</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='no'>sim</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"cumulative"</span>, <span class='kw'>regret</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>rate</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+     <span class='kw'>legend_position</span> <span class='kw'>=</span> <span class='st'>"topleft"</span>, <span class='kw'>ylim</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>0.48</span>,<span class='fl'>0.87</span>))
 
 <span class='co'># }</span></pre>
   </div>

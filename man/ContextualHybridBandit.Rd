@@ -4,7 +4,7 @@
 \alias{ContextualHybridBandit}
 \title{Bandit: ContextualHybridBandit}
 \description{
-TODO: optimal arm calculation
+TODO: Optimization.
 }
 \details{
 Extension of \code{ContextualLogitBandit} modeling hybrid rewards with a combination

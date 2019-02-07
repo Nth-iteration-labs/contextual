@@ -15,8 +15,8 @@ OfflinePropensityWeightingBandit <- R6::R6Class(
                             data, k = NULL, d = NULL,
                             unique = NULL, shared = NULL,
                             randomize = TRUE, replacement = FALSE,
-                            jitter = TRUE, arm_multiply = TRUE,
-                            stabilize = TRUE, preweighted = FALSE) {
+                            jitter = FALSE, arm_multiply = FALSE,
+                            stabilize = TRUE, preweighted = TRUE) {
 
       self$preweighted <- preweighted # Has the propensity column been preweighted?
       self$stabilize   <- stabilize   # Whether or not to stabilize the weights.
@@ -25,8 +25,6 @@ OfflinePropensityWeightingBandit <- R6::R6Class(
                        unique, shared,
                        randomize, replacement,
                        jitter, arm_multiply)
-
-
     },
     post_initialization = function() {
       super$post_initialization()
@@ -51,9 +49,9 @@ OfflinePropensityWeightingBandit <- R6::R6Class(
     get_reward = function(index, context, action) {
       p <- private$p[index]
       if (self$preweighted) {
-        p <- p * private$marginal_prob[action$choice]
+        p <- p * (private$marginal_prob[action$choice])
       } else {
-        p <- (1 / p) * private$marginal_prob[action$choice]
+        p <- (1 / p) * (private$marginal_prob[action$choice])
       }
       if (private$z[[index]] == action$choice) {
         list(

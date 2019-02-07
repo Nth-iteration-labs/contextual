@@ -1,90 +1,83 @@
 #' @export
 OfflineDirectMethodBandit <- R6::R6Class(
-  inherit = Bandit,
+  inherit = OfflineBootstrappedReplayBandit,
   class = FALSE,
   private = list(
-    S = NULL,
-    oa = NULL,
-    or = NULL
+    r = NULL
   ),
   public = list(
     class_name = "OfflineDirectMethodBandit",
-    randomize = NULL,
-    arm_regression_models = NULL,
-    single_regression_model = NULL,
-    initialize   = function(offline_data, k, d = 0, arm_regression_models = NULL, single_regression_model = NULL, randomize = TRUE) {
+    initialize   = function(formula,
+                            data, k = NULL, d = NULL,
+                            unique = NULL, shared = NULL,
+                            randomize = TRUE) {
 
-      self$k <- k                 # Number of arms (integer)
-      self$d <- d                 # Dimension of context feature vector (integer)
-      self$randomize <-randomize  # Randomize logged events for every simulation? (logical)
-      private$S <- offline_data   # Logged events (by default, as a data.table)
-
-      self$arm_regression_models   <- arm_regression_models
-      self$single_regression_model <- single_regression_model
-
-      private$S
-
-      private$S[is.null(context[[1]]),`:=`(context = list(1))]
-      private$oa <- "optimal_arm" %in% colnames(offline_data)
-      private$or <- "optimal_reward" %in% colnames(offline_data)
+      super$initialize(formula,
+                       data, k, d,
+                       unique, shared,
+                       randomize, replacement = FALSE,
+                       jitter = FALSE, arm_multiply = FALSE)
     },
     post_initialization = function() {
-      if(isTRUE(self$randomize)) private$S <- private$S[sample(nrow(private$S))]
-    },
-    get_context = function(index) {
-      context <- list(
-        k = self$k,
-        d = self$d,
-        X = private$S$context[[index]]
-      )
-      context
+      super$post_initialization()
+      # modeled reward for each arm at each t
+      private$r <-  model.matrix(private$formula, data = private$S, rhs = 3)[,-1]
     },
     get_reward = function(index, context, action) {
-
-      choice            <- action$choice
-
-      if(!is.null(self$arm_regression_models)) {
-        regression_reward <- predict(self$arm_regression_models[[choice]], private$S[index,], type="response")
-      }
-
-      if(!is.null(self$single_regression_model)) {
-        regression_reward <- predict(self$single_regression_model, private$S[index,], type="response")
-      }
-
       list(
-        reward = as.double(regression_reward)
+        reward         = as.double(private$r[index,action$choice]),
+        optimal_reward = ifelse(private$or, as.double(private$S$optimal_reward[[index]]), NA),
+        optimal_arm    = ifelse(private$oa, as.double(private$S$optimal_arm[[index]]), NA)
       )
     }
   )
 )
 
-#' Bandit: Offline Direct Method Evaluator
+#' Bandit: Offline Direct Methods
 #'
-#' TODO: Interface needs to be updated, and needs to be documented more fully.
+#' Policy for the evaluation of policies with offline data with modeled rewards per arm.
 #'
 #' @name OfflineDirectMethodBandit
 #'
-#'
 #' @section Usage:
 #' \preformatted{
-#'   bandit <- OfflineDirectMethodBandit(offline_data, k, d = 0, arm_regression_models = NULL,
-#'                                       single_regression_model = NULL, randomize = TRUE)
+#'   bandit <- OfflineDirectMethodBandit(formula,
+#'                                       data, k = NULL, d = NULL,
+#'                                       unique = NULL, shared = NULL,
+#'                                       randomize = TRUE)
 #' }
 #'
 #' @section Arguments:
 #'
 #' \describe{
-#'   \item{\code{offline_data}}{
-#'     data.table; offline data source (required)
+#'   \item{\code{formula}}{
+#'     formula (required).
+#'     Format: \code{y.context ~ z.choice | x1.context + x2.xontext + ... | r1.reward + r2.reward ...}
+#'     Here, r1.reward to rk.reward represent regression based precalculated rewards per arm.
+#'     Adds an intercept to the context model by default. Exclude the intercept, by adding "0" or "-1" to
+#'     the list of contextual features, as in: \code{y.context ~ z.choice | x1.context + x2.xontext -1}
+#'   }
+#'   \item{\code{data}}{
+#'     data.table or data.frame; offline data source (required)
 #'   }
 #'   \item{\code{k}}{
-#'     integer; number of arms (required)
+#'     integer; number of arms (optional). Optionally used to reformat the formula defined x.context vector
+#'     as a \code{k x d} matrix. When making use of such matrix formatted contexts, you need to define custom
+#'     intercept(s) when and where needed in data.table or data.frame.
 #'   }
 #'   \item{\code{d}}{
-#'     integer; number of contextual features (optional, default: 0)
+#'     integer; number of contextual features (optional) Optionally used to reformat the formula defined
+#'     x.context vector as a \code{k x d} matrix. When making use of such matrix formatted contexts, you need
+#'     to define custom intercept(s) when and where needed in data.table or data.frame.
 #'   }
 #'   \item{\code{randomize}}{
 #'     logical; randomize rows of data stream per simulation (optional, default: TRUE)
+#'   }
+#'   \item{\code{replacement}}{
+#'     logical; sample with replacement (optional, default: FALSE)
+#'   }
+#'   \item{\code{replacement}}{
+#'     logical; add jitter to contextual features (optional, default: FALSE)
 #'   }
 #'   \item{\code{unique}}{
 #'     integer vector; index of disjoint features (optional)
@@ -99,8 +92,8 @@ OfflineDirectMethodBandit <- R6::R6Class(
 #'
 #' \describe{
 #'
-#'   \item{\code{new(offline_data, k, d = 0, arm_regression_models = NULL, single_regression_model = NULL,
-#'   randomize = TRUE)}}{ generates and instantializes a new \code{OfflineDirectMethodBandit} instance. }
+#'   \item{\code{new(formula, data, k = NULL, d = NULL, unique = NULL, shared = NULL, randomize = TRUE)}}{
+#'   generates and instantializes a new \code{OfflineDirectMethodBandit} instance. }
 #'
 #'   \item{\code{get_context(t)}}{
 #'      argument:
@@ -146,4 +139,63 @@ OfflineDirectMethodBandit <- R6::R6Class(
 #'
 #' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualLinTSPolicy}}
 #'
+#' @examples
+#' \dontrun{
+#'
+#' library(contextual)
+#' library(data.table)
+#'
+#' # Import personalization data-set
+#'
+#' url         <- "http://d1ie9wlkzugsxr.cloudfront.net/data_cmab_basic/dataset.txt"
+#' data        <- fread(url)
+#'
+#' simulations <- 1
+#' horizon     <- nrow(data)
+#'
+#' # Run regression per arm, predict outcomes, and save results
+#'
+#' x                <- reformulate(names(data)[3:102],response="V2")       # x: V3 .. V102 | y: V2
+#' f                <- as.Formula(x)                                       # y ~ x
+#'
+#' model_f          <- function(arm) glm(f, data=data[V1==arm], family=binomial(link="logit"), y=F, model=F)
+#' arms             <- sort(unique(data$V1))
+#' model_arms       <- lapply(arms, FUN = model_f)
+#'
+#' predict_arm      <- function(model) predict(model, data, type = "response")
+#' r_data           <- lapply(model_arms, FUN = predict_arm)
+#' r_data           <- do.call(cbind, r_data)
+#' colnames(r_data) <- paste0("R", (1:max(arms)))
+#'
+#' # Bind data and model predictions
+#'
+#' data             <- cbind(data,r_data)
+#'
+#' # Run direct method style offline bandit
+#'
+#' x                <- reformulate(names(data)[3:102],response="V2")       # x: V3 .. V102 | y: V2
+#' z                <- ~ V1                                                # z: V1
+#' r                <- ~ R1+R2+R3+R4+R5+R6+R7+R8+R9+R10                    # r: R1 .. R10
+#'
+#' f                <- as.Formula(z,x,r)                                   # y ~ z | x | r
+#'
+#' bandit           <- OfflineDirectMethodBandit$new(formula = f, data = data)
+#'
+#' # Define agents.
+#' agents      <- list(Agent$new(LinUCBDisjointOptimizedPolicy$new(0.01), bandit, "alpha = 0.01"),
+#'                     Agent$new(LinUCBDisjointOptimizedPolicy$new(0.05), bandit, "alpha = 0.05"),
+#'                     Agent$new(LinUCBDisjointOptimizedPolicy$new(0.1),  bandit, "alpha = 0.1"),
+#'                     Agent$new(LinUCBDisjointOptimizedPolicy$new(1.0),  bandit, "alpha = 1.0"))
+#'
+#' # Initialize the simulation.
+#'
+#' simulation  <- Simulator$new(agents = agents, simulations = simulations, horizon = horizon)
+#'
+#' # Run the simulation.
+#' sim  <- simulation$run()
+#'
+#' # plot the results
+#' plot(sim, type = "cumulative", regret = FALSE, rate = TRUE, legend_position = "bottomright", ylim = c(0,1))
+#'
+#' }
 NULL

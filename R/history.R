@@ -320,7 +320,7 @@ History <- R6::R6Class(
       self$set_meta_data("agents",min(private$.data[, .(count = data.table::uniqueN(agent))]$count))
       self$set_meta_data("simulations",min(private$.data[, .(count = data.table::uniqueN(sim))]$count))
 
-      if (!"optimal_reward" %in% colnames(private$.data)) #### TODO: why is this? backward compat?
+      if (!"optimal_reward" %in% colnames(private$.data))
         private$.data[, optimal_reward:= NA]
 
       data.table::setkeyv(private$.data,c("t","agent"))

@@ -243,7 +243,7 @@ individual simulation when self$randomize is TRUE (default)</p></dd>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>splitstackshape</span>)
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>RCurl</span>)
 
-<span class='co'># Import MovieLens ml-10M ------------------------------------------------------------------------------------</span>
+<span class='co'># Import MovieLens ml-10M</span>
 
 <span class='co'># Info: https://d1ie9wlkzugsxr.cloudfront.net/data_movielens/ml-10M/README.html</span>
 
@@ -272,8 +272,6 @@ individual simulation when self$randomize is TRUE (default)</p></dd>
 
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/rm'>rm</a></span>(<span class='no'>movies_dat</span>,<span class='no'>ratings_dat</span>)
 
-<span class='co'># Data wrangling ---------------------------------------------------------------------------------------------</span>
-
 <span class='no'>all_movies</span>[, <span class='no'>UserID</span>   <span class='kw'>:=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/numeric'>as.numeric</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/factor'>as.factor</a></span>(<span class='no'>UserID</span>))]
 
 <span class='no'>count_movies</span>    <span class='kw'>&lt;-</span> <span class='no'>all_movies</span>[,<span class='fu'>.</span>(<span class='kw'>MovieCount</span> <span class='kw'>=</span> <span class='no'>.N</span>), <span class='kw'>by</span> <span class='kw'>=</span> <span class='no'>MovieID</span>]
@@ -281,8 +279,6 @@ individual simulation when self$randomize is TRUE (default)</p></dd>
 <span class='no'>not_50</span>          <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/vector'>as.vector</a></span>(<span class='no'>count_movies</span>[<span class='fu'><a href='https://www.rdocumentation.org/packages/data.table/topics/setorder'>order</a></span>(-<span class='no'>MovieCount</span>)][<span class='fl'>51</span>:<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/nrow'>nrow</a></span>(<span class='no'>count_movies</span>)]$<span class='no'>MovieID</span>)
 
 <span class='no'>top_50_movies</span>   <span class='kw'>&lt;-</span> <span class='no'>all_movies</span>[<span class='no'>MovieID</span> <span class='kw'>%in%</span> <span class='no'>top_50</span>]
-
-<span class='co'># ------------------------------------------------------------------------------------------------------------</span>
 
 <span class='co'># Create feature lookup tables - to speed up, MovieID and UserID are</span>
 <span class='co'># ordered and lined up with the (dt/matrix) default index.</span>
@@ -311,11 +307,7 @@ individual simulation when self$randomize is TRUE (default)</p></dd>
 
 <span class='fu'><a href='https://www.rdocumentation.org/packages/data.table/topics/setorder'>setorder</a></span>(<span class='no'>user_features</span>,<span class='no'>UserID</span>)
 
-<span class='co'># ------------------------------------------------------------------------------------------------------------</span>
-
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/rm'>rm</a></span>(<span class='no'>all_movies</span>, <span class='no'>not_50</span>, <span class='no'>top_50</span>, <span class='no'>count_movies</span>)
-
-<span class='co'># ------------------------------------------------------------------------------------------------------------</span>
 
 <span class='co'># Contextual format</span>
 
@@ -328,7 +320,7 @@ individual simulation when self$randomize is TRUE (default)</p></dd>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/data.table/topics/setorder'>setorder</a></span>(<span class='no'>top_50_movies</span>,<span class='no'>Timestamp</span>,<span class='no'>Name</span>)
 
 
-<span class='co'># Run simulation ---------------------------------------------------------------------------------------------</span>
+<span class='co'># Run simulation</span>
 
 <span class='no'>simulations</span> <span class='kw'>&lt;-</span> <span class='fl'>1</span>
 <span class='no'>horizon</span>     <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/nrow'>nrow</a></span>(<span class='no'>top_50_movies</span>)

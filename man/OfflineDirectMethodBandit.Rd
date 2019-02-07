@@ -2,15 +2,17 @@
 % Please edit documentation in R/bandit_offline_direct_method.R
 \name{OfflineDirectMethodBandit}
 \alias{OfflineDirectMethodBandit}
-\title{Bandit: Offline Direct Method Evaluator}
+\title{Bandit: Offline Direct Methods}
 \description{
-TODO: Interface needs to be updated, and needs to be documented more fully.
+Policy for the evaluation of policies with offline data with modeled rewards per arm.
 }
 \section{Usage}{
 
 \preformatted{
-  bandit <- OfflineDirectMethodBandit(offline_data, k, d = 0, arm_regression_models = NULL,
-                                      single_regression_model = NULL, randomize = TRUE)
+  bandit <- OfflineDirectMethodBandit(formula,
+                                      data, k = NULL, d = NULL,
+                                      unique = NULL, shared = NULL,
+                                      randomize = TRUE)
 }
 }
 
@@ -18,17 +20,34 @@ TODO: Interface needs to be updated, and needs to be documented more fully.
 
 
 \describe{
-\item{\code{offline_data}}{
-data.table; offline data source (required)
+\item{\code{formula}}{
+formula (required).
+Format: \code{y.context ~ z.choice | x1.context + x2.xontext + ... | r1.reward + r2.reward ...}
+Here, r1.reward to rk.reward represent regression based precalculated rewards per arm.
+Adds an intercept to the context model by default. Exclude the intercept, by adding "0" or "-1" to
+the list of contextual features, as in: \code{y.context ~ z.choice | x1.context + x2.xontext -1}
+}
+\item{\code{data}}{
+data.table or data.frame; offline data source (required)
 }
 \item{\code{k}}{
-integer; number of arms (required)
+integer; number of arms (optional). Optionally used to reformat the formula defined x.context vector
+as a \code{k x d} matrix. When making use of such matrix formatted contexts, you need to define custom
+intercept(s) when and where needed in data.table or data.frame.
 }
 \item{\code{d}}{
-integer; number of contextual features (optional, default: 0)
+integer; number of contextual features (optional) Optionally used to reformat the formula defined
+x.context vector as a \code{k x d} matrix. When making use of such matrix formatted contexts, you need
+to define custom intercept(s) when and where needed in data.table or data.frame.
 }
 \item{\code{randomize}}{
 logical; randomize rows of data stream per simulation (optional, default: TRUE)
+}
+\item{\code{replacement}}{
+logical; sample with replacement (optional, default: FALSE)
+}
+\item{\code{replacement}}{
+logical; add jitter to contextual features (optional, default: FALSE)
 }
 \item{\code{unique}}{
 integer vector; index of disjoint features (optional)
@@ -45,8 +64,8 @@ integer vector; index of shared features (optional)
 
 \describe{
 
-\item{\code{new(offline_data, k, d = 0, arm_regression_models = NULL, single_regression_model = NULL,
-  randomize = TRUE)}}{ generates and instantializes a new \code{OfflineDirectMethodBandit} instance. }
+\item{\code{new(formula, data, k = NULL, d = NULL, unique = NULL, shared = NULL, randomize = TRUE)}}{
+generates and instantializes a new \code{OfflineDirectMethodBandit} instance. }
 
 \item{\code{get_context(t)}}{
 argument:
@@ -78,6 +97,66 @@ individual simulation when self$randomize is TRUE (default)
 }
 }
 
+\examples{
+\dontrun{
+
+library(contextual)
+library(data.table)
+
+# Import personalization data-set
+
+url         <- "http://d1ie9wlkzugsxr.cloudfront.net/data_cmab_basic/dataset.txt"
+data        <- fread(url)
+
+simulations <- 1
+horizon     <- nrow(data)
+
+# Run regression per arm, predict outcomes, and save results
+
+x                <- reformulate(names(data)[3:102],response="V2")       # x: V3 .. V102 | y: V2
+f                <- as.Formula(x)                                       # y ~ x
+
+model_f          <- function(arm) glm(f, data=data[V1==arm], family=binomial(link="logit"), y=F, model=F)
+arms             <- sort(unique(data$V1))
+model_arms       <- lapply(arms, FUN = model_f)
+
+predict_arm      <- function(model) predict(model, data, type = "response")
+r_data           <- lapply(model_arms, FUN = predict_arm)
+r_data           <- do.call(cbind, r_data)
+colnames(r_data) <- paste0("R", (1:max(arms)))
+
+# Bind data and model predictions
+
+data             <- cbind(data,r_data)
+
+# Run direct method style offline bandit
+
+x                <- reformulate(names(data)[3:102],response="V2")       # x: V3 .. V102 | y: V2                                       # y ~ x
+z                <- ~ V1                                                # z: V1
+r                <- ~ R1+R2+R3+R4+R5+R6+R7+R8+R9+R10                    # r: R1 .. R10
+
+f                <- as.Formula(z,x,r)                                   # y ~ z | x | r
+
+bandit           <- OfflineDirectMethodBandit$new(formula = f, data = data)
+
+# Define agents.
+agents      <- list(Agent$new(LinUCBDisjointOptimizedPolicy$new(0.01), bandit, "alpha = 0.01"),
+                    Agent$new(LinUCBDisjointOptimizedPolicy$new(0.05), bandit, "alpha = 0.05"),
+                    Agent$new(LinUCBDisjointOptimizedPolicy$new(0.1),  bandit, "alpha = 0.1"),
+                    Agent$new(LinUCBDisjointOptimizedPolicy$new(1.0),  bandit, "alpha = 1.0"))
+
+# Initialize the simulation.
+
+simulation  <- Simulator$new(agents = agents, simulations = simulations, horizon = horizon)
+
+# Run the simulation.
+sim  <- simulation$run()
+
+# plot the results
+plot(sim, type = "cumulative", regret = FALSE, rate = TRUE, legend_position = "bottomright", ylim = c(0,1))
+
+}
+}
 \references{
 Agarwal, Alekh, et al. "Taming the monster: A fast and simple algorithm for contextual bandits."
 International Conference on Machine Learning. 2014.

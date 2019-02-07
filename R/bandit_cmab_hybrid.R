@@ -50,7 +50,7 @@ ContextualHybridBandit <- R6::R6Class(
 
 #' Bandit: ContextualHybridBandit
 #'
-#' TODO: optimal arm calculation
+#' TODO: Optimization.
 #'
 #' Extension of \code{ContextualLogitBandit} modeling hybrid rewards with a combination
 #' of unique (or "disjoint") and shared contextual features.
