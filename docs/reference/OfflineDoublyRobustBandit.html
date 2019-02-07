@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Bandit: Offline Doubly Robust Evaluator — OfflineDoublyRobustBandit • contextual</title>
+<title>Bandit: Offline Doubly Robust — OfflineDoublyRobustBandit • contextual</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -36,9 +36,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Bandit: Offline Doubly Robust Evaluator — OfflineDoublyRobustBandit" />
+<meta property="og:title" content="Bandit: Offline Doubly Robust — OfflineDoublyRobustBandit" />
 
-<meta property="og:description" content="TODO: Interface needs to be updated, and needs to be documented more fully." />
+<meta property="og:description" content="Bandit for the doubly robust evaluation of policies with offline data." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -159,49 +159,61 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Bandit: Offline Doubly Robust Evaluator</h1>
+    <h1>Bandit: Offline Doubly Robust</h1>
     <small class="dont-index">Source: <a href='https://github.com/Nth-iteration-labs/contextual/blob/master/R/bandit_offline_doubly_robust.R'><code>R/bandit_offline_doubly_robust.R</code></a></small>
     <div class="hidden name"><code>OfflineDoublyRobustBandit.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>TODO: Interface needs to be updated, and needs to be documented more fully.</p>
+    <p>Bandit for the doubly robust evaluation of policies with offline data.</p>
     
     </div>
 
         
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
-
-    <p>Policy for the evaluation of policies with offline data.</p>
-    
     <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
 
     
     <pre>
-  bandit &lt;- OfflineDoublyRobustBandit(offline_data, k, d, arm_regression_models,
-  arm_regression_data, randomize = TRUE, stabilize = TRUE, preweighted = FALSE)
+  bandit &lt;- OfflineDoublyRobustBandit(formula,
+                                      data, k = NULL, d = NULL,
+                                      unique = NULL, shared = NULL,
+                                      stabilize = TRUE, preweighted = FALSE,
+                                      randomize = TRUE)
 </pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
 
     
     <dl class='dl-horizontal'>
-<dt><code>offline_data</code></dt><dd><p>data.table; offline data source (required)</p></dd>
-<dt><code>k</code></dt><dd><p>integer; number of arms (required)</p></dd>
-<dt><code>d</code></dt><dd><p>integer; number of contextual features (required)</p></dd>
+<dt><code>formula</code></dt><dd><p>formula (required).
+Format:
+<code>y.context ~ z.choice | x1.context + x2.xontext + ... | r1.reward + r2.reward ... | p.propensity</code>
+Here, r1.reward to rk.reward represent regression based precalculated rewards per arm.
+Adds an intercept to the context model by default. Exclude the intercept, by adding "0" or "-1" to
+the list of contextual features, as in: <code>y.context ~ z.choice | x1.context + x2.xontext -1</code></p></dd>
+<dt><code>data</code></dt><dd><p>data.table or data.frame; offline data source (required)</p></dd>
+<dt><code>k</code></dt><dd><p>integer; number of arms (optional). Optionally used to reformat the formula defined x.context vector
+as a <code>k x d</code> matrix. When making use of such matrix formatted contexts, you need to define custom
+intercept(s) when and where needed in data.table or data.frame.</p></dd>
+<dt><code>d</code></dt><dd><p>integer; number of contextual features (optional) Optionally used to reformat the formula defined
+x.context vector as a <code>k x d</code> matrix. When making use of such matrix formatted contexts, you need
+to define custom intercept(s) when and where needed in data.table or data.frame.</p></dd>
 <dt><code>randomize</code></dt><dd><p>logical; randomize rows of data stream per simulation (optional, default: TRUE)</p></dd>
+<dt><code>replacement</code></dt><dd><p>logical; sample with replacement (optional, default: FALSE)</p></dd>
+<dt><code>replacement</code></dt><dd><p>logical; add jitter to contextual features (optional, default: FALSE)</p></dd>
 <dt><code>unique</code></dt><dd><p>integer vector; index of disjoint features (optional)</p></dd>
 <dt><code>shared</code></dt><dd><p>integer vector; index of shared features (optional)</p></dd>
+<dt><code>stabilize</code></dt><dd><p>logical; whether or not to stabilize the weights. This involves multiplying each unit's
+weight by the sum of the weights in that unit's treatment group.</p></dd>
+<dt><code>preweighted</code></dt><dd><p>logical; have the propensities been transformed (1/p) or not (p)?</p></dd>
     </dl>
     
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     
     <dl class='dl-horizontal'>
-    <dt><code>new(offline_data, k, d, arm_regression_models, arm_regression_data, randomize = TRUE,
-                  stabilize = TRUE, preweighted = FALSE)</code></dt><dd><p>generates
-and instantializes a new <code>OfflineDoublyRobustBandit</code> instance.</p></dd>
+    <dt><code>new(formula, data, k = NULL, d = NULL, unique = NULL, shared = NULL, randomize = TRUE)</code></dt><dd><p>generates and instantializes a new <code>OfflineDoublyRobustBandit</code> instance.</p></dd>
     <dt><code><a href='Bandit.html'>get_context(t)</a></code></dt><dd><p>argument:
 <ul>
 <li><p><code>t</code>: integer, time step <code>t</code>.</p></li>
@@ -238,17 +250,76 @@ International Conference on Machine Learning. 2014.</p>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"># NOT RUN {
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>contextual</span>)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>data.table</span>)
 
-# }
-</pre>
+<span class='co'># Import personalization data-set</span>
+
+<span class='no'>url</span>  <span class='kw'>&lt;-</span> <span class='st'>"http://d1ie9wlkzugsxr.cloudfront.net/data_propensity/myocardial_propensity.csv"</span>
+<span class='no'>data</span>            <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/data.table/topics/fread'>fread</a></span>(<span class='no'>url</span>)
+
+<span class='no'>simulations</span>     <span class='kw'>&lt;-</span> <span class='fl'>100</span>
+<span class='no'>horizon</span>         <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/nrow'>nrow</a></span>(<span class='no'>data</span>)
+
+<span class='co'># arms always start at 1</span>
+<span class='no'>data</span>$<span class='no'>trt</span>        <span class='kw'>&lt;-</span> <span class='no'>data</span>$<span class='no'>trt</span> + <span class='fl'>1</span>
+
+<span class='co'># turn death into alive, making it a reward</span>
+<span class='no'>data</span>$<span class='no'>alive</span>      <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/MathFun'>abs</a></span>(<span class='no'>data</span>$<span class='no'>death</span> - <span class='fl'>1</span>)
+
+<span class='co'># Run regression per arm, predict outcomes, and save results, a column per arm</span>
+
+<span class='no'>f</span>                <span class='kw'>&lt;-</span> <span class='no'>alive</span> ~ <span class='no'>age</span> + <span class='no'>male</span> + <span class='no'>risk</span> + <span class='no'>severity</span>
+
+<span class='no'>model_f</span>          <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>arm</span>) <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/glm'>glm</a></span>(<span class='no'>f</span>, <span class='kw'>data</span><span class='kw'>=</span><span class='no'>data</span>[<span class='no'>trt</span><span class='kw'>==</span><span class='no'>arm</span>],
+                                         <span class='kw'>family</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/family'>binomial</a></span>(<span class='kw'>link</span><span class='kw'>=</span><span class='st'>"logit"</span>),
+                                         <span class='kw'>y</span><span class='kw'>=</span><span class='fl'>FALSE</span>, <span class='kw'>model</span><span class='kw'>=</span><span class='fl'>FALSE</span>)
+<span class='no'>arms</span>             <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sort'>sort</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/data.table/topics/duplicated'>unique</a></span>(<span class='no'>data</span>$<span class='no'>trt</span>))
+<span class='no'>model_arms</span>       <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/lapply'>lapply</a></span>(<span class='no'>arms</span>, <span class='kw'>FUN</span> <span class='kw'>=</span> <span class='no'>model_f</span>)
+
+<span class='no'>predict_arm</span>      <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>model</span>) <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/predict'>predict</a></span>(<span class='no'>model</span>, <span class='no'>data</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"response"</span>)
+<span class='no'>r_data</span>           <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/lapply'>lapply</a></span>(<span class='no'>model_arms</span>, <span class='kw'>FUN</span> <span class='kw'>=</span> <span class='no'>predict_arm</span>)
+<span class='no'>r_data</span>           <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/do.call'>do.call</a></span>(<span class='no'>cbind</span>, <span class='no'>r_data</span>)
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/colnames'>colnames</a></span>(<span class='no'>r_data</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/paste'>paste0</a></span>(<span class='st'>"R"</span>, (<span class='fl'>1</span>:<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Extremes'>max</a></span>(<span class='no'>arms</span>)))
+
+<span class='co'># Bind data and model predictions</span>
+
+<span class='no'>data</span>             <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cbind'>cbind</a></span>(<span class='no'>data</span>,<span class='no'>r_data</span>)
+
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>WeightIt</span>)
+
+<span class='no'>wi</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/WeightIt/topics/weightit'>weightit</a></span>(<span class='no'>trt</span> ~ <span class='no'>age</span> + <span class='no'>male</span> + <span class='no'>risk</span> + <span class='no'>severity</span>,
+                    <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>data</span>, <span class='kw'>estimand</span> <span class='kw'>=</span> <span class='st'>"ATE"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"ps"</span>)
+<span class='no'>data</span>$<span class='no'>P1</span> <span class='kw'>&lt;-</span> <span class='no'>wi</span>$<span class='no'>weights</span>
+
+<span class='no'>f</span>          <span class='kw'>&lt;-</span> <span class='no'>alive</span> ~ <span class='no'>trt</span> <span class='kw'>|</span> <span class='no'>age</span> + <span class='no'>male</span> + <span class='no'>risk</span> + <span class='no'>severity</span> <span class='kw'>|</span> <span class='no'>R1</span> + <span class='no'>R2</span> <span class='kw'>|</span> <span class='no'>P1</span> <span class='co'># y ~ z | x | r | p</span>
+
+<span class='no'>bandit</span>     <span class='kw'>&lt;-</span> <span class='no'>OfflineDoublyRobustBandit</span>$<span class='fu'>new</span>(<span class='kw'>formula</span> <span class='kw'>=</span> <span class='no'>f</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>data</span>, <span class='kw'>stabilize</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+
+<span class='co'># Define agents.</span>
+<span class='no'>agents</span>      <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>LinUCBDisjointOptimizedPolicy</span>$<span class='fu'>new</span>(<span class='fl'>0.2</span>), <span class='no'>bandit</span>, <span class='st'>"LinUCB"</span>),
+                    <span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>FixedPolicy</span>$<span class='fu'>new</span>(<span class='fl'>1</span>), <span class='no'>bandit</span>, <span class='st'>"Arm1"</span>),
+                    <span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>FixedPolicy</span>$<span class='fu'>new</span>(<span class='fl'>2</span>), <span class='no'>bandit</span>, <span class='st'>"Arm2"</span>))
+
+<span class='co'># Initialize the simulation.</span>
+
+<span class='no'>simulation</span>  <span class='kw'>&lt;-</span> <span class='no'>Simulator</span>$<span class='fu'>new</span>(<span class='kw'>agents</span> <span class='kw'>=</span> <span class='no'>agents</span>, <span class='kw'>simulations</span> <span class='kw'>=</span> <span class='no'>simulations</span>, <span class='kw'>horizon</span> <span class='kw'>=</span> <span class='no'>horizon</span>)
+
+<span class='co'># Run the simulation.</span>
+<span class='no'>sim</span>  <span class='kw'>&lt;-</span> <span class='no'>simulation</span>$<span class='fu'><a href='Simulator.html'>run</a></span>()
+
+<span class='co'># plot the results</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='no'>sim</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"cumulative"</span>, <span class='kw'>regret</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>rate</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>legend_position</span> <span class='kw'>=</span> <span class='st'>"bottomright"</span>)
+
+<span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='no'>sim</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"arms"</span>, <span class='kw'>limit_agents</span> <span class='kw'>=</span> <span class='st'>"LinUCB"</span>)
+
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       
-      <li><a href="#details">Details</a></li>
-
       <li><a href="#usage">Usage</a></li>
 
       <li><a href="#arguments">Arguments</a></li>

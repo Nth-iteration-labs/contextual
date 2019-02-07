@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Bandit: Offline Direct Method Evaluator — OfflineDirectMethodBandit • contextual</title>
+<title>Bandit: Offline Direct Methods — OfflineDirectMethodBandit • contextual</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -36,9 +36,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
 
-<meta property="og:title" content="Bandit: Offline Direct Method Evaluator — OfflineDirectMethodBandit" />
+<meta property="og:title" content="Bandit: Offline Direct Methods — OfflineDirectMethodBandit" />
 
-<meta property="og:description" content="TODO: Interface needs to be updated, and needs to be documented more fully." />
+<meta property="og:description" content="Policy for the evaluation of policies with offline data with modeled rewards per arm." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -159,14 +159,14 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Bandit: Offline Direct Method Evaluator</h1>
+    <h1>Bandit: Offline Direct Methods</h1>
     <small class="dont-index">Source: <a href='https://github.com/Nth-iteration-labs/contextual/blob/master/R/bandit_offline_direct_method.R'><code>R/bandit_offline_direct_method.R</code></a></small>
     <div class="hidden name"><code>OfflineDirectMethodBandit.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p>TODO: Interface needs to be updated, and needs to be documented more fully.</p>
+    <p>Policy for the evaluation of policies with offline data with modeled rewards per arm.</p>
     
     </div>
 
@@ -175,18 +175,31 @@
 
     
     <pre>
-  bandit &lt;- OfflineDirectMethodBandit(offline_data, k, d = 0, arm_regression_models = NULL,
-                                      single_regression_model = NULL, randomize = TRUE)
+  bandit &lt;- OfflineDirectMethodBandit(formula,
+                                      data, k = NULL, d = NULL,
+                                      unique = NULL, shared = NULL,
+                                      randomize = TRUE)
 </pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
 
     
     <dl class='dl-horizontal'>
-<dt><code>offline_data</code></dt><dd><p>data.table; offline data source (required)</p></dd>
-<dt><code>k</code></dt><dd><p>integer; number of arms (required)</p></dd>
-<dt><code>d</code></dt><dd><p>integer; number of contextual features (optional, default: 0)</p></dd>
+<dt><code>formula</code></dt><dd><p>formula (required).
+Format: <code>y.context ~ z.choice | x1.context + x2.xontext + ... | r1.reward + r2.reward ...</code>
+Here, r1.reward to rk.reward represent regression based precalculated rewards per arm.
+Adds an intercept to the context model by default. Exclude the intercept, by adding "0" or "-1" to
+the list of contextual features, as in: <code>y.context ~ z.choice | x1.context + x2.xontext -1</code></p></dd>
+<dt><code>data</code></dt><dd><p>data.table or data.frame; offline data source (required)</p></dd>
+<dt><code>k</code></dt><dd><p>integer; number of arms (optional). Optionally used to reformat the formula defined x.context vector
+as a <code>k x d</code> matrix. When making use of such matrix formatted contexts, you need to define custom
+intercept(s) when and where needed in data.table or data.frame.</p></dd>
+<dt><code>d</code></dt><dd><p>integer; number of contextual features (optional) Optionally used to reformat the formula defined
+x.context vector as a <code>k x d</code> matrix. When making use of such matrix formatted contexts, you need
+to define custom intercept(s) when and where needed in data.table or data.frame.</p></dd>
 <dt><code>randomize</code></dt><dd><p>logical; randomize rows of data stream per simulation (optional, default: TRUE)</p></dd>
+<dt><code>replacement</code></dt><dd><p>logical; sample with replacement (optional, default: FALSE)</p></dd>
+<dt><code>replacement</code></dt><dd><p>logical; add jitter to contextual features (optional, default: FALSE)</p></dd>
 <dt><code>unique</code></dt><dd><p>integer vector; index of disjoint features (optional)</p></dd>
 <dt><code>shared</code></dt><dd><p>integer vector; index of shared features (optional)</p></dd>
     </dl>
@@ -195,8 +208,7 @@
 
     
     <dl class='dl-horizontal'>
-    <dt><code>new(offline_data, k, d = 0, arm_regression_models = NULL, single_regression_model = NULL,
-  randomize = TRUE)</code></dt><dd><p>generates and instantializes a new <code>OfflineDirectMethodBandit</code> instance.</p></dd>
+    <dt><code>new(formula, data, k = NULL, d = NULL, unique = NULL, shared = NULL, randomize = TRUE)</code></dt><dd><p>generates and instantializes a new <code>OfflineDirectMethodBandit</code> instance.</p></dd>
     <dt><code><a href='Bandit.html'>get_context(t)</a></code></dt><dd><p>argument:
 <ul>
 <li><p><code>t</code>: integer, time step <code>t</code>.</p></li>
@@ -232,6 +244,68 @@ International Conference on Machine Learning. 2014.</p>
 <p>Policy subclass examples: <code><a href='EpsilonGreedyPolicy.html'>EpsilonGreedyPolicy</a></code>, <code><a href='ContextualLinTSPolicy.html'>ContextualLinTSPolicy</a></code></p></div>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"># NOT RUN {
+library(contextual)
+library(data.table)
+
+# Import myocardial infection dataset
+
+url          <- "http://d1ie9wlkzugsxr.cloudfront.net/data_propensity/myocardial_propensity.csv"
+data         <- fread(url)
+
+simulations  <- 50
+horizon      <- nrow(data)
+
+# arms always start at 1
+data$trt     <- data$trt + 1
+
+# turn death into alive, making it a reward
+data$alive   <- abs(data$death - 1)
+
+# Run regression per arm, predict outcomes, and save results, a column per arm
+
+f                <- alive ~ age + male + risk + severity
+
+model_f          <- function(arm) glm(f, data=data[trt==arm],
+                                         family=binomial(link="logit"),
+                                         y=FALSE, model=FALSE)
+arms             <- sort(unique(data$trt))
+model_arms       <- lapply(arms, FUN = model_f)
+
+predict_arm      <- function(model) predict(model, data, type = "response")
+r_data           <- lapply(model_arms, FUN = predict_arm)
+r_data           <- do.call(cbind, r_data)
+colnames(r_data) <- paste0("R", (1:max(arms)))
+
+# Bind data and model predictions
+
+data             <- cbind(data,r_data)
+
+# Define Bandit
+
+f                <- alive ~ trt | age + male + risk + severity | R1 + R2  # y ~ z | x | r
+
+bandit           <- OfflineDirectMethodBandit$new(formula = f, data = data)
+
+# Define agents.
+agents      <- list(Agent$new(LinUCBDisjointOptimizedPolicy$new(0.2), bandit, "LinUCB"),
+                    Agent$new(FixedPolicy$new(1), bandit, "Arm1"),
+                    Agent$new(FixedPolicy$new(2), bandit, "Arm2"))
+
+# Initialize the simulation.
+
+simulation  <- Simulator$new(agents = agents, simulations = simulations, horizon = horizon)
+
+# Run the simulation.
+sim  <- simulation$run()
+
+# plot the results
+plot(sim, type = "cumulative", regret = FALSE, rate = TRUE, legend_position = "bottomright")
+plot(sim, type = "arms", limit_agents = "LinUCB", legend_position = "topright")b
+
+# }
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -246,7 +320,9 @@ International Conference on Machine Learning. 2014.</p>
       <li><a href="#references">References</a></li>
 
       <li><a href="#see-also">See also</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

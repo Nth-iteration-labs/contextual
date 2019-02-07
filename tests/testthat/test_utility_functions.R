@@ -45,11 +45,11 @@ test_that("InvGamma", {
   x <- dinvgamma(s, 7, 10)
   x2 <- dinvgamma(s, 7, scale = 0.10)
 
-  expect_equal_to_reference(x, file = "dinvgamma.rds")
-  expect_equal_to_reference(x2, file = "dinvgamma.rds")
+  expect_equal_to_reference(x, file = "dinvgamma1.rds")
+  expect_equal_to_reference(x2, file = "dinvgamma2.rds")
 
   x2 <- dinvgamma(s, 7, 10, log = TRUE)
-  expect_equal_to_reference(x2, file = "dinvgamma_log.rds")
+  expect_equal_to_reference(x2, file = "logdiv.rds")
 
   q <- 2
   (p <- pinvgamma(q, 7, 10))

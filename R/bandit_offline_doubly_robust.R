@@ -185,7 +185,7 @@ OfflineDoublyRobustBandit <- R6::R6Class(
 #'
 #' # Import personalization data-set
 #'
-#' url             <- "http://d1ie9wlkzugsxr.cloudfront.net/data_propensity/myocardial_propensity.csv"
+#' url  <- "http://d1ie9wlkzugsxr.cloudfront.net/data_propensity/myocardial_propensity.csv"
 #' data            <- fread(url)
 #'
 #' simulations     <- 100
@@ -201,7 +201,9 @@ OfflineDoublyRobustBandit <- R6::R6Class(
 #'
 #' f                <- alive ~ age + male + risk + severity
 #'
-#' model_f          <- function(arm) glm(f, data=data[trt==arm], family=binomial(link="logit"), y=F, model=F)
+#' model_f          <- function(arm) glm(f, data=data[trt==arm],
+#'                                          family=binomial(link="logit"),
+#'                                          y=FALSE, model=FALSE)
 #' arms             <- sort(unique(data$trt))
 #' model_arms       <- lapply(arms, FUN = model_f)
 #'
@@ -216,12 +218,13 @@ OfflineDoublyRobustBandit <- R6::R6Class(
 #'
 #' library(WeightIt)
 #'
-#' wi <- weightit(trt ~ age + male + risk + severity, data = data, estimand = "ATE", method = "ps")
+#' wi <- weightit(trt ~ age + male + risk + severity,
+#'                     data = data, estimand = "ATE", method = "ps")
 #' data$P1 <- wi$weights
 #'
-#' f                <- alive ~ trt | age + male + risk + severity | R1 + R2 | P1      # y ~ z | x | r | p
+#' f          <- alive ~ trt | age + male + risk + severity | R1 + R2 | P1 # y ~ z | x | r | p
 #'
-#' bandit           <- OfflineDoublyRobustBandit$new(formula = f, data = data, stabilize = TRUE)
+#' bandit     <- OfflineDoublyRobustBandit$new(formula = f, data = data, stabilize = TRUE)
 #'
 #' # Define agents.
 #' agents      <- list(Agent$new(LinUCBDisjointOptimizedPolicy$new(0.2), bandit, "LinUCB"),

@@ -145,21 +145,28 @@ OfflineDirectMethodBandit <- R6::R6Class(
 #' library(contextual)
 #' library(data.table)
 #'
-#' # Import personalization data-set
+#' # Import myocardial infection dataset
 #'
-#' url         <- "http://d1ie9wlkzugsxr.cloudfront.net/data_cmab_basic/dataset.txt"
-#' data        <- fread(url)
+#' url          <- "http://d1ie9wlkzugsxr.cloudfront.net/data_propensity/myocardial_propensity.csv"
+#' data         <- fread(url)
 #'
-#' simulations <- 1
-#' horizon     <- nrow(data)
+#' simulations  <- 50
+#' horizon      <- nrow(data)
 #'
-#' # Run regression per arm, predict outcomes, and save results
+#' # arms always start at 1
+#' data$trt     <- data$trt + 1
 #'
-#' x                <- reformulate(names(data)[3:102],response="V2")       # x: V3 .. V102 | y: V2
-#' f                <- as.Formula(x)                                       # y ~ x
+#' # turn death into alive, making it a reward
+#' data$alive   <- abs(data$death - 1)
 #'
-#' model_f          <- function(arm) glm(f, data=data[V1==arm], family=binomial(link="logit"), y=F, model=F)
-#' arms             <- sort(unique(data$V1))
+#' # Run regression per arm, predict outcomes, and save results, a column per arm
+#'
+#' f                <- alive ~ age + male + risk + severity
+#'
+#' model_f          <- function(arm) glm(f, data=data[trt==arm],
+#'                                          family=binomial(link="logit"),
+#'                                          y=FALSE, model=FALSE)
+#' arms             <- sort(unique(data$trt))
 #' model_arms       <- lapply(arms, FUN = model_f)
 #'
 #' predict_arm      <- function(model) predict(model, data, type = "response")
@@ -171,21 +178,16 @@ OfflineDirectMethodBandit <- R6::R6Class(
 #'
 #' data             <- cbind(data,r_data)
 #'
-#' # Run direct method style offline bandit
+#' # Define Bandit
 #'
-#' x                <- reformulate(names(data)[3:102],response="V2")       # x: V3 .. V102 | y: V2
-#' z                <- ~ V1                                                # z: V1
-#' r                <- ~ R1+R2+R3+R4+R5+R6+R7+R8+R9+R10                    # r: R1 .. R10
-#'
-#' f                <- as.Formula(z,x,r)                                   # y ~ z | x | r
+#' f                <- alive ~ trt | age + male + risk + severity | R1 + R2  # y ~ z | x | r
 #'
 #' bandit           <- OfflineDirectMethodBandit$new(formula = f, data = data)
 #'
 #' # Define agents.
-#' agents      <- list(Agent$new(LinUCBDisjointOptimizedPolicy$new(0.01), bandit, "alpha = 0.01"),
-#'                     Agent$new(LinUCBDisjointOptimizedPolicy$new(0.05), bandit, "alpha = 0.05"),
-#'                     Agent$new(LinUCBDisjointOptimizedPolicy$new(0.1),  bandit, "alpha = 0.1"),
-#'                     Agent$new(LinUCBDisjointOptimizedPolicy$new(1.0),  bandit, "alpha = 1.0"))
+#' agents      <- list(Agent$new(LinUCBDisjointOptimizedPolicy$new(0.2), bandit, "LinUCB"),
+#'                     Agent$new(FixedPolicy$new(1), bandit, "Arm1"),
+#'                     Agent$new(FixedPolicy$new(2), bandit, "Arm2"))
 #'
 #' # Initialize the simulation.
 #'
@@ -195,7 +197,8 @@ OfflineDirectMethodBandit <- R6::R6Class(
 #' sim  <- simulation$run()
 #'
 #' # plot the results
-#' plot(sim, type = "cumulative", regret = FALSE, rate = TRUE, legend_position = "bottomright", ylim = c(0,1))
+#' plot(sim, type = "cumulative", regret = FALSE, rate = TRUE, legend_position = "bottomright")
+#' plot(sim, type = "arms", limit_agents = "LinUCB", legend_position = "topright")b
 #'
 #' }
 NULL
