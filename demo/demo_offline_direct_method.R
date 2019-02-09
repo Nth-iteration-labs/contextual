@@ -6,7 +6,7 @@ library(data.table)
 url             <- "http://d1ie9wlkzugsxr.cloudfront.net/data_propensity/myocardial_propensity.csv"
 data            <- fread(url)
 
-simulations     <- 50
+simulations     <- 3000
 horizon         <- nrow(data)
 
 # arms always start at 1
@@ -17,7 +17,7 @@ data$alive      <- abs(data$death - 1)
 
 # Run regression per arm, predict outcomes, and save results, a column per arm
 
-f                <- alive ~ age + male + risk + severity
+f                <- alive ~ age + risk + severity
 
 model_f          <- function(arm) glm(f, data=data[trt==arm], family=binomial(link="logit"), y=F, model=F)
 arms             <- sort(unique(data$trt))
@@ -34,14 +34,12 @@ data             <- cbind(data,r_data)
 
 # Define Bandit
 
-f                <- alive ~ trt | age + male + risk + severity | R1 + R2  # y ~ z | x | r
+f                <- alive ~ trt | age + risk + severity | R1 + R2
 
 bandit           <- OfflineDirectMethodBandit$new(formula = f, data = data)
 
 # Define agents.
-agents      <- list(Agent$new(LinUCBDisjointOptimizedPolicy$new(0.2), bandit, "LinUCB"),
-                    Agent$new(FixedPolicy$new(1), bandit, "Arm1"),
-                    Agent$new(FixedPolicy$new(2), bandit, "Arm2"))
+agents      <- list(Agent$new(LinUCBDisjointOptimizedPolicy$new(0.2), bandit, "LinUCB"))
 
 # Initialize the simulation.
 

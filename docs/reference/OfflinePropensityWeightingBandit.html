@@ -180,7 +180,7 @@
                                              unique = NULL, shared = NULL,
                                              randomize = TRUE, replacement = TRUE,
                                              jitter = TRUE, arm_multiply = TRUE,
-                                             stabilize = TRUE, preweighted = FALSE)
+                                             preweighted = FALSE)
 </pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -188,6 +188,7 @@
     
     <dl class='dl-horizontal'>
 <dt><code>formula</code></dt><dd><p>formula (required). Format: <code>y.context ~ z.choice | x1.context + x2.xontext + ... | p.propensity </code>
+When leaving out p.propensity, Doubly Robust Bandit uses marginal prob per arm for propensities:
 By default,  adds an intercept to the context model. Exclude the intercept, by adding "0" or "-1" to
 the list of contextual features, as in:
 <code>y.context ~ z.choice | x1.context + x2.xontext -1 | p.propensity </code></p></dd>
@@ -202,7 +203,6 @@ to define custom intercept(s) when and where needed in data.table or data.frame.
 <dt><code>replacement</code></dt><dd><p>logical; sample with replacement (optional, default: TRUE)</p></dd>
 <dt><code>replacement</code></dt><dd><p>logical; add jitter to contextual features (optional, default: TRUE)</p></dd>
 <dt><code>arm_multiply</code></dt><dd><p>logical; multiply the horizon by the number of arms (optional, default: TRUE)</p></dd>
-<dt><code>stabilize</code></dt><dd><p>logical; stabilize the propensity scores (optional, default: TRUE)</p></dd>
 <dt><code>preweighted</code></dt><dd><p>logical; have the propensity scores been weighted (optional, default: FALSE)</p></dd>
 <dt><code>unique</code></dt><dd><p>integer vector; index of disjoint features (optional)</p></dd>
 <dt><code>shared</code></dt><dd><p>integer vector; index of shared features (optional)</p></dd>
@@ -213,9 +213,7 @@ to define custom intercept(s) when and where needed in data.table or data.frame.
     
     <dl class='dl-horizontal'>
     <dt><code>new(formula, data, k = NULL, d = NULL, unique = NULL, shared = NULL, randomize = TRUE,
-                  replacement = TRUE, jitter = TRUE, arm_multiply = TRUE, stabilize = TRUE,
-                  preweighted = FALSE)</code></dt><dd><p>generates
-and instantializes a new <code>OfflinePropensityWeightingBandit</code> instance.</p></dd>
+                  replacement = TRUE, jitter = TRUE, arm_multiply = TRUE, preweighted = FALSE)</code></dt><dd><p>generates and instantializes a new <code>OfflinePropensityWeightingBandit</code> instance.</p></dd>
     <dt><code><a href='Bandit.html'>get_context(t)</a></code></dt><dd><p>argument:
 <ul>
 <li><p><code>t</code>: integer, time step <code>t</code>.</p></li>
@@ -251,6 +249,51 @@ International Conference on Machine Learning. 2014.</p>
 <p>Policy subclass examples: <code><a href='EpsilonGreedyPolicy.html'>EpsilonGreedyPolicy</a></code>, <code><a href='ContextualLinTSPolicy.html'>ContextualLinTSPolicy</a></code></p></div>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><span class='co'># NOT RUN {</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>contextual</span>)
+<span class='fu'>ibrary</span>(<span class='no'>data.table</span>)
+
+<span class='co'># Import myocardial infection dataset</span>
+
+<span class='no'>url</span>  <span class='kw'>&lt;-</span> <span class='st'>"http://d1ie9wlkzugsxr.cloudfront.net/data_propensity/myocardial_propensity.csv"</span>
+<span class='no'>data</span>            <span class='kw'>&lt;-</span> <span class='fu'>fread</span>(<span class='no'>url</span>)
+
+<span class='no'>simulations</span>     <span class='kw'>&lt;-</span> <span class='fl'>3000</span>
+<span class='no'>horizon</span>         <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/nrow'>nrow</a></span>(<span class='no'>data</span>)
+
+<span class='co'># arms always start at 1</span>
+<span class='no'>data</span>$<span class='no'>trt</span>        <span class='kw'>&lt;-</span> <span class='no'>data</span>$<span class='no'>trt</span> + <span class='fl'>1</span>
+
+<span class='co'># turn death into alive, making it a reward</span>
+<span class='no'>data</span>$<span class='no'>alive</span>      <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/MathFun'>abs</a></span>(<span class='no'>data</span>$<span class='no'>death</span> - <span class='fl'>1</span>)
+
+<span class='co'># calculate propensity weights</span>
+
+<span class='no'>m</span>      <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/glm'>glm</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/AsIs'>I</a></span>(<span class='no'>trt</span>-<span class='fl'>1</span>) ~ <span class='no'>age</span> + <span class='no'>risk</span> + <span class='no'>severity</span>, <span class='kw'>data</span><span class='kw'>=</span><span class='no'>data</span>, <span class='kw'>family</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/family'>binomial</a></span>(<span class='kw'>link</span><span class='kw'>=</span><span class='st'>"logit"</span>))
+<span class='no'>data</span>$<span class='no'>p</span> <span class='kw'>&lt;-</span><span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/predict'>predict</a></span>(<span class='no'>m</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"response"</span>)
+
+<span class='co'># run bandit - if you leave out p, Propensity Bandit uses marginal prob per arm for propensities:</span>
+<span class='co'># table(private$z)/length(private$z)</span>
+
+<span class='no'>f</span>          <span class='kw'>&lt;-</span> <span class='no'>alive</span> ~ <span class='no'>trt</span> <span class='kw'>|</span> <span class='no'>age</span> + <span class='no'>risk</span> + <span class='no'>severity</span> <span class='kw'>|</span> <span class='no'>p</span>
+
+<span class='no'>bandit</span>     <span class='kw'>&lt;-</span> <span class='no'>OfflinePropensityWeightingBandit</span>$<span class='fu'>new</span>(<span class='kw'>formula</span> <span class='kw'>=</span> <span class='no'>f</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>data</span>)
+
+<span class='co'># Define agents.</span>
+<span class='no'>agents</span>      <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>LinUCBDisjointOptimizedPolicy</span>$<span class='fu'>new</span>(<span class='fl'>0.2</span>), <span class='no'>bandit</span>, <span class='st'>"LinUCB"</span>))
+
+<span class='co'># Initialize the simulation.</span>
+
+<span class='no'>simulation</span>  <span class='kw'>&lt;-</span> <span class='no'>Simulator</span>$<span class='fu'>new</span>(<span class='kw'>agents</span> <span class='kw'>=</span> <span class='no'>agents</span>, <span class='kw'>simulations</span> <span class='kw'>=</span> <span class='no'>simulations</span>, <span class='kw'>horizon</span> <span class='kw'>=</span> <span class='no'>horizon</span>)
+
+<span class='co'># Run the simulation.</span>
+<span class='no'>sim</span>  <span class='kw'>&lt;-</span> <span class='no'>simulation</span>$<span class='fu'><a href='Simulator.html'>run</a></span>()
+
+<span class='co'># plot the results</span>
+<span class='fu'><a href='https://www.rdocumentation.org/packages/graphics/topics/plot'>plot</a></span>(<span class='no'>sim</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"cumulative"</span>, <span class='kw'>regret</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>rate</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>legend_position</span> <span class='kw'>=</span> <span class='st'>"bottomright"</span>)
+
+<span class='co'># }</span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -265,7 +308,9 @@ International Conference on Machine Learning. 2014.</p>
       <li><a href="#references">References</a></li>
 
       <li><a href="#see-also">See also</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>

@@ -14,7 +14,7 @@ Policy for the evaluation of policies with offline data through replay with prop
                                              unique = NULL, shared = NULL,
                                              randomize = TRUE, replacement = TRUE,
                                              jitter = TRUE, arm_multiply = TRUE,
-                                             stabilize = TRUE, preweighted = FALSE)
+                                             preweighted = FALSE)
 }
 }
 
@@ -24,6 +24,7 @@ Policy for the evaluation of policies with offline data through replay with prop
 \describe{
 \item{\code{formula}}{
 formula (required). Format: \code{y.context ~ z.choice | x1.context + x2.xontext + ... | p.propensity }
+When leaving out p.propensity, Doubly Robust Bandit uses marginal prob per arm for propensities:
 By default,  adds an intercept to the context model. Exclude the intercept, by adding "0" or "-1" to
 the list of contextual features, as in:
 \code{y.context ~ z.choice | x1.context + x2.xontext -1 | p.propensity }
@@ -53,9 +54,6 @@ logical; add jitter to contextual features (optional, default: TRUE)
 \item{\code{arm_multiply}}{
 logical; multiply the horizon by the number of arms (optional, default: TRUE)
 }
-\item{\code{stabilize}}{
-logical; stabilize the propensity scores (optional, default: TRUE)
-}
 \item{\code{preweighted}}{
 logical; have the propensity scores been weighted (optional, default: FALSE)
 }
@@ -75,9 +73,8 @@ integer vector; index of shared features (optional)
 \describe{
 
 \item{\code{new(formula, data, k = NULL, d = NULL, unique = NULL, shared = NULL, randomize = TRUE,
-                  replacement = TRUE, jitter = TRUE, arm_multiply = TRUE, stabilize = TRUE,
-                  preweighted = FALSE)}}{ generates
-and instantializes a new \code{OfflinePropensityWeightingBandit} instance. }
+                  replacement = TRUE, jitter = TRUE, arm_multiply = TRUE, preweighted = FALSE)}}{
+generates and instantializes a new \code{OfflinePropensityWeightingBandit} instance. }
 
 \item{\code{get_context(t)}}{
 argument:
@@ -109,6 +106,53 @@ individual simulation when self$randomize is TRUE (default)
 }
 }
 
+\examples{
+\dontrun{
+
+library(contextual)
+ibrary(data.table)
+
+# Import myocardial infection dataset
+
+url  <- "http://d1ie9wlkzugsxr.cloudfront.net/data_propensity/myocardial_propensity.csv"
+data            <- fread(url)
+
+simulations     <- 3000
+horizon         <- nrow(data)
+
+# arms always start at 1
+data$trt        <- data$trt + 1
+
+# turn death into alive, making it a reward
+data$alive      <- abs(data$death - 1)
+
+# calculate propensity weights
+
+m      <- glm(I(trt-1) ~ age + risk + severity, data=data, family=binomial(link="logit"))
+data$p <-predict(m, type = "response")
+
+# run bandit - if you leave out p, Propensity Bandit uses marginal prob per arm for propensities:
+# table(private$z)/length(private$z)
+
+f          <- alive ~ trt | age + risk + severity | p
+
+bandit     <- OfflinePropensityWeightingBandit$new(formula = f, data = data)
+
+# Define agents.
+agents      <- list(Agent$new(LinUCBDisjointOptimizedPolicy$new(0.2), bandit, "LinUCB"))
+
+# Initialize the simulation.
+
+simulation  <- Simulator$new(agents = agents, simulations = simulations, horizon = horizon)
+
+# Run the simulation.
+sim  <- simulation$run()
+
+# plot the results
+plot(sim, type = "cumulative", regret = FALSE, rate = TRUE, legend_position = "bottomright")
+
+}
+}
 \references{
 Agarwal, Alekh, et al. "Taming the monster: A fast and simple algorithm for contextual bandits."
 International Conference on Machine Learning. 2014.

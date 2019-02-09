@@ -54,7 +54,7 @@ library(contextual)
 #
 # ------------------------------------------------------------------------------------------------------------
 
-horizon                           <- 50000L
+horizon                           <- 10000L
 simulations                       <- 1L
 
 # Bandit representing Male and Female actual preferences for sports and movies.
@@ -187,8 +187,7 @@ print(paste("Movie:",sum(rb_dt[choice==2]$reward)/nrow(rb_dt[choice==2]))) # 0.6
 f                                 <- formula("reward ~ choice | X.1 + X.2 | propensity")
 
 bandit                            <- OfflinePropensityWeightingBandit$new(formula = f, data = b_dt,
-                                                                          k = 2 , d = 2,
-                                                                          stabilize = TRUE)
+                                                                          k = 2 , d = 2)
 policy                            <- EpsilonGreedyPolicy$new(0.1)
 agent                             <- Agent$new(policy, bandit, "prop")
 
@@ -196,7 +195,7 @@ simulation                        <- Simulator$new(agent, horizon, simulations, 
 history                           <- simulation$run()
 prop_dt                           <- history$get_data_table()
 
-# Happily, (stabilized) inverse propensity scoring can help remove the bias again:
+# Happily, inverse propensity score weighting can help remove the bias again:
 
 print("2c. Offline biased policy evaluation, inverse propensity scores.")
 

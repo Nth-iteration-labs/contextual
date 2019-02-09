@@ -5,54 +5,54 @@ OfflineDoublyRobustBandit <- R6::R6Class(
   private = list(
     r = NULL,
     p = NULL,
-    marginal_prob = NULL
+    p_hat = NULL,
+    n = NULL
   ),
   public = list(
     preweighted = NULL,
-    stabilize = NULL,
     class_name = "OfflineDoublyRobustBandit",
     initialize   = function(formula,
                             data, k = NULL, d = NULL,
                             unique = NULL, shared = NULL,
-                            stabilize = TRUE, preweighted = FALSE,
-                            randomize = TRUE) {
-
+                            preweighted = FALSE, randomize = TRUE) {
+      self$preweighted = preweighted
       super$initialize(formula,
                        data, k, d,
                        unique, shared,
                        randomize, replacement = FALSE,
                        jitter = FALSE, arm_multiply = FALSE)
-
-      self$stabilize = stabilize
-      self$preweighted = preweighted
-
     },
     post_initialization = function() {
       super$post_initialization()
       # modeled reward for each arm at each t
       private$r <-  model.matrix(private$formula, data = private$S, rhs = 3)[,-1]
       private$p <-  Formula::model.part(private$formula, data = private$S, lhs = 0, rhs = 4, drop = TRUE)
-      if (self$stabilize) {
-        private$marginal_prob <- table(private$z)/length(private$z)
-      } else {
-        private$marginal_prob <- rep(1,self$k)
+      if (length(private$p) == 0 || is.null(private$p)) {
+        marginal_prob <- table(private$z)/length(private$z)
+        private$p <- marginal_prob[private$z]
       }
+      private$n     <- 0
+      private$p_hat <- 0
     },
     get_reward = function(index, context, action) {
       choice            <- action$choice
       data_reward       <- private$y[index]
       model_reward      <- private$r[index,choice]
+      p                 <- private$p[index]
       indicator         <- ind(private$z[index] == choice)
-
-      p <- private$p[index]
-      if (self$preweighted) {
-        p <- p * private$marginal_prob[action$choice]
+      if (indicator) {
+        if (self$preweighted) {
+          p <- p
+        } else {
+          p <- (1 / p)
+        }
+        inc(private$n)     <- 1
+        inc(private$p_hat) <- (p - private$p_hat) / private$n
+        prop_reward        <- ((data_reward - model_reward) * p) / private$p_hat
       } else {
-        p <- (1 / p) * private$marginal_prob[action$choice]
+        prop_reward       <- 0
       }
-
-      robust_reward <- indicator * ((data_reward - model_reward) * p) + model_reward
-
+      robust_reward <-  prop_reward + model_reward
       list(
         reward         = as.double(robust_reward),
         optimal_reward = ifelse(private$or, as.double(private$S$optimal_reward[[index]]), NA),
@@ -73,8 +73,7 @@ OfflineDoublyRobustBandit <- R6::R6Class(
 #'   bandit <- OfflineDoublyRobustBandit(formula,
 #'                                       data, k = NULL, d = NULL,
 #'                                       unique = NULL, shared = NULL,
-#'                                       stabilize = TRUE, preweighted = FALSE,
-#'                                       randomize = TRUE)
+#'                                       preweighted = FALSE, randomize = TRUE)
 #' }
 #'
 #' @section Arguments:
@@ -85,6 +84,8 @@ OfflineDoublyRobustBandit <- R6::R6Class(
 #'     Format:
 #'     \code{y.context ~ z.choice | x1.context + x2.xontext + ... | r1.reward + r2.reward ... | p.propensity}
 #'     Here, r1.reward to rk.reward represent regression based precalculated rewards per arm.
+#'     When leaving out p.propensity, Doubly Robust Bandit uses marginal prob per arm for propensities:
+#      table(private$z)/length(private$z).
 #'     Adds an intercept to the context model by default. Exclude the intercept, by adding "0" or "-1" to
 #'     the list of contextual features, as in: \code{y.context ~ z.choice | x1.context + x2.xontext -1}
 #'   }
@@ -115,10 +116,6 @@ OfflineDoublyRobustBandit <- R6::R6Class(
 #'   }
 #'   \item{\code{shared}}{
 #'     integer vector; index of shared features (optional)
-#'   }
-#'   \item{\code{stabilize}}{
-#'     logical; whether or not to stabilize the weights. This involves multiplying each unit's
-#'     weight by the sum of the weights in that unit's treatment group.
 #'   }
 #'   \item{\code{preweighted}}{
 #'     logical; have the propensities been transformed (1/p) or not (p)?
@@ -181,14 +178,14 @@ OfflineDoublyRobustBandit <- R6::R6Class(
 #' \dontrun{
 #'
 #' library(contextual)
-#' library(data.table)
+#' ibrary(data.table)
 #'
-#' # Import personalization data-set
+#' # Import myocardial infection dataset
 #'
 #' url  <- "http://d1ie9wlkzugsxr.cloudfront.net/data_propensity/myocardial_propensity.csv"
 #' data            <- fread(url)
 #'
-#' simulations     <- 100
+#' simulations     <- 300
 #' horizon         <- nrow(data)
 #'
 #' # arms always start at 1
@@ -199,32 +196,29 @@ OfflineDoublyRobustBandit <- R6::R6Class(
 #'
 #' # Run regression per arm, predict outcomes, and save results, a column per arm
 #'
-#' f                <- alive ~ age + male + risk + severity
+#' f                <- alive ~ age + risk + severity
 #'
 #' model_f          <- function(arm) glm(f, data=data[trt==arm],
-#'                                          family=binomial(link="logit"),
-#'                                          y=FALSE, model=FALSE)
+#'                                       family=binomial(link="logit"),
+#'                                       y=FALSE, model=FALSE)
 #' arms             <- sort(unique(data$trt))
 #' model_arms       <- lapply(arms, FUN = model_f)
 #'
 #' predict_arm      <- function(model) predict(model, data, type = "response")
 #' r_data           <- lapply(model_arms, FUN = predict_arm)
 #' r_data           <- do.call(cbind, r_data)
-#' colnames(r_data) <- paste0("R", (1:max(arms)))
+#' colnames(r_data) <- paste0("r", (1:max(arms)))
 #'
 #' # Bind data and model predictions
 #'
 #' data             <- cbind(data,r_data)
 #'
-#' library(WeightIt)
+#' m      <- glm(I(trt-1) ~ age + risk + severity, data=data, family=binomial(link="logit"))
+#' data$p <-predict(m, type = "response")
 #'
-#' wi <- weightit(trt ~ age + male + risk + severity,
-#'                     data = data, estimand = "ATE", method = "ps")
-#' data$P1 <- wi$weights
+#' f          <- alive ~ trt | age + risk + severity | r1 + r2 | p
 #'
-#' f          <- alive ~ trt | age + male + risk + severity | R1 + R2 | P1 # y ~ z | x | r | p
-#'
-#' bandit     <- OfflineDoublyRobustBandit$new(formula = f, data = data, stabilize = TRUE)
+#' bandit     <- OfflineDoublyRobustBandit$new(formula = f, data = data)
 #'
 #' # Define agents.
 #' agents      <- list(Agent$new(LinUCBDisjointOptimizedPolicy$new(0.2), bandit, "LinUCB"),

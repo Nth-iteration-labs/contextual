@@ -5,21 +5,19 @@ OfflinePropensityWeightingBandit <- R6::R6Class(
   class = FALSE,
   private = list(
     p = NULL,
-    marginal_prob = NULL
+    p_hat = NULL,
+    n = NULL
   ),
   public = list(
     class_name = "OfflinePropensityWeightingBandit",
-    stabilize = NULL,
     preweighted = NULL,
     initialize   = function(formula,
                             data, k = NULL, d = NULL,
                             unique = NULL, shared = NULL,
                             randomize = TRUE, replacement = FALSE,
                             jitter = FALSE, arm_multiply = FALSE,
-                            stabilize = TRUE, preweighted = TRUE) {
-
-      self$preweighted <- preweighted # Has the propensity column been preweighted?
-      self$stabilize   <- stabilize   # Whether or not to stabilize the weights.
+                            preweighted = FALSE) {
+      self$preweighted <- preweighted
       super$initialize(formula,
                        data, k, d,
                        unique, shared,
@@ -29,33 +27,25 @@ OfflinePropensityWeightingBandit <- R6::R6Class(
     post_initialization = function() {
       super$post_initialization()
       private$p <-  Formula::model.part(private$formula, data = private$S, lhs = 0, rhs = 3, drop = TRUE)
-      if (self$stabilize) {
-        private$marginal_prob <- table(private$z)/length(private$z)
-      } else {
-        private$marginal_prob <- rep(1,self$k)
+      if (length(private$p) == 0 || is.null(private$p)) {
+        marginal_prob <- table(private$z)/length(private$z)
+        private$p <- marginal_prob[private$z]
       }
-
-    },
-    get_context = function(index) {
-      context <- list(
-        k      = self$k,
-        d      = self$d,
-        unique = self$unique,
-        shared = self$shared,
-        X      = if(isTRUE(self$flat_context)) private$x[index,] else matrix(private$x[index,],self$d,self$k)
-      )
-      context
+      private$n     <- 0
+      private$p_hat <- 0
     },
     get_reward = function(index, context, action) {
-      p <- private$p[index]
-      if (self$preweighted) {
-        p <- p * (private$marginal_prob[action$choice])
-      } else {
-        p <- (1 / p) * (private$marginal_prob[action$choice])
-      }
       if (private$z[[index]] == action$choice) {
+        p <- private$p[index]
+        if (self$preweighted) {
+          p <- p
+        } else {
+          p <- (1 / p)
+        }
+        inc(private$n)     <- 1
+        inc(private$p_hat) <- (p - private$p_hat) / private$n
         list(
-          reward         = as.double(private$y[index]*p),
+          reward         = as.double((private$y[index]*p)/private$p_hat),
           optimal_reward = ifelse(private$or, as.double(private$S$optimal_reward[[index]]), NA),
           optimal_arm    = ifelse(private$oa, as.double(private$S$optimal_arm[[index]]), NA)
         )
@@ -80,7 +70,7 @@ OfflinePropensityWeightingBandit <- R6::R6Class(
 #'                                              unique = NULL, shared = NULL,
 #'                                              randomize = TRUE, replacement = TRUE,
 #'                                              jitter = TRUE, arm_multiply = TRUE,
-#'                                              stabilize = TRUE, preweighted = FALSE)
+#'                                              preweighted = FALSE)
 #' }
 #'
 #' @section Arguments:
@@ -88,6 +78,8 @@ OfflinePropensityWeightingBandit <- R6::R6Class(
 #' \describe{
 #'   \item{\code{formula}}{
 #'     formula (required). Format: \code{y.context ~ z.choice | x1.context + x2.xontext + ... | p.propensity }
+#'     When leaving out p.propensity, Doubly Robust Bandit uses marginal prob per arm for propensities:
+#      table(private$z)/length(private$z).
 #'     By default,  adds an intercept to the context model. Exclude the intercept, by adding "0" or "-1" to
 #'     the list of contextual features, as in:
 #'     \code{y.context ~ z.choice | x1.context + x2.xontext -1 | p.propensity }
@@ -117,9 +109,6 @@ OfflinePropensityWeightingBandit <- R6::R6Class(
 #'   \item{\code{arm_multiply}}{
 #'     logical; multiply the horizon by the number of arms (optional, default: TRUE)
 #'   }
-#'   \item{\code{stabilize}}{
-#'     logical; stabilize the propensity scores (optional, default: TRUE)
-#'   }
 #'   \item{\code{preweighted}}{
 #'     logical; have the propensity scores been weighted (optional, default: FALSE)
 #'   }
@@ -137,9 +126,8 @@ OfflinePropensityWeightingBandit <- R6::R6Class(
 #' \describe{
 #'
 #'   \item{\code{new(formula, data, k = NULL, d = NULL, unique = NULL, shared = NULL, randomize = TRUE,
-#'                   replacement = TRUE, jitter = TRUE, arm_multiply = TRUE, stabilize = TRUE,
-#'                   preweighted = FALSE)}}{ generates
-#'    and instantializes a new \code{OfflinePropensityWeightingBandit} instance. }
+#'                   replacement = TRUE, jitter = TRUE, arm_multiply = TRUE, preweighted = FALSE)}}{
+#'                   generates and instantializes a new \code{OfflinePropensityWeightingBandit} instance. }
 #'
 #'   \item{\code{get_context(t)}}{
 #'      argument:
@@ -185,4 +173,50 @@ OfflinePropensityWeightingBandit <- R6::R6Class(
 #'
 #' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualLinTSPolicy}}
 #'
+#' @examples
+#' \dontrun{
+#'
+#' library(contextual)
+#' ibrary(data.table)
+#'
+#' # Import myocardial infection dataset
+#'
+#' url  <- "http://d1ie9wlkzugsxr.cloudfront.net/data_propensity/myocardial_propensity.csv"
+#' data            <- fread(url)
+#'
+#' simulations     <- 3000
+#' horizon         <- nrow(data)
+#'
+#' # arms always start at 1
+#' data$trt        <- data$trt + 1
+#'
+#' # turn death into alive, making it a reward
+#' data$alive      <- abs(data$death - 1)
+#'
+#' # calculate propensity weights
+#'
+#' m      <- glm(I(trt-1) ~ age + risk + severity, data=data, family=binomial(link="logit"))
+#' data$p <-predict(m, type = "response")
+#'
+#' # run bandit - if you leave out p, Propensity Bandit uses marginal prob per arm for propensities:
+#' # table(private$z)/length(private$z)
+#'
+#' f          <- alive ~ trt | age + risk + severity | p
+#'
+#' bandit     <- OfflinePropensityWeightingBandit$new(formula = f, data = data)
+#'
+#' # Define agents.
+#' agents      <- list(Agent$new(LinUCBDisjointOptimizedPolicy$new(0.2), bandit, "LinUCB"))
+#'
+#' # Initialize the simulation.
+#'
+#' simulation  <- Simulator$new(agents = agents, simulations = simulations, horizon = horizon)
+#'
+#' # Run the simulation.
+#' sim  <- simulation$run()
+#'
+#' # plot the results
+#' plot(sim, type = "cumulative", regret = FALSE, rate = TRUE, legend_position = "bottomright")
+#'
+#' }
 NULL

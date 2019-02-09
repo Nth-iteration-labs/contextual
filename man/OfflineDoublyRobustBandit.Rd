@@ -12,8 +12,7 @@ Bandit for the doubly robust evaluation of policies with offline data.
   bandit <- OfflineDoublyRobustBandit(formula,
                                       data, k = NULL, d = NULL,
                                       unique = NULL, shared = NULL,
-                                      stabilize = TRUE, preweighted = FALSE,
-                                      randomize = TRUE)
+                                      preweighted = FALSE, randomize = TRUE)
 }
 }
 
@@ -26,6 +25,7 @@ formula (required).
 Format:
 \code{y.context ~ z.choice | x1.context + x2.xontext + ... | r1.reward + r2.reward ... | p.propensity}
 Here, r1.reward to rk.reward represent regression based precalculated rewards per arm.
+When leaving out p.propensity, Doubly Robust Bandit uses marginal prob per arm for propensities:
 Adds an intercept to the context model by default. Exclude the intercept, by adding "0" or "-1" to
 the list of contextual features, as in: \code{y.context ~ z.choice | x1.context + x2.xontext -1}
 }
@@ -56,10 +56,6 @@ integer vector; index of disjoint features (optional)
 }
 \item{\code{shared}}{
 integer vector; index of shared features (optional)
-}
-\item{\code{stabilize}}{
-logical; whether or not to stabilize the weights. This involves multiplying each unit's
-weight by the sum of the weights in that unit's treatment group.
 }
 \item{\code{preweighted}}{
 logical; have the propensities been transformed (1/p) or not (p)?
@@ -110,14 +106,14 @@ individual simulation when self$randomize is TRUE (default)
 \dontrun{
 
 library(contextual)
-library(data.table)
+ibrary(data.table)
 
-# Import personalization data-set
+# Import myocardial infection dataset
 
 url  <- "http://d1ie9wlkzugsxr.cloudfront.net/data_propensity/myocardial_propensity.csv"
 data            <- fread(url)
 
-simulations     <- 100
+simulations     <- 300
 horizon         <- nrow(data)
 
 # arms always start at 1
@@ -128,32 +124,29 @@ data$alive      <- abs(data$death - 1)
 
 # Run regression per arm, predict outcomes, and save results, a column per arm
 
-f                <- alive ~ age + male + risk + severity
+f                <- alive ~ age + risk + severity
 
 model_f          <- function(arm) glm(f, data=data[trt==arm],
-                                         family=binomial(link="logit"),
-                                         y=FALSE, model=FALSE)
+                                      family=binomial(link="logit"),
+                                      y=FALSE, model=FALSE)
 arms             <- sort(unique(data$trt))
 model_arms       <- lapply(arms, FUN = model_f)
 
 predict_arm      <- function(model) predict(model, data, type = "response")
 r_data           <- lapply(model_arms, FUN = predict_arm)
 r_data           <- do.call(cbind, r_data)
-colnames(r_data) <- paste0("R", (1:max(arms)))
+colnames(r_data) <- paste0("r", (1:max(arms)))
 
 # Bind data and model predictions
 
 data             <- cbind(data,r_data)
 
-library(WeightIt)
+m      <- glm(I(trt-1) ~ age + risk + severity, data=data, family=binomial(link="logit"))
+data$p <-predict(m, type = "response")
 
-wi <- weightit(trt ~ age + male + risk + severity,
-                    data = data, estimand = "ATE", method = "ps")
-data$P1 <- wi$weights
+f          <- alive ~ trt | age + risk + severity | r1 + r2 | p
 
-f          <- alive ~ trt | age + male + risk + severity | R1 + R2 | P1 # y ~ z | x | r | p
-
-bandit     <- OfflineDoublyRobustBandit$new(formula = f, data = data, stabilize = TRUE)
+bandit     <- OfflineDoublyRobustBandit$new(formula = f, data = data)
 
 # Define agents.
 agents      <- list(Agent$new(LinUCBDisjointOptimizedPolicy$new(0.2), bandit, "LinUCB"),

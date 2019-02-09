@@ -178,8 +178,7 @@
   bandit &lt;- OfflineDoublyRobustBandit(formula,
                                       data, k = NULL, d = NULL,
                                       unique = NULL, shared = NULL,
-                                      stabilize = TRUE, preweighted = FALSE,
-                                      randomize = TRUE)
+                                      preweighted = FALSE, randomize = TRUE)
 </pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -190,6 +189,7 @@
 Format:
 <code>y.context ~ z.choice | x1.context + x2.xontext + ... | r1.reward + r2.reward ... | p.propensity</code>
 Here, r1.reward to rk.reward represent regression based precalculated rewards per arm.
+When leaving out p.propensity, Doubly Robust Bandit uses marginal prob per arm for propensities:
 Adds an intercept to the context model by default. Exclude the intercept, by adding "0" or "-1" to
 the list of contextual features, as in: <code>y.context ~ z.choice | x1.context + x2.xontext -1</code></p></dd>
 <dt><code>data</code></dt><dd><p>data.table or data.frame; offline data source (required)</p></dd>
@@ -204,8 +204,6 @@ to define custom intercept(s) when and where needed in data.table or data.frame.
 <dt><code>replacement</code></dt><dd><p>logical; add jitter to contextual features (optional, default: FALSE)</p></dd>
 <dt><code>unique</code></dt><dd><p>integer vector; index of disjoint features (optional)</p></dd>
 <dt><code>shared</code></dt><dd><p>integer vector; index of shared features (optional)</p></dd>
-<dt><code>stabilize</code></dt><dd><p>logical; whether or not to stabilize the weights. This involves multiplying each unit's
-weight by the sum of the weights in that unit's treatment group.</p></dd>
 <dt><code>preweighted</code></dt><dd><p>logical; have the propensities been transformed (1/p) or not (p)?</p></dd>
     </dl>
     
@@ -252,14 +250,14 @@ International Conference on Machine Learning. 2014.</p>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='co'># NOT RUN {</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>contextual</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>data.table</span>)
+<span class='fu'>ibrary</span>(<span class='no'>data.table</span>)
 
-<span class='co'># Import personalization data-set</span>
+<span class='co'># Import myocardial infection dataset</span>
 
 <span class='no'>url</span>  <span class='kw'>&lt;-</span> <span class='st'>"http://d1ie9wlkzugsxr.cloudfront.net/data_propensity/myocardial_propensity.csv"</span>
-<span class='no'>data</span>            <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/data.table/topics/fread'>fread</a></span>(<span class='no'>url</span>)
+<span class='no'>data</span>            <span class='kw'>&lt;-</span> <span class='fu'>fread</span>(<span class='no'>url</span>)
 
-<span class='no'>simulations</span>     <span class='kw'>&lt;-</span> <span class='fl'>100</span>
+<span class='no'>simulations</span>     <span class='kw'>&lt;-</span> <span class='fl'>300</span>
 <span class='no'>horizon</span>         <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/nrow'>nrow</a></span>(<span class='no'>data</span>)
 
 <span class='co'># arms always start at 1</span>
@@ -270,32 +268,29 @@ International Conference on Machine Learning. 2014.</p>
 
 <span class='co'># Run regression per arm, predict outcomes, and save results, a column per arm</span>
 
-<span class='no'>f</span>                <span class='kw'>&lt;-</span> <span class='no'>alive</span> ~ <span class='no'>age</span> + <span class='no'>male</span> + <span class='no'>risk</span> + <span class='no'>severity</span>
+<span class='no'>f</span>                <span class='kw'>&lt;-</span> <span class='no'>alive</span> ~ <span class='no'>age</span> + <span class='no'>risk</span> + <span class='no'>severity</span>
 
 <span class='no'>model_f</span>          <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>arm</span>) <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/glm'>glm</a></span>(<span class='no'>f</span>, <span class='kw'>data</span><span class='kw'>=</span><span class='no'>data</span>[<span class='no'>trt</span><span class='kw'>==</span><span class='no'>arm</span>],
-                                         <span class='kw'>family</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/family'>binomial</a></span>(<span class='kw'>link</span><span class='kw'>=</span><span class='st'>"logit"</span>),
-                                         <span class='kw'>y</span><span class='kw'>=</span><span class='fl'>FALSE</span>, <span class='kw'>model</span><span class='kw'>=</span><span class='fl'>FALSE</span>)
-<span class='no'>arms</span>             <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sort'>sort</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/data.table/topics/duplicated'>unique</a></span>(<span class='no'>data</span>$<span class='no'>trt</span>))
+                                      <span class='kw'>family</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/family'>binomial</a></span>(<span class='kw'>link</span><span class='kw'>=</span><span class='st'>"logit"</span>),
+                                      <span class='kw'>y</span><span class='kw'>=</span><span class='fl'>FALSE</span>, <span class='kw'>model</span><span class='kw'>=</span><span class='fl'>FALSE</span>)
+<span class='no'>arms</span>             <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/sort'>sort</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/unique'>unique</a></span>(<span class='no'>data</span>$<span class='no'>trt</span>))
 <span class='no'>model_arms</span>       <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/lapply'>lapply</a></span>(<span class='no'>arms</span>, <span class='kw'>FUN</span> <span class='kw'>=</span> <span class='no'>model_f</span>)
 
 <span class='no'>predict_arm</span>      <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>model</span>) <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/predict'>predict</a></span>(<span class='no'>model</span>, <span class='no'>data</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"response"</span>)
 <span class='no'>r_data</span>           <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/lapply'>lapply</a></span>(<span class='no'>model_arms</span>, <span class='kw'>FUN</span> <span class='kw'>=</span> <span class='no'>predict_arm</span>)
 <span class='no'>r_data</span>           <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/do.call'>do.call</a></span>(<span class='no'>cbind</span>, <span class='no'>r_data</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/colnames'>colnames</a></span>(<span class='no'>r_data</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/paste'>paste0</a></span>(<span class='st'>"R"</span>, (<span class='fl'>1</span>:<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Extremes'>max</a></span>(<span class='no'>arms</span>)))
+<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/colnames'>colnames</a></span>(<span class='no'>r_data</span>) <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/paste'>paste0</a></span>(<span class='st'>"r"</span>, (<span class='fl'>1</span>:<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Extremes'>max</a></span>(<span class='no'>arms</span>)))
 
 <span class='co'># Bind data and model predictions</span>
 
 <span class='no'>data</span>             <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/cbind'>cbind</a></span>(<span class='no'>data</span>,<span class='no'>r_data</span>)
 
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/library'>library</a></span>(<span class='no'>WeightIt</span>)
+<span class='no'>m</span>      <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/glm'>glm</a></span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/AsIs'>I</a></span>(<span class='no'>trt</span>-<span class='fl'>1</span>) ~ <span class='no'>age</span> + <span class='no'>risk</span> + <span class='no'>severity</span>, <span class='kw'>data</span><span class='kw'>=</span><span class='no'>data</span>, <span class='kw'>family</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/family'>binomial</a></span>(<span class='kw'>link</span><span class='kw'>=</span><span class='st'>"logit"</span>))
+<span class='no'>data</span>$<span class='no'>p</span> <span class='kw'>&lt;-</span><span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/predict'>predict</a></span>(<span class='no'>m</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"response"</span>)
 
-<span class='no'>wi</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/WeightIt/topics/weightit'>weightit</a></span>(<span class='no'>trt</span> ~ <span class='no'>age</span> + <span class='no'>male</span> + <span class='no'>risk</span> + <span class='no'>severity</span>,
-                    <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>data</span>, <span class='kw'>estimand</span> <span class='kw'>=</span> <span class='st'>"ATE"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"ps"</span>)
-<span class='no'>data</span>$<span class='no'>P1</span> <span class='kw'>&lt;-</span> <span class='no'>wi</span>$<span class='no'>weights</span>
+<span class='no'>f</span>          <span class='kw'>&lt;-</span> <span class='no'>alive</span> ~ <span class='no'>trt</span> <span class='kw'>|</span> <span class='no'>age</span> + <span class='no'>risk</span> + <span class='no'>severity</span> <span class='kw'>|</span> <span class='no'>r1</span> + <span class='no'>r2</span> <span class='kw'>|</span> <span class='no'>p</span>
 
-<span class='no'>f</span>          <span class='kw'>&lt;-</span> <span class='no'>alive</span> ~ <span class='no'>trt</span> <span class='kw'>|</span> <span class='no'>age</span> + <span class='no'>male</span> + <span class='no'>risk</span> + <span class='no'>severity</span> <span class='kw'>|</span> <span class='no'>R1</span> + <span class='no'>R2</span> <span class='kw'>|</span> <span class='no'>P1</span> <span class='co'># y ~ z | x | r | p</span>
-
-<span class='no'>bandit</span>     <span class='kw'>&lt;-</span> <span class='no'>OfflineDoublyRobustBandit</span>$<span class='fu'>new</span>(<span class='kw'>formula</span> <span class='kw'>=</span> <span class='no'>f</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>data</span>, <span class='kw'>stabilize</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='no'>bandit</span>     <span class='kw'>&lt;-</span> <span class='no'>OfflineDoublyRobustBandit</span>$<span class='fu'>new</span>(<span class='kw'>formula</span> <span class='kw'>=</span> <span class='no'>f</span>, <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>data</span>)
 
 <span class='co'># Define agents.</span>
 <span class='no'>agents</span>      <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>LinUCBDisjointOptimizedPolicy</span>$<span class='fu'>new</span>(<span class='fl'>0.2</span>), <span class='no'>bandit</span>, <span class='st'>"LinUCB"</span>),

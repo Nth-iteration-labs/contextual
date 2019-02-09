@@ -243,13 +243,12 @@ The bias has propagated itself! So, does that mean it is not possible to use the
  
 ## Repairing the biased policy's logged data with inverse probability weights
 
-Luckily, [inverse probability of treatment weighting](https://stats.stackexchange.com/questions/273367/intuitive-explanation-for-inverse-probability-of-treatment-weights-iptws-in-pr) (IPTW) enables us to use propensity scores to obtain unbiased estimates of the original preferences of Male and Female visitors. That is, since our biased policy actually saved the propensity ("the probability of a unit being assigned to a particular treatment or category") with which a certain category was chosen, we can correct for this bias while "replaying" the data. In "contextual", there are several types of offline bandits that are able to use either such presaved propensities, or estimate propensities based on certain properties of the dataset. Here, we use its basic "[OfflinePropensityWeightingBandit](https://github.com/Nth-iteration-labs/contextual/blob/master/R/bandit_offline_propensity_weighting.R)":
+Luckily, inverse propensity score weighting enables us to use propensity scores to obtain unbiased estimates of the original preferences of Male and Female visitors. That is, since our biased policy actually saved the propensity ("the probability of a unit being assigned to a particular treatment or category") with which a certain category was chosen, we can correct for this bias while "replaying" the data. In "contextual", there are several types of offline bandits that are able to use either such presaved propensities, or estimate propensities based on certain properties of the dataset. Here, we use its basic "[OfflinePropensityWeightingBandit](https://github.com/Nth-iteration-labs/contextual/blob/master/R/bandit_offline_propensity_weighting.R)":
 
 ```r
 f                                 <- formula("reward ~ choice | X.1 + X.2 | propensity")
 bandit                            <- OfflinePropensityWeightingBandit$new(formula = f, data = b_dt,
-                                                                          k = 2 , d = 2,
-                                                                          stabilize = TRUE)
+                                                                          k = 2 , d = 2)
 policy                            <- EpsilonGreedyPolicy$new(0.1)
 agent                             <- Agent$new(policy, bandit, "prop")
  
@@ -274,4 +273,4 @@ print(paste("Movie:",sum(prop_dt[choice==2]$reward)/nrow(prop_dt[choice==2])))
 [1] "Movie: 0.496500591177808" # 0.5 CTR Movie, again, representing actual preferences..
 ```
 
-Hurray - stabilized inverse propensity scoring has removed the bias! In other words: if and where possible, save propensity scores to your log files when experimenting with online policies. You will thank yourself at a later time!
+Hurray - inverse propensity scoring has removed the bias! In other words: if and where possible, save propensity scores to your log files when experimenting with online policies. You will thank yourself at a later time!
