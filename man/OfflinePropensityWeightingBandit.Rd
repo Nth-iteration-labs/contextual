@@ -14,7 +14,7 @@ Policy for the evaluation of policies with offline data through replay with prop
                                              unique = NULL, shared = NULL,
                                              randomize = TRUE, replacement = TRUE,
                                              jitter = TRUE, arm_multiply = TRUE,
-                                             preweighted = FALSE)
+                                             inverted = FALSE)
 }
 }
 
@@ -54,7 +54,7 @@ logical; add jitter to contextual features (optional, default: TRUE)
 \item{\code{arm_multiply}}{
 logical; multiply the horizon by the number of arms (optional, default: TRUE)
 }
-\item{\code{preweighted}}{
+\item{\code{inverted}}{
 logical; have the propensity scores been weighted (optional, default: FALSE)
 }
 \item{\code{unique}}{
@@ -73,7 +73,7 @@ integer vector; index of shared features (optional)
 \describe{
 
 \item{\code{new(formula, data, k = NULL, d = NULL, unique = NULL, shared = NULL, randomize = TRUE,
-                  replacement = TRUE, jitter = TRUE, arm_multiply = TRUE, preweighted = FALSE)}}{
+                  replacement = TRUE, jitter = TRUE, arm_multiply = TRUE, inverted = FALSE)}}{
 generates and instantializes a new \code{OfflinePropensityWeightingBandit} instance. }
 
 \item{\code{get_context(t)}}{

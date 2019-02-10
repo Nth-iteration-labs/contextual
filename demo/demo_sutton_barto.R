@@ -17,11 +17,8 @@ bandit          <- BasicGaussianBandit$new(mu_per_arm = mus, sigma_per_arm = sig
 
 # Install ggplot2 and ggnormalviolin libraries to generate Figure 2.1
 
-install.packages("ggplot2")
-devtools::install_github("wjschne/ggnormalviolin")
-
-library(ggplot2)
-library(ggnormalviolin)
+if(!require(ggplot2)) install.packages("ggplot2")
+if(!require(ggnormalviolin)) devtools::install_github("wjschne/ggnormalviolin")
 
 print(ggplot(data = data.frame(dist_mean = mus, dist_sd = sigmas, dist = factor((1:10))), aes(x = dist,
              mu = dist_mean, sigma = dist_sd)) + ylab("Reward distribution") + geom_normalviolin() +

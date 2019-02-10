@@ -124,7 +124,7 @@
       <h1>Demo: Bandits, Propensity Weighting &amp; Simpson’s Paradox in R</h1>
                         <h4 class="author">Robin van Emden</h4>
             
-            <h4 class="date">2019-02-09</h4>
+            <h4 class="date">2019-02-10</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Nth-iteration-labs/contextual/blob/master/vignettes/simpsons.Rmd"><code>vignettes/simpsons.Rmd</code></a></small>
       <div class="hidden name"><code>simpsons.Rmd</code></div>
@@ -350,7 +350,7 @@
 <a class="sourceLine" id="cb10-23" title="23"></a>
 <a class="sourceLine" id="cb10-24" title="24"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste</a></span>(<span class="st">"Movie:"</span>,<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sum">sum</a></span>(prop_dt[choice<span class="op">==</span><span class="dv">2</span>]<span class="op">$</span>reward)<span class="op">/</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(prop_dt[choice<span class="op">==</span><span class="dv">2</span>]))) </a>
 <a class="sourceLine" id="cb10-25" title="25">[<span class="dv">1</span>] <span class="st">"Movie: 0.496500591177808"</span> <span class="co"># 0.5 CTR Movie, again, representing actual preferences..</span></a></code></pre></div>
-<p>Hurray - inverse propensity scoring has removed the bias! In other words: if and where possible, save propensity scores to your log files when experimenting with online policies. You will thank yourself at a later time!</p>
+<p>Hurray - inverse propensity score weighting has removed the bias! In other words: if and where possible, save propensity scores to your log files when experimenting with online policies. You will thank yourself at a later time!</p>
 </div>
   </div>
 

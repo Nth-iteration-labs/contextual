@@ -43,8 +43,8 @@ Install ggplot2 and ggnormalviolin libraries to be able to generate Figure 2.1.
 
 ```r
 
-install.packages("ggplot2")
-devtools::install_github("wjschne/ggnormalviolin")
+if(!require(ggplot2)) install.packages("ggplot2")
+if(!require(ggnormalviolin)) devtools::install_github("wjschne/ggnormalviolin")
 
 library(ggplot2)
 library(ggnormalviolin)

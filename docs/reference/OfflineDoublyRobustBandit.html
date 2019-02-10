@@ -178,7 +178,7 @@
   bandit &lt;- OfflineDoublyRobustBandit(formula,
                                       data, k = NULL, d = NULL,
                                       unique = NULL, shared = NULL,
-                                      preweighted = FALSE, randomize = TRUE)
+                                      inverted = FALSE, randomize = TRUE)
 </pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -204,7 +204,7 @@ to define custom intercept(s) when and where needed in data.table or data.frame.
 <dt><code>replacement</code></dt><dd><p>logical; add jitter to contextual features (optional, default: FALSE)</p></dd>
 <dt><code>unique</code></dt><dd><p>integer vector; index of disjoint features (optional)</p></dd>
 <dt><code>shared</code></dt><dd><p>integer vector; index of shared features (optional)</p></dd>
-<dt><code>preweighted</code></dt><dd><p>logical; have the propensities been transformed (1/p) or not (p)?</p></dd>
+<dt><code>inverted</code></dt><dd><p>logical; have the propensities been inverted (1/p) or not (p)?</p></dd>
     </dl>
     
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>

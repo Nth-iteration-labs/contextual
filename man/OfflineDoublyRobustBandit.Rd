@@ -12,7 +12,7 @@ Bandit for the doubly robust evaluation of policies with offline data.
   bandit <- OfflineDoublyRobustBandit(formula,
                                       data, k = NULL, d = NULL,
                                       unique = NULL, shared = NULL,
-                                      preweighted = FALSE, randomize = TRUE)
+                                      inverted = FALSE, randomize = TRUE)
 }
 }
 
@@ -57,8 +57,8 @@ integer vector; index of disjoint features (optional)
 \item{\code{shared}}{
 integer vector; index of shared features (optional)
 }
-\item{\code{preweighted}}{
-logical; have the propensities been transformed (1/p) or not (p)?
+\item{\code{inverted}}{
+logical; have the propensities been inverted (1/p) or not (p)?
 }
 
 }

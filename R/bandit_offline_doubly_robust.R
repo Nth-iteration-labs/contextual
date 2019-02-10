@@ -9,13 +9,13 @@ OfflineDoublyRobustBandit <- R6::R6Class(
     n = NULL
   ),
   public = list(
-    preweighted = NULL,
+    inverted = NULL,
     class_name = "OfflineDoublyRobustBandit",
     initialize   = function(formula,
                             data, k = NULL, d = NULL,
                             unique = NULL, shared = NULL,
-                            preweighted = FALSE, randomize = TRUE) {
-      self$preweighted = preweighted
+                            inverted = FALSE, randomize = TRUE) {
+      self$inverted = inverted
       super$initialize(formula,
                        data, k, d,
                        unique, shared,
@@ -41,7 +41,7 @@ OfflineDoublyRobustBandit <- R6::R6Class(
       p                 <- private$p[index]
       indicator         <- ind(private$z[index] == choice)
       if (indicator) {
-        if (self$preweighted) {
+        if (self$inverted) {
           p <- p
         } else {
           p <- (1 / p)
@@ -73,7 +73,7 @@ OfflineDoublyRobustBandit <- R6::R6Class(
 #'   bandit <- OfflineDoublyRobustBandit(formula,
 #'                                       data, k = NULL, d = NULL,
 #'                                       unique = NULL, shared = NULL,
-#'                                       preweighted = FALSE, randomize = TRUE)
+#'                                       inverted = FALSE, randomize = TRUE)
 #' }
 #'
 #' @section Arguments:
@@ -117,8 +117,8 @@ OfflineDoublyRobustBandit <- R6::R6Class(
 #'   \item{\code{shared}}{
 #'     integer vector; index of shared features (optional)
 #'   }
-#'   \item{\code{preweighted}}{
-#'     logical; have the propensities been transformed (1/p) or not (p)?
+#'   \item{\code{inverted}}{
+#'     logical; have the propensities been inverted (1/p) or not (p)?
 #'   }
 #'
 #' }

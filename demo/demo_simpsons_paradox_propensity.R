@@ -203,3 +203,35 @@ print(paste("Sport:",sum(prop_dt[choice==1]$reward)/nrow(prop_dt[choice==1]))) #
 print(paste("Movie:",sum(prop_dt[choice==2]$reward)/nrow(prop_dt[choice==2]))) # 0.5 CTR Movie again, yay!
 
 
+# ------------------------------------------------------------------------------------------------------------
+# ----------------------------------   Biased policy repaired with estimated prop  ---------------------------
+# ------------------------------------------------------------------------------------------------------------
+
+if(!require(twang)) install.packages("twang")
+
+b_dt$choice                       <- b_dt$choice - 1
+ip                                <- ps(choice  ~ X.1 + X.2, data = as.data.frame(b_dt), n.trees = 2000,
+                                        stop.method = "es.mean", verbose=FALSE)
+b_dt$choice                       <- b_dt$choice + 1
+weights                           <- get.weights(ip, stop.method = "es.mean")  # already inverted
+b_dt$p                            <- weights
+
+f                                 <- formula("reward ~ choice | X.1 + X.2 | p")
+
+bandit                            <- OfflinePropensityWeightingBandit$new(formula = f, data = b_dt,
+                                                                          k = 2 , d = 2, inverted = TRUE)
+policy                            <- EpsilonGreedyPolicy$new(0.1)
+agent                             <- Agent$new(policy, bandit, "prop")
+
+simulation                        <- Simulator$new(agent, horizon, simulations, do_parallel = FALSE)
+history                           <- simulation$run()
+prop_dt                           <- history$get_data_table()
+
+# When no saved propensity scores, estimated propensity scores can also help remove bias:
+
+print("2c. Offline biased policy evaluation, inverse propensity scores.")
+
+print(paste("Sport:",sum(prop_dt[choice==1]$reward)/nrow(prop_dt[choice==1]))) # 0.6 CTR Sport again, yay!
+print(paste("Movie:",sum(prop_dt[choice==2]$reward)/nrow(prop_dt[choice==2]))) # 0.5 CTR Movie again, yay!
+
+

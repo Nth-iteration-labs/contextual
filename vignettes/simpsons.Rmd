@@ -273,4 +273,10 @@ print(paste("Movie:",sum(prop_dt[choice==2]$reward)/nrow(prop_dt[choice==2])))
 [1] "Movie: 0.496500591177808" # 0.5 CTR Movie, again, representing actual preferences..
 ```
 
-Hurray - inverse propensity scoring has removed the bias! In other words: if and where possible, save propensity scores to your log files when experimenting with online policies. You will thank yourself at a later time!
+Hurray - inverse propensity score weighting has removed the bias! In other words: if and where possible, 
+save propensity scores to your log files when experimenting with online policies. 
+You will thank yourself at a later time!
+
+
+
+

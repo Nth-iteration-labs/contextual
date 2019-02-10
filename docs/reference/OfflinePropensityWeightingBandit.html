@@ -180,7 +180,7 @@
                                              unique = NULL, shared = NULL,
                                              randomize = TRUE, replacement = TRUE,
                                              jitter = TRUE, arm_multiply = TRUE,
-                                             preweighted = FALSE)
+                                             inverted = FALSE)
 </pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -203,7 +203,7 @@ to define custom intercept(s) when and where needed in data.table or data.frame.
 <dt><code>replacement</code></dt><dd><p>logical; sample with replacement (optional, default: TRUE)</p></dd>
 <dt><code>replacement</code></dt><dd><p>logical; add jitter to contextual features (optional, default: TRUE)</p></dd>
 <dt><code>arm_multiply</code></dt><dd><p>logical; multiply the horizon by the number of arms (optional, default: TRUE)</p></dd>
-<dt><code>preweighted</code></dt><dd><p>logical; have the propensity scores been weighted (optional, default: FALSE)</p></dd>
+<dt><code>inverted</code></dt><dd><p>logical; have the propensity scores been weighted (optional, default: FALSE)</p></dd>
 <dt><code>unique</code></dt><dd><p>integer vector; index of disjoint features (optional)</p></dd>
 <dt><code>shared</code></dt><dd><p>integer vector; index of shared features (optional)</p></dd>
     </dl>
@@ -213,7 +213,7 @@ to define custom intercept(s) when and where needed in data.table or data.frame.
     
     <dl class='dl-horizontal'>
     <dt><code>new(formula, data, k = NULL, d = NULL, unique = NULL, shared = NULL, randomize = TRUE,
-                  replacement = TRUE, jitter = TRUE, arm_multiply = TRUE, preweighted = FALSE)</code></dt><dd><p>generates and instantializes a new <code>OfflinePropensityWeightingBandit</code> instance.</p></dd>
+                  replacement = TRUE, jitter = TRUE, arm_multiply = TRUE, inverted = FALSE)</code></dt><dd><p>generates and instantializes a new <code>OfflinePropensityWeightingBandit</code> instance.</p></dd>
     <dt><code><a href='Bandit.html'>get_context(t)</a></code></dt><dd><p>argument:
 <ul>
 <li><p><code>t</code>: integer, time step <code>t</code>.</p></li>

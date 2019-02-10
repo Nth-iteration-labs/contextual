@@ -10,14 +10,14 @@ OfflinePropensityWeightingBandit <- R6::R6Class(
   ),
   public = list(
     class_name = "OfflinePropensityWeightingBandit",
-    preweighted = NULL,
+    inverted = NULL,
     initialize   = function(formula,
                             data, k = NULL, d = NULL,
                             unique = NULL, shared = NULL,
                             randomize = TRUE, replacement = FALSE,
                             jitter = FALSE, arm_multiply = FALSE,
-                            preweighted = FALSE) {
-      self$preweighted <- preweighted
+                            inverted = FALSE) {
+      self$inverted <- inverted
       super$initialize(formula,
                        data, k, d,
                        unique, shared,
@@ -37,7 +37,7 @@ OfflinePropensityWeightingBandit <- R6::R6Class(
     get_reward = function(index, context, action) {
       if (private$z[[index]] == action$choice) {
         p <- private$p[index]
-        if (self$preweighted) {
+        if (self$inverted) {
           p <- p
         } else {
           p <- (1 / p)
@@ -70,7 +70,7 @@ OfflinePropensityWeightingBandit <- R6::R6Class(
 #'                                              unique = NULL, shared = NULL,
 #'                                              randomize = TRUE, replacement = TRUE,
 #'                                              jitter = TRUE, arm_multiply = TRUE,
-#'                                              preweighted = FALSE)
+#'                                              inverted = FALSE)
 #' }
 #'
 #' @section Arguments:
@@ -109,7 +109,7 @@ OfflinePropensityWeightingBandit <- R6::R6Class(
 #'   \item{\code{arm_multiply}}{
 #'     logical; multiply the horizon by the number of arms (optional, default: TRUE)
 #'   }
-#'   \item{\code{preweighted}}{
+#'   \item{\code{inverted}}{
 #'     logical; have the propensity scores been weighted (optional, default: FALSE)
 #'   }
 #'   \item{\code{unique}}{
@@ -126,7 +126,7 @@ OfflinePropensityWeightingBandit <- R6::R6Class(
 #' \describe{
 #'
 #'   \item{\code{new(formula, data, k = NULL, d = NULL, unique = NULL, shared = NULL, randomize = TRUE,
-#'                   replacement = TRUE, jitter = TRUE, arm_multiply = TRUE, preweighted = FALSE)}}{
+#'                   replacement = TRUE, jitter = TRUE, arm_multiply = TRUE, inverted = FALSE)}}{
 #'                   generates and instantializes a new \code{OfflinePropensityWeightingBandit} instance. }
 #'
 #'   \item{\code{get_context(t)}}{
