@@ -161,7 +161,7 @@
 <a class="sourceLine" id="cb2-9" title="9">             <span class="kw">aes</span>(<span class="dt">x =</span> dist, <span class="dt">mu =</span> dist_mean, <span class="dt">sigma =</span> dist_sd)) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">"Reward distribution"</span>) <span class="op">+</span></a>
 <a class="sourceLine" id="cb2-10" title="10"><span class="st">             </span><span class="kw">geom_normalviolin</span>() <span class="op">+</span><span class="st"> </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">"none"</span>) <span class="op">+</span><span class="st"> </span></a>
 <a class="sourceLine" id="cb2-11" title="11"><span class="st">             </span><span class="kw">xlab</span>(<span class="st">"Action"</span>) <span class="op">+</span><span class="st"> </span><span class="kw">geom_hline</span>(<span class="kw">aes</span>(<span class="dt">yintercept =</span> <span class="dv">0</span>)))</a></code></pre></div>
-<p><img src="sutton_violin.jpeg"></p>
+<p><img src="sutton_violin.jpg"></p>
 </div>
 <div id="the-epsilon-greedy-plot" class="section level2">
 <h2 class="hasAnchor">
@@ -176,7 +176,7 @@
 <a class="sourceLine" id="cb3-8" title="8"></a>
 <a class="sourceLine" id="cb3-9" title="9"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"average"</span>, <span class="dt">regret =</span> <span class="ot">FALSE</span>, <span class="dt">lwd =</span> <span class="dv">1</span>, <span class="dt">legend_position =</span> <span class="st">"bottomright"</span>)</a>
 <a class="sourceLine" id="cb3-10" title="10"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"optimal"</span>, <span class="dt">lwd =</span> <span class="dv">1</span>, <span class="dt">legend_position =</span> <span class="st">"bottomright"</span>)</a></code></pre></div>
-<p><img src="sutton_eg_1.jpeg"><img src="sutton_eg_2.jpeg"></p>
+<p><img src="sutton_eg_1.jpg"><img src="sutton_eg_2.jpg"></p>
 </div>
 </div>
 <div id="optimistic-values" class="section level1">
@@ -196,7 +196,7 @@
 <a class="sourceLine" id="cb4-12" title="12">history         &lt;-<span class="st"> </span>simulator<span class="op">$</span><span class="kw"><a href="../reference/Simulator.html">run</a></span>()</a>
 <a class="sourceLine" id="cb4-13" title="13"></a>
 <a class="sourceLine" id="cb4-14" title="14"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"optimal"</span>, <span class="dt">lwd =</span> <span class="dv">1</span>, <span class="dt">legend_position =</span> <span class="st">"bottomright"</span>)</a></code></pre></div>
-<p><img src="sutton_optimistic.jpeg"></p>
+<p><img src="sutton_optimistic.jpg"></p>
 </div>
 <div id="upper-confidence-bound-action-selection" class="section level1">
 <h1 class="hasAnchor">
@@ -209,7 +209,7 @@
 <a class="sourceLine" id="cb5-6" title="6">history         &lt;-<span class="st"> </span>simulator<span class="op">$</span><span class="kw"><a href="../reference/Simulator.html">run</a></span>()</a>
 <a class="sourceLine" id="cb5-7" title="7"></a>
 <a class="sourceLine" id="cb5-8" title="8"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"average"</span>, <span class="dt">regret =</span> <span class="ot">FALSE</span>, <span class="dt">lwd =</span> <span class="dv">1</span>, <span class="dt">legend_position =</span> <span class="st">"bottomright"</span>)</a></code></pre></div>
-<p><img src="sutton_ucb.jpeg"></p>
+<p><img src="sutton_ucb.jpg"></p>
 </div>
 <div id="gradient-bandit-algorithms" class="section level1">
 <h1 class="hasAnchor">
@@ -234,7 +234,7 @@
 <a class="sourceLine" id="cb6-18" title="18"></a>
 <a class="sourceLine" id="cb6-19" title="19"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"optimal"</span>, <span class="dt">lwd =</span> <span class="dv">1</span>, <span class="dt">legend_position =</span> <span class="st">"bottomright"</span>,</a>
 <a class="sourceLine" id="cb6-20" title="20">     <span class="dt">color_step =</span> <span class="dv">2</span>, <span class="dt">lty_step =</span> <span class="dv">2</span>)</a></code></pre></div>
-<p><img src="sutton_gradient.jpeg"></p>
+<p><img src="sutton_gradient.jpg"></p>
 </div>
   </div>
 

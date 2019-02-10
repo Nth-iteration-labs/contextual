@@ -48,4 +48,4 @@ plot(simulator$history, log = "x")
 
 ```
 
-![](eckles_kaptein_1.png)
+![](eckles_kaptein_1.jpg)

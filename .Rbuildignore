@@ -1,3 +1,5 @@
+^Meta$
+^doc$
 ^demo/working_directory$
 ^demo/working_directory.*
 contextual.Rproj

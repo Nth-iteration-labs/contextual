@@ -39,4 +39,4 @@ history            <- simulation$run()
 plot(history, type = "cumulative")
 ```
 
-![](mabs.jpeg)
+![](mabs.jpg)

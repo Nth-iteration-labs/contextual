@@ -140,7 +140,7 @@
 <a href="#discrepancies-with-the-book" class="anchor"></a>Discrepancies with the book</h1>
 <p>The code used in the book always chooses the arm with the first index when all arms are equal. Contextual’s policies correctly pick one of the max arms. That’s why the plots below are slightly different from the book - they are correct, though.</p>
 <p>An example of Figure 4-3 when running a simulation with an uncorrected policy (conform to the book):</p>
-<p><img src="eg_incorrect.jpeg"></p>
+<p><img src="eg_incorrect.jpg"></p>
 <p>Compare to the (corrected) plot below.</p>
 </div>
 <div id="chapter-4---debugging-and-epsilon-greedy" class="section level1">
@@ -164,19 +164,19 @@
 <h2 class="hasAnchor">
 <a href="#figure-4-2--how-often-does-the-epsilon-greedy-algorithm-select-the-best-arm" class="anchor"></a>Figure 4-2. How often does the epsilon greedy algorithm select the best arm?</h2>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"optimal"</span>, <span class="dt">legend_position =</span> <span class="st">"bottomright"</span>, <span class="dt">ylim =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>,<span class="dv">1</span>))</a></code></pre></div>
-<p><img src="eg_optimal_action.jpeg"></p>
+<p><img src="eg_optimal_action.jpg"></p>
 </div>
 <div id="figure-4-3--how-much-reward-does-the-epsilon-greedy-algorithm-earn-on-average" class="section level2">
 <h2 class="hasAnchor">
 <a href="#figure-4-3--how-much-reward-does-the-epsilon-greedy-algorithm-earn-on-average" class="anchor"></a>Figure 4-3. How much reward does the epsilon greedy algorithm earn on average?</h2>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"average"</span>, <span class="dt">regret =</span> <span class="ot">FALSE</span>, <span class="dt">legend_position =</span> <span class="st">"bottomright"</span>, <span class="dt">ylim =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>,<span class="dv">1</span>))</a></code></pre></div>
-<p><img src="eg_average_reward.jpeg"></p>
+<p><img src="eg_average_reward.jpg"></p>
 </div>
 <div id="figure-4-4--how-much-reward-has-the-epsilon-greedy-algorithm-earned-by-trial-t" class="section level2">
 <h2 class="hasAnchor">
 <a href="#figure-4-4--how-much-reward-has-the-epsilon-greedy-algorithm-earned-by-trial-t" class="anchor"></a>Figure 4-4. How much reward has the epsilon greedy algorithm earned by trial t?</h2>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"cumulative"</span>, <span class="dt">regret =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
-<p><img src="eg_cumulative_reward.jpeg"></p>
+<p><img src="eg_cumulative_reward.jpg"></p>
 </div>
 </div>
 <div id="chapter-5---softmax" class="section level1">
@@ -194,19 +194,19 @@
 <h2 class="hasAnchor">
 <a href="#figure-5-2--how-often-does-the-softmax-algorithm-select-the-best-arm" class="anchor"></a>Figure 5-2. How often does the softmax algorithm select the best arm?</h2>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"optimal"</span>, <span class="dt">legend_position =</span> <span class="st">"bottomright"</span>, <span class="dt">ylim =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>,<span class="dv">1</span>))</a></code></pre></div>
-<p><img src="softmax_optimal_action.jpeg"></p>
+<p><img src="softmax_optimal_action.jpg"></p>
 </div>
 <div id="figure-5-3--how-much-reward-does-the-softmax-algorithm-earn-on-average" class="section level2">
 <h2 class="hasAnchor">
 <a href="#figure-5-3--how-much-reward-does-the-softmax-algorithm-earn-on-average" class="anchor"></a>Figure 5-3. How much reward does the softmax algorithm earn on average?</h2>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"average"</span>, <span class="dt">regret =</span> <span class="ot">FALSE</span>, <span class="dt">legend_position =</span> <span class="st">"bottomright"</span>, <span class="dt">ylim =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>,<span class="dv">1</span>))</a></code></pre></div>
-<p><img src="softmax_average_reward.jpeg"></p>
+<p><img src="softmax_average_reward.jpg"></p>
 </div>
 <div id="figure-5-4--how-much-reward-has-the-softmax-algorithm-earned-by-trial-t" class="section level2">
 <h2 class="hasAnchor">
 <a href="#figure-5-4--how-much-reward-has-the-softmax-algorithm-earned-by-trial-t" class="anchor"></a>Figure 5-4. How much reward has the softmax algorithm earned by trial t?</h2>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"cumulative"</span>, <span class="dt">regret =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
-<p><img src="softmax_cumulative_reward.jpeg"></p>
+<p><img src="softmax_cumulative_reward.jpg"></p>
 </div>
 </div>
 <div id="chapter-6---ucb" class="section level1">
@@ -222,19 +222,19 @@
 <h2 class="hasAnchor">
 <a href="#figure-6-3--how-often-does-the-ucb-algorithm-select-the-best-arm" class="anchor"></a>Figure 6-3. How often does the UCB algorithm select the best arm?</h2>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"optimal"</span>, <span class="dt">legend_position =</span> <span class="st">"bottomright"</span>, <span class="dt">ylim =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>,<span class="dv">1</span>))</a></code></pre></div>
-<p><img src="ucb_optimal_action.jpeg"></p>
+<p><img src="ucb_optimal_action.jpg"></p>
 </div>
 <div id="figure-6-4--how-much-reward-does-the-ucb-algorithm-earn-on-average" class="section level2">
 <h2 class="hasAnchor">
 <a href="#figure-6-4--how-much-reward-does-the-ucb-algorithm-earn-on-average" class="anchor"></a>Figure 6-4. How much reward does the UCB algorithm earn on average?</h2>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"average"</span>, <span class="dt">regret =</span> <span class="ot">FALSE</span>, <span class="dt">legend_position =</span> <span class="st">"bottomright"</span>, <span class="dt">ylim =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>,<span class="dv">1</span>))</a></code></pre></div>
-<p><img src="ucb_average_reward.jpeg"></p>
+<p><img src="ucb_average_reward.jpg"></p>
 </div>
 <div id="figure-6-5--how-much-reward-has-the-ucb-algorithm-earned-by-trial-t" class="section level2">
 <h2 class="hasAnchor">
 <a href="#figure-6-5--how-much-reward-has-the-ucb-algorithm-earned-by-trial-t" class="anchor"></a>Figure 6-5. How much reward has the UCB algorithm earned by trial t?</h2>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"cumulative"</span>, <span class="dt">regret =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
-<p><img src="ucb_cumulative_reward.jpeg"></p>
+<p><img src="ucb_cumulative_reward.jpg"></p>
 </div>
 </div>
   </div>

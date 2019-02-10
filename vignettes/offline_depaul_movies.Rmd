@@ -69,4 +69,4 @@ plot(sim, type = "cumulative", regret = FALSE, rate = TRUE,
 
 ```
 
-![](carskit_depaul.jpeg)
+![](carskit_depaul.jpg)

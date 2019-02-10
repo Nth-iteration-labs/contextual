@@ -27,7 +27,7 @@ The code used in the book always chooses the arm with the first index when all a
 
 An example of Figure 4-3 when running a simulation with an uncorrected policy (conform to the book):
 
-![](eg_incorrect.jpeg)
+![](eg_incorrect.jpg)
 
 Compare to the (corrected) plot below.
 
@@ -57,7 +57,7 @@ history            <- simulation$run()
 plot(history, type = "optimal", legend_position = "bottomright", ylim = c(0,1))
 ```
 
-![](eg_optimal_action.jpeg)
+![](eg_optimal_action.jpg)
 
 ## Figure 4-3. How much reward does the epsilon greedy algorithm earn on average?
 
@@ -65,7 +65,7 @@ plot(history, type = "optimal", legend_position = "bottomright", ylim = c(0,1))
 plot(history, type = "average", regret = FALSE, legend_position = "bottomright", ylim = c(0,1))
 ```
 
-![](eg_average_reward.jpeg)
+![](eg_average_reward.jpg)
 
 ## Figure 4-4. How much reward has the epsilon greedy algorithm earned by trial t?
 
@@ -73,7 +73,7 @@ plot(history, type = "average", regret = FALSE, legend_position = "bottomright",
 plot(history, type = "cumulative", regret = FALSE)
 ```
 
-![](eg_cumulative_reward.jpeg)
+![](eg_cumulative_reward.jpg)
 
 # Chapter 5 - Softmax
 
@@ -93,21 +93,21 @@ history            <- simulation$run()
 ```r
 plot(history, type = "optimal", legend_position = "bottomright", ylim = c(0,1))
 ```
-![](softmax_optimal_action.jpeg)
+![](softmax_optimal_action.jpg)
 
 ## Figure 5-3. How much reward does the softmax algorithm earn on average?
 
 ```r
 plot(history, type = "average", regret = FALSE, legend_position = "bottomright", ylim = c(0,1))
 ```
-![](softmax_average_reward.jpeg)
+![](softmax_average_reward.jpg)
 
 ## Figure 5-4. How much reward has the softmax algorithm earned by trial t?
 
 ```r
 plot(history, type = "cumulative", regret = FALSE)
 ```
-![](softmax_cumulative_reward.jpeg)
+![](softmax_cumulative_reward.jpg)
 
 
 # Chapter 6 - UCB
@@ -126,21 +126,21 @@ history            <- simulation$run()
 ```r
 plot(history, type = "optimal", legend_position = "bottomright", ylim = c(0,1))
 ```
-![](ucb_optimal_action.jpeg)
+![](ucb_optimal_action.jpg)
 
 ## Figure 6-4. How much reward does the UCB algorithm earn on average?
 
 ```r
 plot(history, type = "average", regret = FALSE, legend_position = "bottomright", ylim = c(0,1))
 ```
-![](ucb_average_reward.jpeg)
+![](ucb_average_reward.jpg)
 
 ## Figure 6-5. How much reward has the UCB algorithm earned by trial t?
 
 ```r
 plot(history, type = "cumulative", regret = FALSE)
 ```
-![](ucb_cumulative_reward.jpeg)
+![](ucb_cumulative_reward.jpg)
 
 
 

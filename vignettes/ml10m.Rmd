@@ -139,4 +139,4 @@ plot(results, type = "cumulative", regret = FALSE,
 
 ```
 
-![](ml10m.png)
+![](ml10m.jpg)

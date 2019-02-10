@@ -192,13 +192,13 @@
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">simulations             &lt;-<span class="st"> </span><span class="dv">1</span></a>
 <a class="sourceLine" id="cb3-2" title="2">horizon                 &lt;-<span class="st"> </span><span class="fl">37.45e6</span></a>
 <a class="sourceLine" id="cb3-3" title="3">...</a>
-<a class="sourceLine" id="cb3-4" title="4">con &lt;-<span class="st"> </span>DBI<span class="op">::</span><span class="kw">dbConnect</span>(<span class="kw">MonetDB.R</span>(), <span class="dt">host=</span>monetdb_host, <span class="dt">dbname=</span>monetdb_dbname,</a>
+<a class="sourceLine" id="cb3-4" title="4">con &lt;-<span class="st"> </span>DBI<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/DBI/topics/dbConnect">dbConnect</a></span>(<span class="kw">MonetDB.R</span>(), <span class="dt">host=</span>monetdb_host, <span class="dt">dbname=</span>monetdb_dbname,</a>
 <a class="sourceLine" id="cb3-5" title="5">                                   <span class="dt">user=</span>monetdb_user, <span class="dt">password=</span>monetdb_pass)</a>
 <a class="sourceLine" id="cb3-6" title="6"></a>
 <a class="sourceLine" id="cb3-7" title="7"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/message">message</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="st">"MonetDB: connection to '"</span>,<span class="kw">dbListTables</span>(con),<span class="st">"' succesful!"</span>))</a>
 <a class="sourceLine" id="cb3-8" title="8"></a>
 <a class="sourceLine" id="cb3-9" title="9">arm_lookup_table &lt;-</a>
-<a class="sourceLine" id="cb3-10" title="10"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/matrix">as.matrix</a></span>(DBI<span class="op">::</span><span class="kw">dbGetQuery</span>(con, <span class="st">"SELECT DISTINCT article_id FROM yahoo"</span>))</a>
+<a class="sourceLine" id="cb3-10" title="10"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/matrix">as.matrix</a></span>(DBI<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/DBI/topics/dbGetQuery">dbGetQuery</a></span>(con, <span class="st">"SELECT DISTINCT article_id FROM yahoo"</span>))</a>
 <a class="sourceLine" id="cb3-11" title="11"></a>
 <a class="sourceLine" id="cb3-12" title="12">arm_lookup_table &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rev">rev</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/vector">as.vector</a></span>(arm_lookup_table))</a>
 <a class="sourceLine" id="cb3-13" title="13"></a>
@@ -241,11 +241,11 @@
 <h4 class="hasAnchor">
 <a href="#results" class="anchor"></a>Results</h4>
 <p>We were able to complete the full <span class="math inline">\(7\times6=42\)</span> agent simulation over all of the 37,450,196 events in our database within 22 hours on a 64 core Intel Xeon Unbuntu server with 256GB of memory. We then proceeded to analyse the results of the first 4.7 million events (following the original paper, representing about a day worth of events) to reproduce Li et al 2010’s Figure 4b: “CTRs in evaluation data with varying data sizes in the learning bucket.”. Just like the original paper, the replicated figure below reports each algorithm’s relative CTR for all of the defined data sparsity levels, that is, each algorithm’s CTR divided by the random policy’s CTR.</p>
-<p><img src="replication-fig-1.png" style="width:98.0%"></p>
+<p><img src="replication-fig-1.jpg" style="width:98.0%"></p>
 <p><em>Replication of Figure 4b “CTRs in evaluation data with varying data sizes in the learning bucket.” from Li et al 2010. The plots represent the click through rates for different policies after one day of learning for each of six different levels of sparsity.</em></p>
 <p>As can be observed in the next figure, after one day of learning (on the Yahoo! dataset’s day three), the conclusions of the original paper still stand. First, features again prove to be of use at all levels of sparsity, as LinUCB policies outperform the others consistently. Second, UCB policies generally outperform <span class="math inline">\(\epsilon\)</span>-greedy ones. And third, Hybrid LinUCB shows benefits when the data is small, as it does even better relative to Disjoint LinuCB in the 1% bucket.</p>
 <p>To explore a little further, we also run a simulation that continued to learn beyond the first day for the sparse (1%) data condition to test—for the results, see the final figure.</p>
-<p><img src="replication-fig-2.png" style="width:98.0%"></p>
+<p><img src="replication-fig-2.jpg" style="width:98.0%"></p>
 <p><em>A plot of the cumulative reward rate (equals click-through rate) for EGreedy, EGreedySeg, LinUCB Dis, LinUCB Hyb, UCB1, and UCB1Seg policies over eight days of events from the Yahoo dataset at 1% sparsity. The dotted lines represent blocks consisting of 24 hours worth of data—the lines are not equidistant as the number of data points of these 24 hours differs per block. The plot’s sinusoidal wave pattern reflects visitors’ overall average cyclical daily waxing and waning click-through tendency.</em></p>
 </div>
   </div>
