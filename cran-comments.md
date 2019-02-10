@@ -20,15 +20,14 @@ New submission.
 0 ERRORs | 0 WARNINGs | 0 NOTES.
 ```
 
-### Oldrelease: 1 NOTE
+### Oldrelease and Ubuntu Linux 16.04: 1 NOTE
 
 ```
   Author field differs from that derived from Authors@R
     Author:    'Robin van Emden [aut, cre] (<https://orcid.org/0000-0001-5820-8638>), Maurits Kaptein [ctb]       (<https://orcid.org/0000-0002-6316-7524>)'   
     Authors@R: 'Robin van Emden [aut, cre] (0000-0001-5820-8638), Maurits Kaptein [ctb] (0000-0002-6316-7524)'
 ```
-
-Can safely be ignored, as the only way to get rid of this is by removing the ORCID grom the Authors@R field, which is actually a feature that been added in R versions later than oldrelease. 
+The only way to get rid of this is by removing the ORCID from the Authors@R comment field - which is processed correctly in R versions later than oldrelease/Ununtu 16.04. Presume this can safely be ignored.
 
 ## Downstream dependencies
 
