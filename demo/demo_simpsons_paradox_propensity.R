@@ -210,9 +210,10 @@ print(paste("Movie:",sum(prop_dt[choice==2]$reward)/nrow(prop_dt[choice==2]))) #
 if(!require(twang)) install.packages("twang")
 
 b_dt$choice                       <- b_dt$choice - 1
-ip                                <- ps(choice  ~ X.1 + X.2, data = as.data.frame(b_dt), n.trees = 2000,
+ip                                <- ps(choice ~ X.1 + X.2, data = as.data.frame(b_dt), n.trees = 2000,
                                         stop.method = "es.mean", verbose=FALSE)
 b_dt$choice                       <- b_dt$choice + 1
+
 weights                           <- get.weights(ip, stop.method = "es.mean")  # already inverted
 b_dt$p                            <- weights
 
