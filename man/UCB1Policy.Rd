@@ -50,10 +50,11 @@ based on the reward received, and, potentially, the current context.
 }
 
 \examples{
+\dontrun{
 
 horizon            <- 100L
 simulations        <- 100L
-weights          <- c(0.9, 0.1, 0.1)
+weights            <- c(0.9, 0.1, 0.1)
 
 policy             <- UCB1Policy$new()
 bandit             <- BasicBernoulliBandit$new(weights = weights)
@@ -64,6 +65,8 @@ history            <- Simulator$new(agent, horizon, simulations, do_parallel = F
 plot(history, type = "cumulative")
 
 plot(history, type = "arms")
+
+}
 }
 \references{
 Lai, T. L., & Robbins, H. (1985). Asymptotically efficient adaptive allocation rules. Advances in applied

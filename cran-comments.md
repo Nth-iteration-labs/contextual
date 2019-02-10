@@ -14,13 +14,21 @@ New submission.
 
 ## R CMD check results
 
-Generally:
+### Generally no errors, no warnings, no notes
 
+```
 0 ERRORs | 0 WARNINGs | 0 NOTES.
+```
 
-On Rhub: 1 NOTE:
+### Oldrelease: 1 NOTE
 
-* CRAN incoming feasibility check.
+```
+  Author field differs from that derived from Authors@R
+    Author:    'Robin van Emden [aut, cre] (<https://orcid.org/0000-0001-5820-8638>), Maurits Kaptein [ctb]       (<https://orcid.org/0000-0002-6316-7524>)'   
+    Authors@R: 'Robin van Emden [aut, cre] (0000-0001-5820-8638), Maurits Kaptein [ctb] (0000-0002-6316-7524)'
+```
+
+Can safely be ignored, as the only way to get rid of this is by removing the ORCID grom the Authors@R field, which is actually a feature that been added in R versions later than oldrelease. 
 
 ## Downstream dependencies
 

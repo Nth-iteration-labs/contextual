@@ -98,10 +98,11 @@ UCB1Policy <- R6::R6Class(
 #' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualLinTSPolicy}}
 #'
 #' @examples
+#' \dontrun{
 #'
 #' horizon            <- 100L
 #' simulations        <- 100L
-#' weights          <- c(0.9, 0.1, 0.1)
+#' weights            <- c(0.9, 0.1, 0.1)
 #'
 #' policy             <- UCB1Policy$new()
 #' bandit             <- BasicBernoulliBandit$new(weights = weights)
@@ -112,4 +113,6 @@ UCB1Policy <- R6::R6Class(
 #' plot(history, type = "cumulative")
 #'
 #' plot(history, type = "arms")
+#'
+#' }
 NULL
