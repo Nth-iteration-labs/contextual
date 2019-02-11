@@ -201,10 +201,13 @@ x.context vector as a <code>k x d</code> matrix. When making use of such matrix 
 to define custom intercept(s) when and where needed in data.table or data.frame.</p></dd>
 <dt><code>randomize</code></dt><dd><p>logical; randomize rows of data stream per simulation (optional, default: TRUE)</p></dd>
 <dt><code>replacement</code></dt><dd><p>logical; sample with replacement (optional, default: FALSE)</p></dd>
-<dt><code>replacement</code></dt><dd><p>logical; add jitter to contextual features (optional, default: FALSE)</p></dd>
+<dt><code>jitter</code></dt><dd><p>logical; add jitter to contextual features (optional, default: FALSE)</p></dd>
 <dt><code>unique</code></dt><dd><p>integer vector; index of disjoint features (optional)</p></dd>
 <dt><code>shared</code></dt><dd><p>integer vector; index of shared features (optional)</p></dd>
 <dt><code>inverted</code></dt><dd><p>logical; have the propensities been inverted (1/p) or not (p)?</p></dd>
+<dt><code>threshold</code></dt><dd><p>float 0,1; Lower threshold or Tau on propensity score values. Smaller Tau makes for less biased
+estimates with more variance, and vice versa. For more information, see paper by Strehl at all (2010).
+Values between 0.01 and 0.05 are known to work well.</p></dd>
     </dl>
     
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
@@ -235,8 +238,12 @@ individual simulation when self$randomize is TRUE (default)</p></dd>
     
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Agarwal, Alekh, et al. "Taming the monster: A fast and simple algorithm for contextual bandits."
+    <p>Dudík, Miroslav, John Langford, and Lihong Li. "Doubly robust policy evaluation and learning."
+arXiv preprint arXiv:1103.4601 (2011).</p>
+<p>Agarwal, Alekh, et al. "Taming the monster: A fast and simple algorithm for contextual bandits."
 International Conference on Machine Learning. 2014.</p>
+<p>Strehl, Alex, et al. "Learning from logged implicit exploration data." Advances in Neural Information
+Processing Systems. 2010.</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 

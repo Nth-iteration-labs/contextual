@@ -48,7 +48,7 @@ logical; randomize rows of data stream per simulation (optional, default: TRUE)
 \item{\code{replacement}}{
 logical; sample with replacement (optional, default: FALSE)
 }
-\item{\code{replacement}}{
+\item{\code{jitter}}{
 logical; add jitter to contextual features (optional, default: FALSE)
 }
 \item{\code{unique}}{
@@ -59,6 +59,11 @@ integer vector; index of shared features (optional)
 }
 \item{\code{inverted}}{
 logical; have the propensities been inverted (1/p) or not (p)?
+}
+\item{\code{threshold}}{
+float \link{0,1}; Lower threshold or Tau on propensity score values. Smaller Tau makes for less biased
+estimates with more variance, and vice versa. For more information, see paper by Strehl at all (2010).
+Values between 0.01 and 0.05 are known to work well.
 }
 
 }
@@ -168,8 +173,14 @@ plot(sim, type = "arms", limit_agents = "LinUCB")
 }
 }
 \references{
+Dudík, Miroslav, John Langford, and Lihong Li. "Doubly robust policy evaluation and learning."
+arXiv preprint arXiv:1103.4601 (2011).
+
 Agarwal, Alekh, et al. "Taming the monster: A fast and simple algorithm for contextual bandits."
 International Conference on Machine Learning. 2014.
+
+Strehl, Alex, et al. "Learning from logged implicit exploration data." Advances in Neural Information
+Processing Systems. 2010.
 }
 \seealso{
 Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},

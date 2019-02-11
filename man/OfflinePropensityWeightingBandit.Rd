@@ -48,7 +48,7 @@ logical; randomize rows of data stream per simulation (optional, default: TRUE)
 \item{\code{replacement}}{
 logical; sample with replacement (optional, default: TRUE)
 }
-\item{\code{replacement}}{
+\item{\code{jitter}}{
 logical; add jitter to contextual features (optional, default: TRUE)
 }
 \item{\code{arm_multiply}}{
@@ -56,6 +56,11 @@ logical; multiply the horizon by the number of arms (optional, default: TRUE)
 }
 \item{\code{inverted}}{
 logical; have the propensity scores been weighted (optional, default: FALSE)
+}
+\item{\code{threshold}}{
+float \link{0,1}; Lower threshold or Tau on propensity score values. Smaller Tau makes for less biased
+estimates with more variance, and vice versa. For more information, see paper by Strehl at all (2010).
+Values between 0.01 and 0.05 are known to work well.
 }
 \item{\code{unique}}{
 integer vector; index of disjoint features (optional)
@@ -156,6 +161,9 @@ plot(sim, type = "cumulative", regret = FALSE, rate = TRUE, legend_position = "b
 \references{
 Agarwal, Alekh, et al. "Taming the monster: A fast and simple algorithm for contextual bandits."
 International Conference on Machine Learning. 2014.
+
+Strehl, Alex, et al. "Learning from logged implicit exploration data." Advances in Neural Information
+Processing Systems. 2010.
 }
 \seealso{
 Core contextual classes: \code{\link{Bandit}}, \code{\link{Policy}}, \code{\link{Simulator}},

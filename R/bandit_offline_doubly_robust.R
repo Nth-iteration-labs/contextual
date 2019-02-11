@@ -10,12 +10,15 @@ OfflineDoublyRobustBandit <- R6::R6Class(
   ),
   public = list(
     inverted = NULL,
+    threshold = NULL,
     class_name = "OfflineDoublyRobustBandit",
     initialize   = function(formula,
                             data, k = NULL, d = NULL,
                             unique = NULL, shared = NULL,
-                            inverted = FALSE, randomize = TRUE) {
-      self$inverted = inverted
+                            inverted = FALSE, threshold = 0,
+                            randomize = TRUE) {
+      self$inverted  <- inverted
+      self$threshold <- threshold
       super$initialize(formula,
                        data, k, d,
                        unique, shared,
@@ -41,10 +44,13 @@ OfflineDoublyRobustBandit <- R6::R6Class(
       p                 <- private$p[index]
       indicator         <- ind(private$z[index] == choice)
       if (indicator) {
-        if (self$inverted) {
-          p <- p
+        p   <- private$p[index]
+        if (self$inverted) p <- 1 / p
+        if (self$threshold > 0) {
+          if (isTRUE(self$inverted)) p <- 1 / p
+          p <- 1 / max(p,self$threshold)
         } else {
-          p <- (1 / p)
+          if (isFALSE(self$inverted)) p <- 1 / p
         }
         inc(private$n)     <- 1
         inc(private$p_hat) <- (p - private$p_hat) / private$n
@@ -108,7 +114,7 @@ OfflineDoublyRobustBandit <- R6::R6Class(
 #'   \item{\code{replacement}}{
 #'     logical; sample with replacement (optional, default: FALSE)
 #'   }
-#'   \item{\code{replacement}}{
+#'   \item{\code{jitter}}{
 #'     logical; add jitter to contextual features (optional, default: FALSE)
 #'   }
 #'   \item{\code{unique}}{
@@ -119,6 +125,11 @@ OfflineDoublyRobustBandit <- R6::R6Class(
 #'   }
 #'   \item{\code{inverted}}{
 #'     logical; have the propensities been inverted (1/p) or not (p)?
+#'   }
+#'   \item{\code{threshold}}{
+#'     float [0,1]; Lower threshold or Tau on propensity score values. Smaller Tau makes for less biased
+#'     estimates with more variance, and vice versa. For more information, see paper by Strehl at all (2010).
+#'     Values between 0.01 and 0.05 are known to work well.
 #'   }
 #'
 #' }
@@ -161,8 +172,14 @@ OfflineDoublyRobustBandit <- R6::R6Class(
 #'
 #' @references
 #'
+#' Dudík, Miroslav, John Langford, and Lihong Li. "Doubly robust policy evaluation and learning."
+#' arXiv preprint arXiv:1103.4601 (2011).
+#'
 #' Agarwal, Alekh, et al. "Taming the monster: A fast and simple algorithm for contextual bandits."
 #' International Conference on Machine Learning. 2014.
+#'
+#' Strehl, Alex, et al. "Learning from logged implicit exploration data." Advances in Neural Information
+#' Processing Systems. 2010.
 #'
 #' @seealso
 #'

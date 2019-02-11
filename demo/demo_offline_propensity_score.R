@@ -25,7 +25,7 @@ data$p <-predict(m, type = "response")
 
 f          <- alive ~ trt | age + risk + severity | p
 
-bandit     <- OfflinePropensityWeightingBandit$new(formula = f, data = data)
+bandit     <- OfflinePropensityWeightingBandit$new(formula = f, data = data, threshold = 0.01)
 
 # Define agents.
 agents      <- list(Agent$new(LinUCBDisjointOptimizedPolicy$new(0.2), bandit, "LinUCB"))
