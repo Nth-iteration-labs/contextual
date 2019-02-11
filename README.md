@@ -51,7 +51,7 @@ Documentation
 
 See the [demo directory](https://github.com/Nth-iteration-labs/contextual/tree/master/demo) for practical examples and replications of both synthetic and offline (contextual) bandit policy evaluations. 
 
-How to replicate figures from two books, both offering a first introduction to context-free Multi-Armed Bandits:
+How to replicate figures from two introductory context-free Multi-Armed Bandits texts:
 
 * [Replication of figures from Sutton and Barto, "Reinforcement Learning: An Introduction", Chapter 2](https://nth-iteration-labs.github.io/contextual/articles/sutton_barto.html)
 * [Replication of figures from "Bandit algorithms for website optimization" by John Miles White](https://nth-iteration-labs.github.io/contextual/articles/website_optimization.html)
