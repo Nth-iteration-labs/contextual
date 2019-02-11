@@ -16,8 +16,8 @@ R package facilitating the simulation and evaluation of context-free and context
 
 The package has been developed to:
 
-* Introduce a wider audience to contextual bandit policies' advanced sequential decision strategies.
 * Ease the implementation, evaluation and dissemination of both existing and new contextual Multi-Armed Bandit policies. 
+* Introduce a wider audience to contextual bandit policies' advanced sequential decision strategies.
 
 Installation
 ------------
