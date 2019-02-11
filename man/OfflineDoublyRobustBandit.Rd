@@ -61,7 +61,7 @@ integer vector; index of shared features (optional)
 logical; have the propensities been inverted (1/p) or not (p)?
 }
 \item{\code{threshold}}{
-float \link{0,1}; Lower threshold or Tau on propensity score values. Smaller Tau makes for less biased
+float (0,1); Lower threshold or Tau on propensity score values. Smaller Tau makes for less biased
 estimates with more variance, and vice versa. For more information, see paper by Strehl at all (2010).
 Values between 0.01 and 0.05 are known to work well.
 }
