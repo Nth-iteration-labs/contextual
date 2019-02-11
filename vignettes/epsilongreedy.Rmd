@@ -36,7 +36,7 @@ plot(history, type = "cumulative", regret = TRUE, disp = "ci",
      traces = TRUE, smooth = FALSE, interval = 1)
 ```
 
-![](basic_epsilon_greedy.jpg)
+![](basic_epsilon_greedy.png)
 
 ```r
 summary(history)

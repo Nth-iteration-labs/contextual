@@ -39,4 +39,4 @@ plot(history, type = "cumulative", rate = FALSE, legend_position = "topleft")
 
 ```
 
-![](cmabs.jpg)
+![](cmabs.png)

@@ -56,7 +56,7 @@ print(ggplot(data = data.frame(dist_mean = mus, dist_sd = sigmas, dist = factor(
 
 ```
 
-![](sutton_violin.jpg)
+![](sutton_violin.png)
 
 ## The epsilon greedy plot 
 
@@ -74,8 +74,8 @@ plot(history, type = "optimal", lwd = 1, legend_position = "bottomright")
 
 ```
 
-![](sutton_eg_1.jpg)
-![](sutton_eg_2.jpg)
+![](sutton_eg_1.png)
+![](sutton_eg_2.png)
 
 
 
@@ -99,7 +99,7 @@ history         <- simulator$run()
 plot(history, type = "optimal", lwd = 1, legend_position = "bottomright")
 
 ```
-![](sutton_optimistic.jpg)
+![](sutton_optimistic.png)
 
 
 # 2.7 - Upper-Confidence-Bound Action Selection 
@@ -116,7 +116,7 @@ plot(history, type = "average", regret = FALSE, lwd = 1, legend_position = "bott
 
 ```
 
-![](sutton_ucb.jpg)
+![](sutton_ucb.png)
 
 # 2.8 - Gradient Bandit Algorithms 
 
@@ -142,4 +142,4 @@ history         <- simulator$run()
 plot(history, type = "optimal", lwd = 1, legend_position = "bottomright",
      color_step = 2, lty_step = 2)
 ```
-![](sutton_gradient.jpg)
+![](sutton_gradient.png)

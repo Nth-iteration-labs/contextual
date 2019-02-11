@@ -124,7 +124,7 @@
       <h1>Getting started: running simulations</h1>
                         <h4 class="author">Robin van Emden</h4>
             
-            <h4 class="date">2019-02-10</h4>
+            <h4 class="date">2019-02-11</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Nth-iteration-labs/contextual/blob/master/vignettes/introduction.Rmd"><code>vignettes/introduction.Rmd</code></a></small>
       <div class="hidden name"><code>introduction.Rmd</code></div>
@@ -178,7 +178,7 @@
 <a class="sourceLine" id="cb1-25" title="25"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"average"</span>, <span class="dt">regret =</span> <span class="ot">FALSE</span>, <span class="dt">lwd =</span> <span class="dv">2</span>)</a>
 <a class="sourceLine" id="cb1-26" title="26"><span class="co"># And the cumulative reward rate, which equals the Click Through Rate)</span></a>
 <a class="sourceLine" id="cb1-27" title="27"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"cumulative"</span>, <span class="dt">regret =</span> <span class="ot">FALSE</span>, <span class="dt">rate =</span> <span class="ot">TRUE</span>, <span class="dt">lwd =</span> <span class="dv">2</span>)</a></code></pre></div>
-<p><img src="contextual-fig-1.jpg" style="width:98.0%"></p>
+<p><img src="contextual-fig-1.png" style="width:98.0%"></p>
 <p>As can be observed in the figure above, within our horizon of <span class="math inline">\(T = 400\)</span>, EpsilonFirstPolicy has accumulated more rewards than EpsilonGreedytPolicy. It is easy to see why: The winning arm is better than the other two—by a margin. That means that EpsilonFirstPolicy has no difficulty in finding the optimal arm within its exploration period of one hundred impressions. Up to that point, EpsilonGreedyPolicy still had the advantage of a headstart, as it was already able to exploit for <span class="math inline">\(1- \epsilon\)</span> or sixty percent of the time. But from one hundred impressions on, EpsilonFirstPolicy switches from full exploration to full exploitation mode. In contrast to EpsilonGreedyPolicy, it is now able to exploit the arm that proved best during exploration all of the time. As a result, it is able catch up with (and then surpass) the rewards accumulated by EpsilonGreedyPolicy within less than one hundred and fifty impressions.</p>
 </div>
 <div id="adding-context" class="section level4">
@@ -211,7 +211,7 @@ simulator           &lt;- Simulator$new(agents, horizon, simulations, do_paralle
 history             &lt;- simulator$run()
 # And plot the cumulative reward rate again.
 plot(history, type = "cumulative", regret = FALSE, rate = TRUE)</code></pre>
-<p><img src="contextual-fig-2.jpg" style="width:98.0%"></p>
+<p><img src="contextual-fig-2.png" style="width:98.0%"></p>
 <p>As can be observed in the figure above, both context-free bandit’s do indeed not do better than before. On the other hand, LinUCBDisjointPolicy does very well, as it is able to map its rewards to the available contextual features.</p>
 <p>Of course, the simulations in the current vignette are not very realistic. One way to ameliorate this would be to write a Bandit subclass with a more complex generative model. More on that in the vignette “Creating your own Policies and Bandits”. Another option would be to evaluate policies on offline datasets. Which is covered in the vignette “Evaluating policies with offline datasets”.</p>
 </div>

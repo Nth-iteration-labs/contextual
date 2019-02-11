@@ -66,7 +66,7 @@ plot(history, type = "average", regret = FALSE, lwd = 2)
 # And the cumulative reward rate, which equals the Click Through Rate)
 plot(history, type = "cumulative", regret = FALSE, rate = TRUE, lwd = 2)
 ```
-![](contextual-fig-1.jpg){width=98%}
+![](contextual-fig-1.png){width=98%}
 
 As can be observed in the figure above, within our horizon of $T = 400$, EpsilonFirstPolicy has accumulated more rewards than EpsilonGreedytPolicy. It is easy to see why: The winning arm is better than the other two---by a margin. That means that EpsilonFirstPolicy has no difficulty in finding the optimal arm within its exploration period of one hundred impressions. Up to that point, EpsilonGreedyPolicy still had the advantage of a headstart, as it was already able to exploit for $1- \epsilon$ or sixty percent of the time. But from one hundred impressions on, EpsilonFirstPolicy switches from full exploration to full exploitation mode. In contrast to EpsilonGreedyPolicy, it is now able to exploit the arm that proved best during exploration all of the time. As a result, it is able catch up with (and then surpass) the rewards accumulated by EpsilonGreedyPolicy within less than one hundred and fifty impressions.
 
@@ -105,7 +105,7 @@ history             <- simulator$run()
 # And plot the cumulative reward rate again.
 plot(history, type = "cumulative", regret = FALSE, rate = TRUE)
 ```
-![](contextual-fig-2.jpg){width=98%}
+![](contextual-fig-2.png){width=98%}
 
 As can be observed in the figure above, both context-free bandit's do indeed not do better than before. On the other hand, LinUCBDisjointPolicy does very well, as it is able to map its rewards to the available contextual features. 
 

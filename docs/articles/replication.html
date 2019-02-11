@@ -124,7 +124,7 @@
       <h1>Offline evaluation: Replication of Li et al 2010</h1>
                         <h4 class="author">Robin van Emden</h4>
             
-            <h4 class="date">2019-02-10</h4>
+            <h4 class="date">2019-02-11</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Nth-iteration-labs/contextual/blob/master/vignettes/replication.Rmd"><code>vignettes/replication.Rmd</code></a></small>
       <div class="hidden name"><code>replication.Rmd</code></div>
@@ -241,11 +241,11 @@
 <h4 class="hasAnchor">
 <a href="#results" class="anchor"></a>Results</h4>
 <p>We were able to complete the full <span class="math inline">\(7\times6=42\)</span> agent simulation over all of the 37,450,196 events in our database within 22 hours on a 64 core Intel Xeon Unbuntu server with 256GB of memory. We then proceeded to analyse the results of the first 4.7 million events (following the original paper, representing about a day worth of events) to reproduce Li et al 2010’s Figure 4b: “CTRs in evaluation data with varying data sizes in the learning bucket.”. Just like the original paper, the replicated figure below reports each algorithm’s relative CTR for all of the defined data sparsity levels, that is, each algorithm’s CTR divided by the random policy’s CTR.</p>
-<p><img src="replication-fig-1.jpg" style="width:98.0%"></p>
+<p><img src="replication-fig-1.png" style="width:98.0%"></p>
 <p><em>Replication of Figure 4b “CTRs in evaluation data with varying data sizes in the learning bucket.” from Li et al 2010. The plots represent the click through rates for different policies after one day of learning for each of six different levels of sparsity.</em></p>
 <p>As can be observed in the next figure, after one day of learning (on the Yahoo! dataset’s day three), the conclusions of the original paper still stand. First, features again prove to be of use at all levels of sparsity, as LinUCB policies outperform the others consistently. Second, UCB policies generally outperform <span class="math inline">\(\epsilon\)</span>-greedy ones. And third, Hybrid LinUCB shows benefits when the data is small, as it does even better relative to Disjoint LinuCB in the 1% bucket.</p>
 <p>To explore a little further, we also run a simulation that continued to learn beyond the first day for the sparse (1%) data condition to test—for the results, see the final figure.</p>
-<p><img src="replication-fig-2.jpg" style="width:98.0%"></p>
+<p><img src="replication-fig-2.png" style="width:98.0%"></p>
 <p><em>A plot of the cumulative reward rate (equals click-through rate) for EGreedy, EGreedySeg, LinUCB Dis, LinUCB Hyb, UCB1, and UCB1Seg policies over eight days of events from the Yahoo dataset at 1% sparsity. The dotted lines represent blocks consisting of 24 hours worth of data—the lines are not equidistant as the number of data points of these 24 hours differs per block. The plot’s sinusoidal wave pattern reflects visitors’ overall average cyclical daily waxing and waning click-through tendency.</em></p>
 </div>
   </div>
