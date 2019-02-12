@@ -19,6 +19,7 @@ OfflineBootstrappedReplayBandit <- R6::R6Class(
     jitter = NULL,
     arm_multiply = NULL,
     flat_context = NULL,
+    context_free = NULL,
     initialize   = function(formula,
                             data, k = NULL, d = NULL,
                             unique = NULL, shared = NULL,
@@ -32,17 +33,26 @@ OfflineBootstrappedReplayBandit <- R6::R6Class(
       if (is.null(k) || is.null(d)) {
         self$k            <- max(Formula::model.part(private$formula, data = private$S,
                                                      lhs = 0, rhs = 1, drop = TRUE))
-        self$d            <- length(model.matrix(private$formula, data = private$S[1,], rhs = 2)[,-1])
+        self$d            <- suppressWarnings(
+                                 length(model.matrix(private$formula, data = private$S[1,], rhs = 2)[,-1])
+                             )
         self$flat_context <- TRUE
       } else {
         self$k            <- k
         self$d            <- d
         self$flat_context <- FALSE
       }
+      if(self$d == 0) {
+        self$d <- 1
+        self$context_free <- TRUE
+      } else {
+        self$context_free <- FALSE
+      }
+      self$arm_multiply <- arm_multiply   # bootstrapped bandit needs a horizon of k arms times the horizon
+                                          # by setting this arm_multipy flag , the Simulator knows to continue
+                                          # running for (k * horizon) steps.
 
-      self$arm_multiply <- arm_multiply
-
-      if(isTRUE(arm_multiply))  private$S <- do.call("rbind", replicate(self$k, private$S, simplify = FALSE))
+      if(isTRUE(arm_multiply)) private$S <- do.call("rbind", replicate(self$k, private$S, simplify = FALSE))
 
       self$randomize    <- randomize      # Randomize logged events within each simulation? (logical)
       self$replacement  <- replacement    # Sample with replacement? (logical)
@@ -52,17 +62,18 @@ OfflineBootstrappedReplayBandit <- R6::R6Class(
       self$unique       <- unique         # unique arm ids
       self$shared       <- shared         # shared arm ids
 
-      if(!"context" %in% colnames(private$S)) private$S$context = list(1)
-      private$S[is.null(context[[1]]),`:=`(context = list(1))]
-
       private$oa       <- "optimal_arm" %in% colnames(data)
       private$or       <- "optimal_reward" %in% colnames(data)
     },
     post_initialization = function() {
       if(isTRUE(self$randomize)) private$S <- private$S[sample(nrow(private$S), replace = self$replacement)]
-      private$x <-  model.matrix(private$formula, data = private$S, rhs = 2)
-      if(!isTRUE(self$flat_context))  private$x <- private$x[,-1]
-      if(isTRUE(self$jitter)) private$x <- apply(private$x, 2, jitter)
+      if (self$context_free) {
+        private$x <- matrix(1,nrow(private$S))
+      } else {
+        private$x <- model.matrix(private$formula, data = private$S, rhs = 2)
+        if(!isTRUE(self$flat_context))  private$x <- private$x[,-1]
+        if(isTRUE(self$jitter)) private$x <- apply(private$x, 2, jitter)
+      }
       private$y <- Formula::model.part(private$formula, data = private$S, lhs = 1, rhs = 0, drop = TRUE)
       private$z <- Formula::model.part(private$formula, data = private$S, lhs = 0, rhs = 1, drop = TRUE)
     },

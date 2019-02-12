@@ -3,7 +3,7 @@ library(contextual)
 horizon       <- 400L
 simulations   <- 300L
 
-bandit        <- ContextualLinearBandit$new(k = 5, d = 10, sigma = 1.0)
+bandit        <- ContextualLinearBandit$new(k = 5, d = 5, sigma = 0.1)
 
 agents <- list(Agent$new(EpsilonGreedyPolicy$new(0.1), bandit, "EGreedy"),
                Agent$new(ContextualEpsilonGreedyPolicy$new(0.1), bandit, "cEGreedy"),

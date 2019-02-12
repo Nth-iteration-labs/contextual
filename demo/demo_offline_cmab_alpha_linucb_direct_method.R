@@ -1,5 +1,6 @@
 library(contextual)
 library(data.table)
+library(Formula)
 
 # Import personalization data-set
 
@@ -11,8 +12,8 @@ horizon     <- nrow(data)
 
 # Run regression per arm, predict outcomes, and save results, a column per arm
 
-x                <- reformulate(names(data)[3:102],response="V2")       # x: V3 .. V102 | y: V2
-f                <- as.Formula(x)                                       # y ~ x
+x                <- reformulate(names(data)[3:102],response="V2")    # x: V3 .. V102 | y: V2
+f                <- Formula::as.Formula(x)                           # y ~ x
 
 model_f          <- function(arm) glm(f, data=data[V1==arm], family=binomial(link="logit"), y=F, model=F)
 arms             <- sort(unique(data$V1))

@@ -18,7 +18,7 @@ data$alive      <- abs(data$death - 1)
 # calculate propensity weights
 
 m      <- glm(I(trt-1) ~ age + risk + severity, data=data, family=binomial(link="logit"))
-data$p <-predict(m, type = "response")
+data$p <- predict(m, type = "response")
 
 # run bandit - when leaving out P1, Propensity Bandit uses marginal prob per arm for propensities:
 # table(private$z)/length(private$z)
