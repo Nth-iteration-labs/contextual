@@ -132,8 +132,9 @@ Retrieve cumulative statistics data point.
 Save theta in JSON format to a file. Warning: the theta log, and therefor the file, can get very
 large very fast.
 }
-\item{\code{get_theta_matrix(limit_agent))}}{
-Retrieve an agent's simplified matrix version of the theta log.
+\item{\code{get_theta(limit_agent, to_numeric_matrix = FALSE)}}{
+Retrieve an agent's simplified data.table version of the theta log.
+If to_numeric is TRUE, the data.table will be converted to a numeric matrix.
 }
 \item{\code{data}}{
 Active binding, read access to History's internal data.table.
