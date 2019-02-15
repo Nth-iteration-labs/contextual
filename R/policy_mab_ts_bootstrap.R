@@ -37,7 +37,7 @@ BootstrapTSPolicy <- R6::R6Class(
       reward <- reward$reward
       # double_or_nothing_bootstrap
       # sample_indices <- rbinom(self$J, 1, .5) == 1
-      sample_indices <- sample(c(FALSE,TRUE), replace=TRUE, size=self$J)
+      sample_indices  <- sample(c(FALSE,TRUE), replace=TRUE, size=self$J)
       some_replicates <- which(sample_indices, FALSE, FALSE)
       self$theta$alpha[[arm]][some_replicates] <- self$theta$alpha[[arm]][some_replicates] + reward
       self$theta$beta[[arm]][some_replicates]  <- self$theta$beta[[arm]][some_replicates] + 1 - reward

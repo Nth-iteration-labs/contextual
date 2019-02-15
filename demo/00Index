@@ -7,7 +7,7 @@ demo_offline_propensity_score                     Offline bandit - propensity sc
 demo_offline_doubly_robust                        Offline bandit - doubly robust.
 demo_mab_policy_comparison                        Comparison of some contextual-free bandits.
 demo_epsilon_greedy_policy                        Basic simulation of a context-free policy.
-demo_continuum_bandit                             Use of continuum bandit and LiF policy.
+demo_lif_bandit                                   Use of continuum bandit and LiF policy.
 demo_cmab_policy_comparison_linear_bandit         Comparison of a contextual policies with linear bandit.
 demo_cmab_policy_comparison_weight_bandit         Comparison of a contextual policies with weight bandit.
 demo_simpsons_paradox_propensity                  Simpson's Paradox to demonstrate propensity weighting.

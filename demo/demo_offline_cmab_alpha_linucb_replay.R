@@ -19,7 +19,7 @@ agents      <- list(Agent$new(LinUCBDisjointOptimizedPolicy$new(0.01), bandit, "
 
 # Initialize the simulation.
 
-simulation  <- Simulator$new(agents = agents, simulations = simulations, horizon = horizon)
+simulation  <- Simulator$new(agents = agents, simulations = simulations, horizon = horizon, save_theta = TRUE)
 
 # Run the simulation.
 sim  <- simulation$run()
@@ -27,3 +27,4 @@ sim  <- simulation$run()
 # plot the results
 plot(sim, type = "cumulative", regret = FALSE, rate = TRUE, legend_position = "bottomright", ylim = c(0,1))
 
+m <- sim$get_theta_matrix("alpha = 1.0")

@@ -1,4 +1,5 @@
 #' @importFrom data.table data.table as.data.table set setorder setkeyv copy uniqueN setcolorder tstrsplit
+#' @import rjson
 #' @export
 History <- R6::R6Class(
   "History",
@@ -53,23 +54,25 @@ History <- R6::R6Class(
         optimal_arm <- reward[["optimal_arm"]]
       }
       if (!is.vector(context_value)) context_value <- as.vector(context_value)
-      if (save_context && !is.null(colnames(context_value))) {
+      if (save_context && !is.null(colnames(context_value))) {   # && !is.null(context_value
         context_value <- context_value[,!colnames(context_value) %in% "(Intercept)"]
       }
-      if (save_context || save_theta) {
-        if (!isTRUE(self$save_theta)) {
-          if(!isTRUE(self$context_columns_initialized)) {
-            private$initialize_data_tables(length(context_value))
-            self$context_columns_initialized <- TRUE
-          }
-          data.table::set(private$.data, index, (14L:(13L+length(context_value))),
-                          as.list(as.vector(context_value)))
-        } else if (!isTRUE(self$save_context)) {
-          data.table::set(private$.data, index, 14L, list(list(theta_value)))
-        } else {
-          data.table::set(private$.data, index, 14L, list(list(context_value)))
-          data.table::set(private$.data, index, 15L, list(list(theta_value)))
+      shift_context = 0L
+      if (isTRUE(self$save_theta)) {
+        theta_value$t     <- t
+        theta_value$sim   <- simulation_index
+        theta_value$agent <- agent_name
+        data.table::set(private$.data, index, 14L, list(list(theta_value)))
+        shift_context = 1L
+      }
+      if (save_context && !is.null(context_value)) {
+        if(!isTRUE(self$context_columns_initialized)) {
+          private$initialize_data_tables(length(context_value))
+          self$context_columns_initialized <- TRUE
         }
+        data.table::set(private$.data, index,
+                        ((14L+shift_context):(13L+shift_context+length(context_value))),
+                        as.list(as.vector(context_value)))
       }
       data.table::set(
         private$.data,
@@ -260,14 +263,25 @@ History <- R6::R6Class(
       min_t_sim <- min(private$.data[,max(t), by = c("agent","sim")]$V1)
       private$.data <- private$.data[t<=min_t_sim]
     },
-    extract_theta = function(limit_agents, parameter, arm, tail = NULL, sims = 1){
-      if(!is.null(tail)){
-        unlist(sapply(sapply(tail(private$.data[agent %in% limit_agents & sim %in% sims],tail)$theta,
-                             `[`, parameter), `[[`, arm), FALSE, FALSE)
-      } else {
-        unlist(sapply(sapply(private$.data[agent %in% limit_agents & sim %in% sims]$theta,
-                             `[`, parameter), `[[`, arm), FALSE, FALSE)
-      }
+    get_theta_matrix = function(limit_agents){
+      # unique parameter names, parameter name plus arm nr
+      p_names  <- unique(names(unlist(unlist(private$.data[agent %in% limit_agents][1,]$theta,
+                                             recursive = FALSE), recursive = FALSE)))
+      # number of parameters in theta
+      p_number <- length(p_names)
+      m <- matrix(unlist(unlist(private$.data[agent %in% limit_agents]$theta,
+                                recursive = FALSE, use.names = FALSE), recursive = FALSE, use.names = FALSE),
+                                                    ncol = p_number, byrow = TRUE)
+      colnames(m) <- c(p_names)
+      # get some specific parameter by name
+      # matrix(unlist(m[,"paraname"], recursive = FALSE, use.names = FALSE),nrow = nrow(m))
+      return(m)
+    },
+    save_theta_json = function(filename = "theta.json"){
+      jj <- rjson::toJSON(private$.data$theta)
+      file <- file(filename)
+      writeLines(jj, file)
+      close(file)
     },
     finalize = function() {
       self$clear_data_table()
@@ -294,15 +308,13 @@ History <- R6::R6Class(
         cum_regret = rep(0.0, self$n),
         stringsAsFactors = TRUE
       )
+      if (isTRUE(self$save_theta)) private$.data$theta <- rep(list(), self$n)
       if (isTRUE(self$save_context)) {
         if (!is.null(context_cols)) {
           context_cols <- c(paste0("X.", seq_along(1:context_cols)))
           private$.data[, (context_cols) := 0.0]
-        } else {
-          private$.data$context <- rep(list(), self$n)
         }
       }
-      if (isTRUE(self$save_theta)) private$.data$theta <- rep(list(), self$n)
 
       # meta data
       private$.meta <- list()
@@ -310,9 +322,7 @@ History <- R6::R6Class(
       # cumulative data
       private$.cum_stats <- data.table::data.table()
     },
-
     calculate_cum_stats = function() {
-
 
       self$set_meta_data("min_t",min(private$.data[,max(t), by = c("agent","sim")]$V1))
       self$set_meta_data("max_t",max(private$.data[,max(t), by = c("agent","sim")]$V1))
@@ -515,16 +525,23 @@ History <- R6::R6Class(
 #'   \item{\code{get_meta_data()}}{
 #'      Retrieve History meta data.
 #'   }
-#'   \item{\code{set_meta_data = function(key, value, group = "sim", agent_name = NULL)}}{
+#'   \item{\code{set_meta_datan(key, value, group = "sim", agent_name = NULL)}}{
 #'      Set History meta data.
 #'   }
-#'   \item{\code{get_cumulative_data = function(limit_agents = NULL, limit_cols = NULL, interval = 1,
+#'   \item{\code{get_cumulative_data(limit_agents = NULL, limit_cols = NULL, interval = 1,
 #'   cum_average = FALSE))}}{
 #'      Retrieve cumulative statistics data.
 #'   }
-#'   \item{\code{get_cumulative_result = function(limit_agents = NULL, limit_cols = NULL, interval = 1,
+#'   \item{\code{get_cumulative_result(limit_agents = NULL, limit_cols = NULL, interval = 1,
 #'   cum_average = FALSE))}}{
 #'      Retrieve cumulative statistics data point.
+#'   }
+#'   \item{\code{save_theta_json(filename = "theta.json"))}}{
+#'      Save theta in JSON format to a file. Warning: the theta log, and therefor the file, can get very
+#'      large very fast.
+#'   }
+#'   \item{\code{get_theta_matrix(limit_agent))}}{
+#'      Retrieve an agent's simplified matrix version of the theta log.
 #'   }
 #'   \item{\code{data}}{
 #'      Active binding, read access to History's internal data.table.

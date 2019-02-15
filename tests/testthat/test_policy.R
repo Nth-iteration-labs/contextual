@@ -11,7 +11,6 @@ test_that("Policy", {
 
   expect_identical(policy$class_name, "Policy")
   expect_error(policy$get_action(), "has not been implemented")
-  expect_error(policy$set_parameters(), "has not been implemented")
   expect_error(policy$set_reward(), "has not been implemented")
 
 })

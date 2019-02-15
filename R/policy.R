@@ -24,7 +24,6 @@ Policy <- R6::R6Class(
     },
     set_parameters = function(context_params) {
       # Policy parameter (not theta!) initialisation happens here.
-      stop("Policy$set_parameters() has not been implemented.", call. = FALSE)
     },
     initialize_theta = function(k) {
       # Called during contextual's initialisation.
