@@ -59,9 +59,12 @@ History <- R6::R6Class(
       }
       shift_context = 0L
       if (isTRUE(self$save_theta)) {
-        theta_value$t     <- t
-        theta_value$sim   <- simulation_index
-        theta_value$agent <- agent_name
+        theta_value$t      <- t
+        theta_value$sim    <- simulation_index
+        theta_value$agent  <- agent_name
+        theta_value$choice <- action[["choice"]]
+        theta_value$reward <- reward[["reward"]]
+        theta_value$cum_reward <- reward[["cum_reward"]]
         data.table::set(private$.data, index, 14L, list(list(theta_value)))
         shift_context = 1L
       }
@@ -263,19 +266,22 @@ History <- R6::R6Class(
       min_t_sim <- min(private$.data[,max(t), by = c("agent","sim")]$V1)
       private$.data <- private$.data[t<=min_t_sim]
     },
-    get_theta_matrix = function(limit_agents){
+    get_theta = function(limit_agents, to_numeric_matrix = FALSE){
       # unique parameter names, parameter name plus arm nr
       p_names  <- unique(names(unlist(unlist(private$.data[agent %in% limit_agents][1,]$theta,
                                              recursive = FALSE), recursive = FALSE)))
       # number of parameters in theta
       p_number <- length(p_names)
-      m <- matrix(unlist(unlist(private$.data[agent %in% limit_agents]$theta,
+      theta_data <- matrix(unlist(unlist(private$.data[agent %in% limit_agents]$theta,
                                 recursive = FALSE, use.names = FALSE), recursive = FALSE, use.names = FALSE),
                                                     ncol = p_number, byrow = TRUE)
-      colnames(m) <- c(p_names)
-      # get some specific parameter by name
-      # matrix(unlist(m[,"paraname"], recursive = FALSE, use.names = FALSE),nrow = nrow(m))
-      return(m)
+      colnames(theta_data) <- c(p_names)
+      if(isTRUE(to_numeric_matrix)) {
+        theta_data <- apply(theta_data, 2, function(x){as.numeric(unlist(x,use.names=FALSE,recursive=FALSE))})
+      } else {
+        theta_data <- as.data.table(theta_data)
+      }
+      return(theta_data)
     },
     save_theta_json = function(filename = "theta.json"){
       jj <- rjson::toJSON(private$.data$theta)
@@ -540,8 +546,9 @@ History <- R6::R6Class(
 #'      Save theta in JSON format to a file. Warning: the theta log, and therefor the file, can get very
 #'      large very fast.
 #'   }
-#'   \item{\code{get_theta_matrix(limit_agent))}}{
-#'      Retrieve an agent's simplified matrix version of the theta log.
+#'   \item{\code{get_theta(limit_agent, to_numeric_matrix = FALSE)}}{
+#'      Retrieve an agent's simplified data.table version of the theta log.
+#'      If to_numeric is TRUE, the data.table will be converted to a numeric matrix.
 #'   }
 #'   \item{\code{data}}{
 #'      Active binding, read access to History's internal data.table.
