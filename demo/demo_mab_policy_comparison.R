@@ -1,8 +1,8 @@
 library(contextual)
 
-prob_per_arm       <- c(0.9, 0.1, 0.1)
-horizon            <- 100
-simulations        <- 100
+prob_per_arm       <- c(0.5, 0.3, 0.1)
+horizon            <- 150
+simulations        <- 2000
 
 bandit             <- BasicBernoulliBandit$new(prob_per_arm)
 

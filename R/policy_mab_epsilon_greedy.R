@@ -11,13 +11,18 @@ EpsilonGreedyPolicy          <- R6::R6Class(
       self$epsilon                <- epsilon
     },
     set_parameters = function(context_params) {
+      self$theta                  <- list('exploit' = 0)
       self$theta_to_arms          <- list('n' = 0, 'mean' = 0)
     },
     get_action = function(t, context) {
       if (runif(1) > self$epsilon) {
+        # exploit best arm
+        self$theta$exploit        <- 1
         self$action$choice        <- which_max_list(self$theta$mean)
         self$action$propensity    <- 1 - self$epsilon
       } else {
+        # explore any arm
+        self$theta$exploit        <- 0
         self$action$choice        <- sample.int(context$k, 1, replace = TRUE)
         self$action$propensity    <- self$epsilon*(1/context$k)
       }
