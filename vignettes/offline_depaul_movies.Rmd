@@ -38,6 +38,7 @@ simulations <- 10  # here, "simulations" represents the number of boostrap sampl
 horizon     <- nrow(data)
 
 # Initiate Replay bandit with 10 arms and 100 context dimensions
+# Arms always start with 1 for the first arm
 log_S       <- data
 formula     <- formula("rating ~ itemid | Time_Weekday + Time_Weekend + Location_Cinema + 
                                           Location_Home + Companion_Alone + Companion_Family + 

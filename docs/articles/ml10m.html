@@ -124,7 +124,7 @@
       <h1>Demo: MovieLens 10M Dataset</h1>
                         <h4 class="author">Robin van Emden</h4>
             
-            <h4 class="date">2019-02-15</h4>
+            <h4 class="date">2019-02-19</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Nth-iteration-labs/contextual/blob/master/vignettes/ml10m.Rmd"><code>vignettes/ml10m.Rmd</code></a></small>
       <div class="hidden name"><code>ml10m.Rmd</code></div>
@@ -184,7 +184,7 @@
 <a class="sourceLine" id="cb1-49" title="49"></a>
 <a class="sourceLine" id="cb1-50" title="50"><span class="co"># Arm features</span></a>
 <a class="sourceLine" id="cb1-51" title="51"></a>
-<a class="sourceLine" id="cb1-52" title="52"><span class="co"># MovieID of top 50 ordered from 1 to N:</span></a>
+<a class="sourceLine" id="cb1-52" title="52"><span class="co"># MovieID of top 50 ordered from 1 to N as arms (Arms always start from 1)</span></a>
 <a class="sourceLine" id="cb1-53" title="53">top_<span class="dv">50</span>_movies[, MovieID   <span class="op">:</span><span class="er">=</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/numeric">as.numeric</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/factor">as.factor</a></span>(MovieID))]</a>
 <a class="sourceLine" id="cb1-54" title="54">arm_features    &lt;-<span class="st"> </span>top_<span class="dv">50</span>_movies[,<span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/head">head</a></span>(.SD, <span class="dv">1</span>),by =<span class="st"> </span>MovieID][,<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">1</span>,<span class="dv">6</span><span class="op">:</span><span class="dv">24</span>)]</a>
 <a class="sourceLine" id="cb1-55" title="55"><span class="kw">setorder</span>(arm_features,MovieID)</a>

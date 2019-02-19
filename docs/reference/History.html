@@ -237,7 +237,8 @@ Returns a vector, matrix or array with the selected theta values.</p></dd>
   cum_average = FALSE))</code></dt><dd><p>Retrieve cumulative statistics data point.</p></dd>
 <dt><code>save_theta_json(filename = "theta.json"))</code></dt><dd><p>Save theta in JSON format to a file. Warning: the theta log, and therefor the file, can get very
 large very fast.</p></dd>
-<dt><code>get_theta_matrix(limit_agent))</code></dt><dd><p>Retrieve an agent's simplified matrix version of the theta log.</p></dd>
+<dt><code>get_theta(limit_agent, to_numeric_matrix = FALSE)</code></dt><dd><p>Retrieve an agent's simplified data.table version of the theta log.
+If to_numeric is TRUE, the data.table will be converted to a numeric matrix.</p></dd>
 <dt><code>data</code></dt><dd><p>Active binding, read access to History's internal data.table.</p></dd>
 <dt><code>cumulative</code></dt><dd><p>Active binding, read access to cumulative data by name through $ accessor.</p></dd>
 <dt><code>meta</code></dt><dd><p>Active binding, read access to meta data by name through $ accessor.</p></dd>

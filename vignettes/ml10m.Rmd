@@ -68,7 +68,7 @@ top_50_movies   <- all_movies[MovieID %in% top_50]
 
 # Arm features
 
-# MovieID of top 50 ordered from 1 to N:
+# MovieID of top 50 ordered from 1 to N as arms (Arms always start from 1)
 top_50_movies[, MovieID   := as.numeric(as.factor(MovieID))]
 arm_features    <- top_50_movies[,head(.SD, 1),by = MovieID][,c(1,6:24)]
 setorder(arm_features,MovieID)
