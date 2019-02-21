@@ -26,7 +26,7 @@ OfflineBootstrappedReplayBandit <- R6::R6Class(
                             randomize = TRUE, replacement = TRUE,
                             jitter = TRUE, arm_multiply = TRUE) {
 
-      private$S         <- data           # Logged events
+      private$S         <- data_table_factors_to_numeric(data)
 
       private$formula   <- Formula::as.Formula(formula)
 

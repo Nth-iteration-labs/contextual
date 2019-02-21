@@ -18,7 +18,7 @@ OfflineLookupReplayEvaluatorBandit <- R6::R6Class(
 
       self$k                   <- k
       self$randomize           <- randomize
-      private$S                <- offline_data
+      private$S                <- data_table_factors_to_numeric(offline_data)
 
       if(!is.null(unique_lookup)) {
         dim_u                  <- dim(unique_lookup)[2]-1

@@ -631,4 +631,23 @@ prob_winner <- function(post){
 #' @return a binary (0/1) coded variable indicating whether the condition is true
 #'
 #' @export
-ind <- function(cond) ifelse(cond, 1L, 0L)
+ind <- function(cond) {
+  ifelse(cond, 1L, 0L)
+}
+
+
+#' Convert all factor columns in data.table to numeric
+#'
+#' @param dt a data.table
+#' @return the data.table with column factors converted to numeric
+#'
+#' @export
+data_table_factors_to_numeric <- function(dt){
+  setDT(dt)
+  factor_cols <- names(which(sapply(dt, class)=="factor"))
+  if(length(factor_cols) > 0) {
+    suppressWarnings(dt[,(factor_cols) :=
+                          lapply(.SD, function(x) as.numeric(as.character(x))),.SDcols=factor_cols])
+  }
+  return(dt)
+}
