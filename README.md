@@ -46,6 +46,13 @@ devtools::reload()
 
 clean and rebuild...
 
+Overview of core classes
+------------------------
+
+![](man/figures/cmab_all_medium.jpg)
+
+Contextual consists of six core classes. Of those, the [Bandit](https://github.com/Nth-iteration-labs/contextual/blob/master/R/bandit.R) and [Policy](https://github.com/Nth-iteration-labs/contextual/blob/master/R/policy.R) superclasses are generally subclassed and extended when implementing custom (synthetic or offline) bandits and policies. The other four classes ([Agent](https://github.com/Nth-iteration-labs/contextual/blob/master/R/agent.R), [Simulator](https://github.com/Nth-iteration-labs/contextual/blob/master/R/simulator.R), [History](https://github.com/Nth-iteration-labs/contextual/blob/master/R/history.R) and [Plot](https://github.com/Nth-iteration-labs/contextual/blob/master/R/plot.R)) are the workhorses of the package, and generally do their work behind the scenes.
+
 Documentation
 -------------
 
@@ -87,12 +94,6 @@ Paper offering a general overview of the package's structure & API:
 * [Blog at Pavlov](https://pavlov.tech/category/contextual/)
 -->
 
-Overview of core classes
-------------------------
-
-
-![](man/figures/cmab_all_medium.jpg)
-
 Policies and Bandits
 --------------------
 
@@ -100,7 +101,7 @@ Overview of contextual's growing library of contextual and context-free bandit p
 
 | General | Context-free | Contextual | Other |
 |---------------|-------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------|------------------------------|
-| Random<br>  Oracle<br> Fixed <br> <br> <br><br><br>  | Epsilon-Greedy<br>  Epsilon-First<br>  UCB1, UCB2<br>   Thompson Sampling<br>   BootstrapTS<br>   Softmax<br> Gradient<br>  Gittins | CMAB Naive Epsilon-Greedy <br> Epoch-Greedy<br>   LinUCB (General, Disjoint, Hybrid)<br>Linear Thompson Sampling<br> ProbitTS<br> LogitBTS<br>GLMUCB<br>  <br>  | Lock-in Feedback (LiF)  <br> <br> <br> <br><br> <br><br> <br>  |
+| Random<br>  Oracle<br> Fixed <br><br><br><br><br><br>  | Epsilon-Greedy<br>  Epsilon-First<br>  UCB1, UCB2<br>   Thompson Sampling<br>   BootstrapTS<br>   Softmax<br> Gradient<br>  Gittins | CMAB Naive Epsilon-Greedy <br> Epoch-Greedy<br>   LinUCB (General, Disjoint, Hybrid)<br>Linear Thompson Sampling<br> ProbitTS<br> LogitBTS<br>GLMUCB<br>  <br>  | Lock-in Feedback (LiF)  <br> <br> <br> <br><br> <br><br> <br>  |
 
 Overview of contextual's bandit library:
 
