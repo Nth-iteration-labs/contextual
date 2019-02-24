@@ -17,16 +17,17 @@ Bandit <- R6::R6Class(
     },
     get_context = function(t) {
       stop("Bandit subclass needs to implement bandit$get_context()", call. = FALSE)
-      # Return a list with self$k, self$d and, where applicable, the self$d x self$k context Matrix X.
+      # Return a list with number of arms self$k, number of feature dimensions self$d and, where
+      # applicable, a self$d dimensional context vector or self$d x self$k dimensional context matrix X.
       list(X = context, k = arms, d = features) # nocov
     },
     get_reward = function(t, context, action) {
       stop("Bandit subclass needs to implement bandit$get_reward()", call. = FALSE)
-      # Return a list with the reward of the chosen arm and, if possible, best arm index and reward
+      # Return a list with the reward of the chosen arm and, if available, optimal arm reward and index
       list(reward = reward_for_choice_made, optimal_reward = optimal_reward, optimal_arm = optimal_arm) # nocov
     },
     generate_bandit_data = function(n) {
-      # Pregenerate n contexts and rewards here.
+      # Optionally pregenerate n contexts and rewards here.
     },
     final = function() {
       # called on object destruction

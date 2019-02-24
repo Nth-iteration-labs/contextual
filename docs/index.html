@@ -157,6 +157,12 @@
 <a class="sourceLine" id="cb3-4" title="4">devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reload">reload</a></span>()</a></code></pre></div>
 <p>clean and rebuild…</p>
 </div>
+<div id="overview-of-core-classes" class="section level2">
+<h2 class="hasAnchor">
+<a href="#overview-of-core-classes" class="anchor"></a>Overview of core classes</h2>
+<p><img src="reference/figures/cmab_all_medium.jpg"></p>
+<p>Contextual consists of six core classes. Of these, the <a href="https://github.com/Nth-iteration-labs/contextual/blob/master/R/bandit.R">Bandit</a> and <a href="https://github.com/Nth-iteration-labs/contextual/blob/master/R/policy.R">Policy</a> classes are subclassed and extended when implementing custom (synthetic or offline) bandits and policies. The other four classes (<a href="https://github.com/Nth-iteration-labs/contextual/blob/master/R/agent.R">Agent</a>, <a href="https://github.com/Nth-iteration-labs/contextual/blob/master/R/simulator.R">Simulator</a>, <a href="https://github.com/Nth-iteration-labs/contextual/blob/master/R/history.R">History</a>, and <a href="https://github.com/Nth-iteration-labs/contextual/blob/master/R/plot.R">Plot</a>) are the workhorses of the package, and generally need not be adapted or subclassed.</p>
+</div>
 <div id="documentation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#documentation" class="anchor"></a>Documentation</h2>
@@ -195,11 +201,6 @@
 * [Blog at Pavlov](https://pavlov.tech/category/contextual/)
 -->
 </div>
-<div id="overview-of-core-classes" class="section level2">
-<h2 class="hasAnchor">
-<a href="#overview-of-core-classes" class="anchor"></a>Overview of core classes</h2>
-<p><img src="reference/figures/cmab_all_medium.jpg"></p>
-</div>
 <div id="policies-and-bandits" class="section level2">
 <h2 class="hasAnchor">
 <a href="#policies-and-bandits" class="anchor"></a>Policies and Bandits</h2>
@@ -218,7 +219,7 @@
 <th>Other</th>
 </tr></thead>
 <tbody><tr class="odd">
-<td>Random<br> Oracle<br> Fixed <br><br><br><br><br>
+<td>Random<br> Oracle<br> Fixed <br><br><br><br><br><br>
 </td>
 <td>Epsilon-Greedy<br> Epsilon-First<br> UCB1, UCB2<br> Thompson Sampling<br> BootstrapTS<br> Softmax<br> Gradient<br> Gittins</td>
 <td>CMAB Naive Epsilon-Greedy <br> Epoch-Greedy<br> LinUCB (General, Disjoint, Hybrid)<br>Linear Thompson Sampling<br> ProbitTS<br> LogitBTS<br>GLMUCB<br><br>

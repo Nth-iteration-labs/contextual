@@ -51,7 +51,7 @@ Overview of core classes
 
 ![](man/figures/cmab_all_medium.jpg)
 
-Contextual consists of six core classes. Of these, the [Bandit](https://github.com/Nth-iteration-labs/contextual/blob/master/R/bandit.R) and [Policy](https://github.com/Nth-iteration-labs/contextual/blob/master/R/policy.R) classes are subclassed and extended when implementing custom (synthetic or offline) bandits and policies. The other four classes ([Agent](https://github.com/Nth-iteration-labs/contextual/blob/master/R/agent.R), [Simulator](https://github.com/Nth-iteration-labs/contextual/blob/master/R/simulator.R), [History](https://github.com/Nth-iteration-labs/contextual/blob/master/R/history.R) and [Plot](https://github.com/Nth-iteration-labs/contextual/blob/master/R/plot.R)) are the workhorses of the package, and generally need not be adapted or subclassed.
+Contextual consists of six core classes. Of these, the [Bandit](https://github.com/Nth-iteration-labs/contextual/blob/master/R/bandit.R) and [Policy](https://github.com/Nth-iteration-labs/contextual/blob/master/R/policy.R) classes are subclassed and extended when implementing custom (synthetic or offline) bandits and policies. The other four classes ([Agent](https://github.com/Nth-iteration-labs/contextual/blob/master/R/agent.R), [Simulator](https://github.com/Nth-iteration-labs/contextual/blob/master/R/simulator.R), [History](https://github.com/Nth-iteration-labs/contextual/blob/master/R/history.R), and [Plot](https://github.com/Nth-iteration-labs/contextual/blob/master/R/plot.R)) are the workhorses of the package, and generally need not be adapted or subclassed.
 
 Documentation
 -------------
