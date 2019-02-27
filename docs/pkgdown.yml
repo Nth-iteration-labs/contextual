@@ -10,9 +10,9 @@ articles:
   mabs: mabs.html
   ml10m: ml10m.html
   offline_depaul_movies: offline_depaul_movies.html
+  faq: only_pkgdown/faq.html
   replication: replication.html
   simpsons: simpsons.html
   sutton_barto: sutton_barto.html
   website_optimization: website_optimization.html
-  faq: _only_pkgdown_/faq.html
 

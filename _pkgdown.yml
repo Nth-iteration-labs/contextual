@@ -16,7 +16,7 @@ navbar:
       href: index.html
     FAQ:
         text: FAQ
-        href: articles/_only_pkgdown_/faq.html
+        href: articles/only_pkgdown/faq.html
     reference:
       text: Reference
       href: reference/index.html

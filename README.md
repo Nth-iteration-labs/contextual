@@ -58,7 +58,7 @@ Documentation
 
 See the [demo directory](https://github.com/Nth-iteration-labs/contextual/tree/master/demo) for practical examples and replications of both synthetic and offline (contextual) bandit policy evaluations. 
 
-When seeking to extend contextual, it may also be of use to review ["Extending Contextual: Frequently Asked Questions"](https://nth-iteration-labs.github.io/contextual/articles/_only_pkgdown_/faq.html), before diving into the source code.
+When seeking to extend contextual, it may also be of use to review ["Extending Contextual: Frequently Asked Questions"](https://nth-iteration-labs.github.io/contextual/articles/only_pkgdown/faq.html), before diving into the source code.
 
 How to replicate figures from two introductory context-free Multi-Armed Bandits texts:
 
