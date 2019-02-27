@@ -1,5 +1,58 @@
 #navbar:
 #  type: inverse
+navbar:
+  structure:
+    left:
+    - home
+    - intro
+    - reference
+    - articles
+    - tutorials
+    - news
+    right: github
+  components:
+    home:
+      icon: fa-home fa-lg
+      href: index.html
+    FAQ:
+        text: FAQ
+        href: articles/_only_pkgdown_/faq.html
+    reference:
+      text: Reference
+      href: reference/index.html
+    articles:
+      text: Articles
+      menu:
+      - text: 'Demo: Basic Synthetic cMAB Policies'
+        href: articles/cmabs.html
+      - text: 'Demo: Offline cMAB LinUCB evaluation'
+        href: articles/cmabsoffline.html
+      - text: 'Demo: MAB Replication Eckles & Kaptein (Bootstrap Thompson Sampling)'
+        href: articles/eckles_kaptein.html
+      - text: 'Demo: Basic Epsilon Greedy'
+        href: articles/epsilongreedy.html
+      - text: 'Getting started: running simulations'
+        href: articles/introduction.html
+      - text: 'Demo: MAB Policies Comparison'
+        href: articles/mabs.html
+      - text: 'Demo: MovieLens 10M Dataset'
+        href: articles/ml10m.html
+      - text: 'Demo: Offline cMAB: CarsKit DePaul Movie Dataset'
+        href: articles/offline_depaul_movies.html
+      - text: 'Offline evaluation: Replication of Li et al 2010'
+        href: articles/replication.html
+      - text: 'Demo: Bandits, Propensity Weighting & Simpson''s Paradox in R'
+        href: articles/simpsons.html
+      - text: 'Demo: Replication Sutton & Barto, Reinforcement Learning: An Introduction, Chapter 2'
+        href: articles/sutton_barto.html
+      - text: 'Demo: Replication of John Myles White, Bandit Algorithms for Website Optimization'
+        href: articles/website_optimization.html
+    news:
+      text: Changelog
+      href: news/index.html
+    github:
+      icon: fa-github fa-lg
+      href: https://github.com/Nth-iteration-labs/contextual
 reference:
   - title: "Core"
     desc: "Contextual's core classes."

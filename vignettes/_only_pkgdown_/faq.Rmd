@@ -1,0 +1,166 @@
+---
+title: "Frequently Asked Questions"
+author: "Robin van Emden"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Frequently Asked Questions}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE, cache = TRUE}
+knitr::opts_chunk$set(
+  fig.pos = 'H',
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Extending Contextual: Frequently Asked Questions
+
+- [Are contextual's arms zero- or one-based?](#are-contextuals-arms-zero--or-one-based)
+- [ What is this "self$theta_to_arms" list I see in some Policies?](#what-is-this-selftheta_to_arms-list-i-see-in-some-policies)
+- ["Cannot add bindings to a locked environment"?](#cannot-add-bindings-to-a-locked-environment)
+- [Messages from Bandits and Policies do not show in the console?](#messages-from-bandits-and-policies-do-not-show-in-the-console)
+- [How do I use R packages within custom Bandits and Policies?](#how-do-i-use-r-packages-within-custom-bandits-and-policies)
+- [Why are my custom classes slower than contextual's?](#why-are-my-custom-classes-slower-than-contextuals)
+- [Where do I instantiate a Bandit's simulation level-randomization?](#where-do-i-instantiate-a-bandits-simulation-level-randomization)
+- [What is this public “class_name” member in every Bandit and Policy?](#what-is-this-public-class_name-member-in-every-bandit-and-policy)
+
+## Are contextual's arms zero- or one-based?
+
+In contextual, arms are one based. In other words, in contextual ```k``` arms are represented by ```k <- c(1,2,3,4,...) ```
+
+## What is this "self$theta_to_arms" list I see in some Policies?
+
+In many of contextual's Policy's set_parameters() initialisation function, a parameter list is being 
+assigned to a "self\$theta_to_arms". But the parameters themselves are later only available through self\$theta.
+
+The following source code comments how this little helper variable is used:
+
+```r
+EpsilonFirstPolicy              <- R6::R6Class(
+  inherit = Policy,
+  public = list(
+    first = NULL,
+    class_name = "EpsilonFirstPolicy",
+    initialize = function(epsilon = 0.1, N = 1000) {
+      super$initialize()
+      self$first                <- ceiling(epsilon*N)
+    },
+    set_parameters = function(context_params) {
+
+      self$theta_to_arms        <- list('n' = 0, 'mean' = 0)
+
+      # Here we define a list with 'n' and 'mean' theta parameters to each
+      # arm through helper variable self$theta_to_arms. That is, when the
+      # number of arms is 'k', the above would equal:
+
+      # self$theta <- list(n = rep(list(0,k)), 'mean' = rep(list(0,k)))
+
+      # ... which would also work just fine, but is much less concise.
+
+      # When assigning both to self$theta directly & via self$theta_to_arms,
+      # make sure to do it in that particular order.
+    },
+    get_action = function(t, context) {
+      if (sum_of(self$theta$n) < self$first) {
+        action$choice           <- sample.int(context$k, 1, replace = TRUE)
+      } else {
+        action$choice           <- max_in(self$theta$mean)
+      }
+      action
+    },
+    set_reward = function(t, context, action, reward) {
+      arm                       <- action$choice
+      reward                    <- reward$reward
+      inc(self$theta$n[[arm]])  <- 1
+      if (sum_of(self$theta$n) < self$first - 1) {
+        inc(self$theta$mean[[arm]]) <-
+           (reward - self$theta$mean[[arm]]) / self$theta$n[[arm]]
+      }
+      self$theta
+    }
+  )
+)
+```
+
+## "Cannot add bindings to a locked environment"?
+
+Contextual is build using the ```R6``` class system. In ```R6```, you cannot create new attributes to ```R6``` objects just by assigning to $ indexed values as you can in S3. More information on ```R6``` in general and public and private members in particular can be found in the [Introduction to R6 classes](https://r6.r-lib.org/articles/Introduction.html) vignette. 
+
+## Messages from Bandits and Policies do not show in the console?
+
+By default, contextual's agents are running in separate parallel worker processes. As these worker processes have no direct access to the R console, they can not be tracked there. But there are two options to keep track of Bandit and Policy progress and their messages. The first is to set Simulator's ```do_parallel``` argument to ```FALSE```. The second is to set Simulator's ```progress_file``` argument to ```TRUE```.  If ```TRUE```, Simulator writes ```workers_progress.log```, ```agents_progress.log``` and ```parallel.log``` files to the current working directory, allowing you to keep track of respectively workers, agents, and potential errors when running a Simulator in parallel mode.
+
+## How do I use R packages within custom Bandits and Policies?
+
+If one of your custom Bandits or Policies requires a specific R package, use Simulator's ```include_packages``` 
+option to distribute the package(s) to each of a Simulator intance's workers:
+
+
+```r
+simulator <- Simulator$new(agents,
+                           horizon = 100L,
+                           simulations = 100L,
+                           include_packages = c("rstan","plyr"))  # <- distributes package(s) 
+                                                                  #    to parallel workers
+```
+
+It is then good practice to use a double colon operator to access some function from any included packages:
+
+```r
+# At the top of a custom Bandit or Policy R file
+library(testthat)
+Bandit <- R6::R6Class(
+  class    = FALSE,
+  public   = list(
+    ...
+    # Within a custom Bandit or Policy
+    fit <- stan::stan(...)
+    ...
+)
+``` 
+
+## Why are my custom classes slower than contextual's?
+
+Contextual makes ample use of the ```data.table``` package, which, if used the "data.table way", can speed up
+in-memory data related operations substantially. For more infomation on ```data.table```, see the 
+[Intro to data.table](https://cran.r-project.org/web/packages/data.table/vignettes/datatable-intro.html) 
+vignette, and, for instance, this [data.table cheat sheet](https://www.datacamp.com/community/tutorials/data-table-cheat-sheet).
+
+That does not imply that this is the only way to go - contextual's Bandits and Policies make use of basic 
+(fast) matrix based operations as well, and its Simulation and offline Bandits have been extended to, 
+among others, read and write to and from the super fast open-source column-oriented Monet 
+database management system.
+
+## Where do I instantiate a Bandit's simulation level-randomization?
+
+Bandit  ```initialization()``` function is called before Bandit and Policy clones are distributed simulations. So generally, it is advisable to randomize within Bandits' ```post_initialization()``` function, which is called right before starting every simulation. 
+
+Here, contextual's Simulator class ensures that every Policy and Bandit pair (bound by their shared Agent) will run their simulations on a deterministically set of seeds, ensuring both replicability and fair comparisons between agents.
+
+## What is this public "class_name" member in every Bandit and Policy?
+
+Contextual uses the public "class_name" member internally to keep track of Policy's and Bandit's, and to,
+among others, generate names for Agents' that have not been named explicitly. So don't forget to include it
+in your own custom Bandit's and Policies!
+
+```r
+#' @export
+LinUCBDisjointOptimizedPolicy <- R6::R6Class(     # <-- not directly accessible to contextual
+  portable = FALSE,
+  class = FALSE,
+  inherit = Policy,
+  public = list(
+    alpha = NULL,
+    class_name = "LinUCBDisjointOptimizedPolicy",  # <-- so Bandits and Policies need class_name too
+    initialize = function(alpha = 1.0) {
+      super$initialize()
+      self$alpha <- alpha
+    },
+    ...
+```
+
+

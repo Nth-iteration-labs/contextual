@@ -345,6 +345,21 @@ invlogit <- function(x){
   exp(x)/(1+exp(x))
 }
 
+#' A vector of zeroes and ones
+#'
+#' @param vector_length How long will the vector be?
+#' @param index_of_one Where to insert the one?
+#'
+#' @return Vector of zeroes with one(s) at given index position(s)
+#'
+#' @export
+ones_in_zeroes <- function(vector_length, index_of_one) {
+  x <- rep(0, vector_length)
+  x[index_of_one] <- 1
+  return(x[1:vector_length])
+}
+
+
 #' Return context vector of an arm
 #'
 #' Given d x k matrix or d dimensional vector X,
