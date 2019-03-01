@@ -55,6 +55,7 @@ Agent <- R6::R6Class(
 
       agent_t  <<- agent_t + 1L
       context   <- bandit$get_context(agent_t)
+      if(is.null(context)) return(list(context = NULL, action = NULL, reward = NULL))
       if(is.null(context$d)) context$d <- self$bandit$d
       if(is.null(context$unique)) context$unique <- c(1:context$d)
       if(is.null(context$shared)) context$shared <- c(1:context$d)
