@@ -83,7 +83,7 @@ Examples of both synthetic and offline *contextual* multi-armed bandit evaluatio
 
 An example how to make use of the optional theta log to create interactive context-free bandit animations:
 
-* https://pavlov.tech/2019/03/02/animated-multi-armed-bandit-policies/
+* [Interactive, animated versions of Epsilon Greedy, UCB1 and Thompson Sampling policies](https://pavlov.tech/2019/03/02/animated-multi-armed-bandit-policies/)
 
 Some more extensive vignettes to get you started with the package:
 
