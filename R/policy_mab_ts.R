@@ -12,14 +12,13 @@ ThompsonSamplingPolicy <- R6::R6Class(
       self$beta   <- beta
     },
     set_parameters = function(context_params) {
-      self$theta_to_arms <- list('succes' = self$alpha, 'failure' = self$beta)
+      self$theta_to_arms <- list('succes' = self$alpha, 'failure' = self$beta, "mu" = 0)
     },
     get_action = function(t, context) {
-      mean_estimate <- vector("double", context$k)
       for (arm in 1:context$k) {
-        mean_estimate[arm] <- stats::rbeta(1, self$theta$succes[[arm]], self$theta$failure[[arm]])
+        self$theta$mu[[arm]]   <- stats::rbeta(1, self$theta$succes[[arm]], self$theta$failure[[arm]])
       }
-      action$choice <- which_max_tied(mean_estimate)
+      action$choice <- which_max_list(self$theta$mu)
       action
     },
     set_reward = function(t, context, action, reward) {
