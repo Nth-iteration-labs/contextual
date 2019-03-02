@@ -81,6 +81,10 @@ Examples of both synthetic and offline *contextual* multi-armed bandit evaluatio
 
 * [Offline Bandits and Simpson's Paradox](https://nth-iteration-labs.github.io/contextual/articles/simpsons.html)
 
+An example how to make use of the optional theta log to create interactive context-free bandit animations:
+
+* https://pavlov.tech/2019/03/02/animated-multi-armed-bandit-policies/
+
 Some more extensive vignettes to get you started with the package:
 
 * [Getting started: running simulations](https://nth-iteration-labs.github.io/contextual/articles/introduction.html)
