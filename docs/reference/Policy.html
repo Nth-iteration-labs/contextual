@@ -184,7 +184,7 @@
 <code>context$X</code>*, the current number of <code><a href='Bandit.html'>Bandit</a></code> arms in <code>context$k</code>, and the current
 number of contextual features in <code>context$d</code>.</p>
 <p>To make sure a policy supports both contextual feature vectors and matrices in <code>context$X</code>, it is
-suggested any contextual policy makes use of <span class="pkg">contextual</span>'s <code><a href='get_arm_context.html'>get_arm_context(context$X, arm)</a></code>
+suggested any contextual policy makes use of <span class="pkg">contextual</span>'s <code><a href='get_arm_context.html'>get_arm_context(context, arm)</a></code>
 utility function to obtain the current context for a particular arm, <code>and get_full_context(X, d, k)</code>
 where a policy needs to obtain of the full <code>d x k</code> matrix.</p>
 <p>It has to compute which of the <code>k</code>

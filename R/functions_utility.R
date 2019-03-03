@@ -78,8 +78,9 @@ which_max_list <- function(x, equal_is_random = TRUE) {
 #'
 #' Returns the index of the maximum value in vector \code{vec}.
 #'
-#' If there is a tie,
-#' the index of one of the tied maxima is returned at random.
+#' If there is a tie, and equal_is_random is TRUE,
+#' the index of one of the tied maxima is returned at random. Otherwise,
+#' the value with the lowest index is returned.
 #'
 #' @param x vector of values
 #' @param equal_is_random boolean
@@ -96,6 +97,10 @@ which_max_tied <- function(x, equal_is_random = TRUE) {
 #' Sum of list
 #'
 #' Returns the sum of the values of the elements of a list \code{x}.
+#'
+#' If there is a tie, and equal_is_random is TRUE,
+#' the index of one of the tied maxima is returned at random. Otherwise,
+#' the value with the lowest index is returned.
 #'
 #' @param x List
 #'
@@ -365,15 +370,18 @@ ones_in_zeroes <- function(vector_length, index_of_one) {
 #' Given d x k matrix or d dimensional vector X,
 #' returns a vector with arm's context.
 #'
-#' @param X d x k Matrix.
+#' @param context a context list containing a d x k Matrix or
+#' d dimensional context vector X, the number of features d and
+#' number of arms k.
 #' @param arm index of arm.
 #' @param select_features indices of to be returned features.
 #'
 #' @return Vector that represents context related to an arm
 #'
 #' @export
-get_arm_context <- function(X, arm, select_features = NULL) {
+get_arm_context <- function(context, arm, select_features = NULL) {
   # X <- as.numeric(levels(X))[X]
+  X <- context$X
   if(is.null(select_features)) {
     if(is.vector(X)) return(X) else return(X[, arm])
   } else {
@@ -388,15 +396,18 @@ get_arm_context <- function(X, arm, select_features = NULL) {
 #' number of arms k and number of features d
 #' returns a matrix with d x k context matrix
 #'
-#' @param X d x k Matrix or d dimensional context vector.
-#' @param d number of features.
-#' @param k number of arms.
+#' @param context a context list containing a d x k Matrix or
+#' d dimensional context vector X, the number of features d and
+#' number of arms k.
 #' @param select_features indices of to be returned feature rows.b
 #'
 #' @return A d x k context Matrix
 #'
 #' @export
-get_full_context <- function(X, d, k, select_features = NULL) {
+get_full_context <- function(context, select_features = NULL) {
+  X <- context$X
+  d <- context$d
+  k <- context$k
   if(is.null(select_features)) {
     if(is.vector(X)) return(matrix(X,d,k)) else return(X)
   } else {

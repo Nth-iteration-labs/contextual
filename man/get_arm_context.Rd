@@ -4,10 +4,12 @@
 \alias{get_arm_context}
 \title{Return context vector of an arm}
 \usage{
-get_arm_context(X, arm, select_features = NULL)
+get_arm_context(context, arm, select_features = NULL)
 }
 \arguments{
-\item{X}{d x k Matrix.}
+\item{context}{a context list containing a d x k Matrix or
+d dimensional context vector X, the number of features d and
+number of arms k.}
 
 \item{arm}{index of arm.}
 

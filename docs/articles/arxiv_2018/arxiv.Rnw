@@ -726,7 +726,7 @@ Each of these bandits can either be run directly or serve as templates or superc
 
 \code{Policy} is another often subclassed contexual superclass. Just like the \code{Bandit} superclass, \code{Policy} is an abstract class that declares methods without itself offering an implementation. Any \code{Policy} subclass is therefore expected to implement \code{get_action()} and \code{set_reward()}. Also, any parameters that keep track or summarize \code{context}, \code{action} and \code{reward} values are required to be saved to \code{Policy}'s \textit{named list} \code{theta}.
 
-On every \emph{t} = \{1, \ldots, T\}, a policy receives either a \code{d}-dimensional vector or a \code{d} $\times$ \code{k} dimensional matrix \code{context$X}. To make sure a policy supports both contextual feature vectors and matrices in \code{context$X}, it is suggested any contextual policy makes use of \pkg{contextual}'s \code{get_arm_context(context$X, arm)} utility function to obtain the current context for a particular arm, \code{and get_full_context(X, d, k)} where a policy needs to obtain of the full \code{d x k} matrix.
+On every \emph{t} = \{1, \ldots, T\}, a policy receives either a \code{d}-dimensional vector or a \code{d} $\times$ \code{k} dimensional matrix \code{context$X}. To make sure a policy supports both contextual feature vectors and matrices in \code{context$X}, it is suggested any contextual policy makes use of \pkg{contextual}'s \code{get_arm_context(context, arm)} utility function to obtain the current context for a particular arm, or \code{get_full_context(context)} when a policy makes use of the full \code{d x k} context matrix.
 
 Next to the context vector or matrix, a policy also receives, at least, the current number of \code{Bandit} arms in \code{context$k}, and the current number of contextual features in \code{context$d}. It has to compute which of the \code{k} \code{Bandit} arms to pull by taking into account this contextual information plus the policy's current parameter values stored in the named list \code{theta}. On selecting an arm, the policy then returns its index as \code{action$choice}:
 
@@ -1217,7 +1217,7 @@ LinUCBDisjointPolicy <- R6::R6Class(
     get_action = function(t, context) {
       expected_rewards <- rep(0.0, context$k)
       for (arm in 1:context$k) {
-        Xa         <- get_arm_context(context$X, arm, context$unique)
+        Xa         <- get_arm_context(context, arm, context$unique)
         A          <- self$theta$A[[arm]]
         b          <- self$theta$b[[arm]]
         A_inv      <- inv(A)
@@ -1232,7 +1232,7 @@ LinUCBDisjointPolicy <- R6::R6Class(
     set_reward = function(t, context, action, reward) {
       arm    <- action$choice
       reward <- reward$reward
-      Xa     <- get_arm_context(context$X, arm, context$unique)
+      Xa     <- get_arm_context(context, arm, context$unique)
 
       inc(self$theta$A[[arm]]) <- outer(Xa, Xa)
       inc(self$theta$b[[arm]]) <- reward * Xa

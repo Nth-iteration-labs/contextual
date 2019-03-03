@@ -31,7 +31,7 @@ ContextualTSProbitPolicy <- R6::R6Class(
         mus    <- c(self$theta$main_mu,self$theta$arm_mu[[arm]])
         sigmas <- c(self$theta$main_sigma,self$theta$arm_sigma[[arm]])
 
-        Xa     <- get_arm_context(context$X, arm)
+        Xa     <- get_arm_context(context, arm)
 
         # Sample J times from a normal mean and sd=se (exploration)
         betas <- matrix(rnorm(2*context$d*J, mus, sigmas), ncol=J, nrow=2*context$d)
@@ -51,7 +51,7 @@ ContextualTSProbitPolicy <- R6::R6Class(
       arm                            <- action$choice
       reward                         <- reward$reward
 
-      Xa                             <- get_arm_context(context$X, arm)
+      Xa                             <- get_arm_context(context, arm)
       y                              <- reward*2-1 # -1,1
 
       if(self$use_prop)              y <- y * 1/action$propensity

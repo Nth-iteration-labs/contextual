@@ -34,7 +34,7 @@ ContextualEpochGreedyPolicy <- R6::R6Class(
         theta_hat             <- A_inv %*% b
         expected_rewards <- rep(0.0, context$k)
         for (arm in 1:context$k) {
-          Xa                    <- get_arm_context(context$X, arm)
+          Xa                    <- get_arm_context(context, arm)
           mu_hat                <- Xa %*% theta_hat
           expected_rewards[arm] <- mu_hat
         }
@@ -46,7 +46,7 @@ ContextualEpochGreedyPolicy <- R6::R6Class(
       if (t <= self$p || t <= context$k || self$e==1) {
         arm                      <- action$choice
         reward                   <- reward$reward
-        Xa                       <- get_arm_context(context$X, arm)
+        Xa                       <- get_arm_context(context, arm)
         self$theta$n             <- self$theta$n + 1
         inc(self$theta$A)        <- outer(Xa, Xa)
         inc(self$theta$b)        <- reward * Xa

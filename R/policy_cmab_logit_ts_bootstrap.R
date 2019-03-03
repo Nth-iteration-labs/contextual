@@ -21,7 +21,7 @@ ContextualLogitBTSPolicy <- R6::R6Class(
       for (arm in 1:context$k) {
         # main plus interaction
         coefs <- cbind(self$theta$M,self$theta$i[[arm]])
-        Xa    <- get_arm_context(context$X, arm)
+        Xa    <- get_arm_context(context, arm)
         pred[,arm]  <- coefs%*%c(Xa,Xa)
       }
       wins          <- apply(pred,1,which_max_tied)
@@ -39,7 +39,7 @@ ContextualLogitBTSPolicy <- R6::R6Class(
 
       if(self$use_prop)         reward <- reward * 1/action$propensity
 
-      X                         <- get_arm_context(context$X, arm)
+      X                         <- get_arm_context(context, arm)
 
       update                    <- which(rbinom(self$J,1,.5)==1)
 

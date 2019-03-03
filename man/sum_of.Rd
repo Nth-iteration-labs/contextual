@@ -12,6 +12,11 @@ sum_of(x)
 \description{
 Returns the sum of the values of the elements of a list \code{x}.
 }
+\details{
+If there is a tie, and equal_is_random is TRUE,
+the index of one of the tied maxima is returned at random. Otherwise,
+the value with the lowest index is returned.
+}
 \examples{
 
 theta = list(par_one = list(1,2,3), par_two = list(2,3,4))

@@ -4,14 +4,12 @@
 \alias{get_full_context}
 \title{Get full context matrix over all arms}
 \usage{
-get_full_context(X, d, k, select_features = NULL)
+get_full_context(context, select_features = NULL)
 }
 \arguments{
-\item{X}{d x k Matrix or d dimensional context vector.}
-
-\item{d}{number of features.}
-
-\item{k}{number of arms.}
+\item{context}{a context list containing a d x k Matrix or
+d dimensional context vector X, the number of features d and
+number of arms k.}
 
 \item{select_features}{indices of to be returned feature rows.b}
 }

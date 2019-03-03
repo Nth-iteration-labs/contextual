@@ -17,7 +17,7 @@ ContextualLinTSPolicy <- R6::R6Class(
     get_action = function(t, context) {
       expected_rewards           <- rep(0.0, context$k)
       for (arm in 1:context$k) {
-        Xa                       <- get_arm_context(context$X, arm, context$unique)
+        Xa                       <- get_arm_context(context, arm, context$unique)
         A_inv                    <- self$theta$A_inv[[arm]]
         b                        <- self$theta$b[[arm]]
 
@@ -33,7 +33,7 @@ ContextualLinTSPolicy <- R6::R6Class(
       arm    <- action$choice
       reward <- reward$reward
 
-      Xa    <- get_arm_context(context$X, arm, context$unique)
+      Xa    <- get_arm_context(context, arm, context$unique)
 
       self$theta$A_inv[[arm]]  <- sherman_morrisson(self$theta$A_inv[[arm]],Xa)
       self$theta$b[[arm]]      <- self$theta$b[[arm]] + reward * Xa

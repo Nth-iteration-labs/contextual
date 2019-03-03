@@ -15,6 +15,7 @@ which_max_tied(x, equal_is_random = TRUE)
 Returns the index of the maximum value in vector \code{vec}.
 }
 \details{
-If there is a tie,
-the index of one of the tied maxima is returned at random.
+If there is a tie, and equal_is_random is TRUE,
+the index of one of the tied maxima is returned at random. Otherwise,
+the value with the lowest index is returned.
 }

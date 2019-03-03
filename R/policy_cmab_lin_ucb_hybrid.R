@@ -34,8 +34,8 @@ LinUCBHybridPolicy <- R6::R6Class(
         B          <- self$theta$B[[arm]]
         b          <- self$theta$b[[arm]]
 
-        x          <- get_arm_context(context$X, arm, context$unique)
-        s          <- get_arm_context(context$X, arm, context$shared)
+        x          <- get_arm_context(context, arm, context$unique)
+        s          <- get_arm_context(context, arm, context$shared)
         z          <- matrix(as.vector(outer(x,s)))
 
         A_inv      <- inv(A)
@@ -74,8 +74,8 @@ LinUCBHybridPolicy <- R6::R6Class(
       arm            <- action$choice
       reward         <- reward$reward
 
-      x              <- get_arm_context(context$X, arm, context$unique)
-      s              <- get_arm_context(context$X, arm, context$shared)
+      x              <- get_arm_context(context, arm, context$unique)
+      s              <- get_arm_context(context, arm, context$shared)
       z              <- matrix(as.vector(outer(x,s)))
 
       A0             <- self$theta$A0
