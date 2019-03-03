@@ -35,14 +35,14 @@ rewards      <- c(0,0,1,0,1)
 max_reward   <-which.max(rewards)
 max_reward   # always contains lowest index, 3 in this case, biasing results
 ```
-Contextual correctly returns the index of one of the tied maxima random, fixing the bias, resulting in slightly different plots. In Python, a patch along the following lines would resolve this issue:
+Contextual correctly returns the index of one of the tied maxima random, fixing the bias, resulting in slightly different plots. In Python, a patch along the following lines ought to resolve this issue:
 ```
 def ind_max(x):
-  max_value = max(rewards)
-  max_keys = [k for k, v in enumerate(rewards) if v == max_value]
+  max_value = max(x)
+  max_keys = [k for k, v in enumerate(x) if v == max_value]
   return random.choice(max_keys)
 ```
-In R, this corresponds to, for example:
+In R, this corresponds to:
 ```r
 rewards      <- c(0,0,1,0,1)
 max_reward   <- which(rewards == max(rewards))

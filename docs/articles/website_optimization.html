@@ -152,12 +152,12 @@
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">rewards      &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>)</a>
 <a class="sourceLine" id="cb2-2" title="2">max_reward   &lt;-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/which.min">which.max</a></span>(rewards)</a>
 <a class="sourceLine" id="cb2-3" title="3">max_reward   <span class="co"># always contains lowest index, 3 in this case, biasing results</span></a></code></pre></div>
-<p>Contextual correctly returns the index of one of the tied maxima random, fixing the bias, resulting in slightly different plots. In Python, a patch along the following lines would resolve this issue:</p>
+<p>Contextual correctly returns the index of one of the tied maxima random, fixing the bias, resulting in slightly different plots. In Python, a patch along the following lines ought to resolve this issue:</p>
 <pre><code>def ind_max(x):
-  max_value = max(rewards)
-  max_keys = [k for k, v in enumerate(rewards) if v == max_value]
+  max_value = max(x)
+  max_keys = [k for k, v in enumerate(x) if v == max_value]
   return random.choice(max_keys)</code></pre>
-<p>In R, this corresponds to, for example:</p>
+<p>In R, this corresponds to:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1">rewards      &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>)</a>
 <a class="sourceLine" id="cb4-2" title="2">max_reward   &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/which">which</a></span>(rewards <span class="op">==</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Extremes">max</a></span>(rewards))</a>
 <a class="sourceLine" id="cb4-3" title="3"><span class="cf">if</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(max_reward) <span class="op">&gt;</span><span class="st"> </span><span class="dv">1</span>){</a>
