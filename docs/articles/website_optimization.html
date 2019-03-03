@@ -140,11 +140,11 @@
     
     
 <p>Simulation of multi-armed Bandit policies following John Myles White’s “Bandit algorithms for website_optimization”.</p>
-<p>The book, which offers a great entry-level introduction to context-free bandit policies, is available here: <a href="http://shop.oreilly.com/product/0636920027393.do">John Myles White</a>. The orignal (Python) code for the book can be found in its complementary <a href="https://github.com/johnmyleswhite/BanditsBook">GitHub repository</a>.</p>
+<p>The book, which offers a comprehensive entry-level introduction to context-free bandit policies, is available here: <a href="http://shop.oreilly.com/product/0636920027393.do">John Myles White</a>. The orignal (Python) code for the book can be found in its complementary <a href="https://github.com/johnmyleswhite/BanditsBook">GitHub repository</a>.</p>
 <div id="discrepancies-with-the-book" class="section level2">
 <h2 class="hasAnchor">
 <a href="#discrepancies-with-the-book" class="anchor"></a>Discrepancies with the book</h2>
-<p>The <a href="https://github.com/johnmyleswhite/BanditsBook">code used to generate the plots</a> in the book always chooses the first arm (in other words, the arm with the lowest index) when rewards between arms are tied. In the original Python code:</p>
+<p>We did encounter one minor issue with the original <a href="https://github.com/johnmyleswhite/BanditsBook">code used to generate the plots in the book</a>: its bandit policies always choose the first arm (in other words, the arm with the lowest index) when rewards between arms are tied. In the original Python code:</p>
 <pre><code>def ind_max(x):
   m = max(x)
   return x.index(m)</code></pre>

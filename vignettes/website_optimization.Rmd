@@ -19,11 +19,11 @@ knitr::opts_chunk$set(
 
 Simulation of multi-armed Bandit policies following John Myles White's "Bandit algorithms for website_optimization".
 
-The book, which offers a great entry-level introduction to context-free bandit policies, is available here: [John Myles White](http://shop.oreilly.com/product/0636920027393.do). The orignal (Python) code for the book can be found in its complementary [GitHub repository](https://github.com/johnmyleswhite/BanditsBook).
+The book, which offers a comprehensive entry-level introduction to context-free bandit policies, is available here: [John Myles White](http://shop.oreilly.com/product/0636920027393.do). The orignal (Python) code for the book can be found in its complementary [GitHub repository](https://github.com/johnmyleswhite/BanditsBook).
 
 ## Discrepancies with the book
 
-The [code used to generate the plots](https://github.com/johnmyleswhite/BanditsBook) in the book always chooses the first arm (in other words, the arm with the lowest index) when rewards between arms are tied. In the original Python code:
+We did encounter one minor issue with the original [code used to generate the plots in the book](https://github.com/johnmyleswhite/BanditsBook): its bandit policies always choose the first arm (in other words, the arm with the lowest index) when rewards between arms are tied. In the original Python code:
 ```
 def ind_max(x):
   m = max(x)
