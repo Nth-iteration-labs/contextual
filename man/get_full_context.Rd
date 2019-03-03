@@ -4,7 +4,8 @@
 \alias{get_full_context}
 \title{Get full context matrix over all arms}
 \usage{
-get_full_context(context, select_features = NULL)
+get_full_context(context, select_features = NULL,
+  prepend_arm_matrix = FALSE)
 }
 \arguments{
 \item{context}{a context list containing a d x k Matrix or
@@ -12,6 +13,9 @@ d dimensional context vector X, the number of features d and
 number of arms k.}
 
 \item{select_features}{indices of to be returned feature rows.b}
+
+\item{prepend_arm_matrix}{prepend a diagonal arm matrix to the returned context vector. That is,
+when k = 5 arms, prepend diag(5) to the top of the matrix.}
 }
 \value{
 A d x k context Matrix

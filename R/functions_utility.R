@@ -375,19 +375,24 @@ ones_in_zeroes <- function(vector_length, index_of_one) {
 #' number of arms k.
 #' @param arm index of arm.
 #' @param select_features indices of to be returned features.
+#' @param prepend_arm_vector prepend a one-hot-encoded arm vector to the returned context vector. That is,
+#' when k = 5 arms, and the to be returned arm vector is arm 3, prepend c(0,0,1,0,0)
 #'
 #' @return Vector that represents context related to an arm
 #'
 #' @export
-get_arm_context <- function(context, arm, select_features = NULL) {
+get_arm_context <- function(context, arm, select_features = NULL, prepend_arm_vector = FALSE) {
   # X <- as.numeric(levels(X))[X]
   X <- context$X
+  k <- context$k
   if(is.null(select_features)) {
-    if(is.vector(X)) return(X) else return(X[, arm])
+    if(is.vector(X)) Xv <- X else Xv <- X[, arm]
   } else {
-    if(is.vector(X)) return(X[select_features])
-    else return(X[select_features, arm])
+    if(is.vector(X)) Xv <- X[select_features]
+    else Xv <- X[select_features, arm]
   }
+  if(isTRUE(prepend_arm_vector)) Xv <- c(ones_in_zeroes(k,arm),Xv)
+  return(Xv)
 }
 
 #' Get full context matrix over all arms
@@ -400,20 +405,24 @@ get_arm_context <- function(context, arm, select_features = NULL) {
 #' d dimensional context vector X, the number of features d and
 #' number of arms k.
 #' @param select_features indices of to be returned feature rows.b
+#' @param prepend_arm_matrix prepend a diagonal arm matrix to the returned context vector. That is,
+#' when k = 5 arms, prepend diag(5) to the top of the matrix.
 #'
 #' @return A d x k context Matrix
 #'
 #' @export
-get_full_context <- function(context, select_features = NULL) {
+get_full_context <- function(context, select_features = NULL, prepend_arm_matrix = FALSE) {
   X <- context$X
   d <- context$d
   k <- context$k
   if(is.null(select_features)) {
-    if(is.vector(X)) return(matrix(X,d,k)) else return(X)
+    if(is.vector(X)) Xm <- matrix(X,d,k) else Xm <- X
   } else {
-    if(is.vector(X)) return(X[select_features])
-    else return(X[select_features,])
+    if(is.vector(X)) Xm <- X[select_features]
+    else Xm <- X[select_features,]
   }
+  if(isTRUE(prepend_arm_vector)) Xv <- rbind(diag(k),Xv)
+  return(Xm)
 }
 
 #' @title

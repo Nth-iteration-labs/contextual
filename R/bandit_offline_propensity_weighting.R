@@ -31,10 +31,10 @@ OfflinePropensityWeightingBandit <- R6::R6Class(
       private$p <-  Formula::model.part(private$formula, data = private$S, lhs = 0, rhs = 3, drop = TRUE)
       if (length(private$p) == 0 || is.null(private$p)) {
         marginal_prob <- table(private$z)/length(private$z)
-        private$p <- marginal_prob[private$z]
+        private$p     <- marginal_prob[private$z]
       }
-      private$n     <- 0
-      private$p_hat <- 0
+      private$n       <- 0
+      private$p_hat   <- 0
     },
     get_reward = function(index, context, action) {
       if (private$z[[index]] == action$choice) {

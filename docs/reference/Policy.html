@@ -185,8 +185,8 @@
 number of contextual features in <code>context$d</code>.</p>
 <p>To make sure a policy supports both contextual feature vectors and matrices in <code>context$X</code>, it is
 suggested any contextual policy makes use of <span class="pkg">contextual</span>'s <code><a href='get_arm_context.html'>get_arm_context(context, arm)</a></code>
-utility function to obtain the current context for a particular arm, <code>and get_full_context(X, d, k)</code>
-where a policy needs to obtain of the full <code>d x k</code> matrix.</p>
+utility function to obtain the current context for a particular arm, and <code><a href='get_full_context.html'>get_full_context(context)</a></code>
+where a policy makes direct use of a <code>d x k</code> context matrix.</p>
 <p>It has to compute which of the <code>k</code>
 <code><a href='Bandit.html'>Bandit</a></code> arms to pull by taking into account this contextual information plus the policy's
 current parameter values stored in the named list <code>theta</code>. On selecting an arm, the policy then

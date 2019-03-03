@@ -10,6 +10,7 @@ OfflineBootstrappedReplayBandit <- R6::R6Class(
     x = NULL,
     y = NULL,
     z = NULL,
+    rows = NULL,
     formula = NULL
   ),
   public = list(
@@ -76,8 +77,10 @@ OfflineBootstrappedReplayBandit <- R6::R6Class(
       }
       private$y <- Formula::model.part(private$formula, data = private$S, lhs = 1, rhs = 0, drop = TRUE)
       private$z <- Formula::model.part(private$formula, data = private$S, lhs = 0, rhs = 1, drop = TRUE)
+      private$rows <- nrow(private$S)
     },
     get_context = function(index) {
+      if(index > private$rows) return(NULL)
       context <- list(
         k      = self$k,
         d      = self$d,

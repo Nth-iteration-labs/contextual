@@ -178,14 +178,17 @@ returns a vector with arm's context.</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>get_arm_context</span>(<span class='no'>X</span>, <span class='no'>arm</span>, <span class='kw'>select_features</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>get_arm_context</span>(<span class='no'>context</span>, <span class='no'>arm</span>, <span class='kw'>select_features</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>prepend_arm_vector</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>X</th>
-      <td><p>d x k Matrix.</p></td>
+      <th>context</th>
+      <td><p>a context list containing a d x k Matrix or
+d dimensional context vector X, the number of features d and
+number of arms k.</p></td>
     </tr>
     <tr>
       <th>arm</th>
@@ -194,6 +197,11 @@ returns a vector with arm's context.</p>
     <tr>
       <th>select_features</th>
       <td><p>indices of to be returned features.</p></td>
+    </tr>
+    <tr>
+      <th>prepend_arm_vector</th>
+      <td><p>prepend a one-hot-encoded arm vector to the returned context vector. That is,
+when k = 5 arms, and the to be returned arm vector is arm 3, prepend c(0,0,1,0,0)</p></td>
     </tr>
     </table>
     

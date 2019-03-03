@@ -8,13 +8,15 @@ OfflineLookupReplayEvaluatorBandit <- R6::R6Class(
     or = NULL,
     shared_lookup = NULL,
     unique_lookup = NULL,
-    unique_col = NULL
+    unique_col = NULL,
+    rows = NULL
   ),
   public = list(
     class_name = "OfflineLookupReplayEvaluatorBandit",
     randomize = NULL,
     initialize   = function(offline_data, k, shared_lookup = NULL, unique_lookup = NULL, unique_col = NULL,
                             unique = NULL, shared = NULL, randomize = TRUE) {
+
 
       self$k                   <- k
       self$randomize           <- randomize
@@ -49,8 +51,10 @@ OfflineLookupReplayEvaluatorBandit <- R6::R6Class(
     },
     post_initialization = function() {
       if(isTRUE(self$randomize)) private$S <- private$S[sample(nrow(private$S))]
+      private$rows <- nrow(private$S)
     },
     get_context = function(index) {
+      if(index > private$rows) return(NULL)
       if (self$unique!=0) {
         ulookup            <- private$unique_lookup[private$S[[private$unique_col]][[index]],]
         unique_matrix      <- matrix(ulookup, ncol = self$k, nrow = length(ulookup))

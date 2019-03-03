@@ -180,26 +180,26 @@ returns a matrix with d x k context matrix</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>get_full_context</span>(<span class='no'>X</span>, <span class='no'>d</span>, <span class='no'>k</span>, <span class='kw'>select_features</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>get_full_context</span>(<span class='no'>context</span>, <span class='kw'>select_features</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>prepend_arm_matrix</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>X</th>
-      <td><p>d x k Matrix or d dimensional context vector.</p></td>
-    </tr>
-    <tr>
-      <th>d</th>
-      <td><p>number of features.</p></td>
-    </tr>
-    <tr>
-      <th>k</th>
-      <td><p>number of arms.</p></td>
+      <th>context</th>
+      <td><p>a context list containing a d x k Matrix or
+d dimensional context vector X, the number of features d and
+number of arms k.</p></td>
     </tr>
     <tr>
       <th>select_features</th>
       <td><p>indices of to be returned feature rows.b</p></td>
+    </tr>
+    <tr>
+      <th>prepend_arm_matrix</th>
+      <td><p>prepend a diagonal arm matrix to the returned context vector. That is,
+when k = 5 arms, prepend diag(5) to the top of the matrix.</p></td>
     </tr>
     </table>
     
