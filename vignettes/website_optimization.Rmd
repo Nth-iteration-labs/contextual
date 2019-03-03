@@ -19,19 +19,44 @@ knitr::opts_chunk$set(
 
 Simulation of multi-armed Bandit policies following John Myles White's "Bandit algorithms for website_optimization".
 
-This book is available here: [John Myles White](http://shop.oreilly.com/product/0636920027393.do)
+The book, which offers a great entry-level introduction to context-free bandit policies, is available here: [John Myles White](http://shop.oreilly.com/product/0636920027393.do). The orignal (Python) code for the book can be found in its complementary [GitHub repository](https://github.com/johnmyleswhite/BanditsBook).
 
-# Discrepancies with the book
+## Discrepancies with the book
 
-The code used in the book always chooses the arm with the first index when all arms are equal. Contextual's policies correctly pick one of the max arms. That's why the plots below are slightly different from the book - they are correct, though.
+The [code used to generate the plots](https://github.com/johnmyleswhite/BanditsBook) in the book always chooses the first arm (in other words, the arm with the lowest index) when rewards between arms are tied. In the original Python code:
+```
+def ind_max(x):
+  m = max(x)
+  return x.index(m)
+```
+This introduces a bias that adds up over time, changing simulations' results and plots. In R, (which uses 1 based indexing) this corresponds to always doing:
+```r
+rewards      <- c(0,0,1,0,1)
+max_reward   <-which.max(rewards)
+max_reward   # always contains lowest index, 3 in this case, biasing results
+```
+Contextual correctly returns the index of one of the tied maxima random, fixing the bias, resulting in slightly different plots. In Python, a patch along the following lines would resolve this issue:
+```
+def ind_max(x):
+  max_value = max(rewards)
+  max_keys = [k for k, v in enumerate(rewards) if v == max_value]
+  return random.choice(max_keys)
+```
+In R, this corresponds to, for example:
+```r
+rewards      <- c(0,0,1,0,1)
+max_reward   <- which(rewards == max(rewards))
+if(length(max_reward) > 1){
+  max_reward <- sample(max_reward, 1)
+}
+max_reward   # randomly assigned either 3 or 5, no bias
+```
 
-An example of Figure 4-3 when running a simulation with an uncorrected policy (conform to the book):
+To illustrate, a replication of the original Figure 4-3 when running a simulation with the biased arm selection, (as used in the book) on the left, contextual's unbiased simulation to the right:
 
-![](eg_incorrect.png)
+![](compare.png)
 
-Compare to the (corrected) plot below.
-
-# Chapter 4 - Debugging and epsilon greedy
+## Chapter 4 - Debugging and epsilon greedy
 
 ```r
 prob_per_arm       <- c(0.1, 0.1, 0.1, 0.1, 0.9)
@@ -51,7 +76,7 @@ history            <- simulation$run()
 
 ```
 
-## Figure 4-2. How often does the epsilon greedy algorithm select the best arm?
+### Figure 4-2. How often does the epsilon greedy algorithm select the best arm?
 
 ```r
 plot(history, type = "optimal", legend_position = "bottomright", ylim = c(0,1))
@@ -59,7 +84,7 @@ plot(history, type = "optimal", legend_position = "bottomright", ylim = c(0,1))
 
 ![](eg_optimal_action.png)
 
-## Figure 4-3. How much reward does the epsilon greedy algorithm earn on average?
+### Figure 4-3. How much reward does the epsilon greedy algorithm earn on average?
 
 ```r
 plot(history, type = "average", regret = FALSE, legend_position = "bottomright", ylim = c(0,1))
@@ -67,7 +92,7 @@ plot(history, type = "average", regret = FALSE, legend_position = "bottomright",
 
 ![](eg_average_reward.png)
 
-## Figure 4-4. How much reward has the epsilon greedy algorithm earned by trial t?
+### Figure 4-4. How much reward has the epsilon greedy algorithm earned by trial t?
 
 ```r
 plot(history, type = "cumulative", regret = FALSE)
@@ -75,7 +100,7 @@ plot(history, type = "cumulative", regret = FALSE)
 
 ![](eg_cumulative_reward.png)
 
-# Chapter 5 - Softmax
+## Chapter 5 - Softmax
 
 ```r
 agents             <- list(Agent$new(SoftmaxPolicy$new(0.1), bandit, "Tau = 0.1"),
@@ -88,21 +113,21 @@ simulation         <- Simulator$new(agents, horizon, simulations)
 history            <- simulation$run()
 ```
 
-## Figure 5-2. How often does the softmax algorithm select the best arm?
+### Figure 5-2. How often does the softmax algorithm select the best arm?
 
 ```r
 plot(history, type = "optimal", legend_position = "bottomright", ylim = c(0,1))
 ```
 ![](softmax_optimal_action.png)
 
-## Figure 5-3. How much reward does the softmax algorithm earn on average?
+### Figure 5-3. How much reward does the softmax algorithm earn on average?
 
 ```r
 plot(history, type = "average", regret = FALSE, legend_position = "bottomright", ylim = c(0,1))
 ```
 ![](softmax_average_reward.png)
 
-## Figure 5-4. How much reward has the softmax algorithm earned by trial t?
+### Figure 5-4. How much reward has the softmax algorithm earned by trial t?
 
 ```r
 plot(history, type = "cumulative", regret = FALSE)
@@ -110,7 +135,7 @@ plot(history, type = "cumulative", regret = FALSE)
 ![](softmax_cumulative_reward.png)
 
 
-# Chapter 6 - UCB
+## Chapter 6 - UCB
 
 ```r
 agents             <- list(Agent$new(SoftmaxPolicy$new(0.1), bandit, "Softmax"),
@@ -121,21 +146,21 @@ simulation         <- Simulator$new(agents, horizon, simulations)
 history            <- simulation$run()
 ```
 
-## Figure 6-3. How often does the UCB algorithm select the best arm?
+### Figure 6-3. How often does the UCB algorithm select the best arm?
 
 ```r
 plot(history, type = "optimal", legend_position = "bottomright", ylim = c(0,1))
 ```
 ![](ucb_optimal_action.png)
 
-## Figure 6-4. How much reward does the UCB algorithm earn on average?
+### Figure 6-4. How much reward does the UCB algorithm earn on average?
 
 ```r
 plot(history, type = "average", regret = FALSE, legend_position = "bottomright", ylim = c(0,1))
 ```
 ![](ucb_average_reward.png)
 
-## Figure 6-5. How much reward has the UCB algorithm earned by trial t?
+### Figure 6-5. How much reward has the UCB algorithm earned by trial t?
 
 ```r
 plot(history, type = "cumulative", regret = FALSE)
