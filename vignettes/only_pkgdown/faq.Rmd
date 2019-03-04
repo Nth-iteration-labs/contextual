@@ -1,5 +1,5 @@
 ---
-title: "Frequently Asked Questions"
+title: "Development FAQ"
 author: "Robin van Emden"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
@@ -20,13 +20,14 @@ knitr::opts_chunk$set(
 ## Extending Contextual: Frequently Asked Questions
 
 - [Are contextual's arms zero- or one-based?](#are-contextuals-arms-zero--or-one-based)
-- [ What is this "self$theta_to_arms" list I see in some Policies?](#what-is-this-selftheta_to_arms-list-i-see-in-some-policies)
+- [What is this "self$theta_to_arms" list I see in some Policies?](#what-is-this-selftheta_to_arms-list-i-see-in-some-policies)
 - ["Cannot add bindings to a locked environment"?](#cannot-add-bindings-to-a-locked-environment)
 - [Messages from Bandits and Policies do not show in the console?](#messages-from-bandits-and-policies-do-not-show-in-the-console)
-- [How do I use R packages within custom Bandits and Policies?](#how-do-i-use-r-packages-within-custom-bandits-and-policies)
+- [ What is this "self$theta_to_arms" list I see in some Policies?](#what-is-this-selftheta_to_arms-list-i-see-in-some-policies)
 - [Why are my custom classes slower than contextual's?](#why-are-my-custom-classes-slower-than-contextuals)
 - [Where do I instantiate a Bandit's simulation level-randomization?](#where-do-i-instantiate-a-bandits-simulation-level-randomization)
 - [What is this public “class_name” member in every Bandit and Policy?](#what-is-this-public-class_name-member-in-every-bandit-and-policy)
+- [What is the use of get_arm_context() and get_full_context()?](#what-is-the-use-of-get_arm_context-and-get_full_context)
 
 ## Are contextual's arms zero- or one-based?
 
@@ -163,4 +164,13 @@ LinUCBDisjointOptimizedPolicy <- R6::R6Class(     # <-- not directly accessible 
     ...
 ```
 
+## What is the use of get_arm_context() and get_full_context()?
 
+Contextual passes a "context" list object between Bandit and Policy for each time step t. This object contains, for every \emph{t} = {1, ... , T}, a ```d``` dimensional feature vector or ```d x k``` dimensional matrix ```context$X```, the current number of ```Bandit``` arms in ```context$k```, and the current number of contextual features in ```context$d```.
+
+To transparently support ```Bandits``` generating either contextual feature vectors or matrices, ```contextual```'s ```Policies``` generally use the ```get_arm_context(context, arm)``` utility function to obtain the current ```X``` for a particular arm, or the ```get_full_context(context)``` utility function to obtain the full ```d x k``` context matrix. 
+
+The functions additionally support returning a subset of all context features through its ```select_features``` arguments, and they can respectively prepend a "one hot encoded" style arm vector or diagonal arm matrix through their ```prepend_arm_vector``` arguments.
+
+
+...
