@@ -346,6 +346,7 @@ Simulator <- R6::R6Class(
 #' simulator <- Simulator$new(agents,
 #'                            horizon = 100L,
 #'                            simulations = 100L,
+#'                            save_interval = 1,
 #'                            save_context = FALSE,
 #'                            save_theta = FALSE,
 #'                            do_parallel = TRUE,
@@ -402,7 +403,7 @@ Simulator <- R6::R6Class(
 #'       and potential errors when running a \code{Simulator} in parallel mode.
 #'   }
 #'   \item{\code{log_interval}}{
-#'       \code{integer}. Sets the log write interval.
+#'       \code{integer}. Sets the log write interval. Default every 1000 time steps.
 #'   }
 #'   \item{\code{include_packages}}{
 #'       \code{List}. List of packages that (one of) the policies depend on. If a \code{Policy} requires an
