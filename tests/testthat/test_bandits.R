@@ -1,5 +1,8 @@
 context("Bandits")
 
+
+suppressWarnings(RNGversion("3.5.0"))
+
 test_that("Bandit superclass", {
 
   bandit      <- Bandit$new()

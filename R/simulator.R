@@ -371,7 +371,7 @@ Simulator <- R6::R6Class(
 #'     with a new seed on each repeat (itself deterministically derived from set\_seed).
 #'   }
 #'   \item{\code{save_interval}}{
-#'     \code{integer}. Save only every \code{save_interval} time steps.
+#'     \code{integer}. Write data to historyonly every \code{save_interval} time steps. Default is 1.
 #'   }
 #'   \item{\code{save_context}}{
 #'     \code{logical}. Save the context matrices \code{X} to the History log during a simulation?
@@ -450,7 +450,6 @@ Simulator <- R6::R6Class(
 #'
 #'   policy    <- EpsilonGreedyPolicy$new(epsilon = 0.1)
 #'   bandit    <- BasicBernoulliBandit$new(weights = c(0.6, 0.1, 0.1))
-#'
 #'   agent     <- Agent$new(policy, bandit, name = "E.G.", sparse = 0.5)
 #'
 #'   history   <- Simulator$new(agents = agent,

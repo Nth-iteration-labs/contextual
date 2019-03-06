@@ -130,7 +130,7 @@
       <h1>Getting started: running simulations</h1>
                         <h4 class="author">Robin van Emden</h4>
             
-            <h4 class="date">2019-03-04</h4>
+            <h4 class="date">2019-03-06</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Nth-iteration-labs/contextual/blob/master/vignettes/introduction.Rmd"><code>vignettes/introduction.Rmd</code></a></small>
       <div class="hidden name"><code>introduction.Rmd</code></div>
@@ -157,33 +157,33 @@
 <li><p>EpsilonGreedyPolicy: explores one of the ads uniformly at random <span class="math inline">\(\epsilon\)</span> of the time and exploits the ad with the best current click-through rate <span class="math inline">\(1 - \epsilon\)</span> of the time. Here, we will set <span class="math inline">\(\epsilon = 0.4\)</span>.</p></li>
 </ul>
 <p>Next, we assign the bandit and the two policy instances to two agents. Finally, we assign a list holding both agents to a Simulator instance, set the simulator’s horizon to four hundred and the number of repeats to ten thousand, run the simulation, and plot() its results:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="co"># Load and attach the contextual package.</span></a>
-<a class="sourceLine" id="cb1-2" title="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(contextual)</a>
-<a class="sourceLine" id="cb1-3" title="3"><span class="co"># Define for how long the simulation will run.</span></a>
-<a class="sourceLine" id="cb1-4" title="4">horizon &lt;-<span class="st"> </span><span class="dv">400</span></a>
-<a class="sourceLine" id="cb1-5" title="5"><span class="co"># Define how many times to repeat the simulation.</span></a>
-<a class="sourceLine" id="cb1-6" title="6">simulations &lt;-<span class="st"> </span><span class="dv">10000</span></a>
-<a class="sourceLine" id="cb1-7" title="7"><span class="co"># Define the probability that each ad will be clicked.</span></a>
-<a class="sourceLine" id="cb1-8" title="8">click_probabilities &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="fl">0.8</span>, <span class="fl">0.4</span>, <span class="fl">0.2</span>)</a>
-<a class="sourceLine" id="cb1-9" title="9"><span class="co"># Initialize a ContextualBernoulliBandit</span></a>
-<a class="sourceLine" id="cb1-10" title="10">bandit &lt;-<span class="st"> </span>ContextualBernoulliBandit<span class="op">$</span><span class="kw">new</span>(<span class="dt">weights =</span> click_probabilities)</a>
-<a class="sourceLine" id="cb1-11" title="11"><span class="co"># Initialize an EpsilonGreedyPolicy with a 40% exploiration rate.</span></a>
-<a class="sourceLine" id="cb1-12" title="12">eg_policy &lt;-<span class="st"> </span>EpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="dt">epsilon =</span> <span class="fl">0.4</span>)</a>
-<a class="sourceLine" id="cb1-13" title="13"><span class="co"># Initialize an EpsilonFirstPolicy with a 100 step exploration period.</span></a>
-<a class="sourceLine" id="cb1-14" title="14">ef_policy &lt;-<span class="st"> </span>EpsilonFirstPolicy<span class="op">$</span><span class="kw">new</span>(<span class="dt">first =</span> <span class="dv">100</span>)</a>
-<a class="sourceLine" id="cb1-15" title="15"><span class="co"># Initialize two Agents, binding each policy to a bandit.</span></a>
-<a class="sourceLine" id="cb1-16" title="16">ef_agent &lt;-<span class="st"> </span>Agent<span class="op">$</span><span class="kw">new</span>(ef_policy, bandit)</a>
-<a class="sourceLine" id="cb1-17" title="17">eg_agent &lt;-<span class="st"> </span>Agent<span class="op">$</span><span class="kw">new</span>(eg_policy, bandit)</a>
-<a class="sourceLine" id="cb1-18" title="18"><span class="co"># Assign both agents to a list.</span></a>
-<a class="sourceLine" id="cb1-19" title="19">agents &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(ef_agent, eg_agent)</a>
-<a class="sourceLine" id="cb1-20" title="20"><span class="co"># Initialize Simulator with agent list, horizon, and nr of simulations.</span></a>
-<a class="sourceLine" id="cb1-21" title="21">simulator &lt;-<span class="st"> </span>Simulator<span class="op">$</span><span class="kw">new</span>(agents, horizon, simulations, <span class="dt">do_parallel =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb1-22" title="22"><span class="co"># Now run the simulator.</span></a>
-<a class="sourceLine" id="cb1-23" title="23">history &lt;-<span class="st"> </span>simulator<span class="op">$</span><span class="kw"><a href="../reference/Simulator.html">run</a></span>()</a>
-<a class="sourceLine" id="cb1-24" title="24"><span class="co"># Finally, plot the average reward per time step t</span></a>
-<a class="sourceLine" id="cb1-25" title="25"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"average"</span>, <span class="dt">regret =</span> <span class="ot">FALSE</span>, <span class="dt">lwd =</span> <span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb1-26" title="26"><span class="co"># And the cumulative reward rate, which equals the Click Through Rate)</span></a>
-<a class="sourceLine" id="cb1-27" title="27"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"cumulative"</span>, <span class="dt">regret =</span> <span class="ot">FALSE</span>, <span class="dt">rate =</span> <span class="ot">TRUE</span>, <span class="dt">lwd =</span> <span class="dv">2</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># Load and attach the contextual package.</span></a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(contextual)</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="co"># Define for how long the simulation will run.</span></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4">horizon &lt;-<span class="st"> </span><span class="dv">400</span></a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co"># Define how many times to repeat the simulation.</span></a>
+<a class="sourceLine" id="cb1-6" data-line-number="6">simulations &lt;-<span class="st"> </span><span class="dv">10000</span></a>
+<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="co"># Define the probability that each ad will be clicked.</span></a>
+<a class="sourceLine" id="cb1-8" data-line-number="8">click_probabilities &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="fl">0.8</span>, <span class="fl">0.4</span>, <span class="fl">0.2</span>)</a>
+<a class="sourceLine" id="cb1-9" data-line-number="9"><span class="co"># Initialize a ContextualBernoulliBandit</span></a>
+<a class="sourceLine" id="cb1-10" data-line-number="10">bandit &lt;-<span class="st"> </span>ContextualBernoulliBandit<span class="op">$</span><span class="kw">new</span>(<span class="dt">weights =</span> click_probabilities)</a>
+<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="co"># Initialize an EpsilonGreedyPolicy with a 40% exploiration rate.</span></a>
+<a class="sourceLine" id="cb1-12" data-line-number="12">eg_policy &lt;-<span class="st"> </span>EpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="dt">epsilon =</span> <span class="fl">0.4</span>)</a>
+<a class="sourceLine" id="cb1-13" data-line-number="13"><span class="co"># Initialize an EpsilonFirstPolicy with a 100 step exploration period.</span></a>
+<a class="sourceLine" id="cb1-14" data-line-number="14">ef_policy &lt;-<span class="st"> </span>EpsilonFirstPolicy<span class="op">$</span><span class="kw">new</span>(<span class="dt">first =</span> <span class="dv">100</span>)</a>
+<a class="sourceLine" id="cb1-15" data-line-number="15"><span class="co"># Initialize two Agents, binding each policy to a bandit.</span></a>
+<a class="sourceLine" id="cb1-16" data-line-number="16">ef_agent &lt;-<span class="st"> </span>Agent<span class="op">$</span><span class="kw">new</span>(ef_policy, bandit)</a>
+<a class="sourceLine" id="cb1-17" data-line-number="17">eg_agent &lt;-<span class="st"> </span>Agent<span class="op">$</span><span class="kw">new</span>(eg_policy, bandit)</a>
+<a class="sourceLine" id="cb1-18" data-line-number="18"><span class="co"># Assign both agents to a list.</span></a>
+<a class="sourceLine" id="cb1-19" data-line-number="19">agents &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(ef_agent, eg_agent)</a>
+<a class="sourceLine" id="cb1-20" data-line-number="20"><span class="co"># Initialize Simulator with agent list, horizon, and nr of simulations.</span></a>
+<a class="sourceLine" id="cb1-21" data-line-number="21">simulator &lt;-<span class="st"> </span>Simulator<span class="op">$</span><span class="kw">new</span>(agents, horizon, simulations, <span class="dt">do_parallel =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb1-22" data-line-number="22"><span class="co"># Now run the simulator.</span></a>
+<a class="sourceLine" id="cb1-23" data-line-number="23">history &lt;-<span class="st"> </span>simulator<span class="op">$</span><span class="kw"><a href="../reference/Simulator.html">run</a></span>()</a>
+<a class="sourceLine" id="cb1-24" data-line-number="24"><span class="co"># Finally, plot the average reward per time step t</span></a>
+<a class="sourceLine" id="cb1-25" data-line-number="25"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"average"</span>, <span class="dt">regret =</span> <span class="ot">FALSE</span>, <span class="dt">lwd =</span> <span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb1-26" data-line-number="26"><span class="co"># And the cumulative reward rate, which equals the Click Through Rate)</span></a>
+<a class="sourceLine" id="cb1-27" data-line-number="27"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"cumulative"</span>, <span class="dt">regret =</span> <span class="ot">FALSE</span>, <span class="dt">rate =</span> <span class="ot">TRUE</span>, <span class="dt">lwd =</span> <span class="dv">2</span>)</a></code></pre></div>
 <p><img src="contextual-fig-1.png" style="width:98.0%"></p>
 <p>As can be observed in the figure above, within our horizon of <span class="math inline">\(T = 400\)</span>, EpsilonFirstPolicy has accumulated more rewards than EpsilonGreedytPolicy. It is easy to see why: The winning arm is better than the other two—by a margin. That means that EpsilonFirstPolicy has no difficulty in finding the optimal arm within its exploration period of one hundred impressions. Up to that point, EpsilonGreedyPolicy still had the advantage of a headstart, as it was already able to exploit for <span class="math inline">\(1- \epsilon\)</span> or sixty percent of the time. But from one hundred impressions on, EpsilonFirstPolicy switches from full exploration to full exploitation mode. In contrast to EpsilonGreedyPolicy, it is now able to exploit the arm that proved best during exploration all of the time. As a result, it is able catch up with (and then surpass) the rewards accumulated by EpsilonGreedyPolicy within less than one hundred and fifty impressions.</p>
 </div>
@@ -234,7 +234,7 @@ plot(history, type = "cumulative", regret = FALSE, rate = TRUE)</code></pre>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9000.</p>
 </div>
       </footer>
 </div>

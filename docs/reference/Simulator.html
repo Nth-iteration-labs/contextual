@@ -197,6 +197,7 @@ each agent over all <code>horizon x simulations</code> time steps.</p>
 simulator &lt;- Simulator$new(agents,
                            horizon = 100L,
                            simulations = 100L,
+                           save_interval = 1,
                            save_context = FALSE,
                            save_theta = FALSE,
                            do_parallel = TRUE,
@@ -215,7 +216,7 @@ simulator &lt;- Simulator$new(agents,
 <dt><code>horizon</code></dt><dd><p><code>integer</code>. The number of pulls or time steps to run each agent, where <em>t</em> = 1, &#8230;, T.</p></dd>
 <dt><code>simulations</code></dt><dd><p><code>integer</code>. How many times to repeat each agent's simulation over <em>t</em> = 1, &#8230;, T,
 with a new seed on each repeat (itself deterministically derived from set\_seed).</p></dd>
-<dt><code>save_interval</code></dt><dd><p><code>integer</code>. Save only every <code>save_interval</code> time steps.</p></dd>
+<dt><code>save_interval</code></dt><dd><p><code>integer</code>. Write data to historyonly every <code>save_interval</code> time steps. Default is 1.</p></dd>
 <dt><code>save_context</code></dt><dd><p><code>logical</code>. Save the context matrices <code>X</code> to the History log during a simulation?</p></dd>
 <dt><code>save_theta</code></dt><dd><p><code>logical</code>. Save the parameter list <code>theta</code> to the History log during a simulation?</p></dd>
 <dt><code>do_parallel</code></dt><dd><p><code>logical</code>. Run <code>Simulator</code> processes in parallel?</p></dd>
@@ -231,7 +232,7 @@ and a different subset of the data for each repeat of an agent's simulation.</p>
 <code>agents_progress.log</code> and <code>parallel.log</code> files to the current working directory,
 allowing you to keep track of respectively <code>workers</code>, <code>agents</code>,
 and potential errors when running a <code>Simulator</code> in parallel mode.</p></dd>
-<dt><code>log_interval</code></dt><dd><p><code>integer</code>. Sets the log write interval.</p></dd>
+<dt><code>log_interval</code></dt><dd><p><code>integer</code>. Sets the log write interval. Default every 1000 time steps.</p></dd>
 <dt><code>include_packages</code></dt><dd><p><code>List</code>. List of packages that (one of) the policies depend on. If a <code>Policy</code> requires an
 R package to be loaded, this option can be used to load that package on each of the workers.
 Ignored if <code>do_parallel</code> is <code>FALSE</code>.</p></dd>
@@ -263,7 +264,6 @@ integer value, where the number of chunks will total chunk_multiplier x number_o
     <pre class="examples"><span class='co'># NOT RUN {</span>
   <span class='no'>policy</span>    <span class='kw'>&lt;-</span> <span class='no'>EpsilonGreedyPolicy</span>$<span class='fu'>new</span>(<span class='kw'>epsilon</span> <span class='kw'>=</span> <span class='fl'>0.1</span>)
   <span class='no'>bandit</span>    <span class='kw'>&lt;-</span> <span class='no'>BasicBernoulliBandit</span>$<span class='fu'>new</span>(<span class='kw'>weights</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='fl'>0.6</span>, <span class='fl'>0.1</span>, <span class='fl'>0.1</span>))
-
   <span class='no'>agent</span>     <span class='kw'>&lt;-</span> <span class='no'>Agent</span>$<span class='fu'>new</span>(<span class='no'>policy</span>, <span class='no'>bandit</span>, <span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>"E.G."</span>, <span class='kw'>sparse</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)
 
   <span class='no'>history</span>   <span class='kw'>&lt;-</span> <span class='no'>Simulator</span>$<span class='fu'>new</span>(<span class='kw'>agents</span> <span class='kw'>=</span> <span class='no'>agent</span>,
@@ -311,7 +311,7 @@ integer value, where the number of chunks will total chunk_multiplier x number_o
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9000.</p>
 </div>
       </footer>
    </div>

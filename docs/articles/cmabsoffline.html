@@ -130,7 +130,7 @@
       <h1>Demo: Offline cMAB LinUCB evaluation</h1>
                         <h4 class="author">Robin van Emden</h4>
             
-            <h4 class="date">2019-03-04</h4>
+            <h4 class="date">2019-03-06</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Nth-iteration-labs/contextual/blob/master/vignettes/cmabsoffline.Rmd"><code>vignettes/cmabsoffline.Rmd</code></a></small>
       <div class="hidden name"><code>cmabsoffline.Rmd</code></div>
@@ -139,47 +139,47 @@
 
     
     
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(contextual)</a>
-<a class="sourceLine" id="cb1-2" title="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(data.table)</a>
-<a class="sourceLine" id="cb1-3" title="3"></a>
-<a class="sourceLine" id="cb1-4" title="4"><span class="co"># Import personalization data-set</span></a>
-<a class="sourceLine" id="cb1-5" title="5"></a>
-<a class="sourceLine" id="cb1-6" title="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(contextual); <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(data.table)</a>
-<a class="sourceLine" id="cb1-7" title="7"></a>
-<a class="sourceLine" id="cb1-8" title="8">dt      &lt;-<span class="st"> </span><span class="kw">fread</span>(<span class="st">"http://pwy.nl/d"</span>) <span class="co"># 0/1 reward, 10 arms, 100 features</span></a>
-<a class="sourceLine" id="cb1-9" title="9">                                    <span class="co"># arms always start from 1</span></a>
-<a class="sourceLine" id="cb1-10" title="10"></a>
-<a class="sourceLine" id="cb1-11" title="11"><span class="co">#      z y x1 x2 x3 x4 x5 x6 x7 x8 x9 x10 x11 x12 x13 x14 x15  .. x100</span></a>
-<a class="sourceLine" id="cb1-12" title="12"><span class="co">#   1: 2 0  5  0  0 37  6  0  0  0  0  25   0   0   7   1   0  ..    0</span></a>
-<a class="sourceLine" id="cb1-13" title="13"><span class="co">#   2: 8 0  1  3 36  0  0  0  0  0  0   0   0   1   0   0   0  ..   10</span></a>
-<a class="sourceLine" id="cb1-14" title="14"><span class="co">#   3: . .  .  .  .  .  .  .  .  .  .   .   .   .   .   .   .  ..    .</span></a>
-<a class="sourceLine" id="cb1-15" title="15"></a>
-<a class="sourceLine" id="cb1-16" title="16">horizon     &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(dt)</a>
-<a class="sourceLine" id="cb1-17" title="17">simulations &lt;-<span class="st"> </span><span class="dv">1</span></a>
-<a class="sourceLine" id="cb1-18" title="18"></a>
-<a class="sourceLine" id="cb1-19" title="19"><span class="co"># Set up formula:       y      ~ z    | x1 + x2 + ..</span></a>
-<a class="sourceLine" id="cb1-20" title="20"><span class="co"># In bandit parlance:   reward ~ arms | covariates or contextual features</span></a>
-<a class="sourceLine" id="cb1-21" title="21"></a>
-<a class="sourceLine" id="cb1-22" title="22">f       &lt;-<span class="st"> </span>y <span class="op">~</span><span class="st"> </span>z <span class="op">|</span><span class="st"> </span>. <span class="op">-</span><span class="st"> </span>z</a>
-<a class="sourceLine" id="cb1-23" title="23"></a>
-<a class="sourceLine" id="cb1-24" title="24"><span class="co"># Instantiate Replay Bandit (Li, 2010)</span></a>
-<a class="sourceLine" id="cb1-25" title="25">bandit  &lt;-<span class="st"> </span>OfflineReplayEvaluatorBandit<span class="op">$</span><span class="kw">new</span>(<span class="dt">formula =</span> f, <span class="dt">data =</span> dt)</a>
-<a class="sourceLine" id="cb1-26" title="26"></a>
-<a class="sourceLine" id="cb1-27" title="27"><span class="co"># Bind Policies withs Bandits through Agents, add Agents to list</span></a>
-<a class="sourceLine" id="cb1-28" title="28">agents  &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(Agent<span class="op">$</span><span class="kw">new</span>(LinUCBDisjointOptimizedPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.01</span>), bandit, <span class="st">"alpha = 0.01"</span>),</a>
-<a class="sourceLine" id="cb1-29" title="29">                Agent<span class="op">$</span><span class="kw">new</span>(LinUCBDisjointOptimizedPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.05</span>), bandit, <span class="st">"alpha = 0.05"</span>),</a>
-<a class="sourceLine" id="cb1-30" title="30">                Agent<span class="op">$</span><span class="kw">new</span>(LinUCBDisjointOptimizedPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.1</span>),  bandit, <span class="st">"alpha = 0.1"</span>),</a>
-<a class="sourceLine" id="cb1-31" title="31">                Agent<span class="op">$</span><span class="kw">new</span>(LinUCBDisjointOptimizedPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">1.0</span>),  bandit, <span class="st">"alpha = 1.0"</span>))</a>
-<a class="sourceLine" id="cb1-32" title="32"></a>
-<a class="sourceLine" id="cb1-33" title="33"><span class="co"># Instantiate a Simulator</span></a>
-<a class="sourceLine" id="cb1-34" title="34">simulation &lt;-<span class="st"> </span>Simulator<span class="op">$</span><span class="kw">new</span>(agents, <span class="dt">horizon =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(dt), <span class="dt">simulations =</span> <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb1-35" title="35"></a>
-<a class="sourceLine" id="cb1-36" title="36"><span class="co"># Run the simulation.</span></a>
-<a class="sourceLine" id="cb1-37" title="37">history    &lt;-<span class="st"> </span>simulation<span class="op">$</span><span class="kw"><a href="../reference/Simulator.html">run</a></span>()</a>
-<a class="sourceLine" id="cb1-38" title="38"></a>
-<a class="sourceLine" id="cb1-39" title="39"><span class="co"># plot the results</span></a>
-<a class="sourceLine" id="cb1-40" title="40"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"cumulative"</span>, <span class="dt">regret =</span> <span class="ot">FALSE</span>, <span class="dt">rate =</span> <span class="ot">TRUE</span>, </a>
-<a class="sourceLine" id="cb1-41" title="41">     <span class="dt">legend_position =</span> <span class="st">"bottomright"</span>, <span class="dt">ylim =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>,<span class="dv">1</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(contextual)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(data.table)</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="co"># Import personalization data-set</span></a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(contextual); <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(data.table)</a>
+<a class="sourceLine" id="cb1-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb1-8" data-line-number="8">dt      &lt;-<span class="st"> </span><span class="kw">fread</span>(<span class="st">"http://pwy.nl/d"</span>) <span class="co"># 0/1 reward, 10 arms, 100 features</span></a>
+<a class="sourceLine" id="cb1-9" data-line-number="9">                                    <span class="co"># arms always start from 1</span></a>
+<a class="sourceLine" id="cb1-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="co">#      z y x1 x2 x3 x4 x5 x6 x7 x8 x9 x10 x11 x12 x13 x14 x15  .. x100</span></a>
+<a class="sourceLine" id="cb1-12" data-line-number="12"><span class="co">#   1: 2 0  5  0  0 37  6  0  0  0  0  25   0   0   7   1   0  ..    0</span></a>
+<a class="sourceLine" id="cb1-13" data-line-number="13"><span class="co">#   2: 8 0  1  3 36  0  0  0  0  0  0   0   0   1   0   0   0  ..   10</span></a>
+<a class="sourceLine" id="cb1-14" data-line-number="14"><span class="co">#   3: . .  .  .  .  .  .  .  .  .  .   .   .   .   .   .   .  ..    .</span></a>
+<a class="sourceLine" id="cb1-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb1-16" data-line-number="16">horizon     &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(dt)</a>
+<a class="sourceLine" id="cb1-17" data-line-number="17">simulations &lt;-<span class="st"> </span><span class="dv">1</span></a>
+<a class="sourceLine" id="cb1-18" data-line-number="18"></a>
+<a class="sourceLine" id="cb1-19" data-line-number="19"><span class="co"># Set up formula:       y      ~ z    | x1 + x2 + ..</span></a>
+<a class="sourceLine" id="cb1-20" data-line-number="20"><span class="co"># In bandit parlance:   reward ~ arms | covariates or contextual features</span></a>
+<a class="sourceLine" id="cb1-21" data-line-number="21"></a>
+<a class="sourceLine" id="cb1-22" data-line-number="22">f       &lt;-<span class="st"> </span>y <span class="op">~</span><span class="st"> </span>z <span class="op">|</span><span class="st"> </span>. <span class="op">-</span><span class="st"> </span>z</a>
+<a class="sourceLine" id="cb1-23" data-line-number="23"></a>
+<a class="sourceLine" id="cb1-24" data-line-number="24"><span class="co"># Instantiate Replay Bandit (Li, 2010)</span></a>
+<a class="sourceLine" id="cb1-25" data-line-number="25">bandit  &lt;-<span class="st"> </span>OfflineReplayEvaluatorBandit<span class="op">$</span><span class="kw">new</span>(<span class="dt">formula =</span> f, <span class="dt">data =</span> dt)</a>
+<a class="sourceLine" id="cb1-26" data-line-number="26"></a>
+<a class="sourceLine" id="cb1-27" data-line-number="27"><span class="co"># Bind Policies withs Bandits through Agents, add Agents to list</span></a>
+<a class="sourceLine" id="cb1-28" data-line-number="28">agents  &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(Agent<span class="op">$</span><span class="kw">new</span>(LinUCBDisjointOptimizedPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.01</span>), bandit, <span class="st">"alpha = 0.01"</span>),</a>
+<a class="sourceLine" id="cb1-29" data-line-number="29">                Agent<span class="op">$</span><span class="kw">new</span>(LinUCBDisjointOptimizedPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.05</span>), bandit, <span class="st">"alpha = 0.05"</span>),</a>
+<a class="sourceLine" id="cb1-30" data-line-number="30">                Agent<span class="op">$</span><span class="kw">new</span>(LinUCBDisjointOptimizedPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.1</span>),  bandit, <span class="st">"alpha = 0.1"</span>),</a>
+<a class="sourceLine" id="cb1-31" data-line-number="31">                Agent<span class="op">$</span><span class="kw">new</span>(LinUCBDisjointOptimizedPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">1.0</span>),  bandit, <span class="st">"alpha = 1.0"</span>))</a>
+<a class="sourceLine" id="cb1-32" data-line-number="32"></a>
+<a class="sourceLine" id="cb1-33" data-line-number="33"><span class="co"># Instantiate a Simulator</span></a>
+<a class="sourceLine" id="cb1-34" data-line-number="34">simulation &lt;-<span class="st"> </span>Simulator<span class="op">$</span><span class="kw">new</span>(agents, <span class="dt">horizon =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(dt), <span class="dt">simulations =</span> <span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb1-35" data-line-number="35"></a>
+<a class="sourceLine" id="cb1-36" data-line-number="36"><span class="co"># Run the simulation.</span></a>
+<a class="sourceLine" id="cb1-37" data-line-number="37">history    &lt;-<span class="st"> </span>simulation<span class="op">$</span><span class="kw"><a href="../reference/Simulator.html">run</a></span>()</a>
+<a class="sourceLine" id="cb1-38" data-line-number="38"></a>
+<a class="sourceLine" id="cb1-39" data-line-number="39"><span class="co"># plot the results</span></a>
+<a class="sourceLine" id="cb1-40" data-line-number="40"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"cumulative"</span>, <span class="dt">regret =</span> <span class="ot">FALSE</span>, <span class="dt">rate =</span> <span class="ot">TRUE</span>, </a>
+<a class="sourceLine" id="cb1-41" data-line-number="41">     <span class="dt">legend_position =</span> <span class="st">"bottomright"</span>, <span class="dt">ylim =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>,<span class="dv">1</span>))</a></code></pre></div>
 <p><img src="linucboffline.png"></p>
   </div>
 
@@ -194,7 +194,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9000.</p>
 </div>
       </footer>
 </div>
