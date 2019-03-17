@@ -1,3 +1,8 @@
+contextual 0.9.8.1
+==================
+
+* Specified previous version of set.seed sampler with RNGversion() calls
+
 contextual 0.9.8
 ================
 

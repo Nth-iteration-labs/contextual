@@ -1,7 +1,7 @@
 Package: contextual
 Type: Package
 Title: Simulation and Analysis of Contextual Multi-Armed Bandit Policies
-Version: 0.9.8
+Version: 0.9.8.1
 Authors@R: c(person("Robin", "van Emden", role = c("aut", "cre"), 
         comment = c(ORCID = "0000-0001-5820-8638"), email = "robinvanemden@gmail.com"),
     person("Maurits", "Kaptein", role = "ctb", email = "m.c.kaptein@tilburguniversity.edu", 

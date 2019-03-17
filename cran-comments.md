@@ -1,4 +1,4 @@
-New submission.
+Minor update adding "suppressWarnings(RNGversion("3.5.0"))" to ensure CRAN devel compatibility
 
 ## Test environments
 

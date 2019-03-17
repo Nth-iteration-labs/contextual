@@ -1,5 +1,7 @@
 ^Meta$
 ^doc$
+^vignettes/only_pkgdown$
+^vignettes/only_pkgdown.*
 ^demo/working_directory$
 ^demo/working_directory.*
 contextual.Rproj

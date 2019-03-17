@@ -421,7 +421,7 @@ get_full_context <- function(context, select_features = NULL, prepend_arm_matrix
     if(is.vector(X)) Xm <- X[select_features]
     else Xm <- X[select_features,]
   }
-  if(isTRUE(prepend_arm_vector)) Xv <- rbind(diag(k),Xv)
+  if(isTRUE(prepend_arm_matrix)) Xv <- rbind(diag(k),Xv)
   return(Xm)
 }
 
