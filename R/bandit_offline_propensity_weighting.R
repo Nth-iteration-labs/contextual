@@ -43,7 +43,7 @@ OfflinePropensityWeightingBandit <- R6::R6Class(
           if (isTRUE(self$inverted)) p <- 1 / p
           p <- 1 / max(p,self$threshold)
         } else {
-          if (isFALSE(self$inverted)) p <- 1 / p
+          if (!isTRUE(self$inverted)) p <- 1 / p
         }
         inc(private$n)     <- 1
         inc(private$p_hat) <- (p - private$p_hat) / private$n
