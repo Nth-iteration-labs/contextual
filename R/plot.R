@@ -18,6 +18,8 @@ Plot <- R6::R6Class(
                           no_par             = FALSE,
                           xlim               = NULL,
                           ylim               = NULL,
+                          xlab               = NULL,
+                          ylab               = NULL,
                           legend             = TRUE,
                           log                = "",
                           use_colors         = TRUE,
@@ -71,6 +73,8 @@ Plot <- R6::R6Class(
         lwd                 = lwd,
         xlim                = xlim,
         ylim                = ylim,
+        xlab                = xlab,
+        ylab                = ylab,
         legend_labels       = legend_labels,
         legend_border       = legend_border,
         legend_position     = legend_position,
@@ -99,6 +103,8 @@ Plot <- R6::R6Class(
                        no_par             = FALSE,
                        xlim               = NULL,
                        ylim               = NULL,
+                       xlab               = NULL,
+                       ylab               = NULL,
                        legend             = TRUE,
                        use_colors         = TRUE,
                        log                = "",
@@ -163,6 +169,8 @@ Plot <- R6::R6Class(
                        no_par             = FALSE,
                        xlim               = NULL,
                        ylim               = NULL,
+                       xlab               = NULL,
+                       ylab               = NULL,
                        legend             = TRUE,
                        use_colors         = TRUE,
                        log                = "",
@@ -204,6 +212,8 @@ Plot <- R6::R6Class(
         lwd                 = lwd,
         xlim                = xlim,
         ylim                = ylim,
+        xlab                = xlab,
+        ylab                = ylab,
         legend_labels       = legend_labels,
         legend_border       = legend_border,
         legend_position     = legend_position,
@@ -230,6 +240,8 @@ Plot <- R6::R6Class(
                     interval           = 1,
                     xlim               = NULL,
                     ylim               = NULL,
+                    xlab               = NULL,
+                    ylab               = NULL,
                     legend_labels      = NULL,
                     legend_border      = NULL,
                     legend_position    = "bottomright",
@@ -416,6 +428,8 @@ Plot <- R6::R6Class(
                        no_par              = FALSE,
                        xlim                = NULL,
                        ylim                = NULL,
+                       xlab                = NULL,
+                       ylab                = NULL,
                        interval            = 1,
                        color_step          = 1,
                        lty_step            = 1,
@@ -651,9 +665,11 @@ Plot <- R6::R6Class(
       }
       axis(1)
       axis(2)
-      title(xlab = "Time step")
+      if (is.null(xlab)) xlab = "Time step"
+      title(xlab = xlab)
       if(isTRUE(plot_only_disp)) ylab_title <- paste0(ylab_title,": ",disp)
-      title(ylab = ylab_title)
+      if (is.null(ylab)) ylab = ylab_title
+      title(ylab = ylab)
       box()
       if (legend) {
         if (!is.null(legend_labels)) {
@@ -812,6 +828,12 @@ Plot <- R6::R6Class(
 #'   }
 #'   \item{\code{lwd}}{
 #'      \code{(integer, 1)} Line width.
+#'   }
+#'   \item{\code{xlab}}{
+#'      \code{(character, NULL)} a title for the x axis
+#'   }
+#'   \item{\code{ylab}}{
+#'      \code{(character, NULL)} a title for the y axis
 #'   }
 #'  }
 #'

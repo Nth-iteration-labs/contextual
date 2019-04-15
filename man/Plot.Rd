@@ -133,6 +133,12 @@ size \code{interval}.
 \item{\code{lwd}}{
 \code{(integer, 1)} Line width.
 }
+\item{\code{xlab}}{
+\code{(character, NULL)} a title for the x axis
+}
+\item{\code{ylab}}{
+\code{(character, NULL)} a title for the y axis
+}
 }
 }
 

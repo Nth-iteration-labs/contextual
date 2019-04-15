@@ -118,6 +118,14 @@ plot.History <- function(x, ...) {
     legend_title <- eval(args$legend_title)
   else
     legend_title <- NULL
+  if ("xlab" %in% names(args))
+    xlab <- eval(args$xlab)
+  else
+    xlab <- NULL
+  if ("ylab" %in% names(args))
+    ylab <- eval(args$ylab)
+  else
+    ylab <- NULL
   if ("rate" %in% names(args))
     rate <- eval(args$rate)
   else
@@ -152,6 +160,8 @@ plot.History <- function(x, ...) {
       legend_position = legend_position,
       legend_title = legend_title,
       no_par = no_par,
+      xlab = xlab,
+      ylab = ylab,
       limit_agents = limit_agents,
       limit_context = limit_context
     )
@@ -179,6 +189,8 @@ plot.History <- function(x, ...) {
       legend_position = legend_position,
       legend_title = legend_title,
       no_par = no_par,
+      xlab = xlab,
+      ylab = ylab,
       cum_average = cum_average,
       limit_agents = limit_agents,
       limit_context = limit_context
@@ -205,6 +217,8 @@ plot.History <- function(x, ...) {
       legend_position = legend_position,
       legend_title = legend_title,
       no_par = no_par,
+      xlab = xlab,
+      ylab = ylab,
       limit_agents = limit_agents,
       limit_context = limit_context
     )
@@ -223,6 +237,8 @@ plot.History <- function(x, ...) {
       legend_position = legend_position,
       legend_title = legend_title,
       no_par = no_par,
+      xlab = xlab,
+      ylab = ylab,
       limit_agents = limit_agents,
       limit_context = limit_context
 
