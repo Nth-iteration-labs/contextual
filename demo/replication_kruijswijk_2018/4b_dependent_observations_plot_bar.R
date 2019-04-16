@@ -40,7 +40,7 @@ for (dp in do_poisson) {
             cum_regret[[1]]$cum_regret_ci <- 0
           } else {
             history$load(paste0(data_dir,sim_str))
-            print(history)
+            #print(history)
             cum_regret <- history$get_cumulative_result(t=10000)
           }
           regret_df[(nrow(regret_df) + 1), ] <- c(horizon, simulations, sn, beta[1], dp, pol, subpol,
@@ -65,17 +65,24 @@ regret_df_plot$betas[regret_df_plot$betas == "5"] = "Beta(5,5)"
 regret_df_plot[c(1:7)] <- lapply(regret_df_plot[c(1:7)], as.factor)
 regret_df_plot$subpolicies <- factor(regret_df_plot$subpolicies,
                                      levels=c("Pooled","Unpooled","PartialBB","Partial" ))
+levels(regret_df_plot$subpolicies) <-       c("Complete","No","PartialBB","Partial")
+
+regret_df_plot$policies_r = factor(regret_df_plot$policies, levels=c("EG","UCB","Thompson"))
+regret_df_plot$betas_r = factor(regret_df_plot$betas, levels=c("Beta(1.5,1.5)",
+                                                               "Beta(5,5)",
+                                                               "Beta(2.5,1.5)/Beta(1.5,2.5)"))
 
 p <- ggplot(regret_df_plot, aes(subjects, regret, fill = subpolicies)) +
   geom_bar(position = "dodge", stat = "identity") +
-  theme_minimal() +
+  theme_minimal(base_size = 16) +
   geom_errorbar(aes(ymin=(regret-ci), ymax=(regret+ci)), width=.4, size =0.3,
                 position=position_dodge(.9)) +
-  facet_grid(betas ~ policies) +
+  facet_grid(betas_r ~ policies_r) +
   # when poisson results comment above and uncomment below:
-  # facet_grid(poisson + betas ~ policies) +
+  # facet_grid(poisson + betas_r ~ policies_r) +
   theme(legend.title = element_blank()) +
   theme(legend.position = "bottom") +
+
   xlab("Users") +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.border = element_rect(colour = "black", fill = NA, size = 0.5)) +
