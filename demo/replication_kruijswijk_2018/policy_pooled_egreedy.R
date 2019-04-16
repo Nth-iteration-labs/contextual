@@ -67,6 +67,50 @@ PooledEgreedyPolicy <- R6::R6Class(
   )
 )
 
+PartiallyPooledEgreedyPolicyOld <- R6::R6Class(
+  portable = FALSE,
+  class = FALSE,
+  inherit = Policy,
+  public = list(
+    class_name = "PartiallyPooledEgreedyPolicyOld",
+    epsilon = NULL,
+    n_subjects = NULL,
+    initialize = function(epsilon = 0.1, n_subjects = 1) {
+      super$initialize()
+      self$epsilon <- epsilon
+      self$n_subjects <- n_subjects
+    },
+    set_parameters = function(context_params) {
+      self$theta         <- list(n = rep(list(as.list(rep(1, context_params$k))),self$n_subjects),
+                                 mu = rep(list(as.list(rep(0, context_params$k))),self$n_subjects))
+      self$theta_to_arms <- list('N' = 0, 'MU' = 0)
+    },
+    get_action = function(t, context) {
+      user <- context$user_context
+      if (runif(1) > epsilon) {
+        betas <- 1 / sqrt(unlist(self$theta$n[[user]]))
+        gmus  <- unlist(self$theta$MU)
+        umus  <- unlist(self$theta$mu[[user]])
+        p_hat  <- betas * gmus + (1 - betas) * umus
+        action$choice <- which_max_tied(p_hat)
+      } else {
+        action$choice <- sample.int(context$k, 1, replace = TRUE)
+      }
+      action
+    },
+    set_reward = function(t, context, action, reward) {
+      arm    <- action$choice
+      user   <- context$user_context
+      reward <- reward$reward
+      inc(self$theta$n[[user]][[arm]])     <- 1
+      inc(self$theta$mu[[user]][[arm]])    <- (reward - self$theta$mu[[user]][[arm]]) / self$theta$n[[user]][[arm]]
+      inc(self$theta$N[[arm]])             <- 1
+      inc(self$theta$MU[[arm]])            <- (reward - self$theta$MU[[arm]]) / self$theta$N[[arm]]
+      self$theta
+    }
+  )
+)
+
 PartiallyPooledEgreedyPolicy <- R6::R6Class(
   portable = FALSE,
   class = FALSE,
@@ -88,7 +132,8 @@ PartiallyPooledEgreedyPolicy <- R6::R6Class(
     get_action = function(t, context) {
       user <- context$user_context
       if (runif(1) > epsilon) {
-        betas <- 1 / sqrt(unlist(self$theta$n[[user]]))
+        #betas <- 1 / sqrt(unlist(self$theta$n[[user]]))
+        betas <- 2 / (2 + unlist(self$theta$n[[user]]))
         gmus  <- unlist(self$theta$MU)
         umus  <- unlist(self$theta$mu[[user]])
         p_hat  <- betas * gmus + (1 - betas) * umus

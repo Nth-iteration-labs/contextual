@@ -18,7 +18,7 @@ DependentObservationsBootstrappedBandit <- R6::R6Class(
       private$S[is.null(context[[1]]),`:=`(context = list(1))]
       self$arm_multiply <- TRUE
       private$S <- do.call("rbind", replicate(self$k, private$S, simplify = FALSE))
-      private$rows <- nrow(private$S)
+      private$rows <- nrow(private$S)  # <- daar
     },
     post_initialization = function() {
       private$S <- private$S[sample(nrow(private$S),replace=TRUE)]
@@ -27,7 +27,7 @@ DependentObservationsBootstrappedBandit <- R6::R6Class(
     },
     get_context = function(index) {
       print(index)
-      if(index > private$rows) return(NULL)
+      if(index > private$rows) return(NULL)   # <- en daar ...
       context <- list(
         k      = self$k,
         d      = self$d,

@@ -40,7 +40,6 @@ for (dp in do_poisson) {
             cum_regret[[1]]$cum_regret_ci <- 0
           } else {
             history$load(paste0(data_dir,sim_str))
-            #print(history)
             cum_regret <- history$get_cumulative_result(t=10000)
           }
           regret_df[(nrow(regret_df) + 1), ] <- c(horizon, simulations, sn, beta[1], dp, pol, subpol,
@@ -81,7 +80,7 @@ p <- ggplot(regret_df_plot, aes(subjects, regret, fill = subpolicies)) +
   # when poisson results comment above and uncomment below:
   # facet_grid(poisson + betas_r ~ policies_r) +
   theme(legend.title = element_blank()) +
-  theme(legend.position = "bottom") +
+  theme(legend.position = "bottom", legend.spacing.x = unit(0.25, 'cm')) +
 
   xlab("Users") +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
