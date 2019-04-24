@@ -333,7 +333,7 @@ test_that("ContextualHybridBandit", {
   expect_equal(history$cumulative$ContextualLinTS$reward,  0.7, tolerance = 0.01)
   expect_equal(history$cumulative$EpsilonGreedy$reward,  0.6, tolerance = 0.01)
   expect_equal(history$cumulative$LinUCBGeneral$reward,  0.7, tolerance = 0.01)
-  expect_equal(history$cumulative$ContextualEpochGreedy$reward,  0.6, tolerance = 0.01)
+  expect_equal(history$cumulative$ContextualEpochGreedy$reward,  0.7, tolerance = 0.01)
   expect_equal(history$cumulative$LinUCBDisjointOptimized$reward,  0.7, tolerance = 0.01)
 
 
@@ -351,7 +351,7 @@ test_that("ContextualHybridBandit", {
   simulation     <- Simulator$new(agents, horizon, simulations, do_parallel = FALSE)
   history        <- simulation$run()
 
-  expect_equal(history$cumulative$ContextualEpochGreedy$cum_reward,  77, tolerance = 0.01)
+  expect_equal(history$cumulative$ContextualEpochGreedy$cum_reward,  75, tolerance = 0.01)
 })
 
 test_that("ContextualBernoulliBandit", {

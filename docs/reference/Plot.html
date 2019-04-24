@@ -209,8 +209,7 @@ Methods are descrived in the Methods section above.</p></dd>
 <dt><code>regret</code></dt><dd><p><code>(logical, TRUE)</code> Plot policy regret (default, TRUE) or reward (FALSE)?</p></dd>
 <dt><code>rate</code></dt><dd><p>(<code>logical, TRUE)</code> If rate is TRUE, the rate of regret or reward is plotted.</p></dd>
 <dt><code>limit_agents</code></dt><dd><p><code>(list , NULL)</code> Limit plotted agents to the agents in the list.</p></dd>
-<dt><code>limit_context</code></dt><dd><p><code>(integer vector , NULL)</code> Only plots data of context(s) where vector equals 1 in
-as.vector(context), excludes where 0 or unspecified.</p></dd>
+<dt><code>limit_context</code></dt><dd><p><code>(character vector , NULL)</code> Only plots data where context feature name(s) in vector equal to one.</p></dd>
 <dt><code>no_par</code></dt><dd><p><code>(logical, FALSE)</code> If no_par is TRUE, Plot() does not set or adjust plotting parameters itself.
 This makes it possible to set custom plotting parameters through R's par() function.</p></dd>
 <dt><code>legend</code></dt><dd><p><code>(logical, TRUE)</code> Shows the legend when TRUE (default).</p></dd>
@@ -239,6 +238,8 @@ size <code>interval</code>.</p></dd>
 <dt><code>color_step</code></dt><dd><p><code>(integer, 1)</code> When &gt; 1, the plot cycles through <code>nr_agents/color_step</code> colors.</p></dd>
 <dt><code>lty_step</code></dt><dd><p><code>(integer, 1)</code> When &gt; 1, the plot cycles through <code>nr_agents/lty_step</code> line types.</p></dd>
 <dt><code>lwd</code></dt><dd><p><code>(integer, 1)</code> Line width.</p></dd>
+<dt><code>xlab</code></dt><dd><p><code>(character, NULL)</code> a title for the x axis</p></dd>
+<dt><code>ylab</code></dt><dd><p><code>(character, NULL)</code> a title for the y axis</p></dd>
 </dl>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>

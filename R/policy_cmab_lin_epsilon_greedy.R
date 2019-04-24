@@ -6,7 +6,7 @@ ContextualEpsilonGreedyPolicy <- R6::R6Class(
   public = list(
     epsilon = NULL,
     class_name = "ContextualEpsilonGreedyPolicy",
-    initialize = function(epsilon = 1.0) {
+    initialize = function(epsilon = 0.1) {
       super$initialize()
       self$epsilon <- epsilon
     },

@@ -130,7 +130,7 @@
       <h1>Demo: MovieLens 10M Dataset</h1>
                         <h4 class="author">Robin van Emden</h4>
             
-            <h4 class="date">2019-03-17</h4>
+            <h4 class="date">2019-04-24</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Nth-iteration-labs/contextual/blob/master/vignettes/ml10m.Rmd"><code>vignettes/ml10m.Rmd</code></a></small>
       <div class="hidden name"><code>ml10m.Rmd</code></div>
@@ -156,7 +156,7 @@
 <a class="sourceLine" id="cb1-15" title="15">movies_dat      &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(movies_dat, <span class="dt">collapse =</span> <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</a>
 <a class="sourceLine" id="cb1-16" title="16">movies_dat      &lt;-<span class="st"> </span><span class="kw">fread</span>(movies_dat, <span class="dt">sep =</span> <span class="st">"~"</span>, <span class="dt">quote=</span><span class="st">""</span>)</a>
 <a class="sourceLine" id="cb1-17" title="17"><span class="kw">setnames</span>(movies_dat, <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"V1"</span>, <span class="st">"V2"</span>, <span class="st">"V3"</span>), <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="st">"MovieID"</span>, <span class="st">"Name"</span>, <span class="st">"Type"</span>))</a>
-<a class="sourceLine" id="cb1-18" title="18">movies_dat      &lt;-<span class="st"> </span>splitstackshape<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/splitstackshape/topics/concat.split.expanded">cSplit_e</a></span>(movies_dat, <span class="st">"Type"</span>, <span class="dt">sep =</span> <span class="st">"|"</span>, <span class="dt">type =</span> <span class="st">"character"</span>,</a>
+<a class="sourceLine" id="cb1-18" title="18">movies_dat      &lt;-<span class="st"> </span>splitstackshape<span class="op">::</span><span class="kw">cSplit_e</span>(movies_dat, <span class="st">"Type"</span>, <span class="dt">sep =</span> <span class="st">"|"</span>, <span class="dt">type =</span> <span class="st">"character"</span>,</a>
 <a class="sourceLine" id="cb1-19" title="19">                                             <span class="dt">fill =</span> <span class="dv">0</span>, <span class="dt">drop =</span> <span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb1-20" title="20">movies_dat[[<span class="dv">3</span>]] &lt;-<span class="st"> </span><span class="ot">NULL</span></a>
 <a class="sourceLine" id="cb1-21" title="21"></a>

@@ -4,58 +4,53 @@ ContextualEpochGreedyPolicy <- R6::R6Class(
   class = FALSE,
   inherit = Policy,
   public = list(
-    p = NULL,
-    e = NULL,
+    sZl = NULL,
+    exploration_phase = NULL,
     class_name = "ContextualEpochGreedyPolicy",
-    initialize = function(p = 10) {
+    initialize = function(sZl = 10) {
       super$initialize()
-      self$p <- p
-      self$e <- 0
+      self$sZl <- sZl
     },
     set_parameters = function(context_params) {
       d <- context_params$d
-      self$theta <- list( 'A' = diag(1,d,d), 'b' = rep(0,d), 'n' = 0)
+      self$theta_to_arms <- list('A' = diag(1,d,d), 'b' = rep(0,d))
     },
     get_action = function(t, context) {
-      if (t <= self$p || t <= context$k) {
-        arm <- 1 + (t %% context$k)
-        self$action$choice = arm
-        return(self$action)
-      }
-      self$e <- rbinom(1,1,self$p/t)
-      if(self$e==1) {
-          arm <- sample.int(context$k, 1, replace = TRUE)
-          self$action$choice = arm
-          return(self$action)
-      } else {
-        A                     <- self$theta$A
-        b                     <- self$theta$b
-        A_inv                 <- inv(A)
-        theta_hat             <- A_inv %*% b
+
+      if(t==1 || t%%self$sZl==0) self$exploration_phase = TRUE
+
+      if (!isTRUE(self$exploration_phase)) {
         expected_rewards <- rep(0.0, context$k)
         for (arm in 1:context$k) {
-          Xa                    <- get_arm_context(context, arm)
-          mu_hat                <- Xa %*% theta_hat
-          expected_rewards[arm] <- mu_hat
+          Xa         <- get_arm_context(context, arm)
+          A          <- self$theta$A[[arm]]
+          b          <- self$theta$b[[arm]]
+          A_inv      <- inv(A)
+          theta_hat  <- A_inv %*% b
+          expected_rewards[arm] <- Xa %*% theta_hat
         }
-        self$action$choice  <- which_max_tied(expected_rewards)
-        return(self$action)
+        action$choice  <- which_max_tied(expected_rewards)
+
+      } else {
+        self$action$choice        <- sample.int(context$k, 1, replace = TRUE)
       }
+      action
     },
     set_reward = function(t, context, action, reward) {
-      if (t <= self$p || t <= context$k || self$e==1) {
-        arm                      <- action$choice
-        reward                   <- reward$reward
-        Xa                       <- get_arm_context(context, arm)
-        self$theta$n             <- self$theta$n + 1
-        inc(self$theta$A)        <- outer(Xa, Xa)
-        inc(self$theta$b)        <- reward * Xa
+      arm    <- action$choice
+      reward <- reward$reward
+      Xa     <- get_arm_context(context, arm)
+
+      if (isTRUE(self$exploration_phase)) {
+        inc(self$theta$A[[arm]]) <- outer(Xa, Xa)
+        inc(self$theta$b[[arm]]) <- reward * Xa
+        self$exploration_phase   <- FALSE
       }
+
       self$theta
     }
   )
 )
-
 #' Policy: A Time and Space Efficient Algorithm for Contextual Linear Bandits
 #'
 #' @name ContextualEpochGreedyPolicy

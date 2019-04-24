@@ -60,8 +60,7 @@ Methods are descrived in the Methods section above.
 \code{(list , NULL)} Limit plotted agents to the agents in the list.
 }
 \item{\code{limit_context}}{
-\code{(integer vector , NULL)} Only plots data of context(s) where vector equals 1 in
-as.vector(context), excludes where 0 or unspecified.
+\code{(character vector , NULL)} Only plots data where context feature name(s) in vector equal to one.
 }
 \item{\code{no_par}}{
 \code{(logical, FALSE)} If no_par is TRUE, Plot() does not set or adjust plotting parameters itself.

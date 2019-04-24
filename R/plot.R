@@ -268,11 +268,11 @@ Plot <- R6::R6Class(
 
       if(!is.null(limit_context)) {
         dt <- self$history$get_data_table(
-          limit_cols   = c("agent", "t", "choice", "sim", "context"),
+          limit_cols   = c("agent", "t", "choice", "sim", limit_context),
           limit_agents = limit_agents,
           interval     = interval
         )
-        dt <- dt[sapply(context,function(x)all(x[limit_context]==1))]
+        dt <- dt[dt[, Reduce(`|`, lapply(.SD, `==`, 1)),.SDcols = limit_context],]
       } else {
         dt <- self$history$get_data_table(
           limit_cols   = c("agent", "t", "choice", "sim"),
@@ -519,7 +519,7 @@ Plot <- R6::R6Class(
       if(!is.null(xlim)) data <- data[t>=xlim[1] & t<=xlim[2]]
 
       if(!is.null(limit_context)) {
-        data <- data[sapply(dt$context,function(x)all(x[limit_context]==1))]
+        data <- data[data[, Reduce(`|`, lapply(.SD, `==`, 1)),.SDcols = sel],]
       }
 
       data.table::setorder(data, agent, t)
@@ -756,8 +756,7 @@ Plot <- R6::R6Class(
 #'      \code{(list , NULL)} Limit plotted agents to the agents in the list.
 #'   }
 #'   \item{\code{limit_context}}{
-#'      \code{(integer vector , NULL)} Only plots data of context(s) where vector equals 1 in
-#'      as.vector(context), excludes where 0 or unspecified.
+#'      \code{(character vector , NULL)} Only plots data where context feature name(s) in vector equal to one.
 #'   }
 #'   \item{\code{no_par}}{
 #'      \code{(logical, FALSE)} If no_par is TRUE, Plot() does not set or adjust plotting parameters itself.
