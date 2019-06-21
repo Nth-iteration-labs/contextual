@@ -130,7 +130,7 @@
       <h1>Offline evaluation: Replication of Li et al 2010</h1>
                         <h4 class="author">Robin van Emden</h4>
             
-            <h4 class="date">2019-04-24</h4>
+            <h4 class="date">2019-06-13</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Nth-iteration-labs/contextual/blob/master/vignettes/replication.Rmd"><code>vignettes/replication.Rmd</code></a></small>
       <div class="hidden name"><code>replication.Rmd</code></div>
@@ -198,13 +198,13 @@
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">simulations             &lt;-<span class="st"> </span><span class="dv">1</span></a>
 <a class="sourceLine" id="cb3-2" title="2">horizon                 &lt;-<span class="st"> </span><span class="fl">37.45e6</span></a>
 <a class="sourceLine" id="cb3-3" title="3">...</a>
-<a class="sourceLine" id="cb3-4" title="4">con &lt;-<span class="st"> </span>DBI<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/DBI/topics/dbConnect">dbConnect</a></span>(<span class="kw">MonetDB.R</span>(), <span class="dt">host=</span>monetdb_host, <span class="dt">dbname=</span>monetdb_dbname,</a>
+<a class="sourceLine" id="cb3-4" title="4">con &lt;-<span class="st"> </span>DBI<span class="op">::</span><span class="kw">dbConnect</span>(<span class="kw">MonetDB.R</span>(), <span class="dt">host=</span>monetdb_host, <span class="dt">dbname=</span>monetdb_dbname,</a>
 <a class="sourceLine" id="cb3-5" title="5">                                   <span class="dt">user=</span>monetdb_user, <span class="dt">password=</span>monetdb_pass)</a>
 <a class="sourceLine" id="cb3-6" title="6"></a>
 <a class="sourceLine" id="cb3-7" title="7"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/message">message</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/paste">paste0</a></span>(<span class="st">"MonetDB: connection to '"</span>,<span class="kw">dbListTables</span>(con),<span class="st">"' succesful!"</span>))</a>
 <a class="sourceLine" id="cb3-8" title="8"></a>
 <a class="sourceLine" id="cb3-9" title="9">arm_lookup_table &lt;-</a>
-<a class="sourceLine" id="cb3-10" title="10"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/matrix">as.matrix</a></span>(DBI<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/DBI/topics/dbGetQuery">dbGetQuery</a></span>(con, <span class="st">"SELECT DISTINCT article_id FROM yahoo"</span>))</a>
+<a class="sourceLine" id="cb3-10" title="10"><span class="st">  </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/matrix">as.matrix</a></span>(DBI<span class="op">::</span><span class="kw">dbGetQuery</span>(con, <span class="st">"SELECT DISTINCT article_id FROM yahoo"</span>))</a>
 <a class="sourceLine" id="cb3-11" title="11"></a>
 <a class="sourceLine" id="cb3-12" title="12">arm_lookup_table &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rev">rev</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/vector">as.vector</a></span>(arm_lookup_table))</a>
 <a class="sourceLine" id="cb3-13" title="13"></a>

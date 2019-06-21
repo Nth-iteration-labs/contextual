@@ -1,6 +1,6 @@
 library(contextual)
 
-horizon                           <- 1500
+horizon                           <- 1000
 simulations                       <- 100L
 
 # Lets set up a minimal contextual data generator or "bandit",
@@ -63,7 +63,7 @@ plot(history, type = "arms", limit_context= c("X.2"))
 
 # Finaly, ContextualEpochGreedyPolicy
 
-policy   <- ContextualEpochGreedyPolicy$new(10)
+policy   <- ContextualEpochGreedyPolicy$new(11)
 
 agents   <- list(Agent$new(policy, bandit, "cEpochGreedy"))
 
