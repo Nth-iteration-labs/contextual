@@ -31,7 +31,9 @@ Plot <- R6::R6Class(
                           legend_position    = "topleft",
                           legend_title       = NULL,
                           limit_agents       = NULL,
-                          limit_context      = NULL) {
+                          limit_context      = NULL,
+                          trunc_over_agents  = TRUE,
+                          trunc_per_agent    = TRUE) {
 
       self$history       <- history
 
@@ -85,7 +87,9 @@ Plot <- R6::R6Class(
         traces_max          = traces_max,
         traces_alpha        = traces_alpha,
         smooth              = smooth,
-        rate                = rate
+        rate                = rate,
+        trunc_over_agents   = trunc_over_agents,
+        trunc_per_agent     = trunc_per_agent
       )
 
       invisible(recordPlot())
@@ -116,7 +120,9 @@ Plot <- R6::R6Class(
                        legend_position    = "topleft",
                        legend_title       = NULL,
                        limit_agents       = NULL,
-                       limit_context      = NULL) {
+                       limit_context      = NULL,
+                       trunc_over_agents  = TRUE,
+                       trunc_per_agent    = TRUE) {
 
       self$history <- history
 
@@ -149,7 +155,9 @@ Plot <- R6::R6Class(
         traces              = traces,
         traces_max          = traces_max,
         traces_alpha        = traces_alpha,
-        smooth              = smooth
+        smooth              = smooth,
+        trunc_over_agents   = trunc_over_agents,
+        trunc_per_agent     = trunc_per_agent
       )
 
       invisible(recordPlot())
@@ -183,7 +191,9 @@ Plot <- R6::R6Class(
                        legend_position    = "topleft",
                        legend_title       = NULL,
                        limit_agents       = NULL,
-                       limit_context      = NULL) {
+                       limit_context      = NULL,
+                       trunc_over_agents  = TRUE,
+                       trunc_per_agent    = TRUE) {
       self$history <- history
 
       if (regret) {
@@ -225,7 +235,9 @@ Plot <- R6::R6Class(
         traces_max          = traces_max,
         traces_alpha        = traces_alpha,
         smooth              = smooth,
-        rate                = rate
+        rate                = rate,
+        trunc_over_agents   = trunc_over_agents,
+        trunc_per_agent     = trunc_per_agent
       )
 
       invisible(recordPlot())
@@ -248,7 +260,9 @@ Plot <- R6::R6Class(
                     legend_title       = NULL,
                     limit_context      = NULL,
                     smooth             = FALSE,
-                    limit_agents       = NULL) {
+                    limit_agents       = NULL,
+                    trunc_over_agents  = TRUE,
+                    trunc_per_agent    = TRUE) {
 
       self$history <- history
 
@@ -314,7 +328,10 @@ Plot <- R6::R6Class(
 
       eg                <- expand.grid(t = dt[sim == 1]$t, choice = seq(1.0, max_arm, 1))
       data              <- merge(data, eg, all = TRUE)
-      data[is.na(data)] <- 0.0
+      # turn NA into 0
+      for (j in seq_len(ncol(data)))
+        set(data,which(is.na(data[[j]])),j,0)
+
       data$dataum       <- ave(data$arm_count, data$t, FUN = cumsum)
       data$zero         <- 0.0
       min_ylim          <- 0
@@ -445,7 +462,9 @@ Plot <- R6::R6Class(
                        traces_alpha        = 0.3,
                        cum_average         = FALSE,
                        smooth              = FALSE,
-                       rate                = FALSE) {
+                       rate                = FALSE,
+                       trunc_over_agents   = TRUE,
+                       trunc_per_agent     = TRUE) {
 
       cum_flip <- FALSE
       if((line_data_name=="reward" || line_data_name=="regret") && isTRUE(cum_average)) {
@@ -472,7 +491,7 @@ Plot <- R6::R6Class(
         disp_data_name <- gsub("none", disp, disp_data_name)
         data <-
           self$history$get_cumulative_data(
-            limit_cols   = c("agent", "t", line_data_name, disp_data_name),
+            limit_cols   = c("agent", "t", "sims", line_data_name, disp_data_name),
             limit_agents = limit_agents,
             interval     = interval
           )
@@ -481,10 +500,26 @@ Plot <- R6::R6Class(
         disp <- NULL
         data <-
           self$history$get_cumulative_data(
-            limit_cols   = c("agent", "t", line_data_name),
+            limit_cols   = c("agent", "t", "sims", line_data_name),
             limit_agents = limit_agents,
             interval     = interval
           )
+      }
+
+      agent_levels <- levels(droplevels(data$agent))
+      n_agents <- length(agent_levels)
+
+      # turn NA into 0
+      for (j in seq_len(ncol(data)))
+        data.table::set(data,which(is.na(data[[j]])),j,0)
+
+      if(isTRUE(trunc_per_agent))  {
+        data <- data[data$sims == max(data$sims)]
+      }
+
+      if(isTRUE(trunc_over_agents))  {
+        min_t_sim <- min(data[,max(t), by = c("agent")]$V1)
+        data <- data[t<=min_t_sim]
       }
 
       if (!is.null(xlim)) {
@@ -494,9 +529,6 @@ Plot <- R6::R6Class(
         min_xlim <- 1
         max_xlim <- data[, max(t)]
       }
-
-      agent_levels <- levels(droplevels(data$agent))
-      n_agents <- length(agent_levels)
 
       data.table::setorder(data, agent, t)
 
@@ -709,10 +741,10 @@ Plot <- R6::R6Class(
 
 #' Plot
 #'
-#' Generates plots from \code{History} data.
+#' Generates plots from \code{\link{History}} data.
 #'
 #' Usually not instantiated directly but invoked by calling the generic \code{plot(h)}, where \code{h}
-#' is an \code{History} class instance.
+#' is an \code{\link{History}} class instance.
 #'
 #' @name Plot
 #' @aliases average optimal arms do_plot gg_color_hue check_history_data
@@ -833,6 +865,14 @@ Plot <- R6::R6Class(
 #'   }
 #'   \item{\code{ylab}}{
 #'      \code{(character, NULL)} a title for the y axis
+#'   }
+#'   \item{\code{trunc_over_agents}}{
+#'      \code{(logical , TRUE)} Truncate the chart to the agent with the fewest time steps t.
+#'   }
+#'   \item{\code{trunc_per_agent}}{
+#'      \code{(logical , TRUE)} Truncate every agent's plot to the number of time steps that have been fully
+#'      simulated. That is, time steps for which the number of simulations equals the number defined in
+#'      \code{\link{Simulator}}'s \code{simulations} parameter.
 #'   }
 #'  }
 #'

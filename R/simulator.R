@@ -251,9 +251,6 @@ Simulator <- R6::R6Class(
       self$internal_history$set_meta_data("sim_total_duration", formatted_duration)
       message(paste0("Completed simulation in ",formatted_duration))
 
-      # TODO: this should be optional, and maybe done at plotside?
-      self$internal_history$truncate()
-
       start_time_stats <- Sys.time()
       message("Computing statistics.")
       # update statistics TODO: not always necessary, add option arg to class?

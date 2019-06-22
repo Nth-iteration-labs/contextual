@@ -343,6 +343,10 @@ History <- R6::R6Class(
 
       private$.cum_stats <- private$.data[, list(
 
+
+        sims                = length(reward),
+        sqrt_sims           = sqrt(length(reward)),
+
         regret_var          = var(regret),
         regret_sd           = sd(regret),
         regret              = mean(regret),
@@ -373,14 +377,15 @@ History <- R6::R6Class(
       private$.cum_stats[, cum_regret_rate := cum_regret / t]
 
       qn       <- qnorm(0.975)
-      sqrt_sim <- sqrt(self$get_simulation_count())
 
-      private$.cum_stats[, cum_regret_ci      := cum_regret_sd / sqrt_sim * qn]
-      private$.cum_stats[, cum_reward_ci      := cum_reward_sd / sqrt_sim * qn]
-      private$.cum_stats[, cum_regret_rate_ci := cum_regret_rate_sd / sqrt_sim * qn]
-      private$.cum_stats[, cum_reward_rate_ci := cum_reward_rate_sd / sqrt_sim * qn]
-      private$.cum_stats[, regret_ci          := regret_sd / sqrt_sim * qn]
-      private$.cum_stats[, reward_ci          := reward_sd / sqrt_sim * qn]
+      private$.cum_stats[, cum_regret_ci      := cum_regret_sd / sqrt_sims * qn]
+      private$.cum_stats[, cum_reward_ci      := cum_reward_sd / sqrt_sims * qn]
+      private$.cum_stats[, cum_regret_rate_ci := cum_regret_rate_sd / sqrt_sims * qn]
+      private$.cum_stats[, cum_reward_rate_ci := cum_reward_rate_sd / sqrt_sims * qn]
+      private$.cum_stats[, regret_ci          := regret_sd / sqrt_sims * qn]
+      private$.cum_stats[, reward_ci          := reward_sd / sqrt_sims * qn]
+
+      private$.cum_stats[,sqrt_sims:=NULL]
 
       private$.data[, cum_reward_rate := cum_reward / t]
       private$.data[, cum_regret_rate := cum_regret / t]
