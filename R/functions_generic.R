@@ -254,10 +254,7 @@ plot.History <- function(x, ...) {
       xlab = xlab,
       ylab = ylab,
       limit_agents = limit_agents,
-      limit_context = limit_context,
-      trunc_over_agents = trunc_over_agents,
-      trunc_per_agent = trunc_per_agent
-
+      limit_context = limit_context
     )
   }
 }

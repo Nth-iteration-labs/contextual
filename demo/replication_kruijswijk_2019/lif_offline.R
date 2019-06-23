@@ -36,9 +36,9 @@ bandit             <- OnlineOfflineContinuumBandit$new(delta = 0.1, horizon = ho
 
 
 agents              <- list(Agent$new(UniformRandomContinuousPolicy$new(), bandit),
-                            Agent$new(ThompsonBayesianLinearPolicy$new(), bandit))
-                            #Agent$new(LifPolicy$new(int_time, amplitude, learn_rate, omega, x0_start), bandit),
-                            #Agent$new(EFirstRegressionPolicy$new(epsilon = 100), bandit))
+                            Agent$new(ThompsonBayesianLinearPolicy$new(), bandit),
+                            Agent$new(LifPolicy$new(int_time, amplitude, learn_rate, omega, x0_start), bandit),
+                            Agent$new(EFirstRegressionPolicy$new(epsilon = 100), bandit))
 
 
 history            <- Simulator$new(agents      = agents,

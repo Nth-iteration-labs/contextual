@@ -260,9 +260,7 @@ Plot <- R6::R6Class(
                     legend_title       = NULL,
                     limit_context      = NULL,
                     smooth             = FALSE,
-                    limit_agents       = NULL,
-                    trunc_over_agents  = TRUE,
-                    trunc_per_agent    = TRUE) {
+                    limit_agents       = NULL) {
 
       self$history <- history
 
@@ -555,7 +553,6 @@ Plot <- R6::R6Class(
       }
 
       data.table::setorder(data, agent, t)
-
 
       if (isTRUE(smooth)) {
         for (agent_name in agent_levels) {
