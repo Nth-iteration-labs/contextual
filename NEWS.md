@@ -1,3 +1,9 @@
+contextual 0.9.8.2
+==================
+
+* Minor documentation update
+* Minor refactoring: Private utility functions moved from the History to the Plot class.
+
 contextual 0.9.8.1
 ==================
 

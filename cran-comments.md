@@ -1,11 +1,11 @@
-Minor update adding "suppressWarnings(RNGversion("3.5.0"))" to ensure CRAN devel compatibility
+Minor refactoring of private functions.
 
 ## Test environments
 
-* local Windows 10 (x64) release, R 3.5.1
+* local Windows 10 (x64) release, R 3.6.0
 * OS X install (on travis-ci) R-release
 * Ubuntu 12.04 (on travis-ci) R-release
-* Windows Server 2012 R2 x64 install (on appveyor), R 3.5.1
+* Windows Server 2012 R2 x64 install (on appveyor), R 3.6.1
 * Rhub:
   * Fedora Linux, R-devel, clang, gfortran
   * Ubuntu Linux 16.04 LTS, R-release, GCC
