@@ -27,8 +27,8 @@ plot(history, type = "cumulative", legend_border = FALSE, no_par = TRUE )
 plot(history, type = "arms",  limit_agents = c("LinUCB"), no_par = TRUE)
 plot(history, type = "arms",  limit_agents = c("EGreedy"), no_par = TRUE)
 
-plot(history, type = "arms",  limit_agents = c("LinUCB"), limit_context = 1, no_par = TRUE)
-plot(history, type = "arms",  limit_agents = c("LinUCB"), limit_context = 2, no_par = TRUE )
-plot(history, type = "arms",  limit_agents = c("LinUCB"), limit_context = 3, no_par = TRUE )
+plot(history, type = "arms",  limit_agents = c("LinUCB"), limit_context = c("X.1"), no_par = TRUE)
+plot(history, type = "arms",  limit_agents = c("LinUCB"), limit_context = c("X.2"), no_par = TRUE )
+plot(history, type = "arms",  limit_agents = c("LinUCB"), limit_context = c("X.3"), no_par = TRUE )
 
 par(mfrow = c(1, 1))

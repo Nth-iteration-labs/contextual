@@ -7,8 +7,8 @@ ThompsonBayesianLinearPolicy <- R6::R6Class(
     J = NULL,
     P = NULL,
     err = NULL,
-    initialize = function(J = matrix(c(0, 0.025, -0.025), nrow=1, ncol=3, byrow = TRUE), 
-                          P = matrix(diag(c(2,2,5)), nrow=3, ncol=3, byrow = TRUE), 
+    initialize = function(J = matrix(c(0, 0.025, -0.025), nrow=1, ncol=3, byrow = TRUE),
+                          P = matrix(diag(c(2,2,5)), nrow=3, ncol=3, byrow = TRUE),
                           err=1) {
       super$initialize()
       self$J <- J

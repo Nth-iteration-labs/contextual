@@ -2,9 +2,7 @@ library(contextual)
 library(data.table)
 
 # Import myocardial infection dataset
-
-url  <- "http://d1ie9wlkzugsxr.cloudfront.net/data_propensity/myocardial_propensity.csv"
-data            <- fread(url)
+data  <- fread("http://d1ie9wlkzugsxr.cloudfront.net/data_propensity/myocardial_propensity.csv")
 
 simulations     <- 3000
 horizon         <- nrow(data)
@@ -16,9 +14,7 @@ data$trt        <- data$trt + 1
 data$alive      <- abs(data$death - 1)
 
 # Run regression per arm, predict outcomes, and save results, a column per arm
-
 f                <- alive ~ age + risk + severity
-
 model_f          <- function(arm) glm(f, data=data[trt==arm],
                                       family=binomial(link="logit"),
                                       y=FALSE, model=FALSE)
@@ -31,31 +27,21 @@ r_data           <- do.call(cbind, r_data)
 colnames(r_data) <- paste0("r", (1:max(arms)))
 
 # Bind data and model predictions
-
-data             <- cbind(data,r_data)
+data       <- cbind(data,r_data)
 
 # calculate propensity weights
+m          <- glm(I(trt-1) ~ age + risk + severity,
+                  data=data, family=binomial(link="logit"))
+data$p     <- predict(m, type = "response")
 
-m      <- glm(I(trt-1) ~ age + risk + severity, data=data, family=binomial(link="logit"))
-data$p <-predict(m, type = "response")
+# formula notation of dataset:
+# (without p, doublyrobustbandit uses marginal prob per arm for propensities)
+f           <- alive ~ trt | age + risk + severity | r1 + r2  | p
 
-# run bandit - when leaving out P1, Doubly Robust Bandit uses marginal prob per arm for propensities:
-# table(private$z)/length(private$z)
-
-f          <- alive ~ trt | age + risk + severity | r1 + r2  | p
-
-bandit     <- OfflineDoublyRobustBandit$new(formula = f, data = data)
-
-# Define agents.
+bandit      <- OfflineDoublyRobustBandit$new(formula = f, data = data)
 agents      <- list(Agent$new(LinUCBDisjointOptimizedPolicy$new(0.2), bandit, "LinUCB"))
-
-# Initialize the simulation.
-
-simulation  <- Simulator$new(agents = agents, simulations = simulations, horizon = horizon)
-
-# Run the simulation.
+simulation  <- Simulator$new(agents, horizon, simulations)
 sim  <- simulation$run()
-
 # plot the results
 plot(sim, type = "cumulative", regret = FALSE, rate = TRUE, legend_position = "bottomright")
 plot(sim, type = "arms", limit_agents = "LinUCB")

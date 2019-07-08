@@ -1,0 +1,565 @@
+\begin{thebibliography}{83}
+\newcommand{\enquote}[1]{``#1''}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\providecommand{\urlprefix}{URL }
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi:\discretionary{}{}{}#1}\else
+  \providecommand{\doi}{doi:\discretionary{}{}{}\begingroup
+  \urlstyle{rm}\Url}\fi
+\providecommand{\eprint}[2][]{\url{#2}}
+
+\bibitem[{Abadi \emph{et~al.}(2016)Abadi, Barham, Chen, Chen, Davis, Dean,
+  Devin, Ghemawat, Irving, and Isard}]{Abadi2016}
+Abadi M, Barham P, Chen J, Chen Z, Davis A, Dean J, Devin M, Ghemawat S, Irving
+  G, Isard M (2016).
+\newblock \enquote{Tensorflow: A System for Large-scale Machine Learning.}
+\newblock In \emph{{OSDI}}, volume~16, pp. 265--283.
+
+\bibitem[{Abe \emph{et~al.}(2003)Abe, Biermann, and Long}]{Abe2003}
+Abe N, Biermann AW, Long PM (2003).
+\newblock \enquote{Reinforcement Learning with Immediate Rewards and Linear
+  Hypotheses.}
+\newblock \emph{Algorithmica}, \textbf{37}(4), 263--293.
+\newblock \doi{10.1007/s00453-003-1038-1}.
+
+\bibitem[{ABTasty(2018)}]{BibEntry2018AugA}
+ABTasty (2018).
+\newblock \enquote{Ab Tasty.}
+\newblock [Online; accessed 27. Aug. 2018],
+  \urlprefix\url{https://www.abtasty.com}.
+
+\bibitem[{Adobe(2018)}]{BibEntry2018AugB}
+Adobe (2018).
+\newblock \enquote{Adobe Target.}
+\newblock [Online; accessed 27. Aug. 2018],
+  \urlprefix\url{https://www.adobe.com/marketing/target.html}.
+
+\bibitem[{Agarwal \emph{et~al.}(2016)Agarwal, Bird, Cozowicz, Hoang, Langford,
+  Lee, Li, Melamed, Oshri, and Ribas}]{Agarwal2016}
+Agarwal A, Bird S, Cozowicz M, Hoang L, Langford J, Lee S, Li J, Melamed D,
+  Oshri G, Ribas O (2016).
+\newblock \enquote{Making Contextual Decisions with Low Technical Debt.}
+\newblock \emph{arXiv preprint arXiv:1606.03966}.
+
+\bibitem[{Agarwal \emph{et~al.}(2014)Agarwal, Hsu, Kale, Langford, Li, and
+  Schapire}]{Agarwal2014}
+Agarwal A, Hsu D, Kale S, Langford J, Li L, Schapire R (2014).
+\newblock \enquote{Taming the Monster: A Fast and Simple Algorithm for
+  Contextual Bandits.}
+\newblock In \emph{International Conference on Machine Learning}, pp.
+  1638--1646.
+
+\bibitem[{Agrawal(1995)}]{Agrawal1995}
+Agrawal R (1995).
+\newblock \enquote{The Continuum-armed Bandit Problem.}
+\newblock \emph{SIAM journal on control and optimization}, \textbf{33}(6),
+  1926--1951.
+\newblock \doi{10.1137/s0363012992237273}.
+
+\bibitem[{Agrawal and Goyal(2011)}]{Agrawal2011}
+Agrawal S, Goyal N (2011).
+\newblock \enquote{Analysis of Thompson Sampling for the Multi-armed Bandit
+  Problem.}
+\newblock \emph{arXiv}.
+\newblock \eprint{http://arxiv.org/abs/1111.1797v3}.
+
+\bibitem[{Agrawal and Goyal(2012)}]{Agrawal2012a}
+Agrawal S, Goyal N (2012).
+\newblock \enquote{Thompson Sampling for Contextual Bandits with Linear
+  Payoffs.}
+\newblock \emph{arXiv}.
+\newblock \eprint{http://arxiv.org/abs/1209.3352v4}.
+
+\bibitem[{Auer \emph{et~al.}(2002)Auer, Cesa-Bianchi, and Fischer}]{Auer2002}
+Auer P, Cesa-Bianchi N, Fischer P (2002).
+\newblock \enquote{Finite-time Analysis of the Multiarmed Bandit Problem.}
+\newblock \emph{Machine learning}, \textbf{47}(2-3), 235--256.
+
+\bibitem[{Austin(2011)}]{Austin2011}
+Austin PC (2011).
+\newblock \enquote{An Introduction to Propensity Score Methods for Reducing the
+  Effects of Confounding in Observational Studies.}
+\newblock \emph{Multivariate behavioral research}, \textbf{46}(3), 399--424.
+
+\bibitem[{Bastani and Bayati(2015)}]{Bastani2015}
+Bastani H, Bayati M (2015).
+\newblock \enquote{Online Decision-making with High-dimensional Covariates.}
+\newblock \emph{SSRN}.
+
+\bibitem[{Besson(2018)}]{SMPyBandits}
+Besson L (2018).
+\newblock \enquote{Smpybandits: An Open-source Research Framework for Single
+  and Multi-players Multi-arms Bandits (mab) Algorithms in Python.}
+\newblock Online at: \url{github.com/SMPyBandits/SMPyBandits}.
+\newblock Code at https://github.com/SMPyBandits/SMPyBandits/, documentation at
+  https://smpybandits.github.io/,
+  \urlprefix\url{https://github.com/SMPyBandits/SMPyBandits/}.
+
+\bibitem[{Bottou \emph{et~al.}(2013)Bottou, Peters, Quiñonero-Candela,
+  Charles, Chickering, Portugaly, Ray, Simard, and Snelson}]{Bottou2013}
+Bottou L, Peters J, Quiñonero-Candela J, Charles DX, Chickering DM, Portugaly
+  E, Ray D, Simard P, Snelson E (2013).
+\newblock \enquote{Counterfactual Reasoning and Learning Systems: The Example
+  of Computational Advertising.}
+\newblock \emph{The Journal of Machine Learning Research}, \textbf{14}(1),
+  3207--3260.
+
+\bibitem[{Brezzi and Lai(2002)}]{Brezzi2002}
+Brezzi M, Lai TL (2002).
+\newblock \enquote{Optimal Learning and Experimentation in Bandit Problems.}
+\newblock \emph{Journal of Economic Dynamics and Control}, \textbf{27}(1),
+  87--108.
+\newblock \doi{10.1016/s0165-1889(01)00028-8}.
+
+\bibitem[{Briggs and Hollis(1997)}]{Briggs1997}
+Briggs R, Hollis N (1997).
+\newblock \enquote{Advertising on the Web: Is There Response before
+  Click-through?}
+\newblock \emph{Journal of Advertising research}, \textbf{37}(2), 33--46.
+
+\bibitem[{Bubeck \emph{et~al.}(2012)Bubeck, Cesa-Bianchi
+  \emph{et~al.}}]{Bubeck2012}
+Bubeck S, Cesa-Bianchi N, \emph{et~al.} (2012).
+\newblock \enquote{Regret Analysis of Stochastic and Nonstochastic Multi-armed
+  Bandit Problems.}
+\newblock \emph{Foundations and Trends{\textregistered} in Machine Learning},
+  \textbf{5}(1), 1--122.
+\newblock \doi{10.1561/2200000024}.
+
+\bibitem[{Buckheit and Donoho(1995)}]{Buckheit1995}
+Buckheit JB, Donoho DL (1995).
+\newblock \enquote{Wavelab and Reproducible Research.}
+\newblock In \emph{Wavelets and statistics}, pp. 55--81. Springer.
+\newblock \doi{10.1007/978-1-4612-2544-7_5}.
+
+\bibitem[{Cesa-Bianchi and Fischer(1998)}]{Cesa-Bianchi1998}
+Cesa-Bianchi N, Fischer P (1998).
+\newblock \enquote{Finite-{Time} {Regret} {Bounds} for the {Multiarmed}
+  {Bandit} {Problem}.}
+\newblock In \emph{{ICML}}, pp. 100--108. Citeseer.
+
+\bibitem[{Chang(2017)}]{R6}
+Chang W (2017).
+\newblock \emph{R6: Classes with Reference Semantics}.
+\newblock R package version 2.2.2,
+  \urlprefix\url{https://CRAN.R-project.org/package=R6}.
+
+\bibitem[{Chu \emph{et~al.}(2009)Chu, Park, Beaupre, Motgi, Phadke,
+  Chakraborty, and Zachariah}]{Chu2009}
+Chu W, Park ST, Beaupre T, Motgi N, Phadke A, Chakraborty S, Zachariah J
+  (2009).
+\newblock \enquote{A Case Study of Behavior-driven Conjoint Analysis on
+  {Yahoo}!: Front Page Today Module.}
+\newblock In \emph{Proceedings of the 15\textsuperscript{th} {ACM} {SIGKDD}
+  international conference on {Knowledge} discovery and data mining}, pp.
+  1097--1104. ACM.
+\newblock \doi{10.1145/1557019.1557138}.
+
+\bibitem[{Dud{\'{i}}k \emph{et~al.}(2011)Dud{\'{i}}k, Langford, and
+  Li}]{Dudik2011}
+Dud{\'{i}}k M, Langford J, Li L (2011).
+\newblock \enquote{Doubly Robust Policy Evaluation and Learning.}
+\newblock \emph{arXiv preprint arXiv:1103.4601}.
+
+\bibitem[{Eckles and Kaptein(2014)}]{Eckles2014}
+Eckles D, Kaptein M (2014).
+\newblock \enquote{Thompson Sampling with the Online Bootstrap.}
+\newblock \emph{arXiv}.
+\newblock \eprint{http://arxiv.org/abs/1410.4009v1}.
+
+\bibitem[{Gandrud(2016)}]{Gandrud2016}
+Gandrud C (2016).
+\newblock \emph{Reproducible Research with {R} and {R} Studio}.
+\newblock Chapman and Hall/CRC.
+
+\bibitem[{Gelman(2018)}]{2018a}
+Gelman A (2018).
+\newblock \enquote{Don't Call It a Bandit.}
+\newblock
+  \urlprefix\url{https://andrewgelman.com/2018/08/04/dont-call-bandit/}.
+
+\bibitem[{Google(2018)}]{BibEntry2018Aug2}
+Google (2018).
+\newblock \enquote{Google Analytics.}
+\newblock [Online; accessed 26. Aug. 2018],
+  \urlprefix\url{https://marketingplatform.google.com/about/analytics}.
+
+\bibitem[{Hido \emph{et~al.}(2013)Hido, Tokui, and Oda}]{Hido2013}
+Hido S, Tokui S, Oda S (2013).
+\newblock \enquote{Jubatus: An Open Source Platform for Distributed Online
+  Machine Learning.}
+\newblock In \emph{{NIPS} 2013 {Workshop} on {Big} {Learning}, {Lake} {Tahoe}}.
+
+\bibitem[{Horvitz and Thompson(1952)}]{Horvitz1952}
+Horvitz DG, Thompson DJ (1952).
+\newblock \enquote{A Generalization of Sampling without Replacement from a
+  Finite Universe.}
+\newblock \emph{Journal of the American statistical Association},
+  \textbf{47}(260), 663--685.
+
+\bibitem[{Idreos \emph{et~al.}(2012)Idreos, Groffen, Nes, Manegold, Mullender,
+  and Kersten}]{IdreosGNMMK12}
+Idreos S, Groffen F, Nes N, Manegold S, Mullender KS, Kersten ML (2012).
+\newblock \enquote{Monetdb: Two Decades of Research in Column-oriented Database
+  Architectures.}
+\newblock \emph{IEEE Data Engineering Bulletin}, \textbf{35}(1), 40--45.
+
+\bibitem[{Imbens and Rubin(2015)}]{Imbens2015}
+Imbens GW, Rubin DB (2015).
+\newblock \emph{Causal {Inference} in {Statistics}, {Social}, and {Biomedical}
+  {Sciences}}.
+\newblock Cambridge University Press.
+\newblock ISBN 9780521885881.
+\newblock Google-Books-ID: Bf1tBwAAQBAJ.
+
+\bibitem[{Jordan and Mitchell(2015)}]{Jordan2015}
+Jordan MI, Mitchell TM (2015).
+\newblock \enquote{Machine Learning: Trends, Perspectives, and Prospects.}
+\newblock \emph{Science}, \textbf{349}(6245), 255--260.
+
+\bibitem[{Kaelbling \emph{et~al.}(1996)Kaelbling, Littman, and
+  Moore}]{Kaelbling1996}
+Kaelbling LP, Littman ML, Moore AW (1996).
+\newblock \enquote{Reinforcement Learning: A Survey.}
+\newblock \emph{Journal of artificial intelligence research}, \textbf{4},
+  237--285.
+\newblock \doi{10.1613/jair.301}.
+
+\bibitem[{Kaptein \emph{et~al.}(2016)Kaptein, Van~Emden, and
+  Iannuzzi}]{Kaptein2016a}
+Kaptein MC, Van~Emden R, Iannuzzi D (2016).
+\newblock \enquote{Tracking the Decoy: Maximizing the Decoy Effect through
+  Sequential Experimentation.}
+\newblock \emph{Palgrave Communications}, \textbf{2}, 16082.
+\newblock \doi{10.1057/palcomms.2016.82}.
+
+\bibitem[{Katehakis and Derman(1986)}]{Katehakis1986}
+Katehakis MN, Derman C (1986).
+\newblock \enquote{Computing Optimal Sequential Allocation Rules in Clinical
+  Trials.}
+\newblock \emph{Lecture notes-monograph series}, pp. 29--39.
+
+\bibitem[{Kirkpatrick \emph{et~al.}(1983)Kirkpatrick, Gelatt, and
+  Vecchi}]{Kirkpatrick1983}
+Kirkpatrick S, Gelatt CD, Vecchi MP (1983).
+\newblock \enquote{Optimization by Simulated Annealing.}
+\newblock \emph{science}, \textbf{220}(4598), 671--680.
+
+\bibitem[{Kohavi \emph{et~al.}(2007)Kohavi, Henne, and
+  Sommerfield}]{Kohavi2007}
+Kohavi R, Henne RM, Sommerfield D (2007).
+\newblock \enquote{Practical Guide to Controlled Experiments on the Web.}
+\newblock In \emph{Proceedings of the 13th {ACM} {SIGKDD} international
+  conference on {Knowledge} discovery and data mining}, pp. 959--967. ACM.
+
+\bibitem[{Kruijswijk \emph{et~al.}(2018)Kruijswijk, Parvinen, van Emden, and
+  Kaptein}]{kruijswijk2018streamingbandit}
+Kruijswijk J, Parvinen P, van Emden R, Kaptein MC (2018).
+\newblock \enquote{Streamingbandit; Experimenting with Bandit Policies.}
+\newblock \emph{Journal of Statistical Software}.
+
+\bibitem[{Kuleshov and Precup(2014)}]{Kuleshov2014}
+Kuleshov V, Precup D (2014).
+\newblock \enquote{Algorithms for Multi-armed Bandit Problems.}
+\newblock \emph{arXiv preprint arXiv:1402.6028}.
+
+\bibitem[{Lai and Robbins(1985)}]{Lai1985}
+Lai TL, Robbins H (1985).
+\newblock \enquote{Asymptotically Efficient Adaptive Allocation Rules.}
+\newblock \emph{Advances in applied mathematics}, \textbf{6}(1), 4--22.
+\newblock \doi{10.1016/0196-8858(85)90002-8}.
+
+\bibitem[{Langford \emph{et~al.}(2007)Langford, Li, and Strehl}]{Langford2007}
+Langford J, Li L, Strehl A (2007).
+\newblock \enquote{Vowpal Wabbit.}
+
+\bibitem[{Langford and Zhang(2008)}]{Langford2008}
+Langford J, Zhang T (2008).
+\newblock \enquote{The Epoch-greedy Algorithm for Multi-armed Bandits with Side
+  Information.}
+\newblock In \emph{Advances in neural information processing systems}, pp.
+  817--824.
+
+\bibitem[{Lebera(2018)}]{lebera}
+Lebera T (2018).
+\newblock \enquote{Machine Learning for Personalization.}
+\newblock Online.
+\newblock \urlprefix\url{http://www.cs.columbia.edu/~jebara/6998/}.
+
+\bibitem[{Li \emph{et~al.}(2012)Li, Chu, Langford, Moon, and Wang}]{Li2012}
+Li L, Chu W, Langford J, Moon T, Wang X (2012).
+\newblock \enquote{An Unbiased Offline Evaluation of Contextual Bandit
+  Algorithms with Generalized Linear Models.}
+\newblock In \emph{Proceedings of the {Workshop} on {On}-line {Trading} of
+  {Exploration} and {Exploitation} 2}, pp. 19--36.
+
+\bibitem[{Li \emph{et~al.}(2010)Li, Chu, Langford, and Schapire}]{Li2010}
+Li L, Chu W, Langford J, Schapire RE (2010).
+\newblock \enquote{A Contextual-bandit Approach to Personalized News Article
+  Recommendation.}
+\newblock In \emph{Proceedings of the 19\textsuperscript{th} international
+  conference on World wide web}, pp. 661--670. ACM.
+\newblock \doi{10.1145/1772690.1772758}.
+
+\bibitem[{Li \emph{et~al.}(2011)Li, Chu, Langford, and Wang}]{Li2011}
+Li L, Chu W, Langford J, Wang X (2011).
+\newblock \enquote{Unbiased {Offline} {Evaluation} of {Contextual}-bandit-based
+  {News} {Article} {Recommendation} {Algorithms}.}
+\newblock In \emph{Proceedings of the {Fourth} {ACM} {International}
+  {Conference} on {Web} {Search} and {Data} {Mining}}, {WSDM} '11, pp.
+  297--306. ACM, New York, NY, USA.
+\newblock ISBN 9781450304931.
+\newblock \doi{10.1145/1935826.1935878}.
+
+\bibitem[{Li(2016)}]{Li2016}
+Li S (2016).
+\newblock \emph{The Art of Clustering Bandits.}
+\newblock Ph.D. thesis, Universit{\`{a}} degli Studi dell'Insubria.
+\newblock \urlprefix\url{http://insubriaspace.cineca.it/handle/10277/729}.
+
+\bibitem[{Lu \emph{et~al.}(2010)Lu, P{\'a}l, and P{\'a}l}]{Lu2010}
+Lu T, P{\'a}l D, P{\'a}l M (2010).
+\newblock \enquote{Contextual Multi-armed Bandits.}
+\newblock In \emph{Proceedings of the Thirteenth international conference on
+  Artificial Intelligence and Statistics}, pp. 485--492.
+
+\bibitem[{Mandel \emph{et~al.}(2016)Mandel, Liu, Brunskill, and
+  Popovic}]{Mandel2016}
+Mandel T, Liu YE, Brunskill E, Popovic Z (2016).
+\newblock \enquote{Offline {Evaluation} of {Online} {Reinforcement} {Learning}
+  {Algorithms}.}
+\newblock In \emph{{AAAI}}, pp. 1926--1933.
+
+\bibitem[{May \emph{et~al.}(2012)May, Korda, Lee, and Leslie}]{May2012}
+May BC, Korda N, Lee A, Leslie DS (2012).
+\newblock \enquote{Optimistic {Bayesian} Sampling in Contextual-bandit
+  Problems.}
+\newblock \emph{Journal of Machine Learning Research}, \textbf{13}(Jun),
+  2069--2106.
+
+\bibitem[{Mesirov(2010)}]{Mesirov2010}
+Mesirov JP (2010).
+\newblock \enquote{Accessible Reproducible Research.}
+\newblock \emph{Science}, \textbf{327}(5964), 415--416.
+\newblock \doi{10.1126/science.1179653}.
+
+\bibitem[{Mixpanel(2018)}]{BibEntry2018Aug1}
+Mixpanel (2018).
+\newblock \enquote{Mixpanel.}
+\newblock [Online; accessed 26. Aug. 2018],
+  \urlprefix\url{https://mixpanel.com}.
+
+\bibitem[{Muenchen(2012)}]{2012}
+Muenchen RA (2012).
+\newblock \enquote{The {Popularity} of {Data} {Science} {Software}.}
+\newblock \urlprefix\url{http://r4stats.com/articles/popularity/}.
+
+\bibitem[{Nicol(2014)}]{Nicol2014}
+Nicol O (2014).
+\newblock \emph{Data-driven Evaluation of Contextual Bandit Algorithms and
+  Applications to Dynamic Recommendation}.
+\newblock {PhD} {Thesis}, Université de Lille I.
+
+\bibitem[{NTUCSIE-CLLab(2018)}]{striatum}
+NTUCSIE-CLLab (2018).
+\newblock \enquote{Striatum: {Contextual} Bandit in Python.}
+\newblock \urlprefix\url{https://github.com/ntucllab/striatum}.
+
+\bibitem[{Optimizely(2018)}]{BibEntry2018Aug3}
+Optimizely (2018).
+\newblock \enquote{Optimizely.}
+\newblock [Online; accessed 26. Aug. 2018],
+  \urlprefix\url{https://www.optimizely.com}.
+
+\bibitem[{Pearl(2009)}]{Pearl2009}
+Pearl J (2009).
+\newblock \emph{Causality}.
+\newblock Cambridge University Press.
+\newblock ISBN 9780521895606.
+\newblock Google-Books-ID: f4nuexsNVZIC.
+
+\bibitem[{Presman(1991)}]{Presman1991}
+Presman EL (1991).
+\newblock \enquote{Poisson Version of the Two-armed Bandit Problem with
+  Discounting.}
+\newblock \emph{Theory of Probability \& Its Applications}, \textbf{35}(2),
+  307--317.
+
+\bibitem[{{R Core Team}(2018)}]{RCore}
+{R Core Team} (2018).
+\newblock \enquote{R: A Language and Environment for Statistical Computing.}
+\newblock \urlprefix\url{https://www.R-project.org}.
+
+\bibitem[{Rabbi \emph{et~al.}(2015)Rabbi, Aung, Zhang, and
+  Choudhury}]{Rabbi2015}
+Rabbi M, Aung MH, Zhang M, Choudhury T (2015).
+\newblock \enquote{{MyBehavior}: Automatic Personalized Health Feedback from
+  User Behaviors and Preferences Using Smartphones.}
+\newblock In \emph{Proceedings of the 2015 {ACM} {International} {Joint}
+  {Conference} on {Pervasive} and {Ubiquitous} {Computing}}, pp. 707--718. ACM.
+
+\bibitem[{Riquelme \emph{et~al.}(2018)Riquelme, Tucker, and
+  Snoek}]{Riquelme2018}
+Riquelme C, Tucker G, Snoek J (2018).
+\newblock \enquote{Deep {Bayesian} {Bandits} {Showdown}: {An} {Empirical}
+  {Comparison} of {Bayesian} {Deep} {Networks} for {Thompson} {Sampling}.}
+\newblock \emph{arXiv preprint arXiv:1802.09127}.
+
+\bibitem[{Robbins(1952)}]{Robbins1952}
+Robbins H (1952).
+\newblock \enquote{Some Aspects of the Sequential Design of Experiments.}
+\newblock \emph{Bulletin of the American Mathematical Society}, \textbf{58}(5),
+  527--535.
+\newblock ISSN 0002-9904, 1936-881X.
+\newblock \urlprefix\url{https://projecteuclid.org/euclid.bams/1183517370}.
+
+\bibitem[{Rumbaugh \emph{et~al.}(2004)Rumbaugh, Jacobson, and
+  Booch}]{Rumbaugh2004}
+Rumbaugh J, Jacobson I, Booch G (2004).
+\newblock \emph{Unified Modeling Language Reference Manual}.
+\newblock Pearson Higher Education.
+
+\bibitem[{Sarkar(1991)}]{Sarkar1991}
+Sarkar J (1991).
+\newblock \enquote{One-armed Bandit Problems with Covariates.}
+\newblock \emph{The Annals of Statistics}, pp. 1978--2002.
+\newblock \doi{10.1214/aos/1176348382}.
+
+\bibitem[{Shen \emph{et~al.}(2015)Shen, Wang, Jiang, and Zha}]{Shen2015}
+Shen W, Wang J, Jiang YG, Zha H (2015).
+\newblock \enquote{Portfolio {Choices} with {Orthogonal} {Bandit} {Learning}.}
+\newblock In \emph{{IJCAI}}, volume~15, pp. 974--980.
+
+\bibitem[{Slivkins(2014)}]{Slivkins2014}
+Slivkins A (2014).
+\newblock \enquote{Contextual Bandits with Similarity Information.}
+\newblock \emph{The Journal of Machine Learning Research}, \textbf{15}(1),
+  2533--2568.
+
+\bibitem[{Steenwinckel \emph{et~al.}(2018)Steenwinckel, De~Backere, Nelis,
+  Ongenae, and De~Turck}]{steenwinckel2018self}
+Steenwinckel B, De~Backere F, Nelis J, Ongenae F, De~Turck F (2018).
+\newblock \enquote{Self-learning Algorithms for the Personalised Interaction
+  with People with Dementia.}
+\newblock In \emph{Workshops of the Thirty-Second AAAI Conference on Artificial
+  Intelligence}, pp. 153--158.
+
+\bibitem[{Stodden \emph{et~al.}(2013)Stodden, Guo, and Ma}]{Stodden2013}
+Stodden V, Guo P, Ma Z (2013).
+\newblock \enquote{Toward Reproducible Computational Research: An Empirical
+  Analysis of Data and Code Policy Adoption by Journals.}
+\newblock \emph{PloS one}, \textbf{8}(6), e67111.
+\newblock \doi{10.1371/journal.pone.0067111}.
+
+\bibitem[{Strehl \emph{et~al.}(2010)Strehl, Langford, Li, and
+  Kakade}]{Strehl2010}
+Strehl A, Langford J, Li L, Kakade SM (2010).
+\newblock \enquote{Learning from Logged Implicit Exploration Data.}
+\newblock In \emph{Advances in {Neural} {Information} {Processing} {Systems}},
+  pp. 2217--2225.
+
+\bibitem[{Strehl \emph{et~al.}(2006{\natexlab{a}})Strehl, Li, Wiewiora,
+  Langford, and Littman}]{Strehl2006a}
+Strehl AL, Li L, Wiewiora E, Langford J, Littman ML (2006{\natexlab{a}}).
+\newblock \enquote{{PAC} Model-free Reinforcement Learning.}
+\newblock In \emph{Proceedings of the 23rd international conference on
+  {Machine} learning}, pp. 881--888. ACM.
+
+\bibitem[{Strehl \emph{et~al.}(2006{\natexlab{b}})Strehl, Mesterharm, Littman,
+  and Hirsh}]{Strehl2006}
+Strehl AL, Mesterharm C, Littman ML, Hirsh H (2006{\natexlab{b}}).
+\newblock \enquote{Experience-efficient Learning in Associative Bandit
+  Problems.}
+\newblock In \emph{Proceedings of the 23\textsuperscript{rd} international
+  conference on Machine learning}, pp. 889--896. ACM.
+\newblock \doi{10.1145/1143844.1143956}.
+
+\bibitem[{Sutton and Barto(1998)}]{Sutton1998e}
+Sutton RS, Barto AG (1998).
+\newblock \enquote{Reinforcement Learning: An Introduction.}
+\newblock \emph{IEEE Transactions on Neural Networks}, \textbf{9}(5), 1054.
+\newblock ISSN 1045-9227.
+\newblock \doi{10.1109/TNN.1998.712192}.
+
+\bibitem[{Swaminathan and Joachims(2015)}]{Swaminathan2015}
+Swaminathan A, Joachims T (2015).
+\newblock \enquote{Batch Learning from Logged Bandit Feedback through
+  Counterfactual Risk Minimization.}
+\newblock \emph{Journal of Machine Learning Research}, \textbf{16}(1),
+  1731--1755.
+
+\bibitem[{Tang \emph{et~al.}(2013)Tang, Rosales, Singh, and Agarwal}]{Tang2013}
+Tang L, Rosales R, Singh A, Agarwal D (2013).
+\newblock \enquote{Automatic Ad Format Selection Via Contextual Bandits.}
+\newblock In \emph{Proceedings of the 22\textsuperscript{nd} ACM international
+  conference on Conference on information \& knowledge management}, pp.
+  1587--1594. ACM.
+
+\bibitem[{Tewari and Murphy(2017)}]{Tewari2017}
+Tewari A, Murphy SA (2017).
+\newblock \enquote{From Ads to Interventions: Contextual Bandits in Mobile
+  Health.}
+\newblock In \emph{Mobile Health}, pp. 495--517. Springer.
+\newblock \doi{10.1007/978-3-319-51394-2_25}.
+
+\bibitem[{Tippmann(2015)}]{Tippmann2015}
+Tippmann S (2015).
+\newblock \enquote{Programming Tools: {Adventures} with {R}.}
+\newblock \emph{Nature News}, \textbf{517}(7532), 109.
+
+\bibitem[{Vermorel and Mohri(2005)}]{Vermorel2005}
+Vermorel J, Mohri M (2005).
+\newblock \enquote{Multi-armed Bandit Algorithms and Empirical Evaluation.}
+\newblock In \emph{European conference on machine learning}, pp. 437--448.
+  Springer.
+\newblock \doi{10.1007/11564096_42}.
+
+\bibitem[{Wang \emph{et~al.}(2005)Wang, Kulkarni, and Poor}]{Wang2005a}
+Wang CC, Kulkarni SR, Poor HV (2005).
+\newblock \enquote{Arbitrary Side Observations in Bandit Problems.}
+\newblock \emph{Advances in Applied Mathematics}, \textbf{34}(4), 903--938.
+\newblock \doi{10.1016/j.aam.2004.10.004}.
+
+\bibitem[{Whittle(1979)}]{Whittle1979}
+Whittle P (1979).
+\newblock \enquote{Discussion on "bandit Processes and Dynamic Allocation
+  Indices".}
+\newblock \emph{J. Roy. Statist. Soc. Ser. B}, \textbf{41}, 165.
+
+\bibitem[{Wickham(2014)}]{wickham2014advanced}
+Wickham H (2014).
+\newblock \emph{Advanced R}.
+\newblock Chapman and Hall/CRC.
+\newblock \doi{10.1201/b17487}.
+
+\bibitem[{Wilson \emph{et~al.}(2014)Wilson, Geana, White, Ludvig, and
+  Cohen}]{Wilson2014}
+Wilson RC, Geana A, White JM, Ludvig EA, Cohen JD (2014).
+\newblock \enquote{Humans Use Directed and Random Exploration to Solve the
+  Explore--exploit Dilemma.}
+\newblock \emph{Journal of Experimental Psychology: General}, \textbf{143}(6),
+  2074.
+\newblock \doi{10.1037/a0038199}.
+
+\bibitem[{Wirfs-Brock \emph{et~al.}(1990)Wirfs-Brock, Wilkerson, and
+  Wiener}]{Wirfs-Brock1990}
+Wirfs-Brock R, Wilkerson B, Wiener L (1990).
+\newblock \emph{Designing Object-oriented Software}.
+\newblock CUMINCAD.
+
+\bibitem[{Yelp(2018)}]{2018}
+Yelp (2018).
+\newblock \enquote{{MOE}: {A} Global, Black Box Optimization Engine for Real
+  World Metric Optimization.}
+\newblock Original-date: 2014-02-24T21:55:56Z,
+  \urlprefix\url{https://github.com/Yelp/MOE}.
+
+\bibitem[{Zheng and Hua(2016)}]{Zheng2016a}
+Zheng R, Hua C (2016).
+\newblock \enquote{Stochastic {Multi}-armed {Bandit}.}
+\newblock In \emph{Sequential {Learning} and {Decision}-{Making} in {Wireless}
+  {Resource} {Management}}, pp. 9--25. Springer.
+\newblock \doi{10.1007/978-3-319-50502-2_2}.
+
+\end{thebibliography}
