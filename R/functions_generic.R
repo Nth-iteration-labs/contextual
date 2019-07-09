@@ -253,6 +253,7 @@ plot.History <- function(x, ...) {
       no_par = no_par,
       xlab = xlab,
       ylab = ylab,
+      trunc_over_agents = trunc_over_agents,
       limit_agents = limit_agents,
       limit_context = limit_context
     )

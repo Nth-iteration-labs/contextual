@@ -260,6 +260,7 @@ Plot <- R6::R6Class(
                     legend_title       = NULL,
                     limit_context      = NULL,
                     smooth             = FALSE,
+                    trunc_over_agents  = TRUE,
                     limit_agents       = NULL) {
 
       self$history <- history
@@ -269,14 +270,6 @@ Plot <- R6::R6Class(
         old.par <- par(no.readonly = TRUE)
         par(mar = c(5, 5, 1, 1))
       }
-
-
-      dt <- self$history$get_data_table(
-        limit_cols   = c("agent", "t", "choice", "sim"),
-        limit_agents = limit_agents,
-        interval     = interval
-      )
-
 
       if(!is.null(limit_context)) {
         dt <- self$history$get_data_table(
@@ -291,6 +284,11 @@ Plot <- R6::R6Class(
           limit_agents = limit_agents,
           interval     = interval
         )
+      }
+
+      if(isTRUE(trunc_over_agents))  {
+        min_t_sim <- min(dt[,max(t), by = c("agent","sim")]$V1)
+        dt <- dt[t<=min_t_sim]
       }
 
       ylab_title        <- "Arm choice %"
