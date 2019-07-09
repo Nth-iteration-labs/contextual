@@ -19,11 +19,10 @@ The package has been developed to:
 * Ease the implementation, evaluation and dissemination of both existing and new contextual Multi-Armed Bandit policies. 
 * Introduce a wider audience to contextual bandit policies' advanced sequential decision strategies.
 
+Documentation
 
-* [Package documentation](https://nth-iteration-labs.github.io/contextual/)
+* [Package website](https://nth-iteration-labs.github.io/contextual/)
 * [Package development FAQ](https://nth-iteration-labs.github.io/contextual/articles/only_pkgdown/faq.html)
-
-
 
 Installation
 ------------
