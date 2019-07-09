@@ -24,6 +24,7 @@ knitr::opts_chunk$set(
 - [Where do I instantiate a Bandit's simulation level-randomization?](#where-do-i-instantiate-a-bandits-simulation-level-randomization)
 - [What is this public “class_name” member in every Bandit and Policy?](#what-is-this-public-class_name-member-in-every-bandit-and-policy)
 - [What is the use of get_arm_context() and get_full_context()?](#what-is-the-use-of-get_arm_context-and-get_full_context)
+- [How do I define my own custom regret function?](#how-do-i-define-my-own-custom-regret-function)
 
 ## Are contextual's arms zero- or one-based?
 
@@ -168,5 +169,43 @@ To transparently support ```Bandits``` generating either contextual feature vect
 
 The functions additionally support returning a subset of all context features through its ```select_features``` arguments, and they can respectively prepend a "one hot encoded" style arm vector or diagonal arm matrix through their ```prepend_arm_vector``` arguments.
 
+## How do I define my own custom regret function?
+
+In the ```get_reward()``` function of a ```Bandit``` you can set both 
+the ```reward```, and the ```optimal reward```.
+
+When both have been set, ```contextual``` then knows to subtract the former 
+from the latter to obtain the ```regret```.
+
+For example, see ```BasicBernoulliBandit```'s implementation:
+
+```r
+ #' @export
+BasicBernoulliBandit <- R6::R6Class(
+  inherit = Bandit,
+  class = FALSE,
+  public = list(
+    weights = NULL,
+    class_name = "BasicBernoulliBandit",
+    initialize = function(weights) {
+      self$weights     <- weights
+      self$k           <- length(self$weights)
+    },
+    get_context = function(t) {
+      context <- list(
+        k = self$k
+      )
+    },
+    get_reward = function(t, context, action) {
+      rewards        <- as.double(runif(self$k) < self$weights)
+      optimal_arm    <- which_max_tied(self$weights)
+      reward  <- list(
+        reward                   = rewards[action$choice],    # <- reward here
+        optimal_arm              = optimal_arm,               
+        optimal_reward           = rewards[optimal_arm]       # <- optimal reward here
+      )
+    }
+  )
+```
 
 ...

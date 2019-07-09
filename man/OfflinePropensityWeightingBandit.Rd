@@ -62,6 +62,18 @@ float (0,1); Lower threshold or Tau on propensity score values. Smaller Tau make
 estimates with more variance, and vice versa. For more information, see paper by Strehl at all (2010).
 Values between 0.01 and 0.05 are known to work well.
 }
+\item{\code{drop_value}}{
+logical; Whether to drop a sample when the chosen arm does not equal the sampled arm. When TRUE,
+the sample is dropped by setting the reward to null. When FALSE, the reward will be zero.
+}
+\item{\code{stabilized}}{
+logical; Whether to stabilize propensity weights.
+One common issue with inverse propensity weighting g is that samples with
+a propensity score very close to 0 will end up with an extremely large propensity weight,
+potentially making the weighted estimator highly unstable.
+A common alternative to the conventional weights are stabilized weights,
+which use the marginal probability of treatment instead of 1 in the weight numerator.
+}
 \item{\code{unique}}{
 integer vector; index of disjoint features (optional)
 }
