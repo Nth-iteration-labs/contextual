@@ -47,18 +47,16 @@ OfflineDoublyRobustBandit <- R6::R6Class(
         p   <- private$p[index]
         if (self$inverted) p <- 1 / p
         if (self$threshold > 0) {
-          if (isTRUE(self$inverted)) p <- 1 / p
+          if (isTRUE(self$inverted))  p <- 1 / p
           p <- 1 / max(p,self$threshold)
         } else {
           if (!isTRUE(self$inverted)) p <- 1 / p
         }
-        inc(private$n)     <- 1
-        inc(private$p_hat) <- (p - private$p_hat) / private$n
-        prop_reward        <- ((data_reward - model_reward) * p) / private$p_hat
+        prop_reward       <- (data_reward - model_reward) * p
       } else {
         prop_reward       <- 0
       }
-      robust_reward <-  prop_reward + model_reward
+      robust_reward       <-  prop_reward + model_reward
       list(
         reward         = as.double(robust_reward),
         optimal_reward = ifelse(private$or, as.double(private$S$optimal_reward[[index]]), NA),

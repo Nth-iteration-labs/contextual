@@ -12,14 +12,23 @@ OfflinePropensityWeightingBandit <- R6::R6Class(
     class_name = "OfflinePropensityWeightingBandit",
     inverted = NULL,
     threshold = NULL,
+    drop_value = NULL,
+    stabilized = NULL,
     initialize   = function(formula,
                             data, k = NULL, d = NULL,
                             unique = NULL, shared = NULL,
                             randomize = TRUE, replacement = FALSE,
                             jitter = FALSE, arm_multiply = FALSE,
-                            inverted = FALSE, threshold = 0) {
-      self$inverted  <- inverted
-      self$threshold <- threshold
+                            inverted = FALSE, threshold = 0,
+                            stabilized = TRUE, drop_unequal_arm = TRUE) {
+      self$inverted   <- inverted
+      self$threshold  <- threshold
+      self$stabilized <- stabilized
+      if(isTRUE(drop_unequal_arm)) {
+        self$drop_value = NULL
+      } else {
+        self$drop_value = 0
+      }
       super$initialize(formula,
                        data, k, d,
                        unique, shared,
@@ -40,20 +49,33 @@ OfflinePropensityWeightingBandit <- R6::R6Class(
       if (private$z[[index]] == action$choice) {
         p   <- private$p[index]
         if (self$threshold > 0) {
-          if (isTRUE(self$inverted)) p <- 1 / p
+          if (isTRUE(self$inverted)) p  <- 1 / p
           p <- 1 / max(p,self$threshold)
         } else {
           if (!isTRUE(self$inverted)) p <- 1 / p
         }
-        inc(private$n)     <- 1
-        inc(private$p_hat) <- (p - private$p_hat) / private$n
+        if (self$stabilized) {
+          inc(private$n)     <- 1
+          inc(private$p_hat) <- (p - private$p_hat) / private$n
+          prop_reward          <- as.double((private$y[index]*p)/private$p_hat)
+        } else {
+          prop_reward          <- as.double(private$y[index]*p)
+        }
         list(
-          reward         = as.double((private$y[index]*p)/private$p_hat),
+          reward         = prop_reward,
           optimal_reward = ifelse(private$or, as.double(private$S$optimal_reward[[index]]), NA),
           optimal_arm    = ifelse(private$oa, as.double(private$S$optimal_arm[[index]]), NA)
         )
       } else {
-        NULL
+        if(is.null(self$drop_value)) {
+          return(NULL)
+        } else {
+          list(
+            reward         = 0,
+            optimal_reward = ifelse(private$or, as.double(private$S$optimal_reward[[index]]), NA),
+            optimal_arm    = ifelse(private$oa, as.double(private$S$optimal_arm[[index]]), NA)
+          )
+        }
       }
     }
   )
@@ -119,6 +141,18 @@ OfflinePropensityWeightingBandit <- R6::R6Class(
 #'     float (0,1); Lower threshold or Tau on propensity score values. Smaller Tau makes for less biased
 #'     estimates with more variance, and vice versa. For more information, see paper by Strehl at all (2010).
 #'     Values between 0.01 and 0.05 are known to work well.
+#'   }
+#'  \item{\code{drop_value}}{
+#'     logical; Whether to drop a sample when the chosen arm does not equal the sampled arm. When TRUE,
+#'     the sample is dropped by setting the reward to null. When FALSE, the reward will be zero.
+#'   }
+#'  \item{\code{stabilized}}{
+#'     logical; Whether to stabilize propensity weights.
+#'     One common issue with inverse propensity weighting g is that samples with
+#'     a propensity score very close to 0 will end up with an extremely large propensity weight,
+#'     potentially making the weighted estimator highly unstable.
+#'     A common alternative to the conventional weights are stabilized weights,
+#'     which use the marginal probability of treatment instead of 1 in the weight numerator.
 #'   }
 #'   \item{\code{unique}}{
 #'     integer vector; index of disjoint features (optional)
