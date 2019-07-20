@@ -21,7 +21,6 @@ EFirstRegressionPolicy <- R6::R6Class(
       print("set_parameters")
     },
     get_action = function(t, context) {
-      print("get_action")
       if(t <= epsilon){
         action$choice <- runif(1)
       } else {
@@ -32,7 +31,6 @@ EFirstRegressionPolicy <- R6::R6Class(
       action
     },
     set_reward = function(t, context, action, reward) {
-      print("set_reward")
         y <- reward$reward
         x <- action$choice
         x <- matrix(c(1,x,x^2), nrow = 1, ncol = 3, byrow = TRUE)

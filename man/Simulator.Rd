@@ -102,6 +102,14 @@ Depending on workload, network bandwith, memory size and other variables it can 
 break these workloads into smaller chunks. This can be done by setting the chunk_multiplier to some
 integer value, where the number of chunks will total chunk_multiplier x number_of_workers.
 }
+\item{\code{policy_time_loop}}{
+\code{logical} In the case of replay style bandits, a Simulator's horizon equals the number of
+accepted plus the number of rejected data points or samples. If \code{policy_time_loop} is \code{TRUE},
+the horizon equals the number of accepted data points or samples. That is, when \code{policy_time_loop}
+is \code{TRUE}, a Simulator will keep running until the number of data points saved to History is
+equal to the Simulator's horizon.
+}
+
 }
 }
 

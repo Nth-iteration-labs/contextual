@@ -59,8 +59,8 @@ Agent <- R6::R6Class(
       if(is.null(context$d)) context$d <- self$bandit$d
       if(is.null(context$unique)) context$unique <- c(1:context$d)
       if(is.null(context$shared)) context$shared <- c(1:context$d)
-      action    <- policy$get_action (policy_t, context)
-      reward    <- bandit$get_reward (agent_t, context, action)
+      action    <- policy$get_action(policy_t, context)
+      reward    <- bandit$get_reward(agent_t, context, action)
 
       if (is.null(reward)) {
         theta   <- NULL

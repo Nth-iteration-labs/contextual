@@ -241,7 +241,12 @@ worker saves its simulation results to a local history file which is then aggreg
 Depending on workload, network bandwith, memory size and other variables it can sometimes be useful to
 break these workloads into smaller chunks. This can be done by setting the chunk_multiplier to some
 integer value, where the number of chunks will total chunk_multiplier x number_of_workers.</p></dd>
-</dl>
+<dt><code>policy_time_loop</code></dt><dd><p><code>logical</code> In the case of replay style bandits, a Simulator's horizon equals the number of
+accepted plus the number of rejected data points or samples. If <code>policy_time_loop</code> is <code>TRUE</code>,
+the horizon equals the number of accepted data points or samples. That is, when <code>policy_time_loop</code>
+is <code>TRUE</code>, a Simulator will keep running until the number of data points saved to History is
+equal to the Simulator's horizon.</p></dd>
+    </dl>
     
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 

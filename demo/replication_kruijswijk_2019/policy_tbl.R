@@ -21,7 +21,7 @@ ThompsonBayesianLinearPolicy <- R6::R6Class(
     get_action = function(t, context) {
       sigma <- solve(self$theta$P)
       mu <- sigma %*% matrix(self$theta$J)
-      betas <- mvrnorm(n = 1, mu, sigma)
+      betas <- contextual::mvrnorm(n = 1, mu, sigma)
       action$choice <- -(betas[2] / (2*betas[3]))
       action
     },

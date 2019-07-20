@@ -1,5 +1,6 @@
 library(contextual)
 library(here)
+library(Formula)
 setwd(here("demo","replication_kruijswijk_2019"))
 
 source("./bandit_continuum_offon.R")
@@ -11,7 +12,7 @@ set.seed(100)
 
 
 
-horizon            <- 10000
+horizon            <- 100
 simulations        <- 10
 
 continuous_arms    <- function(x, c1 = 0.25, c2 = 0.75) {
@@ -20,7 +21,7 @@ continuous_arms    <- function(x, c1 = 0.25, c2 = 0.75) {
 
 
 
-choice <- runif(horizon, min=0, max=1)
+choice <- runif(10000, min=0, max=1)
 reward <- continuous_arms(choice)
 offline_data <- data.frame(choice, reward)
 
@@ -32,7 +33,7 @@ x0_start           <- runif(1)#2.0
 
 
 
-bandit             <- OnlineOfflineContinuumBandit$new(delta = 0.1, horizon = horizon)
+bandit             <- OnlineOfflineContinuumBandit$new(delta = 0.1, horizon = 1000000)
 
 
 agents              <- list(Agent$new(UniformRandomContinuousPolicy$new(), bandit),
@@ -44,7 +45,8 @@ agents              <- list(Agent$new(UniformRandomContinuousPolicy$new(), bandi
 history            <- Simulator$new(agents      = agents,
                                     horizon     = horizon,
                                     simulations = simulations,
-                                    do_parallel = TRUE)$run()
+                                    do_parallel = FALSE,
+                                    agent_time_loop = FALSE)$run()
 
 plot(history, type = "cumulative", regret = TRUE,
      rate = FALSE, disp = 'ci', trunc_over_agents = FALSE, trunc_per_agent = FALSE)
