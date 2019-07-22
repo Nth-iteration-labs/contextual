@@ -14,9 +14,11 @@ EFirstRegressionPolicy <- R6::R6Class(
       self$b <- b
       self$A <- A
       self$epsilon <- epsilon
+      print("initialize")
     },
     set_parameters = function(context_params) {
       self$theta <- list('b' = self$b, 'A' = self$A, 'epsilon' = self$epsilon)
+      print("set_parameters")
     },
     get_action = function(t, context) {
       if(t <= epsilon){

@@ -10,11 +10,11 @@
 \alias{check_history_data}
 \title{Plot}
 \description{
-Generates plots from \code{History} data.
+Generates plots from \code{\link{History}} data.
 }
 \details{
 Usually not instantiated directly but invoked by calling the generic \code{plot(h)}, where \code{h}
-is an \code{History} class instance.
+is an \code{\link{History}} class instance.
 }
 \section{Usage}{
 
@@ -137,6 +137,14 @@ size \code{interval}.
 }
 \item{\code{ylab}}{
 \code{(character, NULL)} a title for the y axis
+}
+\item{\code{trunc_over_agents}}{
+\code{(logical , TRUE)} Truncate the chart to the agent with the fewest time steps t.
+}
+\item{\code{trunc_per_agent}}{
+\code{(logical , TRUE)} Truncate every agent's plot to the number of time steps that have been fully
+simulated. That is, time steps for which the number of simulations equals the number defined in
+\code{\link{Simulator}}'s \code{simulations} parameter.
 }
 }
 }

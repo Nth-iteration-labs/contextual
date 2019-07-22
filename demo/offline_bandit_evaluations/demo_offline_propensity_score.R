@@ -6,7 +6,7 @@ library(data.table)
 url  <- "http://d1ie9wlkzugsxr.cloudfront.net/data_propensity/myocardial_propensity.csv"
 data            <- fread(url)
 
-simulations     <- 3000
+simulations     <- 1000
 horizon         <- nrow(data)
 
 # arms always start at 1
@@ -25,7 +25,7 @@ data$p <- predict(m, type = "response")
 
 f          <- alive ~ trt | age + risk + severity | p
 
-bandit     <- OfflinePropensityWeightingBandit$new(formula = f, data = data, threshold = 0.01)
+bandit     <- OfflinePropensityWeightingBandit$new(formula = f, data = data)
 
 # Define agents.
 agents      <- list(Agent$new(LinUCBDisjointOptimizedPolicy$new(0.2), bandit, "LinUCB"))
@@ -39,3 +39,4 @@ sim  <- simulation$run()
 
 # plot the results
 plot(sim, type = "cumulative", regret = FALSE, rate = TRUE, legend_position = "bottomright")
+

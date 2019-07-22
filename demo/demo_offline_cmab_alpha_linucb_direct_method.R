@@ -4,7 +4,8 @@ library(Formula)
 
 # Import personalization data-set
 
-data         <- fread("http://pwy.nl/d") # 0/1 reward, 10 arms, 100 features
+data         <- fread("http://d1ie9wlkzugsxr.cloudfront.net/data_cmab_basic/data.txt")
+                                         # 0/1 reward, 10 arms, 100 features
                                          # arms always start from 1
 
 #      z y x1 x2 x3 x4 x5 x6 x7 x8 x9 x10 x11 x12 x13 x14 x15  .. x100

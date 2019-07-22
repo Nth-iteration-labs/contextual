@@ -1,0 +1,41 @@
+\BOOKMARK [1][-]{Section.0.Introduction.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{Section.1.Formalization and implementation.1}{Formalization and implementation}{}% 2
+\BOOKMARK [2][-]{Subsection.2.0.Formalization.2}{Formalization}{Section.1.Formalization and implementation.1}% 3
+\BOOKMARK [3][-]{Subsubsection.2.1.0.Bandit.3}{Bandit}{Subsection.2.0.Formalization.2}% 4
+\BOOKMARK [3][-]{Subsubsection.2.1.1.Policy.3}{Policy}{Subsection.2.0.Formalization.2}% 5
+\BOOKMARK [3][-]{Subsubsection.2.1.2.Arm-selection process.3}{Arm-selection process}{Subsection.2.0.Formalization.2}% 6
+\BOOKMARK [3][-]{Subsubsection.2.1.3.Goal and performance measure.3}{Goal and performance measure}{Subsection.2.0.Formalization.2}% 7
+\BOOKMARK [2][-]{Subsection.2.1.Implementation.2}{Implementation}{Section.1.Formalization and implementation.1}% 8
+\BOOKMARK [2][-]{Subsection.2.2.Putting it together: a first MAB simulation.2}{Putting it together: a first MAB simulation}{Section.1.Formalization and implementation.1}% 9
+\BOOKMARK [3][-]{Subsubsection.2.3.0.Running a simulation.3}{Running a simulation}{Subsection.2.2.Putting it together: a first MAB simulation.2}% 10
+\BOOKMARK [3][-]{Subsubsection.2.3.1.Results of the simulation.3}{Results of the simulation}{Subsection.2.2.Putting it together: a first MAB simulation.2}% 11
+\BOOKMARK [1][-]{Section.2.Basic usage.1}{Basic usage}{}% 12
+\BOOKMARK [2][-]{Subsection.3.0.Implemented policies and bandits.2}{Implemented policies and bandits}{Section.2.Basic usage.1}% 13
+\BOOKMARK [2][-]{Subsection.3.1.Running basic simulations.2}{Running basic simulations}{Section.2.Basic usage.1}% 14
+\BOOKMARK [3][-]{Subsubsection.3.2.0.The scenario.3}{The scenario}{Subsection.3.1.Running basic simulations.2}% 15
+\BOOKMARK [3][-]{Subsubsection.3.2.1.Evaluating context-free policies.3}{Evaluating context-free policies}{Subsection.3.1.Running basic simulations.2}% 16
+\BOOKMARK [3][-]{Subsubsection.3.2.2.Adding context.3}{Adding context}{Subsection.3.1.Running basic simulations.2}% 17
+\BOOKMARK [1][-]{Section.3.Core classes.1}{Core classes}{}% 18
+\BOOKMARK [2][-]{Subsection.4.0.Choice for the R6 class system.2}{Choice for the R6 class system}{Section.3.Core classes.1}% 19
+\BOOKMARK [2][-]{Subsection.4.1.Main classes.2}{Main classes}{Section.3.Core classes.1}% 20
+\BOOKMARK [3][-]{Subsubsection.4.2.0.Simulator.3}{Simulator}{Subsection.4.1.Main classes.2}% 21
+\BOOKMARK [3][-]{Subsubsection.4.2.1.Agent.3}{Agent}{Subsection.4.1.Main classes.2}% 22
+\BOOKMARK [3][-]{Subsubsection.4.2.2.Bandit.3}{Bandit}{Subsection.4.1.Main classes.2}% 23
+\BOOKMARK [3][-]{Subsubsection.4.2.3.Policy.3}{Policy}{Subsection.4.1.Main classes.2}% 24
+\BOOKMARK [3][-]{Subsubsection.4.2.4.History.3}{History}{Subsection.4.1.Main classes.2}% 25
+\BOOKMARK [3][-]{Subsubsection.4.2.5.Plot.3}{Plot}{Subsection.4.1.Main classes.2}% 26
+\BOOKMARK [1][-]{Section.4.Custom bandits and policies.1}{Custom bandits and policies}{}% 27
+\BOOKMARK [2][-]{Subsection.5.0.ContextualBernoulliBandit: a minimal contextual Bernoulli bandit.2}{ContextualBernoulliBandit: a minimal contextual Bernoulli bandit}{Section.4.Custom bandits and policies.1}% 28
+\BOOKMARK [2][-]{Subsection.5.1.EpsilonFirstPolicy.2}{EpsilonFirstPolicy}{Section.4.Custom bandits and policies.1}% 29
+\BOOKMARK [2][-]{Subsection.5.2.EpsilonGreedyPolicy.2}{EpsilonGreedyPolicy}{Section.4.Custom bandits and policies.1}% 30
+\BOOKMARK [2][-]{Subsection.5.3.Contextual Bandit: LinUCB with linear disjoint models.2}{Contextual Bandit: LinUCB with linear disjoint models}{Section.4.Custom bandits and policies.1}% 31
+\BOOKMARK [1][-]{Section.5.Subclassing bandits and policies.1}{Subclassing bandits and policies}{}% 32
+\BOOKMARK [1][-]{Section.6.Offline evaluation.1}{Offline evaluation}{}% 33
+\BOOKMARK [2][-]{Subsection.7.0.The replay method.2}{The replay method}{Section.6.Offline evaluation.1}% 34
+\BOOKMARK [1][-]{Section.7.Replication of Li et al 2010.1}{Replication of Li et al 2010}{}% 35
+\BOOKMARK [2][-]{Subsection.8.0.Description of the data.2}{Description of the data}{Section.7.Replication of Li et al 2010.1}% 36
+\BOOKMARK [2][-]{Subsection.8.1.Data import.2}{Data import}{Section.7.Replication of Li et al 2010.1}% 37
+\BOOKMARK [2][-]{Subsection.8.2.Custom bandit and policies.2}{Custom bandit and policies}{Section.7.Replication of Li et al 2010.1}% 38
+\BOOKMARK [2][-]{Subsection.8.3.Results.2}{Results}{Section.7.Replication of Li et al 2010.1}% 39
+\BOOKMARK [1][-]{Section.8.Discussion and future work.1}{Discussion and future work}{}% 40
+\BOOKMARK [1][-]{Section.9.Appendix A: UML diagrams.1}{Appendix A: UML diagrams}{}% 41

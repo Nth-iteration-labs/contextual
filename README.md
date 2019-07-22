@@ -19,6 +19,11 @@ The package has been developed to:
 * Ease the implementation, evaluation and dissemination of both existing and new contextual Multi-Armed Bandit policies. 
 * Introduce a wider audience to contextual bandit policies' advanced sequential decision strategies.
 
+Package links:
+
+* [Package website](https://nth-iteration-labs.github.io/contextual/)
+* [Package development FAQ](https://nth-iteration-labs.github.io/contextual/articles/only_pkgdown/faq.html)
+
 Installation
 ------------
 
@@ -93,7 +98,7 @@ Some more extensive vignettes to get you started with the package:
 
 Paper offering a general overview of the package's structure & API:
 
-* [An introduction to multi-armed bandit problems and the use of the R package contextual](https://arxiv.org/abs/1811.01926) paper.
+* [An introduction to multi-armed bandit problems and the use of the R package contextual](https://github.com/Nth-iteration-labs/contextual/raw/master/docs/articles/arxiv_2018/jss.pdf) paper.
 
 
 <!---

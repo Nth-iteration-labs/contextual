@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../../index.html">contextual</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.8.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.8.2</span>
       </span>
     </div>
 
@@ -130,7 +130,7 @@
       <h1>Development FAQ</h1>
                         <h4 class="author">Robin van Emden</h4>
             
-            <h4 class="date">2019-06-13</h4>
+            <h4 class="date">2019-07-20</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Nth-iteration-labs/contextual/blob/master/vignettes/only_pkgdown/faq.Rmd"><code>vignettes/only_pkgdown/faq.Rmd</code></a></small>
       <div class="hidden name"><code>faq.Rmd</code></div>
@@ -152,6 +152,7 @@
 <li><a href="#where-do-i-instantiate-a-bandits-simulation-level-randomization">Where do I instantiate a Bandit’s simulation level-randomization?</a></li>
 <li><a href="#what-is-this-public-class_name-member-in-every-bandit-and-policy">What is this public “class_name” member in every Bandit and Policy?</a></li>
 <li><a href="#what-is-the-use-of-get_arm_context-and-get_full_context">What is the use of get_arm_context() and get_full_context()?</a></li>
+<li><a href="#how-do-i-define-my-own-custom-regret-function">How do I define my own custom regret function?</a></li>
 </ul>
 </div>
 <div id="are-contextuals-arms-zero--or-one-based" class="section level2">
@@ -276,6 +277,39 @@
 <p>Contextual passes a “context” list object between Bandit and Policy for each time step t. This object contains, for every  = {1, … , T}, a <code>d</code> dimensional feature vector or <code>d x k</code> dimensional matrix <code>context$X</code>, the current number of <code>Bandit</code> arms in <code>context$k</code>, and the current number of contextual features in <code>context$d</code>.</p>
 <p>To transparently support <code>Bandits</code> generating either contextual feature vectors or matrices, <code>contextual</code>’s <code>Policies</code> generally use the <code><a href="../../reference/get_arm_context.html">get_arm_context(context, arm)</a></code> utility function to obtain the current <code>X</code> for a particular arm, or the <code><a href="../../reference/get_full_context.html">get_full_context(context)</a></code> utility function to obtain the full <code>d x k</code> context matrix.</p>
 <p>The functions additionally support returning a subset of all context features through its <code>select_features</code> arguments, and they can respectively prepend a “one hot encoded” style arm vector or diagonal arm matrix through their <code>prepend_arm_vector</code> arguments.</p>
+</div>
+<div id="how-do-i-define-my-own-custom-regret-function" class="section level2">
+<h2 class="hasAnchor">
+<a href="#how-do-i-define-my-own-custom-regret-function" class="anchor"></a>How do I define my own custom regret function?</h2>
+<p>In the <code>get_reward()</code> function of a <code>Bandit</code> you can set both the <code>reward</code>, and the <code>optimal reward</code>.</p>
+<p>When both have been set, <code>contextual</code> then knows to subtract the former from the latter to obtain the <code>regret</code>.</p>
+<p>For example, see <code>BasicBernoulliBandit</code>’s implementation:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"> <span class="co">#' @export</span></a>
+<a class="sourceLine" id="cb5-2" title="2">BasicBernoulliBandit &lt;-<span class="st"> </span>R6<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/R6/topics/R6Class">R6Class</a></span>(</a>
+<a class="sourceLine" id="cb5-3" title="3">  <span class="dt">inherit =</span> Bandit,</a>
+<a class="sourceLine" id="cb5-4" title="4">  <span class="dt">class =</span> <span class="ot">FALSE</span>,</a>
+<a class="sourceLine" id="cb5-5" title="5">  <span class="dt">public =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(</a>
+<a class="sourceLine" id="cb5-6" title="6">    <span class="dt">weights =</span> <span class="ot">NULL</span>,</a>
+<a class="sourceLine" id="cb5-7" title="7">    <span class="dt">class_name =</span> <span class="st">"BasicBernoulliBandit"</span>,</a>
+<a class="sourceLine" id="cb5-8" title="8">    <span class="dt">initialize =</span> <span class="cf">function</span>(weights) {</a>
+<a class="sourceLine" id="cb5-9" title="9">      self<span class="op">$</span>weights     &lt;-<span class="st"> </span>weights</a>
+<a class="sourceLine" id="cb5-10" title="10">      self<span class="op">$</span>k           &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(self<span class="op">$</span>weights)</a>
+<a class="sourceLine" id="cb5-11" title="11">    },</a>
+<a class="sourceLine" id="cb5-12" title="12">    <span class="dt">get_context =</span> <span class="cf">function</span>(t) {</a>
+<a class="sourceLine" id="cb5-13" title="13">      context &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(</a>
+<a class="sourceLine" id="cb5-14" title="14">        <span class="dt">k =</span> self<span class="op">$</span>k</a>
+<a class="sourceLine" id="cb5-15" title="15">      )</a>
+<a class="sourceLine" id="cb5-16" title="16">    },</a>
+<a class="sourceLine" id="cb5-17" title="17">    <span class="dt">get_reward =</span> <span class="cf">function</span>(t, context, action) {</a>
+<a class="sourceLine" id="cb5-18" title="18">      rewards        &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/double">as.double</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Uniform">runif</a></span>(self<span class="op">$</span>k) <span class="op">&lt;</span><span class="st"> </span>self<span class="op">$</span>weights)</a>
+<a class="sourceLine" id="cb5-19" title="19">      optimal_arm    &lt;-<span class="st"> </span><span class="kw"><a href="../../reference/which_max_tied.html">which_max_tied</a></span>(self<span class="op">$</span>weights)</a>
+<a class="sourceLine" id="cb5-20" title="20">      reward  &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(</a>
+<a class="sourceLine" id="cb5-21" title="21">        <span class="dt">reward                   =</span> rewards[action<span class="op">$</span>choice],    <span class="co"># &lt;- reward here</span></a>
+<a class="sourceLine" id="cb5-22" title="22">        <span class="dt">optimal_arm              =</span> optimal_arm,               </a>
+<a class="sourceLine" id="cb5-23" title="23">        <span class="dt">optimal_reward           =</span> rewards[optimal_arm]       <span class="co"># &lt;- optimal reward here</span></a>
+<a class="sourceLine" id="cb5-24" title="24">      )</a>
+<a class="sourceLine" id="cb5-25" title="25">    }</a>
+<a class="sourceLine" id="cb5-26" title="26">  )</a></code></pre></div>
 <p>…</p>
 </div>
   </div>
@@ -295,6 +329,7 @@
       <li><a href="#where-do-i-instantiate-a-bandits-simulation-level-randomization">Where do I instantiate a Bandit’s simulation level-randomization?</a></li>
       <li><a href="#what-is-this-public-class_name-member-in-every-bandit-and-policy">What is this public “class_name” member in every Bandit and Policy?</a></li>
       <li><a href="#what-is-the-use-of-get_arm_context-and-get_full_context">What is the use of get_arm_context() and get_full_context()?</a></li>
+      <li><a href="#how-do-i-define-my-own-custom-regret-function">How do I define my own custom regret function?</a></li>
       </ul>
 </div>
       </div>

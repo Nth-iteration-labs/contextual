@@ -1,7 +1,7 @@
 Package: contextual
 Type: Package
 Title: Simulation and Analysis of Contextual Multi-Armed Bandit Policies
-Version: 0.9.8.1
+Version: 0.9.8.2
 Authors@R: c(person("Robin", "van Emden", role = c("aut", "cre"), 
         comment = c(ORCID = "0000-0001-5820-8638"), email = "robinvanemden@gmail.com"),
     person("Maurits", "Kaptein", role = "ctb", email = "m.c.kaptein@tilburguniversity.edu", 
@@ -15,6 +15,8 @@ License: GPL-3
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.1
+Depends:
+    R (>= 3.5.0)
 Imports:
     R6 (>= 2.3.0),
     data.table,
