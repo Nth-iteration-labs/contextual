@@ -7,8 +7,8 @@ ThompsonBayesianLinearPolicy <- R6::R6Class(
     J = NULL,
     P = NULL,
     err = NULL,
-    initialize = function(J = matrix(c(0, 0.025, -0.025), nrow=1, ncol=3, byrow = TRUE), 
-                          P = matrix(diag(c(2,2,5)), nrow=3, ncol=3, byrow = TRUE), 
+    initialize = function(J = matrix(c(0, 0.025, -0.025), nrow=1, ncol=3, byrow = TRUE),
+                          P = matrix(diag(c(2,2,5)), nrow=3, ncol=3, byrow = TRUE),
                           err=1) {
       super$initialize()
       self$J <- J
@@ -19,7 +19,8 @@ ThompsonBayesianLinearPolicy <- R6::R6Class(
       self$theta <- list('J' = self$J, 'P' = self$P, 'err' = self$err)
     },
     get_action = function(t, context) {
-      sigma <- solve(self$theta$P)
+      sigma <- solve(self$theta$P, tol = 1e-200)
+      #print(paste0("Sigma: ", sigma, " P: ", self$theta$P))
       mu <- sigma %*% matrix(self$theta$J)
       betas <- mvrnorm(n = 1, mu, sigma)
       action$choice <- -(betas[2] / (2*betas[3]))

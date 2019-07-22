@@ -14,13 +14,15 @@ OnlineOfflineContinuumBandit <- R6::R6Class(
     choice = NULL,
     initialize   = function(delta, horizon) {
       self$c1 <- runif(1,0.25,0.75)
-      self$c2 <- runif(1,0.25,0.75)
+      self$c2 <- 1#runif(1,0.25,0.75)
       self$arm_function <- function(x, c1 = 0.25, c2 = 0.75) {
         -(x - c1) ^ 2 + c2  + rnorm(length(x), 0, 0.01)
       }
       self$delta <- delta
+      print(horizon)
       self$choice <- runif(horizon, min=0, max=1)
       private$S <- data.frame(self$choice, self$arm_function(self$choice, self$c1, self$c2))
+      print(nrow(private$S))
       self$k <- 1
     },
     post_initialization = function() {

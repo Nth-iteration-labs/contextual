@@ -56,3 +56,4 @@ rsconnect/
 *.tex
 *.csv
 /revdep/.cache.rds
+.Rproj.user
