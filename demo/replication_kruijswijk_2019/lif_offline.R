@@ -46,7 +46,7 @@ history            <- Simulator$new(agents      = agents,
                                     horizon     = horizon,
                                     simulations = simulations,
                                     do_parallel = FALSE,
-                                    agent_time_loop = FALSE)$run()
+                                    policy_time_loop = TRUE)$run()
 
 plot(history, type = "cumulative", regret = TRUE,
      rate = FALSE, disp = 'ci', trunc_over_agents = FALSE, trunc_per_agent = FALSE)
