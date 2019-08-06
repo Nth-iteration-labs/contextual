@@ -15,3 +15,6 @@ plot(simulator$history, type = "cumulative", regret = TRUE, disp = "ci",
                         traces = TRUE, traces_max = 100, traces_alpha = 0.1)
 
 summary(simulator$history)
+
+sim_data          <- simulator$history$get_data_table()
+sim_cum_data      <- simulator$history$get_cumulative_data()

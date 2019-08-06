@@ -212,9 +212,13 @@ x.context vector as a <code>k x d</code> matrix. When making use of such matrix 
 to define custom intercept(s) when and where needed in data.table or data.frame.</p></dd>
 <dt><code>randomize</code></dt><dd><p>logical; randomize rows of data stream per simulation (optional, default: TRUE)</p></dd>
 <dt><code>replacement</code></dt><dd><p>logical; sample with replacement (optional, default: TRUE)</p></dd>
-<dt><code>replacement</code></dt><dd><p>logical; add jitter to contextual features (optional, default: TRUE)</p></dd>
+<dt><code>jitter</code></dt><dd><p>logical; add jitter to contextual features (optional, default: TRUE)</p></dd>
 <dt><code>arm_multiply</code></dt><dd><p>logical; multiply the horizon by the number of arms (optional, default: TRUE)</p></dd>
-<dt><code>unique</code></dt><dd><p>integer vector; index of disjoint features (optional)</p></dd>
+<dt><code>multiplier</code></dt><dd><p>integer; replicate the dataset <code>multiplier</code> times before randomization. When
+<code>arm_multiply</code> has been set to TRUE, the number of replications is the number of arms times
+this integer. Can be used when Simulator's policy_time_loop has been set to TRUE, otherwise a
+simulation might run out of pre-indexed data.</p></dd>
+    <dt><code>unique</code></dt><dd><p>integer vector; index of disjoint features (optional)</p></dd>
 <dt><code>shared</code></dt><dd><p>integer vector; index of shared features (optional)</p></dd>
     </dl>
     

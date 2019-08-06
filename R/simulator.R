@@ -210,12 +210,19 @@ Simulator <- R6::R6Class(
           local_curent_seed <- simulation_index + set_seed * 42
           set.seed(local_curent_seed)
           sim_agent$bandit$post_initialization()
-          if(isTRUE(sim_agent$bandit$arm_multiply))
-            horizon_loop <- horizon * sim_agent$bandit$k
-          else
+          if(isTRUE(sim_agent$bandit$arm_multiply)) {
+            if(policy_time_loop)
+              horizon_loop <- horizon
+            else
+              horizon_loop <- horizon * sim_agent$bandit$k
+            data_length <- horizon * sim_agent$bandit$k
+          } else {
             horizon_loop <- horizon
+            data_length <- horizon
+          }
           set.seed(local_curent_seed + 1e+06)
-          sim_agent$bandit$generate_bandit_data(n = horizon_loop)
+          sim_agent$bandit$generate_bandit_data(n = data_length)
+
           if (isTRUE(t_over_sims)) sim_agent$set_t(as.integer((simulation_index - 1L) * horizon_loop))
           step <- list()
 
@@ -354,15 +361,18 @@ Simulator <- R6::R6Class(
 #' simulator <- Simulator$new(agents,
 #'                            horizon = 100L,
 #'                            simulations = 100L,
-#'                            save_interval = 1,
 #'                            save_context = FALSE,
 #'                            save_theta = FALSE,
 #'                            do_parallel = TRUE,
 #'                            worker_max = NULL,
-#'                            t_over_sims = FALSE,
 #'                            set_seed = 0,
+#'                            save_interval = 1,
 #'                            progress_file = FALSE,
-#'                            include_packages = NULL)
+#'                            log_interval = 1000,
+#'                            include_packages = NULL,
+#'                            t_over_sims = FALSE,
+#'                            chunk_multiplier = 1,
+#'                            policy_time_loop = FALSE)
 #' }
 #'
 #' @section Arguments:
