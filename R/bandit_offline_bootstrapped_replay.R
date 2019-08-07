@@ -25,7 +25,8 @@ OfflineBootstrappedReplayBandit <- R6::R6Class(
                             data, k = NULL, d = NULL,
                             unique = NULL, shared = NULL,
                             randomize = TRUE, replacement = TRUE,
-                            jitter = TRUE, arm_multiply = TRUE) {
+                            jitter = TRUE, arm_multiply = TRUE,
+                            multiplier = 1) {
 
       private$S         <- data_table_factors_to_numeric(data)
 
@@ -49,11 +50,14 @@ OfflineBootstrappedReplayBandit <- R6::R6Class(
       } else {
         self$context_free <- FALSE
       }
-      self$arm_multiply <- arm_multiply   # bootstrapped bandit needs a horizon of k arms times the horizon
-                                          # by setting this arm_multipy flag , the Simulator knows to continue
-                                          # running for (k * horizon) steps.
+      self$arm_multiply <- arm_multiply   # bootstrapped bandit needs a horizon of at least k arms times the
+                                          # horizon by setting this arm_multipy flag, the Simulator knows to
+                                          # continue running for (k * horizon) steps.
 
-      if(isTRUE(arm_multiply)) private$S <- do.call("rbind", replicate(self$k, private$S, simplify = FALSE))
+      if(isTRUE(arm_multiply))
+        private$S <- do.call("rbind", replicate(self$k * multiplier, private$S, simplify = FALSE))
+      else
+        private$S <- do.call("rbind", replicate(multiplier, private$S, simplify = FALSE))
 
       self$randomize    <- randomize      # Randomize logged events within each simulation? (logical)
       self$replacement  <- replacement    # Sample with replacement? (logical)
@@ -153,12 +157,19 @@ OfflineBootstrappedReplayBandit <- R6::R6Class(
 #'   \item{\code{replacement}}{
 #'     logical; sample with replacement (optional, default: TRUE)
 #'   }
-#'   \item{\code{replacement}}{
+#'   \item{\code{jitter}}{
 #'     logical; add jitter to contextual features (optional, default: TRUE)
 #'   }
 #'   \item{\code{arm_multiply}}{
 #'     logical; multiply the horizon by the number of arms (optional, default: TRUE)
 #'   }
+#'   \item{\code{multiplier}}{
+#'     integer; replicate the dataset \code{multiplier} times before randomization. When
+#'     \code{arm_multiply} has been set to TRUE, the number of replications is the number of arms times
+#'     this integer. Can be used when Simulator's policy_time_loop has been set to TRUE, otherwise a
+#'     simulation might run out of pre-indexed data.
+#'   }
+#'
 #'   \item{\code{unique}}{
 #'     integer vector; index of disjoint features (optional)
 #'   }

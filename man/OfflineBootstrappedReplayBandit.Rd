@@ -53,12 +53,19 @@ logical; randomize rows of data stream per simulation (optional, default: TRUE)
 \item{\code{replacement}}{
 logical; sample with replacement (optional, default: TRUE)
 }
-\item{\code{replacement}}{
+\item{\code{jitter}}{
 logical; add jitter to contextual features (optional, default: TRUE)
 }
 \item{\code{arm_multiply}}{
 logical; multiply the horizon by the number of arms (optional, default: TRUE)
 }
+\item{\code{multiplier}}{
+integer; replicate the dataset \code{multiplier} times before randomization. When
+\code{arm_multiply} has been set to TRUE, the number of replications is the number of arms times
+this integer. Can be used when Simulator's policy_time_loop has been set to TRUE, otherwise a
+simulation might run out of pre-indexed data.
+}
+
 \item{\code{unique}}{
 integer vector; index of disjoint features (optional)
 }

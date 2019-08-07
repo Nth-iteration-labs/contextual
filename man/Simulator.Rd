@@ -29,15 +29,18 @@ each agent over all \code{horizon x simulations} time steps.
 simulator <- Simulator$new(agents,
                            horizon = 100L,
                            simulations = 100L,
-                           save_interval = 1,
                            save_context = FALSE,
                            save_theta = FALSE,
                            do_parallel = TRUE,
                            worker_max = NULL,
-                           t_over_sims = FALSE,
                            set_seed = 0,
+                           save_interval = 1,
                            progress_file = FALSE,
-                           include_packages = NULL)
+                           log_interval = 1000,
+                           include_packages = NULL,
+                           t_over_sims = FALSE,
+                           chunk_multiplier = 1,
+                           policy_time_loop = FALSE)
 }
 }
 
