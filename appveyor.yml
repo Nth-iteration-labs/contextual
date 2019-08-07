@@ -14,6 +14,7 @@ environment:
   R_VERSION: stable
   PKGTYPE: binary
   USE_RTOOLS: true
+  R_REMOTES_STANDALONE: true
 
 cache:
   - C:\RLibrary
