@@ -11,8 +11,8 @@ source("./policy_efirst_regression.R")
 
 set.seed(1)
 
-horizon            <- 100
-simulations        <- 10
+horizon            <- 10000
+simulations        <- 50
 
 continuous_arms    <- function(x) {
   c1 <- runif(1, 0.25, 0.75)
@@ -21,7 +21,7 @@ continuous_arms    <- function(x) {
   -(x - c1) ^ 2 + c2  + rnorm(length(x), 0, 0.01)
 }
 
-choice <- runif(10000, min=0, max=1)
+choice <- runif(horizon, min=0, max=1)
 reward <- continuous_arms(choice)
 offline_data <- data.frame(choice, reward)
 
@@ -47,8 +47,8 @@ bandits <- list(ContinuumBandit$new(FUN = continuous_arms),
                 OnlineOfflineContinuumBandit$new(delta = 0.5, horizon = horizon/0.5),
                 OnlineOfflineContinuumBandit$new(delta = 0.2, horizon = horizon/0.2),
                 OnlineOfflineContinuumBandit$new(delta = 0.1, horizon = horizon/0.1),
-                OnlineOfflineContinuumBandit$new(delta = 0.05, horizon = horizon),
-                OnlineOfflineContinuumBandit$new(delta = 0.01, horizon = horizon))
+                OnlineOfflineContinuumBandit$new(delta = 0.05, horizon = horizon/0.05),
+                OnlineOfflineContinuumBandit$new(delta = 0.01, horizon = horizon/0.01))
 
 policy <- LifPolicy$new(int_time, amplitude, learn_rate, omega, x0_start)
 
@@ -62,7 +62,16 @@ agents <- list(Agent$new(policy, bandits[[1]]),
 history            <- Simulator$new(agents      = agents,
                                     horizon     = horizon,
                                     simulations = simulations,
-                                    do_parallel = FALSE,
-                                    agent_time_loop = FALSE)$run()
+                                    do_parallel = TRUE,
+                                    policy_time_loop = TRUE)$run()
+# save_interval = 20
 
-plot(history, type = "cumulative", regret = FALSE, rate = TRUE, disp = 'ci', legend_position = 'bottomright', ylim = c(0.5,1), trunc_over_agents = FALSE, trunc_per_agent = FALSE)
+plot(history, type = "cumulative", regret = FALSE, rate = TRUE, disp = 'ci',
+     legend_position = 'bottomright',
+     legend_labels = c("LiF A = 0.05",
+                       expression(paste(delta, " = " , 0.5)),
+                       expression(paste(delta, " = " , 0.2)),
+                       expression(paste(delta, " = " , 0.1)),
+                       expression(paste(delta, " = " , 0.05)),
+                       expression(paste(delta, " = " , 0.01))),
+     trunc_over_agents = FALSE, trunc_per_agent = FALSE)

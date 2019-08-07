@@ -19,16 +19,13 @@ OnlineOfflineContinuumBandit <- R6::R6Class(
         -(x - c1) ^ 2 + c2  + rnorm(length(x), 0, 0.01)
       }
       self$delta <- delta
-      print(horizon)
       self$choice <- runif(horizon, min=0, max=1)
       private$S <- data.frame(self$choice, self$arm_function(self$choice, self$c1, self$c2))
-      print(nrow(private$S))
       self$k <- 1
     },
     post_initialization = function() {
       private$S <- private$S[sample(nrow(private$S)),]
       colnames(private$S) <- c('choice', 'reward')
-      #print(private$S)
     },
     get_context = function(index) {
       context           <- list()
