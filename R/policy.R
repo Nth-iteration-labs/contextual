@@ -14,6 +14,10 @@ Policy <- R6::R6Class(
       is_oracle   <- FALSE     # very seldom TRUE
       invisible(self)
     },
+    post_initialization = function() {
+      # Called after setting seed, but before iterating over T. Do random generation here.
+      invisible(self)
+    },
     set_parameters = function(context_params) {
       # Parameter initialisation happens here.
     },

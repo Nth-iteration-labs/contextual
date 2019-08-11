@@ -97,12 +97,14 @@ Bandit <- R6::R6Class(
 #'  }
 #'
 #'   \item{\code{post_initialization()}}{
-#'      Called after class and seed initialisation, but before the start of the simulation.
+#'      Called after setting first simulation level deterministic seed, but before
+#'      \code{generate_bandit_data()}
 #'      Set random values that remain available throughout the life of a \code{Bandit} here.
 #'   }
 #'
 #'   \item{\code{generate_bandit_data()}}{
-#'      Called after class and seed initialisation, but before the start of a simulation.
+#'      Called after setting second simulation level deterministic seed, right after post_initialization().
+#'      \code{generate_bandit_data()}
 #'      Pregenerate \code{contexts} and \code{rewards} here.
 #'   }
 #' }
