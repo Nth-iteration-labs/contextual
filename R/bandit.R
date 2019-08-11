@@ -9,10 +9,12 @@ Bandit <- R6::R6Class(
     shared      = NULL,  # Vector of arm indices of context features shared between arms (vector, optional)
     class_name  = "Bandit",
     initialize  = function() {
+      # Is called before the Policy instance has been cloned.
       # Initialize Bandit. Set self$d and self$k here.
     },
     post_initialization = function() {
-      # Called after setting seed, but before iterating over T. Do random generation here.
+      # Is called after a Simulator has cloned the Bandit instance [number_of_simulations] times.
+      # Do sim level random generation here.
       invisible(self)
     },
     get_context = function(t) {
@@ -97,15 +99,15 @@ Bandit <- R6::R6Class(
 #'  }
 #'
 #'   \item{\code{post_initialization()}}{
-#'      Called after setting first simulation level deterministic seed, but before
-#'      \code{generate_bandit_data()}
-#'      Set random values that remain available throughout the life of a \code{Bandit} here.
+#'      Is called after a Simulator has cloned the Bandit instance \code{number_of_simulations} times.
+#'      Do sim level random generation here.
 #'   }
 #'
-#'   \item{\code{generate_bandit_data()}}{
-#'      Called after setting second simulation level deterministic seed, right after post_initialization().
-#'      \code{generate_bandit_data()}
-#'      Pregenerate \code{contexts} and \code{rewards} here.
+#'   \item{\code{generate_bandit_data(n)}}{
+#'      Is called after cloning the Bandit instance \code{number_of_simulations} times.
+#'      Differentiates itself from \code{post_initialization()} in that it is called after the optional
+#'      arm-multiplier option is applied in Simulator, and in that it is possible to set the length of
+#'      the to be generated data with the function's \code{n} parameter.
 #'   }
 #' }
 #'

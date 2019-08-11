@@ -230,6 +230,8 @@ and the current <code>context</code>. Returns a named list containing
 <code>reward$optimal</code> (as set by <code>bandit</code>).</p></li>
 </ul>
 utilizes the above arguments to update and return the set of parameters in list <code>theta</code>.</p></dd>
+    <dt><code><a href='Bandit.html'>post_initialization()</a></code></dt><dd><p>Post-initialization happens after cloning the Policy instance <code>number_of_simulations</code> times.
+Do sim level random generation here.</p></dd>
     <dt><code>set_parameters()</code></dt><dd><p>Helper function, called during a Policy's initialisation, assigns the values
 it finds in list <code>self$theta_to_arms</code> to each of the Policy's k arms.
 The parameters defined here can then be accessed by arm index in the following way:
