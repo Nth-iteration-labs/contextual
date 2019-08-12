@@ -210,6 +210,7 @@ Simulator <- R6::R6Class(
           local_curent_seed <- simulation_index + set_seed * 42
           set.seed(local_curent_seed)
           sim_agent$bandit$post_initialization()
+          sim_agent$policy$post_initialization()
           if(isTRUE(sim_agent$bandit$arm_multiply)) {
             if(policy_time_loop)
               horizon_loop <- horizon

@@ -79,6 +79,11 @@ arguments:
 utilizes the above arguments to update and return the set of parameters in list \code{theta}.
 }
 
+\item{\code{post_initialization()}}{
+Post-initialization happens after cloning the Policy instance \code{number_of_simulations} times.
+Do sim level random generation here.
+}
+
 \item{\code{set_parameters()}}{
 Helper function, called during a Policy's initialisation, assigns the values
 it finds in list \code{self$theta_to_arms} to each of the Policy's k arms.

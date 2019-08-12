@@ -9,9 +9,15 @@ Policy <- R6::R6Class(
     is_oracle     = NULL,      # is policy an oracle? (logical)
     class_name    = "Policy",  # policy name - required (character)
     initialize = function() {
+      # Is called before the Policy instance has been cloned.
       self$theta  <- list()    # initializes theta list
       self$action <- list()    # initializes action list
       is_oracle   <- FALSE     # very seldom TRUE
+      invisible(self)
+    },
+    post_initialization = function() {
+      # Is called after a Simulator has cloned the Policy instance [number_of_simulations] times.
+      # Do sim level random generation here.
       invisible(self)
     },
     set_parameters = function(context_params) {
@@ -113,6 +119,11 @@ Policy <- R6::R6Class(
 #'      }
 #'    utilizes the above arguments to update and return the set of parameters in list \code{theta}.
 #'    }
+#'
+#'   \item{\code{post_initialization()}}{
+#'         Post-initialization happens after cloning the Policy instance \code{number_of_simulations} times.
+#'         Do sim level random generation here.
+#'   }
 #'
 #'   \item{\code{set_parameters()}}{
 #'    Helper function, called during a Policy's initialisation, assigns the values

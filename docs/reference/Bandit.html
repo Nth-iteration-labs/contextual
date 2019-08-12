@@ -222,10 +222,12 @@ the number of arms <code>context$k</code> and the number of features <code>conte
 </ul>
 returns a named <code>list</code> containing <code>reward$reward</code> and, where computable,
 <code>reward$optimal</code> (used by "oracle" policies and to calculate regret).</p></dd>
-    <dt><code>post_initialization()</code></dt><dd><p>Called after class and seed initialisation, but before the start of the simulation.
-Set random values that remain available throughout the life of a <code>Bandit</code> here.</p></dd>
-    <dt><code>generate_bandit_data()</code></dt><dd><p>Called after class and seed initialisation, but before the start of a simulation.
-Pregenerate <code>contexts</code> and <code>rewards</code> here.</p></dd>
+    <dt><code>post_initialization()</code></dt><dd><p>Post-initialization is called after cloning the Bandit instance <code>number_of_simulations</code> times.
+Do sim level random generation here.</p></dd>
+    <dt><code>generate_bandit_data(n)</code></dt><dd><p>Is called after cloning the Bandit instance <code>number_of_simulations</code> times.
+Differentiates from <code>post_initialization()</code> in that it is called after the optional
+arm-multiplier option is set in Simulator, and in that it is possible to set the length of the to
+be generated data with the function's <code>n</code> paramater.</p></dd>
 </dl>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
