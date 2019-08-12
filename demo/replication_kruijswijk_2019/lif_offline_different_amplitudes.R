@@ -13,7 +13,7 @@ source("./policy_efirst_regression.R")
 
 set.seed(1)
 
-horizon            <- 10000
+horizon            <- 1000
 simulations        <- 50
 
 continuous_arms_standard    <- function(x, c1 = 0.25, c2 = 0.75) {
@@ -38,8 +38,8 @@ x0_start           <- runif(1)
 deltas <- c(0.01, 0.1, 0.5)
 
 all_data <- data.frame(amp=double(),
-                 reward=double(),
-                 delta=double())
+                       reward=double(),
+                       delta=double())
 
 for (d in deltas){
   bandit             <- OnlineOfflineContinuumBandit$new(delta = d, horizon = horizon)
@@ -69,34 +69,14 @@ for (d in deltas){
       select <- dd[maxes]$cum_reward_rate
       confs[[i]] <- sd(select) / sqrt(simulations) * qnorm(0.975)
     }
-    # for(j in 1:length(agents)){
-    # confs[[i]] <- history$cumulative[[i]]$cum_reward_rate_ci
-    # dt <- history$get_data_table()
-    # selectiun <- dt[dt[,'agent'] == 'Lif.2',]
-    # selectiun[selectiun[, .I[which.max(t)], by=sim]$V1]
-    # }
   }
   df <- data.frame(amp = amplitude_list, reward = reward_rate, delta = rep(d), ci = confs)
   all_data <- rbind(all_data, df)
 }
-#plot(amplitude_list, reward_rate, xaxt = "n")
-#axis(1, at = amplitude_list)
-#smoothingSpline = smooth.spline(amplitude_list, reward_rate, spar=0.05)
-#plot(amplitude_list, reward_rate)
-#lines(smoothingSpline)
 
-ggplot(data = all_data, aes(x=amp, y=reward, label = delta)) +
-        geom_line(aes(colour = as.factor(delta))) +
-        geom_errorbar(aes(ymin=reward-ci, ymax=reward+ci, color=factor(delta)), width=.01) +
-        geom_vline(xintercept = 0.045, linetype = "dotted", color = "black", size = 1.5)
+g <- ggplot(data = all_data, aes(x=amp, y=reward, label = delta)) +
+  geom_line(aes(colour = as.factor(delta))) +
+  geom_errorbar(aes(ymin=reward-ci, ymax=reward+ci, color=factor(delta)), width=.01) +
+  geom_vline(xintercept = 0.045, linetype = "dotted", color = "black", size = 1.5)
 
-
-# plot(history, type = "cumulative", regret = FALSE, rate = TRUE, disp = "ci",
-#      legend_position = 'bottomright',
-#      legend_labels = c("A = 0.15",
-#                        "A = 0.1",
-#                        "A = 0.075",
-#                        "A = 0.05",
-#                        "A = 0.025",
-#                        "A = 0.01"),
-#      legend_title = expression(paste(delta, " = ", 0.1)))
+print(g)
