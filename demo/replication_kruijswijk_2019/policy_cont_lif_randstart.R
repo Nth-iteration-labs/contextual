@@ -17,10 +17,13 @@ LifPolicyRandstart <- R6::R6Class(
       self$amplitude <- amplitude
       self$learnrate <- learnrate
       self$omega     <- omega
-      self$x0_start  <- runif(1)
+      #self$x0_start  <- runif(1)
+    },
+    post_initialization = function(){
+      self$x0_start <- runif(1)
+      self$theta <- list('x0' = x0_start, 'Y' = rep(NA, inttime))
     },
     set_parameters = function(context_params) {
-      self$theta <- list('x0' = x0_start, 'Y' = rep(NA, inttime))
     },
     get_action = function(t, context) {
       action$choice <- self$theta$x0 + amplitude*cos(omega * t)

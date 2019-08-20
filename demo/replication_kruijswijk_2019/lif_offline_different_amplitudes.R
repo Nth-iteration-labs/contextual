@@ -10,11 +10,12 @@ source("./bandit_continuum_offon.R")
 source("./policy_tbl.R")
 source("./policy_unifcont.R")
 source("./policy_efirst_regression.R")
+source("./policy_cont_lif_randstart.R")
 
 set.seed(1)
 
-horizon            <- 1000
-simulations        <- 50
+horizon            <- 10000
+simulations        <- 100
 
 continuous_arms_standard    <- function(x, c1 = 0.25, c2 = 0.75) {
   -(x - c1) ^ 2 + c2  + rnorm(length(x), 0, 0.01)
@@ -47,7 +48,7 @@ for (d in deltas){
   agents <- list()
 
   for (i in 1:length(amplitude_list)){
-    agents <- append(agents, Agent$new(LifPolicy$new(int_time, amplitude_list[i], learn_rate, omega, x0_start), bandit))
+    agents <- append(agents, Agent$new(LifPolicyRandstart$new(int_time, amplitude_list[i], learn_rate, omega), bandit))
   }
 
   history            <- Simulator$new(agents      = agents,

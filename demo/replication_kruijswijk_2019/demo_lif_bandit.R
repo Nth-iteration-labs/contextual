@@ -7,6 +7,8 @@ source("./bandit_continuum_function.R")
 source("./policy_tbl.R")
 source("./policy_unifcont.R")
 source("./policy_efirst_regression.R")
+source("./policy_cont_lif_randstart.R")
+
 
 set.seed(1)
 
@@ -32,15 +34,12 @@ learn_rate         <- 1
 omega              <- 1#2*pi/int_time
 x0_start           <- runif(1)#2.0
 
-policy             <- LifPolicy$new(int_time, amplitude, learn_rate, omega, x0_start)
-
-#bandit             <- ContinuumBandit$new()
 bandit             <- ContinuumBandit$new(FUN = continuous_arms)
 
 agents <- list()
 
 for (i in 1:length(amplitude_list)){
-  agents <- append(agents, Agent$new(LifPolicy$new(int_time, amplitude_list[i], learn_rate, omega, x0_start), bandit))
+  agents <- append(agents, Agent$new(LifPolicyRandstart$new(int_time, amplitude_list[i], learn_rate, omega), bandit))
 }
 
 # agents              <- list(Agent$new(UniformRandomContinuousPolicy$new(), bandit),
