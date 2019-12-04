@@ -17,24 +17,29 @@ LifPolicyRandstart <- R6::R6Class(
       self$amplitude <- amplitude
       self$learnrate <- learnrate
       self$omega     <- omega
-      #self$x0_start  <- runif(1)
     },
     post_initialization = function(){
-      self$x0_start <- runif(1)
-      self$theta <- list('x0' = x0_start, 'Y' = rep(NA, inttime))
+      self$x0_start <- runif(1, min = 0.7, max = 1)
+      self$theta <- list('x0' = x0_start, 'Y' = rep(NA, inttime), 't_real' = 1)
     },
     set_parameters = function(context_params) {
     },
     get_action = function(t, context) {
-      action$choice <- self$theta$x0 + amplitude*cos(omega * t)
+      action$choice <- self$theta$x0 + amplitude*cos(omega * self$theta$t_real)
+      if(action$choice < 0){
+        action$choice <- 0
+      }else if(action$choice > 1){
+        action$choice <- 1
+      }
       action
     },
     set_reward = function(t, context, action, reward) {
       reward   <- reward$reward
-      y <- amplitude*cos(omega * t)*reward
+      y <- amplitude*cos(omega * self$theta$t_real)*reward
       self$theta$Y <- c(y, self$theta$Y)[seq_along(self$theta$Y)]
-      if (t > inttime)
+      if (self$theta$t_real > inttime)
         self$theta$x0 <- self$theta$x0 + learnrate * sum( self$theta$Y ) / inttime
+      self$theta$t_real <- self$theta$t_real + 1
       self$theta
     }
   )

@@ -1,15 +1,23 @@
 #' @export
-ContinuumBandit <- R6::R6Class(
+ContinuumBanditUnimodal <- R6::R6Class(
   inherit = Bandit,
   class = FALSE,
   public = list(
     arm_function = NULL,
-    class_name = "ContinuumBandit",
-    initialize   = function(FUN, optimal_reward) {
-      self$arm_function <- FUN
+    c1 = NULL,
+    c2 = NULL,
+    class_name = "ContinuumBanditUnimodal",
+    initialize   = function() {
+      self$c2 <- 1
+      self$arm_function <- function(x, c1 = 0.25, c2 = 0.75) {
+        -(x - c1) ^ 2 + c2  + rnorm(length(x), 0, 0.01)
+      }
       super$initialize()
       self$d            <- 1
       self$k            <- 1
+    },
+    post_initialization = function(){
+      self$c1 <- runif(1,0.25,0.75)
     },
     get_context = function(t) {
       context           <- list()
@@ -18,9 +26,10 @@ ContinuumBandit <- R6::R6Class(
       context
     },
     get_reward = function(t, context, action) {
-      reward            <- list()
-      reward$reward     <- self$arm_function(action$choice)
-      reward
+      reward  <- list(
+        reward                   = self$arm_function(action$choice, self$c1, self$c2),
+        optimal_reward           = self$c2
+      )
     }
   )
 )

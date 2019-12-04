@@ -15,24 +15,20 @@ OnlineOfflineContinuumBanditKernel <- R6::R6Class(
     choice = NULL,
     h = NULL,
     kernel = NULL,
-    initialize   = function(horizon) {
-      self$c1 <- runif(1,0.25,0.75)
-      self$c2 <- runif(1,0.25,0.75)
-      print(self$c2)
-      self$arm_function <- function(x, c1 = 0.25, c2 = 0.75) {
-        -(x - c1) ^ 2 + c2  + rnorm(length(x), 0, 0.01)
-      }
-      self$choice <- runif(horizon, min=0, max=1)
-      private$S <- data.frame(self$choice, self$arm_function(self$choice, self$c1, self$c2))
+    horizon = NULL,
+    initialize   = function(FUN, horizon) {
+      self$arm_function <- FUN
       self$k <- 1
+      self$horizon <- horizon
       self$h <- horizon^(-1/5)
       self$kernel <- function(action_true, action_choice, bandwith){ 1/sqrt(2*pi)*exp(((action_choice - action_true) / bandwith)^2/2) }
     },
     post_initialization = function() {
+      self$choice <- runif(self$horizon, min=0, max=1)
+      private$S <- data.frame(self$choice, self$arm_function(self$choice))
       private$S <- private$S[sample(nrow(private$S)),]
       colnames(private$S) <- c('choice', 'reward')
       private$n <- 0
-      #print(private$S)
     },
     get_context = function(index) {
       context           <- list()

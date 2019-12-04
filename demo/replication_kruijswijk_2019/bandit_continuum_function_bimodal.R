@@ -1,21 +1,30 @@
 #' @export
-ContinuumBandit <- R6::R6Class(
+library("truncnorm")
+ContinuumBanditBimodal <- R6::R6Class(
   inherit = Bandit,
   class = FALSE,
   public = list(
     arm_function = NULL,
-    c1 = NULL,
-    c2 = NULL,
-    class_name = "ContinuumBandit",
+    mu1 = NULL,
+    sd1 = NULL,
+    mu2 = NULL,
+    sd2 = NULL,
+    class_name = "ContinuumBanditBimodal",
     initialize   = function() {
-      self$c1 <- runif(1,0.25,0.75)
-      self$c2 <- runif(1,0.25,0.75)
-      self$arm_function <- function(x, c1 = 0.25, c2 = 0.75) {
-        -(x - c1) ^ 2 + c2  + rnorm(length(x), 0, 0.01)
+      self$arm_function <- function(x, mu1, sd1, mu2, sd2) {
+        y1 <- truncnorm::dtruncnorm(x, a=0, b=1, mean=mu1, sd=sd1)
+        y2 <- truncnorm::dtruncnorm(x, a=0, b=1, mean=mu2, sd=sd2)
+        return(y1 + y2 + rnorm(length(x), 0, 0.01))
       }
       super$initialize()
       self$d            <- 1
       self$k            <- 1
+    },
+    post_initialization = function(){
+      self$mu1 <- runif(1, 0.15, 0.35)
+      self$sd1 <- runif(1, 0.1, 0.2)
+      self$mu2 <- runif(1, 0.65, 0.85)
+      self$sd2 <- runif(1, 0.1, 0.2)
     },
     get_context = function(t) {
       context           <- list()
@@ -25,8 +34,8 @@ ContinuumBandit <- R6::R6Class(
     },
     get_reward = function(t, context, action) {
       reward  <- list(
-        reward                   = self$arm_function(action$choice, self$c1, self$c2),
-        optimal_reward           = self$c2
+        reward                   = self$arm_function(action$choice, self$mu1, self$sd1, self$mu2, self$sd2),
+        optimal_reward           = self$mu2
       )
     }
   )

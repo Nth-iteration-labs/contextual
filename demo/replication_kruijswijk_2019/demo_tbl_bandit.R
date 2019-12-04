@@ -1,8 +1,8 @@
-# This is the demo file for the online and offline parameter tuning of Lock-in Feedback
-# For policy and bandit specific code, please look at the files (as sourced above).
-# First make sure to install contextual 
+# This is the demo file for the online and offline parameter tuning of Thompson sampling
+# for Bayesian linear regression. For policy and bandit specific code, please look at
+# the files (as sourced above). First make sure to install contextual
 # (see https://github.com/Nth-iteration-labs/contextual for a how to).
-#
+# 
 # For any questions, please contact the authors.
 
 library(contextual)
@@ -13,11 +13,11 @@ source("./bandit_continuum_function_unimodal.R")
 source("./bandit_continuum_function_bimodal.R")
 source("./bandit_continuum_offon.R")
 source("./bandit_continuum_offon_kern.R")
-source("./policy_cont_lif_randstart.R")
+source("./policy_tbl.R")
 
 #############################################################
 #                                                           #
-#  Online evaluation for LiF                                #
+#  Online evaluation for TBL                                #
 #                                                           #
 #############################################################
 
@@ -29,22 +29,26 @@ set.seed(1)
 horizon            <- 10000
 simulations        <- 10
 
-### Set LiF specific parameters. Start point is set within the policy itself.
-int_time           <- 50
-amplitude_list     <- seq(0.002, 0.2, length.out = 20)
-learn_rate         <- .1
-omega              <- 2*pi/int_time
+### Set TBL specific parameters
+J <- matrix(c(5, 4, -4), nrow=1, ncol=3, byrow = TRUE)
+err <- 1
+precision_list <- list(matrix(diag(c(0.01,0.01,0.02)), nrow=3, ncol=3, byrow = TRUE),
+                       matrix(diag(c(0.1,0.1,0.2)), nrow=3, ncol=3, byrow = TRUE),
+                       matrix(diag(c(0.4,0.4,1)), nrow=3, ncol=3, byrow = TRUE),
+                       matrix(diag(c(1,1,2)), nrow=3, ncol=3, byrow = TRUE),
+                       matrix(diag(c(2,2,5)), nrow=3, ncol=3, byrow = TRUE),
+                       matrix(diag(c(10,10,20)), nrow=3, ncol=3, byrow = TRUE))
 
 ### Set up two different bandits
 bandits <- c(ContinuumBanditUnimodal$new(), ContinuumBanditBimodal$new())
 
-### Set up all agents with different amplitudes and run them for each bandit
+### Set up all agents with different prior precisions and run them for each bandit
 for (bandit in bandits){
   
   agents <- list()
   
-  for (i in 1:length(amplitude_list)){
-    agents <- append(agents, Agent$new(LifPolicyRandstart$new(int_time, amplitude_list[i], learn_rate, omega), bandit))
+  for (prec in precision_list){
+    agents <- append(agents, Agent$new(ThompsonBayesianLinearPolicy$new(J = J, P = prec, err = err), bandit))
   }
   
   history            <- Simulator$new(agents      = agents,
@@ -54,7 +58,7 @@ for (bandit in bandits){
                                       save_interval = 10)$run()
   
   ### Post-processing for plotting
-  iters <- length(amplitude_list)
+  iters <- length(precision_list)
   reward_rate <- c()
   confs <- c()
   
@@ -63,28 +67,29 @@ for (bandit in bandits){
     confs[[i]] <- history$cumulative[[i]]$cum_reward_rate_sd / sqrt(simulations) * qnorm(0.975)
   }
   
-  df <- data.frame(amp = amplitude_list, reward = reward_rate, ci = confs, delta = rep("Online"))
-  g <- ggplot(data = df, aes(x=amp, y=reward)) +
+  df <- data.frame(prec = 1:length(precision_list), reward = reward_rate, ci = confs, delta = rep("Online"))
+  g <- ggplot(data = df, aes(x=prec, y=reward)) +
     geom_line(colour = 'red') +
-    geom_errorbar(aes(ymin=reward-ci, ymax=reward+ci, color='red'), width=0.01) +
-    labs(x = "Amplitude", y = "Average reward per interaction") +
-    theme_bw(base_size = 15) +
+    geom_errorbar(aes(ymin=reward-ci, ymax=reward+ci, color='red'), width=.2) +
+    labs(x = "Prior precision", y = "Average reward per interaction") +
+    scale_x_continuous(breaks = c(1,6), labels=c("Low", "High")) +
+    theme_bw(base_size = 15) + 
     theme(legend.position = "none")
   
   ### Saving data to use later
   if (bandit$class_name == "ContinuumBanditBimodal"){
-    online_lif_bimodal <- df
+    online_tbl_bimodal <- df
   } else if (bandit$class_name == "ContinuumBanditUnimodal"){
-    online_lif_unimodal <- df
+    online_tbl_unimodal <- df
   }
   
   print(g)
-  print(amplitude_list[[which.max(reward_rate)]])
+  print(precision_list[[which.max(reward_rate)]])
 }
 
 #############################################################
 #                                                           #
-#  Offline evaluation for LiF                               #
+#  Offline evaluation for TBL                               #
 #                                                           #
 #############################################################
 
@@ -96,12 +101,16 @@ set.seed(1)
 horizon            <- 1000
 simulations        <- 2
 
-### Set LiF specific parameters. Start point is set within the policy itself.
+### Set TBL specific parameters
 ### Typically same as in online evaluation
-int_time           <- 50
-amplitude_list     <- seq(0.002, 0.2, length.out = 20)
-learn_rate         <- .1
-omega              <- 2*pi/int_time
+J <- matrix(c(5, 4, -4), nrow=1, ncol=3, byrow = TRUE)
+err <- 1
+precision_list <- list(matrix(diag(c(0.01,0.01,0.02)), nrow=3, ncol=3, byrow = TRUE),
+                       matrix(diag(c(0.1,0.1,0.2)), nrow=3, ncol=3, byrow = TRUE),
+                       matrix(diag(c(0.4,0.4,1)), nrow=3, ncol=3, byrow = TRUE),
+                       matrix(diag(c(1,1,2)), nrow=3, ncol=3, byrow = TRUE),
+                       matrix(diag(c(2,2,5)), nrow=3, ncol=3, byrow = TRUE),
+                       matrix(diag(c(10,10,20)), nrow=3, ncol=3, byrow = TRUE))
 
 ### Set up functions to make offline dataset
 unimodal_data    <- function(x) {
@@ -126,12 +135,12 @@ functions <- list(list("unimodal", unimodal_data), list("bimodal", bimodal_data)
 deltas <- c(0, 0.01, 0.1, 0.5)
 
 ### Pre-allocation
-offline_lif_unimodal_kernel <- data.frame()
-offline_lif_unimodal <- data.frame()
-offline_lif_bimodal_kernel <- data.frame()
-offline_lif_bimodal <- data.frame()
+offline_tbl_unimodal_kernel <- data.frame()
+offline_tbl_unimodal <- data.frame()
+offline_tbl_bimodal_kernel <- data.frame()
+offline_tbl_bimodal <- data.frame()
 
-### Set up all agents with different amplitudes and run them for each bandit
+### Set up all agents with different prior precisions and run them for each bandit
 ### Do this for each specified delta
 for (f in functions){
   for (d in deltas){
@@ -143,8 +152,8 @@ for (f in functions){
     
     agents <- list()
     
-    for (amp in amplitude_list){
-      agents <- append(agents, Agent$new(LifPolicyRandstart$new(int_time, amp, learn_rate, omega), bandit))
+    for (prec in precision_list){
+      agents <- append(agents, Agent$new(ThompsonBayesianLinearPolicy$new(J = J, P = prec, err = err), bandit))
     }
     
     history            <- Simulator$new(agents      = agents,
@@ -154,7 +163,7 @@ for (f in functions){
                                         save_interval = 20)$run()
     
     ### Post-processing for plotting
-    iters <- length(amplitude_list)
+    iters <- length(precision_list)
     reward_rate <- c()
     confs <- c()
     
@@ -169,24 +178,25 @@ for (f in functions){
         confs[[k]] <- sd(select) / sqrt(simulations) * qnorm(0.975)
       }
     }
+    
     history$clear_data_table()
     if (d == 0){
-      df <- data.frame(amp = amplitude_list, reward = reward_rate, delta = as.factor(rep("Kernel")), ci = confs)
+      df <- data.frame(prec = 1:length(precision_list), reward = reward_rate, delta = as.factor(rep("Kernel")), ci = confs)
     } else {
-      df <- data.frame(amp = amplitude_list, reward = reward_rate, delta = as.factor(rep(d)), ci = confs)
+      df <- data.frame(prec = 1:length(precision_list), reward = reward_rate, delta = as.factor(rep(d)), ci = confs)
     }
     
     if (f[[1]] == "bimodal"){
       if (d == 0){
-        offline_lif_bimodal_kernel <- rbind(offline_lif_bimodal_kernel, df)
+        offline_tbl_bimodal_kernel <- rbind(offline_tbl_bimodal_kernel, df)
       } else {
-        offline_lif_bimodal <- rbind(offline_lif_bimodal, df)
+        offline_tbl_bimodal <- rbind(offline_tbl_bimodal, df)
       }
     } else if(f[[1]] == "unimodal"){
       if (d == 0){
-        offline_lif_unimodal_kernel <- rbind(offline_lif_unimodal_kernel, df)
+        offline_tbl_unimodal_kernel <- rbind(offline_tbl_unimodal_kernel, df)
       } else {
-        offline_lif_unimodal <- rbind(offline_lif_unimodal, df)
+        offline_tbl_unimodal <- rbind(offline_tbl_unimodal, df)
       }
     }
   }
@@ -194,41 +204,44 @@ for (f in functions){
 
 ### Plotting both online and offline data together
 different_plots <- list(
-  list("unimodal", rbind(online_lif_unimodal, offline_lif_unimodal)),
-  list("unimodal_kernel", offline_lif_unimodal_kernel),
-  list("bimodal", rbind(online_lif_bimodal, offline_lif_bimodal)),
-  list("bimodal_kernel", offline_lif_bimodal_kernel)
+  list("unimodal", rbind(online_tbl_unimodal, offline_tbl_unimodal)),
+  list("unimodal_kernel", offline_tbl_unimodal_kernel),
+  list("bimodal", rbind(online_tbl_bimodal, offline_tbl_bimodal)),
+  list("bimodal_kernel", offline_tbl_bimodal_kernel)
 )
 
 for (dif_plot in different_plots){
   if(dif_plot[[1]] == "unimodal_kernel"){
-    g <- ggplot(data = dif_plot[[2]], aes(x=amp, y=reward, label = delta)) +
+    g <- ggplot(data = dif_plot[[2]], aes(x=prec, y=reward, label = delta)) +
       geom_line(aes(colour = as.factor(delta))) +
-      geom_errorbar(data = dif_plot[[2]], aes(ymin=reward-ci, ymax=reward+ci, color=as.factor(delta)), width=.01) +
-      geom_vline(xintercept = 0.115, linetype = "dotted", color = "black", size = 1.5) +
+      geom_errorbar(data = dif_plot[[2]], aes(ymin=reward-ci, ymax=reward+ci, color=as.factor(delta)), width=.2) +
+      geom_vline(xintercept = 4, linetype = "dotted", color = "black", size = 1.5) +
       theme(legend.position = "right") + #"none"
-      labs(x = "Amplitude", y = "Average reward per interaction", color="", fill="") +
+      labs(x = "Prior precision", y = "Average reward per interaction", color="", fill="") +
+      scale_x_continuous(breaks = c(1,6), labels=c("Low", "High")) +
       theme_bw(base_size = 15)
-    ggsave(g, file=paste0("offline_lif_function_",dif_plot[[1]],".eps"), device="eps")
+    ggsave(g, file=paste0("offline_tbl_function_",dif_plot[[1]],".eps"), device="eps")
     print(g)
   } else if(dif_plot[[1]] == "bimodal_kernel"){
-    g <- ggplot(data = dif_plot[[2]], aes(x=amp, y=reward, label = delta)) +
+    g <- ggplot(data = dif_plot[[2]], aes(x=prec, y=reward, label = delta)) +
       geom_line(aes(colour = as.factor(delta))) +
-      geom_errorbar(data = dif_plot[[2]], aes(ymin=reward-ci, ymax=reward+ci, color=as.factor(delta)), width=.01) +
-      geom_vline(xintercept = 0.035, linetype = "dotted", color = "black", size = 1.5) +
+      geom_errorbar(data = dif_plot[[2]], aes(ymin=reward-ci, ymax=reward+ci, color=as.factor(delta)), width=.2) +
+      geom_vline(xintercept = 4, linetype = "dotted", color = "black", size = 1.5) +
       theme(legend.position = "right") + #"none"
-      labs(x = "Amplitude", y = "Average reward per interaction", color="", fill="") +
+      labs(x = "Prior precision", y = "Average reward per interaction", color="", fill="") +
+      scale_x_continuous(breaks = c(1,6), labels=c("Low", "High")) +
       theme_bw(base_size = 15)
-    ggsave(g, file=paste0("offline_lif_function_",dif_plot[[1]],".eps"), device="eps")
+    ggsave(g, file=paste0("offline_tbl_function_",dif_plot[[1]],".eps"), device="eps")
     print(g)
   } else if(dif_plot[[1]] == "unimodal" || dif_plot[[1]] == "bimodal") {
-    g <- ggplot(data = dif_plot[[2]], aes(x=amp, y=reward, label = delta)) +
+    g <- ggplot(data = dif_plot[[2]], aes(x=prec, y=reward, label = delta)) +
       geom_line(aes(colour = as.factor(delta))) +
-      geom_errorbar(data = dif_plot[[2]], aes(ymin=reward-ci, ymax=reward+ci, color=as.factor(delta)), width=.01) +
+      geom_errorbar(data = dif_plot[[2]], aes(ymin=reward-ci, ymax=reward+ci, color=as.factor(delta)), width=.2) +
       theme(legend.position = "right") + #"none"
-      labs(x = "Amplitude", y = "Average reward per interaction", color="", fill="") +
+      labs(x = "Prior precision", y = "Average reward per interaction", color="", fill="") +
+      scale_x_continuous(breaks = c(1,6), labels=c("Low", "High")) +
       theme_bw(base_size = 15)
-    ggsave(g, file=paste0("offline_lif_function_",dif_plot[[1]],"_delta.eps"), device="eps")
+    ggsave(g, file=paste0("offline_tbl_function_",dif_plot[[1]],"_delta.eps"), device="eps")
     print(g)
   }
 }
