@@ -60,12 +60,19 @@ returns a named \code{list} containing \code{reward$reward} and, where computabl
 \examples{
 \dontrun{
 
+library(contextual)
+
 horizon            <- 100
 sims               <- 100
 
-policy             <- EpsilonGreedyPolicy$new(epsilon = 0.1)
+policy             <- LinUCBDisjointOptimizedPolicy$new(alpha = 0.9)
 
-bandit             <- ContextualBernoulliBandit$new(weights = c(0.6, 0.1, 0.1))
+weights             <- matrix(  c(0.4, 0.2, 0.4,
+                                  0.3, 0.4, 0.3,
+                                  0.1, 0.8, 0.1),  nrow = 3, ncol = 3, byrow = TRUE)
+
+bandit             <- ContextualBernoulliBandit$new(weights = weights)
+
 agent              <- Agent$new(policy,bandit)
 
 history            <- Simulator$new(agent, horizon, sims)$run()

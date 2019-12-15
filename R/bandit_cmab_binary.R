@@ -7,8 +7,13 @@ ContextualBinaryBandit <- R6::R6Class(
     class_name = "ContextualBinaryBandit",
     initialize = function(weights) {
       self$weights     <- weights
-      self$d           <- nrow(weights)
-      self$k           <- ncol(weights)
+      if (is.vector(weights)) {
+        self$weights <- matrix(weights, nrow = 1L)
+      } else {
+        self$weights <- weights
+      }
+      self$d           <- nrow(self$weights)
+      self$k           <- ncol(self$weights)
     },
     get_context = function(t) {
       # self$d random features on (1) or off (0)
@@ -101,12 +106,19 @@ ContextualBinaryBandit <- R6::R6Class(
 #' @examples
 #' \dontrun{
 #'
+#' library(contextual)
+#'
 #' horizon            <- 100
 #' sims               <- 100
 #'
-#' policy             <- EpsilonGreedyPolicy$new(epsilon = 0.1)
+#' policy             <- LinUCBDisjointOptimizedPolicy$new(alpha = 0.9)
 #'
-#' bandit             <- ContextualBinaryBandit$new(weights = c(0.6, 0.1, 0.1))
+#' weights             <- matrix(  c(0.4, 0.2, 0.4,
+#'                                   0.3, 0.4, 0.3,
+#'                                   0.1, 0.8, 0.1),  nrow = 3, ncol = 3, byrow = TRUE)
+#'
+#' bandit             <- ContextualBinaryBandit$new(weights = weights)
+#'
 #' agent              <- Agent$new(policy,bandit)
 #'
 #' history            <- Simulator$new(agent, horizon, sims)$run()

@@ -6,9 +6,14 @@ ContextualBernoulliBandit <- R6::R6Class(
     weights = NULL,
     class_name = "ContextualBernoulliBandit",
     initialize = function(weights) {
-      self$weights     <- weights        # d x k weight matrix
-      self$d           <- nrow(weights)  # d features
-      self$k           <- ncol(weights)  # k arms
+      self$weights     <- weights
+      if (is.vector(weights)) {
+        self$weights <- matrix(weights, nrow = 1L)
+      } else {
+        self$weights <- weights               # d x k weight matrix
+      }
+      self$d           <- nrow(self$weights)  # d features
+      self$k           <- ncol(self$weights)  # k arms
     },
     get_context = function(t) {
       # generate d dimensional feature vector, one random feature active at a time
@@ -103,12 +108,19 @@ ContextualBernoulliBandit <- R6::R6Class(
 #' @examples
 #' \dontrun{
 #'
+#' library(contextual)
+#'
 #' horizon            <- 100
 #' sims               <- 100
 #'
-#' policy             <- EpsilonGreedyPolicy$new(epsilon = 0.1)
+#' policy             <- LinUCBDisjointOptimizedPolicy$new(alpha = 0.9)
 #'
-#' bandit             <- ContextualBernoulliBandit$new(weights = c(0.6, 0.1, 0.1))
+#' weights             <- matrix(  c(0.4, 0.2, 0.4,
+#'                                   0.3, 0.4, 0.3,
+#'                                   0.1, 0.8, 0.1),  nrow = 3, ncol = 3, byrow = TRUE)
+#'
+#' bandit             <- ContextualBernoulliBandit$new(weights = weights)
+#'
 #' agent              <- Agent$new(policy,bandit)
 #'
 #' history            <- Simulator$new(agent, horizon, sims)$run()
