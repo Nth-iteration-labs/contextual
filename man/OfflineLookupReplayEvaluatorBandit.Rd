@@ -99,7 +99,7 @@ ratings_dat     <- "http://d1ie9wlkzugsxr.cloudfront.net/data_movielens/ml-10M/r
 
 movies_dat      <- readLines(movies_dat)
 movies_dat      <- gsub( "::", "~", movies_dat )
-movies_dat      <- paste0(movies_dat, collapse = "\\n")
+movies_dat      <- paste0(movies_dat, collapse = "\n")
 movies_dat      <- fread(movies_dat, sep = "~", quote="")
 setnames(movies_dat, c("V1", "V2", "V3"), c("MovieID", "Name", "Type"))
 movies_dat      <- splitstackshape::cSplit_e(movies_dat, "Type", sep = "|", type = "character",
@@ -109,7 +109,7 @@ movies_dat[[3]] <- NULL
 ratings_dat     <- RCurl::getURL(ratings_dat)
 ratings_dat     <- readLines(textConnection(ratings_dat))
 ratings_dat     <- gsub( "::", "~", ratings_dat )
-ratings_dat     <- paste0(ratings_dat, collapse = "\\n")
+ratings_dat     <- paste0(ratings_dat, collapse = "\n")
 ratings_dat     <- fread(ratings_dat, sep = "~", quote="")
 setnames(ratings_dat, c("V1", "V2", "V3", "V4"), c("UserID", "MovieID", "Rating", "Timestamp"))
 

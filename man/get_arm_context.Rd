@@ -4,8 +4,12 @@
 \alias{get_arm_context}
 \title{Return context vector of an arm}
 \usage{
-get_arm_context(context, arm, select_features = NULL,
-  prepend_arm_vector = FALSE)
+get_arm_context(
+  context,
+  arm,
+  select_features = NULL,
+  prepend_arm_vector = FALSE
+)
 }
 \arguments{
 \item{context}{a context list containing a d x k Matrix or

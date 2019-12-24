@@ -17,7 +17,7 @@ synthetic or offline) contexts and rewards.
 On initialisation, a \code{Bandit} subclass has to define the number of arms \code{self$k}
 and the number of contextual feature dimensions \code{self$d}.
 
-For each \emph{t} = {1, \ldots, T} a \code{Bandit} then generates a \code{list} containing
+For each \emph{t} = \{1, \ldots, T\} a \code{Bandit} then generates a \code{list} containing
 current context in \code{d x k} dimensional matrix \code{context$X},
 the number of arms in \code{context$k} and the number of features in \code{context$d}.
 

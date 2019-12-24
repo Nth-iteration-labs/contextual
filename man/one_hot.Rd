@@ -4,8 +4,14 @@
 \alias{one_hot}
 \title{One Hot Encoding of data.table columns}
 \usage{
-one_hot(dt, cols = "auto", sparsifyNAs = FALSE, naCols = FALSE,
-  dropCols = TRUE, dropUnusedLevels = FALSE)
+one_hot(
+  dt,
+  cols = "auto",
+  sparsifyNAs = FALSE,
+  naCols = FALSE,
+  dropCols = TRUE,
+  dropUnusedLevels = FALSE
+)
 }
 \arguments{
 \item{dt}{A data.table}

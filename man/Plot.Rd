@@ -99,7 +99,7 @@ Otherwise, plots will make use of a color palette (default).
 }
 \item{\code{disp}}{
 \code{(character, NULL)} When disp (for "dispersion measure") is set to either 'var','sd' or 'ci',
-the variance, standard deviation, or 95% confidence interval will be added to the plot(s).
+the variance, standard deviation, or 95\% confidence interval will be added to the plot(s).
 }
 \item{\code{plot_only_disp}}{
 \code{(logical, FALSE)} When TRUE and disp is either 'var','sd' or 'ci', plot only dispersion measure.
@@ -111,13 +111,13 @@ the variance, standard deviation, or 95% confidence interval will be added to th
 \code{(integer , 100)} The number of trace lines.
 }
 \item{\code{traces_alpha}}{
-\code{(numeric , 0.3)} Opacity of the trace lines. Default is 0.3 - that is, an opacity of 30%.
+\code{(numeric , 0.3)} Opacity of the trace lines. Default is 0.3 - that is, an opacity of 30\%.
 }
 \item{\code{smooth}}{
 \code{(logical , FALSE)} Smooth the plot (default is FALSE)
 }
 \item{\code{interval}}{
-\code{(integer, NULL)} Plot only every t%%interval==0 data point.
+\code{(integer, NULL)} Plot only every t\%\%interval==0 data point.
 }
 \item{\code{cum_average}}{
 \code{(logical , FALSE)} Calculates moving average from cum_reward or cum_regret with step

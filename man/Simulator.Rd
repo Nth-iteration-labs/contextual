@@ -10,8 +10,8 @@ The entry point of any \pkg{contextual} simulation.
 }
 \details{
 A Simulator takes, at a minimum, one or more \code{\link{Agent}} instances, a horizon
-(the length of an individual simulation, \emph{t} = {1, \ldots, T}) and the number of simulations
-(How many times to repeat each simulation over \emph{t} = {1, \ldots, T}, with a new seed
+(the length of an individual simulation, \emph{t} = \{1, \ldots, T\}) and the number of simulations
+(How many times to repeat each simulation over \emph{t} = \{1, \ldots, T\}, with a new seed
 on each repeat*).
 
 It then runs all simulations (in parallel by default), keeping a log of all \code{\link{Policy}} and
@@ -52,10 +52,10 @@ simulator <- Simulator$new(agents,
 An \code{Agent} instance or a \code{list} of \code{Agent} instances.
 }
 \item{\code{horizon}}{
-\code{integer}. The number of pulls or time steps to run each agent, where \emph{t} = {1, \ldots, T}.
+\code{integer}. The number of pulls or time steps to run each agent, where \emph{t} = \{1, \ldots, T\}.
 }
 \item{\code{simulations}}{
-\code{integer}. How many times to repeat each agent's simulation over \emph{t} = {1, \ldots, T},
+\code{integer}. How many times to repeat each agent's simulation over \emph{t} = \{1, \ldots, T\},
 with a new seed on each repeat (itself deterministically derived from set\_seed).
 }
 \item{\code{save_interval}}{

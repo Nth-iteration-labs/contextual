@@ -12,7 +12,7 @@ Keeps track of one \code{\link{Bandit}} and \code{\link{Policy}} pair.
 }
 \details{
 Controls the running of one \code{\link{Bandit}} and \code{\link{Policy}}
-pair over \emph{t} = {1, \ldots, T} looping over, consecutively,
+pair over \emph{t} = \{1, \ldots, T\} looping over, consecutively,
 \code{bandit$get_context(), policy$get_action(), bandit$get_reward()} and \code{policy$set_reward()}
 for each time step \code{t}.
 }

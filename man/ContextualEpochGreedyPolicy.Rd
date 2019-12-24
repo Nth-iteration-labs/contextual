@@ -9,7 +9,7 @@ Policy: A Time and Space Efficient Algorithm for Contextual Linear Bandits
 \section{Usage}{
 
 \preformatted{
-policy <- EpsilonGreedyPolicy(epsilon = 0.1)
+ policy <- ContextualEpochGreedyPolicy$new(sZl = 10)
 }
 }
 

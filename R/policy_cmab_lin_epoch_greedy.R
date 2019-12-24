@@ -58,7 +58,7 @@ ContextualEpochGreedyPolicy <- R6::R6Class(
 #'
 #' @section Usage:
 #' \preformatted{
-#' policy <- EpsilonGreedyPolicy(epsilon = 0.1)
+#'  policy <- ContextualEpochGreedyPolicy$new(sZl = 10)
 #' }
 #'
 #' @seealso

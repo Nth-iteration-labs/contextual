@@ -27,6 +27,7 @@ Simulator <- R6::R6Class(
     save_interval = NULL,
     include_packages = NULL,
     outfile = NULL,
+    global_seed = NULL,
     chunk_multiplier = NULL,
     policy_time_loop = NULL,
     cl = NULL,
@@ -45,6 +46,9 @@ Simulator <- R6::R6Class(
                           t_over_sims = FALSE,
                           chunk_multiplier = 1,
                           policy_time_loop = FALSE) {
+
+      # save current seed
+      self$global_seed <- contextual::get_global_seed()
 
       if (!is.list(agents)) agents <- list(agents)
 
@@ -275,6 +279,9 @@ Simulator <- R6::R6Class(
       # update statistics TODO: not always necessary, add option arg to class?
       self$internal_history$update_statistics()
 
+      # load global seed
+      .Random.seed <- self$global_seed
+
       # set meta data and messages
       self$stop_parallel_backend()
       self$internal_history
@@ -317,6 +324,8 @@ Simulator <- R6::R6Class(
       # nocov end
     },
     finalize = function() {
+      # set global seed back to value before
+      contextual::set_global_seed(self$global_seed)
       #closeAllConnections()
     }
   ),

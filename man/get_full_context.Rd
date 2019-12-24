@@ -4,8 +4,7 @@
 \alias{get_full_context}
 \title{Get full context matrix over all arms}
 \usage{
-get_full_context(context, select_features = NULL,
-  prepend_arm_matrix = FALSE)
+get_full_context(context, select_features = NULL, prepend_arm_matrix = FALSE)
 }
 \arguments{
 \item{context}{a context list containing a d x k Matrix or

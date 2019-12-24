@@ -13,7 +13,7 @@
 Parent or superclass of all \code{\{contextual\}} \code{Policy} subclasses.
 }
 \details{
-On every \emph{t} = {1, \ldots, T}, a policy receives \code{d} dimensional feature vector or
+On every \emph{t} = \{1, \ldots, T\}, a policy receives \code{d} dimensional feature vector or
 \code{d x k} dimensional matrix
 \code{context$X}*, the current number of \code{\link{Bandit}} arms in \code{context$k}, and the current
 number of contextual features in \code{context$d}.

@@ -686,3 +686,30 @@ data_table_factors_to_numeric <- function(dt){
   }
   return(dt)
 }
+
+
+
+#' Lookup .Random.seed in global environment
+#'
+#' @return an integer vector, containing the random number generator (RNG) state for random number generation
+#'
+#' @export
+get_global_seed = function() {
+  current.seed = NA
+  if (exists(".Random.seed", envir=.GlobalEnv)) {
+    current.seed = .Random.seed
+  }
+  current.seed
+}
+
+
+#' Set .Random.seed to a pre-saved value
+#'
+#' @param x integer vector
+#'
+#' @export
+set_global_seed = function(x) {
+  if (length(x)>1) {
+    assign(".Random.seed", x, envir=.GlobalEnv)
+  }
+}
