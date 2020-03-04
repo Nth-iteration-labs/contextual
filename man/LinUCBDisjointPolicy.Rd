@@ -4,6 +4,11 @@
 \alias{LinUCBDisjointPolicy}
 \title{Policy: LinUCB with unique linear models}
 \description{
+LinUCBDisjointPolicy is an R implementation of
+"Algorithm 1 LinUCB" from Li (2010) "A contextual-bandit approach to
+personalized news article recommendation.".
+}
+\details{
 Each time step t, \code{LinUCBDisjointPolicy} runs a linear regression per arm that produces coefficients
 for each context feature \code{d}.
 Next,  \code{LinUCBDisjointPolicy} observes the new context, and generates a predicted payoff or reward

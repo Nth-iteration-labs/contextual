@@ -7,8 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Demo: Offline cMAB LinUCB evaluation • contextual</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><!-- docsearch --><script src="../docsearch.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous">
 <link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="Demo: Offline cMAB LinUCB evaluation">
@@ -32,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">contextual</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.8.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.8.3</span>
       </span>
     </div>
 
@@ -79,9 +80,6 @@
       <a href="../articles/offline_depaul_movies.html">Demo: Offline cMAB: CarsKit DePaul Movie Dataset</a>
     </li>
     <li>
-      <a href="../articles/only_pkgdown/faq.html">Development FAQ</a>
-    </li>
-    <li>
       <a href="../articles/replication.html">Offline evaluation: Replication of Li et al 2010</a>
     </li>
     <li>
@@ -110,7 +108,7 @@
   </a>
 </li>
       </ul>
-<form class="navbar-form navbar-right" role="search">
+<form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
 </div>
@@ -124,13 +122,14 @@
 <!--/.navbar -->
 
       
+
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1>Demo: Offline cMAB LinUCB evaluation</h1>
                         <h4 class="author">Robin van Emden</h4>
             
-            <h4 class="date">2019-08-11</h4>
+            <h4 class="date">2020-03-04</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Nth-iteration-labs/contextual/blob/master/vignettes/cmabsoffline.Rmd"><code>vignettes/cmabsoffline.Rmd</code></a></small>
       <div class="hidden name"><code>cmabsoffline.Rmd</code></div>
@@ -139,55 +138,57 @@
 
     
     
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(contextual)</a>
-<a class="sourceLine" id="cb1-2" title="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(data.table)</a>
-<a class="sourceLine" id="cb1-3" title="3"></a>
-<a class="sourceLine" id="cb1-4" title="4"><span class="co"># Import personalization data-set</span></a>
-<a class="sourceLine" id="cb1-5" title="5"></a>
-<a class="sourceLine" id="cb1-6" title="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(contextual); <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(data.table)</a>
-<a class="sourceLine" id="cb1-7" title="7"></a>
-<a class="sourceLine" id="cb1-8" title="8">dt      &lt;-<span class="st"> </span><span class="kw">fread</span>(<span class="st">"http://d1ie9wlkzugsxr.cloudfront.net/data_cmab_basic/data.txt"</span>) </a>
-<a class="sourceLine" id="cb1-9" title="9">                                    <span class="co"># 0/1 reward, 10 arms, 100 features</span></a>
-<a class="sourceLine" id="cb1-10" title="10">                                    <span class="co"># arms always start from 1</span></a>
-<a class="sourceLine" id="cb1-11" title="11"></a>
-<a class="sourceLine" id="cb1-12" title="12"><span class="co">#      z y x1 x2 x3 x4 x5 x6 x7 x8 x9 x10 x11 x12 x13 x14 x15  .. x100</span></a>
-<a class="sourceLine" id="cb1-13" title="13"><span class="co">#   1: 2 0  5  0  0 37  6  0  0  0  0  25   0   0   7   1   0  ..    0</span></a>
-<a class="sourceLine" id="cb1-14" title="14"><span class="co">#   2: 8 0  1  3 36  0  0  0  0  0  0   0   0   1   0   0   0  ..   10</span></a>
-<a class="sourceLine" id="cb1-15" title="15"><span class="co">#   3: . .  .  .  .  .  .  .  .  .  .   .   .   .   .   .   .  ..    .</span></a>
-<a class="sourceLine" id="cb1-16" title="16"></a>
-<a class="sourceLine" id="cb1-17" title="17">horizon     &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(dt)</a>
-<a class="sourceLine" id="cb1-18" title="18">simulations &lt;-<span class="st"> </span><span class="dv">1</span></a>
-<a class="sourceLine" id="cb1-19" title="19"></a>
-<a class="sourceLine" id="cb1-20" title="20"><span class="co"># Set up formula:       y      ~ z    | x1 + x2 + ..</span></a>
-<a class="sourceLine" id="cb1-21" title="21"><span class="co"># In bandit parlance:   reward ~ arms | covariates or contextual features</span></a>
-<a class="sourceLine" id="cb1-22" title="22"></a>
-<a class="sourceLine" id="cb1-23" title="23">f       &lt;-<span class="st"> </span>y <span class="op">~</span><span class="st"> </span>z <span class="op">|</span><span class="st"> </span>. <span class="op">-</span><span class="st"> </span>z</a>
-<a class="sourceLine" id="cb1-24" title="24"></a>
-<a class="sourceLine" id="cb1-25" title="25"><span class="co"># Instantiate Replay Bandit (Li, 2010)</span></a>
-<a class="sourceLine" id="cb1-26" title="26">bandit  &lt;-<span class="st"> </span>OfflineReplayEvaluatorBandit<span class="op">$</span><span class="kw">new</span>(<span class="dt">formula =</span> f, <span class="dt">data =</span> dt)</a>
-<a class="sourceLine" id="cb1-27" title="27"></a>
-<a class="sourceLine" id="cb1-28" title="28"><span class="co"># Bind Policies withs Bandits through Agents, add Agents to list</span></a>
-<a class="sourceLine" id="cb1-29" title="29">agents  &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(Agent<span class="op">$</span><span class="kw">new</span>(LinUCBDisjointOptimizedPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.01</span>), bandit, <span class="st">"alpha = 0.01"</span>),</a>
-<a class="sourceLine" id="cb1-30" title="30">                Agent<span class="op">$</span><span class="kw">new</span>(LinUCBDisjointOptimizedPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.05</span>), bandit, <span class="st">"alpha = 0.05"</span>),</a>
-<a class="sourceLine" id="cb1-31" title="31">                Agent<span class="op">$</span><span class="kw">new</span>(LinUCBDisjointOptimizedPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.1</span>),  bandit, <span class="st">"alpha = 0.1"</span>),</a>
-<a class="sourceLine" id="cb1-32" title="32">                Agent<span class="op">$</span><span class="kw">new</span>(LinUCBDisjointOptimizedPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">1.0</span>),  bandit, <span class="st">"alpha = 1.0"</span>))</a>
-<a class="sourceLine" id="cb1-33" title="33"></a>
-<a class="sourceLine" id="cb1-34" title="34"><span class="co"># Instantiate a Simulator</span></a>
-<a class="sourceLine" id="cb1-35" title="35">simulation &lt;-<span class="st"> </span>Simulator<span class="op">$</span><span class="kw">new</span>(agents, <span class="dt">horizon =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/nrow">nrow</a></span>(dt), <span class="dt">simulations =</span> <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb1-36" title="36"></a>
-<a class="sourceLine" id="cb1-37" title="37"><span class="co"># Run the simulation.</span></a>
-<a class="sourceLine" id="cb1-38" title="38">history    &lt;-<span class="st"> </span>simulation<span class="op">$</span><span class="kw"><a href="../reference/Simulator.html">run</a></span>()</a>
-<a class="sourceLine" id="cb1-39" title="39"></a>
-<a class="sourceLine" id="cb1-40" title="40"><span class="co"># plot the results</span></a>
-<a class="sourceLine" id="cb1-41" title="41"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"cumulative"</span>, <span class="dt">regret =</span> <span class="ot">FALSE</span>, <span class="dt">rate =</span> <span class="ot">TRUE</span>, </a>
-<a class="sourceLine" id="cb1-42" title="42">     <span class="dt">legend_position =</span> <span class="st">"bottomright"</span>, <span class="dt">ylim =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>,<span class="dv">1</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(contextual)</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(data.table)</span>
+<span id="cb1-3"><a href="#cb1-3"></a></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="co"># Import personalization data-set</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a></span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(contextual); <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(data.table)</span>
+<span id="cb1-7"><a href="#cb1-7"></a></span>
+<span id="cb1-8"><a href="#cb1-8"></a>dt      &lt;-<span class="st"> </span><span class="kw">fread</span>(<span class="st">"http://d1ie9wlkzugsxr.cloudfront.net/data_cmab_basic/data.txt"</span>) </span>
+<span id="cb1-9"><a href="#cb1-9"></a>                                    <span class="co"># 0/1 reward, 10 arms, 100 features</span></span>
+<span id="cb1-10"><a href="#cb1-10"></a>                                    <span class="co"># arms always start from 1</span></span>
+<span id="cb1-11"><a href="#cb1-11"></a></span>
+<span id="cb1-12"><a href="#cb1-12"></a><span class="co">#      z y x1 x2 x3 x4 x5 x6 x7 x8 x9 x10 x11 x12 x13 x14 x15  .. x100</span></span>
+<span id="cb1-13"><a href="#cb1-13"></a><span class="co">#   1: 2 0  5  0  0 37  6  0  0  0  0  25   0   0   7   1   0  ..    0</span></span>
+<span id="cb1-14"><a href="#cb1-14"></a><span class="co">#   2: 8 0  1  3 36  0  0  0  0  0  0   0   0   1   0   0   0  ..   10</span></span>
+<span id="cb1-15"><a href="#cb1-15"></a><span class="co">#   3: . .  .  .  .  .  .  .  .  .  .   .   .   .   .   .   .  ..    .</span></span>
+<span id="cb1-16"><a href="#cb1-16"></a></span>
+<span id="cb1-17"><a href="#cb1-17"></a>horizon     &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(dt)</span>
+<span id="cb1-18"><a href="#cb1-18"></a>simulations &lt;-<span class="st"> </span><span class="dv">1</span></span>
+<span id="cb1-19"><a href="#cb1-19"></a></span>
+<span id="cb1-20"><a href="#cb1-20"></a><span class="co"># Set up formula:       y      ~ z    | x1 + x2 + ..</span></span>
+<span id="cb1-21"><a href="#cb1-21"></a><span class="co"># In bandit parlance:   reward ~ arms | covariates or contextual features</span></span>
+<span id="cb1-22"><a href="#cb1-22"></a></span>
+<span id="cb1-23"><a href="#cb1-23"></a>f       &lt;-<span class="st"> </span>y <span class="op">~</span><span class="st"> </span>z <span class="op">|</span><span class="st"> </span>. <span class="op">-</span><span class="st"> </span>z</span>
+<span id="cb1-24"><a href="#cb1-24"></a></span>
+<span id="cb1-25"><a href="#cb1-25"></a><span class="co"># Instantiate Replay Bandit (Li, 2010)</span></span>
+<span id="cb1-26"><a href="#cb1-26"></a>bandit  &lt;-<span class="st"> </span>OfflineReplayEvaluatorBandit<span class="op">$</span><span class="kw">new</span>(<span class="dt">formula =</span> f, <span class="dt">data =</span> dt)</span>
+<span id="cb1-27"><a href="#cb1-27"></a></span>
+<span id="cb1-28"><a href="#cb1-28"></a><span class="co"># Bind Policies withs Bandits through Agents, add Agents to list</span></span>
+<span id="cb1-29"><a href="#cb1-29"></a>agents  &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(Agent<span class="op">$</span><span class="kw">new</span>(LinUCBDisjointOptimizedPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.01</span>), bandit, <span class="st">"alpha = 0.01"</span>),</span>
+<span id="cb1-30"><a href="#cb1-30"></a>                Agent<span class="op">$</span><span class="kw">new</span>(LinUCBDisjointOptimizedPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.05</span>), bandit, <span class="st">"alpha = 0.05"</span>),</span>
+<span id="cb1-31"><a href="#cb1-31"></a>                Agent<span class="op">$</span><span class="kw">new</span>(LinUCBDisjointOptimizedPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.1</span>),  bandit, <span class="st">"alpha = 0.1"</span>),</span>
+<span id="cb1-32"><a href="#cb1-32"></a>                Agent<span class="op">$</span><span class="kw">new</span>(LinUCBDisjointOptimizedPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">1.0</span>),  bandit, <span class="st">"alpha = 1.0"</span>))</span>
+<span id="cb1-33"><a href="#cb1-33"></a></span>
+<span id="cb1-34"><a href="#cb1-34"></a><span class="co"># Instantiate a Simulator</span></span>
+<span id="cb1-35"><a href="#cb1-35"></a>simulation &lt;-<span class="st"> </span>Simulator<span class="op">$</span><span class="kw">new</span>(agents, <span class="dt">horizon =</span> <span class="kw"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(dt), <span class="dt">simulations =</span> <span class="dv">1</span>)</span>
+<span id="cb1-36"><a href="#cb1-36"></a></span>
+<span id="cb1-37"><a href="#cb1-37"></a><span class="co"># Run the simulation.</span></span>
+<span id="cb1-38"><a href="#cb1-38"></a>history    &lt;-<span class="st"> </span>simulation<span class="op">$</span><span class="kw"><a href="../reference/Simulator.html">run</a></span>()</span>
+<span id="cb1-39"><a href="#cb1-39"></a></span>
+<span id="cb1-40"><a href="#cb1-40"></a><span class="co"># plot the results</span></span>
+<span id="cb1-41"><a href="#cb1-41"></a><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"cumulative"</span>, <span class="dt">regret =</span> <span class="ot">FALSE</span>, <span class="dt">rate =</span> <span class="ot">TRUE</span>, </span>
+<span id="cb1-42"><a href="#cb1-42"></a>     <span class="dt">legend_position =</span> <span class="st">"bottomright"</span>, <span class="dt">ylim =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>,<span class="dv">1</span>))</span></code></pre></div>
 <p><img src="linucboffline.png"></p>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+
       </div>
 
 </div>
+
 
 
       <footer><div class="copyright">
@@ -195,8 +196,9 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
+
       </footer>
 </div>
 

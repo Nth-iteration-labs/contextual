@@ -7,8 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Demo: Replication of John Myles White, Bandit Algorithms for Website Optimization • contextual</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><!-- docsearch --><script src="../docsearch.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous">
 <link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="Demo: Replication of John Myles White, Bandit Algorithms for Website Optimization">
@@ -32,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">contextual</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.8.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.8.3</span>
       </span>
     </div>
 
@@ -79,9 +80,6 @@
       <a href="../articles/offline_depaul_movies.html">Demo: Offline cMAB: CarsKit DePaul Movie Dataset</a>
     </li>
     <li>
-      <a href="../articles/only_pkgdown/faq.html">Development FAQ</a>
-    </li>
-    <li>
       <a href="../articles/replication.html">Offline evaluation: Replication of Li et al 2010</a>
     </li>
     <li>
@@ -110,7 +108,7 @@
   </a>
 </li>
       </ul>
-<form class="navbar-form navbar-right" role="search">
+<form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
 </div>
@@ -124,13 +122,14 @@
 <!--/.navbar -->
 
       
+
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1>Demo: Replication of John Myles White, Bandit Algorithms for Website Optimization</h1>
                         <h4 class="author">Robin van Emden</h4>
             
-            <h4 class="date">2019-08-11</h4>
+            <h4 class="date">2020-03-04</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Nth-iteration-labs/contextual/blob/master/vignettes/website_optimization.Rmd"><code>vignettes/website_optimization.Rmd</code></a></small>
       <div class="hidden name"><code>website_optimization.Rmd</code></div>
@@ -149,121 +148,122 @@
   m = max(x)
   return x.index(m)</code></pre>
 <p>This introduces a bias that adds up over time, changing simulations’ results and plots. In R, (which uses 1 based indexing) this corresponds to always doing:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">rewards      &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb2-2" title="2">max_reward   &lt;-<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/which.min">which.max</a></span>(rewards)</a>
-<a class="sourceLine" id="cb2-3" title="3">max_reward   <span class="co"># always contains lowest index, 3 in this case, biasing results</span></a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>rewards      &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>)</span>
+<span id="cb2-2"><a href="#cb2-2"></a>max_reward   &lt;-<span class="kw"><a href="https://rdrr.io/r/base/which.min.html">which.max</a></span>(rewards)</span>
+<span id="cb2-3"><a href="#cb2-3"></a>max_reward   <span class="co"># always contains lowest index, 3 in this case, biasing results</span></span></code></pre></div>
 <p>Contextual correctly returns the index of one of the tied maxima random, fixing the bias, resulting in slightly different plots. In Python, a patch along the following lines ought to resolve this issue:</p>
 <pre><code>def ind_max(x):
   max_value = max(x)
   max_keys = [k for k, v in enumerate(x) if v == max_value]
   return random.choice(max_keys)</code></pre>
 <p>In R, this corresponds to:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1">rewards      &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb4-2" title="2">max_reward   &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/which">which</a></span>(rewards <span class="op">==</span><span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Extremes">max</a></span>(rewards))</a>
-<a class="sourceLine" id="cb4-3" title="3"><span class="cf">if</span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/length">length</a></span>(max_reward) <span class="op">&gt;</span><span class="st"> </span><span class="dv">1</span>){</a>
-<a class="sourceLine" id="cb4-4" title="4">  max_reward &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/sample">sample</a></span>(max_reward, <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb4-5" title="5">}</a>
-<a class="sourceLine" id="cb4-6" title="6">max_reward   <span class="co"># randomly assigned either 3 or 5, no bias</span></a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>rewards      &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>)</span>
+<span id="cb4-2"><a href="#cb4-2"></a>max_reward   &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/which.html">which</a></span>(rewards <span class="op">==</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span>(rewards))</span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="cf">if</span>(<span class="kw"><a href="https://rdrr.io/r/base/length.html">length</a></span>(max_reward) <span class="op">&gt;</span><span class="st"> </span><span class="dv">1</span>){</span>
+<span id="cb4-4"><a href="#cb4-4"></a>  max_reward &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(max_reward, <span class="dv">1</span>)</span>
+<span id="cb4-5"><a href="#cb4-5"></a>}</span>
+<span id="cb4-6"><a href="#cb4-6"></a>max_reward   <span class="co"># randomly assigned either 3 or 5, no bias</span></span></code></pre></div>
 <p>To illustrate, a replication of the original Figure 4-3 when running a simulation with the biased arm selection, (as used in the book) on the left, contextual’s unbiased simulation to the right:</p>
 <p><img src="compare.png"></p>
 </div>
 <div id="chapter-4---debugging-and-epsilon-greedy" class="section level2">
 <h2 class="hasAnchor">
 <a href="#chapter-4---debugging-and-epsilon-greedy" class="anchor"></a>Chapter 4 - Debugging and epsilon greedy</h2>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1">prob_per_arm       &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="fl">0.1</span>, <span class="fl">0.1</span>, <span class="fl">0.1</span>, <span class="fl">0.1</span>, <span class="fl">0.9</span>)</a>
-<a class="sourceLine" id="cb5-2" title="2">horizon            &lt;-<span class="st"> </span><span class="dv">250</span></a>
-<a class="sourceLine" id="cb5-3" title="3">simulations        &lt;-<span class="st"> </span><span class="dv">5000</span></a>
-<a class="sourceLine" id="cb5-4" title="4"></a>
-<a class="sourceLine" id="cb5-5" title="5">bandit             &lt;-<span class="st"> </span>BasicBernoulliBandit<span class="op">$</span><span class="kw">new</span>(prob_per_arm)</a>
-<a class="sourceLine" id="cb5-6" title="6"></a>
-<a class="sourceLine" id="cb5-7" title="7">agents             &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(Agent<span class="op">$</span><span class="kw">new</span>(EpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.1</span>), bandit, <span class="st">"Epsilon = 0.1"</span>),</a>
-<a class="sourceLine" id="cb5-8" title="8">                           Agent<span class="op">$</span><span class="kw">new</span>(EpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.2</span>), bandit, <span class="st">"Epsilon = 0.2"</span>),</a>
-<a class="sourceLine" id="cb5-9" title="9">                           Agent<span class="op">$</span><span class="kw">new</span>(EpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.3</span>), bandit, <span class="st">"Epsilon = 0.3"</span>),</a>
-<a class="sourceLine" id="cb5-10" title="10">                           Agent<span class="op">$</span><span class="kw">new</span>(EpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.4</span>), bandit, <span class="st">"Epsilon = 0.4"</span>),</a>
-<a class="sourceLine" id="cb5-11" title="11">                           Agent<span class="op">$</span><span class="kw">new</span>(EpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.5</span>), bandit, <span class="st">"Epsilon = 0.5"</span>))</a>
-<a class="sourceLine" id="cb5-12" title="12"></a>
-<a class="sourceLine" id="cb5-13" title="13">simulation         &lt;-<span class="st"> </span>Simulator<span class="op">$</span><span class="kw">new</span>(agents, horizon, simulations)</a>
-<a class="sourceLine" id="cb5-14" title="14">history            &lt;-<span class="st"> </span>simulation<span class="op">$</span><span class="kw"><a href="../reference/Simulator.html">run</a></span>()</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>prob_per_arm       &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.1</span>, <span class="fl">0.1</span>, <span class="fl">0.1</span>, <span class="fl">0.1</span>, <span class="fl">0.9</span>)</span>
+<span id="cb5-2"><a href="#cb5-2"></a>horizon            &lt;-<span class="st"> </span><span class="dv">250</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a>simulations        &lt;-<span class="st"> </span><span class="dv">5000</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a></span>
+<span id="cb5-5"><a href="#cb5-5"></a>bandit             &lt;-<span class="st"> </span>BasicBernoulliBandit<span class="op">$</span><span class="kw">new</span>(prob_per_arm)</span>
+<span id="cb5-6"><a href="#cb5-6"></a></span>
+<span id="cb5-7"><a href="#cb5-7"></a>agents             &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(Agent<span class="op">$</span><span class="kw">new</span>(EpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.1</span>), bandit, <span class="st">"Epsilon = 0.1"</span>),</span>
+<span id="cb5-8"><a href="#cb5-8"></a>                           Agent<span class="op">$</span><span class="kw">new</span>(EpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.2</span>), bandit, <span class="st">"Epsilon = 0.2"</span>),</span>
+<span id="cb5-9"><a href="#cb5-9"></a>                           Agent<span class="op">$</span><span class="kw">new</span>(EpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.3</span>), bandit, <span class="st">"Epsilon = 0.3"</span>),</span>
+<span id="cb5-10"><a href="#cb5-10"></a>                           Agent<span class="op">$</span><span class="kw">new</span>(EpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.4</span>), bandit, <span class="st">"Epsilon = 0.4"</span>),</span>
+<span id="cb5-11"><a href="#cb5-11"></a>                           Agent<span class="op">$</span><span class="kw">new</span>(EpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.5</span>), bandit, <span class="st">"Epsilon = 0.5"</span>))</span>
+<span id="cb5-12"><a href="#cb5-12"></a></span>
+<span id="cb5-13"><a href="#cb5-13"></a>simulation         &lt;-<span class="st"> </span>Simulator<span class="op">$</span><span class="kw">new</span>(agents, horizon, simulations)</span>
+<span id="cb5-14"><a href="#cb5-14"></a>history            &lt;-<span class="st"> </span>simulation<span class="op">$</span><span class="kw"><a href="../reference/Simulator.html">run</a></span>()</span></code></pre></div>
 <div id="figure-4-2--how-often-does-the-epsilon-greedy-algorithm-select-the-best-arm" class="section level3">
 <h3 class="hasAnchor">
 <a href="#figure-4-2--how-often-does-the-epsilon-greedy-algorithm-select-the-best-arm" class="anchor"></a>Figure 4-2. How often does the epsilon greedy algorithm select the best arm?</h3>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"optimal"</span>, <span class="dt">legend_position =</span> <span class="st">"bottomright"</span>, <span class="dt">ylim =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>,<span class="dv">1</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"optimal"</span>, <span class="dt">legend_position =</span> <span class="st">"bottomright"</span>, <span class="dt">ylim =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>,<span class="dv">1</span>))</span></code></pre></div>
 <p><img src="eg_optimal_action.png"></p>
 </div>
 <div id="figure-4-3--how-much-reward-does-the-epsilon-greedy-algorithm-earn-on-average" class="section level3">
 <h3 class="hasAnchor">
 <a href="#figure-4-3--how-much-reward-does-the-epsilon-greedy-algorithm-earn-on-average" class="anchor"></a>Figure 4-3. How much reward does the epsilon greedy algorithm earn on average?</h3>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"average"</span>, <span class="dt">regret =</span> <span class="ot">FALSE</span>, <span class="dt">legend_position =</span> <span class="st">"bottomright"</span>, <span class="dt">ylim =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>,<span class="dv">1</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"average"</span>, <span class="dt">regret =</span> <span class="ot">FALSE</span>, <span class="dt">legend_position =</span> <span class="st">"bottomright"</span>, <span class="dt">ylim =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>,<span class="dv">1</span>))</span></code></pre></div>
 <p><img src="eg_average_reward.png"></p>
 </div>
 <div id="figure-4-4--how-much-reward-has-the-epsilon-greedy-algorithm-earned-by-trial-t" class="section level3">
 <h3 class="hasAnchor">
 <a href="#figure-4-4--how-much-reward-has-the-epsilon-greedy-algorithm-earned-by-trial-t" class="anchor"></a>Figure 4-4. How much reward has the epsilon greedy algorithm earned by trial t?</h3>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"cumulative"</span>, <span class="dt">regret =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"cumulative"</span>, <span class="dt">regret =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
 <p><img src="eg_cumulative_reward.png"></p>
 </div>
 </div>
 <div id="chapter-5---softmax" class="section level2">
 <h2 class="hasAnchor">
 <a href="#chapter-5---softmax" class="anchor"></a>Chapter 5 - Softmax</h2>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1">agents             &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(Agent<span class="op">$</span><span class="kw">new</span>(SoftmaxPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.1</span>), bandit, <span class="st">"Tau = 0.1"</span>),</a>
-<a class="sourceLine" id="cb9-2" title="2">                           Agent<span class="op">$</span><span class="kw">new</span>(SoftmaxPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.2</span>), bandit, <span class="st">"Tau = 0.2"</span>),</a>
-<a class="sourceLine" id="cb9-3" title="3">                           Agent<span class="op">$</span><span class="kw">new</span>(SoftmaxPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.3</span>), bandit, <span class="st">"Tau = 0.3"</span>),</a>
-<a class="sourceLine" id="cb9-4" title="4">                           Agent<span class="op">$</span><span class="kw">new</span>(SoftmaxPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.4</span>), bandit, <span class="st">"Tau = 0.4"</span>),</a>
-<a class="sourceLine" id="cb9-5" title="5">                           Agent<span class="op">$</span><span class="kw">new</span>(SoftmaxPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.5</span>), bandit, <span class="st">"Tau = 0.5"</span>))</a>
-<a class="sourceLine" id="cb9-6" title="6"></a>
-<a class="sourceLine" id="cb9-7" title="7">simulation         &lt;-<span class="st"> </span>Simulator<span class="op">$</span><span class="kw">new</span>(agents, horizon, simulations)</a>
-<a class="sourceLine" id="cb9-8" title="8">history            &lt;-<span class="st"> </span>simulation<span class="op">$</span><span class="kw"><a href="../reference/Simulator.html">run</a></span>()</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>agents             &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(Agent<span class="op">$</span><span class="kw">new</span>(SoftmaxPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.1</span>), bandit, <span class="st">"Tau = 0.1"</span>),</span>
+<span id="cb9-2"><a href="#cb9-2"></a>                           Agent<span class="op">$</span><span class="kw">new</span>(SoftmaxPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.2</span>), bandit, <span class="st">"Tau = 0.2"</span>),</span>
+<span id="cb9-3"><a href="#cb9-3"></a>                           Agent<span class="op">$</span><span class="kw">new</span>(SoftmaxPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.3</span>), bandit, <span class="st">"Tau = 0.3"</span>),</span>
+<span id="cb9-4"><a href="#cb9-4"></a>                           Agent<span class="op">$</span><span class="kw">new</span>(SoftmaxPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.4</span>), bandit, <span class="st">"Tau = 0.4"</span>),</span>
+<span id="cb9-5"><a href="#cb9-5"></a>                           Agent<span class="op">$</span><span class="kw">new</span>(SoftmaxPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.5</span>), bandit, <span class="st">"Tau = 0.5"</span>))</span>
+<span id="cb9-6"><a href="#cb9-6"></a></span>
+<span id="cb9-7"><a href="#cb9-7"></a>simulation         &lt;-<span class="st"> </span>Simulator<span class="op">$</span><span class="kw">new</span>(agents, horizon, simulations)</span>
+<span id="cb9-8"><a href="#cb9-8"></a>history            &lt;-<span class="st"> </span>simulation<span class="op">$</span><span class="kw"><a href="../reference/Simulator.html">run</a></span>()</span></code></pre></div>
 <div id="figure-5-2--how-often-does-the-softmax-algorithm-select-the-best-arm" class="section level3">
 <h3 class="hasAnchor">
 <a href="#figure-5-2--how-often-does-the-softmax-algorithm-select-the-best-arm" class="anchor"></a>Figure 5-2. How often does the softmax algorithm select the best arm?</h3>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"optimal"</span>, <span class="dt">legend_position =</span> <span class="st">"bottomright"</span>, <span class="dt">ylim =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>,<span class="dv">1</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"optimal"</span>, <span class="dt">legend_position =</span> <span class="st">"bottomright"</span>, <span class="dt">ylim =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>,<span class="dv">1</span>))</span></code></pre></div>
 <p><img src="softmax_optimal_action.png"></p>
 </div>
 <div id="figure-5-3--how-much-reward-does-the-softmax-algorithm-earn-on-average" class="section level3">
 <h3 class="hasAnchor">
 <a href="#figure-5-3--how-much-reward-does-the-softmax-algorithm-earn-on-average" class="anchor"></a>Figure 5-3. How much reward does the softmax algorithm earn on average?</h3>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"average"</span>, <span class="dt">regret =</span> <span class="ot">FALSE</span>, <span class="dt">legend_position =</span> <span class="st">"bottomright"</span>, <span class="dt">ylim =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>,<span class="dv">1</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"average"</span>, <span class="dt">regret =</span> <span class="ot">FALSE</span>, <span class="dt">legend_position =</span> <span class="st">"bottomright"</span>, <span class="dt">ylim =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>,<span class="dv">1</span>))</span></code></pre></div>
 <p><img src="softmax_average_reward.png"></p>
 </div>
 <div id="figure-5-4--how-much-reward-has-the-softmax-algorithm-earned-by-trial-t" class="section level3">
 <h3 class="hasAnchor">
 <a href="#figure-5-4--how-much-reward-has-the-softmax-algorithm-earned-by-trial-t" class="anchor"></a>Figure 5-4. How much reward has the softmax algorithm earned by trial t?</h3>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"cumulative"</span>, <span class="dt">regret =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"cumulative"</span>, <span class="dt">regret =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
 <p><img src="softmax_cumulative_reward.png"></p>
 </div>
 </div>
 <div id="chapter-6---ucb" class="section level2">
 <h2 class="hasAnchor">
 <a href="#chapter-6---ucb" class="anchor"></a>Chapter 6 - UCB</h2>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1">agents             &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(Agent<span class="op">$</span><span class="kw">new</span>(SoftmaxPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.1</span>), bandit, <span class="st">"Softmax"</span>),</a>
-<a class="sourceLine" id="cb13-2" title="2">                           Agent<span class="op">$</span><span class="kw">new</span>(EpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.1</span>), bandit, <span class="st">"EpsilonGreedy"</span>),</a>
-<a class="sourceLine" id="cb13-3" title="3">                           Agent<span class="op">$</span><span class="kw">new</span>(UCB1Policy<span class="op">$</span><span class="kw">new</span>(), bandit, <span class="st">"UCB1"</span>))</a>
-<a class="sourceLine" id="cb13-4" title="4"></a>
-<a class="sourceLine" id="cb13-5" title="5">simulation         &lt;-<span class="st"> </span>Simulator<span class="op">$</span><span class="kw">new</span>(agents, horizon, simulations)</a>
-<a class="sourceLine" id="cb13-6" title="6">history            &lt;-<span class="st"> </span>simulation<span class="op">$</span><span class="kw"><a href="../reference/Simulator.html">run</a></span>()</a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>agents             &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(Agent<span class="op">$</span><span class="kw">new</span>(SoftmaxPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.1</span>), bandit, <span class="st">"Softmax"</span>),</span>
+<span id="cb13-2"><a href="#cb13-2"></a>                           Agent<span class="op">$</span><span class="kw">new</span>(EpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.1</span>), bandit, <span class="st">"EpsilonGreedy"</span>),</span>
+<span id="cb13-3"><a href="#cb13-3"></a>                           Agent<span class="op">$</span><span class="kw">new</span>(UCB1Policy<span class="op">$</span><span class="kw">new</span>(), bandit, <span class="st">"UCB1"</span>))</span>
+<span id="cb13-4"><a href="#cb13-4"></a></span>
+<span id="cb13-5"><a href="#cb13-5"></a>simulation         &lt;-<span class="st"> </span>Simulator<span class="op">$</span><span class="kw">new</span>(agents, horizon, simulations)</span>
+<span id="cb13-6"><a href="#cb13-6"></a>history            &lt;-<span class="st"> </span>simulation<span class="op">$</span><span class="kw"><a href="../reference/Simulator.html">run</a></span>()</span></code></pre></div>
 <div id="figure-6-3--how-often-does-the-ucb-algorithm-select-the-best-arm" class="section level3">
 <h3 class="hasAnchor">
 <a href="#figure-6-3--how-often-does-the-ucb-algorithm-select-the-best-arm" class="anchor"></a>Figure 6-3. How often does the UCB algorithm select the best arm?</h3>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"optimal"</span>, <span class="dt">legend_position =</span> <span class="st">"bottomright"</span>, <span class="dt">ylim =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>,<span class="dv">1</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"optimal"</span>, <span class="dt">legend_position =</span> <span class="st">"bottomright"</span>, <span class="dt">ylim =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>,<span class="dv">1</span>))</span></code></pre></div>
 <p><img src="ucb_optimal_action.png"></p>
 </div>
 <div id="figure-6-4--how-much-reward-does-the-ucb-algorithm-earn-on-average" class="section level3">
 <h3 class="hasAnchor">
 <a href="#figure-6-4--how-much-reward-does-the-ucb-algorithm-earn-on-average" class="anchor"></a>Figure 6-4. How much reward does the UCB algorithm earn on average?</h3>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"average"</span>, <span class="dt">regret =</span> <span class="ot">FALSE</span>, <span class="dt">legend_position =</span> <span class="st">"bottomright"</span>, <span class="dt">ylim =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/c">c</a></span>(<span class="dv">0</span>,<span class="dv">1</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"average"</span>, <span class="dt">regret =</span> <span class="ot">FALSE</span>, <span class="dt">legend_position =</span> <span class="st">"bottomright"</span>, <span class="dt">ylim =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>,<span class="dv">1</span>))</span></code></pre></div>
 <p><img src="ucb_average_reward.png"></p>
 </div>
 <div id="figure-6-5--how-much-reward-has-the-ucb-algorithm-earned-by-trial-t" class="section level3">
 <h3 class="hasAnchor">
 <a href="#figure-6-5--how-much-reward-has-the-ucb-algorithm-earned-by-trial-t" class="anchor"></a>Figure 6-5. How much reward has the UCB algorithm earned by trial t?</h3>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"cumulative"</span>, <span class="dt">regret =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"cumulative"</span>, <span class="dt">regret =</span> <span class="ot">FALSE</span>)</span></code></pre></div>
 <p><img src="ucb_cumulative_reward.png"></p>
 </div>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+
         <div id="tocnav">
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
@@ -279,13 +279,15 @@
 </div>
 
 
+
       <footer><div class="copyright">
   <p>Developed by Robin van Emden.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
+
       </footer>
 </div>
 

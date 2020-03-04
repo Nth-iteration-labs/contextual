@@ -7,8 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Demo: Replication Sutton &amp; Barto, Reinforcement Learning: An Introduction, Chapter 2 • contextual</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><!-- docsearch --><script src="../docsearch.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous">
 <link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="Demo: Replication Sutton &amp; Barto, Reinforcement Learning: An Introduction, Chapter 2">
@@ -32,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">contextual</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.8.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.8.3</span>
       </span>
     </div>
 
@@ -79,9 +80,6 @@
       <a href="../articles/offline_depaul_movies.html">Demo: Offline cMAB: CarsKit DePaul Movie Dataset</a>
     </li>
     <li>
-      <a href="../articles/only_pkgdown/faq.html">Development FAQ</a>
-    </li>
-    <li>
       <a href="../articles/replication.html">Offline evaluation: Replication of Li et al 2010</a>
     </li>
     <li>
@@ -110,7 +108,7 @@
   </a>
 </li>
       </ul>
-<form class="navbar-form navbar-right" role="search">
+<form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
 </div>
@@ -124,13 +122,14 @@
 <!--/.navbar -->
 
       
+
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1>Demo: Replication Sutton &amp; Barto, Reinforcement Learning: An Introduction, Chapter 2</h1>
                         <h4 class="author">Robin van Emden</h4>
             
-            <h4 class="date">2019-08-11</h4>
+            <h4 class="date">2020-03-04</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Nth-iteration-labs/contextual/blob/master/vignettes/sutton_barto.Rmd"><code>vignettes/sutton_barto.Rmd</code></a></small>
       <div class="hidden name"><code>sutton_barto.Rmd</code></div>
@@ -145,106 +144,107 @@
 <h1 class="hasAnchor">
 <a href="#the-10-armed-testbed" class="anchor"></a>2.3 The 10-armed Testbed</h1>
 <p>Generate the 10 arms.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"></a>
-<a class="sourceLine" id="cb1-2" title="2"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(contextual)</a>
-<a class="sourceLine" id="cb1-3" title="3"></a>
-<a class="sourceLine" id="cb1-4" title="4"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Random">set.seed</a></span>(<span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb1-5" title="5">mus             &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb1-6" title="6">sigmas          &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="dv">1</span>, <span class="dv">10</span>)</a>
-<a class="sourceLine" id="cb1-7" title="7">bandit          &lt;-<span class="st"> </span>BasicGaussianBandit<span class="op">$</span><span class="kw">new</span>(<span class="dt">mu_per_arm =</span> mus, <span class="dt">sigma_per_arm =</span> sigmas)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(contextual)</span>
+<span id="cb1-3"><a href="#cb1-3"></a></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="kw"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="dv">2</span>)</span>
+<span id="cb1-5"><a href="#cb1-5"></a>mus             &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb1-6"><a href="#cb1-6"></a>sigmas          &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="dv">1</span>, <span class="dv">10</span>)</span>
+<span id="cb1-7"><a href="#cb1-7"></a>bandit          &lt;-<span class="st"> </span>BasicGaussianBandit<span class="op">$</span><span class="kw">new</span>(<span class="dt">mu_per_arm =</span> mus, <span class="dt">sigma_per_arm =</span> sigmas)</span></code></pre></div>
 <div id="the-violin-plot" class="section level2">
 <h2 class="hasAnchor">
 <a href="#the-violin-plot" class="anchor"></a>The violin plot</h2>
 <p>Install ggplot2 and ggnormalviolin libraries to be able to generate Figure 2.1.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"></a>
-<a class="sourceLine" id="cb2-2" title="2"><span class="cf">if</span>(<span class="op">!</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">require</a></span>(ggplot2)) <span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"ggplot2"</span>)</a>
-<a class="sourceLine" id="cb2-3" title="3"><span class="cf">if</span>(<span class="op">!</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">require</a></span>(ggnormalviolin)) devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"wjschne/ggnormalviolin"</span>)</a>
-<a class="sourceLine" id="cb2-4" title="4"></a>
-<a class="sourceLine" id="cb2-5" title="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(ggplot2)</a>
-<a class="sourceLine" id="cb2-6" title="6"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(ggnormalviolin)</a>
-<a class="sourceLine" id="cb2-7" title="7"></a>
-<a class="sourceLine" id="cb2-8" title="8"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/print">print</a></span>(<span class="kw">ggplot</span>(<span class="dt">data =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/data.frame">data.frame</a></span>(<span class="dt">dist_mean =</span> mus, <span class="dt">dist_sd =</span> sigmas, <span class="dt">dist =</span> <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/factor">factor</a></span>((<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>))), </a>
-<a class="sourceLine" id="cb2-9" title="9">             <span class="kw">aes</span>(<span class="dt">x =</span> dist, <span class="dt">mu =</span> dist_mean, <span class="dt">sigma =</span> dist_sd)) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">"Reward distribution"</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb2-10" title="10"><span class="st">             </span><span class="kw">geom_normalviolin</span>() <span class="op">+</span><span class="st"> </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">"none"</span>) <span class="op">+</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb2-11" title="11"><span class="st">             </span><span class="kw">xlab</span>(<span class="st">"Action"</span>) <span class="op">+</span><span class="st"> </span><span class="kw">geom_hline</span>(<span class="kw">aes</span>(<span class="dt">yintercept =</span> <span class="dv">0</span>)))</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a></span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="cf">if</span>(<span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span>(ggplot2)) <span class="kw"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"ggplot2"</span>)</span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="cf">if</span>(<span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html">require</a></span>(ggnormalviolin)) devtools<span class="op">::</span><span class="kw"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span>(<span class="st">"wjschne/ggnormalviolin"</span>)</span>
+<span id="cb2-4"><a href="#cb2-4"></a></span>
+<span id="cb2-5"><a href="#cb2-5"></a><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(ggplot2)</span>
+<span id="cb2-6"><a href="#cb2-6"></a><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(ggnormalviolin)</span>
+<span id="cb2-7"><a href="#cb2-7"></a></span>
+<span id="cb2-8"><a href="#cb2-8"></a><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="kw">ggplot</span>(<span class="dt">data =</span> <span class="kw"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="dt">dist_mean =</span> mus, <span class="dt">dist_sd =</span> sigmas, <span class="dt">dist =</span> <span class="kw"><a href="https://rdrr.io/r/base/factor.html">factor</a></span>((<span class="dv">1</span><span class="op">:</span><span class="dv">10</span>))), </span>
+<span id="cb2-9"><a href="#cb2-9"></a>             <span class="kw">aes</span>(<span class="dt">x =</span> dist, <span class="dt">mu =</span> dist_mean, <span class="dt">sigma =</span> dist_sd)) <span class="op">+</span><span class="st"> </span><span class="kw">ylab</span>(<span class="st">"Reward distribution"</span>) <span class="op">+</span></span>
+<span id="cb2-10"><a href="#cb2-10"></a><span class="st">             </span><span class="kw">geom_normalviolin</span>() <span class="op">+</span><span class="st"> </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">"none"</span>) <span class="op">+</span><span class="st"> </span></span>
+<span id="cb2-11"><a href="#cb2-11"></a><span class="st">             </span><span class="kw">xlab</span>(<span class="st">"Action"</span>) <span class="op">+</span><span class="st"> </span><span class="kw">geom_hline</span>(<span class="kw">aes</span>(<span class="dt">yintercept =</span> <span class="dv">0</span>)))</span></code></pre></div>
 <p><img src="sutton_violin.png"></p>
 </div>
 <div id="the-epsilon-greedy-plot" class="section level2">
 <h2 class="hasAnchor">
 <a href="#the-epsilon-greedy-plot" class="anchor"></a>The epsilon greedy plot</h2>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"></a>
-<a class="sourceLine" id="cb3-2" title="2">agents          &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(Agent<span class="op">$</span><span class="kw">new</span>(EpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="dv">0</span>),    bandit, <span class="st">"e = 0, greedy"</span>),</a>
-<a class="sourceLine" id="cb3-3" title="3">                        Agent<span class="op">$</span><span class="kw">new</span>(EpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.1</span>),  bandit, <span class="st">"e = 0.1"</span>),</a>
-<a class="sourceLine" id="cb3-4" title="4">                        Agent<span class="op">$</span><span class="kw">new</span>(EpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.01</span>), bandit, <span class="st">"e = 0.01"</span>))</a>
-<a class="sourceLine" id="cb3-5" title="5"></a>
-<a class="sourceLine" id="cb3-6" title="6">simulator       &lt;-<span class="st"> </span>Simulator<span class="op">$</span><span class="kw">new</span>(<span class="dt">agents =</span> agents, <span class="dt">horizon =</span> <span class="dv">1000</span>, <span class="dt">simulations =</span> <span class="dv">2000</span>)</a>
-<a class="sourceLine" id="cb3-7" title="7">history         &lt;-<span class="st"> </span>simulator<span class="op">$</span><span class="kw"><a href="../reference/Simulator.html">run</a></span>()</a>
-<a class="sourceLine" id="cb3-8" title="8"></a>
-<a class="sourceLine" id="cb3-9" title="9"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"average"</span>, <span class="dt">regret =</span> <span class="ot">FALSE</span>, <span class="dt">lwd =</span> <span class="dv">1</span>, <span class="dt">legend_position =</span> <span class="st">"bottomright"</span>)</a>
-<a class="sourceLine" id="cb3-10" title="10"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"optimal"</span>, <span class="dt">lwd =</span> <span class="dv">1</span>, <span class="dt">legend_position =</span> <span class="st">"bottomright"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a></span>
+<span id="cb3-2"><a href="#cb3-2"></a>agents          &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(Agent<span class="op">$</span><span class="kw">new</span>(EpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="dv">0</span>),    bandit, <span class="st">"e = 0, greedy"</span>),</span>
+<span id="cb3-3"><a href="#cb3-3"></a>                        Agent<span class="op">$</span><span class="kw">new</span>(EpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.1</span>),  bandit, <span class="st">"e = 0.1"</span>),</span>
+<span id="cb3-4"><a href="#cb3-4"></a>                        Agent<span class="op">$</span><span class="kw">new</span>(EpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.01</span>), bandit, <span class="st">"e = 0.01"</span>))</span>
+<span id="cb3-5"><a href="#cb3-5"></a></span>
+<span id="cb3-6"><a href="#cb3-6"></a>simulator       &lt;-<span class="st"> </span>Simulator<span class="op">$</span><span class="kw">new</span>(<span class="dt">agents =</span> agents, <span class="dt">horizon =</span> <span class="dv">1000</span>, <span class="dt">simulations =</span> <span class="dv">2000</span>)</span>
+<span id="cb3-7"><a href="#cb3-7"></a>history         &lt;-<span class="st"> </span>simulator<span class="op">$</span><span class="kw"><a href="../reference/Simulator.html">run</a></span>()</span>
+<span id="cb3-8"><a href="#cb3-8"></a></span>
+<span id="cb3-9"><a href="#cb3-9"></a><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"average"</span>, <span class="dt">regret =</span> <span class="ot">FALSE</span>, <span class="dt">lwd =</span> <span class="dv">1</span>, <span class="dt">legend_position =</span> <span class="st">"bottomright"</span>)</span>
+<span id="cb3-10"><a href="#cb3-10"></a><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"optimal"</span>, <span class="dt">lwd =</span> <span class="dv">1</span>, <span class="dt">legend_position =</span> <span class="st">"bottomright"</span>)</span></code></pre></div>
 <p><img src="sutton_eg_1.png"><img src="sutton_eg_2.png"></p>
 </div>
 </div>
 <div id="optimistic-values" class="section level1">
 <h1 class="hasAnchor">
 <a href="#optimistic-values" class="anchor"></a>2.6 - Optimistic values</h1>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"></a>
-<a class="sourceLine" id="cb4-2" title="2">agents  &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(Agent<span class="op">$</span><span class="kw">new</span>(EpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="dv">0</span>), bandit, </a>
-<a class="sourceLine" id="cb4-3" title="3">                          <span class="st">"optimistic greedy Q0 = 5, e = 0"</span>),</a>
-<a class="sourceLine" id="cb4-4" title="4">                          </a>
-<a class="sourceLine" id="cb4-5" title="5">                Agent<span class="op">$</span><span class="kw">new</span>(EpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.1</span>), bandit, </a>
-<a class="sourceLine" id="cb4-6" title="6">                          <span class="st">"realistic  greedy Q0 = 0, e = 0.1"</span>))</a>
-<a class="sourceLine" id="cb4-7" title="7"></a>
-<a class="sourceLine" id="cb4-8" title="8">agents[[<span class="dv">1</span>]]<span class="op">$</span>policy<span class="op">$</span>theta<span class="op">$</span>mean &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">as.list</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="dv">5</span>,<span class="dv">10</span>))</a>
-<a class="sourceLine" id="cb4-9" title="9">agents[[<span class="dv">1</span>]]<span class="op">$</span>policy<span class="op">$</span>theta<span class="op">$</span>n    &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">as.list</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="dv">5</span>,<span class="dv">10</span>))</a>
-<a class="sourceLine" id="cb4-10" title="10"></a>
-<a class="sourceLine" id="cb4-11" title="11">simulator       &lt;-<span class="st"> </span>Simulator<span class="op">$</span><span class="kw">new</span>(<span class="dt">agents =</span> agents, <span class="dt">horizon =</span> <span class="dv">1000</span>, <span class="dt">simulations =</span> <span class="dv">2000</span>)</a>
-<a class="sourceLine" id="cb4-12" title="12">history         &lt;-<span class="st"> </span>simulator<span class="op">$</span><span class="kw"><a href="../reference/Simulator.html">run</a></span>()</a>
-<a class="sourceLine" id="cb4-13" title="13"></a>
-<a class="sourceLine" id="cb4-14" title="14"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"optimal"</span>, <span class="dt">lwd =</span> <span class="dv">1</span>, <span class="dt">legend_position =</span> <span class="st">"bottomright"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a></span>
+<span id="cb4-2"><a href="#cb4-2"></a>agents  &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(Agent<span class="op">$</span><span class="kw">new</span>(EpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="dv">0</span>), bandit, </span>
+<span id="cb4-3"><a href="#cb4-3"></a>                          <span class="st">"optimistic greedy Q0 = 5, e = 0"</span>),</span>
+<span id="cb4-4"><a href="#cb4-4"></a>                          </span>
+<span id="cb4-5"><a href="#cb4-5"></a>                Agent<span class="op">$</span><span class="kw">new</span>(EpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.1</span>), bandit, </span>
+<span id="cb4-6"><a href="#cb4-6"></a>                          <span class="st">"realistic  greedy Q0 = 0, e = 0.1"</span>))</span>
+<span id="cb4-7"><a href="#cb4-7"></a></span>
+<span id="cb4-8"><a href="#cb4-8"></a>agents[[<span class="dv">1</span>]]<span class="op">$</span>policy<span class="op">$</span>theta<span class="op">$</span>mean &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">as.list</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="dv">5</span>,<span class="dv">10</span>))</span>
+<span id="cb4-9"><a href="#cb4-9"></a>agents[[<span class="dv">1</span>]]<span class="op">$</span>policy<span class="op">$</span>theta<span class="op">$</span>n    &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">as.list</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="dv">5</span>,<span class="dv">10</span>))</span>
+<span id="cb4-10"><a href="#cb4-10"></a></span>
+<span id="cb4-11"><a href="#cb4-11"></a>simulator       &lt;-<span class="st"> </span>Simulator<span class="op">$</span><span class="kw">new</span>(<span class="dt">agents =</span> agents, <span class="dt">horizon =</span> <span class="dv">1000</span>, <span class="dt">simulations =</span> <span class="dv">2000</span>)</span>
+<span id="cb4-12"><a href="#cb4-12"></a>history         &lt;-<span class="st"> </span>simulator<span class="op">$</span><span class="kw"><a href="../reference/Simulator.html">run</a></span>()</span>
+<span id="cb4-13"><a href="#cb4-13"></a></span>
+<span id="cb4-14"><a href="#cb4-14"></a><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"optimal"</span>, <span class="dt">lwd =</span> <span class="dv">1</span>, <span class="dt">legend_position =</span> <span class="st">"bottomright"</span>)</span></code></pre></div>
 <p><img src="sutton_optimistic.png"></p>
 </div>
 <div id="upper-confidence-bound-action-selection" class="section level1">
 <h1 class="hasAnchor">
 <a href="#upper-confidence-bound-action-selection" class="anchor"></a>2.7 - Upper-Confidence-Bound Action Selection</h1>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"></a>
-<a class="sourceLine" id="cb5-2" title="2">agents          &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(Agent<span class="op">$</span><span class="kw">new</span>(EpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.1</span>),  bandit, <span class="st">"EGreedy"</span>),</a>
-<a class="sourceLine" id="cb5-3" title="3">                        Agent<span class="op">$</span><span class="kw">new</span>(UCB1Policy<span class="op">$</span><span class="kw">new</span>(),   bandit,            <span class="st">"UCB1"</span>))</a>
-<a class="sourceLine" id="cb5-4" title="4"></a>
-<a class="sourceLine" id="cb5-5" title="5">simulator       &lt;-<span class="st"> </span>Simulator<span class="op">$</span><span class="kw">new</span>(<span class="dt">agents =</span> agents, <span class="dt">horizon =</span> <span class="dv">1000</span>, <span class="dt">simulations =</span> <span class="dv">2000</span>)</a>
-<a class="sourceLine" id="cb5-6" title="6">history         &lt;-<span class="st"> </span>simulator<span class="op">$</span><span class="kw"><a href="../reference/Simulator.html">run</a></span>()</a>
-<a class="sourceLine" id="cb5-7" title="7"></a>
-<a class="sourceLine" id="cb5-8" title="8"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"average"</span>, <span class="dt">regret =</span> <span class="ot">FALSE</span>, <span class="dt">lwd =</span> <span class="dv">1</span>, <span class="dt">legend_position =</span> <span class="st">"bottomright"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a></span>
+<span id="cb5-2"><a href="#cb5-2"></a>agents          &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(Agent<span class="op">$</span><span class="kw">new</span>(EpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.1</span>),  bandit, <span class="st">"EGreedy"</span>),</span>
+<span id="cb5-3"><a href="#cb5-3"></a>                        Agent<span class="op">$</span><span class="kw">new</span>(UCB1Policy<span class="op">$</span><span class="kw">new</span>(),   bandit,            <span class="st">"UCB1"</span>))</span>
+<span id="cb5-4"><a href="#cb5-4"></a></span>
+<span id="cb5-5"><a href="#cb5-5"></a>simulator       &lt;-<span class="st"> </span>Simulator<span class="op">$</span><span class="kw">new</span>(<span class="dt">agents =</span> agents, <span class="dt">horizon =</span> <span class="dv">1000</span>, <span class="dt">simulations =</span> <span class="dv">2000</span>)</span>
+<span id="cb5-6"><a href="#cb5-6"></a>history         &lt;-<span class="st"> </span>simulator<span class="op">$</span><span class="kw"><a href="../reference/Simulator.html">run</a></span>()</span>
+<span id="cb5-7"><a href="#cb5-7"></a></span>
+<span id="cb5-8"><a href="#cb5-8"></a><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"average"</span>, <span class="dt">regret =</span> <span class="ot">FALSE</span>, <span class="dt">lwd =</span> <span class="dv">1</span>, <span class="dt">legend_position =</span> <span class="st">"bottomright"</span>)</span></code></pre></div>
 <p><img src="sutton_ucb.png"></p>
 </div>
 <div id="gradient-bandit-algorithms" class="section level1">
 <h1 class="hasAnchor">
 <a href="#gradient-bandit-algorithms" class="anchor"></a>2.8 - Gradient Bandit Algorithms</h1>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/Random">set.seed</a></span>(<span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb6-2" title="2">mus             &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/stats/topics/Normal">rnorm</a></span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb6-3" title="3">sigmas          &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/rep">rep</a></span>(<span class="dv">1</span>, <span class="dv">10</span>)</a>
-<a class="sourceLine" id="cb6-4" title="4">bandit          &lt;-<span class="st"> </span>BasicGaussianBandit<span class="op">$</span><span class="kw">new</span>(<span class="dt">mu_per_arm =</span> mus, <span class="dt">sigma_per_arm =</span> sigmas,</a>
-<a class="sourceLine" id="cb6-5" title="5">                                           <span class="dt">mu_offset =</span> <span class="dv">4</span>)</a>
-<a class="sourceLine" id="cb6-6" title="6"></a>
-<a class="sourceLine" id="cb6-7" title="7">agents          &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(Agent<span class="op">$</span><span class="kw">new</span>(GradientPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.1</span>, <span class="ot">TRUE</span>),  bandit,</a>
-<a class="sourceLine" id="cb6-8" title="8">                                  <span class="st">"alpha = 0.1, with baseline"</span>),</a>
-<a class="sourceLine" id="cb6-9" title="9">                        Agent<span class="op">$</span><span class="kw">new</span>(GradientPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.1</span>, <span class="ot">FALSE</span>), bandit,</a>
-<a class="sourceLine" id="cb6-10" title="10">                                  <span class="st">"alpha = 0.1, without baseline"</span>),</a>
-<a class="sourceLine" id="cb6-11" title="11">                        Agent<span class="op">$</span><span class="kw">new</span>(GradientPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.4</span>, <span class="ot">TRUE</span>),  bandit,</a>
-<a class="sourceLine" id="cb6-12" title="12">                                  <span class="st">"alpha = 0.4, with baseline"</span>),</a>
-<a class="sourceLine" id="cb6-13" title="13">                        Agent<span class="op">$</span><span class="kw">new</span>(GradientPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.4</span>, <span class="ot">FALSE</span>), bandit,</a>
-<a class="sourceLine" id="cb6-14" title="14">                                  <span class="st">"alpha = 0.4, without baseline"</span>))</a>
-<a class="sourceLine" id="cb6-15" title="15"></a>
-<a class="sourceLine" id="cb6-16" title="16">simulator       &lt;-<span class="st"> </span>Simulator<span class="op">$</span><span class="kw">new</span>(<span class="dt">agents =</span> agents, <span class="dt">horizon =</span> <span class="dv">1000</span>, <span class="dt">simulations =</span> <span class="dv">2000</span>)</a>
-<a class="sourceLine" id="cb6-17" title="17">history         &lt;-<span class="st"> </span>simulator<span class="op">$</span><span class="kw"><a href="../reference/Simulator.html">run</a></span>()</a>
-<a class="sourceLine" id="cb6-18" title="18"></a>
-<a class="sourceLine" id="cb6-19" title="19"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"optimal"</span>, <span class="dt">lwd =</span> <span class="dv">1</span>, <span class="dt">legend_position =</span> <span class="st">"bottomright"</span>,</a>
-<a class="sourceLine" id="cb6-20" title="20">     <span class="dt">color_step =</span> <span class="dv">2</span>, <span class="dt">lty_step =</span> <span class="dv">2</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="dv">2</span>)</span>
+<span id="cb6-2"><a href="#cb6-2"></a>mus             &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(<span class="dv">10</span>, <span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb6-3"><a href="#cb6-3"></a>sigmas          &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="dv">1</span>, <span class="dv">10</span>)</span>
+<span id="cb6-4"><a href="#cb6-4"></a>bandit          &lt;-<span class="st"> </span>BasicGaussianBandit<span class="op">$</span><span class="kw">new</span>(<span class="dt">mu_per_arm =</span> mus, <span class="dt">sigma_per_arm =</span> sigmas,</span>
+<span id="cb6-5"><a href="#cb6-5"></a>                                           <span class="dt">mu_offset =</span> <span class="dv">4</span>)</span>
+<span id="cb6-6"><a href="#cb6-6"></a></span>
+<span id="cb6-7"><a href="#cb6-7"></a>agents          &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(Agent<span class="op">$</span><span class="kw">new</span>(GradientPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.1</span>, <span class="ot">TRUE</span>),  bandit,</span>
+<span id="cb6-8"><a href="#cb6-8"></a>                                  <span class="st">"alpha = 0.1, with baseline"</span>),</span>
+<span id="cb6-9"><a href="#cb6-9"></a>                        Agent<span class="op">$</span><span class="kw">new</span>(GradientPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.1</span>, <span class="ot">FALSE</span>), bandit,</span>
+<span id="cb6-10"><a href="#cb6-10"></a>                                  <span class="st">"alpha = 0.1, without baseline"</span>),</span>
+<span id="cb6-11"><a href="#cb6-11"></a>                        Agent<span class="op">$</span><span class="kw">new</span>(GradientPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.4</span>, <span class="ot">TRUE</span>),  bandit,</span>
+<span id="cb6-12"><a href="#cb6-12"></a>                                  <span class="st">"alpha = 0.4, with baseline"</span>),</span>
+<span id="cb6-13"><a href="#cb6-13"></a>                        Agent<span class="op">$</span><span class="kw">new</span>(GradientPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.4</span>, <span class="ot">FALSE</span>), bandit,</span>
+<span id="cb6-14"><a href="#cb6-14"></a>                                  <span class="st">"alpha = 0.4, without baseline"</span>))</span>
+<span id="cb6-15"><a href="#cb6-15"></a></span>
+<span id="cb6-16"><a href="#cb6-16"></a>simulator       &lt;-<span class="st"> </span>Simulator<span class="op">$</span><span class="kw">new</span>(<span class="dt">agents =</span> agents, <span class="dt">horizon =</span> <span class="dv">1000</span>, <span class="dt">simulations =</span> <span class="dv">2000</span>)</span>
+<span id="cb6-17"><a href="#cb6-17"></a>history         &lt;-<span class="st"> </span>simulator<span class="op">$</span><span class="kw"><a href="../reference/Simulator.html">run</a></span>()</span>
+<span id="cb6-18"><a href="#cb6-18"></a></span>
+<span id="cb6-19"><a href="#cb6-19"></a><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"optimal"</span>, <span class="dt">lwd =</span> <span class="dv">1</span>, <span class="dt">legend_position =</span> <span class="st">"bottomright"</span>,</span>
+<span id="cb6-20"><a href="#cb6-20"></a>     <span class="dt">color_step =</span> <span class="dv">2</span>, <span class="dt">lty_step =</span> <span class="dv">2</span>)</span></code></pre></div>
 <p><img src="sutton_gradient.png"></p>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+
         <div id="tocnav">
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
@@ -265,13 +265,15 @@
 </div>
 
 
+
       <footer><div class="copyright">
   <p>Developed by Robin van Emden.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
+
       </footer>
 </div>
 

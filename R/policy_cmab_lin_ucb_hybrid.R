@@ -115,6 +115,10 @@ LinUCBHybridPolicy <- R6::R6Class(
 
 #' Policy: LinUCB with hybrid linear models
 #'
+#' LinUCBHybridPolicy is an R implementation of
+#' "Algorithm 2 LinUCB" from Li (2010) "A contextual-bandit approach to
+#' personalized news article recommendation.".
+#'
 #' Each time step t, \code{LinUCBHybridOptimizedPolicy} runs a linear regression per arm that produces
 #' coefficients for each context feature \code{d}. Next, it observes the new context, and generates a
 #' predicted payoff or reward together with a confidence interval for each available arm. It then proceeds

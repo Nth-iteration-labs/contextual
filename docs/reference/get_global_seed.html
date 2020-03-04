@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>One Hot Encoding of data.table columns — one_hot • contextual</title>
+<title>Lookup .Random.seed in global environment — get_global_seed • contextual</title>
 
 
 <!-- jquery -->
@@ -41,8 +41,8 @@
 
 
 
-<meta property="og:title" content="One Hot Encoding of data.table columns — one_hot" />
-<meta property="og:description" content="One-Hot-Encode unordered factor columns of a data.table mltools. From ben519's &quot;mltools&quot; package." />
+<meta property="og:title" content="Lookup .Random.seed in global environment — get_global_seed" />
+<meta property="og:description" content="Lookup .Random.seed in global environment" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -168,98 +168,27 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>One Hot Encoding of data.table columns</h1>
+    <h1>Lookup .Random.seed in global environment</h1>
     <small class="dont-index">Source: <a href='https://github.com/Nth-iteration-labs/contextual/blob/master/R/functions_utility.R'><code>R/functions_utility.R</code></a></small>
-    <div class="hidden name"><code>one_hot.Rd</code></div>
+    <div class="hidden name"><code>get_global_seed.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>One-Hot-Encode unordered factor columns of a data.table mltools. From ben519's "mltools" package.</p>
+    <p>Lookup .Random.seed in global environment</p>
     </div>
 
-    <pre class="usage"><span class='fu'>one_hot</span>(
-  <span class='no'>dt</span>,
-  <span class='kw'>cols</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
-  <span class='kw'>sparsifyNAs</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>naCols</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>dropCols</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>dropUnusedLevels</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
-)</pre>
+    <pre class="usage"><span class='fu'>get_global_seed</span>()</pre>
 
-    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
-    <table class="ref-arguments">
-    <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>dt</th>
-      <td><p>A data.table</p></td>
-    </tr>
-    <tr>
-      <th>cols</th>
-      <td><p>Which column(s) should be one-hot-encoded? DEFAULT = "auto" encodes all unordered
-factor columns.</p></td>
-    </tr>
-    <tr>
-      <th>sparsifyNAs</th>
-      <td><p>Should NAs be converted to 0s?</p></td>
-    </tr>
-    <tr>
-      <th>naCols</th>
-      <td><p>Should columns be generated to indicate the present of NAs? Will only apply to factor
-columns with at least one NA</p></td>
-    </tr>
-    <tr>
-      <th>dropCols</th>
-      <td><p>Should the resulting data.table exclude the original columns which are one-hot-encoded?</p></td>
-    </tr>
-    <tr>
-      <th>dropUnusedLevels</th>
-      <td><p>Should columns of all 0s be generated for unused factor levels?</p></td>
-    </tr>
-    </table>
 
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>One-hot-encoding converts an unordered categorical vector (i.e. a factor) to multiple binarized vectors
-where each binary vector of
-1s and 0s indicates the presence of a class (i.e. level) of the of the original vector.</p>
+    <p>an integer vector, containing the random number generator (RNG) state for random number generation</p>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>data.table</span>)
-
-<span class='no'>dt</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://Rdatatable.gitlab.io/data.table/reference/data.table.html'>data.table</a></span>(
-  <span class='kw'>ID</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>4</span>,
-  <span class='kw'>color</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/factor.html'>factor</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"red"</span>, <span class='fl'>NA</span>, <span class='st'>"blue"</span>, <span class='st'>"blue"</span>), <span class='kw'>levels</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"blue"</span>, <span class='st'>"green"</span>, <span class='st'>"red"</span>))
-)
-
-<span class='fu'>one_hot</span>(<span class='no'>dt</span>)</div><div class='output co'>#&gt;    ID color_blue color_green color_red
-#&gt; 1:  1          0           0         1
-#&gt; 2:  2         NA          NA        NA
-#&gt; 3:  3          1           0         0
-#&gt; 4:  4          1           0         0</div><div class='input'><span class='fu'>one_hot</span>(<span class='no'>dt</span>, <span class='kw'>sparsifyNAs</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt;    ID color_blue color_green color_red
-#&gt; 1:  1          0           0         1
-#&gt; 2:  2          0           0         0
-#&gt; 3:  3          1           0         0
-#&gt; 4:  4          1           0         0</div><div class='input'><span class='fu'>one_hot</span>(<span class='no'>dt</span>, <span class='kw'>naCols</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt;    ID color_NA color_blue color_green color_red
-#&gt; 1:  1        0          0           0         1
-#&gt; 2:  2        1         NA          NA        NA
-#&gt; 3:  3        0          1           0         0
-#&gt; 4:  4        0          1           0         0</div><div class='input'><span class='fu'>one_hot</span>(<span class='no'>dt</span>, <span class='kw'>dropCols</span><span class='kw'>=</span><span class='fl'>FALSE</span>)</div><div class='output co'>#&gt;    ID color color_blue color_green color_red
-#&gt; 1:  1   red          0           0         1
-#&gt; 2:  2  &lt;NA&gt;         NA          NA        NA
-#&gt; 3:  3  blue          1           0         0
-#&gt; 4:  4  blue          1           0         0</div><div class='input'><span class='fu'>one_hot</span>(<span class='no'>dt</span>, <span class='kw'>dropUnusedLevels</span><span class='kw'>=</span><span class='fl'>TRUE</span>)</div><div class='output co'>#&gt;    ID color_blue color_red
-#&gt; 1:  1          0         1
-#&gt; 2:  2         NA        NA
-#&gt; 3:  3          1         0
-#&gt; 4:  4          1         0</div><div class='input'>
-</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#details">Details</a></li>
-      <li><a href="#examples">Examples</a></li>
+      <li><a href="#value">Value</a></li>
     </ul>
 
   </div>

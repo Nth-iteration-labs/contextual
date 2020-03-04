@@ -7,8 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Demo: Basic Synthetic cMAB Policies • contextual</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><!-- docsearch --><script src="../docsearch.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous">
 <link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="Demo: Basic Synthetic cMAB Policies">
@@ -32,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">contextual</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.8.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.8.3</span>
       </span>
     </div>
 
@@ -79,9 +80,6 @@
       <a href="../articles/offline_depaul_movies.html">Demo: Offline cMAB: CarsKit DePaul Movie Dataset</a>
     </li>
     <li>
-      <a href="../articles/only_pkgdown/faq.html">Development FAQ</a>
-    </li>
-    <li>
       <a href="../articles/replication.html">Offline evaluation: Replication of Li et al 2010</a>
     </li>
     <li>
@@ -110,7 +108,7 @@
   </a>
 </li>
       </ul>
-<form class="navbar-form navbar-right" role="search">
+<form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
 </div>
@@ -124,13 +122,14 @@
 <!--/.navbar -->
 
       
+
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1>Demo: Basic Synthetic cMAB Policies</h1>
                         <h4 class="author">Robin van Emden</h4>
             
-            <h4 class="date">2019-08-11</h4>
+            <h4 class="date">2020-03-04</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Nth-iteration-labs/contextual/blob/master/vignettes/cmabs.Rmd"><code>vignettes/cmabs.Rmd</code></a></small>
       <div class="hidden name"><code>cmabs.Rmd</code></div>
@@ -139,32 +138,34 @@
 
     
     
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(contextual)</a>
-<a class="sourceLine" id="cb1-2" title="2"></a>
-<a class="sourceLine" id="cb1-3" title="3">horizon       &lt;-<span class="st"> </span>100L</a>
-<a class="sourceLine" id="cb1-4" title="4">simulations   &lt;-<span class="st"> </span>100L</a>
-<a class="sourceLine" id="cb1-5" title="5"></a>
-<a class="sourceLine" id="cb1-6" title="6">bandit        &lt;-<span class="st"> </span>ContextualLinearBandit<span class="op">$</span><span class="kw">new</span>(<span class="dt">k =</span> <span class="dv">4</span>, <span class="dt">d =</span> <span class="dv">3</span>, <span class="dt">sigma =</span> <span class="fl">0.3</span>)</a>
-<a class="sourceLine" id="cb1-7" title="7"></a>
-<a class="sourceLine" id="cb1-8" title="8"><span class="co"># Linear CMAB policies comparison</span></a>
-<a class="sourceLine" id="cb1-9" title="9"></a>
-<a class="sourceLine" id="cb1-10" title="10">agents &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(Agent<span class="op">$</span><span class="kw">new</span>(EpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.1</span>), bandit, <span class="st">"EGreedy"</span>),</a>
-<a class="sourceLine" id="cb1-11" title="11">               Agent<span class="op">$</span><span class="kw">new</span>(ContextualEpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.1</span>), bandit, <span class="st">"cEGreedy"</span>),</a>
-<a class="sourceLine" id="cb1-12" title="12">               Agent<span class="op">$</span><span class="kw">new</span>(ContextualLinTSPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.1</span>), bandit, <span class="st">"LinTS"</span>),</a>
-<a class="sourceLine" id="cb1-13" title="13">               Agent<span class="op">$</span><span class="kw">new</span>(LinUCBDisjointOptimizedPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.6</span>), bandit, <span class="st">"LinUCB"</span>))</a>
-<a class="sourceLine" id="cb1-14" title="14"></a>
-<a class="sourceLine" id="cb1-15" title="15">simulation     &lt;-<span class="st"> </span>Simulator<span class="op">$</span><span class="kw">new</span>(agents, horizon, simulations, <span class="dt">do_parallel =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb1-16" title="16"></a>
-<a class="sourceLine" id="cb1-17" title="17">history        &lt;-<span class="st"> </span>simulation<span class="op">$</span><span class="kw"><a href="../reference/Simulator.html">run</a></span>()</a>
-<a class="sourceLine" id="cb1-18" title="18"></a>
-<a class="sourceLine" id="cb1-19" title="19"><span class="kw"><a href="https://www.rdocumentation.org/packages/graphics/topics/plot">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"cumulative"</span>, <span class="dt">rate =</span> <span class="ot">FALSE</span>, <span class="dt">legend_position =</span> <span class="st">"topleft"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(contextual)</span>
+<span id="cb1-2"><a href="#cb1-2"></a></span>
+<span id="cb1-3"><a href="#cb1-3"></a>horizon       &lt;-<span class="st"> </span>100L</span>
+<span id="cb1-4"><a href="#cb1-4"></a>simulations   &lt;-<span class="st"> </span>100L</span>
+<span id="cb1-5"><a href="#cb1-5"></a></span>
+<span id="cb1-6"><a href="#cb1-6"></a>bandit        &lt;-<span class="st"> </span>ContextualLinearBandit<span class="op">$</span><span class="kw">new</span>(<span class="dt">k =</span> <span class="dv">4</span>, <span class="dt">d =</span> <span class="dv">3</span>, <span class="dt">sigma =</span> <span class="fl">0.3</span>)</span>
+<span id="cb1-7"><a href="#cb1-7"></a></span>
+<span id="cb1-8"><a href="#cb1-8"></a><span class="co"># Linear CMAB policies comparison</span></span>
+<span id="cb1-9"><a href="#cb1-9"></a></span>
+<span id="cb1-10"><a href="#cb1-10"></a>agents &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(Agent<span class="op">$</span><span class="kw">new</span>(EpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.1</span>), bandit, <span class="st">"EGreedy"</span>),</span>
+<span id="cb1-11"><a href="#cb1-11"></a>               Agent<span class="op">$</span><span class="kw">new</span>(ContextualEpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.1</span>), bandit, <span class="st">"cEGreedy"</span>),</span>
+<span id="cb1-12"><a href="#cb1-12"></a>               Agent<span class="op">$</span><span class="kw">new</span>(ContextualLinTSPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.1</span>), bandit, <span class="st">"LinTS"</span>),</span>
+<span id="cb1-13"><a href="#cb1-13"></a>               Agent<span class="op">$</span><span class="kw">new</span>(LinUCBDisjointOptimizedPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.6</span>), bandit, <span class="st">"LinUCB"</span>))</span>
+<span id="cb1-14"><a href="#cb1-14"></a></span>
+<span id="cb1-15"><a href="#cb1-15"></a>simulation     &lt;-<span class="st"> </span>Simulator<span class="op">$</span><span class="kw">new</span>(agents, horizon, simulations, <span class="dt">do_parallel =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb1-16"><a href="#cb1-16"></a></span>
+<span id="cb1-17"><a href="#cb1-17"></a>history        &lt;-<span class="st"> </span>simulation<span class="op">$</span><span class="kw"><a href="../reference/Simulator.html">run</a></span>()</span>
+<span id="cb1-18"><a href="#cb1-18"></a></span>
+<span id="cb1-19"><a href="#cb1-19"></a><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"cumulative"</span>, <span class="dt">rate =</span> <span class="ot">FALSE</span>, <span class="dt">legend_position =</span> <span class="st">"topleft"</span>)</span></code></pre></div>
 <p><img src="cmabs.png"></p>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+
       </div>
 
 </div>
+
 
 
       <footer><div class="copyright">
@@ -172,8 +173,9 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
 </div>
+
       </footer>
 </div>
 
