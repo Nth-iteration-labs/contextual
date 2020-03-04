@@ -51,7 +51,7 @@ bandit <- ContextualBernoulliBandit$new(weights = click_probabilities)
 # Initialize an EpsilonGreedyPolicy with a 40% exploiration rate.
 eg_policy <- EpsilonGreedyPolicy$new(epsilon = 0.4)
 # Initialize an EpsilonFirstPolicy with a 100 step exploration period.
-ef_policy <- EpsilonFirstPolicy$new(first = 100)
+ef_policy <- EpsilonFirstPolicy$new(time_steps = 100)
 # Initialize two Agents, binding each policy to a bandit.
 ef_agent <- Agent$new(ef_policy, bandit)
 eg_agent <- Agent$new(eg_policy, bandit)

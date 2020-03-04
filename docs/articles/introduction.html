@@ -169,7 +169,7 @@
 <span id="cb1-11"><a href="#cb1-11"></a><span class="co"># Initialize an EpsilonGreedyPolicy with a 40% exploiration rate.</span></span>
 <span id="cb1-12"><a href="#cb1-12"></a>eg_policy &lt;-<span class="st"> </span>EpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="dt">epsilon =</span> <span class="fl">0.4</span>)</span>
 <span id="cb1-13"><a href="#cb1-13"></a><span class="co"># Initialize an EpsilonFirstPolicy with a 100 step exploration period.</span></span>
-<span id="cb1-14"><a href="#cb1-14"></a>ef_policy &lt;-<span class="st"> </span>EpsilonFirstPolicy<span class="op">$</span><span class="kw">new</span>(<span class="dt">first =</span> <span class="dv">100</span>)</span>
+<span id="cb1-14"><a href="#cb1-14"></a>ef_policy &lt;-<span class="st"> </span>EpsilonFirstPolicy<span class="op">$</span><span class="kw">new</span>(<span class="dt">time_steps =</span> <span class="dv">100</span>)</span>
 <span id="cb1-15"><a href="#cb1-15"></a><span class="co"># Initialize two Agents, binding each policy to a bandit.</span></span>
 <span id="cb1-16"><a href="#cb1-16"></a>ef_agent &lt;-<span class="st"> </span>Agent<span class="op">$</span><span class="kw">new</span>(ef_policy, bandit)</span>
 <span id="cb1-17"><a href="#cb1-17"></a>eg_agent &lt;-<span class="st"> </span>Agent<span class="op">$</span><span class="kw">new</span>(eg_policy, bandit)</span>

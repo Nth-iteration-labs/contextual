@@ -140,6 +140,7 @@ OfflineDirectMethodBandit <- R6::R6Class(
 #' Policy subclass examples: \code{\link{EpsilonGreedyPolicy}}, \code{\link{ContextualLinTSPolicy}}
 #'
 #' @examples
+#'
 #' \dontrun{
 #'
 #' library(contextual)
@@ -166,6 +167,7 @@ OfflineDirectMethodBandit <- R6::R6Class(
 #' model_f          <- function(arm) glm(f, data=data[trt==arm],
 #'                                          family=binomial(link="logit"),
 #'                                          y=FALSE, model=FALSE)
+#'
 #' arms             <- sort(unique(data$trt))
 #' model_arms       <- lapply(arms, FUN = model_f)
 #'
@@ -198,7 +200,7 @@ OfflineDirectMethodBandit <- R6::R6Class(
 #'
 #' # plot the results
 #' plot(sim, type = "cumulative", regret = FALSE, rate = TRUE, legend_position = "bottomright")
-#' plot(sim, type = "arms", limit_agents = "LinUCB", legend_position = "topright")b
+#' plot(sim, type = "arms", limit_agents = "LinUCB", legend_position = "topright")
 #'
 #' }
 NULL

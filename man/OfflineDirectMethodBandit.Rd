@@ -98,6 +98,7 @@ individual simulation when self$randomize is TRUE (default)
 }
 
 \examples{
+
 \dontrun{
 
 library(contextual)
@@ -124,6 +125,7 @@ f                <- alive ~ age + male + risk + severity
 model_f          <- function(arm) glm(f, data=data[trt==arm],
                                          family=binomial(link="logit"),
                                          y=FALSE, model=FALSE)
+
 arms             <- sort(unique(data$trt))
 model_arms       <- lapply(arms, FUN = model_f)
 
@@ -156,7 +158,7 @@ sim  <- simulation$run()
 
 # plot the results
 plot(sim, type = "cumulative", regret = FALSE, rate = TRUE, legend_position = "bottomright")
-plot(sim, type = "arms", limit_agents = "LinUCB", legend_position = "topright")b
+plot(sim, type = "arms", limit_agents = "LinUCB", legend_position = "topright")
 
 }
 }

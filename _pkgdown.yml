@@ -74,6 +74,9 @@ reference:
   - title: "Utility functions"
     desc: "Contextual utility functions."
     contents:
+      - data_table_factors_to_numeric
+      - get_global_seed
+      - set_global_seed
       - get_arm_context
       - get_full_context
       - dec<-
