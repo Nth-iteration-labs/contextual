@@ -180,7 +180,7 @@ from the latter to obtain the ```regret```.
 For example, see ```BasicBernoulliBandit```'s implementation:
 
 ```r
- #' @export
+#' @export
 BasicBernoulliBandit <- R6::R6Class(
   inherit = Bandit,
   class = FALSE,

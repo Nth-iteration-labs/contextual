@@ -87,9 +87,10 @@ which_max_list <- function(x, equal_is_random = TRUE) {
 #'
 #' @export
 which_max_tied <- function(x, equal_is_random = TRUE) {
+  x <- unlist(x, FALSE, FALSE)
   x <- seq_along(x)[x == max(x)]
   if (length(x) > 1L && equal_is_random)  {
-      return(sample(x, 1L, replace = TRUE))
+    return(sample(x, 1L, replace = TRUE))
   } else {
     return(x[1])
   }

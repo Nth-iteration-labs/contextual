@@ -1,4 +1,4 @@
- #' @export
+#' @export
 BasicBernoulliBandit <- R6::R6Class(
   inherit = Bandit,
   class = FALSE,

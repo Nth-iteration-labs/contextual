@@ -1,4 +1,4 @@
- #' @export
+#' @export
 ContextualBinaryBandit <- R6::R6Class(
   inherit = Bandit,
   class = FALSE,
