@@ -3,7 +3,7 @@ contextual 0.9.8.3
 
 * Tested and confirmed to be R 4.0.0 proof.
 * Minor documentation updates.
-* Now correctly restores global seed on completing a simulation (thanks for reporting, pstansell!)
+* Now correctly restores global seed on completing a simulation (thanks, pstansell!)
 
 
 contextual 0.9.8.2

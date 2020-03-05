@@ -1,4 +1,6 @@
-Minor refactoring of private functions.
+* Fix setting global random seed independent of code.
+* R-devel fix.
+* Minor documentation fixes.
 
 ## Test environments
 
