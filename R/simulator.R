@@ -116,8 +116,16 @@ Simulator <- R6::R6Class(
       if (self$do_parallel) {
         self$register_parallel_backend()
         `%fun%` <- foreach::`%dopar%`
+
         # If Microsoft R, set MKL threads to 1
-        if ("RevoUtilsMath" %in% rownames(installed.packages())) {
+
+        # Due to an unresolved incompatibility between MRAN and RStudio:
+        # https://github.com/rstudio/rstudio/issues/5933
+        # https://social.technet.microsoft.com/Forums/en-US/2791e896-c284-4330-88f2-2dcd4acea074
+        # setting MKL threads to 1 is disabled when running from RStudio.
+
+        isRStudio <- Sys.getenv("RSTUDIO") == "1"
+        if (!isRStudio && "RevoUtilsMath" %in% rownames(installed.packages())) {
           RevoUtilsMath::setMKLthreads(1)
         }
       }
