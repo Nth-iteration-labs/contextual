@@ -2,7 +2,7 @@ library(contextual)
 library(here)
 library(rstan)
 
-setwd(here("demo","replication_kruijswijk_2018"))
+#setwd(here("demo","replication_kruijswijk_2018"))
 
 source("./bandit_bernoulli.R")
 source("./policy_pooled_egreedy.R")
@@ -40,7 +40,7 @@ model           <- rstan::stan_model(file = "beta_binom_hier_model.stan",
 
 ##################### Simulate ###################
 
-# total number of evaluations: 9 x 6 x 2 x 2 = 216
+# total number of evaluations: 11 x 4 x 3 x 2 = 264
 
 ptm             <- proc.time()
 

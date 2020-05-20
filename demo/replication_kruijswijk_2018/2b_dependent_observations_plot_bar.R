@@ -7,7 +7,7 @@ setwd(here("demo","replication_kruijswijk_2018"))
 ### Settings
 
 horizon         <- 10000
-simulations     <- 100
+simulations     <- 1000
 
 subjects        <- list(50,100,500,1000)
 betas           <- list(c(1.5, 1.5),c(5, 5),c(2.5, 1.5))
@@ -15,7 +15,7 @@ do_poisson      <- list(FALSE) #, TRUE)
 policies        <- list("EG","UCB","Thompson")
 subpolicies     <- list("PartialBB","Partial", "Pooled", "Unpooled" )
 
-data_dir        <- "D:/_plotme_/"
+data_dir        <- "D:/Kruijswijk/contextual-master/demo/replication_kruijswijk_2018/data/"#D:/_plotme_/"
 
 history         <- History$new()
 
