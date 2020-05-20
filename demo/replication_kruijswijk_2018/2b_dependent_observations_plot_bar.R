@@ -15,7 +15,7 @@ do_poisson      <- list(FALSE) #, TRUE)
 policies        <- list("EG","UCB","Thompson")
 subpolicies     <- list("PartialBB","Partial", "Pooled", "Unpooled" )
 
-data_dir        <- "D:/Kruijswijk/contextual-master/demo/replication_kruijswijk_2018/data/"#D:/_plotme_/"
+data_dir        <- "D:/_plotme_/"
 
 history         <- History$new()
 
