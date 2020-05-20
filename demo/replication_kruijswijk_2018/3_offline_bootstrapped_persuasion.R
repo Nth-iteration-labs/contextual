@@ -13,7 +13,9 @@ simulations <- 100
 horizon     <- 570000
 
 csv_url     <- "http://d1ie9wlkzugsxr.cloudfront.net/data_persuasion_api/persuasion_api_simple.csv"
-data        <- fread(csv_url, nrows = horizon)
+# If csv file is not yet available, use csv_url instead
+csv         <- "./persuasion_api_simple.csv"
+data        <- fread(csv, nrows = horizon)
 
 tab <- table(data$user)
 data <- data[data$user %in% names(tab)[tab>5 & tab<50],]
