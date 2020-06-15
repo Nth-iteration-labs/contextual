@@ -203,7 +203,7 @@ print(paste("Movie:",sum(b_dt[choice==2]$reward)/nrow(b_dt[choice==2])))
 [1] "Movie: 0.600675138999206"  # 0.6 CTR Movie - Simpson's..
 ```
 
-Clearly, the BiasedPolicy gives rise to, well, biased results! If you'd only be able to look at the data, without knowing of the biased business logic, you'd falsely conclude Sports is more popular then Movies, overall. 
+Clearly, the BiasedPolicy gives rise to, well, biased results! If you'd only be able to look at the data, without knowing of the biased business logic, you'd falsely conclude Movies is more popular then Sports, overall. 
 
 ## Using the biased policy's offline logged data to evaluate another policy
 
