@@ -17,8 +17,8 @@ Exp3Policy <- R6::R6Class(
       probs <- rep(0.0, context$k)
       for (i in 1:context$k) {
          probs[i] <- (1 - gamma) * (self$theta$weight[[i]] / sum_of(self$theta$weight))
+         inc(probs[i])  <- ((gamma) * (1.0 / context$k))
       }
-      inc(probs[i])  <- ((gamma) * (1.0 / context$k))
       action$choice  <- categorical_draw(probs)
       action
     },
