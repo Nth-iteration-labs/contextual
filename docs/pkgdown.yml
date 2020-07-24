@@ -1,5 +1,5 @@
 pandoc: 2.7.3
-pkgdown: 1.4.1
+pkgdown: 1.5.1
 pkgdown_sha: ~
 articles:
   cmabs: cmabs.html
@@ -15,4 +15,5 @@ articles:
   simpsons: simpsons.html
   sutton_barto: sutton_barto.html
   website_optimization: website_optimization.html
+last_built: 2020-07-24T16:53Z
 

@@ -29,7 +29,7 @@ test_that("History save_csv without filename", {
 
 })
 
-test_that("History save_csv without filename", {
+test_that("History save_csv with filename", {
 
   csv_comparison_file <- read.csv("history_test.ref")
   history$save_csv("history_test.csv")

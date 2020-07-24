@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -35,7 +39,7 @@
 
 <!-- docsearch -->
 <script src="../docsearch.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
 <link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
@@ -47,7 +51,6 @@ Payoffs, following Agrawal and Goyal (2011).
 Thompson Sampling with Linear Payoffs is a contextual Thompson Sampling multi-armed bandit
 Policy which assumes the underlying relationship between rewards and contexts
 are linear. Check the reference for more details." />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -65,7 +68,7 @@ are linear. Check the reference for more details." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -79,7 +82,7 @@ are linear. Check the reference for more details." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">contextual</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.8.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.8.4</span>
       </span>
     </div>
 
@@ -192,15 +195,14 @@ are linear. Check the reference for more details.</p>
     
 
 <pre>
-policy &lt;- ContextualLinTSPolicy$new(v = 0.2)
-</pre>
+<span class='no'>policy</span> <span class='kw'>&amp;</span><span class='no'>lt</span>;- <span class='no'>ContextualLinTSPolicy</span>$<span class='fu'>new</span>(<span class='kw'>v</span> <span class='kw'>=</span> <span class='fl'>0.2</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
 
     
 
 
-<dl class='dl-horizontal'>
+<dl'>
 <dt><code>v</code></dt><dd><p>double, a positive real value R+;
 Hyper-parameter for adjusting the variance of posterior gaussian distribution.</p></dd>
 
@@ -211,19 +213,19 @@ Hyper-parameter for adjusting the variance of posterior gaussian distribution.</
     
 
 
-<dl class='dl-horizontal'>
+<dl'>
 <dt><code>new(v)</code></dt><dd><p>instantiates a new <code>ContextualLinTSPolicy</code> instance.
 Arguments defined in the Arguments section above.</p></dd>
 
 </dl>
 
-<dl class='dl-horizontal'>
+<dl'>
 <dt><code><a href='Policy.html'>set_parameters(context_params)</a></code></dt><dd><p>initialization of policy parameters, utilising <code>context_params$k</code> (number of arms) and
 <code>context_params$d</code> (number of context features).</p></dd>
 
 </dl>
 
-<dl class='dl-horizontal'>
+<dl'>
 <dt><code><a href='Policy.html'>get_action(t,context)</a></code></dt><dd><p>selects an arm based on <code>self$theta</code> and <code>context</code>, returning the index of the selected arm
 in <code>action$choice</code>. The context argument consists of a list with <code>context$k</code> (number of arms),
 <code>context$d</code> (number of features), and the feature matrix <code>context$X</code> with dimensions
@@ -231,7 +233,7 @@ in <code>action$choice</code>. The context argument consists of a list with <cod
 
 </dl>
 
-<dl class='dl-horizontal'>
+<dl'>
 <dt><code><a href='Policy.html'>set_reward(t, context, action, reward)</a></code></dt><dd><p>updates parameter list <code>theta</code> in accordance with the current <code>reward$reward</code>,
 <code>action$choice</code> and the feature matrix <code>context$X</code> with dimensions
 \(d \times k\). Returns the updated <code>theta</code>.</p></dd>
@@ -265,21 +267,14 @@ in Neural Information Processing Systems 24. 2011.</p>
 
 <span class='no'>history</span>        <span class='kw'>&lt;-</span> <span class='no'>simulation</span>$<span class='fu'><a href='Simulator.html'>run</a></span>()
 
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>history</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"cumulative"</span>, <span class='kw'>rate</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>legend_position</span> <span class='kw'>=</span> <span class='st'>"topleft"</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='no'>history</span>, <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"cumulative"</span>, <span class='kw'>rate</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>legend_position</span> <span class='kw'>=</span> <span class='st'>"topleft"</span>)
 
 }</div></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#usage">Usage</a></li>
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#methods">Methods</a></li>
-      <li><a href="#references">References</a></li>
-      <li><a href="#see-also">See also</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -290,7 +285,7 @@ in Neural Information Processing Systems 24. 2011.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

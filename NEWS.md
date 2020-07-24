@@ -1,9 +1,17 @@
+contextual 0.9.8.4
+==================
+
+* Minor documentation updates.
+* Fix for Exp3 bug (thanks, @leferrad !)
+* Updated tests.
+
+
 contextual 0.9.8.3
 ==================
 
 * Tested and confirmed to be R 4.0.0 proof.
 * Minor documentation updates.
-* Now correctly restores global seed on completing a simulation (thanks, pstansell!)
+* Now correctly restores global seed on completing a simulation (thanks, @pstansell !)
 
 
 contextual 0.9.8.2

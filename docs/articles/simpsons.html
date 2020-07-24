@@ -6,21 +6,21 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Demo: Bandits, Propensity Weighting &amp; Simpson's Paradox in R • contextual</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><!-- docsearch --><script src="../docsearch.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<script src="../pkgdown.js"></script><!-- docsearch --><script src="../docsearch.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous">
 <link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="Demo: Bandits, Propensity Weighting &amp; Simpson's Paradox in R">
-<meta property="og:description" content="">
-<meta name="twitter:card" content="summary">
+<meta property="og:description" content="contextual">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
-<body>
+<body data-spy="scroll" data-target="#toc">
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">contextual</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.8.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.8.4</span>
       </span>
     </div>
 
@@ -123,13 +123,13 @@
 
       
 
-      </header><div class="row">
+      </header><script src="simpsons_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>Demo: Bandits, Propensity Weighting &amp; Simpson’s Paradox in R</h1>
+      <h1 data-toc-skip>Demo: Bandits, Propensity Weighting &amp; Simpson’s Paradox in R</h1>
                         <h4 class="author">Robin van Emden</h4>
             
-            <h4 class="date">2020-03-04</h4>
+            <h4 class="date">2020-07-24</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Nth-iteration-labs/contextual/blob/master/vignettes/simpsons.Rmd"><code>vignettes/simpsons.Rmd</code></a></small>
       <div class="hidden name"><code>simpsons.Rmd</code></div>
@@ -139,24 +139,24 @@
     
     
 <p>Imagine a website with Sport and Movie related articles where the “actual” preference of men and women for Sport and Movie articles is the following:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>Contexts   <span class="op">|</span><span class="st"> </span><span class="kw">Sport</span> (arm) <span class="op">|</span><span class="st">  </span><span class="kw">Movie</span> (arm)</span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="op">-----------------------------------------</span></span>
-<span id="cb1-3"><a href="#cb1-3"></a>Male       <span class="op">|</span><span class="st"> </span><span class="fl">0.4</span>         <span class="op">|</span><span class="st">  </span><span class="fl">0.3</span></span>
-<span id="cb1-4"><a href="#cb1-4"></a>Female     <span class="op">|</span><span class="st"> </span><span class="fl">0.8</span>         <span class="op">|</span><span class="st">  </span><span class="fl">0.7</span></span></code></pre></div>
+<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="no">Contexts</span>   <span class="kw">|</span> <span class="fu">Sport</span> (<span class="no">arm</span>) <span class="kw">|</span>  <span class="fu">Movie</span> (<span class="no">arm</span>)
+-----------------------------------------
+<span class="no">Male</span>       <span class="kw">|</span> <span class="fl">0.4</span>         <span class="kw">|</span>  <span class="fl">0.3</span>
+<span class="no">Female</span>     <span class="kw">|</span> <span class="fl">0.8</span>         <span class="kw">|</span>  <span class="fl">0.7</span></pre></body></html></div>
 <p>In other words, both Male and Female visitors actually prefer Sports articles over Movie articles. When visitors are randomly assigned to types of articles, the overall CTR rate per category reflects this:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>Contexts   <span class="op">|</span><span class="st"> </span><span class="kw">Sport</span> (arm) <span class="op">|</span><span class="st">  </span><span class="kw">Movie</span> (arm)</span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="op">-----------------------------------------</span></span>
-<span id="cb2-3"><a href="#cb2-3"></a>Male       <span class="op">|</span><span class="st"> </span><span class="fl">0.4</span> x <span class="fl">0.5</span>   <span class="op">|</span><span class="st">  </span><span class="fl">0.3</span> x <span class="fl">0.5</span></span>
-<span id="cb2-4"><a href="#cb2-4"></a>Female     <span class="op">|</span><span class="st"> </span><span class="fl">0.8</span> x <span class="fl">0.5</span>   <span class="op">|</span><span class="st">  </span><span class="fl">0.7</span> x <span class="fl">0.5</span></span>
-<span id="cb2-5"><a href="#cb2-5"></a><span class="op">-----------------------------------------</span></span>
-<span id="cb2-6"><a href="#cb2-6"></a>CTR total  <span class="op">|</span><span class="st"> </span><span class="fl">0.6</span>         <span class="op">|</span><span class="st">  </span><span class="fl">0.5</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><html><body><pre class="r">Contexts   | Sport (arm) |  Movie (arm)
+-----------------------------------------
+Male       | 0.4 x 0.5   |  0.3 x 0.5
+Female     | 0.8 x 0.5   |  0.7 x 0.5
+-----------------------------------------
+CTR total  | 0.6         |  0.5</pre></body></html></div>
 <p>Now suggest the site’s editor just “knows” that men like sports, and women like movie related articles. So the editor has some business logic implemented, assigning Movie related articles, on average, to 75% of Female visitors, and Sports articles, on average, to 75% of Male visitors:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>Contexts   <span class="op">|</span><span class="st"> </span><span class="kw">Sport</span> (arm) <span class="op">|</span><span class="st">  </span><span class="kw">Movie</span> (arm)</span>
-<span id="cb3-2"><a href="#cb3-2"></a><span class="op">-----------------------------------------</span></span>
-<span id="cb3-3"><a href="#cb3-3"></a>Male       <span class="op">|</span><span class="st"> </span><span class="fl">0.4</span> x <span class="fl">0.75</span>  <span class="op">|</span><span class="st">  </span><span class="fl">0.3</span> x <span class="fl">0.25</span></span>
-<span id="cb3-4"><a href="#cb3-4"></a>Female     <span class="op">|</span><span class="st"> </span><span class="fl">0.8</span> x <span class="fl">0.25</span>  <span class="op">|</span><span class="st">  </span><span class="fl">0.7</span> x <span class="fl">0.75</span></span>
-<span id="cb3-5"><a href="#cb3-5"></a><span class="op">-----------------------------------------</span></span>
-<span id="cb3-6"><a href="#cb3-6"></a>CTR total  <span class="op">|</span><span class="st"> </span><span class="fl">0.5</span>         <span class="op">|</span><span class="st">  </span><span class="fl">0.6</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><html><body><pre class="r">Contexts   | Sport (arm) |  Movie (arm)
+-----------------------------------------
+Male       | 0.4 x 0.75  |  0.3 x 0.25
+Female     | 0.8 x 0.25  |  0.7 x 0.75
+-----------------------------------------
+CTR total  | 0.5         |  0.6</pre></body></html></div>
 <p>This results in a higher CTR for movies than for Sports related articles - even though these CTR’s do not actually reflect the overall preferences of website visitors, but rather the editor’s prejudice.</p>
 <p>A clear example of <a href="https://en.wikipedia.org/wiki/Simpson%27s_paradox">Simpson’s Paradox</a>!</p>
 <p>Below an R code based illustration (making use of our “<a href="https://github.com/Nth-iteration-labs/contextual">contextual</a>” bandit package) of how Simpson’s Paradox could give rise to biased logged data, resulting in biased offline evaluations of bandit policies. Next, we demonstrate how <a href="https://en.wikipedia.org/wiki/Inverse_probability_weighting">inverse propensity weighting</a> can help make such data usable for offline evaluation after all.</p>
@@ -164,82 +164,82 @@
 <h2 class="hasAnchor">
 <a href="#original-bandit-weights" class="anchor"></a>Original bandit weights</h2>
 <p>Set up simulation bandit weights representing Male and Female actual preferences for Sports and Movies:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a> </span>
-<span id="cb4-2"><a href="#cb4-2"></a>horizon                           &lt;-<span class="st"> </span>10000L</span>
-<span id="cb4-3"><a href="#cb4-3"></a>simulations                       &lt;-<span class="st"> </span>1L</span>
-<span id="cb4-4"><a href="#cb4-4"></a></span>
-<span id="cb4-5"><a href="#cb4-5"></a><span class="co">#                    S----M------------&gt; Arm 1:   Sport</span></span>
-<span id="cb4-6"><a href="#cb4-6"></a><span class="co">#                    |    |              Arm 2:   Movie</span></span>
-<span id="cb4-7"><a href="#cb4-7"></a><span class="co">#                    |    |</span></span>
-<span id="cb4-8"><a href="#cb4-8"></a>weights &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>( <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.4</span>, <span class="fl">0.3</span>,    <span class="co">#-----&gt; Context: Male</span></span>
-<span id="cb4-9"><a href="#cb4-9"></a>                     <span class="fl">0.8</span>, <span class="fl">0.7</span>),   <span class="co">#-----&gt; Context: Female</span></span>
-<span id="cb4-10"><a href="#cb4-10"></a> </span>
-<span id="cb4-11"><a href="#cb4-11"></a>                     <span class="dt">nrow =</span> <span class="dv">2</span>, <span class="dt">ncol =</span> <span class="dv">2</span>, <span class="dt">byrow =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><html><body><pre class="r">
+<span class="no">horizon</span>                           <span class="kw">&lt;-</span> <span class="fl">10000L</span>
+<span class="no">simulations</span>                       <span class="kw">&lt;-</span> <span class="fl">1L</span>
+
+<span class="co">#                    S----M------------&gt; Arm 1:   Sport</span>
+<span class="co">#                    |    |              Arm 2:   Movie</span>
+<span class="co">#                    |    |</span>
+<span class="no">weights</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span>( <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.4</span>, <span class="fl">0.3</span>,    <span class="co">#-----&gt; Context: Male</span>
+                     <span class="fl">0.8</span>, <span class="fl">0.7</span>),   <span class="co">#-----&gt; Context: Female</span>
+
+                     <span class="kw">nrow</span> <span class="kw">=</span> <span class="fl">2</span>, <span class="kw">ncol</span> <span class="kw">=</span> <span class="fl">2</span>, <span class="kw">byrow</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></body></html></div>
 <p>These weights will be fed to contextual’s <a href="https://github.com/Nth-iteration-labs/contextual/blob/master/R/bandit_cmab_bernoulli.R">ContextualBernoulliBandit</a> so it can simulate clicks by Male and Female according to their preferences per category.</p>
 </div>
 <div id="generate-data-by-running-a-fully-random-online-policy" class="section level2">
 <h2 class="hasAnchor">
 <a href="#generate-data-by-running-a-fully-random-online-policy" class="anchor"></a>Generate data by running a fully random online policy</h2>
 <p>Let’s first run contextual’s basic <a href="https://github.com/Nth-iteration-labs/contextual/blob/master/R/policy_random.R">random policy</a> against the bandit that models actual visitor’s preferences. This random policy assigns Males and Females fully at random to either Sport or Movie articles:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>policy                            &lt;-<span class="st"> </span>RandomPolicy<span class="op">$</span><span class="kw">new</span>()</span>
-<span id="cb5-2"><a href="#cb5-2"></a>bandit                            &lt;-<span class="st"> </span>ContextualBernoulliBandit<span class="op">$</span><span class="kw">new</span>(<span class="dt">weights =</span> weights)</span>
-<span id="cb5-3"><a href="#cb5-3"></a>agent                             &lt;-<span class="st"> </span>Agent<span class="op">$</span><span class="kw">new</span>(policy, bandit, <span class="st">"Random"</span>)</span>
-<span id="cb5-4"><a href="#cb5-4"></a></span>
-<span id="cb5-5"><a href="#cb5-5"></a>simulation                        &lt;-<span class="st"> </span>Simulator<span class="op">$</span><span class="kw">new</span>(agent, horizon, simulations, </span>
-<span id="cb5-6"><a href="#cb5-6"></a>                                                   <span class="dt">save_context =</span> <span class="ot">TRUE</span>, <span class="dt">do_parallel =</span> F)</span>
-<span id="cb5-7"><a href="#cb5-7"></a>                                                   </span>
-<span id="cb5-8"><a href="#cb5-8"></a>history                           &lt;-<span class="st"> </span>simulation<span class="op">$</span><span class="kw"><a href="../reference/Simulator.html">run</a></span>()</span>
-<span id="cb5-9"><a href="#cb5-9"></a></span>
-<span id="cb5-10"><a href="#cb5-10"></a>Simulation horizon<span class="op">:</span><span class="st"> </span><span class="dv">10000</span></span>
-<span id="cb5-11"><a href="#cb5-11"></a>Number of simulations<span class="op">:</span><span class="st"> </span><span class="dv">1</span></span>
-<span id="cb5-12"><a href="#cb5-12"></a>Number of batches<span class="op">:</span><span class="st"> </span><span class="dv">1</span></span>
-<span id="cb5-13"><a href="#cb5-13"></a>Starting main loop.</span>
-<span id="cb5-14"><a href="#cb5-14"></a>Completed simulation <span class="cf">in</span> <span class="dv">0</span><span class="op">:</span><span class="dv">00</span><span class="op">:</span><span class="fl">01.781</span></span>
-<span id="cb5-15"><a href="#cb5-15"></a></span>
-<span id="cb5-16"><a href="#cb5-16"></a>u_dt                              &lt;-<span class="st"> </span>history<span class="op">$</span><span class="kw"><a href="../reference/History.html">get_data_table</a></span>()</span>
-<span id="cb5-17"><a href="#cb5-17"></a></span>
-<span id="cb5-18"><a href="#cb5-18"></a><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="st">"1a. Unbiased data generation."</span>)</span>
-<span id="cb5-19"><a href="#cb5-19"></a>[<span class="dv">1</span>] <span class="st">"1a. Unbiased data generation."</span></span>
-<span id="cb5-20"><a href="#cb5-20"></a></span>
-<span id="cb5-21"><a href="#cb5-21"></a><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="st">"Sport:"</span>,<span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(u_dt[choice<span class="op">==</span><span class="dv">1</span>]<span class="op">$</span>reward)<span class="op">/</span><span class="kw"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(u_dt[choice<span class="op">==</span><span class="dv">1</span>]))) </span>
-<span id="cb5-22"><a href="#cb5-22"></a>[<span class="dv">1</span>] <span class="st">"Sport: 0.603323988786544"</span>   <span class="co"># 0.6 CTR Sport - equals preferences!</span></span>
-<span id="cb5-23"><a href="#cb5-23"></a></span>
-<span id="cb5-24"><a href="#cb5-24"></a><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="st">"Movie:"</span>,<span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(u_dt[choice<span class="op">==</span><span class="dv">2</span>]<span class="op">$</span>reward)<span class="op">/</span><span class="kw"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(u_dt[choice<span class="op">==</span><span class="dv">2</span>]))) </span>
-<span id="cb5-25"><a href="#cb5-25"></a>[<span class="dv">1</span>] <span class="st">"Movie: 0.501997602876548"</span>   <span class="co"># 0.5 CTR Movie - equals preferences!</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><html><body><pre class="r">policy                            &lt;- RandomPolicy$new()
+bandit                            &lt;- ContextualBernoulliBandit$new(weights = weights)
+agent                             &lt;- Agent$new(policy, bandit, "Random")
+
+simulation                        &lt;- Simulator$new(agent, horizon, simulations, 
+                                                   save_context = TRUE, do_parallel = F)
+                                                   
+history                           &lt;- simulation$run()
+
+Simulation horizon: 10000
+Number of simulations: 1
+Number of batches: 1
+Starting main loop.
+Completed simulation in 0:00:01.781
+
+u_dt                              &lt;- history$get_data_table()
+
+print("1a. Unbiased data generation.")
+[1] "1a. Unbiased data generation."
+
+print(paste("Sport:",sum(u_dt[choice==1]$reward)/nrow(u_dt[choice==1]))) 
+[1] "Sport: 0.603323988786544"   # 0.6 CTR Sport - equals preferences!
+
+print(paste("Movie:",sum(u_dt[choice==2]$reward)/nrow(u_dt[choice==2]))) 
+[1] "Movie: 0.501997602876548"   # 0.5 CTR Movie - equals preferences!</pre></body></html></div>
 <p>The results are clear: when running the random policy, the logged data accurately represents visitor’s preferences.</p>
 </div>
 <div id="using-the-random-policys-offline-logged-data-to-evaluate-another-policy" class="section level2">
 <h2 class="hasAnchor">
 <a href="#using-the-random-policys-offline-logged-data-to-evaluate-another-policy" class="anchor"></a>Using the random policy’s offline logged data to evaluate another policy</h2>
 <p>The previous simulation produced a data.table with fully randomised historical data. Let’s use this data to evaluate some other policy:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a></span>
-<span id="cb6-2"><a href="#cb6-2"></a>f                                 &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/formula.html">formula</a></span>(<span class="st">"reward ~ choice | X.1 + X.2"</span>)</span>
-<span id="cb6-3"><a href="#cb6-3"></a>bandit                            &lt;-<span class="st"> </span>OfflineReplayEvaluatorBandit<span class="op">$</span><span class="kw">new</span>(<span class="dt">formula =</span> f,</span>
-<span id="cb6-4"><a href="#cb6-4"></a>                                                                      <span class="dt">data =</span> u_dt, </span>
-<span id="cb6-5"><a href="#cb6-5"></a>                                                                      <span class="dt">k =</span> <span class="dv">2</span> , <span class="dt">d =</span> <span class="dv">2</span>)</span>
-<span id="cb6-6"><a href="#cb6-6"></a></span>
-<span id="cb6-7"><a href="#cb6-7"></a>policy                            &lt;-<span class="st"> </span>EpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.1</span>)</span>
-<span id="cb6-8"><a href="#cb6-8"></a>agent                             &lt;-<span class="st"> </span>Agent<span class="op">$</span><span class="kw">new</span>(policy, bandit, <span class="st">"OfflineLinUCB"</span>)</span>
-<span id="cb6-9"><a href="#cb6-9"></a> </span>
-<span id="cb6-10"><a href="#cb6-10"></a>simulation                        &lt;-<span class="st"> </span>Simulator<span class="op">$</span><span class="kw">new</span>(agent, horizon, simulations, <span class="dt">do_parallel =</span> F)</span>
-<span id="cb6-11"><a href="#cb6-11"></a>history                           &lt;-<span class="st"> </span>simulation<span class="op">$</span><span class="kw"><a href="../reference/Simulator.html">run</a></span>()</span>
-<span id="cb6-12"><a href="#cb6-12"></a></span>
-<span id="cb6-13"><a href="#cb6-13"></a>Simulation horizon<span class="op">:</span><span class="st"> </span><span class="dv">10000</span></span>
-<span id="cb6-14"><a href="#cb6-14"></a>Number of simulations<span class="op">:</span><span class="st"> </span><span class="dv">1</span></span>
-<span id="cb6-15"><a href="#cb6-15"></a>Number of batches<span class="op">:</span><span class="st"> </span><span class="dv">1</span></span>
-<span id="cb6-16"><a href="#cb6-16"></a>Starting main loop.</span>
-<span id="cb6-17"><a href="#cb6-17"></a>Completed simulation <span class="cf">in</span> <span class="dv">0</span><span class="op">:</span><span class="dv">00</span><span class="op">:</span><span class="fl">01.606</span></span>
-<span id="cb6-18"><a href="#cb6-18"></a></span>
-<span id="cb6-19"><a href="#cb6-19"></a>ru_dt                             &lt;-<span class="st"> </span>history<span class="op">$</span><span class="kw"><a href="../reference/History.html">get_data_table</a></span>()</span>
-<span id="cb6-20"><a href="#cb6-20"></a> </span>
-<span id="cb6-21"><a href="#cb6-21"></a><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="st">"1b. Offline unbiased policy evaluation."</span>)</span>
-<span id="cb6-22"><a href="#cb6-22"></a>[<span class="dv">1</span>] <span class="st">"1b. Offline unbiased policy evaluation."</span></span>
-<span id="cb6-23"><a href="#cb6-23"></a> </span>
-<span id="cb6-24"><a href="#cb6-24"></a><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="st">"Sport:"</span>,<span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(ru_dt[choice<span class="op">==</span><span class="dv">1</span>]<span class="op">$</span>reward)<span class="op">/</span><span class="kw"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(ru_dt[choice<span class="op">==</span><span class="dv">1</span>])))</span>
-<span id="cb6-25"><a href="#cb6-25"></a>[<span class="dv">1</span>] <span class="st">"Sport: 0.602566799915843"</span>   <span class="co"># 0.6 CTR Sport - equals preferences!</span></span>
-<span id="cb6-26"><a href="#cb6-26"></a></span>
-<span id="cb6-27"><a href="#cb6-27"></a><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="st">"Movie:"</span>,<span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(ru_dt[choice<span class="op">==</span><span class="dv">2</span>]<span class="op">$</span>reward)<span class="op">/</span><span class="kw"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(ru_dt[choice<span class="op">==</span><span class="dv">2</span>]))) </span>
-<span id="cb6-28"><a href="#cb6-28"></a>[<span class="dv">1</span>] <span class="st">"Movie: 0.493589743589744"</span>   <span class="co"># 0.5 CTR Movie - equals preferences!</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><html><body><pre class="r">
+f                                 &lt;- formula("reward ~ choice | X.1 + X.2")
+bandit                            &lt;- OfflineReplayEvaluatorBandit$new(formula = f,
+                                                                      data = u_dt, 
+                                                                      k = 2 , d = 2)
+
+policy                            &lt;- EpsilonGreedyPolicy$new(0.1)
+agent                             &lt;- Agent$new(policy, bandit, "OfflineLinUCB")
+ 
+simulation                        &lt;- Simulator$new(agent, horizon, simulations, do_parallel = F)
+history                           &lt;- simulation$run()
+
+Simulation horizon: 10000
+Number of simulations: 1
+Number of batches: 1
+Starting main loop.
+Completed simulation in 0:00:01.606
+
+ru_dt                             &lt;- history$get_data_table()
+ 
+print("1b. Offline unbiased policy evaluation.")
+[1] "1b. Offline unbiased policy evaluation."
+ 
+print(paste("Sport:",sum(ru_dt[choice==1]$reward)/nrow(ru_dt[choice==1])))
+[1] "Sport: 0.602566799915843"   # 0.6 CTR Sport - equals preferences!
+
+print(paste("Movie:",sum(ru_dt[choice==2]$reward)/nrow(ru_dt[choice==2]))) 
+[1] "Movie: 0.493589743589744"   # 0.5 CTR Movie - equals preferences!</pre></body></html></div>
 <p>Accurate numbers again: clearly, the logged data from a randomizing policy can be used to test other ‘off-policy’ algorithms.</p>
 </div>
 <div id="generate-data-by-running-a-biased-online-policy" class="section level2">
@@ -247,133 +247,123 @@
 <a href="#generate-data-by-running-a-biased-online-policy" class="anchor"></a>Generate data by running a biased online policy</h2>
 <p>Now suggest some editor just "knows’ that men like Sport, and women like Movie. So some business logic was added to the site assigning Movie related articles, on average, to 75% of Female visitors, and Sport articles, on average, to 75% of Male visitors.</p>
 <p>This business logic might be implemented through the following policy:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>BiasedPolicy                      &lt;-<span class="st"> </span>R6<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/R6/man/R6Class.html">R6Class</a></span>(</span>
-<span id="cb7-2"><a href="#cb7-2"></a>  <span class="dt">portable =</span> <span class="ot">FALSE</span>,</span>
-<span id="cb7-3"><a href="#cb7-3"></a>  <span class="dt">class =</span> <span class="ot">FALSE</span>,</span>
-<span id="cb7-4"><a href="#cb7-4"></a>  <span class="dt">inherit =</span> RandomPolicy,</span>
-<span id="cb7-5"><a href="#cb7-5"></a>  <span class="dt">public =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(</span>
-<span id="cb7-6"><a href="#cb7-6"></a>   <span class="dt">class_name =</span> <span class="st">"BiasedPolicy"</span>,</span>
-<span id="cb7-7"><a href="#cb7-7"></a>   <span class="dt">get_action =</span> <span class="cf">function</span>(t, context) {</span>
-<span id="cb7-8"><a href="#cb7-8"></a>     <span class="cf">if</span>(context<span class="op">$</span>X[<span class="dv">1</span>]<span class="op">==</span><span class="dv">1</span>) {           <span class="co"># 1: Male || 0: Female.</span></span>
-<span id="cb7-9"><a href="#cb7-9"></a>       prob                      &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.75</span>,<span class="fl">0.25</span>) <span class="co"># Editor thinks men like Sport articles more.</span></span>
-<span id="cb7-10"><a href="#cb7-10"></a>     } <span class="cf">else</span> {</span>
-<span id="cb7-11"><a href="#cb7-11"></a>       prob                      &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.25</span>,<span class="fl">0.75</span>) <span class="co"># Editor thinks women like Movie articles more.</span></span>
-<span id="cb7-12"><a href="#cb7-12"></a>     }</span>
-<span id="cb7-13"><a href="#cb7-13"></a>     action<span class="op">$</span>choice               &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/sample.html">sample.int</a></span>(context<span class="op">$</span>k, <span class="dv">1</span>, <span class="dt">replace =</span> <span class="ot">TRUE</span>, <span class="dt">prob =</span> prob)</span>
-<span id="cb7-14"><a href="#cb7-14"></a>      <span class="co"># Store the propensity score for the current action too:</span></span>
-<span id="cb7-15"><a href="#cb7-15"></a>      action<span class="op">$</span>propensity           &lt;-<span class="st"> </span>prob[action<span class="op">$</span>choice]</span>
-<span id="cb7-16"><a href="#cb7-16"></a>      action</span>
-<span id="cb7-17"><a href="#cb7-17"></a>    }</span>
-<span id="cb7-18"><a href="#cb7-18"></a>  )</span>
-<span id="cb7-19"><a href="#cb7-19"></a>) </span></code></pre></div>
+<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="no">BiasedPolicy</span>                      <span class="kw">&lt;-</span> <span class="kw pkg">R6</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/R6/man/R6Class.html">R6Class</a></span>(
+  <span class="kw">portable</span> <span class="kw">=</span> <span class="fl">FALSE</span>,
+  <span class="kw">class</span> <span class="kw">=</span> <span class="fl">FALSE</span>,
+  <span class="kw">inherit</span> <span class="kw">=</span> <span class="no">RandomPolicy</span>,
+  <span class="kw">public</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(
+   <span class="kw">class_name</span> <span class="kw">=</span> <span class="st">"BiasedPolicy"</span>,
+   <span class="kw">get_action</span> <span class="kw">=</span> <span class="kw">function</span>(<span class="no">t</span>, <span class="no">context</span>) {
+     <span class="kw">if</span>(<span class="no">context</span>$<span class="no">X</span>[<span class="fl">1</span>]<span class="kw">==</span><span class="fl">1</span>) {           <span class="co"># 1: Male || 0: Female.</span>
+       <span class="no">prob</span>                      <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.75</span>,<span class="fl">0.25</span>) <span class="co"># Editor thinks men like Sport articles more.</span>
+     } <span class="kw">else</span> {
+       <span class="no">prob</span>                      <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.25</span>,<span class="fl">0.75</span>) <span class="co"># Editor thinks women like Movie articles more.</span>
+     }
+     <span class="no">action</span>$<span class="no">choice</span>               <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample.int</a></span>(<span class="no">context</span>$<span class="no">k</span>, <span class="fl">1</span>, <span class="kw">replace</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">prob</span> <span class="kw">=</span> <span class="no">prob</span>)
+      <span class="co"># Store the propensity score for the current action too:</span>
+      <span class="no">action</span>$<span class="no">propensity</span>           <span class="kw">&lt;-</span> <span class="no">prob</span>[<span class="no">action</span>$<span class="no">choice</span>]
+      <span class="no">action</span>
+    }
+  )
+)</pre></body></html></div>
 <p>Now run this policy against the Bandit modeling actual visitor preferences:</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a> </span>
-<span id="cb8-2"><a href="#cb8-2"></a>policy                            &lt;-<span class="st"> </span>BiasedPolicy<span class="op">$</span><span class="kw">new</span>()</span>
-<span id="cb8-3"><a href="#cb8-3"></a>bandit                            &lt;-<span class="st"> </span>ContextualBernoulliBandit<span class="op">$</span><span class="kw">new</span>(<span class="dt">weights =</span> weights)</span>
-<span id="cb8-4"><a href="#cb8-4"></a>agent                             &lt;-<span class="st"> </span>Agent<span class="op">$</span><span class="kw">new</span>(policy, bandit, <span class="st">"Random"</span>)</span>
-<span id="cb8-5"><a href="#cb8-5"></a></span>
-<span id="cb8-6"><a href="#cb8-6"></a>simulation                        &lt;-<span class="st"> </span>Simulator<span class="op">$</span><span class="kw">new</span>(agent, horizon, simulations, </span>
-<span id="cb8-7"><a href="#cb8-7"></a>                                                   <span class="dt">save_context =</span> <span class="ot">TRUE</span>, <span class="dt">do_parallel =</span> F)</span>
-<span id="cb8-8"><a href="#cb8-8"></a>history                           &lt;-<span class="st"> </span>simulation<span class="op">$</span><span class="kw"><a href="../reference/Simulator.html">run</a></span>()</span>
-<span id="cb8-9"><a href="#cb8-9"></a></span>
-<span id="cb8-10"><a href="#cb8-10"></a>Simulation horizon<span class="op">:</span><span class="st"> </span><span class="dv">10000</span></span>
-<span id="cb8-11"><a href="#cb8-11"></a>Number of simulations<span class="op">:</span><span class="st"> </span><span class="dv">1</span></span>
-<span id="cb8-12"><a href="#cb8-12"></a>Number of batches<span class="op">:</span><span class="st"> </span><span class="dv">1</span></span>
-<span id="cb8-13"><a href="#cb8-13"></a>Starting main loop.</span>
-<span id="cb8-14"><a href="#cb8-14"></a>Completed simulation <span class="cf">in</span> <span class="dv">0</span><span class="op">:</span><span class="dv">00</span><span class="op">:</span><span class="fl">01.954</span></span>
-<span id="cb8-15"><a href="#cb8-15"></a> </span>
-<span id="cb8-16"><a href="#cb8-16"></a>b_dt                              &lt;-<span class="st"> </span>history<span class="op">$</span><span class="kw"><a href="../reference/History.html">get_data_table</a></span>()</span>
-<span id="cb8-17"><a href="#cb8-17"></a></span>
-<span id="cb8-18"><a href="#cb8-18"></a><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="st">"2a. Biased data generation."</span>)</span>
-<span id="cb8-19"><a href="#cb8-19"></a>[<span class="dv">1</span>] <span class="st">"2a. Biased data generation."</span></span>
-<span id="cb8-20"><a href="#cb8-20"></a> </span>
-<span id="cb8-21"><a href="#cb8-21"></a><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="st">"Sport:"</span>,<span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(b_dt[choice<span class="op">==</span><span class="dv">1</span>]<span class="op">$</span>reward)<span class="op">/</span><span class="kw"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(b_dt[choice<span class="op">==</span><span class="dv">1</span>]))) </span>
-<span id="cb8-22"><a href="#cb8-22"></a>[<span class="dv">1</span>] <span class="st">"Sport: 0.506446414182111"</span>  <span class="co"># 0.5 CTR Sport - Simpson's paradox at work</span></span>
-<span id="cb8-23"><a href="#cb8-23"></a></span>
-<span id="cb8-24"><a href="#cb8-24"></a><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="st">"Movie:"</span>,<span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(b_dt[choice<span class="op">==</span><span class="dv">2</span>]<span class="op">$</span>reward)<span class="op">/</span><span class="kw"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(b_dt[choice<span class="op">==</span><span class="dv">2</span>]))) </span>
-<span id="cb8-25"><a href="#cb8-25"></a>[<span class="dv">1</span>] <span class="st">"Movie: 0.600675138999206"</span>  <span class="co"># 0.6 CTR Movie - Simpson's..</span></span></code></pre></div>
-<p>Clearly, the BiasedPolicy gives rise to, well, biased results! If you’d only be able to look at the data, without knowing of the biased business logic, you’d falsely conclude Sports is more popular then Movies, overall.</p>
+<div class="sourceCode" id="cb8"><html><body><pre class="r"> 
+policy                            &lt;- BiasedPolicy$new()
+bandit                            &lt;- ContextualBernoulliBandit$new(weights = weights)
+agent                             &lt;- Agent$new(policy, bandit, "Random")
+
+simulation                        &lt;- Simulator$new(agent, horizon, simulations, 
+                                                   save_context = TRUE, do_parallel = F)
+history                           &lt;- simulation$run()
+
+Simulation horizon: 10000
+Number of simulations: 1
+Number of batches: 1
+Starting main loop.
+Completed simulation in 0:00:01.954
+ 
+b_dt                              &lt;- history$get_data_table()
+
+print("2a. Biased data generation.")
+[1] "2a. Biased data generation."
+ 
+print(paste("Sport:",sum(b_dt[choice==1]$reward)/nrow(b_dt[choice==1]))) 
+[1] "Sport: 0.506446414182111"  # 0.5 CTR Sport - Simpson's paradox at work
+
+print(paste("Movie:",sum(b_dt[choice==2]$reward)/nrow(b_dt[choice==2]))) 
+[1] "Movie: 0.600675138999206"  # 0.6 CTR Movie - Simpson's..</pre></body></html></div>
+<p>Clearly, the BiasedPolicy gives rise to, well, biased results! If you’d only be able to look at the data, without knowing of the biased business logic, you’d falsely conclude Movies is more popular then Sports, overall.</p>
 </div>
 <div id="using-the-biased-policys-offline-logged-data-to-evaluate-another-policy" class="section level2">
 <h2 class="hasAnchor">
 <a href="#using-the-biased-policys-offline-logged-data-to-evaluate-another-policy" class="anchor"></a>Using the biased policy’s offline logged data to evaluate another policy</h2>
 <p>This time, the simulation generated a data.table with biased data. Let’s see what happens if we use this data to evaluate some other policy:</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>f                                 &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/formula.html">formula</a></span>(<span class="st">"reward ~ choice | X.1 + X.2"</span>)</span>
-<span id="cb9-2"><a href="#cb9-2"></a>bandit                            &lt;-<span class="st"> </span>OfflineReplayEvaluatorBandit<span class="op">$</span><span class="kw">new</span>(<span class="dt">formula =</span> f, </span>
-<span id="cb9-3"><a href="#cb9-3"></a>                                                                      <span class="dt">data =</span> b_dt, </span>
-<span id="cb9-4"><a href="#cb9-4"></a>                                                                      <span class="dt">k =</span> <span class="dv">2</span> , <span class="dt">d =</span> <span class="dv">2</span>)</span>
-<span id="cb9-5"><a href="#cb9-5"></a>policy                            &lt;-<span class="st"> </span>EpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.1</span>)</span>
-<span id="cb9-6"><a href="#cb9-6"></a>agent                             &lt;-<span class="st"> </span>Agent<span class="op">$</span><span class="kw">new</span>(policy, bandit, <span class="st">"rb"</span>)</span>
-<span id="cb9-7"><a href="#cb9-7"></a> </span>
-<span id="cb9-8"><a href="#cb9-8"></a>simulation                        &lt;-<span class="st"> </span>Simulator<span class="op">$</span><span class="kw">new</span>(agent, horizon, simulations, <span class="dt">do_parallel =</span> F)</span>
-<span id="cb9-9"><a href="#cb9-9"></a>history                           &lt;-<span class="st"> </span>simulation<span class="op">$</span><span class="kw"><a href="../reference/Simulator.html">run</a></span>()</span>
-<span id="cb9-10"><a href="#cb9-10"></a></span>
-<span id="cb9-11"><a href="#cb9-11"></a>Simulation horizon<span class="op">:</span><span class="st"> </span><span class="dv">10000</span></span>
-<span id="cb9-12"><a href="#cb9-12"></a>Number of simulations<span class="op">:</span><span class="st"> </span><span class="dv">1</span></span>
-<span id="cb9-13"><a href="#cb9-13"></a>Number of batches<span class="op">:</span><span class="st"> </span><span class="dv">1</span></span>
-<span id="cb9-14"><a href="#cb9-14"></a>Starting main loop.</span>
-<span id="cb9-15"><a href="#cb9-15"></a>Completed simulation <span class="cf">in</span> <span class="dv">0</span><span class="op">:</span><span class="dv">00</span><span class="op">:</span><span class="fl">01.478</span></span>
-<span id="cb9-16"><a href="#cb9-16"></a></span>
-<span id="cb9-17"><a href="#cb9-17"></a>rb_dt                             &lt;-<span class="st"> </span>history<span class="op">$</span><span class="kw"><a href="../reference/History.html">get_data_table</a></span>()</span>
-<span id="cb9-18"><a href="#cb9-18"></a> </span>
-<span id="cb9-19"><a href="#cb9-19"></a><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="st">"2b. Offline biased policy evaluation."</span>)</span>
-<span id="cb9-20"><a href="#cb9-20"></a>[<span class="dv">1</span>] <span class="st">"2b. Offline biased policy evaluation."</span></span>
-<span id="cb9-21"><a href="#cb9-21"></a> </span>
-<span id="cb9-22"><a href="#cb9-22"></a><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="st">"Sport:"</span>,<span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(rb_dt[choice<span class="op">==</span><span class="dv">1</span>]<span class="op">$</span>reward)<span class="op">/</span><span class="kw"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(rb_dt[choice<span class="op">==</span><span class="dv">1</span>]))) </span>
-<span id="cb9-23"><a href="#cb9-23"></a>[<span class="dv">1</span>] <span class="st">"Sport: 0.5"</span>  <span class="co"># 0.5 CTR Sport - Simpson's paradox, again!</span></span>
-<span id="cb9-24"><a href="#cb9-24"></a></span>
-<span id="cb9-25"><a href="#cb9-25"></a><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="st">"Movie:"</span>,<span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(rb_dt[choice<span class="op">==</span><span class="dv">2</span>]<span class="op">$</span>reward)<span class="op">/</span><span class="kw"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(rb_dt[choice<span class="op">==</span><span class="dv">2</span>]))) </span>
-<span id="cb9-26"><a href="#cb9-26"></a>[<span class="dv">1</span>] <span class="st">"Movie: 0.602175277138674"</span> <span class="co"># 0.6 CTR Sport - Simpson's paradox, again!</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><html><body><pre class="r">f                                 &lt;- formula("reward ~ choice | X.1 + X.2")
+bandit                            &lt;- OfflineReplayEvaluatorBandit$new(formula = f, 
+                                                                      data = b_dt, 
+                                                                      k = 2 , d = 2)
+policy                            &lt;- EpsilonGreedyPolicy$new(0.1)
+agent                             &lt;- Agent$new(policy, bandit, "rb")
+ 
+simulation                        &lt;- Simulator$new(agent, horizon, simulations, do_parallel = F)
+history                           &lt;- simulation$run()
+
+Simulation horizon: 10000
+Number of simulations: 1
+Number of batches: 1
+Starting main loop.
+Completed simulation in 0:00:01.478
+
+rb_dt                             &lt;- history$get_data_table()
+ 
+print("2b. Offline biased policy evaluation.")
+[1] "2b. Offline biased policy evaluation."
+ 
+print(paste("Sport:",sum(rb_dt[choice==1]$reward)/nrow(rb_dt[choice==1]))) 
+[1] "Sport: 0.5"  # 0.5 CTR Sport - Simpson's paradox, again!
+
+print(paste("Movie:",sum(rb_dt[choice==2]$reward)/nrow(rb_dt[choice==2]))) 
+[1] "Movie: 0.602175277138674" # 0.6 CTR Sport - Simpson's paradox, again!</pre></body></html></div>
 <p>The bias has propagated itself! So, does that mean it is not possible to use the “biased” data to evaluate other, off-line policies? That would severely limit the number of data sets for use in offline evaluation.</p>
 </div>
 <div id="repairing-the-biased-policys-logged-data-with-inverse-probability-weights" class="section level2">
 <h2 class="hasAnchor">
 <a href="#repairing-the-biased-policys-logged-data-with-inverse-probability-weights" class="anchor"></a>Repairing the biased policy’s logged data with inverse probability weights</h2>
 <p>Luckily, inverse propensity score weighting enables us to use propensity scores to obtain unbiased estimates of the original preferences of Male and Female visitors. That is, since our biased policy actually saved the propensity (“the probability of a unit being assigned to a particular treatment or category”) with which a certain category was chosen, we can correct for this bias while “replaying” the data. In “contextual”, there are several types of offline bandits that are able to use either such presaved propensities, or estimate propensities based on certain properties of the dataset. Here, we use its basic “<a href="https://github.com/Nth-iteration-labs/contextual/blob/master/R/bandit_offline_propensity_weighting.R">OfflinePropensityWeightingBandit</a>”:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>f                                 &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/formula.html">formula</a></span>(<span class="st">"reward ~ choice | X.1 + X.2 | propensity"</span>)</span>
-<span id="cb10-2"><a href="#cb10-2"></a>bandit                            &lt;-<span class="st"> </span>OfflinePropensityWeightingBandit<span class="op">$</span><span class="kw">new</span>(<span class="dt">formula =</span> f, <span class="dt">data =</span> b_dt,</span>
-<span id="cb10-3"><a href="#cb10-3"></a>                                                                          <span class="dt">k =</span> <span class="dv">2</span> , <span class="dt">d =</span> <span class="dv">2</span>)</span>
-<span id="cb10-4"><a href="#cb10-4"></a>policy                            &lt;-<span class="st"> </span>EpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="fl">0.1</span>)</span>
-<span id="cb10-5"><a href="#cb10-5"></a>agent                             &lt;-<span class="st"> </span>Agent<span class="op">$</span><span class="kw">new</span>(policy, bandit, <span class="st">"prop"</span>)</span>
-<span id="cb10-6"><a href="#cb10-6"></a> </span>
-<span id="cb10-7"><a href="#cb10-7"></a>simulation                        &lt;-<span class="st"> </span>Simulator<span class="op">$</span><span class="kw">new</span>(agent, horizon, simulations, <span class="dt">do_parallel =</span> F)</span>
-<span id="cb10-8"><a href="#cb10-8"></a>history                           &lt;-<span class="st"> </span>simulation<span class="op">$</span><span class="kw"><a href="../reference/Simulator.html">run</a></span>()</span>
-<span id="cb10-9"><a href="#cb10-9"></a></span>
-<span id="cb10-10"><a href="#cb10-10"></a>Simulation horizon<span class="op">:</span><span class="st"> </span><span class="dv">10000</span></span>
-<span id="cb10-11"><a href="#cb10-11"></a>Number of simulations<span class="op">:</span><span class="st"> </span><span class="dv">1</span></span>
-<span id="cb10-12"><a href="#cb10-12"></a>Number of batches<span class="op">:</span><span class="st"> </span><span class="dv">1</span></span>
-<span id="cb10-13"><a href="#cb10-13"></a>Starting main loop.</span>
-<span id="cb10-14"><a href="#cb10-14"></a>Completed simulation <span class="cf">in</span> <span class="dv">0</span><span class="op">:</span><span class="dv">00</span><span class="op">:</span><span class="fl">01.257</span></span>
-<span id="cb10-15"><a href="#cb10-15"></a></span>
-<span id="cb10-16"><a href="#cb10-16"></a>prop_dt                           &lt;-<span class="st"> </span>history<span class="op">$</span><span class="kw"><a href="../reference/History.html">get_data_table</a></span>()</span>
-<span id="cb10-17"><a href="#cb10-17"></a> </span>
-<span id="cb10-18"><a href="#cb10-18"></a><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="st">"2c. Offline biased policy evaluation, inverse propensity scores."</span>)</span>
-<span id="cb10-19"><a href="#cb10-19"></a>[<span class="dv">1</span>] <span class="st">"2c. Offline biased policy evaluation, inverse propensity scores."</span></span>
-<span id="cb10-20"><a href="#cb10-20"></a> </span>
-<span id="cb10-21"><a href="#cb10-21"></a><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="st">"Sport:"</span>,<span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(prop_dt[choice<span class="op">==</span><span class="dv">1</span>]<span class="op">$</span>reward)<span class="op">/</span><span class="kw"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(prop_dt[choice<span class="op">==</span><span class="dv">1</span>])))</span>
-<span id="cb10-22"><a href="#cb10-22"></a>[<span class="dv">1</span>] <span class="st">"Sport: 0.618266176609179"</span>  <span class="co"># 0.6 CTR Sport, representing actual preferences - yay!</span></span>
-<span id="cb10-23"><a href="#cb10-23"></a></span>
-<span id="cb10-24"><a href="#cb10-24"></a><span class="kw"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/paste.html">paste</a></span>(<span class="st">"Movie:"</span>,<span class="kw"><a href="https://rdrr.io/r/base/sum.html">sum</a></span>(prop_dt[choice<span class="op">==</span><span class="dv">2</span>]<span class="op">$</span>reward)<span class="op">/</span><span class="kw"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(prop_dt[choice<span class="op">==</span><span class="dv">2</span>]))) </span>
-<span id="cb10-25"><a href="#cb10-25"></a>[<span class="dv">1</span>] <span class="st">"Movie: 0.496500591177808"</span> <span class="co"># 0.5 CTR Movie, again, representing actual preferences..</span></span></code></pre></div>
+<div class="sourceCode" id="cb10"><html><body><pre class="r">f                                 &lt;- formula("reward ~ choice | X.1 + X.2 | propensity")
+bandit                            &lt;- OfflinePropensityWeightingBandit$new(formula = f, data = b_dt,
+                                                                          k = 2 , d = 2)
+policy                            &lt;- EpsilonGreedyPolicy$new(0.1)
+agent                             &lt;- Agent$new(policy, bandit, "prop")
+ 
+simulation                        &lt;- Simulator$new(agent, horizon, simulations, do_parallel = F)
+history                           &lt;- simulation$run()
+
+Simulation horizon: 10000
+Number of simulations: 1
+Number of batches: 1
+Starting main loop.
+Completed simulation in 0:00:01.257
+
+prop_dt                           &lt;- history$get_data_table()
+ 
+print("2c. Offline biased policy evaluation, inverse propensity scores.")
+[1] "2c. Offline biased policy evaluation, inverse propensity scores."
+ 
+print(paste("Sport:",sum(prop_dt[choice==1]$reward)/nrow(prop_dt[choice==1])))
+[1] "Sport: 0.618266176609179"  # 0.6 CTR Sport, representing actual preferences - yay!
+
+print(paste("Movie:",sum(prop_dt[choice==2]$reward)/nrow(prop_dt[choice==2]))) 
+[1] "Movie: 0.496500591177808" # 0.5 CTR Movie, again, representing actual preferences..</pre></body></html></div>
 <p>Hurray - inverse propensity score weighting has removed the bias! In other words: if and where possible, save propensity scores to your log files when experimenting with online policies. You will thank yourself at a later time!</p>
 </div>
   </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-        <div id="tocnav">
-      <h2 class="hasAnchor">
-<a href="#tocnav" class="anchor"></a>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-<li><a href="#original-bandit-weights">Original bandit weights</a></li>
-      <li><a href="#generate-data-by-running-a-fully-random-online-policy">Generate data by running a fully random online policy</a></li>
-      <li><a href="#using-the-random-policys-offline-logged-data-to-evaluate-another-policy">Using the random policy’s offline logged data to evaluate another policy</a></li>
-      <li><a href="#generate-data-by-running-a-biased-online-policy">Generate data by running a biased online policy</a></li>
-      <li><a href="#using-the-biased-policys-offline-logged-data-to-evaluate-another-policy">Using the biased policy’s offline logged data to evaluate another policy</a></li>
-      <li><a href="#repairing-the-biased-policys-logged-data-with-inverse-probability-weights">Repairing the biased policy’s logged data with inverse probability weights</a></li>
-      </ul>
+        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
+    </nav>
 </div>
-      </div>
 
 </div>
 
@@ -384,7 +374,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

@@ -6,21 +6,21 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Demo: Basic Epsilon Greedy • contextual</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><!-- docsearch --><script src="../docsearch.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<script src="../pkgdown.js"></script><!-- docsearch --><script src="../docsearch.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous">
 <link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="Demo: Basic Epsilon Greedy">
-<meta property="og:description" content="">
-<meta name="twitter:card" content="summary">
+<meta property="og:description" content="contextual">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
-<body>
+<body data-spy="scroll" data-target="#toc">
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">contextual</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.8.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.9.8.4</span>
       </span>
     </div>
 
@@ -123,13 +123,13 @@
 
       
 
-      </header><div class="row">
+      </header><script src="epsilongreedy_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>Demo: Basic Epsilon Greedy</h1>
+      <h1 data-toc-skip>Demo: Basic Epsilon Greedy</h1>
                         <h4 class="author">Robin van Emden</h4>
             
-            <h4 class="date">2020-03-04</h4>
+            <h4 class="date">2020-07-24</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/Nth-iteration-labs/contextual/blob/master/vignettes/epsilongreedy.Rmd"><code>vignettes/epsilongreedy.Rmd</code></a></small>
       <div class="hidden name"><code>epsilongreedy.Rmd</code></div>
@@ -138,47 +138,46 @@
 
     
     
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(contextual)</span>
-<span id="cb1-2"><a href="#cb1-2"></a></span>
-<span id="cb1-3"><a href="#cb1-3"></a>policy             &lt;-<span class="st"> </span>EpsilonGreedyPolicy<span class="op">$</span><span class="kw">new</span>(<span class="dt">epsilon =</span> <span class="fl">0.1</span>)</span>
-<span id="cb1-4"><a href="#cb1-4"></a></span>
-<span id="cb1-5"><a href="#cb1-5"></a>bandit             &lt;-<span class="st"> </span>BasicBernoulliBandit<span class="op">$</span><span class="kw">new</span>(<span class="dt">weights =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.6</span>, <span class="fl">0.1</span>, <span class="fl">0.1</span>))</span>
-<span id="cb1-6"><a href="#cb1-6"></a>agent              &lt;-<span class="st"> </span>Agent<span class="op">$</span><span class="kw">new</span>(policy,bandit)</span>
-<span id="cb1-7"><a href="#cb1-7"></a></span>
-<span id="cb1-8"><a href="#cb1-8"></a>simulator          &lt;-<span class="st"> </span>Simulator<span class="op">$</span><span class="kw">new</span>(<span class="dt">agents      =</span> agent,</span>
-<span id="cb1-9"><a href="#cb1-9"></a>                                    <span class="dt">horizon     =</span> <span class="dv">100</span>,</span>
-<span id="cb1-10"><a href="#cb1-10"></a>                                    <span class="dt">simulations =</span> <span class="dv">1000</span>)</span>
-<span id="cb1-11"><a href="#cb1-11"></a>                                    </span>
-<span id="cb1-12"><a href="#cb1-12"></a>history            &lt;-<span class="st"> </span>simulator<span class="op">$</span><span class="kw"><a href="../reference/Simulator.html">run</a></span>()</span>
-<span id="cb1-13"><a href="#cb1-13"></a></span>
-<span id="cb1-14"><a href="#cb1-14"></a><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(history, <span class="dt">type =</span> <span class="st">"cumulative"</span>, <span class="dt">regret =</span> <span class="ot">TRUE</span>, <span class="dt">disp =</span> <span class="st">"ci"</span>,</span>
-<span id="cb1-15"><a href="#cb1-15"></a>              <span class="dt">traces_max =</span> <span class="dv">100</span>, <span class="dt">traces_alpha =</span> <span class="fl">0.1</span>, <span class="dt">traces =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">contextual</span>)
+
+<span class="no">policy</span>             <span class="kw">&lt;-</span> <span class="no">EpsilonGreedyPolicy</span>$<span class="fu">new</span>(<span class="kw">epsilon</span> <span class="kw">=</span> <span class="fl">0.1</span>)
+
+<span class="no">bandit</span>             <span class="kw">&lt;-</span> <span class="no">BasicBernoulliBandit</span>$<span class="fu">new</span>(<span class="kw">weights</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.6</span>, <span class="fl">0.1</span>, <span class="fl">0.1</span>))
+<span class="no">agent</span>              <span class="kw">&lt;-</span> <span class="no">Agent</span>$<span class="fu">new</span>(<span class="no">policy</span>,<span class="no">bandit</span>)
+
+<span class="no">simulator</span>          <span class="kw">&lt;-</span> <span class="no">Simulator</span>$<span class="fu">new</span>(<span class="kw">agents</span>      <span class="kw">=</span> <span class="no">agent</span>,
+                                    <span class="kw">horizon</span>     <span class="kw">=</span> <span class="fl">100</span>,
+                                    <span class="kw">simulations</span> <span class="kw">=</span> <span class="fl">1000</span>)
+
+<span class="no">history</span>            <span class="kw">&lt;-</span> <span class="no">simulator</span>$<span class="fu"><a href="../reference/Simulator.html">run</a></span>()
+
+<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">history</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"cumulative"</span>, <span class="kw">regret</span> <span class="kw">=</span> <span class="fl">TRUE</span>, <span class="kw">disp</span> <span class="kw">=</span> <span class="st">"ci"</span>,
+              <span class="kw">traces_max</span> <span class="kw">=</span> <span class="fl">100</span>, <span class="kw">traces_alpha</span> <span class="kw">=</span> <span class="fl">0.1</span>, <span class="kw">traces</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></body></html></div>
 <p><img src="basic_epsilon_greedy.png"></p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(history)</span>
-<span id="cb2-2"><a href="#cb2-2"></a>                                  </span></code></pre></div>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>Agents<span class="op">:</span></span>
-<span id="cb3-2"><a href="#cb3-2"></a></span>
-<span id="cb3-3"><a href="#cb3-3"></a><span class="st">  </span>EpsilonGreedy</span>
-<span id="cb3-4"><a href="#cb3-4"></a></span>
-<span id="cb3-5"><a href="#cb3-5"></a>Cumulative regret<span class="op">:</span></span>
-<span id="cb3-6"><a href="#cb3-6"></a></span>
-<span id="cb3-7"><a href="#cb3-7"></a><span class="st">         </span>agent   t sims cum_regret cum_regret_var cum_regret_sd</span>
-<span id="cb3-8"><a href="#cb3-8"></a> EpsilonGreedy <span class="dv">100</span> <span class="dv">1000</span>      <span class="fl">8.951</span>       <span class="fl">116.7133</span>      <span class="fl">10.80339</span></span>
-<span id="cb3-9"><a href="#cb3-9"></a></span>
-<span id="cb3-10"><a href="#cb3-10"></a></span>
-<span id="cb3-11"><a href="#cb3-11"></a>Cumulative reward<span class="op">:</span></span>
-<span id="cb3-12"><a href="#cb3-12"></a></span>
-<span id="cb3-13"><a href="#cb3-13"></a><span class="st">         </span>agent   t sims cum_reward cum_reward_var cum_reward_sd</span>
-<span id="cb3-14"><a href="#cb3-14"></a> EpsilonGreedy <span class="dv">100</span> <span class="dv">1000</span>      <span class="fl">51.09</span>       <span class="fl">141.6215</span>      <span class="fl">11.90048</span></span>
-<span id="cb3-15"><a href="#cb3-15"></a></span>
-<span id="cb3-16"><a href="#cb3-16"></a></span>
-<span id="cb3-17"><a href="#cb3-17"></a>Cumulative reward rate<span class="op">:</span></span>
-<span id="cb3-18"><a href="#cb3-18"></a></span>
-<span id="cb3-19"><a href="#cb3-19"></a><span class="st">         </span>agent   t sims cur_reward cur_reward_var cur_reward_sd</span>
-<span id="cb3-20"><a href="#cb3-20"></a> EpsilonGreedy <span class="dv">100</span> <span class="dv">1000</span>     <span class="fl">0.5109</span>       <span class="fl">1.416215</span>     <span class="fl">0.1190048</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="no">history</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb3"><html><body><pre class="r">Agents:
+
+  EpsilonGreedy
+
+Cumulative regret:
+
+         agent   t sims cum_regret cum_regret_var cum_regret_sd
+ EpsilonGreedy 100 1000      8.951       116.7133      10.80339
+
+
+Cumulative reward:
+
+         agent   t sims cum_reward cum_reward_var cum_reward_sd
+ EpsilonGreedy 100 1000      51.09       141.6215      11.90048
+
+
+Cumulative reward rate:
+
+         agent   t sims cur_reward cur_reward_var cur_reward_sd
+ EpsilonGreedy 100 1000     0.5109       1.416215     0.1190048</pre></body></html></div>
   </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
       </div>
 
@@ -191,7 +190,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

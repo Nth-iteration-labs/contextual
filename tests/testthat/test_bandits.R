@@ -261,7 +261,7 @@ test_that("ContextualPrecachingBandit MAB policies", {
   expect_equal(history$cumulative$Random$cum_regret,3.4, tolerance = 0.01)
   expect_equal(history$cumulative$Oracle$cum_regret,0.9, tolerance = 0.01)
   expect_equal(history$cumulative$GittinsBrezziLai$cum_regret,3.1, tolerance = 0.01)
-  expect_equal(history$cumulative$Exp3$cum_regret,3.5, tolerance = 0.01)
+  expect_equal(history$cumulative$Exp3$cum_regret,3, tolerance = 0.01)
   expect_equal(history$cumulative$UCB1$cum_regret,3.4, tolerance = 0.01)
   expect_equal(history$cumulative$ThompsonSampling$cum_regret,3, tolerance = 0.01)
   expect_equal(history$cumulative$EpsilonGreedy$cum_regret,3.3, tolerance = 0.01)
