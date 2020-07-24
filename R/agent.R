@@ -73,6 +73,11 @@ Agent <- R6::R6Class(
           reward[["regret"]]      <- 0.0
           reward[["cum_regret"]]  <- 0.0
         }
+
+        if (!is.null(reward[["context"]])) {
+          context <- reward[["context"]]
+        }
+
         cum_reward                <<- cum_reward + reward[["reward"]]
         reward[["cum_reward"]]    <- cum_reward
 
