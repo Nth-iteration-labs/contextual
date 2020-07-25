@@ -1,13 +1,14 @@
-* Fix setting global random seed independent of code.
-* R-devel fix.
-* Minor documentation fixes.
+* Minor documentation updates.
+* Fix for Exp3 bug (thanks, @leferrad)
+* Cleanup of propensity score related code (thanks again, @leferrad)
+* Updated tests.
 
 ## Test environments
 
-* local Windows 10 (x64) release, R 3.6.0
+* local Windows 10 (x64) release, R 4.0.2
 * OS X install (on travis-ci) R-release
 * Ubuntu 12.04 (on travis-ci) R-release
-* Windows Server 2012 R2 x64 install (on appveyor), R 3.6.1
+* Windows Server 2012 R2 x64 install (on appveyor), R 4.0.2
 * Rhub:
   * Fedora Linux, R-devel, clang, gfortran
   * Ubuntu Linux 16.04 LTS, R-release, GCC
