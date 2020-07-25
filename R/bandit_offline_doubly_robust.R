@@ -9,15 +9,13 @@ OfflineDoublyRobustBandit <- R6::R6Class(
     n = NULL
   ),
   public = list(
-    inverted = NULL,
     threshold = NULL,
     class_name = "OfflineDoublyRobustBandit",
     initialize   = function(formula,
                             data, k = NULL, d = NULL,
                             unique = NULL, shared = NULL,
-                            inverted = FALSE, threshold = 0,
+                            threshold = 0,
                             randomize = TRUE) {
-      self$inverted  <- inverted
       self$threshold <- threshold
       super$initialize(formula,
                        data, k, d,
@@ -44,15 +42,11 @@ OfflineDoublyRobustBandit <- R6::R6Class(
       p                 <- private$p[index]
       indicator         <- ind(private$z[index] == choice)
       if (indicator) {
-        p   <- private$p[index]
-        if (self$inverted) p <- 1 / p
-        if (self$threshold > 0) {
-          if (isTRUE(self$inverted))  p <- 1 / p
-          p <- 1 / max(p,self$threshold)
-        } else {
-          if (!isTRUE(self$inverted)) p <- 1 / p
-        }
-        prop_reward       <- (data_reward - model_reward) * p
+
+        p <- max(private$p[index], self$threshold) # when threshold 0 (default)
+                                                   # p = private$p[index]
+        w <- 1 / p
+        prop_reward       <- (data_reward - model_reward) * w
       } else {
         prop_reward       <- 0
       }
@@ -77,7 +71,7 @@ OfflineDoublyRobustBandit <- R6::R6Class(
 #'   bandit <- OfflineDoublyRobustBandit(formula,
 #'                                       data, k = NULL, d = NULL,
 #'                                       unique = NULL, shared = NULL,
-#'                                       inverted = FALSE, randomize = TRUE)
+#'                                       randomize = TRUE)
 #' }
 #'
 #' @section Arguments:
@@ -120,9 +114,6 @@ OfflineDoublyRobustBandit <- R6::R6Class(
 #'   }
 #'   \item{\code{shared}}{
 #'     integer vector; index of shared features (optional)
-#'   }
-#'   \item{\code{inverted}}{
-#'     logical; have the propensities been inverted (1/p) or not (p)?
 #'   }
 #'   \item{\code{threshold}}{
 #'     float (0,1); Lower threshold or Tau on propensity score values. Smaller Tau makes for less biased

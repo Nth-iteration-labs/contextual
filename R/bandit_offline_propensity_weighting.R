@@ -10,7 +10,6 @@ OfflinePropensityWeightingBandit <- R6::R6Class(
   ),
   public = list(
     class_name = "OfflinePropensityWeightingBandit",
-    inverted = NULL,
     threshold = NULL,
     drop_value = NULL,
     stabilized = NULL,
@@ -18,10 +17,8 @@ OfflinePropensityWeightingBandit <- R6::R6Class(
                             data, k = NULL, d = NULL,
                             unique = NULL, shared = NULL,
                             randomize = TRUE, replacement = FALSE,
-                            jitter = FALSE, arm_multiply = FALSE,
-                            inverted = FALSE, threshold = 0,
+                            jitter = FALSE, arm_multiply = FALSE, threshold = 0,
                             stabilized = TRUE, drop_unequal_arm = TRUE) {
-      self$inverted   <- inverted
       self$threshold  <- threshold
       self$stabilized <- stabilized
       if(isTRUE(drop_unequal_arm)) {
@@ -47,20 +44,22 @@ OfflinePropensityWeightingBandit <- R6::R6Class(
     },
     get_reward = function(index, context, action) {
       if (private$z[[index]] == action$choice) {
-        p   <- private$p[index]
-        if (self$threshold > 0) {
-          if (isTRUE(self$inverted)) p  <- 1 / p
-          p <- 1 / max(p,self$threshold)
-        } else {
-          if (!isTRUE(self$inverted)) p <- 1 / p
-        }
+
+        p <- max(private$p[index], self$threshold) # when threshold 0 (default)
+                                                   # p = private$p[index]
+
+        w <- 1 / p
+
         if (self$stabilized) {
+
           inc(private$n)     <- 1
-          inc(private$p_hat) <- (p - private$p_hat) / private$n
-          prop_reward          <- as.double((private$y[index]*p)/private$p_hat)
+          inc(private$p_hat) <- (w - private$p_hat) / private$n
+          prop_reward        <- as.double((private$y[index]*w)/private$p_hat)
+
         } else {
-          prop_reward          <- as.double(private$y[index]*p)
+          prop_reward        <- as.double(private$y[index]*w)
         }
+
         list(
           reward         = prop_reward,
           optimal_reward = ifelse(private$or, as.double(private$S$optimal_reward[[index]]), NA),
@@ -94,8 +93,7 @@ OfflinePropensityWeightingBandit <- R6::R6Class(
 #'                                              data, k = NULL, d = NULL,
 #'                                              unique = NULL, shared = NULL,
 #'                                              randomize = TRUE, replacement = TRUE,
-#'                                              jitter = TRUE, arm_multiply = TRUE,
-#'                                              inverted = FALSE)
+#'                                              jitter = TRUE, arm_multiply = TRUE)
 #' }
 #'
 #' @section Arguments:
@@ -134,10 +132,7 @@ OfflinePropensityWeightingBandit <- R6::R6Class(
 #'   \item{\code{arm_multiply}}{
 #'     logical; multiply the horizon by the number of arms (optional, default: TRUE)
 #'   }
-#'   \item{\code{inverted}}{
-#'     logical; have the propensity scores been weighted (optional, default: FALSE)
-#'   }
- #'  \item{\code{threshold}}{
+#'  \item{\code{threshold}}{
 #'     float (0,1); Lower threshold or Tau on propensity score values. Smaller Tau makes for less biased
 #'     estimates with more variance, and vice versa. For more information, see paper by Strehl at all (2010).
 #'     Values between 0.01 and 0.05 are known to work well.
@@ -168,7 +163,7 @@ OfflinePropensityWeightingBandit <- R6::R6Class(
 #' \describe{
 #'
 #'   \item{\code{new(formula, data, k = NULL, d = NULL, unique = NULL, shared = NULL, randomize = TRUE,
-#'                   replacement = TRUE, jitter = TRUE, arm_multiply = TRUE, inverted = FALSE)}}{
+#'                   replacement = TRUE, jitter = TRUE, arm_multiply = TRUE)}}{
 #'                   generates and instantializes a new \code{OfflinePropensityWeightingBandit} instance. }
 #'
 #'   \item{\code{get_context(t)}}{

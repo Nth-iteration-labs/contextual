@@ -214,13 +214,13 @@ print(paste("Movie:",round(sum(prop_dt[choice==2]$reward)/nrow(prop_dt[choice==2
 #                                         stop.method = "es.mean", verbose=FALSE)
 # b_dt$choice                       <- b_dt$choice + 1
 #
-# weights                           <- get.weights(ip, stop.method = "es.mean")  # already inverted
+# weights                           <- get.weights(ip, stop.method = "es.mean")
 # b_dt$p                            <- weights
 #
 # f                                 <- formula("reward ~ choice | X.1 + X.2 | p")
 #
 # bandit                            <- OfflinePropensityWeightingBandit$new(formula = f, data = b_dt,
-#                                                                           k = 2 , d = 2, inverted = TRUE)
+#                                                                           k = 2 , d = 2)
 # policy                            <- EpsilonGreedyPolicy$new(0.1)
 # agent                             <- Agent$new(policy, bandit, "prop")
 #
