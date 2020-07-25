@@ -191,8 +191,7 @@
                                              <span class='no'>data</span>, <span class='kw'>k</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>d</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
                                              <span class='kw'>unique</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>shared</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
                                              <span class='kw'>randomize</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>replacement</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-                                             <span class='kw'>jitter</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>arm_multiply</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-                                             <span class='kw'>inverted</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre>
+                                             <span class='kw'>jitter</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>arm_multiply</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
 
@@ -216,7 +215,6 @@ to define custom intercept(s) when and where needed in data.table or data.frame.
 <dt><code>replacement</code></dt><dd><p>logical; sample with replacement (optional, default: TRUE)</p></dd>
 <dt><code>jitter</code></dt><dd><p>logical; add jitter to contextual features (optional, default: TRUE)</p></dd>
 <dt><code>arm_multiply</code></dt><dd><p>logical; multiply the horizon by the number of arms (optional, default: TRUE)</p></dd>
-<dt><code>inverted</code></dt><dd><p>logical; have the propensity scores been weighted (optional, default: FALSE)</p></dd>
 <dt><code>threshold</code></dt><dd><p>float (0,1); Lower threshold or Tau on propensity score values. Smaller Tau makes for less biased
 estimates with more variance, and vice versa. For more information, see paper by Strehl at all (2010).
 Values between 0.01 and 0.05 are known to work well.</p></dd>
@@ -242,7 +240,7 @@ which use the marginal probability of treatment instead of 1 in the weight numer
 <dl'>
 
 <dt><code>new(formula, data, k = NULL, d = NULL, unique = NULL, shared = NULL, randomize = TRUE,
-                  replacement = TRUE, jitter = TRUE, arm_multiply = TRUE, inverted = FALSE)</code></dt><dd><p>generates and instantializes a new <code>OfflinePropensityWeightingBandit</code> instance.</p></dd>
+                  replacement = TRUE, jitter = TRUE, arm_multiply = TRUE)</code></dt><dd><p>generates and instantializes a new <code>OfflinePropensityWeightingBandit</code> instance.</p></dd>
 
 <dt><code><a href='Bandit.html'>get_context(t)</a></code></dt><dd><p>argument:
 <ul>

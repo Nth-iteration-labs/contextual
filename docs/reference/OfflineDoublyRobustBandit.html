@@ -190,7 +190,7 @@
   <span class='no'>bandit</span> <span class='kw'>&amp;</span><span class='no'>lt</span>;- <span class='fu'>OfflineDoublyRobustBandit</span>(<span class='no'>formula</span>,
                                       <span class='no'>data</span>, <span class='kw'>k</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>d</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
                                       <span class='kw'>unique</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>shared</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-                                      <span class='kw'>inverted</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>randomize</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+                                      <span class='kw'>randomize</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
 
@@ -217,7 +217,6 @@ to define custom intercept(s) when and where needed in data.table or data.frame.
 <dt><code>jitter</code></dt><dd><p>logical; add jitter to contextual features (optional, default: FALSE)</p></dd>
 <dt><code>unique</code></dt><dd><p>integer vector; index of disjoint features (optional)</p></dd>
 <dt><code>shared</code></dt><dd><p>integer vector; index of shared features (optional)</p></dd>
-<dt><code>inverted</code></dt><dd><p>logical; have the propensities been inverted (1/p) or not (p)?</p></dd>
 <dt><code>threshold</code></dt><dd><p>float (0,1); Lower threshold or Tau on propensity score values. Smaller Tau makes for less biased
 estimates with more variance, and vice versa. For more information, see paper by Strehl at all (2010).
 Values between 0.01 and 0.05 are known to work well.</p></dd>

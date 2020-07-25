@@ -13,8 +13,7 @@ Policy for the evaluation of policies with offline data through replay with prop
                                              data, k = NULL, d = NULL,
                                              unique = NULL, shared = NULL,
                                              randomize = TRUE, replacement = TRUE,
-                                             jitter = TRUE, arm_multiply = TRUE,
-                                             inverted = FALSE)
+                                             jitter = TRUE, arm_multiply = TRUE)
 }
 }
 
@@ -54,9 +53,6 @@ logical; add jitter to contextual features (optional, default: TRUE)
 \item{\code{arm_multiply}}{
 logical; multiply the horizon by the number of arms (optional, default: TRUE)
 }
-\item{\code{inverted}}{
-logical; have the propensity scores been weighted (optional, default: FALSE)
-}
 \item{\code{threshold}}{
 float (0,1); Lower threshold or Tau on propensity score values. Smaller Tau makes for less biased
 estimates with more variance, and vice versa. For more information, see paper by Strehl at all (2010).
@@ -90,7 +86,7 @@ integer vector; index of shared features (optional)
 \describe{
 
 \item{\code{new(formula, data, k = NULL, d = NULL, unique = NULL, shared = NULL, randomize = TRUE,
-                  replacement = TRUE, jitter = TRUE, arm_multiply = TRUE, inverted = FALSE)}}{
+                  replacement = TRUE, jitter = TRUE, arm_multiply = TRUE)}}{
 generates and instantializes a new \code{OfflinePropensityWeightingBandit} instance. }
 
 \item{\code{get_context(t)}}{

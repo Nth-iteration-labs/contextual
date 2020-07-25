@@ -12,7 +12,7 @@ Bandit for the doubly robust evaluation of policies with offline data.
   bandit <- OfflineDoublyRobustBandit(formula,
                                       data, k = NULL, d = NULL,
                                       unique = NULL, shared = NULL,
-                                      inverted = FALSE, randomize = TRUE)
+                                      randomize = TRUE)
 }
 }
 
@@ -56,9 +56,6 @@ integer vector; index of disjoint features (optional)
 }
 \item{\code{shared}}{
 integer vector; index of shared features (optional)
-}
-\item{\code{inverted}}{
-logical; have the propensities been inverted (1/p) or not (p)?
 }
 \item{\code{threshold}}{
 float (0,1); Lower threshold or Tau on propensity score values. Smaller Tau makes for less biased
